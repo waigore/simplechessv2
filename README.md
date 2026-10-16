@@ -1,12 +1,10 @@
-# game-dev-template
-Template repo for agent-driven game development projects
+# Simple Chess
 
-## Start here
+A zen web chess game where you play a friend on one device, or work a stream of puzzles matched to your level, at a quiet cafe table.
 
-After creating a repo from this template, ask your agent to:
+## Overview
 
-1. Run `ensure-project-setup` to check and complete first-time GitHub setup.
-2. Run `capture-requirements` to lock in the high-level requirements: the vision, then the definition (scope, platforms, engine, spec depth), then quality expectations. Design and every other spec build on these. You can describe the game in as much detail as you like up front; design-level detail is saved as notes and used when design is captured.
+Two people share one browser for untimed or timed (blitz / rapid) chess, or a solo player works a continuous puzzle stream that adapts to each result. Optional Stockfish move advice appears when online and asked for; local moves never wait on the network. Built with Godot for the web, with touch as the primary input. Specs: [`specs/vision.md`](specs/vision.md), [`specs/definition/definition.md`](specs/definition/definition.md).
 
 ## Layout
 
