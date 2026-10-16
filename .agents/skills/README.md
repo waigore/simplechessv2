@@ -1,0 +1,49 @@
+# Project skills
+
+Canonical skill bodies live here (one folder per skill). This catalog is the list agents should maintain — not a full inventory in `AGENTS.md`.
+
+Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invoke, don't restate**): [`docs/skills.md`](../../docs/skills.md).
+
+## Catalog
+
+| Skill | Purpose |
+|-------|---------|
+| [`ensure-project-setup`](ensure-project-setup/SKILL.md) | Check first-time setup is done; apply gaps via `setup-github-repo` |
+| [`setup-github-repo`](setup-github-repo/SKILL.md) | Apply and verify first-time GitHub settings (Actions, `main` ruleset, squash-only, auto-merge, labels) |
+| [`setup-project-mcp`](setup-project-mcp/SKILL.md) | Add, enable, disable, or smoke-test MCP servers for Cursor / OpenCode / Grok; credentials never in-repo |
+| [`create-project-label`](create-project-label/SKILL.md) | Add a label to config + docs and sync to GitHub |
+| [`create-project-epic`](create-project-epic/SKILL.md) | Create an Epic issue (`type:epic`) on GitHub |
+| [`create-project-task`](create-project-task/SKILL.md) | Create a Task issue (`type:task`) with parent/blocked-by wiring |
+| [`plan-project-waves`](plan-project-waves/SKILL.md) | Inventory specs; cut waves (milestones) and vertical epics; file wave-1 leaf tasks + demo follow-ons |
+| [`audit-project-wave`](audit-project-wave/SKILL.md) | Audit a filed wave (milestone description vs epics); confirm before new epics / moves / set-level restructure |
+| [`project-planner-agent`](project-planner-agent/SKILL.md) | Gap-drive specs vs demonstrated or planned work; mutate GitHub issues only (breadth or depth) |
+| [`create-project-defect`](create-project-defect/SKILL.md) | Create a Defect issue (`type:defect`) with related/blocked-by wiring |
+| [`enforce-task-workflow-status`](enforce-task-workflow-status/SKILL.md) | Gate or audit `status:*` labels for typed issues |
+| [`review-project-issue`](review-project-issue/SKILL.md) | Review pass / fail / clarify → next status |
+| [`refine-project-issue`](refine-project-issue/SKILL.md) | Refine issue body → pending-review |
+| [`clarify-project-issue`](clarify-project-issue/SKILL.md) | Record PO clarification → review or refinement |
+| [`implement-project-issue`](implement-project-issue/SKILL.md) | Implementation summary → pending-verification |
+| [`verify-project-issue`](verify-project-issue/SKILL.md) | Independent verify pass / fail |
+| [`accept-project-issue`](accept-project-issue/SKILL.md) | Accept / fail / clarify after verification |
+| [`issue-workflow-review-agent`](issue-workflow-review-agent/SKILL.md) | Background dispatch → `review-project-issue` |
+| [`issue-workflow-refine-agent`](issue-workflow-refine-agent/SKILL.md) | Background dispatch → `refine-project-issue` |
+| [`issue-workflow-clarify-agent`](issue-workflow-clarify-agent/SKILL.md) | Background dispatch → `clarify-project-issue` |
+| [`issue-workflow-implement-agent`](issue-workflow-implement-agent/SKILL.md) | Background dispatch → implement work + `implement-project-issue` |
+| [`issue-workflow-verify-agent`](issue-workflow-verify-agent/SKILL.md) | Background dispatch → `verify-project-issue` |
+| [`issue-workflow-accept-agent`](issue-workflow-accept-agent/SKILL.md) | Background dispatch → `accept-project-issue` |
+| [`author-spec`](author-spec/SKILL.md) | Write or edit a spec from `.agents/specs/rules/`; do not copy the rules into the spec |
+| [`capture-requirements`](capture-requirements/SKILL.md) | Interview for specs, high-level stage first; detail saved as notes; confirm, `author-spec`, open a spec PR |
+| [`review-spec`](review-spec/SKILL.md) | Review a spec doc or the whole set; whole-spec also runs applicability, terminology, and TBD audits; report verdict |
+| [`review-code`](review-code/SKILL.md) | Review code vs `docs/solid.md` (SOLID + continuity) and `docs/coding-conventions.md` (project rules + `Code lint`); Pass/Fail, read-only |
+| [`audit-spec-applicability`](audit-spec-applicability/SKILL.md) | Audit Applies/N/A upstream grounds and downstream carry-outs; report for author-spec |
+| [`audit-spec-terminology`](audit-spec-terminology/SKILL.md) | Audit glossary ownership and term usage (undefined, drift, synonyms, homonyms); report for author-spec |
+| [`audit-spec-tbd`](audit-spec-tbd/SKILL.md) | Find TBDs (undecided aspects), propose grounded answers, confirm with the user, then author-spec |
+| [`create-gameplay-demo`](create-gameplay-demo/SKILL.md) | Scope a demo aggressively, clarify blockers into specs, build it under `demos/` as a spec-traced reference artifact that expresses the aesthetics and uses only cataloged pipeline assets |
+| [`manage-asset`](manage-asset/SKILL.md) | Generate, import, update, or deprecate assets per `specs/assets/` procedures; catalog, review, PR |
+| [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs / soft SFX → registry); PR |
+| [`register-asset`](register-asset/SKILL.md) | Catalog a person-supplied (human-made or third-party) asset; person-granted review exemption or review-asset; PR |
+| [`review-asset`](review-asset/SKILL.md) | Review produced assets vs kind spec and `specs/aesthetics/`; Pass/Fail by element ID, read-only |
+| [`promote-gameplay-demo`](promote-gameplay-demo/SKILL.md) | Reimplement demo behavior in main code: drift check, assumptions into specs, technical design, asset approval, code review |
+| [`sync-upstream-template`](sync-upstream-template/SKILL.md) | Merge upstream template changes downstream: baseline, per-file classify, confirm conflicts, one sync PR |
+
+When adding or renaming a skill: update this table, add facades per `docs/skills.md`, and keep the thin Skills pointer in [`AGENTS.md`](../../AGENTS.md) unchanged unless the path to this catalog moves.
