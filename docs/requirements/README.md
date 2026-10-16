@@ -8,6 +8,8 @@ Notes are **not specs**. They are unconfirmed and do not authorize code or desig
 
 One file per downstream layer, created when first needed: `design.md`, `view.md`, `aesthetics.md`, `ux.md`, `playtest.md`, `assets.md`, `adr.md`, `technical.md`. When a file nears 500 words, split it by topic into `<layer>-<topic>.md` (for example `design-combat.md`) and list the parts in the layer file.
 
+Current notes: [design](design.md), [view](view.md), [aesthetics](aesthetics.md), [adr](adr.md), [technical](technical.md).
+
 ## Entry format
 
 ```markdown
