@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/design/traceability.md`](../../.agents/sp
 | Difficulty settings | [`difficulty.md`](difficulty.md) | <!-- fill in --> |
 | Scenarios | [`scenarios/`](scenarios/) | <!-- fill in --> |
 | Progress management | [`progression.md`](progression.md) | <!-- fill in --> |
-| Sub-games | [`sub-games/`](sub-games/) | <!-- fill in --> |
+| Sub-games | [`sub-games/`](sub-games/) | N/A — the puzzle stream is a primary mode, not a minigame inside a match |
 | Win and loss conditions | [`end-conditions.md`](end-conditions.md) | <!-- fill in --> |
 | Economy and resources | [`features/`](features/) | <!-- fill in --> |
 | Opponent and NPC behavior | [`characters/`](characters/), [`features/`](features/) | <!-- fill in --> |
