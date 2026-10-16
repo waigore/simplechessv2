@@ -36,6 +36,7 @@ Outcome: changes reach `main` only via PR; no one bypasses; PRs merge (or auto-m
 - Squash commit message default: **Pull request title and description**.
 - **Always suggest updating pull request branches** on, since up-to-date checks hold back stale PRs.
 - **Allow auto-merge** on. Same-repo, non-draft PRs then squash-merge once mergeable unless labeled `no-automerge` ([`automerge.yml`](../.github/workflows/automerge.yml)).
+- **Automatically delete head branches** on. After a same-repo PR merges, GitHub deletes that PR's head branch.
 
 ## 4. Labels
 
