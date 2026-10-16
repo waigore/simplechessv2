@@ -24,7 +24,7 @@ A **ruleset** (**Settings → Rules → Rulesets**) targeting `main`, enforcemen
 | Require a pull request before merging | On; 0 required approvals (baseline; tighten later if needed) |
 | Require status checks to pass | On; **require branches to be up to date**; checks `Spec lint` ([`spec-lint.yml`](../.github/workflows/spec-lint.yml)), `PR hygiene` ([`pr-hygiene.yml`](../.github/workflows/pr-hygiene.yml)), `Code lint` ([`code-lint.yml`](../.github/workflows/code-lint.yml)) |
 
-Existing classic branch protection on `main` may stay; GitHub enforces the stricter of both. Do not remove or weaken it without the user's confirmation. A check appears in the UI picker only after it has run once; the API accepts check names before then.
+Existing classic branch protection on `main` may stay; GitHub enforces the stricter of both. Do not weaken it without the user's confirmation. The API accepts check names before the UI lists them.
 
 Outcome: changes reach `main` only via PR; no one bypasses; PRs merge (or auto-merge) only when the three checks pass on a branch up to date with `main`.
 
@@ -44,7 +44,7 @@ Every label in [`.github/project-labels.yml`](../.github/project-labels.yml) exi
 
 ## 5. Verify
 
-Read every setting above back from GitHub and compare it with this doc; a successful write is not proof. Confirm Actions can run (e.g. a `Spec lint` run on `main` succeeds). Setup passes only when every outcome holds.
+Read every setting back from GitHub and compare it with this doc; a write is not proof. Confirm Actions can run (e.g. a `Spec lint` run on `main` succeeds). Setup passes only when every outcome holds.
 
 ## Blockers
 
