@@ -4,16 +4,16 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 
 ## Project
 
-- **Purpose**: <!-- fill in: what this game/project is -->
-- **Language / engine**: <!-- fill in from specs/definition/definition.md (Engine) and its Engine ADR: e.g. GDScript/Godot, C#/Unity, Dart/Flame -->
-- **Frameworks / tools**: <!-- fill in: key libs, build tooling, CI -->
+- **Purpose**: Zen web chess — same-device two-player games and an adaptive solo puzzle stream, set at a cafe table ([`specs/vision.md`](specs/vision.md)).
+- **Language / engine**: Godot (2D web / touch) — [`specs/definition/definition.md`](specs/definition/definition.md). Scripting language TBD until the Engine ADR is Accepted.
+- **Frameworks / tools**: Godot web export; optional Stockfish advice (server, async); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
 
 ## Quick start commands
 
-- **Setup**: <!-- fill in: install deps / clone assets / env -->
-- **Run**: <!-- fill in: launch editor or game -->
-- **Test**: <!-- fill in: unit/integration test command -->
-- **Build / export**: <!-- fill in: build and package/export targets -->
+- **Setup**: Install Godot (version TBD — Engine ADR). Clone this repo; no installable package yet.
+- **Run**: Open the Godot project and run (or export to web). Project scaffold TBD.
+- **Test**: TBD — Engine ADR / coding conventions.
+- **Build / export**: Godot HTML5/web export for the browser. Exact targets TBD.
 
 ## Labels
 
@@ -48,7 +48,7 @@ Canonical skills and catalog: [`.agents/`](.agents/) ([README](.agents/README.md
 - [`docs/`](docs/) — ([README](docs/README.md))
 - [`specs/`](specs/) — ([README](specs/README.md))
 - [`demos/`](demos/) — gameplay demos, kept apart from main code ([README](demos/README.md))
-- <!-- fill in: top-level dirs (e.g. src/, assets/, tests/) + their README.md -->
+- Godot game root / `src/` / asset catalog paths — TBD when the Engine ADR and first implementation wave land
 
 ## Rules to live by
 
