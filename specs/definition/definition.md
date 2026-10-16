@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 ### Player objectives
 
 - **Goal**: Win the shared game, or solve the puzzle currently dealt.
-- **Win / lose conditions**: A game ends by checkmate, resignation, or a draw under the laws of chess, and the players may begin a new session. A puzzle leaves the stream when it is solved or abandoned, and the next puzzle is dealt immediately.
+- **Win / lose conditions**: A game ends by checkmate, resignation, or a draw under the laws of chess. In a timed game, a side whose clock reaches zero loses if the other side can still checkmate, and the game is drawn otherwise. Only the side to move has a clock running. The players may begin a new session. A puzzle leaves the stream when it is solved or abandoned, and the next puzzle is dealt immediately.
 - **Progression**: Puzzle selection tracks each result and deals a harder or easier puzzle next. Two-player games have no long-term progression.
 
 ### Product objectives
