@@ -6,11 +6,11 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 
 | Term | Definition | Detailed in |
 |------|------------|-------------|
-| Abandon puzzle | Leave the current Puzzle unsolved; Elo loss; next Puzzle dealt | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
-| Advice | Automatic best-move highlights, arrow, and eval for the side to move when On and online | [`features/move-advice.md`](features/move-advice.md) |
+| Abandon puzzle | Leave current Puzzle unsolved; Elo loss; next dealt | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
+| Advice | Best-move highlights, arrow, and eval when On and online | [`features/move-advice.md`](features/move-advice.md) |
 | Blitz | Timed Shared game; each side starts at `CFG.BLITZ_START` | [`configuration.md`](configuration.md) |
 | Bottom player | Seat at the bottom of the shared device | [`configuration.md`](configuration.md) |
-| Check | The side to move's king is attacked | [`loops/two-player-game.md`](loops/two-player-game.md) |
+| Check | The side to move's king is attacked | [`entities/pieces/common.md`](entities/pieces/common.md) |
 | Checkmate | Side to move is in check and has no legal move (Shared-game loss) | [`end-conditions.md`](end-conditions.md) |
 | Clock | Shared-game timing: Untimed, Blitz, or Rapid | [`configuration.md`](configuration.md) |
 | Clock expiry | A running clock reaches zero (loss or draw per end conditions) | [`end-conditions.md`](end-conditions.md) |
@@ -18,9 +18,10 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 | Fifty-move rule | Draw after fifty moves each with no capture and no pawn move | [`end-conditions.md`](end-conditions.md) |
 | Increment | Seconds added after each completed move in Blitz or Rapid | [`configuration.md`](configuration.md) |
 | Last mode | Shared game or Puzzle stream last chosen at mode pick; default highlight | [`flows/mode-pick.md`](flows/mode-pick.md) |
-| Leave stream | Quit Puzzle stream; Elo kept; open Puzzle is not Abandon puzzle | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
-| Legal move | One orthodox move that does not leave the mover's king in check | [`loops/two-player-game.md`](loops/two-player-game.md) |
-| Player Elo | Visible Puzzle-stream rating; starts at 1000; classic Elo updates | [`difficulty.md`](difficulty.md), [`progression.md`](progression.md) |
+| Leave stream | Quit Puzzle stream; Elo kept; open puzzle not abandon | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
+| Legal move | Pseudo-legal piece move; mover's king not left in check | [`entities/pieces/common.md`](entities/pieces/common.md) |
+| Piece | King, queen, rook, bishop, knight, or pawn | [`entities/pieces.md`](entities/pieces.md) |
+| Player Elo | Puzzle rating; starts at `CFG.ELO_START`; Elo updates | [`difficulty.md`](difficulty.md), [`progression.md`](progression.md) |
 | Puzzle | One dealt position with a required sequence in Puzzle stream | [`end-conditions.md`](end-conditions.md) |
 | Puzzle Elo | Fixed pre-rated puzzle difficulty; never changes | [`difficulty.md`](difficulty.md) |
 | Puzzle stream | Solo continuous puzzles; next pick follows Player Elo | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
@@ -31,7 +32,7 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 | Side to move | The color whose turn it is to move | [`loops/two-player-game.md`](loops/two-player-game.md) |
 | Sitting | One continuous play period of about 15–40 minutes | [`design.md`](design.md) |
 | Stalemate | Side to move is not in check and has no legal move (draw) | [`end-conditions.md`](end-conditions.md) |
-| Threefold repetition | Draw when the same position, side to move, and rights occur three times | [`end-conditions.md`](end-conditions.md) |
+| Threefold repetition | Draw when same position, side to move, and rights occur thrice | [`end-conditions.md`](end-conditions.md) |
 | Top player | Seat at the top of the shared device | [`configuration.md`](configuration.md) |
 | Untimed | Shared game with no clocks | [`configuration.md`](configuration.md) |
 | White seat | Which seat plays White and moves first | [`configuration.md`](configuration.md) |

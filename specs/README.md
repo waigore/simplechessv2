@@ -30,6 +30,11 @@ Add a row for each new spec file. Each hub indexes its own unit specs; its rules
 | [`design/game-state/fields.md`](design/game-state/fields.md) | Game-state fields index | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/game-state/fields-play.md`](design/game-state/fields-play.md) | Play-scoped game-state fields | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/game-state/fields-persist.md`](design/game-state/fields-persist.md) | Persistent and configuration fields | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/entities/pieces.md`](design/entities/pieces.md) | Chess pieces entity | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/entities/pieces/common.md`](design/entities/pieces/common.md) | Board, attack, check, legality | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/entities/pieces/king.md`](design/entities/pieces/king.md) | King and castling | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/entities/pieces/officers.md`](design/entities/pieces/officers.md) | Queen, rook, bishop, knight | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/entities/pieces/pawn.md`](design/entities/pieces/pawn.md) | Pawn, en passant, promotion | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`view/view.md`](view/view.md) | View hub: camera, projection, feel | [`view-review.md`](../.agents/specs/view-review.md) |
 | [`aesthetics/aesthetics.md`](aesthetics/aesthetics.md) | Aesthetics hub: medium, style pillars, palette, form, motion, interface and sound style | [`aesthetics-review.md`](../.agents/specs/aesthetics-review.md) |
 | [`ux/ux.md`](ux/ux.md) | UX hub: screens, navigation, input, mockups | [`ux-review.md`](../.agents/specs/ux-review.md) |
