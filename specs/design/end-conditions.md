@@ -19,7 +19,7 @@ Authoring rules: [`.agents/specs/rules/design/end-conditions.md`](../../.agents/
 
 ## Rewards and penalties
 
-A shared game carries nothing forward. W1 makes the next puzzle harder. L4 or L5 makes it easier. See [progression.md](progression.md).
+A [Shared game](glossary.md) carries nothing forward. W1, L4, and L5 update [Player Elo](glossary.md) per [difficulty.md](difficulty.md). See [progression.md](progression.md).
 
 ## Experience intent
 
