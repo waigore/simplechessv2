@@ -16,7 +16,7 @@ When Advice is On and the browser is online, show the engine’s best move for t
 - **R1**: [Advice](../glossary.md) applies only in a [Shared game](../glossary.md). It never applies in [Puzzle stream](../glossary.md) ([CFG.K3](../configuration.md)).
 - **R2**: Advice runs only when the Advice option is On and the browser is online. Otherwise there is no evaluation and no advice display.
 - **R3**: Advice is automatic. There is no ask action. While R2 holds, the engine evaluates the current position.
-- **R4**: When a best move is ready, the game shows it as piece highlights and an arrow, plus an eval score. No longer principal line. Eval score format is TBD — centipawns or another scale?
+- **R4**: When a best move is ready, the game shows it as piece highlights and an arrow, plus an eval score in centipawns from White's view (`GS.adviceEval`). No longer principal line.
 - **R5**: The best move and eval are always for the [Side to move](../glossary.md) only.
 - **R6**: A local move never waits on the engine. Piece motion and turn change complete on the device ([L-two-player-game.K2](../loops/two-player-game.md)).
 - **R7**: Search is time-capped by `CFG.ADVICE_TIME_MS`. Streaming updates may deepen until the cap.
@@ -31,7 +31,13 @@ When Advice is On and the browser is online, show the engine’s best move for t
 
 | Field | Read / write | When |
 |-------|--------------|------|
-| TBD — Advice-related game-state fields once [game-state.md](../game-state.md) is captured | — | — |
+| `GS.advice` | read | Whether Advice may run (R2) |
+| `GS.online` | read | Whether Advice may run (R2) |
+| `GS.sideToMove` | read | Whose best move and eval (R5) |
+| `GS.position` | read | Position to evaluate (R3) |
+| `GS.gameEnded` | read | Clear advice on end (R8) |
+| `GS.adviceBestMove` | write | Set when ready; clear per R8/R9 |
+| `GS.adviceEval` | write | Centipawns from White's view with best move; clear with it |
 
 ## Interactions with other features
 
