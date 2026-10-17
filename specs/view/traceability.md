@@ -14,6 +14,7 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Move advice ([F-move-advice](../design/features/move-advice.md)) | design | [`perception.md`](perception.md) |
 | Experience clarity / feedback | design | [`perception.md`](perception.md), [`physics.md`](physics.md) |
 | Accessibility (shape, not color alone) | quality | [`perception.md`](perception.md) R1–R2 |
+| Board edge coordinates (UX play screens) | design / UX | [`perception.md`](perception.md) R7 |
 
 ## Topic coverage
 
