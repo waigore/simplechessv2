@@ -26,6 +26,10 @@ Add a row for each new spec file. Each hub indexes its own unit specs; its rules
 | [`design/end-conditions/conditions.md`](design/end-conditions/conditions.md) | End-condition rows | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/experience.md`](design/experience.md) | Experience and feel | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/experience/feedback.md`](design/experience/feedback.md) | Feedback principles | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/game-state.md`](design/game-state.md) | Conceptual game state | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/game-state/fields.md`](design/game-state/fields.md) | Game-state fields index | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/game-state/fields-play.md`](design/game-state/fields-play.md) | Play-scoped game-state fields | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/game-state/fields-persist.md`](design/game-state/fields-persist.md) | Persistent and configuration fields | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`view/view.md`](view/view.md) | View hub: camera, projection, feel | [`view-review.md`](../.agents/specs/view-review.md) |
 | [`aesthetics/aesthetics.md`](aesthetics/aesthetics.md) | Aesthetics hub: medium, style pillars, palette, form, motion, interface and sound style | [`aesthetics-review.md`](../.agents/specs/aesthetics-review.md) |
 | [`ux/ux.md`](ux/ux.md) | UX hub: screens, navigation, input, mockups | [`ux-review.md`](../.agents/specs/ux-review.md) |
