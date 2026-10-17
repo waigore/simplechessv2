@@ -18,7 +18,7 @@ Seats on the shared device are the **Top player** and the **Bottom player**.
 | White seat | Top player, Bottom player | TBD — which seat is White by default? | That seat plays White and moves first | Players; before Shared game starts | Shared game starts |
 | Clock | Untimed, Blitz, Rapid | Untimed | Untimed: no clocks. Blitz: each side starts at `CFG.BLITZ_START`. Rapid: each side starts at `CFG.RAPID_START`. Timed: only the side to move runs a clock | Players; before Shared game starts | Shared game starts |
 | Increment | 3 s, 5 s | 3 s | After each completed move, that side's clock gains the chosen seconds, not if the clock has already reached zero | Players; before Shared game starts, when Clock is Blitz or Rapid | Shared game starts |
-| Advice | On, Off | On | When On and online, a player may ask for move suggestions. When Off, none. Shared game only | TBD — before Shared game only, or any time during it? | TBD — follows the Advice chosen-by question |
+| Advice | On, Off | On | When On and online, automatic best-move advice for the side to move (highlights, arrow, eval). When Off, none. Shared game only | Players; before Shared game starts and during it | Not locked; may toggle during the Shared game |
 
 ## Designer tunables
 
@@ -29,6 +29,7 @@ Seats on the shared device are the **Top player** and the **Bottom player**.
 | `CFG.ELO_K` | [`difficulty.md`](difficulty.md) | 20 | 20 | — | Classic Elo K-factor for [Player Elo](glossary.md) updates |
 | `CFG.ELO_MATCH_RANGE` | [`difficulty.md`](difficulty.md) | 100 | 100 | Elo | ± band when dealing the next puzzle by [Player Elo](glossary.md) |
 | `CFG.ELO_START` | [`difficulty.md`](difficulty.md) | 1000 | 1000 | Elo | First-time [Player Elo](glossary.md) |
+| `CFG.ADVICE_TIME_MS` | [`features/move-advice.md`](features/move-advice.md) | 2000 | 2000 | ms | Max engine think time per position for [Advice](glossary.md) |
 
 ## Dependencies and restrictions
 

@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 | Term | Definition | Detailed in |
 |------|------------|-------------|
 | Abandon puzzle | Leave the current Puzzle unsolved; Elo loss; next Puzzle dealt | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
-| Advice | Optional move suggestions in a Shared game when online and Advice is On | [`configuration.md`](configuration.md) |
+| Advice | Automatic best-move highlights, arrow, and eval for the side to move in a Shared game when On and online | [`features/move-advice.md`](features/move-advice.md) |
 | Blitz | Timed Shared game; each side starts at `CFG.BLITZ_START` | [`configuration.md`](configuration.md) |
 | Bottom player | Seat at the bottom of the shared device | [`configuration.md`](configuration.md) |
 | Check | The side to move's king is attacked | [`loops/two-player-game.md`](loops/two-player-game.md) |

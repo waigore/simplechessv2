@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 - Two people play chess on one device in the browser.
 - Untimed play, and timed blitz and rapid with time added after each move.
 - A continuous solo puzzle stream that gets harder or easier from each result.
-- Optional Stockfish move suggestions when the browser is online and the player asks.
+- Optional Stockfish move advice when the browser is online and Advice is On.
 - Starting a new two-player session after a game ends.
 
 ### Out of scope

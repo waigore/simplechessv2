@@ -27,7 +27,7 @@ Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md)
 - **Characters**: None — the people playing are not authored characters.
 - **Entities**: Added when those specs are written.
 - **Loops**: [`two-player-game.md`](loops/two-player-game.md), [`puzzle-stream.md`](loops/puzzle-stream.md)
-- **Features**: Added when those specs are written.
+- **Features**: [`move-advice.md`](features/move-advice.md)
 - **Flows**: Added when those specs are written.
 - **Stages**: Added when those specs are written.
 - **Scenarios**: Added when those specs are written.

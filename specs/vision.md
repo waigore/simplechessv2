@@ -8,7 +8,7 @@ A zen web chess game where you play a friend on one device, or work a stream of 
 
 ## High-level description
 
-You sit down at a quiet cafe table, in the browser, and either play a friend on the same device or take the next puzzle in a stream matched to your level. The board is classic mahogany and the pieces are distinct vectors, so a casual player can read the position at a glance. Moves snap into place, with sounds for touch, move, check, checkmate, and resign, under cafe ambient music. Untimed play leaves as long as you want to think. Timed play offers blitz and rapid, with time added after each move. The other seat is always a person. When you are online and you ask, move advice can appear beside the board without holding up the move.
+You sit down at a quiet cafe table, in the browser, and either play a friend on the same device or take the next puzzle in a stream matched to your level. The board is classic mahogany and the pieces are distinct vectors, so a casual player can read the position at a glance. Moves snap into place, with sounds for touch, move, check, checkmate, and resign, under cafe ambient music. Untimed play leaves as long as you want to think. Timed play offers blitz and rapid, with time added after each move. The other seat is always a person. When you are online and Advice is on, the best move and eval can appear on the board without holding up the move.
 
 ## Target audience and player fantasy
 
