@@ -34,5 +34,5 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 | Threefold repetition | Draw when the same position, side to move, and rights occur three times | [`end-conditions.md`](end-conditions.md) |
 | Top player | Seat at the top of the shared device | [`configuration.md`](configuration.md) |
 | Untimed | Shared game with no clocks | [`configuration.md`](configuration.md) |
-| White seat | Which seat plays White and moves first; default Bottom player | [`configuration.md`](configuration.md) |
+| White seat | Which seat plays White and moves first | [`configuration.md`](configuration.md) |
 | Wrong move | Puzzle move that is not the next move of the required sequence | [`end-conditions.md`](end-conditions.md) |
