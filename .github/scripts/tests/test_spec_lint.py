@@ -127,7 +127,12 @@ class SpecLintTest(unittest.TestCase):
 
     def test_glossary_order_and_duplicates(self) -> None:
         rows = "| Zone | An area. | here |\n| Avatar | The player. | here |\n| zone | Again. | here |\n"
-        self.edit("specs/design/glossary.md", "| <!-- fill in -->", rows + "| <!-- fill in -->")
+        path = "specs/design/glossary.md"
+        text = self.read(path)
+        if "| <!-- fill in -->" in text:
+            self.edit(path, "| <!-- fill in -->", rows + "| <!-- fill in -->")
+        else:
+            self.write(path, text.rstrip() + "\n" + rows)
         messages = [f.message for f in self.errors("glossary")]
         self.assertTrue(any("alphabetical" in m for m in messages))
         self.assertTrue(any("defined twice" in m for m in messages))
