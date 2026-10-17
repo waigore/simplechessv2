@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Journey: Puzzle session</title>
+  <style>
+    :root { --fg:#2C2A28; --bg:#F7F1E8; --line:#5C3A2A; --accent:#C9A227; --muted:#5c574e; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.4 system-ui,sans-serif; color:var(--fg); background:var(--bg); }
+    header, main { padding:1rem; }
+    header p { color:var(--muted); margin:0; }
+    .layout { display:grid; grid-template-columns:16rem 1fr; gap:1rem; }
+    a { color:var(--accent); }
+    iframe { width:100%; min-height:40rem; border:1px solid var(--line); background:#fff; }
+    @media (max-width:48rem) { .layout { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <p>J-puzzle-session</p>
+    <h1>Puzzle session</h1>
+    <p>Bottom player — practice puzzles then leave the stream</p>
+  </header>
+  <main class="layout">
+    <nav aria-label="Steps">
+      <ol>
+        <li><a href="../screens/mode-pick.html#state-default" target="stage">S1 Mode pick → Puzzle</a></li>
+        <li><a href="../screens/puzzle-play.html#state-default" target="stage">S2 Puzzle play</a></li>
+        <li><a href="../screens/puzzle-play.html#ex-confirm" target="stage">S2 Leave confirm</a></li>
+        <li><a href="../screens/mode-pick.html#state-default" target="stage">S2 → Mode pick</a></li>
+        <li><a href="../screens/puzzle-play.html#state-default" target="stage">B1 Cancel leave</a></li>
+      </ol>
+    </nav>
+    <iframe name="stage" title="Puzzle session stage" src="../screens/mode-pick.html"></iframe>
+  </main>
+</body>
+</html>

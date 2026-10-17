@@ -14,6 +14,7 @@ Authoring rules: [`.agents/specs/rules/view/perception.md`](../../.agents/specs/
 | R4 | Legal destinations | Empty and capture targets for the selection are marked on those squares while selected | all |
 | R5 | Advice ([F-move-advice](../design/features/move-advice.md)) | Best-move from/to highlights, arrow, and eval visible when set; never obscure R1 | all |
 | R6 | Side to move / check | Whose turn and check stay obvious without relying on sound | all |
+| R7 | Board coordinates (files a–h, ranks 1–8) | Letters and numbers along outer edges only; stay correct after [CAM-board.M2](cameras/board.md) White-seat flip; never drawn inside squares | all |
 
 ## Depth cues
 

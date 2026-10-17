@@ -6,6 +6,6 @@ Authoring rules: [`.agents/specs/rules/ux/ux.md`](../../.agents/specs/rules/ux/u
 
 Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md), [`ids.md`](ids.md), [`navigation.md`](navigation.md), [`exceptions.md`](exceptions.md), [`controls.md`](controls.md), [`stories.md`](stories.md), [`story-coverage.md`](story-coverage.md), [`presentation.md`](presentation.md).
 
-- **Actors**: <!-- fill in -->
-- **Screens**: <!-- fill in -->
-- **Journeys**: <!-- fill in -->
+- **Actors**: [`bottom-player.md`](actors/bottom-player.md), [`top-player.md`](actors/top-player.md)
+- **Screens**: [`mode-pick.md`](screens/mode-pick.md), [`shared-setup.md`](screens/shared-setup.md), [`shared-play.md`](screens/shared-play.md), [`shared-result.md`](screens/shared-result.md), [`puzzle-play.md`](screens/puzzle-play.md)
+- **Journeys**: [`shared-session.md`](journeys/shared-session.md), [`puzzle-session.md`](journeys/puzzle-session.md)

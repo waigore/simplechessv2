@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Journey: Shared session</title>
+  <style>
+    :root { --fg:#2C2A28; --bg:#F7F1E8; --line:#5C3A2A; --accent:#C9A227; --muted:#5c574e; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.4 system-ui,sans-serif; color:var(--fg); background:var(--bg); }
+    header, main { padding:1rem; }
+    header p { color:var(--muted); margin:0; }
+    .layout { display:grid; grid-template-columns:16rem 1fr; gap:1rem; }
+    a { color:var(--accent); }
+    iframe { width:100%; min-height:40rem; border:1px solid var(--line); background:#fff; }
+    @media (max-width:48rem) { .layout { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <p>J-shared-session</p>
+    <h1>Shared session</h1>
+    <p>Bottom player — finish a Shared game and optionally start another</p>
+  </header>
+  <main class="layout">
+    <nav aria-label="Steps">
+      <ol>
+        <li><a href="../screens/mode-pick.html#state-default" target="stage">S1 Mode pick → Shared game</a></li>
+        <li><a href="../screens/shared-setup.html#state-default" target="stage">S2 Setup → Start</a></li>
+        <li><a href="../screens/shared-play.html#state-default" target="stage">S3 Shared play</a></li>
+        <li><a href="../screens/shared-result.html#state-default" target="stage">S4 Result → Stop</a></li>
+        <li><a href="../screens/shared-setup.html#state-default" target="stage">B1 Play again</a></li>
+        <li><a href="../screens/mode-pick.html#state-default" target="stage">B2 Setup Back</a></li>
+      </ol>
+    </nav>
+    <iframe name="stage" title="Shared session stage" src="../screens/mode-pick.html"></iframe>
+  </main>
+</body>
+</html>

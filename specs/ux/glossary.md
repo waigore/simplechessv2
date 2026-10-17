@@ -8,6 +8,7 @@ Authoring rules: [`.agents/specs/rules/ux/glossary.md`](../../.agents/specs/rule
 |------|------------|-------------|
 | Actor | A person who operates the interface. | [`actors/`](actors/) |
 | Binding | A mapping from one platform input to one UI action. | [`controls.md`](controls.md) |
+| Board coordinates | File letters a–h and rank numbers 1–8 shown only along the outer board edges. | [`screens/shared-play.md`](screens/shared-play.md), [`screens/puzzle-play.md`](screens/puzzle-play.md) |
 | Control | A named thing an actor operates on a screen. | the screen spec |
 | Exception | A shared interface state, such as loading, empty, or error. | [`exceptions.md`](exceptions.md) |
 | Journey | An ordered path an actor takes through existing screens to reach a goal. | [`journeys/`](journeys/) |
@@ -15,4 +16,3 @@ Authoring rules: [`.agents/specs/rules/ux/glossary.md`](../../.agents/specs/rule
 | Region | A named part of a screen that shows specific content. | the screen spec |
 | Screen | One interface surface with one job. | [`screens/`](screens/) |
 | UI action | A named interface command, such as confirm or back. | [`controls.md`](controls.md) |
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |

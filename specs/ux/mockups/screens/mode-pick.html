@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Screen: Mode pick</title>
+  <style>
+    :root { --fg:#2C2A28; --bg:#F7F1E8; --line:#5C3A2A; --accent:#C9A227; --muted:#5c574e; --panel:#F7F1E8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:16px/1.4 system-ui,sans-serif; color:var(--fg); background:var(--bg); }
+    article { max-width:40rem; margin:0 auto; padding:1rem; }
+    header p { color:var(--muted); margin:0; }
+    nav[aria-label="States"] { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1rem 0; }
+    nav[aria-label="States"] a { color:var(--accent); }
+    .states > section { display:none; border:1px solid var(--line); padding:1rem; background:#fff; }
+    .states:not(:has(:target)) > section[data-state="default"] { display:block; }
+    .states:has(:target) > section:target { display:block; }
+    [data-region] { border:1px dashed var(--line); padding:0.75rem; margin:0.5rem 0; }
+    [data-region]::before { content:attr(data-region) " " attr(aria-label); display:block; font-size:0.75rem; color:var(--muted); }
+    button { min-height:44px; min-width:44px; margin:0.25rem; background:var(--panel); border:1px solid var(--line); border-radius:6px; }
+    .board { display:grid; grid-template-columns:1.5rem repeat(8,1.75rem) 1.5rem; grid-template-rows:1.25rem repeat(8,1.75rem) 1.25rem; gap:0; width:max-content; margin:0.5rem auto; }
+    .sq { width:1.75rem; height:1.75rem; }
+    .light { background:#E8D5B5; } .dark { background:#8B5A3C; }
+    .coord { font-size:0.65rem; color:var(--muted); display:flex; align-items:center; justify-content:center; }
+  </style>
+</head>
+<body>
+  <article data-screen="UI-mode-pick">
+    <header>
+      <p>UI-mode-pick</p>
+      <h1>Mode pick</h1>
+      <p>Choose Shared game, Puzzle stream, or quit</p>
+    </header>
+    <nav aria-label="States">
+      <a href="#state-default">state-default</a>
+      <a href="#ex-loading">ex-loading</a>
+      <a href="#ex-confirm">ex-confirm</a>
+      <a href="#ex-save-failure">ex-save-failure</a>
+    </nav>
+    <div class="states">
+      <section id="state-default" data-state="default">
+
+        <section data-region="R1" aria-label="Mode choices">
+          <p>Choose how to play</p>
+          <button type="button" data-control="C1">Shared game</button>
+          <button type="button" data-control="C2">Puzzle stream</button>
+        </section>
+        <section data-region="R2" aria-label="Quit">
+          <button type="button" data-control="C3">Quit</button>
+        </section>
+
+      </section>
+
+      <section id="ex-loading" data-state="EX.loading"><p>Loading…</p></section>
+      <section id="ex-confirm" data-state="EX.confirm"><p>End this sitting?</p><button type="button">Confirm</button><button type="button">Cancel</button></section>
+      <section id="ex-save-failure" data-state="EX.save-failure"><p>Save failed. Prior values kept.</p><button type="button">Dismiss</button></section>
+
+    </div>
+  </article>
+</body>
+</html>
