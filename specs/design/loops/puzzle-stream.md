@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/
 - **Level**: session
 - **Timescale**: One [Puzzle](../glossary.md) per iteration, as many as fit a [Sitting](../glossary.md) of about 15–40 minutes.
 - **Serves**: Instant play and Cafe calm. Scope: continuous solo Puzzle stream matched to level.
-- **Parent / child loops**: None. Mode pick before entry is a separate flow.
+- **Parent / child loops**: None. Entered from [mode-pick](../flows/mode-pick.md) P3; Leave stream returns there.
 
 ## Steps
 
@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/
 | K1 | Enter Puzzle stream after choosing that mode | Deals the next [Puzzle](../glossary.md) per [DIF.Y1](../difficulty.md). Shows [Player Elo](../glossary.md). The player moves the side to move in the dealt position. | The position and their Elo are clear. |
 | K2 | Makes a move, reveals the solution, or abandons this puzzle | A move that matches the next step of the [Required sequence](../glossary.md) advances it. A [Wrong move](../glossary.md) returns the puzzle to its start and does not deal the next. [L5](../end-conditions/conditions.md) on reveal. Abandoning the puzzle is an Elo loss (S = 0), then the next puzzle is dealt. No clocks. No [Advice](../glossary.md). | Progress on the puzzle, or a clear fail and a new deal. |
 | K3 | After [W1](../end-conditions/conditions.md), [L4](../end-conditions/conditions.md), [L5](../end-conditions/conditions.md), or abandon-puzzle | [Player Elo](../glossary.md) updates per [DIF.Y1](../difficulty.md). The next puzzle is dealt. Returns to K2. | Elo drifts; a new puzzle begins. |
-| K4 | Leaves the stream (quits the mode) | The mode ends. [Player Elo](../glossary.md) is kept ([PRG.P1](../progression.md)). An open puzzle is not scored as abandon. | They can stop without Elo change on the open puzzle. |
+| K4 | Leaves the stream (quits the mode) | Returns to [mode pick](../flows/mode-pick.md). [Player Elo](../glossary.md) is kept ([PRG.P1](../progression.md)). An open puzzle is not scored as abandon. | They can stop without Elo change on the open puzzle. |
 
 ## Motivation
 

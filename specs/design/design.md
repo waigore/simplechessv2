@@ -28,7 +28,7 @@ Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md)
 - **Entities**: Added when those specs are written.
 - **Loops**: [`two-player-game.md`](loops/two-player-game.md), [`puzzle-stream.md`](loops/puzzle-stream.md)
 - **Features**: [`move-advice.md`](features/move-advice.md)
-- **Flows**: Added when those specs are written.
+- **Flows**: [`mode-pick.md`](flows/mode-pick.md)
 - **Stages**: Added when those specs are written.
 - **Scenarios**: Added when those specs are written.
 - **Sub-games**: None — the puzzle stream is a primary mode, not a minigame inside a match.

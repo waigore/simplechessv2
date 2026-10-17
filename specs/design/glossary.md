@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 | Term | Definition | Detailed in |
 |------|------------|-------------|
 | Abandon puzzle | Leave the current Puzzle unsolved; Elo loss; next Puzzle dealt | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
-| Advice | Automatic best-move highlights, arrow, and eval for the side to move in a Shared game when On and online | [`features/move-advice.md`](features/move-advice.md) |
+| Advice | Automatic best-move highlights, arrow, and eval for the side to move when On and online | [`features/move-advice.md`](features/move-advice.md) |
 | Blitz | Timed Shared game; each side starts at `CFG.BLITZ_START` | [`configuration.md`](configuration.md) |
 | Bottom player | Seat at the bottom of the shared device | [`configuration.md`](configuration.md) |
 | Check | The side to move's king is attacked | [`loops/two-player-game.md`](loops/two-player-game.md) |
@@ -17,6 +17,7 @@ Authoring rules: [`.agents/specs/rules/design/glossary.md`](../../.agents/specs/
 | Draw | Shared-game ending that is neither win nor loss | [`end-conditions.md`](end-conditions.md) |
 | Fifty-move rule | Draw after fifty moves each with no capture and no pawn move | [`end-conditions.md`](end-conditions.md) |
 | Increment | Seconds added after each completed move in Blitz or Rapid | [`configuration.md`](configuration.md) |
+| Last mode | Shared game or Puzzle stream last chosen at mode pick; default highlight | [`flows/mode-pick.md`](flows/mode-pick.md) |
 | Leave stream | Quit Puzzle stream; Elo kept; open Puzzle is not Abandon puzzle | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
 | Legal move | One orthodox move that does not leave the mover's king in check | [`loops/two-player-game.md`](loops/two-player-game.md) |
 | Player Elo | Visible Puzzle-stream rating; starts at 1000; classic Elo updates | [`difficulty.md`](difficulty.md), [`progression.md`](progression.md) |
