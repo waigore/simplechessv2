@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/design/design.md`](../../.agents/specs/ru
 Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md), [`ids.md`](ids.md), [`stories.md`](stories.md), [`story-coverage.md`](story-coverage.md), [`game-state.md`](game-state.md), [`game-state/fields.md`](game-state/fields.md), [`game-state/fields-play.md`](game-state/fields-play.md), [`game-state/fields-persist.md`](game-state/fields-persist.md), [`configuration.md`](configuration.md), [`difficulty.md`](difficulty.md), [`progression.md`](progression.md), [`end-conditions.md`](end-conditions.md), [`end-conditions/conditions.md`](end-conditions/conditions.md), [`world.md`](world.md), [`experience.md`](experience.md), [`experience/feedback.md`](experience/feedback.md).
 
 - **Characters**: None — the people playing are not authored characters.
-- **Entities**: Added when those specs are written.
+- **Entities**: [`pieces.md`](entities/pieces.md) ([common](entities/pieces/common.md), [king](entities/pieces/king.md), [officers](entities/pieces/officers.md), [pawn](entities/pieces/pawn.md))
 - **Loops**: [`two-player-game.md`](loops/two-player-game.md), [`puzzle-stream.md`](loops/puzzle-stream.md)
 - **Features**: [`move-advice.md`](features/move-advice.md)
 - **Flows**: [`mode-pick.md`](flows/mode-pick.md)

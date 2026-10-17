@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/
 | K2 | The side to move makes one legal move, or resigns. | A legal move updates the position. In a timed game, only that side's clock runs. It stops when the move is completed, the chosen seconds are added, and the other clock starts. Seconds are added only for a completed move. A clock that has reached zero does not receive them. An illegal attempt is refused, the same side is still to move, and that clock keeps running. Advice never delays this response. | The position and whose turn it is are clear. |
 | K3 | After a result, begin another game or stop. | Another game returns to K1. Stopping returns to [mode pick](../flows/mode-pick.md). Endings stop both clocks. | They can play again or choose a mode. |
 
-A move is legal when it is one orthodox move and the mover's king is not left in check. What each piece may do, including castling, en passant, and promotion, is specified with the pieces.
+A move is legal when it matches [`E-pieces.I10`](../entities/pieces/common.md) (piece rules in [`entities/pieces.md`](../entities/pieces.md), including castling, en passant, and promotion).
 
 ## Motivation
 
