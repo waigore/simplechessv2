@@ -24,6 +24,8 @@ Add a row for each new spec file. Each hub indexes its own unit specs; its rules
 | [`design/design.md`](design/design.md) | Game design hub | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/end-conditions.md`](design/end-conditions.md) | How shared games and puzzles end | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/end-conditions/conditions.md`](design/end-conditions/conditions.md) | End-condition rows | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/experience.md`](design/experience.md) | Experience and feel | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/experience/feedback.md`](design/experience/feedback.md) | Feedback principles | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`view/view.md`](view/view.md) | View hub: camera, projection, feel | [`view-review.md`](../.agents/specs/view-review.md) |
 | [`aesthetics/aesthetics.md`](aesthetics/aesthetics.md) | Aesthetics hub: medium, style pillars, palette, form, motion, interface and sound style | [`aesthetics-review.md`](../.agents/specs/aesthetics-review.md) |
 | [`ux/ux.md`](ux/ux.md) | UX hub: screens, navigation, input, mockups | [`ux-review.md`](../.agents/specs/ux-review.md) |
