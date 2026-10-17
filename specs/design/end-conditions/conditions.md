@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/design/end-conditions.md`](../../../.agents/specs/rules/design/end-conditions.md).
 
-Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop both clocks and continue at [K3](../loops/two-player-game.md). Puzzle endings deal the next puzzle per [progression.md](../progression.md).
+Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop both clocks and continue at [K3](../loops/two-player-game.md). Puzzle endings (W1, L4, L5) and abandon-puzzle continue at [K3](../loops/puzzle-stream.md).
 
 | ID | Unit | Type | Condition | Checked when | Outcome |
 |----|------|------|-----------|--------------|---------|

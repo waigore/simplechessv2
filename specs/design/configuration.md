@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/design/configuration.md`](../../.agents/s
 | Mode | Description | Differs from standard rules by | Flow |
 |------|-------------|--------------------------------|------|
 | Shared game | Two people play on one device | Baseline. Optional clocks and advice | [`loops/two-player-game.md`](loops/two-player-game.md) |
-| Puzzle stream | Solo continuous puzzles | No clocks. No advice. Next puzzle follows [Player Elo](glossary.md) | TBD — which flow or loop owns the puzzle stream? |
+| Puzzle stream | Solo continuous puzzles | No clocks. No advice. Next puzzle follows [Player Elo](glossary.md) | [`loops/puzzle-stream.md`](loops/puzzle-stream.md) |
 
 ## Game options
 
