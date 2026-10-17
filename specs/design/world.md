@@ -4,36 +4,30 @@ Authoring rules: [`.agents/specs/rules/design/world.md`](../../.agents/specs/rul
 
 ## Setting
 
-- **Place and time**: <!-- fill in -->
-- **Tone**: <!-- fill in -->
-- **Defining traits**: <!-- fill in -->
+- **Place and time**: A quiet cafe table in the present day. Framing only — not a simulated place, clock-of-day, or travel between locations.
+- **Tone**: Calm and unhurried ([Cafe calm](../vision.md); [experience.md](experience.md) mood).
+- **Defining traits**: Warm mahogany board on a cafe table; two human seats on one device; no tournament hall or esports arena framing.
 
 ## World rules
 
 | Rule | Gameplay effect | Feature |
 |------|-----------------|---------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-
-## Factions and groups
-
-| Faction | Goals | Relationship to the player | Members |
-|---------|-------|----------------------------|---------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| None | Cafe framing does not add or change chess or puzzle rules | — |
 
 ## Story
 
-- **Premise**: <!-- fill in -->
-- **Structure**: <!-- fill in -->
-- **Player agency**: <!-- fill in -->
+- **Premise**: Sit down and play a friend or a puzzle stream — no authored plot.
+- **Structure**: None.
+- **Player agency**: The player chooses mode, Shared-game options, and moves. No story outcomes to change.
 
 | Beat | Where | What happens | Player choice |
 |------|-------|--------------|---------------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| None | — | — | — |
 
 ## Narrative delivery
 
-<!-- fill in -->
+Atmosphere only: cafe framing reaches the player through presentation and sound ([experience.md](experience.md)). No dialogue, cutscenes, or lore text during play.
 
 ## Experience intent
 
-<!-- fill in -->
+The world supports the fantasy of a quiet cafe table with time to think — not a competitive chess site.
