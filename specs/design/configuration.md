@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/design/configuration.md`](../../.agents/s
 | Mode | Description | Differs from standard rules by | Flow |
 |------|-------------|--------------------------------|------|
 | Shared game | Two people play on one device | Baseline. Optional clocks and advice | [`loops/two-player-game.md`](loops/two-player-game.md) |
-| Puzzle stream | Solo continuous puzzles | No clocks. No advice. Next puzzle harder or easier from each result | TBD — which flow or loop owns the puzzle stream? |
+| Puzzle stream | Solo continuous puzzles | No clocks. No advice. Next puzzle follows [Player Elo](glossary.md) | TBD — which flow or loop owns the puzzle stream? |
 
 ## Game options
 
@@ -26,6 +26,9 @@ Seats on the shared device are the **Top player** and the **Bottom player**.
 |-----------|------------|---------|-------|------|--------|
 | `CFG.BLITZ_START` | [`loops/two-player-game.md`](loops/two-player-game.md) | 60 | 60 | seconds | Starting clock for each side in Blitz |
 | `CFG.RAPID_START` | [`loops/two-player-game.md`](loops/two-player-game.md) | 600 | 600 | seconds | Starting clock for each side in Rapid |
+| `CFG.ELO_K` | [`difficulty.md`](difficulty.md) | 20 | 20 | — | Classic Elo K-factor for [Player Elo](glossary.md) updates |
+| `CFG.ELO_MATCH_RANGE` | [`difficulty.md`](difficulty.md) | 100 | 100 | Elo | ± band when dealing the next puzzle by [Player Elo](glossary.md) |
+| `CFG.ELO_START` | [`difficulty.md`](difficulty.md) | 1000 | 1000 | Elo | First-time [Player Elo](glossary.md) |
 
 ## Dependencies and restrictions
 
