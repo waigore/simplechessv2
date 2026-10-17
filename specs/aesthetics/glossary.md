@@ -14,4 +14,3 @@ Authoring rules: [`.agents/specs/rules/aesthetics/glossary.md`](../../.agents/sp
 | Silhouette | The outline of a subject filled with one color, used to judge recognition. | [`form.md`](form.md) |
 | Style pillar | A ranked style principle with a test a reviewer can apply to one asset. | [`aesthetics.md`](aesthetics.md) |
 | Swatch | One named color with a fixed value and role. | [`palette.md`](palette.md) |
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
