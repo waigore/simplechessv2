@@ -21,38 +21,69 @@
   </style>
 </head>
 <body>
-  <!-- Authoring rules: .agents/specs/rules/aesthetics/sheets.md. Replace every fill-in; draw to scale from SPC.E extents; keep data-element on each drawn element. -->
+  <!-- Authoring rules: .agents/specs/rules/aesthetics/sheets.md. Scale: 40 px = 1 unit (SPC.U1). SPC.E1 = 0.85×0.85. -->
   <article data-spec="FRM">
     <header>
       <p>FRM</p>
       <h1>Lineup</h1>
-      <p><!-- fill in: the scale this drawing uses, e.g. 40 px = 1 unit --></p>
+      <p>40 px = 1 unit · SPC.E1 piece extent 0.85 × 0.85 · Staunton-inspired vectors (FRM.S1)</p>
     </header>
 
     <figure>
-      <svg viewBox="0 0 640 260" role="img" aria-label="Cast silhouettes to scale on a common ground line">
+      <svg viewBox="0 0 640 280" role="img" aria-label="Piece silhouettes to scale on a common ground line">
         <line class="ground" x1="20" y1="220" x2="620" y2="220" />
-        <g data-element="C-name">
-          <rect class="extent" x="60" y="140" width="40" height="80" />
-          <rect class="silhouette" x="64" y="146" width="32" height="74" rx="10" />
-          <text x="52" y="240">C-name <!-- fill in: character or entity ID --></text>
+        <!-- King: x=40, extent 34px -->
+        <g data-element="E-pieces">
+          <rect class="extent" x="40" y="186" width="34" height="34" />
+          <path class="silhouette" d="M55 188 h4 v4 h4 v4 h-4 v4 h-4 v-4 h-4 v-4 h4 z M48 200 h18 l2 4 v12 h-22 v-12 z M45 216 h24 v4 h-24 z" />
+          <text x="38" y="248">E-pieces King</text>
+        </g>
+        <g data-element="E-pieces">
+          <rect class="extent" x="120" y="186" width="34" height="34" />
+          <path class="silhouette" d="M133 188 c6 0 10 4 10 9 0 4-2 7-6 8 l4 3 h-16 l4-3 c-4-1-6-4-6-8 0-5 4-9 10-9 z M128 208 h20 l2 4 v8 h-24 v-8 z M125 220 h26 v4 h-26 z" />
+          <text x="112" y="248">E-pieces Queen</text>
+        </g>
+        <g data-element="E-pieces">
+          <rect class="extent" x="200" y="186" width="34" height="34" />
+          <path class="silhouette" d="M208 190 h18 v6 h-4 v10 h4 v6 h-18 v-6 h4 v-10 h-4 z M205 212 h24 v8 h-24 z" />
+          <text x="198" y="248">E-pieces Rook</text>
+        </g>
+        <g data-element="E-pieces">
+          <rect class="extent" x="280" y="186" width="34" height="34" />
+          <path class="silhouette" d="M297 188 l8 14 h-5 l-3-5-3 5 h-5 z M288 206 h22 l2 4 v6 h-26 v-6 z M285 216 h28 v4 h-28 z" />
+          <text x="272" y="248">E-pieces Bishop</text>
+        </g>
+        <g data-element="E-pieces">
+          <rect class="extent" x="360" y="186" width="34" height="34" />
+          <path class="silhouette" d="M372 190 c8-2 16 4 14 12 l-6 2 4 4 h-16 l2-6 c-6-2-4-10 2-12 z M368 208 h20 l2 4 v6 h-24 v-6 z M365 218 h26 v4 h-26 z" />
+          <text x="354" y="248">E-pieces Knight</text>
+        </g>
+        <g data-element="E-pieces">
+          <rect class="extent" x="440" y="186" width="34" height="34" />
+          <path class="silhouette" d="M453 196 h8 v6 h-8 z M448 204 h18 l2 6 v6 h-22 v-6 z M445 216 h24 v4 h-24 z" />
+          <text x="438" y="248">E-pieces Pawn</text>
         </g>
         <g data-element="scale">
-          <line class="scale" x1="520" y1="250" x2="560" y2="250" />
-          <text x="566" y="254"><!-- fill in: N units --></text>
+          <line class="scale" x1="520" y1="260" x2="560" y2="260" />
+          <text x="566" y="264">1 unit</text>
         </g>
       </svg>
-      <figcaption>Reference size, drawn to scale. Dashed boxes are SPC.E extents. <!-- fill in --></figcaption>
+      <figcaption>Reference size, drawn to scale. Dashed boxes are SPC.E1 extents. Height order per FRM.P2.</figcaption>
     </figure>
 
     <figure>
-      <svg viewBox="0 0 640 120" role="img" aria-label="Silhouettes at the smallest on-screen size">
+      <svg viewBox="0 0 640 140" role="img" aria-label="Silhouettes at the smallest on-screen size FRM.L1">
         <g data-element="FRM.L1">
-          <rect class="silhouette" x="60" y="40" width="8" height="18" rx="3" />
-          <text x="52" y="80">FRM.L1 <!-- fill in: subjects and smallest on-screen size --></text>
+          <path class="silhouette" transform="translate(40,50) scale(0.35)" d="M15 0 h4 v4 h4 v4 h-4 v4 h-4 v-4 h-4 v-4 h4 z M8 12 h18 l2 4 v12 h-22 v-12 z M5 28 h24 v4 h-24 z" />
+          <path class="silhouette" transform="translate(100,52) scale(0.35)" d="M13 0 c6 0 10 4 10 9 0 4-2 7-6 8 l4 3 h-16 l4-3 c-4-1-6-4-6-8 0-5 4-9 10-9 z M8 20 h20 l2 4 v8 h-24 v-8 z M5 32 h26 v4 h-26 z" />
+          <path class="silhouette" transform="translate(160,54) scale(0.35)" d="M8 2 h18 v6 h-4 v10 h4 v6 h-18 v-6 h4 v-10 h-4 z M5 24 h24 v8 h-24 z" />
+          <path class="silhouette" transform="translate(220,52) scale(0.35)" d="M17 0 l8 14 h-5 l-3-5-3 5 h-5 z M8 18 h22 l2 4 v6 h-26 v-6 z M5 28 h28 v4 h-28 z" />
+          <path class="silhouette" transform="translate(280,54) scale(0.35)" d="M12 2 c8-2 16 4 14 12 l-6 2 4 4 h-16 l2-6 c-6-2-4-10 2-12 z M8 20 h20 l2 4 v6 h-24 v-6 z M5 30 h26 v4 h-26 z" />
+          <path class="silhouette" transform="translate(340,58) scale(0.35)" d="M13 8 h8 v6 h-8 z M8 16 h18 l2 6 v6 h-22 v-6 z M5 28 h24 v4 h-24 z" />
+          <text x="40" y="110">FRM.L1 — six types readable as solid black at ~1/12 frame height</text>
         </g>
       </svg>
-      <figcaption>Smallest on-screen size from each silhouette rule. <!-- fill in --></figcaption>
+      <figcaption>Smallest on-screen size from FRM.L1. Types must remain distinguishable.</figcaption>
     </figure>
   </article>
 </body>

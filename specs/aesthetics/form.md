@@ -2,29 +2,32 @@
 
 Authoring rules: [`.agents/specs/rules/aesthetics/form.md`](../../.agents/specs/rules/aesthetics/form.md).
 
-- **Sheet**: [`sheets/lineup.html`](sheets/lineup.html) <!-- fill in: or None — spec depth <level> -->
-- **Serves**: <!-- fill in -->
+- **Sheet**: [`sheets/lineup.html`](sheets/lineup.html)
+- **Serves**: P2; Clear board; [PER.R1](../view/perception.md); [E-pieces](../design/entities/pieces.md); [SPC.E1](../view/spatial-model.md)
 
 ## Shape language
 
 | ID | Shape family | Signals | Used by |
 |----|--------------|---------|---------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| S1 | Staunton-inspired vector | Classic chess piece identity; calm table set | All six [Piece](../design/glossary.md) types ([E-pieces](../design/entities/pieces.md)) |
+| S2 | Rectangular grid | Stable board plane | Light and dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) |
 
 ## Proportions
 
 | ID | Subject | Rule |
 |----|---------|------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| P1 | Piece body | Drawn body fills [SPC.E1](../view/spatial-model.md) (0.85 × 0.85), centered on the square; does not spill into neighbors |
+| P2 | Piece height order | King tallest, then Queen, then Rook / Bishop / Knight band, Pawn shortest — crown and height cues reinforce type |
 
 ## Silhouette
 
 | ID | Must be told apart | Smallest on-screen size | Test |
-|----|--------------------|-------------------------|------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+|----|--------------------|------------------------|------|
+| L1 | King, Queen, Rook, Bishop, Knight, Pawn | About 1/12 of frame height (Web touch; [view.md](../view/view.md) platform) | Each type named from a solid-black silhouette at that size ([PER.R1](../view/perception.md)) |
 
 ## Detail
 
 | ID | Size class or distance | Detail allowed |
 |----|------------------------|----------------|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| D1 | Board play size | Clean vector contours; few interior lines; at most three distinct fill regions per piece (body, accent, outline) |
+| D2 | Overlay marks | Flat shapes; no texture that hides piece silhouette ([PER.R1](../view/perception.md), [PER.R5](../view/perception.md)) |
