@@ -31,12 +31,12 @@ Define the board, every piece type, capture, check, and every legal move — inc
 
 | ID | Interacts with | Trigger | Outcome |
 |----|----------------|---------|---------|
-| I1–I11 | Board and other pieces | Attempted move | [common.md](pieces/common.md): board, capture, attack, check, legality |
+| I1–I11, I35 | Board and other pieces | Attempted move | [common.md](pieces/common.md): board, square colors, capture, attack, check, legality |
 | I12–I22 | King and rook | King step or castling | [king.md](pieces/king.md) |
 | I23–I27 | Queen, rook, bishop, knight | Officer move | [officers.md](pieces/officers.md) |
 | I28–I34 | Pawn | Pawn move, en passant, or promotion | [pawn.md](pieces/pawn.md) |
 
-Qualified IDs are `E-pieces.I1` … `E-pieces.I34`.
+Qualified IDs are `E-pieces.I1` … `E-pieces.I35`.
 
 ## Placement and availability
 

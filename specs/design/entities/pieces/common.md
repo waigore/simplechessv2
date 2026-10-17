@@ -20,6 +20,7 @@ N/A — split from [`pieces.md`](../pieces.md).
 
 - **I1**: The board is an 8×8 grid. Files a–h (White's left to right). Ranks 1–8 (White's near to far). Each square holds at most one piece.
 - **I2**: White's pieces start toward rank 1; Black's toward rank 8. A pawn's forward direction is toward the opponent (White +rank, Black −rank).
+- **I35**: Every square is light or dark; orthogonally adjacent squares differ. Square a1 is dark. With files a=1 … h=8, a square is dark when file index + rank is even, otherwise light.
 
 ### Capture
 
