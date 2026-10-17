@@ -15,6 +15,7 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 | [coding-conventions.md](coding-conventions.md) | Project-owned coding conventions and lint/format tooling; extends `solid.md` |
 | [demos.md](demos.md) | Gameplay demos under `demos/`: scope, what is relaxed, traceability, promotion |
 | [demo-style-assets.md](demo-style-assets.md) | Demos as style and asset-pipeline proofs of concept: gate, assets, findings, verification |
+| [dev-env-setup.md](dev-env-setup.md) | Local game-stack and asset-tool install/verify outcomes (`ensure-dev-env-setup`) |
 | [github-repo-setup.md](github-repo-setup.md) | First-time GitHub settings to apply and verify (Actions, `main` ruleset, squash, auto-merge, labels) |
 | [github-repo-setup-examples.md](github-repo-setup-examples.md) | Non-binding example commands for the setup |
 | [issues/](issues/) | Epic / Task / Defect contract and status workflow |

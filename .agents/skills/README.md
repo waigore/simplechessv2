@@ -9,6 +9,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | Skill | Purpose |
 |-------|---------|
 | [`ensure-project-setup`](ensure-project-setup/SKILL.md) | Check first-time setup is done; apply gaps via `setup-github-repo` |
+| [`ensure-dev-env-setup`](ensure-dev-env-setup/SKILL.md) | Explicit-only: invent and best-effort install/verify game stack + asset tools from Accepted ADRs |
 | [`setup-github-repo`](setup-github-repo/SKILL.md) | Apply and verify first-time GitHub settings (Actions, `main` ruleset, squash-only, auto-merge, labels) |
 | [`setup-project-mcp`](setup-project-mcp/SKILL.md) | Add, enable, disable, or smoke-test MCP servers for Cursor / OpenCode / Grok; credentials never in-repo |
 | [`create-project-label`](create-project-label/SKILL.md) | Add a label to config + docs and sync to GitHub |
