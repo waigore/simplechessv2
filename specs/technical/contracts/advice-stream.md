@@ -24,7 +24,15 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | E1 | advice_update | best move + eval (White cp) | Stream tick from backend | Advice client → session |
 | E2 | advice_ended | reason (cap / cancel / error) | Stream stops | Session |
 
-Wire field names: TBD — exact JSON/protobuf keys for position and updates?
+## Wire (JSON)
+
+| Message | Fields |
+|---------|--------|
+| Request (O1) | `fen` (string), `time_ms` (int, search cap) |
+| Update (E1) | `best_move_uci` (string), `eval_cp` (int, White view), optional `mate_in`, `depth`, `time_ms` |
+| End (E2) | `reason`: `cap` \| `cancel` \| `error` |
+
+Client maps `best_move_uci` to board squares for [`SCH-advice-update`](../schemata/advice-update.md).
 
 ## Guarantees
 

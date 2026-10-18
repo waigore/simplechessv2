@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | F3 | last_mode | `shared` / `puzzle` / `none` | yes | `GS.lastMode` |
 | F4 | recent_solved | string[] | yes | Puzzle IDs; max 20; newest last |
 
-Exact `localStorage` key string: TBD — which key name for this game's document?
+`localStorage` key: `simplechessv2.persist.v1`.
 
 ## Invariants
 

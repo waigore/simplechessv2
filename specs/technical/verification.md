@@ -33,7 +33,7 @@ Authoring rules: [`.agents/specs/rules/technical/verification.md`](../../.agents
 |----|-------------|
 | H1 | Playtest build flag compiles S3–S7; release strips or no-ops them |
 | H2 | CI can launch S1; Graphical evidence via S2 when UX protocol requires screenshots |
-| H3 | Telemetry sink format: TBD — which log sink/format do playtest agents read? |
+| H3 | Telemetry sink: one JSON object per line on stdout (NDJSON); fields match playtest `TEL.*` ids |
 | H4 | Smoke path: [`SEQ-playtest-headless-smoke`](sequences/playtest-headless-smoke.md) |
 
 ## Diagram

@@ -16,14 +16,15 @@ Art and sound need catalog records and importable files without treating entry J
 
 Where do catalog entries and asset files live, and how is the asset manifest produced?
 
-In scope: roots, default entry format, manifest boundary, file kinds. Out of scope: recipes; Godot project path (TBD — where does the Godot project root live?).
+In scope: roots, default entry format, manifest boundary, file kinds, Godot project root for the manifest. Out of scope: recipes.
 
 ## Decision
 
 - **Catalog root**: `asset_catalog/` — entry JSON only; never Godot-imported.
 - **Asset root**: `game_assets/` — cataloged files + `.import`/`.uid` sidecars; entry paths relative here.
+- **Godot project root**: `game/` (repo root sibling of the catalog and asset roots).
 - **Formats**: SVG preferred / PNG alpha; audio OGG; fonts TTF/OTF/WOFF2 (Web-embed license).
-- **Manifest**: generated from catalog, approved-only, outside both roots; regenerate on catalog change; path with Godot scaffold.
+- **Manifest**: generated from catalog, approved-only, at `game/asset_manifest.json`; committed; regenerate on catalog change (including CI).
 - Visual generate: **Recraft only** (no fal). Audio: **ElevenLabs**.
 
 ## Reasoning

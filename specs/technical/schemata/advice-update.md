@@ -12,10 +12,12 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 
 | ID | Field | Type / shape | Required | Notes |
 |----|-------|--------------|----------|-------|
-| F1 | best_from | square | yes | Side to move |
-| F2 | best_to | square | yes | Side to move |
+| F1 | best_from | square | yes | From `best_move_uci` |
+| F2 | best_to | square | yes | From `best_move_uci` |
 | F3 | eval_cp | int | yes | Centipawns from White's view |
-| F4 | depth_or_time | optional hint | no | Deepening signal; TBD — which optional depth/time fields ship on the wire? |
+| F4 | depth | int | no | Optional deepening signal from wire |
+| F5 | time_ms | int | no | Optional search time from wire |
+| F6 | mate_in | int | no | Optional mate distance from wire |
 
 ## Invariants
 

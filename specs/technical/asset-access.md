@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Aspect | Realizes | Rule |
 |----|--------|----------|------|
-| R1 | Asset manifest | `ACC.A2` | Generated JSON (or Godot-friendly map) from `asset_catalog/`; **outside** `asset_catalog/` and `game_assets/`; never hand-edited; regenerated when catalog entries change. Exact path: TBD — Godot project scaffold (ADR-0001). |
+| R1 | Asset manifest | `ACC.A2` | Generated JSON from `asset_catalog/`; path `game/asset_manifest.json` (outside `asset_catalog/` and `game_assets/`); never hand-edited; regenerated when catalog entries change. |
 | R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by asset ID. |
 | R3 | Unresolved asset ID | `ACC.A3` | Dev/playtest: log + Must overlay. Release: skip draw, keep session, log once. |
 
@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 | ID | Output | Generator | Inputs | Location | Committed |
 |----|--------|-----------|--------|----------|-----------|
 | O1 | Godot `.import` caches | Godot import (ADR-0001) | Files under `game_assets/` | Beside assets or Godot cache | Rebuild; sidecars may commit with assets |
-| O2 | Asset manifest | Catalog generator (ADR-0005) | Approved `asset_catalog/` entries | Outside both roots | TBD — commit the manifest or regenerate only in CI/build once the Godot scaffold exists? |
+| O2 | Asset manifest | Catalog generator (ADR-0005) | Approved `asset_catalog/` entries | `game/asset_manifest.json` | Committed; regenerate in CI when catalog changes |
 
 ## Load groups
 

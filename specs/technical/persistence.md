@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/technical/persistence.md`](../../.agents/
 
 | ID | Schema / field | Stored as | When written | When loaded |
 |----|----------------|-----------|--------------|-------------|
-| M1 | [`SCH-persist-doc`](schemata/persist-doc.md) whole document | One `localStorage` JSON key for this game | After successful Elo/Last mode/recentSolved commit | Cold open before mode pick ready |
+| M1 | [`SCH-persist-doc`](schemata/persist-doc.md) whole document | `localStorage` key `simplechessv2.persist.v1` | After successful Elo/Last mode/recentSolved commit | Cold open before mode pick ready |
 | M2 | `GS.playerElo` | Number in document | Puzzle result commit (W1 / fail path per design) | M1 load |
 | M3 | `GS.lastMode` | Enum string in document | Mode pick enters Shared or Puzzle | M1 load |
 | M4 | `GS.recentSolved` | Array ≤20 puzzle IDs | Append on solve; trim to 20 | M1 load |
