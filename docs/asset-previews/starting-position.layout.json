@@ -1,0 +1,15 @@
+{
+  "board_viewBox": [0, 0, 2048, 2048],
+  "square_centers_x": [561, 693, 826, 957, 1088, 1219, 1350, 1483],
+  "square_centers_y": [566, 697, 827, 957, 1088, 1219, 1351, 1483],
+  "square_size": 131.22,
+  "piece_fill": 0.88,
+  "fit_size_px": 512,
+  "back_rank_order": ["R", "N", "B", "Q", "K", "B", "N", "R"],
+  "sources": {
+    "board_svg": "game_assets/board-backgrounds/play-table.svg",
+    "piece_sheet_svg": "game_assets/piece-sprites/style-anchor-sheet.svg",
+    "rebuild_script": "docs/asset-previews/rebuild_starting_position.py"
+  },
+  "notes": "Authoritative square layout (board S7 / piece S9). Definitive pipeline: piece-sprites S5–S9, board-backgrounds S5–S7. See README.md. Regenerable rasters/crops are not kept; run rebuild_starting_position.py."
+}
