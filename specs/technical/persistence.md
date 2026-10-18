@@ -1,0 +1,34 @@
+# Persistence
+
+Authoring rules: [`.agents/specs/rules/technical/persistence.md`](../../.agents/specs/rules/technical/persistence.md).
+
+- **Serves**: Save durability; Reliability; [PRG](../design/progression.md); `GS.playerElo` `GS.lastMode` `GS.recentSolved`
+- **Informed by**: [`fields-persist`](../design/game-state/fields-persist.md); quality Save durability
+- **ADRs**: [ADR-0003](../adr/decisions/0003-localstorage-persistence.md)
+
+## Durable vs ephemeral
+
+| ID | Data | Durability | Owner |
+|----|------|------------|-------|
+| D1 | Player Elo, Last mode, recent solved IDs | Durable across sittings until origin storage cleared | [`CMP-persist-store`](components/persist-store.md) |
+| D2 | Play position, clocks, advice marks, in-session options | Ephemeral; lost on quit/reload | Session components |
+| D3 | Mode-pick UI selection before commit | Ephemeral until Last mode written | [`CMP-session-router`](components/session-router.md) |
+
+## Save mapping
+
+| ID | Schema / field | Stored as | When written | When loaded |
+|----|----------------|-----------|--------------|-------------|
+| M1 | [`SCH-persist-doc`](schemata/persist-doc.md) whole document | One `localStorage` JSON key for this game | After successful Elo/Last mode/recentSolved commit | Cold open before mode pick ready |
+| M2 | `GS.playerElo` | Number in document | Puzzle result commit (W1 / fail path per design) | M1 load |
+| M3 | `GS.lastMode` | Enum string in document | Mode pick enters Shared or Puzzle | M1 load |
+| M4 | `GS.recentSolved` | Array ≤20 puzzle IDs | Append on solve; trim to 20 | M1 load |
+
+## Migration
+
+| ID | From → to | Change | Strategy |
+|----|-----------|--------|----------|
+| G1 | — | — | None — single version |
+
+## Diagram
+
+None — single whole-document replace.
