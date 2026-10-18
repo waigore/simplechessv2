@@ -23,4 +23,3 @@ Authoring rules: [`.agents/specs/rules/assets/glossary.md`](../../.agents/specs/
 | Style series | The kind-level registry of modality, enforce mode, anchors, style binding (Recraft / ElevenLabs / soft), prompt policy, and state that constrains generation. | [`kinds/`](kinds/) |
 | Tool role | A capability the pipeline needs, realized by an Accepted ADR or an ADR-free tool in [`docs/asset-tools.md`](../../docs/asset-tools.md). | [`tools.md`](tools.md) |
 | Touch-up | An optional edit to an asset's files, such as background removal, inpainting, or upscaling, recorded in its entry. | [`procedures/touch-up.md`](procedures/touch-up.md) |
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |

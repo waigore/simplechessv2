@@ -60,5 +60,5 @@ Optional: [`procedures/touch-up.md`](procedures/touch-up.md). Respect series neg
 
 ## Failure handling
 
-- **Retry limit**: <!-- fill in: attempts per asset before asking the user -->
+- **Retry limit**: 3 attempts per asset before asking the user.
 - **Ask the user** after repeated check fails, a second review Fail on the same asset, an unclear license, or a reached cost or quota limit.

@@ -23,5 +23,5 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Persistence and save mapping | `persistence.md` | <!-- fill in --> |
 | Config and data-driven tables | `configuration.md` | <!-- fill in --> |
 | Verification hooks | `verification.md` | <!-- fill in --> |
-| Asset access and loading | [`asset-access.md`](asset-access.md) | <!-- fill in --> |
+| Asset access and loading | [`asset-access.md`](asset-access.md) | Applies — pairs [`specs/assets/access.md`](../assets/access.md); ADR-0005 |
 | Diagrams | [`diagrams/`](diagrams/) | <!-- fill in --> |

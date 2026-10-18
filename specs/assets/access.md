@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/assets/access.md`](../../.agents/specs/rules/assets/access.md).
 
-- **Serves**: <!-- fill in -->
+- **Serves**: Instant play; Load time (board playable ≤ 3 s); Clear board; Cafe calm; Localization; [mode-pick](../ux/screens/mode-pick.md); Shared/Puzzle play screens
 - **Technical counterpart**: [`specs/technical/asset-access.md`](../technical/asset-access.md)
 
 ## Addressing
@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/assets/access.md`](../../.agents/specs/ru
 |----|------|
 | A1 | Code and data name an asset only by its asset ID, never by file path or handle. |
 | A2 | An asset manifest generated from the catalog, never hand-edited, maps each asset ID to its files. The asset manifest main code uses lists only approved entries. |
-| A3 | <!-- fill in: what happens when an asset ID cannot be resolved, in development and in a release --> |
+| A3 | **Development / playtest**: unresolved ID (unknown, draft, or deprecated) fails loud — log and Must overlay when present. **Release**: do not draw that asset; keep the sitting playable and log once (Instant play, Reliability). |
 
 ## Placement
 
@@ -24,4 +24,5 @@ Authoring rules: [`.agents/specs/rules/assets/access.md`](../../.agents/specs/ru
 
 | ID | Group | Members | Load point | Unload point | Serves |
 |----|-------|---------|------------|--------------|--------|
-| G1 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| G1 | Boot | [`fonts`](kinds/fonts.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md), [`music`](kinds/music.md) | Cold open / mode pick (`EX.loading` → ready) | Never in a sitting | Load time; [mode-pick](../ux/screens/mode-pick.md) |
+| G2 | Play | [`piece-sprites`](kinds/piece-sprites.md), [`board-backgrounds`](kinds/board-backgrounds.md), [`sound-effects`](kinds/sound-effects.md) | First enter Shared play or Puzzle play | Never in a sitting | Instant play; Clear board; [SND.X*](../aesthetics/sound.md) |

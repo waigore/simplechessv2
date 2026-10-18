@@ -6,7 +6,7 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 
 - **Purpose**: Zen web chess — same-device two-player games and an adaptive solo puzzle stream, set at a cafe table ([`specs/vision.md`](specs/vision.md)).
 - **Language / engine**: Godot 4.7.2 + GDScript (2D web / touch) — [`specs/definition/definition.md`](specs/definition/definition.md); [ADR-0001](specs/adr/decisions/0001-godot-engine.md).
-- **Frameworks / tools**: Godot web export; optional Stockfish advice via backend ([ADR-0002](specs/adr/decisions/0002-stockfish-advice-backend.md)); dual playtest environments ([ADR-0004](specs/adr/decisions/0004-dual-playtest-environments.md)); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
+- **Frameworks / tools**: Godot web export; optional Stockfish advice via backend ([ADR-0002](specs/adr/decisions/0002-stockfish-advice-backend.md)); dual playtest environments ([ADR-0004](specs/adr/decisions/0004-dual-playtest-environments.md)); asset catalog `asset_catalog/` + files `game_assets/` ([ADR-0005](specs/adr/decisions/0005-asset-catalog-roots.md)); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
 
 ## Quick start commands
 
@@ -48,7 +48,7 @@ Canonical skills and catalog: [`.agents/`](.agents/) ([README](.agents/README.md
 - [`docs/`](docs/) — ([README](docs/README.md))
 - [`specs/`](specs/) — ([README](specs/README.md))
 - [`demos/`](demos/) — gameplay demos, kept apart from main code ([README](demos/README.md))
-- Godot game root / `src/` / asset catalog paths — TBD when the Engine ADR and first implementation wave land
+- `asset_catalog/` / `game_assets/` — catalog entries and asset files ([ADR-0005](specs/adr/decisions/0005-asset-catalog-roots.md)); Godot project root TBD
 
 ## Rules to live by
 

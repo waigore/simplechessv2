@@ -22,9 +22,12 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | PRG.P1 P2; GS persist fields | design | [ADR-0003](decisions/0003-localstorage-persistence.md) |
 | 2D Web board view | view | [ADR-0001](decisions/0001-godot-engine.md) |
 | Playtest `ENV.1` `ENV.2` `DBG.*` `TEL.*` | playtest | [ADR-0004](decisions/0004-dual-playtest-environments.md) |
+| Asset catalog / asset roots; Recraft-only visual | assets | [ADR-0005](decisions/0005-asset-catalog-roots.md) |
+| Load time; Localization fonts | quality | [ADR-0005](decisions/0005-asset-catalog-roots.md) |
 
 ## Imposed constraints
 
 | ADR | Constrained spec or element | Citation |
 |-----|-----------------------------|----------|
-| — | None | — |
+| ADR-0005 | `specs/assets/assets.md` Catalog roots | [`0005-asset-catalog-roots.md`](decisions/0005-asset-catalog-roots.md) |
+| ADR-0005 | `specs/assets/access.md`; `specs/technical/asset-access.md` | [`0005-asset-catalog-roots.md`](decisions/0005-asset-catalog-roots.md) |
