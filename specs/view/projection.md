@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/view/projection.md`](../../.agents/specs/rules/view/projection.md).
 
 - **Serves**: Clear board; Web touch primary. [spatial-model.md](spatial-model.md).
-- **Diagram**: [`diagrams/projection.html`](diagrams/projection.html) — TBD — fill deferred to a follow-up capture.
+- **Diagram**: [`diagrams/projection.html`](diagrams/projection.html)
 
 ## Projections
 

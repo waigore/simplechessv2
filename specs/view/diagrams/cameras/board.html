@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camera: Board</title>
+  <style>
+    :root { --fg: #1a1a1a; --bg: #f7f6f3; --line: #c8c4bc; --accent: #0b57d0; --muted: #5c574e; --warn: #b3261e; --board: #d9c4a8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 16px/1.4 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
+    article { max-width: 56rem; margin: 0 auto; padding: 1rem; }
+    header p { color: var(--muted); margin: 0; }
+    figure { margin: 1rem 0; border: 1px solid var(--line); padding: 0.5rem; }
+    figcaption { font-size: 0.875rem; color: var(--muted); }
+    svg { width: 100%; height: auto; }
+    svg text { font: 12px system-ui, sans-serif; fill: var(--fg); }
+    .frame { fill: none; stroke: var(--fg); stroke-width: 2; }
+    .board { fill: var(--board); stroke: var(--fg); stroke-width: 1; }
+    .limit { fill: none; stroke: var(--warn); stroke-dasharray: 2 4; }
+    .target { fill: var(--accent); }
+    .axis { stroke: var(--fg); stroke-width: 1.5; marker-end: url(#arrow); }
+    .scale { stroke: var(--fg); stroke-width: 3; }
+    .muted { fill: var(--muted); }
+  </style>
+</head>
+<body>
+  <!-- Authoring rules: .agents/specs/rules/view/diagrams.md. 2D camera: frame view only. -->
+  <article data-spec="CAM-board">
+    <header>
+      <p>CAM-board</p>
+      <h1>Board</h1>
+      <p>Kind fixed · projection PRJ.P1 · scale 32 px = 1 world unit · side/top views omitted (2D)</p>
+    </header>
+
+    <figure>
+      <!-- Same mapping as projection front: V1 at (80,40) size 320; board at (112,72) size 256.
+           Board center (4,4) in SPC: from a1 corner +4,+4 → SVG (112+128, 328-128) = (240, 200). -->
+      <svg viewBox="0 0 520 460" role="img" aria-label="Frame view: target, rest, limits, seat flip">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" />
+          </marker>
+        </defs>
+
+        <!-- Frame = PRJ.V1 rest framing -->
+        <rect class="frame" x="80" y="40" width="320" height="320" />
+        <rect class="board" x="112" y="72" width="256" height="256" />
+
+        <!-- L1: SPC.B1 board bounds 0–8 (same as board rect) -->
+        <g data-element="L1">
+          <rect class="limit" x="112" y="72" width="256" height="256" />
+          <text x="116" y="68">L1 bounds SPC.B1 · no pan past board</text>
+        </g>
+
+        <!-- L2: zoom fixed to PRJ.P1 visible height 10 -->
+        <g data-element="L2">
+          <text x="84" y="56">L2 zoom fixed · PRJ.P1 visible height 10</text>
+        </g>
+
+        <!-- F2 rest: board fills frame; center at frame center -->
+        <g data-element="F2">
+          <text x="84" y="380">F2 rest · board fills frame per PRJ.V1 · center at frame center</text>
+        </g>
+
+        <!-- F1 target board center (4,4) -->
+        <g data-element="F1">
+          <circle class="target" cx="240" cy="200" r="8" />
+          <text x="252" y="204">F1 target (4, 4)</text>
+        </g>
+
+        <!-- F3 offset none -->
+        <g data-element="F3">
+          <text x="252" y="220" class="muted">F3 offset none</text>
+        </g>
+
+        <!-- F4 dead zone none -->
+        <g data-element="F4">
+          <text x="252" y="236" class="muted">F4 dead zone none</text>
+        </g>
+
+        <!-- F5 lookahead none -->
+        <g data-element="F5">
+          <text x="252" y="252" class="muted">F5 lookahead none</text>
+        </g>
+
+        <!-- M1 follow none -->
+        <g data-element="M1">
+          <text x="84" y="396" class="muted">M1 follow none · camera fixed while pieces move</text>
+        </g>
+
+        <!-- M2 seat flip about F1 -->
+        <g data-element="M2">
+          <text x="84" y="412">M2 seat flip · Bottom 0° · Top 180° about F1</text>
+        </g>
+
+        <!-- SPC.A1 reminder at a1 -->
+        <g data-element="SPC.A1">
+          <line class="axis" x1="112" y1="328" x2="160" y2="328" />
+          <line class="axis" x1="112" y1="328" x2="112" y2="280" />
+          <text x="164" y="332">+x</text>
+          <text x="116" y="276">+y</text>
+        </g>
+
+        <g data-element="scale">
+          <line class="scale" x1="80" y1="440" x2="112" y2="440" />
+          <text x="118" y="444">1 unit (32 px)</text>
+        </g>
+      </svg>
+      <figcaption>Frame view. Fixed orthographic table camera; White-seat orientation via M2 only.</figcaption>
+    </figure>
+  </article>
+</body>
+</html>

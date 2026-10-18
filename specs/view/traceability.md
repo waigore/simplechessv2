@@ -30,4 +30,4 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Motion comfort | [`perception.md`](perception.md) | N/A — fixed camera; no autonomous camera motion |
 | Spatial audio | [`audio.md`](audio.md) | N/A — non-positional event cues only |
 | Haptics | [`haptics.md`](haptics.md) | N/A — Web primary; no haptic platforms |
-| Diagrams | [`diagrams/`](diagrams/) | TBD — deferred to a follow-up capture |
+| Diagrams | [`diagrams/`](diagrams/) | Applies — [`projection.html`](diagrams/projection.html), [`cameras/board.html`](diagrams/cameras/board.html) |

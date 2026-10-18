@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 - **Kind**: fixed
 - **Used in**: [FL-mode-pick.P2](../../design/flows/mode-pick.md), [FL-mode-pick.P3](../../design/flows/mode-pick.md) (Shared game and Puzzle stream play)
 - **Projection**: [PRJ.P1](../projection.md)
-- **Diagram**: TBD — camera diagram deferred to a follow-up capture
+- **Diagram**: [`../diagrams/cameras/board.html`](../diagrams/cameras/board.html)
 - **Serves**: Clear board, Cafe calm. Fixed board embodiment in [view.md](../view.md).
 - **Glossary terms**: [Camera](../glossary.md), [Frame](../glossary.md)
 
