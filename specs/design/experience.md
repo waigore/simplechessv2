@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/design/experience.md`](../../.agents/spec
 ## Sensory intent
 
 - **Mood and style**: Quiet cafe table; classic warm board; distinct vector pieces; calm, not tournament chrome.
-- **Sound intent**: Short cues for touch, move, check, checkmate or resign; soft cafe ambient. Sound alone never required for a rules outcome.
+- **Sound intent**: Short cues for touch, move, check, checkmate or resign; soft cafe ambient beds [SND.M1](../aesthetics/sound.md) then [SND.M2](../aesthetics/sound.md) (~3 min each). While music is on: play M1 → M2 → M1…; when one bed ends, the next starts (no crossfade). Sound alone never required for a rules outcome.
 - **Clarity rules**: Piece types by shape; side to move and check obvious; Advice marks never obscure piece identity.
 
 ## Accessibility

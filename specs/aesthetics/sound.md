@@ -8,7 +8,10 @@ Authoring rules: [`.agents/specs/rules/aesthetics/sound.md`](../../.agents/specs
 
 | ID | Context | Genre and instrumentation | Tempo (BPM) | Mood |
 |----|---------|---------------------------|-------------|------|
-| M1 | All play and mode pick | Soft cafe ambient — acoustic guitar / light jazz; no lyrics | 70–90 | Quiet table; unhurried |
+| M1 | All play and mode pick (~3 min bed A) | Soft cafe ambient — acoustic guitar / light jazz; no lyrics | 70–90 | Quiet table; unhurried |
+| M2 | All play and mode pick (~3 min bed B) | Same as M1 (shared style) | 70–90 | Same as M1 |
+
+Playlist order and when beds change: [experience.md](../design/experience.md).
 
 ## Sound effects
 
@@ -32,6 +35,6 @@ Sound alone never required for a rules outcome ([experience.md](../design/experi
 
 | ID | Category | Target loudness | Relation to other categories |
 |----|----------|-----------------|------------------------------|
-| L1 | Music (M1) | About −18 LUFS integrated | Always under SFX; no ducking of moves |
+| L1 | Music (M1, M2) | About −18 LUFS integrated | Always under SFX; no ducking of moves |
 | L2 | Sound effects (X1–X5) | About −14 LUFS for peaks of short cues | Above ambient; never gate a local move |
 | L3 | Voice | N/A — no voice | — |
