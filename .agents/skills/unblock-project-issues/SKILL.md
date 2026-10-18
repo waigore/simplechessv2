@@ -1,9 +1,10 @@
 ---
 name: unblock-project-issues
 description: |-
-  Clear a native blocked-by link when the blocker is status:accepted or closed
-  and the default branch shows that issue's deliverables. Use when unblocking
-  issues, checking whether a blocker is done in the repo, or at the start of a
+  Clear a native blocked-by link when the default branch already satisfies the
+  blocker's done-conditions, or when the edge is obsolete / never warranted.
+  Acceptance and closed state do not gate clearance. Use when unblocking
+  issues, checking whether a block still holds, or at the start of a
   project-planner-agent pass. Does not add dependencies or close issues.
 
   Examples:
@@ -14,13 +15,13 @@ description: |-
 
 # Unblock project issues
 
-Delete native **blocked-by** edges the default branch has already satisfied. The resolution rule is [`docs/issues/hierarchy.md`](../../../docs/issues/hierarchy.md). Read it and apply it. Do not invent a different bar, add blocked-by links, or close issues.
+Delete native **blocked-by** edges that are already satisfied on the default branch, or that no longer warrant blocking. The resolution rule is [`docs/issues/hierarchy.md`](../../../docs/issues/hierarchy.md). Read it and apply it. Do not invent a different bar, add blocked-by links, or close issues. Do not require `status:accepted` or a closed blocker — those are separate from “work is on the default branch.”
 
 ## Scope
 
 - Default: every open `type:epic`, `type:task`, and `type:defect` issue.
 - If the user names issue numbers, judge only those issues' blocked-by links.
-- Delete each satisfied edge without asking for confirmation.
+- Delete each edge that passes the rule without asking for confirmation.
 
 ## Steps
 
@@ -40,8 +41,14 @@ Delete native **blocked-by** edges the default branch has already satisfied. The
    ```
 
    Skip an issue whose list is empty.
-3. For each blocker, read `state`, labels, and body (`gh issue view BLOCKER --json state,labels,body,title`). Inspect the default branch for the done-conditions hierarchy names: cited paths, specs, demos, and playtest evidence. Use `git grep` and `git ls-tree` against `origin/<default-branch>`.
-4. Apply the hierarchy rule to that edge alone. Other blockers on the same issue stay until they pass the same rule.
+3. For each blocker, read title and body (`gh issue view BLOCKER --json title,body,state,labels` — state and labels are for the report only, not a gate). Read the blocked issue's title and body the same way. Inspect the default branch for the done-conditions hierarchy names: cited paths, specs, demos, and playtest evidence. Use `git grep` and `git ls-tree` against `origin/<default-branch>`.
+4. Apply the hierarchy rule to that edge alone:
+
+   1. **Satisfied in repo** — every done-condition for the blocker is met on the default branch → delete.
+   2. Else **edge not warranted** — from both bodies and default-branch evidence, the blocked issue no longer depends on that blocker (or never did) → delete.
+   3. Else keep (missing work and dependency still real, or a condition cannot be checked).
+
+   Other blockers on the same issue stay until they pass the same rule.
 5. On a deletion, `ISSUE_ID` is the blocker's REST `id` from step 2:
 
    ```bash
@@ -61,7 +68,11 @@ Delete native **blocked-by** edges the default branch has already satisfied. The
 
 ## Report
 
-For every edge: blocked issue, blocker, removed or kept, and the reason. For a removal or a keep because the default branch is missing work, name the done-conditions and the paths that decided it.
+For every edge: blocked issue, blocker, removed or kept, and the reason.
+
+- **Removed (satisfied):** name the done-conditions and the default-branch paths that decided it.
+- **Removed (obsolete):** state why the dependency no longer holds (or never did).
+- **Kept:** name missing done-conditions and/or why the dependency still reads as real; if unchecked, say what could not be verified.
 
 ## Related
 

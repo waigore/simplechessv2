@@ -1,9 +1,10 @@
 ---
 name: unblock-project-issues
 description: |-
-  Clear a native blocked-by link when the blocker is status:accepted or closed
-  and the default branch shows that issue's deliverables. Use when unblocking
-  issues, checking whether a blocker is done in the repo, or at the start of a
+  Clear a native blocked-by link when the default branch already satisfies the
+  blocker's done-conditions, or when the edge is obsolete / never warranted.
+  Acceptance and closed state do not gate clearance. Use when unblocking
+  issues, checking whether a block still holds, or at the start of a
   project-planner-agent pass. Does not add dependencies or close issues.
 
   Examples:
