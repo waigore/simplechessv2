@@ -6,6 +6,13 @@ Authoring rules: [`.agents/specs/rules/playtest/tools.md`](../../.agents/specs/r
 
 The agent drives play through **both** player-facing controls (per UX) and debug commands (below).
 
+## Environments (Must)
+
+| ID | Capability | Agent can |
+|----|------------|-----------|
+| `ENV.1` | Headless session | Run Design and UX protocols with no graphics display; observe via `DBG.*` and `TEL.*` |
+| `ENV.2` | Graphical session | Run UX protocols in a full rendered session; capture screenshots per [`evidence.md`](evidence.md) |
+
 ## Debug UI (Must)
 
 | ID | Capability | Agent can |
@@ -31,7 +38,7 @@ Sinks and formats are ADR decisions. Seams live in technical verification.
 
 ## Capture affordance
 
-A running playtest session must be observable so screenshots and logs can be written under `docs/playtest/evidence/` per [`evidence.md`](evidence.md).
+A running playtest session must be observable so logs (and screenshots when Graphical) can be written under `docs/playtest/evidence/` per [`evidence.md`](evidence.md).
 
 ## Situational
 
@@ -43,4 +50,4 @@ A running playtest session must be observable so screenshots and logs can be wri
 
 ## Constraints on ADR and technical
 
-Accepted ADRs and technical design (including verification seams and observability) must realize every Must row. Each Situational row a protocol cites must be realized before that protocol is required at acceptance.
+Accepted ADRs and technical design (including verification seams and observability) must realize every Must row (`ENV.*`, `DBG.*`, `TEL.*`). Each Situational row a protocol cites must be realized before that protocol is required at acceptance. Headless and Graphical playtest architecture is required by `ENV.1` and `ENV.2`.

@@ -4,13 +4,15 @@ In-repo evidence from AI-agent playtesting. Schema and requirements: [`specs/pla
 
 ## Layout
 
-`issue-<n>/<run-id>/` with at least:
+`issue-<n>/headless-<run-id>/` and `issue-<n>/graphical-<run-id>/` with at least:
 
-- `manifest.md` — issue, build/session id, coverage mode, results table, paths
+- `manifest.md` — issue, environment, build/session id, coverage mode, results table, paths
 - `notes.md`
-- `screenshots/`
 - `logs/`
+- `screenshots/` — Graphical runs only (Headless: omit)
 
 ## When required
 
 Only when acceptance deliverables change playable behavior. Spec-only and docs-only issues do not need a folder here.
+
+Design protocols → Headless only. UX protocols → Headless and Graphical.
