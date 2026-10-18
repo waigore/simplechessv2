@@ -15,6 +15,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 | S1 | Open mode-pick; activate Shared game control. |
 | S2 | Return; activate Puzzle stream control. |
 | S3 | Confirm Last mode affordance when persisted. |
+| S4 | Activate Switch locale; confirm the copy switches locale immediately. |
 
 ## Pass
 
@@ -22,6 +23,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 |----|---------|
 | P1 | Both mode entries work; Last mode indication matches UX story. |
 | P2 | Headless and Graphical both pass. |
+| P3 | Switch locale updates mode-pick copy without leaving the screen. |
 
 ## Fail
 

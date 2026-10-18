@@ -34,7 +34,7 @@ Every playtest-relevant event carries at least:
 | `TEL.4` | Story ID | Design or UX story ID when known; omit only when not applicable |
 | `TEL.5` | Outcome / severity hint | Pass, fail, or severity cue for correlation |
 
-Sinks and formats are ADR decisions. Seams live in technical verification.
+Sink and format are set by the technical design in [`specs/technical/verification.md`](../technical/verification.md) (ADR-0004).
 
 ## Capture affordance
 

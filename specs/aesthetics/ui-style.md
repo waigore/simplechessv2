@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/ui-style.md`](../../.agents/sp
 | ID | Type role | Classification | Weight and case | Size |
 |----|-----------|----------------|-----------------|------|
 | T1 | Title | Humanist sans | Semibold; sentence case | About 1/18 of frame height |
-| T2 | Body / labels | Humanist sans | Regular; sentence case | ≥ smallest shipped readable size on Web touch (Accessibility); scripts Latin, Traditional Chinese, Japanese |
+| T2 | Body / labels | Humanist sans | Regular; sentence case | ≥ 16 screen px at a 640 px reference frame height (smallest shipped size; legible on a phone-width layout — Accessibility); scripts Latin, Traditional Chinese, Japanese |
 | T3 | In-play numbers (clocks, Elo, eval) | Humanist sans / tabular | Medium; lining figures | ≥ T2; tabular figures preferred |
 
 Named typefaces are assets ([specs/assets/](../assets/assets.md)).

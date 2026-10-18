@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/technical.md`](../../.agents/sp
 
 ## Overview
 
-A Godot 4.7.2 Web client ([ADR-0001](../adr/decisions/0001-godot-engine.md)) runs Presentation, Session, Domain, and Edge layers on-device so a local move never waits on the network. The Edge talks to origin `localStorage` ([ADR-0003](../adr/decisions/0003-localstorage-persistence.md)), an advice backend that alone peers with Stockfish ([ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md)), and a generated asset manifest ([ADR-0005](../adr/decisions/0005-asset-catalog-roots.md)). Playtest builds add Headless and Graphical seams ([ADR-0004](../adr/decisions/0004-dual-playtest-environments.md)).
+A Godot 4.7.2 Web client ([ADR-0001](../adr/decisions/0001-godot-engine.md)) runs Presentation, Session, Domain, and Edge layers on-device ([ADR-0006](../adr/decisions/0006-layered-client-architecture.md)) so a local move never waits on the network. The Edge talks to origin `localStorage` ([ADR-0003](../adr/decisions/0003-localstorage-persistence.md)), an advice backend that alone peers with Stockfish ([ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md)), and a generated asset manifest ([ADR-0005](../adr/decisions/0005-asset-catalog-roots.md)). Playtest builds add Headless and Graphical seams ([ADR-0004](../adr/decisions/0004-dual-playtest-environments.md)).
 
 ## Traceability
 

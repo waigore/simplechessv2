@@ -66,7 +66,7 @@ Then IN.back activates
 ```gherkin
 Given mode-pick S1
 When focus moves without a pointer hit
-Then focus order follows C1 then C2 then C3
+Then focus order follows C1 then C2 then C3 then C4
 ```
 
 ### US1.5: Activate

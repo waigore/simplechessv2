@@ -12,9 +12,11 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 |---------|---------|-----------|
 | R1 | Last mode highlight | US1.1 |
 | R2 | Quit region | US1.2 |
+| R3 | Locale name | US1.9 |
 | C1 | Shared game | US1.3 |
 | C2 | Puzzle stream | US1.4 |
 | C3 | Quit → confirm | US1.5 |
+| C4 | Switch locale, immediate | US1.9 |
 | C1 unavailable N/A | always available | US1.3 |
 | S1 | Default | US1.1 |
 | S2 | EX.loading | US1.6 |
@@ -103,5 +105,15 @@ Then the screen is mode-pick S1
 Given Bottom player is on mode-pick S4 after a failed Last mode write
 When Bottom dismisses
 Then the screen is mode-pick S1 and prior GS.lastMode remains
+```
+
+### US1.9: Switch locale applies immediately
+
+- **Proves**: R3, C4
+
+```gherkin
+Given Bottom player is on mode-pick S1 and GS.locale is en
+When Bottom activates C4
+Then R3 shows 繁體中文 and every copy string shows its zh-Hant form and the screen is mode-pick S1
 ```
 

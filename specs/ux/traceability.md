@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Cafe calm | vision | [`screens/mode-pick.md`](screens/mode-pick.md), journeys |
 | Shared game; Puzzle stream; new session | definition | screens + [`shared-result.md`](screens/shared-result.md) Play again |
 | Web touch | definition | [`controls.md`](controls.md) bindings |
-| Accessibility; Localization | quality | presentation craft; screen copy tables |
+| Accessibility; Localization | quality | presentation craft; screen copy tables; mode-pick Switch locale (C4) |
 | Mode pick; loops; configuration; Advice | design | navigation, screens, journeys |
 | PER.R1–R7; no camera controls | view | play screens; controls (no CC bindings) |
 | UIS interface style | aesthetics | [`presentation.md`](presentation.md) |
@@ -28,5 +28,5 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Controls and bindings | [`controls.md`](controls.md) | Applies |
 | Mockups | [`mockups/`](mockups/), [`presentation.md`](presentation.md) | Applies — depth full |
 | Accessibility presentation | screens, presentation | Applies |
-| Localization copy | screen copy tables | Applies |
+| Localization copy | screen copy tables; mode-pick C4 | Applies |
 | Save-failure feedback | `EX.save-failure` | Applies |

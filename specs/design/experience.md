@@ -34,7 +34,7 @@ Authoring rules: [`.agents/specs/rules/design/experience.md`](../../.agents/spec
 
 ## Localization
 
-Varies by locale (`en` default, `zh-Hant`, `ja` — [quality.md](../definition/quality.md)): mode pick and mode labels; Shared-game options and choices; in-play and end status copy; puzzle result copy; Player Elo labels and helpers; exception and system copy (loading, error, save-failure, confirm). Not translated: piece identity by shape; board geometry; cafe ambient (no lyrics).
+Varies by locale (`en`, `zh-Hant`, `ja` — [quality.md](../definition/quality.md)): mode pick and mode labels; Shared-game options and choices; in-play and end status copy; puzzle result copy; Player Elo labels and helpers; exception and system copy (loading, error, save-failure, confirm). Not translated: piece identity by shape; board geometry; cafe ambient (no lyrics). The locale defaults to the browser's locale when shipped, else `en`; the player may switch locale, and a switch applies immediately to all player-facing copy.
 
 ## Learning and mastery
 

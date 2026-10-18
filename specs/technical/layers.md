@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/layers.md`](../../.agents/specs/rules/technical/layers.md).
 
 - **Serves**: Instant play; Shared game; Puzzle stream; optional Advice; cafe Presentation
-- **Informed by**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0003](../adr/decisions/0003-localstorage-persistence.md), [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md), [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md); design; view; UX
+- **Informed by**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0003](../adr/decisions/0003-localstorage-persistence.md), [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md), [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md), [ADR-0006](../adr/decisions/0006-layered-client-architecture.md); design; view; UX
 
 ## Layers
 
