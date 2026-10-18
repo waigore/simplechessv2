@@ -4,7 +4,7 @@ Read this before editing `specs/assets/procedures.md` or a file split from it. D
 
 Also read [assets.md](assets.md), [tools.md](tools.md), and [catalog.md](catalog.md).
 
-How an agent generates, imports, reviews, updates, and deprecates assets. Steps are agent-facing. Cite tools by role ID. Do not restate catalog fields (`catalog.md`) or recipes (kind specs). Product names only where `docs/asset-tools.md` locks a capability (visual style series → Recraft; audio style series → ElevenLabs).
+How an agent generates, imports, reviews, updates, and deprecates assets. Steps are agent-facing. Cite tools by role ID. Do not restate catalog fields (`catalog.md`) or recipes (kind specs). Product names only where `docs/asset-tools.md` locks a capability (visual style series → Recraft; audio style series → ElevenLabs CLI).
 
 ## When to run
 
@@ -18,7 +18,7 @@ One subsection per procedure: `APR.generate`, `APR.import`, `APR.register`, `APR
 - **Import** / **Register** / **Review** / **Deprecate**: as today’s skeleton (license, supplier, exemption, review-asset, successor).
 - **Update**: keep asset ID; raise version; append `history` snapshot before overwriting generation; prefer prior prompt as guide; keep series style when `active`; checks and review; re-check dependents.
 - **Touch-up**: `procedures/touch-up.md`. Respect series negatives; do not clear series binding.
-- **Establish-style**: `procedures/establish-style.md`. Bootstrap anchors → create modality binding (Recraft style / ElevenLabs finetune or voice / soft SFX) → write kind Style series registry → `active`. Refresh when `stale`.
+- **Establish-style**: `procedures/establish-style.md`. Bootstrap anchors → create modality binding (Recraft style / ElevenLabs CLI finetune or voice / soft SFX) → write kind Style series registry → `active`. Refresh when `stale`.
 
 ## Consistency
 

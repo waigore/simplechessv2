@@ -28,8 +28,9 @@ Committed configs may list **env var names** and `${env:NAME}` (or client-equiva
 | Id | Purpose | Auth | Notes |
 |----|---------|------|-------|
 | `recraft` | Graphic design + 2D raster/vector generation, editing, touch-up ([`asset-tools.md`](asset-tools.md)) | OAuth | Remote URL; no API key |
-| `elevenlabs` | Music, SFX, voice generation and audio style series ([`asset-tools.md`](asset-tools.md)) | OAuth | Remote `https://api.elevenlabs.io/v1/mcp`; no API key in-repo |
 | `fal` | High-throughput model host: search, pricing, raw generation ([`asset-tools.md`](asset-tools.md)) | `FAL_AI_KEY` | Remote `https://mcp.fal.ai/mcp-relay`. Header is `Authorization: Key` plus that variable. OpenCode sets `oauth` to false so the header is sent |
+
+ElevenLabs is **not** an MCP server here. Agents use the ElevenLabs CLI only; see [`asset-tools-elevenlabs.md`](asset-tools-elevenlabs.md).
 
 When adding a server, update this table and all three client configs in the same PR.
 
