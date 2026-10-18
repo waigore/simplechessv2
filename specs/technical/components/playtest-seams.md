@@ -1,0 +1,48 @@
+# Component: Playtest seams
+
+Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agents/specs/rules/technical/components.md).
+
+- **Layer**: L4 Edge
+- **Module**: M1 `client` (playtest builds only)
+- **Serves**: Observability; playtest `DBG.*` `TEL.*`; Cafe calm in release
+- **Informed by**: [`specs/playtest/tools.md`](../../playtest/tools.md); [`verification.md`](../verification.md)
+- **ADRs**: [ADR-0004](../../adr/decisions/0004-dual-playtest-environments.md)
+
+## Responsibilities
+
+| ID | Responsibility |
+|----|----------------|
+| R1 | Expose pause/resume, inspect, jump, and story-ID overlay (`DBG.1–4`) |
+| R2 | Emit telemetry events with `TEL.1–5` fields |
+| R3 | Compile or no-op out of public release Web export |
+| R4 | Work in both Headless and Graphical playtest runners |
+
+## Communication
+
+| ID | Peer | Direction | Via contract | Notes |
+|----|------|-----------|--------------|-------|
+| C1 | Playtest agent / harness | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | Drive + observe |
+| C2 | Sessions / presentation | both | internal | Read play state; overlay |
+| C3 | [`CMP-session-router`](session-router.md) | calls | internal | Jump may re-enter modes |
+
+## Owns / mutates
+
+| Schema or state | Access |
+|-----------------|--------|
+| Pause flag; overlay visibility | write (playtest only) |
+| Play state | read via inspect |
+
+## Diagram
+
+```mermaid
+flowchart LR
+  H[harness]
+  P[CMP-playtest-seams]
+  S[sessions]
+  H -->|CTR-playtest-drive| P
+  P --> S
+```
+
+## Failure / concurrency / persistence
+
+[`failures.md`](../failures.md) T5; [`verification.md`](../verification.md) S3–S7; [`SEQ-playtest-headless-smoke`](../sequences/playtest-headless-smoke.md).

@@ -6,7 +6,9 @@ Authoring rules: [`.agents/specs/rules/technical/glossary.md`](../../.agents/spe
 
 | Term | Definition | Detailed in |
 |------|------------|-------------|
-| Advice backend | Server process that is the sole UCI peer to Stockfish and streams advice to the client. | [`modules.md`](modules.md) M2; [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md) |
+| Advice backend | Server process that is the sole UCI peer to Stockfish and streams advice to the client. | [`modules.md`](modules.md) M2; [`CMP-advice-backend`](components/advice-backend.md); [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md) |
+| Playtest seams | Playtest-build-only DBG/TEL drive and observe surface. | [`CMP-playtest-seams`](components/playtest-seams.md); [`CTR-playtest-drive`](contracts/playtest-drive.md) |
+| Puzzle attempt | Current puzzle deal, played prefix, and outcome before Elo commit. | [`SCH-puzzle-attempt`](schemata/puzzle-attempt.md) |
 | Component | A named unit of runtime responsibility with defined peers and communication. | [`components/`](components/) |
 | Contract | A behavioral interface between components: operations, events, and guarantees. | [`contracts/`](contracts/) |
 | Edge | L4 band: persist, advice client, asset resolver, playtest seams. | [`layers.md`](layers.md) L4 |

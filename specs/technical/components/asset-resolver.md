@@ -21,8 +21,8 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-session-router`](session-router.md) | listens | internal | Boot ready |
-| C2 | [`CMP-presentation`](presentation.md) | listens | internal | Resolve by ID |
+| C1 | [`CMP-session-router`](session-router.md) | listens | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Boot ready |
+| C2 | [`CMP-presentation`](presentation.md) | listens | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Resolve by ID |
 
 ## Owns / mutates
 
