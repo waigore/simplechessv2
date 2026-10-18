@@ -18,6 +18,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`plan-project-waves`](plan-project-waves/SKILL.md) | Inventory specs; cut waves (milestones) and vertical epics; file wave-1 leaf tasks + demo follow-ons |
 | [`audit-project-wave`](audit-project-wave/SKILL.md) | Audit a filed wave (milestone description vs epics); confirm before new epics / moves / set-level restructure |
 | [`project-planner-agent`](project-planner-agent/SKILL.md) | Gap-drive specs vs demonstrated or planned work; mutate GitHub issues only (breadth or depth) |
+| [`unblock-project-issues`](unblock-project-issues/SKILL.md) | Remove blocked-by when the blocker is accepted or closed and the default branch shows its done-conditions |
 | [`create-project-defect`](create-project-defect/SKILL.md) | Create a Defect issue (`type:defect`) with related/blocked-by wiring |
 | [`enforce-task-workflow-status`](enforce-task-workflow-status/SKILL.md) | Gate or audit `status:*` labels for typed issues |
 | [`review-project-issue`](review-project-issue/SKILL.md) | Review pass / fail / clarify → next status |

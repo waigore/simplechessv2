@@ -28,4 +28,9 @@ For blockers and ordering:
 
 Use `none` when there are no blockers or no issues this one blocks. Merely related work belongs in `## Related tasks or defects` (defects) or prose — not as fake blocked-by edges.
 
-Closing a blocker resolves the dependency in GitHub; keep the body history unless correcting a mistake.
+Closing a blocker resolves its native dependency. `status:accepted` stays open ([workflow.md](workflow.md)), so acceptance does not. While the blocker is open, [`unblock-project-issues`](../../.agents/skills/unblock-project-issues/SKILL.md) is what deletes a satisfied edge, and only when both hold:
+
+- The blocker is `status:accepted` or closed.
+- The default branch meets every done-condition in the blocker body. A task uses deliverables and acceptance criteria; an epic uses its goal; a defect uses expected behavior. Count code, specs, demos, and playtest evidence on that branch.
+
+Keep the edge when the blocker is not accepted, when a done-condition is missing on the default branch, or when a condition cannot be checked. That includes work present on the default branch before acceptance. The skill adds no blocked-by edges. A create flow may still remove a mistaken link while both issues are open (linking doc above). After a deletion, set the blocked issue's `Blocked by` line and the blocker's `Blocking` line from the native links that remain (`none` when empty). Do not close the blocker to force resolution.

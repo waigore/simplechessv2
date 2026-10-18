@@ -119,7 +119,7 @@ Always mirror in the body:
 - Blocking: none
 ```
 
-Do not remove native dependencies when a blocker closes; GitHub marks them resolved. Remove only mistaken links while both issues are still open.
+Do not remove native dependencies from a create flow except a mistaken link while both issues are still open. GitHub resolves a dependency when its blocker closes. A satisfied blocker that stays open is cleared only by [`unblock-project-issues`](../../unblock-project-issues/SKILL.md).
 
 ## Related links (defects)
 
