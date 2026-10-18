@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 | ID | Aspect | Realizes | Rule |
 |----|--------|----------|------|
 | R1 | Asset manifest | `ACC.A2` | Generated JSON (or Godot-friendly map) from `asset_catalog/`; **outside** `asset_catalog/` and `game_assets/`; never hand-edited; regenerated when catalog entries change. Exact path: TBD — Godot project scaffold (ADR-0001). |
-| R2 | Resolver | `ACC.A1` | One component reads the manifest by asset ID. Owning `CMP-`: TBD — technical components not authored yet. |
+| R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by asset ID. |
 | R3 | Unresolved asset ID | `ACC.A3` | Dev/playtest: log + Must overlay. Release: skip draw, keep session, log once. |
 
 ## Engine resources
@@ -31,8 +31,8 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Realizes | Mechanism | Owner | Sequence |
 |----|----------|-----------|-------|----------|
-| G1 | `ACC.G1` | Preload Boot set before mode pick ready | TBD — `CMP-` | Cold open → manifest Boot IDs → mark ready |
-| G2 | `ACC.G2` | Preload Play set on first play screen | TBD — `CMP-` | Enter Shared/Puzzle play → Play IDs |
+| G1 | `ACC.G1` | Preload Boot set before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Cold open → manifest Boot IDs → mark ready |
+| G2 | `ACC.G2` | Preload Play set on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Enter Shared/Puzzle play → Play IDs |
 
 ## Diagram
 
