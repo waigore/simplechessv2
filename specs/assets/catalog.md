@@ -29,7 +29,7 @@ Moved to [`catalog/fields.md`](catalog/fields.md).
 | `I2` | Asset IDs are valid UUIDs version 7, unique, and never reused | CI: `asset_catalog.py` |
 | `I3` | Every approved entry has a Pass review for its current version, or a review exemption | CI: `asset_catalog.py` |
 | `I4` | Every cited ID exists; a planned kind spec named in the hub counts | CI for kind specs and successors; `review-asset` for the rest |
-| `I5` | Main code uses no draft or deprecated asset | <!-- fill in --> |
+| `I5` | Main code uses no draft or deprecated asset | Code review + CI: main code cites only approved asset IDs from the generated manifest; no path/handle literals |
 | `I6` | Every review exemption names the person who granted it | CI: `asset_catalog.py` |
 | `I7` | Handles are unique, deprecated entries included, and prefixed by a kind spec the hub names | CI: `asset_catalog.py` |
 | `I8` | No entry was generated or touched up with a tool that [`docs/asset-tools.md`](../../docs/asset-tools.md) bans | CI: `asset_catalog.py` |
