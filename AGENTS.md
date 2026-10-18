@@ -11,7 +11,7 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 ## Quick start commands
 
 - **Setup**: Install Godot 4.7.2. Clone this repo; no installable package yet.
-- **Run**: Open the Godot project and run (or export to web). Project scaffold TBD.
+- **Run**: Open the Godot project under `game/` and run (or export to web). Full scene scaffold TBD.
 - **Test**: TBD — coding conventions / technical specs.
 - **Build / export**: Godot HTML5/web export for the browser (ADR-0001).
 
@@ -48,7 +48,7 @@ Canonical skills and catalog: [`.agents/`](.agents/) ([README](.agents/README.md
 - [`docs/`](docs/) — ([README](docs/README.md))
 - [`specs/`](specs/) — ([README](specs/README.md))
 - [`demos/`](demos/) — gameplay demos, kept apart from main code ([README](demos/README.md))
-- `asset_catalog/` / `game_assets/` — catalog entries and asset files ([ADR-0005](specs/adr/decisions/0005-asset-catalog-roots.md)); Godot project root TBD
+- `asset_catalog/` / `game_assets/` — catalog entries and asset files ([ADR-0005](specs/adr/decisions/0005-asset-catalog-roots.md)); Godot project root `game/`
 
 ## Rules to live by
 

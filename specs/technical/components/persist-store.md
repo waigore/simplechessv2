@@ -29,7 +29,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | Schema or state | Access |
 |-----------------|--------|
 | [`SCH-persist-doc`](../schemata/persist-doc.md) | write |
-| Browser `localStorage` | write |
+| Browser `localStorage` key `simplechessv2.persist.v1` | write |
 
 ## Diagram
 

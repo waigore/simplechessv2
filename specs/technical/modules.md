@@ -9,10 +9,10 @@ Authoring rules: [`.agents/specs/rules/technical/modules.md`](../../.agents/spec
 
 | ID | Name | Contains | Boundary rule |
 |----|------|----------|---------------|
-| M1 | `client` | Godot 4.7.2 Web app: all L1–L4 components; playtest build flags | No Stockfish; no UCI |
+| M1 | `client` | Godot 4.7.2 Web app under `game/`: all L1–L4 components; playtest build flags | No Stockfish; no UCI |
 | M2 | `advice-backend` | Server process: sole UCI peer to Stockfish; streams eval/best-move to M1 | Client never imports engine |
 
-Godot project root path: TBD — where does the Godot project live under the repo? ([ADR-0001](../adr/decisions/0001-godot-engine.md)).
+Godot project root: `game/` at the repo root (sibling of `asset_catalog/`, `game_assets/`, `specs/`) ([ADR-0001](../adr/decisions/0001-godot-engine.md)).
 
 ## Boundaries
 
