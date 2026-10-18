@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 - **Kind**: message — streamed eval/best-move
 - **Provider**: [`CMP-advice-backend`](../components/advice-backend.md); client façade [`CMP-advice-client`](../components/advice-client.md)
-- **Consumers**: [`CMP-shared-game-session`](../components/shared-game-session.md); presentation via session state
+- **Consumers**: [`CMP-shared-game-session`](../components/shared-game-session.md) (marks reach L1 via [`CTR-presentation`](presentation.md) O4)
 - **Serves**: F-move-advice; Load time advice ≤2000 ms; Instant play
 - **Informed by**: [F-move-advice](../../design/features/move-advice.md); `CFG.ADVICE_TIME_MS`
 - **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
@@ -53,9 +53,9 @@ Client maps `best_move_uci` to board squares for [`SCH-advice-update`](../schema
 
 ```mermaid
 sequenceDiagram
-  participant S as shared-game
-  participant A as advice-client
-  participant B as advice-backend
+  participant S as CMP-shared-game-session
+  participant A as CMP-advice-client
+  participant B as CMP-advice-backend
   S->>A: O1 start
   A->>B: position
   B-->>A: E1 updates

@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/specs/rules/technical/schemata.md).
 
 - **Kind**: entity — in-memory session play
-- **Owner**: [`CMP-chess-rules`](../components/chess-rules.md) (position); sessions (clocks/options)
+- **Owner**: [`CMP-chess-rules`](../components/chess-rules.md)
 - **Serves**: Shared game; Puzzle stream; Advice marks
 - **Informed by**: [`fields-play`](../../design/game-state/fields-play.md); F-move-advice state
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md)
@@ -27,6 +27,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | I1 | Only Domain mutates F1 F2 via [`CTR-local-move`](../contracts/local-move.md) |
 | I2 | F4/F5 never gate F1 updates |
 | I3 | Only side-to-move clock runs when timed |
+| I4 | Only the active L2 session mutates F3–F7 |
 
 ## Lifecycle
 

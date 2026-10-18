@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/design/end-conditions.md`](../../../.agents/specs/rules/design/end-conditions.md).
 
-Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop both clocks and continue at [K3](../loops/two-player-game.md). Puzzle endings (W1, L4, L5) and abandon-puzzle continue at [K3](../loops/puzzle-stream.md).
+Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop both clocks and continue at [K3](../loops/two-player-game.md). Puzzle endings (W1, L4, L5, L6) continue at [K3](../loops/puzzle-stream.md).
 
 | ID | Unit | Type | Condition | Checked when | Outcome |
 |----|------|------|-----------|--------------|---------|
@@ -17,5 +17,6 @@ Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop b
 | W1 | Puzzle | win | Required sequence played and no wrong move on that puzzle | Sequence completed | Solved. Next puzzle is harder |
 | L4 | Puzzle | loss | Required sequence completed after a wrong move on that puzzle | Sequence completed | Failed. Next puzzle is easier |
 | L5 | Puzzle | loss | Player reveals the solution | On reveal | Failed. Next puzzle is easier |
+| L6 | Puzzle | loss | Player abandons the puzzle | On abandon | Failed. Next puzzle follows the Elo update |
 
-A wrong move may be any move of a multi-move sequence. It blocks W1, returns the puzzle to its start, and does not deal the next puzzle. The player may try again until L4 or L5.
+A wrong move may be any move of a multi-move sequence. It blocks W1, returns the puzzle to its start, and does not deal the next puzzle. The player may try again until L4, L5, or L6.

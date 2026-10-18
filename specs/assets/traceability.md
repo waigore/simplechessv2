@@ -8,6 +8,7 @@ Authoring rules: [`.agents/specs/rules/assets/traceability.md`](../../.agents/sp
 |---------------|--------|-----------|
 | Instant play / Clear board / Cafe calm | vision | [`piece-sprites`](kinds/piece-sprites.md), [`board-backgrounds`](kinds/board-backgrounds.md), [`sound-effects`](kinds/sound-effects.md), [`music`](kinds/music.md) |
 | Shared game + Puzzle stream; no AI opponent art | definition | Hub kinds; content limits via aesthetics |
+| No-install browser game (market constraint on licenses) | definition | [`fonts`](kinds/fonts.md) S3 Web-embed license; [`catalog.md`](catalog.md) `CAT.F12` license field |
 | Load time; Accessibility; Localization | quality | [`access.md`](access.md) G1 G2; [`fonts`](kinds/fonts.md); piece silhouette checks |
 | E-pieces; FRM; PAL; P2 P3 | design / aesthetics | [`piece-sprites`](kinds/piece-sprites.md), [`board-backgrounds`](kinds/board-backgrounds.md) |
 | SND.M1 M2 X1–X5; UI T* I1 F* | aesthetics | [`music`](kinds/music.md), [`sound-effects`](kinds/sound-effects.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md), [`fonts`](kinds/fonts.md) |

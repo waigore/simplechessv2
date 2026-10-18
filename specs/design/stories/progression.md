@@ -13,6 +13,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 | A1 | Player Elo axis | PS1.1 |
 | P1 | Elo persists | PS1.2 PS1.3 |
 | P2 | Last mode persists | PS1.4 |
+| P3 | Solved IDs persist | PS1.8 PS1.9 |
 | M1 | Commit timing | PS1.1 PS1.4 PS1.5 |
 | F1 | Failure continues stream | PS1.6 |
 | Z1 | No completion | PS1.7 |
@@ -70,7 +71,7 @@ Then GS.lastMode is Shared game And it is committed
 ```gherkin
 Given Puzzle stream interrupted And GS.playerElo is 1080
 When the player reopens and chooses Puzzle stream
-Then first screen is mode pick And the deal uses GS.playerElo 1080
+Then the phase is FL-mode-pick.P1 And the deal uses GS.playerElo 1080
 ```
 
 ### PS1.6: Puzzle failure continues
@@ -91,4 +92,24 @@ Then the stream continues And only A1 updates And Shared game still carries noth
 Given Puzzle stream
 When the player leaves the stream
 Then there is no completion requirement And the sitting may end
+```
+
+### PS1.8: Solved IDs commit on W1
+
+- **Proves**: P3
+
+```gherkin
+Given GS.recentSolved holds p1, newest last
+When END.W1 appends p2
+Then GS.recentSolved holds p1, p2 And the new list is committed
+```
+
+### PS1.9: Solved IDs survive reopen
+
+- **Proves**: P3
+
+```gherkin
+Given GS.recentSolved holds p1, p2 And the sitting ends
+When the player reopens
+Then GS.recentSolved holds p1, p2
 ```

@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 - **Trigger**: Shared game needs Advice for the side to move (On + online)
 - **Participants**: [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-advice-client`](../components/advice-client.md), [`CMP-advice-backend`](../components/advice-backend.md), [`CMP-presentation`](../components/presentation.md)
-- **Contracts used**: [`CTR-advice-stream`](../contracts/advice-stream.md)
+- **Contracts used**: [`CTR-advice-stream`](../contracts/advice-stream.md), [`CTR-presentation`](../contracts/presentation.md)
 - **Serves**: F-move-advice; streamed eval to `CFG.ADVICE_TIME_MS`
 - **Informed by**: requirement note — server Stockfish, time-capped stream, moves never wait
 - **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
@@ -13,13 +13,13 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 | ID | From | To | Via | Action / message |
 |----|------|----|-----|------------------|
-| S1 | shared-game | advice-client | O1 | start(position) |
+| S1 | shared-game | advice-client | CTR-advice-stream.O1 | start(position) |
 | S2 | advice-client | advice-backend | network | Send position |
 | S3 | advice-backend | Stockfish | UCI | Search (M2 only) |
-| S4 | advice-backend | advice-client | E1 | Stream updates |
-| S5 | advice-client | shared-game | internal | Write best-move/eval |
-| S6 | shared-game | presentation | internal | Show marks |
-| S7 | advice-backend | advice-client | E2 | End at cap or cancel |
+| S4 | advice-backend | advice-client | CTR-advice-stream.E1 | Stream updates |
+| S5 | advice-client | shared-game | CTR-advice-stream.E1 | Write best-move/eval |
+| S6 | shared-game | presentation | CTR-presentation.O4 | Show marks |
+| S7 | advice-backend | advice-client | CTR-advice-stream.E2 | End at cap or cancel |
 
 ## Branches
 
@@ -38,9 +38,9 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 ```mermaid
 sequenceDiagram
-  participant S as shared-game
-  participant A as advice-client
-  participant B as advice-backend
+  participant S as CMP-shared-game-session
+  participant A as CMP-advice-client
+  participant B as CMP-advice-backend
   S->>A: S1 start
   A->>B: S2 position
   B-->>A: S4 updates

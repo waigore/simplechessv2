@@ -9,11 +9,11 @@ Authoring rules: [`.agents/specs/rules/view/perception.md`](../../.agents/specs/
 | ID | Subject | Guarantee | Cameras |
 |----|---------|-----------|---------|
 | R1 | Each piece type | Recognizable by shape alone inside [PRJ.A2](projection.md); overlays never hide silhouette identity | all |
-| R2 | Light vs dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Alternation readable after [CAM-board.M2](cameras/board.md) flip; not by hue alone when accessibility Applies | all |
+| R2 | Light vs dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Alternation distinguishable with hue removed — luminance contrast per [palette K1](../aesthetics/palette.md) — including after [CAM-board.M2](cameras/board.md) flip | all |
 | R3 | Selected piece | Occupied square and piece both highlighted while selected | all |
 | R4 | Legal destinations | Empty and capture targets for the selection are marked on those squares while selected | all |
 | R5 | Advice ([F-move-advice](../design/features/move-advice.md)) | Best-move from/to highlights, arrow, and eval visible when set; never obscure R1 | all |
-| R6 | Side to move / check | Whose turn and check stay obvious without relying on sound | all |
+| R6 | Side to move / check | A non-audio indicator of side to move and of check is inside the frame at all times | all |
 | R7 | Board coordinates (files a–h, ranks 1–8) | Letters and numbers along outer edges only; stay correct after [CAM-board.M2](cameras/board.md) White-seat flip; never drawn inside squares | all |
 
 ## Depth cues

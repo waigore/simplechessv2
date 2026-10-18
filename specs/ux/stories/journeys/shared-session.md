@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | N2 | Exit stop or play again | US1.2 US1.3 |
 | S1 | Shared game | US1.1 |
 | S2 | Start | US1.1 |
-| S3 | To result | US1.2 |
+| S3 | Resign to result | US1.5 |
 | S4 | Stop | US1.2 |
 | B1 | Play again | US1.3 |
 | B2 | Setup back | US1.4 |
@@ -35,7 +35,7 @@ Then the screen is shared-play
 
 ### US1.2: Stop after result
 
-- **Proves**: N2, S3, S4
+- **Proves**: N2, S4
 
 ```gherkin
 Given Bottom player is on shared-result after a finished game
@@ -61,5 +61,15 @@ Then the screen is shared-setup
 Given Bottom player is on shared-setup before Start
 When Bottom activates Back
 Then the screen is mode-pick
+```
+
+### US1.5: Resign to result
+
+- **Proves**: S3
+
+```gherkin
+Given Bottom player is on shared-play S1 and Bottom seat is side to move
+When Bottom activates UI-shared-play.C4 and then activates Confirm
+Then the screen is shared-result
 ```
 

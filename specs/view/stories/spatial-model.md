@@ -37,20 +37,20 @@ Given PHY.M1 travel When duration measured Then time is in seconds
 - **Proves**: P1, P2, E1, E2
 
 ```gherkin
-Given a piece on e4 When placement applied Then the body center is at square-center (4.5, 3.5) And travel to that square is presentation only
-Given e4 occupied When another piece is placed on e4 Then at most one body remains (E-pieces.I1)
-Given a piece on e4 When extent measured Then body is 0.85×0.85 units about square center And facing is none
-Given square e4 When extent measured Then square is 1×1 units about its center
+Given CAM-board Web, any PRJ.A1 aspect And a piece on e4 When placement applied Then the body center is at square-center (4.5, 3.5) And travel to that square is presentation only
+Given CAM-board Web, any PRJ.A1 aspect And e4 occupied When another piece is placed on e4 Then at most one body remains (E-pieces.I1)
+Given CAM-board Web, any PRJ.A1 aspect And a piece on e4 When extent measured Then body is 0.85×0.85 units about square center And facing is none
+Given CAM-board Web, any PRJ.A1 aspect And square e4 When extent measured Then square is 1×1 units about its center
 ```
 
-### VS1.9–VS1.13: Layers and bounds
+### VS1.9–VS1.13: Render layers and bounds
 
 - **Proves**: L1, L2, L3, L4, B1
 
 ```gherkin
-Given cafe backdrop under the board When both drawn Then L2 board draws over L1 And L1 L2 parallax factors are 0 and 1
-Given two pieces whose bodies overlap in frame When drawn Then L3 nearer by rank-then-file draws over the farther And parallax is 1
-Given selection or Advice overlay on a piece When drawn Then L4 draws over L3 And parallax is 1
-Given play board When extent checked Then x and y stay in 0–8 inclusive
-Given a move that would leave 0–8 When presentation runs Then no piece center rests outside B1 And E-pieces legality owns the reject
+Given CAM-board Web, any PRJ.A1 aspect And cafe backdrop under the board When both drawn Then render layer L2 draws over render layer L1 And L1 L2 parallax factors are 0 and 1
+Given CAM-board Web, any PRJ.A1 aspect And two pieces whose bodies overlap in frame When drawn Then render layer L3 nearer by rank-then-file draws over the farther And parallax is 1
+Given CAM-board Web, any PRJ.A1 aspect And selection or Advice overlay on a piece When drawn Then render layer L4 draws over render layer L3 And parallax is 1
+Given CAM-board Web, any PRJ.A1 aspect And play board When extent checked Then x and y stay in 0–8 inclusive
+Given CAM-board Web, any PRJ.A1 aspect And a move that would leave 0–8 When presentation runs Then no piece center rests outside B1 And E-pieces legality owns the reject
 ```

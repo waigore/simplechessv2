@@ -24,8 +24,9 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | C1 | [`CMP-persist-store`](persist-store.md) | calls | [`CTR-persist-document`](../contracts/persist-document.md) | Load Elo/Last mode; write Last mode |
 | C2 | [`CMP-shared-game-session`](shared-game-session.md) | calls | internal | Start / tear down Shared |
 | C3 | [`CMP-puzzle-session`](puzzle-session.md) | calls | internal | Start / tear down Puzzle |
-| C4 | [`CMP-presentation`](presentation.md) | both | internal | Mode-pick and navigation screens |
-| C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Ensure Boot group before ready |
+| C4 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens: O1 down; E2 up. Asset needs: E3 up, O5 down |
+| C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Ensure Boot group before ready; resolve L1 asset needs |
+| C6 | [`CMP-playtest-seams`](playtest-seams.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | E2 jump re-enters modes (playtest builds) |
 
 ## Owns / mutates
 
@@ -42,9 +43,11 @@ flowchart LR
   P[CMP-persist-store]
   S[CMP-shared-game-session]
   Q[CMP-puzzle-session]
+  V[CMP-presentation]
   R --> P
   R --> S
   R --> Q
+  R -->|CTR-presentation| V
 ```
 
 ## Failure / concurrency / persistence

@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 - **Job**: Choose Shared game, Puzzle stream, or quit the sitting
 - **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
-- **Serves**: Instant play, Cafe calm; [mode-pick.md](../../design/flows/mode-pick.md)
+- **Serves**: Instant play, Cafe calm, Accessibility; [mode-pick.md](../../design/flows/mode-pick.md)
 - **Mockup**: [`../mockups/screens/mode-pick.html`](../mockups/screens/mode-pick.html)
 - **Glossary terms**: [Screen](../glossary.md); [Last mode](../../design/glossary.md)
 
@@ -50,11 +50,15 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | puzzle | Puzzle stream | C2 |
 | quit | Quit | C3 |
 | quit_confirm | End this sitting? | S3 |
+| confirm | Confirm | S3 |
+| cancel | Cancel | S3 |
 | loading | Loading… | S2 |
+| save_failed | Save failed. Prior values kept. | S4 |
+| dismiss | Dismiss | S4 |
 | locale | English | C4 |
 
 The C4 string is the current locale's own name (English, 繁體中文, 日本語) — the same in every locale.
 
 ## Experience intent
 
-Calm and immediate: two clear modes, Last mode remembered, quit is confirmed.
+Calm and immediate: two clear modes, Last mode remembered, quit is confirmed. Meets Accessibility: modes and locale read as text, not color alone; controls are 44px-class touch targets.

@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 - **Trigger**: Player opens the Web game
 - **Participants**: [`CMP-asset-resolver`](../components/asset-resolver.md), [`CMP-persist-store`](../components/persist-store.md), [`CMP-session-router`](../components/session-router.md), [`CMP-presentation`](../components/presentation.md)
-- **Contracts used**: [`CTR-persist-document`](../contracts/persist-document.md)
+- **Contracts used**: [`CTR-asset-resolve`](../contracts/asset-resolve.md), [`CTR-persist-document`](../contracts/persist-document.md), [`CTR-presentation`](../contracts/presentation.md)
 - **Serves**: Load time ≤3 s to playable; mode pick
 - **Informed by**: quality Load time; [`ACC.G1`](../../assets/access.md)
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md), [ADR-0003](../../adr/decisions/0003-localstorage-persistence.md), [ADR-0005](../../adr/decisions/0005-asset-catalog-roots.md)
@@ -13,10 +13,10 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 | ID | From | To | Via | Action / message |
 |----|------|----|-----|------------------|
-| S1 | boot | asset-resolver | internal | Preload Boot asset IDs |
+| S1 | boot | asset-resolver | CTR-asset-resolve.O2 | Preload Boot asset IDs |
 | S2 | boot | persist-store | CTR-persist-document.O1 | Load document or defaults |
-| S3 | persist-store | session-router | internal | Provide Elo / Last mode |
-| S4 | session-router | presentation | internal | Show mode pick when Boot ready |
+| S3 | persist-store | session-router | CTR-persist-document.O1 return | Provide Elo / Last mode |
+| S4 | session-router | presentation | CTR-presentation.O1 | Show mode pick when Boot ready (E1) |
 
 ## Branches
 
@@ -35,11 +35,12 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 ```mermaid
 sequenceDiagram
   participant Boot
-  participant AR as asset-resolver
-  participant PS as persist-store
-  participant SR as session-router
+  participant AR as CMP-asset-resolver
+  participant PS as CMP-persist-store
+  participant SR as CMP-session-router
+  participant V as CMP-presentation
   Boot->>AR: S1 Boot preload
   Boot->>PS: S2 load
   PS->>SR: S3 committed fields
-  SR->>SR: S4 mode pick
+  SR->>V: S4 mode pick
 ```

@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/surface.md`](../../.agents/spe
 
 | ID | Who | Width | Color rule |
 |----|-----|-------|------------|
-| O1 | Every piece | About 2% of piece height | Darker than the piece fill; White pieces use near-[PAL.C4](palette.md); Black pieces use a soft light edge so the silhouette stays clear on dark squares |
+| O1 | Every piece | About 2% of piece height | Darker than the piece fill; White pieces use near-[PAL.C4](palette.md); Black pieces use a soft light edge (near [PAL.C3](palette.md)) so the silhouette stays clear on dark squares |
 
 ## Materials
 

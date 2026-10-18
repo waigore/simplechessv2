@@ -50,8 +50,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 #### Prompt policy
 
 - **Compose**: subject-first when `active`; append master + negative.
-- **Master**: flat 24 grid cafe UI icon; soft round; simple silhouette
-- **Negative**: skeuomorphic; 3D; emoji style; busy detail; esports badges
+- **Master**: flat 24 grid cafe UI icon; soft round; simple silhouette (UI.I1; PAL.C9 C6; P3)
+- **Negative**: skeuomorphic; 3D; emoji style; busy detail; esports badges (vs UI.I1; PAL.S3)
 
 ## Recipes
 
@@ -75,6 +75,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K2 | Readable at UI size | Look on phone-width | Recognizable subject |
 | K3 | Budget | File size | ≤ 20 KB |
 | K4 | Style | Look vs P3 | Quiet, flat |
+| K5 | Spec S3 | File inspect | SVG shipped (preferred), or justified PNG |
 
 ## Naming
 

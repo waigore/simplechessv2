@@ -6,50 +6,34 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 - **Spec key**: `END`
 - **Glossary terms**: [Shared game](../glossary.md), [Puzzle](../glossary.md), [Wrong move](../glossary.md)
 
+Condition rows L1–L3, D1–D5: [`stories/end-conditions/conditions.md`](end-conditions/conditions.md). Puzzle rows W1, L4, L5, L6: [`stories/end-conditions/conditions-puzzle.md`](end-conditions/conditions-puzzle.md).
+
 ## Coverage
 
-| Element | Scenarios | Element | Scenarios |
-|---------|-----------|---------|-----------|
-| L1 | PS1.1 | L2 | PS1.2 |
-| L3 | PS1.3 | D1 | PS1.4 |
-| D2 | PS1.5 PS1.6 | D3 | PS1.7 |
-| D4 | PS1.8 | D5 | PS1.9 |
-| W1 | PS1.10 | L4 | PS1.11 |
-| L5 | PS1.12 | P1 | PS1.13 |
+| Element | Summary | Scenarios |
+|---------|---------|-----------|
+| P1 | Ending precedence | PS1.1 PS1.2 |
 
-## PS1: Reach a result
+## PS1: One ending at a time
 
-As a casual player, I finish a game or puzzle so that the outcome matches the rules.
+As a casual player, I finish a game or puzzle so that exactly one ending applies.
 
-### PS1.1–PS1.3: Shared losses
+### PS1.1: Checkmate beats stalemate
 
-- **Proves**: L1, L2, L3
+- **Proves**: P1
 
 ```gherkin
-Given side to move in check with no legal move When checked after a move Then mover loses And gameEnded true
-Given open Shared When side to move resigns Then that side loses And gameEnded true
-Given timed And White clock 0 And Black can checkmate When expiry Then White loses And no seconds added
+Given the side to move is in check with no legal move
+When endings are checked after a move
+Then END.L1 applies And END.D1 does not
 ```
 
-### PS1.4–PS1.9: Draws
+### PS1.2: Resign beats clock draw
 
-- **Proves**: D1, D2, D3, D4, D5
-
-```gherkin
-Given not in check and no legal move When checked Then draw
-Given White offers draw When Black accepts Then draw; when Black declines Then continues same side to move clock running
-Given same position/side/rights third time When checked after move Then draw
-Given fifty moves each side no capture/pawn move When checked Then draw
-Given timed White clock 0 And Black cannot checkmate When expiry Then draw And no seconds added
-```
-
-### PS1.10–PS1.13: Puzzle and precedence
-
-- **Proves**: W1, L4, L5, P1
+- **Proves**: P1
 
 ```gherkin
-Given wrongMove false And sequence completed When done Then solved And next harder per DIF.Y1
-Given wrongMove true And sequence later completed When done Then failed And next easier
-Given open puzzle When reveal Then failed And next easier
-Given in check with no legal move When checked Then L1 applies And D1 does not
+Given a timed game And White's clock hits zero as White resigns And Black cannot checkmate
+When the coinciding endings resolve
+Then END.L2 applies, White loses And END.D5 does not
 ```

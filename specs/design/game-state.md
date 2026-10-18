@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/design/game-state.md`](../../.agents/specs/rules/design/game-state.md).
 
+- **Serves**: Shared game with clocks; Puzzle stream + Elo matching; optional Stockfish advice (definition scope).
+
 Logical only: no data formats or storage. Other specs reference fields by name. Persistence: [`progression.md`](progression.md). Options: [`configuration.md`](configuration.md).
 
 ## Scopes
@@ -10,7 +12,7 @@ Logical only: no data formats or storage. Other specs reference fields by name. 
 |-------|----------|-----------------------|
 | Moment | One selection or in-flight advice update | Selected piece; advice stream deepening |
 | Session / run | One Shared game, or one open puzzle in the stream | Position, clocks, sequence progress |
-| Persistent | Across sittings until this game's storage is cleared | Player Elo, Last mode, last-20 solved IDs |
+| Persistent | Across sittings until this game's storage is cleared | Player Elo, Last mode, recent solved IDs |
 | Configuration | Until changed, or locked per [configuration.md](configuration.md) | White seat, Clock, Increment, Advice, locale |
 
 Stage: deleted — no stages.

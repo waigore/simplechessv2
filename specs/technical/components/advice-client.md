@@ -22,9 +22,8 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-advice-stream`](../contracts/advice-stream.md) | Start/stop |
+| C1 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-advice-stream`](../contracts/advice-stream.md) | Session calls O1–O3 down; E1/E2 up (D5) |
 | C2 | [`CMP-advice-backend`](advice-backend.md) | calls | [`CTR-advice-stream`](../contracts/advice-stream.md) | Network stream |
-| C3 | [`CMP-presentation`](presentation.md) | calls | internal | Marks via session state |
 
 ## Owns / mutates
 

@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: Design
 - **Spec key**: `PTD-end-conditions`
 - **Environment**: Headless only
-- **Cites**: `END` (L1–L5, D1–D5, W1, P1)
+- **Cites**: `END` (L1–L6, D1–D5, W1, P1)
 - **Situational tools**: `SIT.1`, `SIT.3`
 
 ## Steps
@@ -15,15 +15,15 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 | S1 | `DBG.3` to checkmate position; complete mating move; confirm L1 win/loss. |
 | S2 | Resign as side to move; confirm L2. |
 | S3 | `DBG.3` to stalemate / agreement / repetition / fifty-move setups; confirm draws D1–D4 as applicable. |
-| S4 | Blitz: force clock to zero with mate material vs without; confirm L3 vs D5. |
-| S5 | Puzzle: solve W1; fail L4 after wrong then complete; reveal L5; confirm mutual exclusion. |
+| S4 | Blitz: force clock to zero with mate material vs without; confirm L3 vs D5. Resign as the clock hits zero; confirm L2, not D5. |
+| S5 | Puzzle: solve W1; fail L4 after wrong then complete; reveal L5; abandon L6; confirm mutual exclusion. |
 
 ## Pass
 
 | ID | Outcome |
 |----|---------|
 | P1 | Precedence P1 holds: position endings before clock; clocks stop on end. |
-| P2 | Shared endings match L*/D* tables; puzzle W1/L4/L5 never true together. |
+| P2 | Shared endings match L*/D* tables; puzzle W1/L4/L5/L6 never true together. |
 
 ## Fail
 

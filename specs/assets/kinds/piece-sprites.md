@@ -29,7 +29,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | ID | Limit | Value | Traces to |
 |----|-------|-------|-----------|
 | B1 | Per asset file | ≤ 80 KB SVG/PNG | Load time |
-| B2 | Kind total | 12 assets | V1 |
+| B2 | Kind total | 12 assets (6 types × 2 sides per V1) | Load time; G2 |
 
 ## Style series
 
@@ -72,6 +72,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K2 | Spec S1–S4 | Review + file inspect | Spec met |
 | K3 | Budget B1 | File size | ≤ 80 KB |
 | K4 | Style vs P2 P3 | Look review | Distinct vectors; quiet mahogany mood |
+| K5 | Budget B2 | Catalog count vs V1 | 12 entries (6 types × 2 sides) |
 
 ## Naming
 

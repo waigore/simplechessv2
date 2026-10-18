@@ -46,8 +46,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 #### Prompt policy
 
 - **Compose**: subject-first when `active`; append master + negative.
-- **Master**: quiet cafe UI panel; flat cream; soft radius; warm thin border; no chrome
-- **Negative**: glassmorphism; neon; heavy shadow stacks; esports HUD; baked text
+- **Master**: quiet cafe UI panel; flat cream; soft radius; warm thin border; no chrome (UI.F1; PAL.C10; P3)
+- **Negative**: glassmorphism; neon; heavy shadow stacks; esports HUD; baked text (vs UI.F1 F2; PAL.S3)
 
 ## Recipes
 
@@ -71,6 +71,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K2 | Contrast ready | C9 on C10 region | PAL.K4 feasible |
 | K3 | Budget | File size | ≤ 100 KB |
 | K4 | Quiet UI | Look vs P3 | Apart from board; calm |
+| K5 | Spec S2 | File inspect | SVG or 9-slice PNG with alpha |
 
 ## Naming
 

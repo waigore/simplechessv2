@@ -34,8 +34,8 @@ Given Web aspect outside about 9:16–16:9 When play opens Then bars appear And 
 - **Proves**: A2, X1, D1
 
 ```gherkin
-Given a selected piece legal-move marks and Advice marks on the board When framed Then each stays inside the inner 90% of the frame And piece silhouettes remain inside that safe area
-Given vector board and pieces When any resolution is used Then X1 stays N/A (not pixel art) And scale follows P1 V1
-Given every occupied square on the 8×8 When framed Then each square and piece is inside the frame
-Given no off-board hide distance When D1 applied Then D1 limit is none And no on-board piece is hidden by distance
+Given CAM-board Web, any A1 aspect And a selected piece legal-move marks and Advice marks on the board When framed Then each stays inside the inner 90% of the frame And piece silhouettes remain inside that safe area
+Given CAM-board Web, any A1 aspect And vector board and pieces When any resolution is used Then X1 stays N/A (not pixel art) And scale follows P1 V1
+Given CAM-board Web, any A1 aspect And every occupied square on the 8×8 When framed Then each square and piece is inside the frame
+Given CAM-board Web, any A1 aspect And no off-board hide distance When D1 applied Then D1 limit is none And no on-board piece is hidden by distance
 ```

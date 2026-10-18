@@ -19,7 +19,7 @@ Authoring rules: [`.agents/specs/rules/ux/journeys.md`](../../../.agents/specs/r
 |----|--------|---------|------------|
 | S1 | `mode-pick` | `UI-mode-pick.C1` | `shared-setup` |
 | S2 | `shared-setup` | `UI-shared-setup.C5` | `shared-play` |
-| S3 | `shared-play` | game end or resign confirm | `shared-result` |
+| S3 | `shared-play` | `UI-shared-play.C4` then `EX.confirm` Confirm | `shared-result` |
 | S4 | `shared-result` | `UI-shared-result.C2` | `mode-pick` |
 
 ## Branches
@@ -27,7 +27,7 @@ Authoring rules: [`.agents/specs/rules/ux/journeys.md`](../../../.agents/specs/r
 | ID | At step | When | Destination |
 |----|---------|------|-------------|
 | B1 | S4 | Play again (`UI-shared-result.C1`) | `shared-setup` S1 of a new game |
-| B2 | S2 | Back (`UI-shared-setup.C6`) | `mode-pick` |
+| B2 | S2 | Back (`UI-shared-setup.C6`) | `mode-pick` S1 |
 
 ## Experience intent
 

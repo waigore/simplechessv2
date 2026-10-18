@@ -32,10 +32,12 @@ Authoring rules: [`.agents/specs/rules/view/spatial-model.md`](../../.agents/spe
 | E1 | Piece body | 0.85 × 0.85 | Square center | None — upright on the plane |
 | E2 | Square | 1 × 1 | Square center | None |
 
-## Layers and depth
+## Render layers and depth
 
-| ID | Layer | Holds | Depth order | Parallax |
-|----|-------|-------|-------------|----------|
+Render layers (draw bands), farthest to nearest. This L1–L4 set is render order only, independent of the technical layers in [`technical/layers.md`](../technical/layers.md).
+
+| ID | Render layer | Holds | Depth order | Parallax |
+|----|--------------|-------|-------------|----------|
 | L1 | Cafe / table | Ambient backdrop | Fixed | 0 |
 | L2 | Board | Light and dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Fixed | 1 |
 | L3 | Pieces | All piece bodies | By rank then file when overlapping draws | 1 |

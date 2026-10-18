@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 - **Job**: Play the continuous Puzzle stream
 - **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
-- **Serves**: Instant play, Cafe calm; [puzzle-stream](../../design/loops/puzzle-stream.md)
+- **Serves**: Instant play, Cafe calm, Accessibility; [puzzle-stream](../../design/loops/puzzle-stream.md)
 - **Mockup**: [`../mockups/screens/puzzle-play.html`](../mockups/screens/puzzle-play.html)
 - **Glossary terms**: [Board coordinates](../glossary.md); [Player Elo](../../design/glossary.md)
 
@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Puzzle position | 8×8; edge coordinates; selection and legal marks |
+| R1 | Board | Puzzle position | 8×8; edge coordinates; selection and legal marks; C1/C2 tap squares |
 | R2 | Elo and status | Rating and feedback | Player Elo; wrong-move / solved cues |
 | R3 | Stream actions | Reveal, abandon, leave | Reveal, Abandon, Leave stream |
 
@@ -55,7 +55,13 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | reveal_confirm | Reveal the solution? | S2 |
 | abandon_confirm | Abandon this puzzle? | S2 |
 | leave_confirm | Leave the puzzle stream? | S2 |
+| confirm | Confirm | S2 |
+| cancel | Cancel | S2 |
+| save_failed | Save failed. Prior Elo kept. | S3 |
+| dismiss | Dismiss | S3 |
+| cue_solved | Solved | R2 |
+| cue_wrong | Wrong move | R2 |
 
 ## Experience intent
 
-Untimed calm practice; leave without punishing an open puzzle; coordinates keep orientation clear.
+Untimed calm practice; leave without punishing an open puzzle; coordinates keep orientation clear. Meets Accessibility: pieces read by shape; no status by color alone; 44px-class touch targets.

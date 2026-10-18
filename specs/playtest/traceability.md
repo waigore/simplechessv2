@@ -12,8 +12,8 @@ Authoring rules: [`.agents/specs/rules/playtest/traceability.md`](../../.agents/
 | Shared two-player + puzzle stream scope | definition | [`design/shared-game.md`](design/shared-game.md), [`design/puzzle-stream.md`](design/puzzle-stream.md), UX session protocols |
 | Optional Stockfish advice | definition | [`design/move-advice.md`](design/move-advice.md) |
 | Observability quality | definition/quality | [`tools.md`](tools.md), [`evidence.md`](evidence.md) |
-| Design stories (full) | design | All [`design/`](design/) protocols |
-| UX journeys and screens (full) | ux | All [`ux/`](ux/) protocols |
+| Design stories (full) | design | All [`design/`](design/) protocols; playtest set selection [`coverage.md`](coverage.md) |
+| UX journeys and screens (full) | ux | All [`ux/`](ux/) protocols; playtest set selection [`coverage.md`](coverage.md) |
 
 ## Topic coverage
 

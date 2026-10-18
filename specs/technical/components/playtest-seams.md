@@ -22,8 +22,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | Playtest agent / harness | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | Drive + observe |
-| C2 | Sessions / presentation | both | internal | Read play state; overlay |
-| C3 | [`CMP-session-router`](session-router.md) | calls | internal | Jump may re-enter modes |
+| C2 | [`CMP-shared-game-session`](shared-game-session.md), [`CMP-puzzle-session`](puzzle-session.md), [`CMP-presentation`](presentation.md) | listens | [`CTR-local-move`](../contracts/local-move.md), [`CTR-presentation`](../contracts/presentation.md) | Observe play state and story IDs (D6) |
 
 ## Owns / mutates
 
@@ -38,9 +37,9 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 flowchart LR
   H[harness]
   P[CMP-playtest-seams]
-  S[sessions]
+  R[CMP-session-router]
   H -->|CTR-playtest-drive| P
-  P --> S
+  P -.->|E2 jump_requested| R
 ```
 
 ## Failure / concurrency / persistence

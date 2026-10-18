@@ -31,8 +31,8 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Realizes | Mechanism | Owner | Sequence |
 |----|----------|-----------|-------|----------|
-| G1 | `ACC.G1` | Preload Boot set before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Cold open → manifest Boot IDs → mark ready |
-| G2 | `ACC.G2` | Preload Play set on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Enter Shared/Puzzle play → Play IDs |
+| G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Cold open → manifest Boot IDs → mark ready |
+| G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Enter Shared/Puzzle play → Play IDs |
 
 ## Diagram
 

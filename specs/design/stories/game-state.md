@@ -4,77 +4,101 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 
 - **Design spec**: [`game-state.md`](../game-state.md)
 - **Spec key**: `GS`
-- **Glossary terms**: [Side to move](../glossary.md), [Required sequence](../glossary.md)
+- **Glossary terms**: [Side to move](../glossary.md), [Required sequence](../glossary.md), [Advice](../glossary.md)
+
+Field rows: [`stories/game-state/fields-play.md`](game-state/fields-play.md), [`stories/game-state/fields-play-moment.md`](game-state/fields-play-moment.md), [`stories/game-state/fields-persist.md`](game-state/fields-persist.md).
 
 ## Coverage
 
-| Element | Scenarios | Element | Scenarios |
-|---------|-----------|---------|-----------|
-| GS.selectedPiece | PS1.1 | GS.position | PS1.2 PS1.3 |
-| GS.sideToMove | PS1.2 | GS.whiteClock / blackClock | PS1.4 |
-| GS.gameEnded | PS1.5 | GS.puzzleId / puzzleElo | PS1.6 |
-| GS.requiredSequence / sequenceIndex | PS1.7 | GS.wrongMoveOnPuzzle | PS1.8 |
-| GS.online / adviceBestMove / adviceEval | PS1.9 | GS.playerElo / lastMode | PS1.10 |
-| GS.recentSolved | PS1.11 | GS.whiteSeat / clock / increment / advice | PS1.12 |
-| GS.locale | PS1.13 | V1 | PS1.14 |
-| V2 | PS1.4 | V3 | PS1.15 |
-| H1 | PS1.16 | H2 | PS1.9 |
-| Q1 | PS1.17 | | |
+| Element | Summary | Scenarios |
+|---------|---------|-----------|
+| V1 | Only side to move changes position | PS1.1 |
+| V2 | At most one clock runs | PS1.2 |
+| V3 | No advice fields in Puzzle stream | PS1.3 |
+| H1 | Sequence hidden until played or revealed | PS1.4 PS1.5 |
+| H2 | Advice fields knowable only when set | PS1.6 PS1.7 |
+| Q1 | Deal need not repeat | PS1.8 |
 
-## PS1: Scoped fields
+## PS1: Invariants and knowledge
 
 As a casual player, I rely on consistent state so that legality and Elo stay trustworthy.
 
-### PS1.1–PS1.3: Selection and position
+### PS1.1: Other side cannot move
 
-- **Proves**: GS.selectedPiece, GS.position, GS.sideToMove
+- **Proves**: V1
 
 ```gherkin
-Given Shared K1 done
-When play begins Then GS.position is the orthodox opening And GS.sideToMove is White
-Given White's e2 pawn When selected Then GS.selectedPiece is that piece; when deselected, none
-Given Puzzle Wrong move When reset Then GS.position is the dealt start
+Given GS.sideToMove is White
+When Black attempts to change GS.position
+Then GS.position is unchanged
 ```
 
-### PS1.4–PS1.5: Clocks and end
+### PS1.2: Only one clock runs
 
-- **Proves**: GS.whiteClock, GS.blackClock, V2, GS.gameEnded
+- **Proves**: V2
 
 ```gherkin
-Given timed Shared And GS.sideToMove White And not ended
-When observed Then only White's clock runs And both ≥ 0
-Given GS.gameEnded true When a Shared move is attempted Then GS.position unchanged
+Given a Blitz game And GS.sideToMove is White And White's clock is running
+When White completes a legal move
+Then GS.whiteClock is stopped And GS.blackClock is running And both never run together
 ```
 
-### PS1.6–PS1.8: Puzzle fields
+### PS1.3: Puzzle advice stays none
 
-- **Proves**: GS.puzzleId, GS.puzzleElo, GS.requiredSequence, GS.sequenceIndex, GS.wrongMoveOnPuzzle
+- **Proves**: V3
 
 ```gherkin
-Given deal of puzzle P Elo 1050 Then GS.puzzleId is P And GS.puzzleElo is 1050 (fixed for that puzzle)
-Given sequence length 3 When first match played Then GS.sequenceIndex is 1
-Given wrongMove false When Wrong move Then wrongMove true until new deal
+Given Puzzle stream And a puzzle is open
+When the player completes a move
+Then GS.adviceBestMove is none And GS.adviceEval is none
 ```
 
-### PS1.9–PS1.13: Advice, persist, config
+### PS1.4: Sequence hidden before reveal
 
-- **Proves**: GS.online, GS.adviceBestMove, GS.adviceEval, H2, GS.playerElo, GS.lastMode, GS.recentSolved, GS.whiteSeat, GS.clock, GS.increment, GS.advice, GS.locale
+- **Proves**: H1
 
 ```gherkin
-Given Shared Advice On online And best move ready Then player can know adviceBestMove and adviceEval; none pairs with none
-Given Elo 1100 lastMode Puzzle When reopen Then both remain
-Given recentSolved length 20 When W1 appends Then length 20 newest last
-Given Shared started with seat/clock/increment locked Then those stay locked And Advice may toggle
-Given locale ja Then locale is one of en, zh-Hant, ja
+Given a dealt puzzle before any reveal
+When play begins on it
+Then the player can know GS.position and GS.sideToMove And cannot know the full Required sequence
 ```
 
-### PS1.14–PS1.17: Invariants and knowledge
+### PS1.5: Sequence knowable after reveal
 
-- **Proves**: V1, V3, H1, Q1
+- **Proves**: H1
 
 ```gherkin
-Given sideToMove White When Black changes position Then unchanged
-Given Puzzle stream Then adviceBestMove and adviceEval are none
-Given open puzzle before reveal Then player can know position and sideToMove And cannot know full Required sequence
-Given same Elo/history and multiple candidates When two deals Then chosen puzzle need not match
+Given an open puzzle
+When the player reveals the solution
+Then the player can know the full Required sequence
+```
+
+### PS1.6: Advice knowable when set
+
+- **Proves**: H2
+
+```gherkin
+Given a Shared game And Advice On And online And a best move is ready
+When advice is set
+Then the player can know GS.adviceBestMove and GS.adviceEval
+```
+
+### PS1.7: Advice not knowable when unset
+
+- **Proves**: H2
+
+```gherkin
+Given a Shared game And Advice Off
+When the position is ready
+Then GS.adviceBestMove is none And the player cannot know GS.adviceBestMove or GS.adviceEval
+```
+
+### PS1.8: Deal may differ
+
+- **Proves**: Q1
+
+```gherkin
+Given the same GS.playerElo and history And multiple candidate puzzles
+When two deals occur
+Then the chosen puzzles need not match
 ```

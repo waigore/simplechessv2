@@ -3,8 +3,8 @@
 Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents/specs/rules/technical/sequences.md).
 
 - **Trigger**: Player commits a move on the shared or puzzle board
-- **Participants**: [`CMP-presentation`](../components/presentation.md), shared or puzzle session, [`CMP-chess-rules`](../components/chess-rules.md), [`CMP-advice-client`](../components/advice-client.md) (Shared only)
-- **Contracts used**: [`CTR-local-move`](../contracts/local-move.md), [`CTR-advice-stream`](../contracts/advice-stream.md)
+- **Participants**: [`CMP-presentation`](../components/presentation.md), [`CMP-shared-game-session`](../components/shared-game-session.md) or [`CMP-puzzle-session`](../components/puzzle-session.md), [`CMP-chess-rules`](../components/chess-rules.md), [`CMP-advice-client`](../components/advice-client.md) (Shared only)
+- **Contracts used**: [`CTR-presentation`](../contracts/presentation.md), [`CTR-local-move`](../contracts/local-move.md), [`CTR-advice-stream`](../contracts/advice-stream.md)
 - **Serves**: Instant play; F-move-advice.R6 R8
 - **Informed by**: Shared / Puzzle loops; end-conditions
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md), [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
@@ -13,10 +13,10 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 | ID | From | To | Via | Action / message |
 |----|------|----|-----|------------------|
-| S1 | presentation | session | internal | Commit from/to (+ promotion) |
+| S1 | presentation | session | CTR-presentation.E1 | Commit from/to (+ promotion) |
 | S2 | session | chess-rules | CTR-local-move.O1 | try_move |
-| S3 | chess-rules | session | E1 | move_applied |
-| S4 | session | presentation | internal | Animate / SFX; update board |
+| S3 | chess-rules | session | CTR-local-move.E1 | move_applied |
+| S4 | session | presentation | CTR-presentation.O2 O3 | Animate / SFX; update board |
 | S5 | session | advice-client | CTR-advice-stream.O2 | cancel + clear (Shared, if any) |
 | S6 | session | advice-client | CTR-advice-stream.O1 | start new position if Advice still allowed |
 
@@ -38,10 +38,10 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 ```mermaid
 sequenceDiagram
-  participant V as presentation
-  participant S as session
-  participant C as chess-rules
-  participant A as advice-client
+  participant V as CMP-presentation
+  participant S as CMP-shared-game-session
+  participant C as CMP-chess-rules
+  participant A as CMP-advice-client
   V->>S: S1 commit
   S->>C: S2 try_move
   C-->>S: S3 applied

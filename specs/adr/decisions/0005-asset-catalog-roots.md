@@ -34,6 +34,8 @@ In scope: roots, default entry format, manifest boundary, file kinds, Godot proj
 3. Default one-JSON-per-asset keeps PRs safe.
 4. Recraft-only matches style lock; drops fal.
 
+Costs accepted: repo-root layout constraints; manifest tooling to maintain.
+
 ## Rejected alternatives
 
 | Alternative | Why rejected |
@@ -73,6 +75,7 @@ In scope: roots, default entry format, manifest boundary, file kinds, Godot proj
 | `specs/assets/assets.md` Catalog | Roots as Decision |
 | `specs/assets/access.md` | Uses these roots |
 | `specs/technical/asset-access.md` | Manifest outside roots |
+| `specs/assets/tools.md` | Recraft realizes visual generation/editing; fal is not used |
 
 ## Validation
 
@@ -80,3 +83,6 @@ In scope: roots, default entry format, manifest boundary, file kinds, Godot proj
 |-------|--------|------|
 | Catalog integrity | `asset_catalog.py` | PRs with catalog |
 | Roots not mixed | Review | Every release |
+| 3 s open with boot/play groups | quality.md timed cold open | Every release |
+| Piece/font readability | quality.md readability checks | Every release |
+| Locale font coverage | quality.md locale spot-check | Every release |

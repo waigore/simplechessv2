@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 - **Job**: Play one Shared game on the shared board
 - **Actors**: [`bottom-player.md`](../actors/bottom-player.md), [`top-player.md`](../actors/top-player.md)
-- **Serves**: Instant play, Clear board; [two-player-game](../../design/loops/two-player-game.md); [PER.R*](../../view/perception.md)
+- **Serves**: Instant play, Clear board, Accessibility; [two-player-game](../../design/loops/two-player-game.md); [PER.R*](../../view/perception.md)
 - **Mockup**: [`../mockups/screens/shared-play.html`](../mockups/screens/shared-play.html)
 - **Glossary terms**: [Board coordinates](../glossary.md); [Side to move](../../design/glossary.md), [Advice](../../design/glossary.md)
 
@@ -24,7 +24,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Position and coordinates | 8×8; edge letters/numbers only; selection and legal marks |
+| R1 | Board | Position and coordinates | 8×8; edge letters/numbers only; selection and legal marks; C1/C2 tap squares |
 | R2 | Status | Turn, clocks, check | Side to move; clocks when timed; check |
 | R3 | Advice | Shared Advice chrome | Toggle; best-move marks when On |
 | R4 | Resign | End as loss | Resign control |
@@ -54,8 +54,12 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | advice_off | Advice Off | C3 |
 | resign | Resign | C4 |
 | resign_confirm | Resign this game? | S2 |
+| confirm | Confirm | S2 |
+| cancel | Cancel | S2 |
+| advice_error | Advice unavailable. Play continues. | S3 |
+| dismiss | Dismiss | S3 |
 | to_move | to move | R2 |
 
 ## Experience intent
 
-Clear seats and turn; one Advice switch; moves never wait on the network.
+Clear seats and turn; one Advice switch; moves never wait on the network. Meets Accessibility: pieces read by shape; no status by color alone; 44px-class touch targets.

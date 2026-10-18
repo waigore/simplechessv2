@@ -13,8 +13,8 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Responsibility |
 |----|----------------|
 | R1 | Read generated asset manifest by asset ID only ([`AST.R1`](../asset-access.md)) |
-| R2 | Preload Boot set before mode pick ready ([`AST.G1`](../asset-access.md)) |
-| R3 | Preload Play set on first play screen ([`AST.G2`](../asset-access.md)) |
+| R2 | Preload Boot group before mode pick ready ([`AST.G1`](../asset-access.md)) |
+| R3 | Preload Play group on first play screen ([`AST.G2`](../asset-access.md)) |
 | R4 | Handle unresolved IDs per [`AST.R3`](../asset-access.md) |
 
 ## Communication
@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | [`CMP-session-router`](session-router.md) | listens | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Boot ready |
-| C2 | [`CMP-presentation`](presentation.md) | listens | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Resolve by ID |
+| C2 | [`CMP-session-router`](session-router.md) | listens | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | O1 resolve and O3 Play preload; L2 routes L1 asset needs |
 
 ## Owns / mutates
 
@@ -35,11 +35,11 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 ```mermaid
 flowchart LR
-  V[CMP-presentation]
-  R[CMP-asset-resolver]
+  SR[CMP-session-router]
+  AR[CMP-asset-resolver]
   M[manifest]
-  V --> R
-  R --> M
+  SR -->|CTR-asset-resolve| AR
+  AR --> M
 ```
 
 ## Failure / concurrency / persistence

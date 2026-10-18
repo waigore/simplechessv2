@@ -9,6 +9,7 @@ Authoring rules: [`.agents/specs/rules/technical/glossary.md`](../../.agents/spe
 | Advice backend | Server process that is the sole UCI peer to Stockfish and streams advice to the client. | [`modules.md`](modules.md) M2; [`CMP-advice-backend`](components/advice-backend.md); [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md) |
 | Component | A named unit of runtime responsibility with defined peers and communication. | [`components/`](components/) |
 | Contract | A behavioral interface between components: operations, events, and guarantees. | [`contracts/`](contracts/) |
+| Diagram | A Mermaid or HTML drawing of one technical spec's structure or flow; the [view sense](../view/glossary.md) differs. | [`diagrams/README.md`](diagrams/README.md) |
 | Edge | L4 band: persist, advice client, asset resolver, playtest seams. | [`layers.md`](layers.md) L4 |
 | Layer | A dependency band: what may call or depend on what. | [`layers.md`](layers.md) |
 | Module | A packaging or source boundary that groups components or code. | [`modules.md`](modules.md) |

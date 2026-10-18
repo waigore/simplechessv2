@@ -10,54 +10,26 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| R1 | Board and coordinates | US1.1 |
-| R2 | Elo | US1.2 |
-| R3 | Stream actions | US1.3 |
-| C1 | Select | US1.4 |
-| C2 | Place | US1.5 |
-| C3 | Reveal confirm | US1.6 |
-| C4 | Abandon confirm | US1.7 |
-| C5 | Leave confirm | US1.8 |
-| C5 unavailable N/A | always | US1.8 |
-| S1 | Default | US1.1 |
-| S2 | EX.confirm | US1.8 US1.9 |
-| S3 | EX.save-failure | US1.10 |
+| R1 | Board and coordinates | US2.1 US2.2 US2.3 |
+| R2 | Elo and result cue | US2.4 US2.5 |
+| R3 | Stream actions | US2.6 |
+| C1 | Select | US1.1 US1.9 |
+| C2 | Place | US1.2 US1.10 |
+| C3 | Reveal confirm | US1.3 |
+| C4 | Abandon confirm | US1.4 |
+| C5 | Leave confirm | US1.5 US1.6 |
+| C5 unavailable | N/A — always available | US1.5 |
+| S1 | Default | US2.1 |
+| S2 | EX.confirm | US1.5 US1.6 US1.7 US1.9 |
+| S3 | EX.save-failure | US1.8 |
 
-## US1: Puzzle stream UI
+US2 region scenarios live in [`puzzle-play-regions.md`](puzzle-play-regions.md).
+
+## US1: Puzzle stream controls
 
 As Bottom player, I solve or leave puzzles so that Elo tracks my sitting.
 
-### US1.1: Coordinates
-
-- **Proves**: R1, S1
-
-```gherkin
-Given Bottom player is on puzzle-play S1
-When the screen is shown
-Then R1 shows a–h and 1–8 only on the outer edges
-```
-
-### US1.2: Elo visible
-
-- **Proves**: R2
-
-```gherkin
-Given GS.playerElo is 1000
-When puzzle-play is shown
-Then R2 shows Elo 1000
-```
-
-### US1.3: Actions visible
-
-- **Proves**: R3
-
-```gherkin
-Given puzzle-play S1
-When the screen is shown
-Then R3 shows Reveal, Abandon, and Leave stream
-```
-
-### US1.4: Select
+### US1.1: Select
 
 - **Proves**: C1
 
@@ -67,7 +39,7 @@ When Bottom activates C1 on a movable piece
 Then GS.selectedPiece is that piece
 ```
 
-### US1.5: Place
+### US1.2: Place
 
 - **Proves**: C2
 
@@ -77,7 +49,7 @@ When Bottom activates C2 on a square
 Then the interface asks the puzzle loop to handle that move
 ```
 
-### US1.6: Reveal
+### US1.3: Reveal
 
 - **Proves**: C3
 
@@ -87,7 +59,7 @@ When Bottom activates C3
 Then EX.confirm shows Reveal the solution?
 ```
 
-### US1.7: Abandon
+### US1.4: Abandon
 
 - **Proves**: C4
 
@@ -97,17 +69,27 @@ When Bottom activates C4
 Then EX.confirm shows Abandon this puzzle?
 ```
 
-### US1.8: Leave
+### US1.5: Leave opens confirm
 
 - **Proves**: C5, S2
 
 ```gherkin
 Given puzzle-play S1
-When Bottom activates C5 and then Confirm
+When Bottom activates C5
+Then EX.confirm shows Leave the puzzle stream?
+```
+
+### US1.6: Confirm leave
+
+- **Proves**: S2
+
+```gherkin
+Given puzzle-play S2 leave confirm
+When Bottom activates Confirm
 Then the screen is mode-pick
 ```
 
-### US1.9: Cancel leave
+### US1.7: Cancel leave
 
 - **Proves**: S2
 
@@ -117,7 +99,7 @@ When Bottom activates Cancel
 Then the screen is puzzle-play S1
 ```
 
-### US1.10: Save failure
+### US1.8: Save failure
 
 - **Proves**: S3
 
@@ -127,3 +109,22 @@ When Bottom dismisses
 Then prior GS.playerElo remains and the screen is puzzle-play S1
 ```
 
+### US1.9: Select unavailable in confirm
+
+- **Proves**: C1, S2
+
+```gherkin
+Given puzzle-play S2 leave confirm
+When Bottom activates C1 on a piece
+Then GS.selectedPiece is unchanged
+```
+
+### US1.10: Place unavailable without selection
+
+- **Proves**: C2
+
+```gherkin
+Given puzzle-play S1 and no piece is selected
+When Bottom activates C2 on a square
+Then the position is unchanged and nothing is asked
+```

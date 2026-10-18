@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 ## Context
 
-Playtest requires Design protocols on Headless only and UX on Headless and Graphical. ADR-0001 ships Godot Web but does not define those session kinds or Must playtest tools.
+Playtest requires Design protocols on Headless only and UX on Headless and Graphical; ADR-0001 defines neither session kinds nor Must tools.
 
 ## Purpose
 
@@ -25,7 +25,7 @@ The Godot **4.7.2** project (ADR-0001) exposes **two playtest session kinds**:
 1. **Headless** — Godot **`--headless`** (no display) for all Design protocols and UX Headless runs (`ENV.1`).
 2. **Graphical** — **Web/HTML5** (or editor with display) for UX Graphical runs and screenshots (`ENV.2`).
 
-**Must** debug UI (`DBG.1–4`) and telemetry (`TEL.1–5`) work in both. Debug UI and story-ID overlay ship in **playtest builds only**, not the public release Web export. Seams live in `specs/technical/verification.md` when authored.
+**Must** debug UI (`DBG.1–4`) and telemetry (`TEL.1–5`) work in both. Debug UI and story-ID overlay ship in **playtest builds only**, not the public release Web export. Seams: `specs/technical/verification.md` when authored.
 
 ## Reasoning
 
@@ -33,6 +33,8 @@ The Godot **4.7.2** project (ADR-0001) exposes **two playtest session kinds**:
 2. Godot `--headless` fits CI Design runs without a display.
 3. Graphical Web matches the shipped client for UX screenshots.
 4. Debug seams stay out of release to protect Cafe calm.
+
+Costs accepted: two build profiles to maintain.
 
 ## Rejected alternatives
 
@@ -79,3 +81,4 @@ The Godot **4.7.2** project (ADR-0001) exposes **two playtest session kinds**:
 | Headless Design protocol | Spike: `--headless` + one Design protocol | Before acceptance |
 | Graphical UX screenshots | Spike: Web + one UX protocol evidence | Before acceptance |
 | Observability story IDs | quality.md playtest check | Every release |
+| 60 fps with playtest I/O | quality.md frame-time capture | Every release |

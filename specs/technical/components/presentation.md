@@ -22,10 +22,9 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-session-router`](session-router.md) | both | internal | Screens |
-| C2 | [`CMP-shared-game-session`](shared-game-session.md) | both | internal | Shared play |
-| C3 | [`CMP-puzzle-session`](puzzle-session.md) | both | internal | Puzzle play |
-| C4 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Textures/audio/fonts |
+| C1 | [`CMP-session-router`](session-router.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens and asset routing: O1/O5 down; E2/E3 up |
+| C2 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Shared play: O2–O4 down; E1 up |
+| C3 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Puzzle play: O2–O3 down; E1 up |
 
 ## Owns / mutates
 
@@ -38,11 +37,14 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 ```mermaid
 flowchart LR
+  R[CMP-session-router]
+  S[CMP-shared-game-session]
+  Q[CMP-puzzle-session]
   V[CMP-presentation]
-  A[CMP-asset-resolver]
-  S[sessions]
-  V --> A
-  S --> V
+  R -->|CTR-presentation O1-O5| V
+  S -->|CTR-presentation| V
+  Q -->|CTR-presentation| V
+  V -.->|E1-E3| R
 ```
 
 ## Failure / concurrency / persistence
