@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/adr/adr.md`](../../.agents/specs/rules/ad
 
 ## Overview
 
-The game is a Godot Web client ([ADR-0001](decisions/0001-godot-engine.md)) that runs Shared game and Puzzle stream on-device. Optional Advice goes to an advice backend that alone runs Stockfish and streams results ([ADR-0002](decisions/0002-stockfish-advice-backend.md)). Player Elo, Last mode, and recent solves persist in origin `localStorage` ([ADR-0003](decisions/0003-localstorage-persistence.md)).
+The game is a Godot Web client ([ADR-0001](decisions/0001-godot-engine.md)) that runs Shared game and Puzzle stream on-device. Optional Advice goes to an advice backend that alone runs Stockfish and streams results ([ADR-0002](decisions/0002-stockfish-advice-backend.md)). Player Elo, Last mode, and recent solves persist in origin `localStorage` ([ADR-0003](decisions/0003-localstorage-persistence.md)). Agent playtesting uses Godot `--headless` and Graphical Web sessions with Must debug/telemetry seams in playtest builds ([ADR-0004](decisions/0004-dual-playtest-environments.md)).
 
 ## Stack
 
@@ -14,7 +14,7 @@ The game is a Godot Web client ([ADR-0001](decisions/0001-godot-engine.md)) that
 | Frameworks | N/A — Godot is the runtime; no separate web framework | — |
 | Libraries | N/A — no third-party runtime library chosen yet | — |
 | Data storage | Origin `localStorage` JSON document | [ADR-0003](decisions/0003-localstorage-persistence.md) |
-| Integrations | Advice backend ↔ Stockfish (client never talks to Stockfish) | [ADR-0002](decisions/0002-stockfish-advice-backend.md) |
+| Integrations | Advice backend ↔ Stockfish; dual playtest environments | [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0004](decisions/0004-dual-playtest-environments.md) |
 | Game architecture | None yet | — |
 
 ## Traceability
@@ -25,4 +25,4 @@ The game is a Godot Web client ([ADR-0001](decisions/0001-godot-engine.md)) that
 
 Global specs: [`traceability.md`](traceability.md). Superseded and deprecated decisions: [`archive/`](archive/README.md).
 
-- **Decisions**: [ADR-0001: Godot 4.7.2 engine](decisions/0001-godot-engine.md) — Accepted; [ADR-0002: Stockfish advice via backend](decisions/0002-stockfish-advice-backend.md) — Accepted; [ADR-0003: localStorage persistence](decisions/0003-localstorage-persistence.md) — Accepted
+- **Decisions**: [ADR-0001: Godot 4.7.2 engine](decisions/0001-godot-engine.md) — Accepted; [ADR-0002: Stockfish advice via backend](decisions/0002-stockfish-advice-backend.md) — Accepted; [ADR-0003: localStorage persistence](decisions/0003-localstorage-persistence.md) — Accepted; [ADR-0004: Dual playtest environments](decisions/0004-dual-playtest-environments.md) — Accepted
