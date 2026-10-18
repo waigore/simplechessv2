@@ -4,10 +4,6 @@
       "url": "https://mcp.recraft.ai/mcp",
       "disabled": true
     },
-    "elevenlabs": {
-      "url": "https://api.elevenlabs.io/v1/mcp",
-      "disabled": true
-    },
     "fal": {
       "url": "https://mcp.fal.ai/mcp-relay",
       "headers": {

@@ -2,10 +2,6 @@
 url = "https://mcp.recraft.ai/mcp"
 enabled = false
 
-[mcp_servers.elevenlabs]
-url = "https://api.elevenlabs.io/v1/mcp"
-enabled = false
-
 [mcp_servers.fal]
 url = "https://mcp.fal.ai/mcp-relay"
 enabled = false

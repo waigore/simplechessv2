@@ -7,15 +7,16 @@ description: |-
   review-asset, and open a PR. Spec first: only assets a coverage rule
   requires, through tool roles realized by Accepted ADRs or ADR-free tools in
   docs/asset-tools.md (Recraft for visual gen/edit/touch-up and style series;
-  ElevenLabs for music/SFX/voice and audio style series; fal needs an ADR and
-  is not used when the kind series is active). Never a banned tool.
+  ElevenLabs CLI for music/SFX/voice and audio style series — never MCP;
+  fal needs an ADR and is not used when the kind series is active). Never a
+  banned tool.
   Use when the user asks to create, generate, source, regenerate, replace,
   touch up, or retire art, animation, interface art, fonts, or audio.
   For establishing a kind's style series, use establish-asset-style.
 
   Examples:
     - user: "Generate the player run sprites" → APR.generate from the kind recipe, checks, review, PR
-    - user: "Generate the menu theme with the music series" → ElevenLabs + finetune_id
+    - user: "Generate the menu theme with the music series" → ElevenLabs CLI + finetune_id
     - user: "Use this licensed tileset for the forest" → APR.import, license check, catalog, review
     - user: "Regenerate the slime with the new palette" → APR.update, version bump, re-review
     - user: "Retire the old HUD icons" → APR.deprecate with successor IDs
@@ -32,7 +33,7 @@ Procedures: [`specs/assets/procedures.md`](../../../specs/assets/procedures.md).
    - The asset hub's **Catalog** names a catalog root and asset root (no TBD), and **Approval** is filled.
    - The target kind spec exists. Its coverage rule, specification, recipe, checks, and Style series hold no placeholder or TBD for the work requested.
    - Every aesthetics element the kind cites exists and holds no TBD.
-   - The recipe's tool role in `specs/assets/tools.md` is realized by an **Accepted** ADR, or by an ADR-free tool named in [`docs/asset-tools.md`](../../../docs/asset-tools.md). Prefer tools per that doc. When the kind Style series is `active`, use Recraft (visual) or ElevenLabs (music / SFX / voice); do not use fal.
+   - The recipe's tool role in `specs/assets/tools.md` is realized by an **Accepted** ADR, or by an ADR-free tool named in [`docs/asset-tools.md`](../../../docs/asset-tools.md). Prefer tools per that doc. When the kind Style series is `active`, use Recraft (visual) or the ElevenLabs CLI (music / SFX / voice; never MCP); do not use fal.
    - Full series generate/update needs Style series `active` with the modality binding (hard id or soft anchors for SFX). If `none` or `bootstrapping`, only bootstrap seed runs (or hand off to `establish-asset-style`). If `stale`, refresh via `establish-asset-style` first.
 2. **Resolve the request** to one procedure (`APR.generate`, `APR.import`, `APR.update`, `APR.deprecate`, or `APR.touch-up`), the kind spec, coverage rules, and asset IDs. If no coverage rule requires the asset, stop: spec first.
 3. **Confirm scope** with the user when the request spans more than one coverage rule or would exceed a cost or quota limit in `tools.md`.
@@ -50,7 +51,7 @@ Procedures: [`specs/assets/procedures.md`](../../../specs/assets/procedures.md).
 ## Rules
 
 - Never invent a recipe, prompt, setting, style choice, coverage rule, or style-binding id. Missing ones go into specs or `establish-asset-style` first.
-- Use only Accepted ADR tools, ADR-free / touch-up options in `docs/asset-tools.md`, or the modality-required tool for active series. Never a banned tool. Credentials never enter the repository.
+- Use only Accepted ADR tools, ADR-free / touch-up options in `docs/asset-tools.md`, or the modality-required tool for active series. Audio via ElevenLabs is CLI-only ([`docs/asset-tools-elevenlabs.md`](../../../docs/asset-tools-elevenlabs.md)); never an ElevenLabs MCP. Never a banned tool. Credentials never enter the repository.
 - Do not import a third-party asset whose license is unclear; stop and ask.
 - Main code uses only approved assets. Do not wire a draft into main code.
 - Person-supplied assets go through [`register-asset`](../register-asset/SKILL.md). Style series establish goes through [`establish-asset-style`](../establish-asset-style/SKILL.md).

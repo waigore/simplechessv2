@@ -6,11 +6,6 @@
       "url": "https://mcp.recraft.ai/mcp",
       "enabled": false
     },
-    "elevenlabs": {
-      "type": "remote",
-      "url": "https://api.elevenlabs.io/v1/mcp",
-      "enabled": false
-    },
     "fal": {
       "type": "remote",
       "url": "https://mcp.fal.ai/mcp-relay",
