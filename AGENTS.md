@@ -6,7 +6,7 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 
 - **Purpose**: Zen web chess — same-device two-player games and an adaptive solo puzzle stream, set at a cafe table ([`specs/vision.md`](specs/vision.md)).
 - **Language / engine**: Godot 4.7.2 + GDScript (2D web / touch) — [`specs/definition/definition.md`](specs/definition/definition.md); [ADR-0001](specs/adr/decisions/0001-godot-engine.md).
-- **Frameworks / tools**: Godot web export; optional Stockfish advice via backend ([ADR-0002](specs/adr/decisions/0002-stockfish-advice-backend.md)); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
+- **Frameworks / tools**: Godot web export; optional Stockfish advice via backend ([ADR-0002](specs/adr/decisions/0002-stockfish-advice-backend.md)); dual playtest environments ([ADR-0004](specs/adr/decisions/0004-dual-playtest-environments.md)); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
 
 ## Quick start commands
 
