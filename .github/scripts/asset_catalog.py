@@ -41,6 +41,8 @@ SOURCE_TYPES = {"ai-generation", "procedural-generation", "third-party", "human-
 GENERATED = {"ai-generation", "procedural-generation"}
 ALWAYS = ("id", "handle", "kind_spec", "serves", "state", "version", "files", "source_type", "license")
 ENGINE_SIDECARS = (".meta", ".import", ".uid")
+# Keep empty catalog/asset roots trackable in git before the first entry or file.
+ROOT_PLACEHOLDERS = (".gitkeep",)
 KEBAB = r"[a-z0-9]+(?:-[a-z0-9]+)*"
 HANDLE_RE = re.compile(rf"^({KEBAB})/{KEBAB}$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -270,7 +272,11 @@ def check_files(root: Path, hub: Hub, entries: dict[str, dict[str, Any]]) -> lis
             owner.setdefault(f, rel)
     catalog_root = (root / hub.catalog_root).resolve()
     for path in sorted(p for p in asset_root.rglob("*") if p.is_file()):
-        if path.suffix in ENGINE_SIDECARS or catalog_root in path.resolve().parents:
+        if (
+            path.suffix in ENGINE_SIDECARS
+            or path.name in ROOT_PLACEHOLDERS
+            or catalog_root in path.resolve().parents
+        ):
             continue
         f = path.relative_to(asset_root).as_posix()
         if f not in owner:
@@ -289,7 +295,7 @@ def check(root: Path) -> tuple[list[Finding], list[str]]:
     entries: dict[str, dict[str, Any]] = {}
     for path in sorted(p for p in catalog.iterdir() if p.is_file()):
         rel = path.relative_to(root).as_posix()
-        if path.suffix in ENGINE_SIDECARS:
+        if path.suffix in ENGINE_SIDECARS or path.name in ROOT_PLACEHOLDERS:
             continue
         if path.suffix != ".json":
             findings.append(Finding(rel, "catalog", "only entry files ('<id>.json') may live in the catalog root"))
