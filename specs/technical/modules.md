@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/modules.md`](../../.agents/specs/rules/technical/modules.md).
 
 - **Serves**: Instant play; Web ship; Advice without client Stockfish
-- **Informed by**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md)
+- **Informed by**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md), [ADR-0006](../adr/decisions/0006-layered-client-architecture.md)
 
 ## Modules
 

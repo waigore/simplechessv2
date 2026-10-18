@@ -13,4 +13,4 @@ Part of [`fields.md`](fields.md).
 | `GS.clock` | Configuration | Untimed, Blitz, or Rapid | Untimed | Before Shared game starts | Locked when Shared game starts |
 | `GS.increment` | Configuration | 3 s or 5 s when timed | 3 s | Before Shared game starts when timed | Locked when Shared game starts |
 | `GS.advice` | Configuration | Advice On or Off | On | Before and during Shared game | Shared game only |
-| `GS.locale` | Configuration | `en`, `zh-Hant`, or `ja` | `en` | Player setting | One of the shipped locales |
+| `GS.locale` | Configuration | `en`, `zh-Hant`, or `ja` | Browser locale when shipped, else `en` | Player setting | One of the shipped locales |

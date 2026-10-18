@@ -20,7 +20,6 @@ When pillars conflict: P1 > P2 > P3 (vision tradeoffs).
 
 ## Content limits
 
-- No blood or gore; captures stay abstract ([SRF.E1](surface.md)).
 - No competitive chess-site chrome (loud leaderboards, rank badges, esports framing).
 - No computer-opponent or AI avatar imagery (vision non-goal).
 
