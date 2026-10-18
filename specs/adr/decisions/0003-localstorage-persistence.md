@@ -29,6 +29,8 @@ Persist in origin-scoped **`localStorage`** as one JSON document for this game: 
 3. Whole-document replace gives a clear prior-commit durability story.
 4. IndexedDB/`user://` add complexity without benefit at this size.
 
+Costs accepted: the synchronous API and the ~5 MB origin quota.
+
 ## Rejected alternatives
 
 | Alternative | Why rejected |
@@ -73,3 +75,5 @@ Persist in origin-scoped **`localStorage`** as one JSON document for this game: 
 |-------|--------|------|
 | Reload keeps Elo and Last mode | quality.md quit/reload | Every release |
 | Failed write keeps prior | quality.md forced fail | Every release |
+| Cold open includes sync read | quality.md timed cold open | Every release |
+| Persist failures in logs | quality.md log check | Every release |

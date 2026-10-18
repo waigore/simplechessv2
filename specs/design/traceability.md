@@ -29,7 +29,7 @@ Authoring rules: [`.agents/specs/rules/design/traceability.md`](../../.agents/sp
 | Game state | [`game-state.md`](game-state.md) | Applies |
 | Configuration | [`configuration.md`](configuration.md) | Applies |
 | Difficulty settings | [`difficulty.md`](difficulty.md) | Applies — puzzle Elo only |
-| Scenarios | [`scenarios/`](scenarios/) | N/A — none authored yet; walkthroughs deferred |
+| Scenarios | [`scenarios/puzzle-stream-visit.md`](scenarios/puzzle-stream-visit.md) | Applies |
 | Progress management | [`progression.md`](progression.md) | Applies |
 | Sub-games | [`sub-games/`](sub-games/) | N/A — the puzzle stream is a primary mode, not a minigame inside a match |
 | Win and loss conditions | [`end-conditions.md`](end-conditions.md) | Applies |

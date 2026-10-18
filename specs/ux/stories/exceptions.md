@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | EX.loading | Cold open | US1.1 |
-| EX.confirm | Destructive confirm | US1.2 |
+| EX.confirm | Destructive confirm | US1.2 US1.7 |
 | EX.interrupt | Resume mode-pick | US1.3 |
 | EX.save-failure | Prior commit kept | US1.4 |
 | EX.error | Dismiss continue | US1.5 |
@@ -79,5 +79,15 @@ Then shared-play remains usable for local moves
 Given Web play and a non-touch primary input is used
 When that input targets a play control
 Then EX.unsupported-input is shown and the control does not activate
+```
+
+### US1.7: Confirm shown on resign
+
+- **Proves**: EX.confirm
+
+```gherkin
+Given the side-to-move actor is on shared-play S1
+When that actor activates UI-shared-play.C4
+Then EX.confirm is shown and names resign
 ```
 

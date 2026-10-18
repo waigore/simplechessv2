@@ -24,6 +24,7 @@ Authoring rules: [`.agents/specs/rules/ux/controls.md`](../../.agents/specs/rule
 | B4 | Web | Tap Confirm in an exception | `IN.confirm` |
 | B5 | Web | Tap Cancel / Dismiss in an exception | `IN.cancel` |
 | B6 | Web | Tap Back | `IN.back` |
+| B7 | Web | Pointer moved over, or focus moved to, a control | `IN.point` |
 
 No camera bindings — [camera-controls.md](../view/camera-controls.md) has none.
 

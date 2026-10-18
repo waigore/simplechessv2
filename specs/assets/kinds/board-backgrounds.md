@@ -45,7 +45,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 #### Prompt policy
 
-- **Compose**: subject-first when `active`; append master + negative.
+- **Compose**: subject-first when `active`; append master + negative; cite IDs only.
 - **Master**: quiet mahogany cafe table chessboard; warm wood; soft daylight (SRF.L1); square readability first
 - **Negative**: neon; esports chrome; 3D perspective board; cluttered props; blood
 

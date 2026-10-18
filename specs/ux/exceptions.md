@@ -11,7 +11,6 @@ Authoring rules: [`.agents/specs/rules/ux/exceptions.md`](../../.agents/specs/ru
 | `EX.interrupt` | Close, refresh, or reopen during Shared play or Puzzle play ([mode-pick U1](../design/flows/mode-pick.md)) | Next open is mode pick (no mid-game resume) | Use mode pick | n/a (new open) | Arrives at `mode-pick` |
 | `EX.save-failure` | Failed commit of Player Elo or Last mode ([quality.md](../definition/quality.md) save durability) | Save failed; prior values kept | Dismiss; continue | no | Dismiss; previous commit intact |
 | `EX.error` | Recoverable failure (e.g. Advice fetch while On) | What failed; play may continue | Dismiss | no | Dismiss; local moves never wait |
-| `EX.empty` | N/A — every open always has a mode pick or a position | — | — | — | — |
 | `EX.unsupported-input` | Non-touch primary input on Web | Input not supported for play | Use touch | no | Switch to touch; control unchanged |
 
 ## Experience intent

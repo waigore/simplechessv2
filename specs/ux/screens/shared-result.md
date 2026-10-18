@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 - **Job**: Show the Shared-game result and choose play again or stop
 - **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
-- **Serves**: Cafe calm; [two-player-game K3](../../design/loops/two-player-game.md)
+- **Serves**: Cafe calm, Accessibility; [two-player-game K3](../../design/loops/two-player-game.md)
 - **Mockup**: [`../mockups/screens/shared-result.html`](../mockups/screens/shared-result.html)
 - **Glossary terms**: [Shared game](../../design/glossary.md)
 
@@ -39,9 +39,12 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | Key | String | Used in |
 |-----|--------|---------|
 | title | Game over | header |
+| result_white | White wins | R1 |
+| result_black | Black wins | R1 |
+| result_draw | Draw | R1 |
 | play_again | Play again | C1 |
 | stop | Stop | C2 |
 
 ## Experience intent
 
-Clear outcome, then either a new session or back to modes — no friction.
+Clear outcome, then either a new session or back to modes — no friction. Meets Accessibility: the result is stated in text, not color alone; controls are 44px-class touch targets.

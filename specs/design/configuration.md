@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/design/configuration.md`](../../.agents/specs/rules/design/configuration.md).
 
+- **Serves**: Timed/untimed play and optional advice (definition scope); Cafe calm via the Untimed default (vision).
+
 ## Modes
 
 | Mode | Description | Differs from standard rules by | Flow |
@@ -26,8 +28,10 @@ Seats on the shared device are the **Top player** and the **Bottom player**.
 |-----------|------------|---------|-------|------|--------|
 | `CFG.BLITZ_START` | [`loops/two-player-game.md`](loops/two-player-game.md) | 60 | 60 | seconds | Starting clock for each side in Blitz |
 | `CFG.RAPID_START` | [`loops/two-player-game.md`](loops/two-player-game.md) | 600 | 600 | seconds | Starting clock for each side in Rapid |
+| `CFG.ELO_BAND_WIDEN` | [`difficulty.md`](difficulty.md) | 50 | 50 | Elo | Step the ±`CFG.ELO_MATCH_RANGE` deal band widens by when no candidate fits ([DIF.Y1](difficulty.md)) |
 | `CFG.ELO_K` | [`difficulty.md`](difficulty.md) | 20 | 20 | — | Classic Elo K-factor for [Player Elo](glossary.md) updates |
 | `CFG.ELO_MATCH_RANGE` | [`difficulty.md`](difficulty.md) | 100 | 100 | Elo | ± band when dealing the next puzzle by [Player Elo](glossary.md) |
+| `CFG.ELO_RECENT_WINDOW` | [`difficulty.md`](difficulty.md) | 20 | 20 | puzzles | Solved ([END.W1](end-conditions/conditions.md)) puzzle memory for deal preference ([DIF.Y1](difficulty.md)); caps `GS.recentSolved` |
 | `CFG.ELO_START` | [`difficulty.md`](difficulty.md) | 1000 | 1000 | Elo | First-time [Player Elo](glossary.md) |
 | `CFG.ADVICE_TIME_MS` | [`features/move-advice.md`](features/move-advice.md) | 2000 | 2000 | ms | Max engine think time per position for [Advice](glossary.md) |
 

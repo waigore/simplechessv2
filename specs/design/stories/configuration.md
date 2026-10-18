@@ -11,44 +11,161 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
 | Shared game mode | PS1.1 | Puzzle stream mode | PS1.2 |
-| White seat | PS1.3 | Clock | PS1.4 PS1.5 |
-| Increment | PS1.6 | Advice | PS1.7 PS1.8 |
-| K1 | PS1.9 PS1.10 | K2 | PS1.11 |
-| K3 | PS1.12 | | |
+| White seat | PS1.3 PS1.4 | Clock | PS1.5 PS1.6 PS1.7 |
+| Increment | PS1.8 | Advice | PS1.9 PS1.10 |
+| K1 | PS1.11 PS1.12 | K2, K3 | PS1.13 |
+| CFG.ELO_RECENT_WINDOW | PS1.14 | CFG.ELO_BAND_WIDEN | PS1.15 |
 
 ## PS1: Choose session options
 
-As a casual player, I set Shared-game options so that clocks and seats match the sitting.
+As a casual player, I set options so that clocks and seats fit the sitting.
 
-### PS1.1–PS1.3: Modes and seat
+### PS1.1: Shared mode
 
-- **Proves**: Shared game mode, Puzzle stream mode, White seat
+- **Proves**: Shared game mode
 
 ```gherkin
-Given choose Shared game When play starts Then two people one device And clocks/Advice follow Shared options
-Given choose Puzzle stream When play starts Then no clocks Advice N/A And deals follow Player Elo
-Given White seat Bottom When game starts Then Bottom is White And White moves first
+Given Shared game with default options
+When the game starts
+Then GS.clock Untimed And GS.whiteClock none
 ```
 
-### PS1.4–PS1.8: Clock, increment, Advice
+### PS1.2: Puzzle by Elo
 
-- **Proves**: Clock, Increment, Advice
+- **Proves**: Puzzle stream mode
 
 ```gherkin
-Given Clock Untimed When start Then both clocks none
-Given Clock Blitz When start Then each clock CFG.BLITZ_START (60)
-Given Rapid Increment 5 s whiteClock 100 When White completes move Then whiteClock 105
-Given Shared Advice On online When turn Then advice may run for side to move
-Given Shared Advice Off When turn Then no eval and no display
+Given GS.playerElo 1000
+When Puzzle stream deals its first puzzle
+Then dealt GS.puzzleElo is 1050, within CFG.ELO_MATCH_RANGE (100) of GS.playerElo 1000
 ```
 
-### PS1.9–PS1.12: Restrictions
+### PS1.3: Bottom seat White
 
-- **Proves**: K1, K2, K3
+- **Proves**: White seat
 
 ```gherkin
-Given Clock Blitz When setup Then Increment 3 s and 5 s available
-Given Clock Untimed When setup Then Increment unavailable
-Given Puzzle stream When open Then White seat Clock Increment do not apply
-Given Puzzle stream When open Then Advice does not apply
+Given White seat Bottom player
+When the game starts
+Then Bottom player is White And moves first
+```
+
+### PS1.4: Top seat White
+
+- **Proves**: White seat
+
+```gherkin
+Given White seat Top player
+When the game starts
+Then Top player is White And moves first
+```
+
+### PS1.5: Untimed
+
+- **Proves**: Clock
+
+```gherkin
+Given Clock Untimed
+When the game starts
+Then GS.whiteClock and GS.blackClock are none
+```
+
+### PS1.6: Blitz 60
+
+- **Proves**: Clock
+
+```gherkin
+Given Clock Blitz
+When the game starts
+Then both clocks are CFG.BLITZ_START (60)
+```
+
+### PS1.7: Rapid 600
+
+- **Proves**: Clock
+
+```gherkin
+Given Clock Rapid
+When the game starts
+Then both clocks are CFG.RAPID_START (600)
+```
+
+### PS1.8: Increment
+
+- **Proves**: Increment
+
+```gherkin
+Given Rapid And Increment 5 s And GS.whiteClock 100
+When White completes a move
+Then GS.whiteClock is 105
+```
+
+### PS1.9: Advice On
+
+- **Proves**: Advice
+
+```gherkin
+Given Shared game And Advice On And online
+When the turn passes
+Then advice may run for side to move
+```
+
+### PS1.10: Advice Off
+
+- **Proves**: Advice
+
+```gherkin
+Given Shared game And Advice Off
+When the turn passes
+Then GS.adviceBestMove and GS.adviceEval are none
+```
+
+### PS1.11: Increment available
+
+- **Proves**: K1
+
+```gherkin
+Given Clock Blitz
+When options are chosen
+Then Increment 3 s and 5 s available
+```
+
+### PS1.12: Increment blocked
+
+- **Proves**: K1
+
+```gherkin
+Given Clock Untimed
+When options are chosen
+Then Increment is unavailable
+```
+
+### PS1.13: Shared-only
+
+- **Proves**: K2, K3
+
+```gherkin
+Given Puzzle stream
+When it starts
+Then White seat, Clock, Increment, and Advice do not apply
+```
+
+### PS1.14: Window trims
+
+- **Proves**: CFG.ELO_RECENT_WINDOW
+
+```gherkin
+Given GS.recentSolved holds 20 IDs
+When END.W1 appends a new ID
+Then GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20)
+```
+
+### PS1.15: Band widens
+
+- **Proves**: CFG.ELO_BAND_WIDEN
+
+```gherkin
+Given GS.playerElo 1000 And no unsolved puzzle within CFG.ELO_MATCH_RANGE (100)
+When the next puzzle is dealt
+Then the band widens CFG.ELO_BAND_WIDEN (50) until one fits
 ```

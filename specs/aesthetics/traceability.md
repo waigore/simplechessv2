@@ -15,6 +15,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/traceability.md`](../../.agent
 | Sensory mood, sound, clarity | design | [`aesthetics.md`](aesthetics.md); [`sound.md`](sound.md); [`form.md`](form.md) |
 | Feedback: select, move, check, ends, wrong puzzle | design | [`sound.md`](sound.md) X1–X5; [`palette.md`](palette.md) C6–C8 |
 | [PER.R1](../view/perception.md)–[PER.R6](../view/perception.md) | view | [`form.md`](form.md); [`palette.md`](palette.md); [`surface.md`](surface.md) |
+| [PER.R7](../view/perception.md) | view | [`ui-style.md`](ui-style.md) T2; [`palette.md`](palette.md) K4 |
 | [PHY.M1](../view/physics.md)–[PHY.M3](../view/physics.md) | view | [`motion.md`](motion.md); [`surface.md`](surface.md) E1–E2 |
 
 ## Topic coverage

@@ -10,15 +10,15 @@ Authoring rules: [`.agents/specs/rules/assets/access.md`](../../.agents/specs/ru
 | ID | Rule |
 |----|------|
 | A1 | Code and data name an asset only by its asset ID, never by file path or handle. |
-| A2 | An asset manifest generated from the catalog, never hand-edited, maps each asset ID to its files. The asset manifest main code uses lists only approved entries. |
+| A2 | An asset manifest generated from the catalog ([ADR-0005](../adr/decisions/0005-asset-catalog-roots.md)), never hand-edited, maps each asset ID to its files. The asset manifest main code uses lists only approved entries. |
 | A3 | **Development / playtest**: unresolved ID (unknown, draft, or deprecated) fails loud — log and Must overlay when present. **Release**: do not draw that asset; keep the sitting playable and log once (Instant play, Reliability). |
 
 ## Placement
 
 | ID | Rule |
 |----|------|
-| P1 | The asset root holds only cataloged asset files and the engine's import sidecars. |
-| P2 | Engine resources and build outputs live outside the asset root, are not cataloged, and are listed in the technical counterpart. |
+| P1 | The asset root ([ADR-0005](../adr/decisions/0005-asset-catalog-roots.md)) holds only cataloged asset files and the engine's import sidecars. |
+| P2 | Engine resources and build outputs live outside the asset root (ADR-0005), are not cataloged, and are listed in the technical counterpart. |
 
 ## Load groups
 

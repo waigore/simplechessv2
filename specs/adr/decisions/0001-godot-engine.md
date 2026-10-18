@@ -29,6 +29,8 @@ In scope: version, scripting, Web export, input. Out of scope: Stockfish, persis
 3. GDScript fits a small 2D Web project.
 4. Instant play over waiting on servers for moves.
 
+Costs accepted: Web export size/performance limits of a browser runtime.
+
 ## Rejected alternatives
 
 | Alternative | Why rejected |
@@ -72,3 +74,6 @@ In scope: version, scripting, Web export, input. Out of scope: Stockfish, persis
 | Web export touch board | Spike on 4.7.2 HTML5 | Before acceptance |
 | Move hitch ≤1 frame | quality.md frame-time | Every release |
 | Cold open ≤3 s | quality.md timed open | Every release |
+| Sitting without forced exit | quality.md sitting soak | Every release |
+| Piece shape and color-blind readability | quality.md readability checks | Every release |
+| Locale spot-check | quality.md locale spot-check | Every release |

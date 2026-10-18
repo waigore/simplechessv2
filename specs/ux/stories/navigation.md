@@ -12,15 +12,17 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 |---------|---------|-----------|
 | T1 | mode-pick → setup | US1.1 |
 | T2 | mode-pick → puzzle | US1.2 |
-| T3 | quit sitting | US1.3 |
-| T4 | setup → play | US1.4 |
+| T3 | quit sitting | US1.3 US2.1 |
+| T4 | setup → play | US1.4 US2.2 |
 | T5 | setup → mode-pick | US1.5 |
-| T6 | play → result | US1.6 |
+| T6 | play → result | US1.6 US2.3 |
 | T7 | result → setup | US1.7 |
-| T8 | result → mode-pick | US1.8 |
-| T9 | leave stream | US1.9 |
+| T8 | result → mode-pick | US1.8 US2.5 |
+| T9 | leave stream | US1.9 US2.4 |
 | N1 | new sitting | US1.10 |
 | N2 | interrupt resume | US1.11 |
+
+US2 scenarios live in [`navigation-conditions.md`](navigation-conditions.md).
 
 ## US1: Screen map
 
@@ -82,7 +84,7 @@ Then the screen is mode-pick
 
 ```gherkin
 Given shared-play and GS.gameEnded becomes true
-When the end is shown
+When the game end system event fires
 Then the screen is shared-result
 ```
 

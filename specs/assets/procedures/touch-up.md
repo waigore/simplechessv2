@@ -15,3 +15,5 @@ Part of [`procedures.md`](../procedures.md).
 3. Apply only the operations the fix needs. Keep the asset ID, the source type, and any `series` binding. Respect Style series negative bans that apply to the edit. On an approved asset, run inside `APR.update`.
 4. Save the result over the asset's files per the kind's naming. Record each operation in `touchups` (`CAT.F19`), including `prompt` / `inputs` / `settings` when used.
 5. Rerun the kind's checks, then `APR.review`. A review exemption covers touched-up files only if the person grants it after the touch-up.
+
+**Outputs**: touched-up files over the same asset ID; `touchups` entries (`CAT.F19`); kind checks rerun; `APR.review` verdict.

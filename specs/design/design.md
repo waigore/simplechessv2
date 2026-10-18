@@ -29,6 +29,6 @@ Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md)
 - **Loops**: [`two-player-game.md`](loops/two-player-game.md), [`puzzle-stream.md`](loops/puzzle-stream.md)
 - **Features**: [`move-advice.md`](features/move-advice.md)
 - **Flows**: [`mode-pick.md`](flows/mode-pick.md)
-- **Stages**: Added when those specs are written.
-- **Scenarios**: Added when those specs are written.
+- **Stages**: None — no stages; board play only.
+- **Scenarios**: [`scenarios/puzzle-stream-visit.md`](scenarios/puzzle-stream-visit.md)
 - **Sub-games**: None — the puzzle stream is a primary mode, not a minigame inside a match.

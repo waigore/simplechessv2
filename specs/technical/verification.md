@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/verification.md`](../../.agents
 
 - **Serves**: Observability; playtest Must `ENV.*` `DBG.*` `TEL.*`
 - **Informed by**: [`specs/playtest/tools.md`](../playtest/tools.md); quality Observability
-- **ADRs**: [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md), [ADR-0001](../adr/decisions/0001-godot-engine.md)
+- **ADRs**: [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md), [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0003](../adr/decisions/0003-localstorage-persistence.md)
 
 ## Seams
 

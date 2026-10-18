@@ -35,10 +35,10 @@ Given a piece travels under PHY.M1 When travel runs Then camera world position a
 - **Proves**: M2, L1, L2, O1
 
 ```gherkin
-Given White seat Bottom When play opens Then framed board rotation about F1 is 0° And White near edge faces Bottom
-Given White seat Top When play opens Then framed board rotates 180° about F1 And White near edge faces Top
-Given CAM-board When pan or zoom attempted Then camera stays on SPC.B1 And visible height stays PRJ.P1
-Given open table When board viewed Then O1 holds: no scenery between camera and board
+Given CAM-board Web, any PRJ.A1 aspect And White seat Bottom When play opens Then framed board rotation about F1 is 0° And White near edge faces Bottom
+Given CAM-board Web, any PRJ.A1 aspect And White seat Top When play opens Then framed board rotates 180° about F1 And White near edge faces Top
+Given CAM-board Web, any PRJ.A1 aspect When pan or zoom attempted Then camera stays on SPC.B1 And visible height stays PRJ.P1
+Given CAM-board Web, any PRJ.A1 aspect And open table When board viewed Then O1 holds: no scenery between camera and board
 ```
 
 ### VS1.8–VS1.11: Transition, effects, control
@@ -46,8 +46,8 @@ Given open table When board viewed Then O1 holds: no scenery between camera and 
 - **Proves**: T1, E1, P1
 
 ```gherkin
-Given mode pick When Shared or Puzzle play starts (FL-mode-pick) Then CAM-board is in use within 0 s cut And nothing carries over
-Given Shared or Puzzle play When returning to mode pick Then CAM-board leaves by 0 s cut
-Given any play event When E1 checked Then no shake or zoom punch runs
-Given CAM-board When any camera action is attempted Then position angle and zoom are unchanged (CC has no actions)
+Given mode pick Web, any PRJ.A1 aspect And CAM-board as the target camera When Shared or Puzzle play starts (FL-mode-pick) Then CAM-board is in use within 0 s cut And nothing carries over
+Given CAM-board Web, any PRJ.A1 aspect And Shared or Puzzle play When returning to mode pick Then CAM-board leaves by 0 s cut
+Given CAM-board Web, any PRJ.A1 aspect And any play event When E1 checked Then no shake or zoom punch runs
+Given CAM-board Web, any PRJ.A1 aspect When any camera action is attempted Then position angle and zoom are unchanged (CC has no actions)
 ```

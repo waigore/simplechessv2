@@ -71,6 +71,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K2 | Legibility | Smallest shipped size on phone-width | Accessibility |
 | K3 | License | Catalog F12 | Web-embed allowed |
 | K4 | Budget | Total size | ≤ ~2 MB or justified exception in review |
+| K5 | Spec S1 | Font file inspect | Humanist sans; T1–T3 weights present |
+| K6 | Spec S4 | File extension | TTF / OTF / WOFF2 |
 
 ## Naming
 

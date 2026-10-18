@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | [`CMP-chess-rules`](chess-rules.md) | calls | [`CTR-local-move`](../contracts/local-move.md) | Puzzle sequence checks |
-| C2 | [`CMP-presentation`](presentation.md) | both | internal | Board and feedback |
+| C2 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Board and feedback: O2–O3 down; E1 up |
 | C3 | [`CMP-persist-store`](persist-store.md) | calls | [`CTR-persist-document`](../contracts/persist-document.md) | Elo / recentSolved commit |
 | C4 | [`CMP-session-router`](session-router.md) | listens | internal | Enter / leave stream |
 
@@ -40,8 +40,10 @@ flowchart LR
   Q[CMP-puzzle-session]
   C[CMP-chess-rules]
   P[CMP-persist-store]
+  V[CMP-presentation]
   Q --> C
   Q --> P
+  Q -->|CTR-presentation| V
 ```
 
 ## Failure / concurrency / persistence

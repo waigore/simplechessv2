@@ -26,7 +26,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S1 | Durations | X1 0.05–0.15 s; X2 0.08–0.20 s; X3 0.10–0.25 s; X4 0.20–0.40 s; X5 0.08–0.20 s |
 | S2 | Character | Wood / tactile; soft cafe; never gates a move (P1) |
 | S3 | Loudness | Peaks toward −14 LUFS (L2) |
-| S4 | Format | OGG (WAV intermediate OK) |
+| S4 | Format | OGG |
 
 ## Budgets
 
@@ -50,8 +50,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 #### Prompt policy
 
 - **Compose**: subject-first when `active`; append master + negative.
-- **Master**: soft wood cafe SFX; short; unhurried table; never harsh
-- **Negative**: stadium crowd; synth laser; gore impact; loud alarm; voice
+- **Master**: soft wood cafe SFX; short; unhurried table; never harsh (SND.X1–X5; SND.L2; P3)
+- **Negative**: stadium crowd; synth laser; gore impact; loud alarm; voice (vs SND.X1–X5 character; SND.L2; SND.V1)
 
 ## Recipes
 
@@ -75,6 +75,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K2 | Loudness | Meter | ~L2 peaks |
 | K3 | Character | Listen vs X* | Wood/cafe; not chrome |
 | K4 | Budget | File size | ≤ 100 KB |
+| K5 | Spec S4 | File extension | OGG |
 
 ## Naming
 

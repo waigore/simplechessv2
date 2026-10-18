@@ -15,10 +15,11 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 |----|------|----|-----|------------------|
 | S1 | harness | Godot | `--headless` playtest | Launch playtest build |
 | S2 | harness | playtest-seams | CTR-playtest-drive.O4 | jump to a named smoke stage |
-| S3 | harness | playtest-seams | O3 | inspect key play-state fields |
-| S4 | playtest-seams | harness | E1 | Emit at least one `tel_event` with story ID when applicable |
-| S5 | harness | playtest-seams | O1 then O2 | pause then resume |
-| S6 | harness | process | exit | Session ends without forced crash |
+| S3 | playtest-seams | session-router | CTR-playtest-drive.E2 | Router enters that start state |
+| S4 | harness | playtest-seams | CTR-playtest-drive.O3 | inspect key play-state fields |
+| S5 | playtest-seams | harness | CTR-playtest-drive.E1 | Emit at least one `tel_event` with story ID when applicable |
+| S6 | harness | playtest-seams | CTR-playtest-drive.O1 then O2 | pause then resume |
+| S7 | harness | process | exit | Session ends without forced crash |
 
 ## Branches
 
@@ -37,9 +38,11 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 ```mermaid
 sequenceDiagram
   participant H as harness
-  participant P as playtest-seams
+  participant P as CMP-playtest-seams
+  participant R as CMP-session-router
   H->>P: S2 jump
-  H->>P: S3 inspect
-  P-->>H: S4 tel_event
-  H->>P: S5 pause/resume
+  P->>R: S3 jump_requested
+  H->>P: S4 inspect
+  P-->>H: S5 tel_event
+  H->>P: S6 pause/resume
 ```
