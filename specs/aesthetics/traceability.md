@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/traceability.md`](../../.agent
 |---------------|--------|-----------|
 | Instant play | vision | [`aesthetics.md`](aesthetics.md) P1; [`motion.md`](motion.md); [`sound.md`](sound.md) X2 |
 | Clear board | vision | [`aesthetics.md`](aesthetics.md) P2; [`form.md`](form.md); [`palette.md`](palette.md) K2 |
-| Cafe calm | vision | [`aesthetics.md`](aesthetics.md) P3; [`surface.md`](surface.md); [`sound.md`](sound.md) M1 |
+| Cafe calm | vision | [`aesthetics.md`](aesthetics.md) P3; [`surface.md`](surface.md); [`sound.md`](sound.md) M1 M2 |
 | Web touch; vector board | definition | [`aesthetics.md`](aesthetics.md) Medium; [`form.md`](form.md) |
 | No computer opponent / matchmaking | definition | [`aesthetics.md`](aesthetics.md) Content limits |
 | Accessibility; Localization | quality | [`palette.md`](palette.md) K1–K4; [`ui-style.md`](ui-style.md) T2 |

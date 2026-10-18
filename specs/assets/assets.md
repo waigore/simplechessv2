@@ -21,7 +21,7 @@ Produces vector piece and board art, quiet UI chrome, icons, locale-capable font
 | Icons | Applies | Mode and control icons ([UI.I1](../aesthetics/ui-style.md)) | [`icons`](kinds/icons.md) |
 | Fonts | Applies | T1–T3; `en` / `zh-Hant` / `ja` | [`fonts`](kinds/fonts.md) |
 | Sound effects | Applies | [SND.X1–X5](../aesthetics/sound.md) | [`sound-effects`](kinds/sound-effects.md) |
-| Music | Applies | [SND.M1](../aesthetics/sound.md) | [`music`](kinds/music.md) |
+| Music | Applies | [SND.M1](../aesthetics/sound.md) [SND.M2](../aesthetics/sound.md) | [`music`](kinds/music.md) |
 | Voice | N/A — [SND.V1](../aesthetics/sound.md) | No spoken characters | — |
 
 ## Sources

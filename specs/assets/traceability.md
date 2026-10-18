@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/assets/traceability.md`](../../.agents/sp
 | Shared game + Puzzle stream; no AI opponent art | definition | Hub kinds; content limits via aesthetics |
 | Load time; Accessibility; Localization | quality | [`access.md`](access.md) G1 G2; [`fonts`](kinds/fonts.md); piece silhouette checks |
 | E-pieces; FRM; PAL; P2 P3 | design / aesthetics | [`piece-sprites`](kinds/piece-sprites.md), [`board-backgrounds`](kinds/board-backgrounds.md) |
-| SND.M1 X1–X5; UI T* I1 F* | aesthetics | [`music`](kinds/music.md), [`sound-effects`](kinds/sound-effects.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md), [`fonts`](kinds/fonts.md) |
+| SND.M1 M2 X1–X5; UI T* I1 F* | aesthetics | [`music`](kinds/music.md), [`sound-effects`](kinds/sound-effects.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md), [`fonts`](kinds/fonts.md) |
 | Mode pick; Shared/Puzzle play screens | ux | [`access.md`](access.md) G1 G2; icons / interface |
 | Catalog / asset roots | adr | [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md); [`assets.md`](assets.md) |
 
