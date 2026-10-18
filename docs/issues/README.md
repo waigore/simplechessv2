@@ -28,7 +28,7 @@ Labels: [`.github/project-labels.yml`](../../.github/project-labels.yml). Choose
 | Audience | How |
 |----------|-----|
 | Humans (GitHub UI) | New issue → Epic / Task / Defect form |
-| Agents | `create-project-epic`, `create-project-task`, or `create-project-defect`; wave maps via `plan-project-waves`; filed-wave coherence via `audit-project-wave` |
+| Agents | `create-project-epic`, `create-project-task`, or `create-project-defect`; wave maps via `plan-project-waves`; filed-wave coherence via `audit-project-wave`; satisfied blocked-by via `unblock-project-issues` ([hierarchy.md](hierarchy.md)) |
 
 Agent defaults: create on GitHub with `status:pending-review`. Pass `--no-create` (or “draft only”) for title + body without filing. Optional inputs shared by skills: `title`, parent issue number (where applicable), `blocked_by` / `blocking` issue numbers. Collect content for every required section of the type; ask when missing — do not invent goal, scope, deliverables, or defect expected/actual.
 

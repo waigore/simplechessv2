@@ -31,6 +31,7 @@ Keep the live plan aligned with `specs/`. Anything the specs require is either a
 - Do not edit the repository: no commits, branches, pull requests, or changes to specs, code, assets, or demos.
 - Mutations stay in the issue domain: issues, labels, milestones, sub-issues, blocked-by, and epic/task structure. Filing an issue that *requests* repo work is in bounds.
 - Do not invent product decisions. Where a spec is missing or still undecided, file work that asks for that decision.
+- At the start of every pass, invoke [`unblock-project-issues`](../unblock-project-issues/SKILL.md) for all open typed issues unless the user named a narrower set. Do not restate it.
 - Invoke issue-domain skills when they fit ([`plan-project-waves`](../plan-project-waves/SKILL.md), [`audit-project-wave`](../audit-project-wave/SKILL.md), `create-project-*`, [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md), and the other issue workflow skills). Do not restate them. Do not run skills whose job is to change the tree.
 
 ## Report
