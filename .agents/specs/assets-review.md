@@ -27,7 +27,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 ### Tools
 
 - [ ] Each tool role states its source type, kinds served, required capabilities, and realized by. Each capability traces to an aesthetics element, a kind requirement, or a definition constraint.
-- [ ] Realized by is an Accepted Integration ADR that exists, "Pending — needs Integration ADR", or ADR-free per `docs/asset-tools.md` (Recraft, ElevenLabs). No product, service, model, or format names appear outside ADRs and that doc, except the default entry file format in `catalog.md`.
+- [ ] Realized by is an Accepted Integration ADR that exists, "Pending — needs Integration ADR", or ADR-free per `docs/asset-tools.md` (Recraft, ElevenLabs CLI). No product, service, model, or format names appear outside ADRs and that doc, except the default entry file format in `catalog.md`.
 - [ ] Access covers each role, and no credential is in the repository.
 
 ### Procedures and catalog

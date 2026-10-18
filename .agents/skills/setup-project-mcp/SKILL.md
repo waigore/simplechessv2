@@ -12,7 +12,8 @@ description: |-
     - user: "Add the GitHub MCP with GITHUB_TOKEN" → interview, wire all three
       clients disabled, update docs/mcp.md, open PR (env name only)
     - user: "Enable Recraft for me" → guide local enable + OAuth; no commit
-    - user: "Enable ElevenLabs for me" → guide local enable + OAuth; no commit
+    - user: "Enable ElevenLabs for me" → refuse MCP; point to ElevenLabs CLI
+      (docs/asset-tools-elevenlabs.md); assume ELEVENLABS_API_KEY in env
     - user: "Test that the new MCP works" → list tools, smoke call, report
 ---
 
@@ -48,7 +49,7 @@ Guide the user through project MCP wiring so Cursor, OpenCode, and Grok can use 
 - Do not commit `enabled: true` / Cursor enabled state; shipped default is disabled.
 - Keep all three clients in sync when adding or removing a declared server.
 - Not part of `ensure-project-setup`; MCP is optional per developer.
-- Asset-specific policy stays in [`docs/asset-tools.md`](../../../docs/asset-tools.md); this skill is general MCP wiring.
+- Asset-specific policy stays in [`docs/asset-tools.md`](../../../docs/asset-tools.md); this skill is general MCP wiring. ElevenLabs is CLI-only ([`docs/asset-tools-elevenlabs.md`](../../../docs/asset-tools-elevenlabs.md)) — never add or enable an ElevenLabs MCP server.
 
 ## Related
 
