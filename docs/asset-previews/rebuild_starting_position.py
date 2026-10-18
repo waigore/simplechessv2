@@ -15,7 +15,7 @@ Outputs (regenerable; not kept):
     starting-position.preview.png
 
 Usage (from repo root):
-  python3 game_assets/previews/rebuild_starting_position.py
+  python3 docs/asset-previews/rebuild_starting_position.py
 """
 from __future__ import annotations
 
@@ -280,8 +280,8 @@ def main() -> None:
     derived = {
         "piece_box": box,
         "sheet_bboxes": {k: list(v) for k, v in bboxes.items()},
-        "last_preview": "game_assets/previews/starting-position.preview.png",
-        "work_dir": "game_assets/previews/_work/",
+        "last_preview": "docs/asset-previews/starting-position.preview.png",
+        "work_dir": "docs/asset-previews/_work/",
     }
     (WORK / "last-run.json").write_text(json.dumps(derived, indent=2) + "\n")
     print("rebuilt", preview)

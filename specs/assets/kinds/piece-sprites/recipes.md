@@ -38,7 +38,7 @@ N/A — see [`style-series.md`](style-series.md).
 - **Settings**: transparent; square; Recraft `input_style_id` when active
 - **Seed policy**: record when returned; else `n/a`
 - **Post-processing**: parent S5–S9 (Chrome → edge flood-fill → crop → fit_contain → on-board 0.88); crush
-- **Outputs**: one V1 file; preview via `game_assets/previews/rebuild_starting_position.py`
+- **Outputs**: one V1 file; preview via `docs/asset-previews/rebuild_starting_position.py`
 
 ## Checks
 

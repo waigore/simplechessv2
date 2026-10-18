@@ -29,7 +29,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S8 | Fit | `fit_contain` square (LANCZOS); center; no stretch |
 | S9 | On-board | Box = 0.88 × square; centers from board layout JSON |
 
-S5–S9 definitive for SS1. Reproduce: [`game_assets/previews/README.md`](../../../game_assets/previews/README.md).
+S5–S9 definitive for SS1. Reproduce: [`docs/asset-previews/README.md`](../../../docs/asset-previews/README.md).
 
 ## Budgets
 

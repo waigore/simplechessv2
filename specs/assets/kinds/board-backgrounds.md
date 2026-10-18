@@ -27,7 +27,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S6 | Rasterize | Recraft SVG → PNG via Chrome headless only (not qlmanage/rsvg) |
 | S7 | Square layout | Centers + pitch in `starting-position.layout.json`; pieces 0.88 fill ([piece S9](piece-sprites.md)) |
 
-S5–S7 definitive for SS1 look. Reproduce: [`game_assets/previews/README.md`](../../../game_assets/previews/README.md).
+S5–S7 definitive for SS1 look. Reproduce: [`docs/asset-previews/README.md`](../../../docs/asset-previews/README.md).
 
 ## Budgets
 
@@ -66,7 +66,7 @@ S5–S7 definitive for SS1 look. Reproduce: [`game_assets/previews/README.md`](.
 - **Settings**: Recraft style when active; high square clarity
 - **Seed policy**: record or `n/a`
 - **Post-processing**: S5–S7 (orient BR light; Chrome rasterize; layout JSON); crush
-- **Outputs**: one V1 file; preview via `game_assets/previews/rebuild_starting_position.py`
+- **Outputs**: one V1 file; preview via `docs/asset-previews/rebuild_starting_position.py`
 
 ## Checks
 
