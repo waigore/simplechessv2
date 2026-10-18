@@ -28,9 +28,9 @@ For blockers and ordering:
 
 Use `none` when there are no blockers or no issues this one blocks. Merely related work belongs in `## Related tasks or defects` (defects) or prose — not as fake blocked-by edges.
 
-Closing a blocker resolves its native dependency. `status:accepted` stays open ([workflow.md](workflow.md)), so acceptance does not. While the blocker is open, [`unblock-project-issues`](../../.agents/skills/unblock-project-issues/SKILL.md) is what deletes a satisfied edge, and only when both hold:
+Closing a blocker resolves its native dependency. `status:accepted` stays open ([workflow.md](workflow.md)); acceptance is a human product-owner gate and does **not** gate dependency clearance. While the blocker is open, [`unblock-project-issues`](../../.agents/skills/unblock-project-issues/SKILL.md) deletes an edge when **either** holds:
 
-- The blocker is `status:accepted` or closed.
-- The default branch meets every done-condition in the blocker body. A task uses deliverables and acceptance criteria; an epic uses its goal; a defect uses expected behavior. Count code, specs, demos, and playtest evidence on that branch.
+1. **Satisfied in repo** — the default branch meets every done-condition in the blocker body. A task uses deliverables and acceptance criteria; an epic uses its goal; a defect uses expected behavior. Count code, specs, demos, and playtest evidence on that branch only (not other branches or open PRs).
+2. **Edge not warranted** — from both issue bodies and default-branch evidence, the blocked issue no longer depends on that blocker (or never did)—including scopes that diverged, a mistaken link, or equivalent work already on the default branch under other ownership.
 
-Keep the edge when the blocker is not accepted, when a done-condition is missing on the default branch, or when a condition cannot be checked. That includes work present on the default branch before acceptance. The skill adds no blocked-by edges. A create flow may still remove a mistaken link while both issues are open (linking doc above). After a deletion, set the blocked issue's `Blocked by` line and the blocker's `Blocking` line from the native links that remain (`none` when empty). Do not close the blocker to force resolution.
+Keep the edge when done-conditions are still missing **and** the dependency still reads as real, or when a condition cannot be checked. The skill adds no blocked-by edges. A create flow may still remove a mistaken link while both issues are open (linking doc above). After a deletion, set the blocked issue's `Blocked by` line and the blocker's `Blocking` line from the native links that remain (`none` when empty). Do not close the blocker to force resolution.
