@@ -9,10 +9,12 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Instant play; on-device moves | vision; definition; ADR-0001 | [`layers.md`](layers.md); [`CTR-local-move`](contracts/local-move.md); [`SEQ-apply-local-move`](sequences/apply-local-move.md) |
 | Optional Stockfish Advice stream | F-move-advice; ADR-0002 | [`CMP-advice-client`](components/advice-client.md); [`CTR-advice-stream`](contracts/advice-stream.md); [`SEQ-advice-stream`](sequences/advice-stream.md) |
 | Elo / Last mode / recent solved | fields-persist; ADR-0003 | [`persistence.md`](persistence.md); [`CMP-persist-store`](components/persist-store.md) |
-| Dual playtest ENV/DBG/TEL | playtest tools; ADR-0004 | [`verification.md`](verification.md) |
-| Asset catalog + manifest | assets access; ADR-0005 | [`asset-access.md`](asset-access.md); [`CMP-asset-resolver`](components/asset-resolver.md) |
-| Shared + Puzzle modes | design configuration / loops | Session components; [`SEQ-cold-open`](sequences/cold-open.md) |
+| Dual playtest ENV/DBG/TEL | playtest tools; ADR-0004 | [`verification.md`](verification.md); [`CMP-playtest-seams`](components/playtest-seams.md); [`CTR-playtest-drive`](contracts/playtest-drive.md); [`SEQ-playtest-headless-smoke`](sequences/playtest-headless-smoke.md) |
+| Asset catalog + manifest | assets access; ADR-0005 | [`asset-access.md`](asset-access.md); [`CMP-asset-resolver`](components/asset-resolver.md); [`CTR-asset-resolve`](contracts/asset-resolve.md) |
+| Shared + Puzzle modes | design configuration / loops | Session components; [`SEQ-cold-open`](sequences/cold-open.md); [`SEQ-shared-end-new-session`](sequences/shared-end-new-session.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
 | Design `CFG.*` | design configuration | [`configuration.md`](configuration.md) |
+| Advice stream DTO | F-move-advice | [`SCH-advice-update`](schemata/advice-update.md); [`CMP-advice-backend`](components/advice-backend.md) |
+| Puzzle attempt / Elo commit | puzzle stream; DIF; PRG | [`SCH-puzzle-attempt`](schemata/puzzle-attempt.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
 
 ## Topic coverage
 
@@ -20,10 +22,10 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 |-------|------------|---------------|
 | Layer decomposition | [`layers.md`](layers.md) | Applies |
 | Modular decomposition | [`modules.md`](modules.md) | Applies |
-| Components | [`components/`](components/) | Applies — critical-path set |
-| Contracts | [`contracts/`](contracts/) | Applies — local-move, advice-stream, persist-document |
-| Schemata and lifecycles | [`schemata/`](schemata/) | Applies — play-state, persist-doc |
-| Sequences | [`sequences/`](sequences/) | Applies — cold-open, apply-local-move, advice-stream |
+| Components | [`components/`](components/) | Applies — critical path + advice-backend + playtest-seams |
+| Contracts | [`contracts/`](contracts/) | Applies — includes asset-resolve, playtest-drive |
+| Schemata and lifecycles | [`schemata/`](schemata/) | Applies — includes advice-update, puzzle-attempt |
+| Sequences | [`sequences/`](sequences/) | Applies — includes puzzle-result-commit, shared-end-new-session, playtest-headless-smoke |
 | Failure model | [`failures.md`](failures.md) | Applies |
 | Concurrency and update loop | [`concurrency.md`](concurrency.md) | Applies |
 | Persistence and save mapping | [`persistence.md`](persistence.md) | Applies |

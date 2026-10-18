@@ -23,14 +23,14 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-advice-stream`](../contracts/advice-stream.md) | Start/stop |
-| C2 | advice-backend (M2) | calls | [`CTR-advice-stream`](../contracts/advice-stream.md) | Network stream |
+| C2 | [`CMP-advice-backend`](advice-backend.md) | calls | [`CTR-advice-stream`](../contracts/advice-stream.md) | Network stream |
 | C3 | [`CMP-presentation`](presentation.md) | calls | internal | Marks via session state |
 
 ## Owns / mutates
 
 | Schema or state | Access |
 |-----------------|--------|
-| `GS.adviceBestMove` `GS.adviceEval` | write |
+| `GS.adviceBestMove` `GS.adviceEval` (from [`SCH-advice-update`](../schemata/advice-update.md)) | write |
 | Position | read only |
 
 ## Diagram

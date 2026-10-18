@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents/specs/rules/technical/sequences.md).
 
 - **Trigger**: Shared game needs Advice for the side to move (On + online)
-- **Participants**: [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-advice-client`](../components/advice-client.md), advice-backend (M2), [`CMP-presentation`](../components/presentation.md)
+- **Participants**: [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-advice-client`](../components/advice-client.md), [`CMP-advice-backend`](../components/advice-backend.md), [`CMP-presentation`](../components/presentation.md)
 - **Contracts used**: [`CTR-advice-stream`](../contracts/advice-stream.md)
 - **Serves**: F-move-advice; streamed eval to `CFG.ADVICE_TIME_MS`
 - **Informed by**: requirement note — server Stockfish, time-capped stream, moves never wait

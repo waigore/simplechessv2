@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | C2 | [`CMP-shared-game-session`](shared-game-session.md) | calls | internal | Start / tear down Shared |
 | C3 | [`CMP-puzzle-session`](puzzle-session.md) | calls | internal | Start / tear down Puzzle |
 | C4 | [`CMP-presentation`](presentation.md) | both | internal | Mode-pick and navigation screens |
-| C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | internal | Ensure Boot group before ready |
+| C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Ensure Boot group before ready |
 
 ## Owns / mutates
 

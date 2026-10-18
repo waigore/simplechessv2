@@ -30,7 +30,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | Schema or state | Access |
 |-----------------|--------|
-| Current puzzle id and attempt state | write |
+| [`SCH-puzzle-attempt`](../schemata/puzzle-attempt.md) | write |
 | `GS.playerElo` `GS.recentSolved` (via persist) | write on result |
 
 ## Diagram
@@ -46,4 +46,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-[`persistence.md`](../persistence.md) M2 M4; [`failures.md`](../failures.md) T2 M2.
+[`persistence.md`](../persistence.md) M2 M4; [`failures.md`](../failures.md) T2 M2; [`SEQ-puzzle-result-commit`](../sequences/puzzle-result-commit.md).

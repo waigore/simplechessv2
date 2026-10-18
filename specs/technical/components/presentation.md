@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | C1 | [`CMP-session-router`](session-router.md) | both | internal | Screens |
 | C2 | [`CMP-shared-game-session`](shared-game-session.md) | both | internal | Shared play |
 | C3 | [`CMP-puzzle-session`](puzzle-session.md) | both | internal | Puzzle play |
-| C4 | [`CMP-asset-resolver`](asset-resolver.md) | calls | internal | Textures/audio/fonts |
+| C4 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Textures/audio/fonts |
 
 ## Owns / mutates
 

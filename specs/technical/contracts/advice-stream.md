@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents/specs/rules/technical/contracts.md).
 
 - **Kind**: message — streamed eval/best-move
-- **Provider**: advice-backend (M2); client façade [`CMP-advice-client`](../components/advice-client.md)
+- **Provider**: [`CMP-advice-backend`](../components/advice-backend.md); client façade [`CMP-advice-client`](../components/advice-client.md)
 - **Consumers**: [`CMP-shared-game-session`](../components/shared-game-session.md); presentation via session state
 - **Serves**: F-move-advice; Load time advice ≤2000 ms; Instant play
 - **Informed by**: [F-move-advice](../../design/features/move-advice.md); `CFG.ADVICE_TIME_MS`
