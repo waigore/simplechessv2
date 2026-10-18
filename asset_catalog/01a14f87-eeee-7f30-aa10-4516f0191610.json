@@ -1,0 +1,43 @@
+{
+  "id": "01a14f87-eeee-7f30-aa10-4516f0191610",
+  "handle": "piece-sprites/style-anchor-sheet",
+  "kind_spec": "AK-piece-sprites",
+  "coverage": ["AK-piece-sprites.V1"],
+  "serves": ["E-pieces", "PER.R1"],
+  "state": "draft",
+  "version": 1,
+  "files": ["piece-sprites/style-anchor-sheet.svg"],
+  "source_type": "ai-generation",
+  "tool_role": {"role": "TL.1", "adr": "adr-free"},
+  "recipe": "AK-piece-sprites.R1",
+  "generation": {
+    "prompt": "Complete chess piece sprite sheet: exactly two rows of six soft-matte vector Staunton icons on plain white. Top row cream ivory #F5F0E6 left to right: KING (cross), QUEEN (coronet+ball), ROOK (crenellations), BISHOP (mitre with diagonal slit), KNIGHT (horse head), PAWN (ball head, collar, short stem). Bottom row charcoal #2C2A28 same order: KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN. Same style both rows — soft cel shading from top-left, thin subtle outline OK. CRITICAL: every piece has nearly the SAME overall size and bounding box; each icon fills ~85% of an equal cell; do not make the pawn smaller or the king larger — distinguish types by silhouette shape only (tiny height cues OK). No text labels, no board, no extra pieces, game UI sprite set.",
+    "negative_prompt": "pixel art; 3D render; blood; rank badges; AI avatar; busy texture; neon; tournament UI; uneven piece scale; oversized king; tiny pawn",
+    "tool": "Recraft",
+    "operation": "generate_image",
+    "settings": {
+      "model": "recraftv4_1_pro_vector",
+      "image_size": "1:1"
+    },
+    "seed": "n/a — tool has no seed",
+    "inputs": {
+      "style_anchors": [],
+      "refs": [],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "generate_image",
+        "tool": "Recraft",
+        "date": "2026-10-18",
+        "notes": "Bootstrap style-anchor sheet; equal-size clause on 12-piece sheet prompt"
+      }
+    ]
+  },
+  "license": {
+    "grant": "Generated with Recraft; project use under Recraft terms for the signing account",
+    "tool": "Recraft",
+    "terms": "https://www.recraft.ai/docs"
+  },
+  "guidance": "Style-series bootstrap sheet (all 12 types/sides). Not the final per-piece ship files; used as style_anchor for APR.establish-style / create_style."
+}
