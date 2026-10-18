@@ -5,15 +5,15 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 ## Project
 
 - **Purpose**: Zen web chess — same-device two-player games and an adaptive solo puzzle stream, set at a cafe table ([`specs/vision.md`](specs/vision.md)).
-- **Language / engine**: Godot (2D web / touch) — [`specs/definition/definition.md`](specs/definition/definition.md). Scripting language TBD until the Engine ADR is Accepted.
-- **Frameworks / tools**: Godot web export; optional Stockfish advice (server, async); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
+- **Language / engine**: Godot 4.7.2 + GDScript (2D web / touch) — [`specs/definition/definition.md`](specs/definition/definition.md); [ADR-0001](specs/adr/decisions/0001-godot-engine.md).
+- **Frameworks / tools**: Godot web export; optional Stockfish advice via backend ([ADR-0002](specs/adr/decisions/0002-stockfish-advice-backend.md)); GitHub Actions CI (`Spec lint`, `Code lint`, label sync).
 
 ## Quick start commands
 
-- **Setup**: Install Godot (version TBD — Engine ADR). Clone this repo; no installable package yet.
+- **Setup**: Install Godot 4.7.2. Clone this repo; no installable package yet.
 - **Run**: Open the Godot project and run (or export to web). Project scaffold TBD.
-- **Test**: TBD — Engine ADR / coding conventions.
-- **Build / export**: Godot HTML5/web export for the browser. Exact targets TBD.
+- **Test**: TBD — coding conventions / technical specs.
+- **Build / export**: Godot HTML5/web export for the browser (ADR-0001).
 
 ## Labels
 
