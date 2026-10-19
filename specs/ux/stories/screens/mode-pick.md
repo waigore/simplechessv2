@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C2 | Puzzle stream | US1.4 |
 | C3 | Quit → confirm | US1.5 |
 | C4 | Switch locale, immediate | US1.9 |
-| C1 unavailable N/A | always available | US1.3 |
+| C1 unavailable | not S2 or S3 | US1.6 US1.10 |
 | S1 | Default | US1.1 |
 | S2 | EX.loading | US1.6 |
 | S3 | EX.confirm quit | US1.5 US1.7 |
@@ -74,7 +74,7 @@ Then the screen is puzzle-play
 ```gherkin
 Given Bottom player is on mode-pick S1
 When Bottom activates C3
-Then EX.confirm shows End this sitting?
+Then EX.confirm shows End this session?
 ```
 
 ### US1.6: Loading blocks
@@ -84,7 +84,7 @@ Then EX.confirm shows End this sitting?
 ```gherkin
 Given cold open before the board is playable
 When mode-pick would show
-Then EX.loading is shown and C1–C3 are not available
+Then EX.loading is shown and C1–C4 are not available
 ```
 
 ### US1.7: Cancel quit
@@ -115,5 +115,15 @@ Then the screen is mode-pick S1 and prior GS.lastMode remains
 Given Bottom player is on mode-pick S1 and GS.locale is en
 When Bottom activates C4
 Then R3 shows 繁體中文 and every copy string shows its zh-Hant form and the screen is mode-pick S1
+```
+
+### US1.10: C1 unavailable in quit confirm
+
+- **Proves**: C1
+
+```gherkin
+Given Bottom player is on mode-pick S3 quit confirm
+When Bottom activates C1
+Then the screen stays mode-pick and the quit confirm remains
 ```
 

@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 ## US1: Puzzle path
 
-As Bottom player, I enter and leave the stream so that practice fits one sitting.
+As Bottom player, I enter and leave the stream so that practice fits one session.
 
 ### US1.1: Enter
 

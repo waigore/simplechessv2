@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 ## US1: After the game
 
-As Bottom player, I choose play again or stop so that the sitting continues or returns to modes.
+As Bottom player, I choose play again or stop so that the session continues or returns to modes.
 
 ### US1.1: Result shown
 

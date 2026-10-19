@@ -61,7 +61,7 @@ Then R2 shows Elo 1000
 ```gherkin
 Given a wrong move just failed the open puzzle (clear fail, puzzle-stream K2)
 When the cue is shown before the next deal
-Then R2 shows the fail cue
+Then R2 shows Wrong move
 ```
 
 ### US2.6: Actions visible
@@ -72,4 +72,34 @@ Then R2 shows the fail cue
 Given puzzle-play S1
 When the screen is shown
 Then R3 shows Reveal, Abandon, and Leave stream
+```
+
+### US2.7: Solved cue
+
+- **Proves**: R2
+
+```gherkin
+Given [END.W1](../../../design/end-conditions/conditions.md) solved the open puzzle
+When the cue is shown before the next deal
+Then R2 shows Solved
+```
+
+### US2.8: Abandon cue
+
+- **Proves**: R2
+
+```gherkin
+Given [END.L6](../../../design/end-conditions/conditions.md) abandoned the open puzzle
+When the cue is shown before the next deal
+Then R2 shows Abandoned
+```
+
+### US2.9: Legal marks visible
+
+- **Proves**: R1
+
+```gherkin
+Given GS.selectedPiece is a White knight on g1 (legal moves derived from GS.position, game-state)
+When the screen is shown
+Then R1 marks each legal destination square
 ```

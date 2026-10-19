@@ -47,9 +47,18 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 |-----|--------|---------|
 | title | Shared game setup | header |
 | white_seat | White seat | C1 |
+| seat_top | Top | C1 |
+| seat_bottom | Bottom | C1 |
 | clock | Clock | C2 |
+| clock_untimed | Untimed | C2 |
+| clock_blitz | Blitz | C2 |
+| clock_rapid | Rapid | C2 |
 | increment | Increment | C3 |
+| increment_3s | 3 s | C3 |
+| increment_5s | 5 s | C3 |
 | advice | Advice | C4 |
+| advice_on | On | C4 |
+| advice_off | Off | C4 |
 | start | Start | C5 |
 | back | Back | C6 |
 

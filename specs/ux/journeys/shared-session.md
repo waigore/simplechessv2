@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/ux/journeys.md`](../../../.agents/specs/r
 
 ## Entry and exit
 
-- **N1**: Starts on `mode-pick` when Bottom opens a sitting
+- **N1**: Starts on `mode-pick` when Bottom opens a session
 - **N2**: Ends on `mode-pick` after Stop, or on `shared-setup` after Play again (new session continues)
 
 ## Steps

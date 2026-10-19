@@ -64,64 +64,34 @@ When the actor activates C6
 Then no promotion type is committed
 ```
 
-### US3.5: Other seat accepts
+### US3.5: Accept the offer
 
 - **Proves**: C7, S6
 
 ```gherkin
 Given shared-play S6 and Top offered the draw
 When Bottom activates C7
-Then the screen is shared-result and the result is a draw
+Then the screen is shared-result and R1 shows Draw ([END.D2](../../../design/end-conditions/conditions.md))
 ```
 
-### US3.6: Offerer cannot accept
-
-- **Proves**: C7
-
-```gherkin
-Given shared-play S6 and Top offered the draw
-When Top activates C7
-Then the screen stays S6
-```
-
-### US3.7: Other seat declines
+### US3.7: Decline the offer
 
 - **Proves**: C8
 
 ```gherkin
 Given shared-play S6 and Top offered the draw
 When Bottom activates C8
-Then the screen is shared-play S1 and Top's seat is still side to move
+Then the screen is shared-play S1 and R2 shows White to move
 ```
 
-### US3.8: Offerer cannot decline
-
-- **Proves**: C8
-
-```gherkin
-Given shared-play S6 and Top offered the draw
-When Top activates C8
-Then the screen stays S6
-```
-
-### US3.9: Offerer withdraws
+### US3.9: Withdraw the offer
 
 - **Proves**: C9
 
 ```gherkin
 Given shared-play S6 and Top offered the draw
 When Top activates C9
-Then the screen is shared-play S1 and Top's seat is still side to move
-```
-
-### US3.10: Other seat cannot withdraw
-
-- **Proves**: C9
-
-```gherkin
-Given shared-play S6 and Top offered the draw
-When Bottom activates C9
-Then the screen stays S6
+Then the screen is shared-play S1 and R2 shows White to move
 ```
 
 ### US3.12: Confirm opens the offer
@@ -131,7 +101,27 @@ Then the screen stays S6
 ```gherkin
 Given shared-play S2 showing Offer a draw?
 When the side to move activates Confirm
-Then the screen is shared-play S6 and that clock is still running
+Then the screen is shared-play S6 and R2 still shows both clocks
+```
+
+### US3.14: Move lapses the offer
+
+- **Proves**: S6
+
+```gherkin
+Given shared-play S6 and a piece is selected
+When the side to move activates C2 on a legal destination
+Then the screen is shared-play S1 and no draw offer panel is shown
+```
+
+### US3.15: Offer panel controls
+
+- **Proves**: S6
+
+```gherkin
+Given shared-play S6
+When the screen is shown
+Then C7, C8, and C9 are shown as available
 ```
 
 ### US3.11: Refused place

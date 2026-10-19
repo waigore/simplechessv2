@@ -18,14 +18,14 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | R2 | `GS.whiteClock`, `GS.blackClock` | Clock is Blitz or Rapid |
 | R2 | `GS.sideToMove` | always |
 | R3 | `GS.adviceBestMove`, `GS.adviceEval` | Advice On and online and values set |
-| R2 | Check cue | side to move in check |
+| R2 | Check cue: the word Check and [PAL.C8](../../aesthetics/palette.md) | side to move in check |
 
 ## Regions
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
 | R1 | Board | Position and coordinates | 8×8; edge letters/numbers; selection and legal marks. `IN.deselect` clears the selection |
-| R2 | Status | Turn, clocks, check | Side to move; clocks when timed; check |
+| R2 | Status | Turn, clocks, check | Side to move; clocks when timed; Check word and [PAL.C8](../../aesthetics/palette.md) |
 | R3 | Advice | Shared Advice chrome | Toggle; best-move marks when On |
 | R4 | End | Resign or draw | Resign; Offer draw |
 
@@ -55,7 +55,15 @@ S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
 | cancel | Cancel | S2 |
 | advice_error | Advice unavailable. Play continues. | S3 |
 | dismiss | Dismiss | S3 |
-| to_move | to move | R2 |
+| white_to_move | White to move | R2 |
+| black_to_move | Black to move | R2 |
+| check | Check | R2 |
+| choose_promotion | Choose promotion | S4 |
+| refused_place | Refused place | S5 |
+| queen | Queen | C6 |
+| rook | Rook | C6 |
+| bishop | Bishop | C6 |
+| knight | Knight | C6 |
 
 ## Experience intent
 
