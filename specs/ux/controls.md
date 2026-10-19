@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/ux/controls.md`](../../.agents/specs/rules/ux/controls.md).
 
+- **Serves**: Instant play; Web touch (definition primary input); every screen’s controls; [camera-controls.md](../view/camera-controls.md) (no camera actions).
+
 ## UI actions
 
 | ID | Action | Meaning |

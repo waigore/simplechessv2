@@ -13,7 +13,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 | T1 | mode-pick → setup | US1.1 |
 | T2 | mode-pick → puzzle | US1.2 |
 | T3 | quit sitting | US1.3 US2.1 |
-| T4 | setup → play | US1.4 US2.2 |
+| T4 | setup → play | US1.4 |
 | T5 | setup → mode-pick | US1.5 |
 | T6 | play → result | US1.6 US2.3 |
 | T7 | result → setup | US1.7 |

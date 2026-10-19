@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/ux/glossary.md`](../../.agents/specs/rules/ux/glossary.md).
 
+- **Serves**: Instant play, Clear board, Cafe calm; Shared game and Puzzle stream (definition); the UX specs, deferring to [design/glossary.md](../design/glossary.md) and [view/glossary.md](../view/glossary.md).
+
 ## Terms
 
 | Term | Definition | Detailed in |

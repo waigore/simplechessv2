@@ -119,7 +119,7 @@ Then the screen stays puzzle-play
 ```gherkin
 Given Top player is on shared-play S1 and Bottom seat is side to move
 When Top activates UI-shared-play.C2
-Then the position is unchanged
+Then the interface asks the game for no place And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
 ```
 
 Choice scenarios: [`top-player-choices.md`](top-player-choices.md).

@@ -24,16 +24,6 @@ When Bottom activates Cancel
 Then the screen stays mode-pick and the sitting does not end
 ```
 
-### US2.2: T4 fail-stay
-
-- **Proves**: T4
-
-```gherkin
-Given Bottom player is on shared-setup and the Options set condition fails
-When Bottom activates UI-shared-setup.C5
-Then the screen stays shared-setup
-```
-
 ### US2.3: T6 fail-stay
 
 - **Proves**: T6

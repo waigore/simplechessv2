@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/aesthetics.md`](../../.agents/
 |----|--------|-------------|--------------|--------|
 | P1 | Snap settle | Move visuals and cues finish without network wait | Piece travel and its SFX end within [PHY.M1](../view/physics.md) (≤ 0.15 s) | Instant play |
 | P2 | Distinct vectors | Six piece types read from shape alone | A casual player names each type from a solid-black silhouette at the size in [FRM.L1](form.md) | Clear board; [PER.R1](../view/perception.md) |
-| P3 | Quiet mahogany | Warm wood board and soft cafe calm, not tournament chrome | Board reads as mahogany wood; UI and chrome stay quiet beside it | Cafe calm; [experience.md](../design/experience.md) mood |
+| P3 | Quiet mahogany | Warm wood board and soft cafe calm, not tournament chrome | Board reads as mahogany ([PAL.C2](palette.md)); UI fills use only the [PAL.S3](palette.md) swatches (C9, C10, C6); no accent outside [PAL.C6](palette.md)/[PAL.C7](palette.md)/[PAL.C8](palette.md)/[PAL.C11](palette.md); panel fill [PAL.C10](palette.md) differs from light square [PAL.C1](palette.md) by less than the board squares' [PAL.K1](palette.md) 0.25 luminance difference | Cafe calm; [experience.md](../design/experience.md) mood |
 
 When pillars conflict: P1 > P2 > P3 (vision tradeoffs).
 

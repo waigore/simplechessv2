@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C2 | Place | US1.2 US1.10 |
 | C3 | Reveal confirm | US1.3 |
 | C4 | Abandon confirm | US1.4 |
-| C5 | Leave confirm | US1.5 US1.6 |
+| C5 | Leave confirm | US1.5 |
 | C3 unavailable | Not on S4 | US3.5 |
 | C4 unavailable | Not on S4 | US3.6 |
 | C5 unavailable | Not on S4 | US3.7 |

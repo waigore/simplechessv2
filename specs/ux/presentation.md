@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/ux/presentation.md`](../../.agents/specs/rules/ux/presentation.md).
 
+- **Serves**: Instant play, Clear board, Cafe calm; Accessibility, Localization (quality); [ui-style.md](../aesthetics/ui-style.md); screens and journeys.
+
 ## Binding
 
 - **Design system**: `linear` / `design-systems/linear`

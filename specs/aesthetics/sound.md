@@ -18,10 +18,10 @@ Playlist order and when beds change: [experience.md](../design/experience.md).
 | ID | Category | Character | Duration range |
 |----|----------|-----------|----------------|
 | X1 | Touch / select | Wood / tactile tap | 0.05–0.15 s — piece selected ([experience/feedback.md](../design/experience/feedback.md)) |
-| X2 | Movement | Soft wood place / settle | 0.08–0.15 s — move completed; ends with travel ([PHY.M1](../view/physics.md)) |
-| X3 | Impact / check | Short taut cue | 0.10–0.25 s — check |
-| X4 | Ability / end | Slightly longer resolved cue | 0.20–0.40 s — checkmate, resign, or clock loss |
-| X5 | Interface / puzzle fail | Soft negative tap | 0.08–0.20 s — wrong puzzle move |
+| X2 | Movement | Soft wood place / settle | 0.08–0.15 s — move completed ([experience/feedback.md](../design/experience/feedback.md)); ends with travel ([PHY.M1](../view/physics.md)) |
+| X3 | Impact / check | Short taut cue | 0.10–0.25 s — check ([experience/feedback.md](../design/experience/feedback.md)) |
+| X4 | Ability / end | Slightly longer resolved cue | 0.20–0.40 s — checkmate, resign, or clock loss ([experience/feedback.md](../design/experience/feedback.md)) |
+| X5 | Interface / puzzle fail | Soft negative tap | 0.08–0.20 s — wrong puzzle move ([experience/feedback.md](../design/experience/feedback.md)) |
 
 Sound alone never required for a rules outcome ([experience.md](../design/experience.md)).
 

@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/ux/exceptions.md`](../../.agents/specs/rules/ux/exceptions.md).
 
+- **Serves**: Instant play; Load time, Reliability, Save durability, Localization (quality); [mode-pick](../design/flows/mode-pick.md) interrupt; [progression.md](../design/progression.md) save-failure.
+
 ## Exceptions
 
 | ID | When it appears | Actor sees | Actor can | Blocks the screen | Recovery |
