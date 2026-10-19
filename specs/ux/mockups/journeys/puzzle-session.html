@@ -5,20 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Journey: Puzzle session</title>
   <style>
-    :root { --fg:#2C2A28; --bg:#F7F1E8; --line:#5C3A2A; --accent:#B8940C; --muted:#5c574e; }
-    * { box-sizing:border-box; }
-    body { margin:0; font:16px/1.4 system-ui,sans-serif; color:var(--fg); background:var(--bg); }
-    header, main { padding:1rem; }
-    header p { color:var(--muted); margin:0; }
-    .layout { display:grid; grid-template-columns:16rem 1fr; gap:1rem; }
-    a { color:var(--accent); }
-    iframe { width:100%; min-height:40rem; border:1px solid var(--line); background:#fff; }
-    @media (max-width:48rem) { .layout { grid-template-columns:1fr; } }
+    :root {
+      --bg: #F7F1E8;
+      --surface: #FFF9F0;
+      --fg: #2C2A28;
+      --muted: #5c574e;
+      --border: color-mix(in oklch, #5C3A2A 28%, #F7F1E8);
+      --accent: #B8940C;
+      --table: #5C3A2A;
+      --font-display: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(120% 80% at 50% -10%, color-mix(in oklch, var(--table) 22%, transparent), transparent 55%),
+        var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    header, main { padding: var(--gap-md); }
+    header p { color: var(--muted); margin: 0; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0.25rem 0;
+    }
+    .meta { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+    .layout { display: grid; grid-template-columns: 16rem 1fr; gap: var(--gap-md); }
+    nav[aria-label="Steps"] {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--gap-md);
+    }
+    ol { margin: 0; padding-left: 1.25rem; }
+    li { margin: 0.5rem 0; }
+    a {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    a:hover, a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
+    iframe {
+      width: 100%;
+      min-height: 42rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+    }
+    @media (max-width: 48rem) { .layout { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <header>
-    <p>J-puzzle-session</p>
+    <p class="meta">J-puzzle-session</p>
     <h1>Puzzle session</h1>
     <p>Bottom player — practice puzzles then leave the stream</p>
   </header>

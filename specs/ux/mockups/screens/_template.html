@@ -5,59 +5,125 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Screen: <!-- fill in: name --></title>
   <style>
+    /* Play-UI seed: bind tokens to presentation.md (linear-app + UIS/PAL overrides). */
     :root {
-      --fg: #1a1a1a;
-      --bg: #f7f6f3;
-      --line: #c8c4bc;
-      --accent: #0b57d0;
+      --bg: #F7F1E8;
+      --surface: #FFF9F0;
+      --fg: #2C2A28;
       --muted: #5c574e;
+      --border: color-mix(in oklch, #5C3A2A 28%, #F7F1E8);
+      --accent: #B8940C;
+      --table: #5C3A2A;
+      --font-display: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --fs-h1: clamp(28px, 4vw, 36px);
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --container: 36rem;
     }
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      font: 16px/1.4 system-ui, sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(120% 80% at 50% -10%, color-mix(in oklch, var(--table) 22%, transparent), transparent 55%),
+        var(--bg);
       color: var(--fg);
-      background: var(--bg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.5;
     }
-    article { max-width: 40rem; margin: 0 auto; padding: 1rem; }
-    header p { color: var(--muted); margin: 0; }
-    nav[aria-label="States"] { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
-    nav[aria-label="States"] a { color: var(--accent); }
-    .states > section { display: none; border: 1px solid var(--line); padding: 1rem; }
-    .states:not(:has(:target)) > section[data-state="default"] { display: block; }
-    .states:has(:target) > section:target { display: block; }
-    [data-region] { border: 1px dashed var(--line); padding: 0.75rem; margin: 0.5rem 0; }
-    [data-region]::before {
-      content: attr(data-region) " " attr(aria-label);
-      display: block;
-      font-size: 0.75rem;
+    button { font: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 600; margin: 0; }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .lead { margin: 0; color: var(--muted); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; min-width: 44px;
+      padding: 11px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg);
+      font-size: 15px; font-weight: 510;
+    }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+    .spec-chrome {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--gap-md) var(--gap-md) 0;
+    }
+    .spec-chrome h1 { font-size: 1.25rem; }
+    .states-nav {
+      display: flex; flex-wrap: wrap; gap: var(--gap-xs);
+      max-width: var(--container);
+      margin: var(--gap-sm) auto 0;
+      padding-inline: var(--gap-md);
+    }
+    .states-nav a {
+      font-family: var(--font-mono);
+      font-size: 12px;
       color: var(--muted);
     }
-    button { min-height: 44px; min-width: 44px; }
+    .stage {
+      max-width: var(--container);
+      margin: var(--gap-md) auto;
+      padding: 0 var(--gap-md) var(--gap-md);
+    }
+    .states > section { display: none; }
+    .states:not(:has(:target)) > section[data-state="default"] { display: block; }
+    .states:has(:target) > section:target { display: block; }
+    [data-region]::before {
+      content: attr(data-region) " · " attr(aria-label);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--gap-xs);
+    }
   </style>
 </head>
 <body>
   <!-- Template: copy to mockups/screens/<kebab-name>.html and delete this comment. Authoring rules: .agents/specs/rules/ux/screen-mockup.md -->
   <article data-screen="UI-<!-- fill in: kebab-name -->">
-    <header>
-      <p>UI-<!-- fill in: kebab-name --></p>
+    <header class="spec-chrome">
+      <p class="meta">UI-<!-- fill in: kebab-name --></p>
       <h1><!-- fill in: screen name --></h1>
-      <p><!-- fill in: job --></p>
+      <p class="lead"><!-- fill in: job --></p>
     </header>
-    <nav aria-label="States">
+    <nav class="states-nav" aria-label="States">
       <a href="#state-default">Default</a>
       <a href="#ex-loading">EX.loading</a>
       <!-- fill in: one link per exception this screen uses. Delete the rest. -->
     </nav>
-    <div class="states">
+    <div class="stage states">
       <section id="state-default" data-state="default">
-        <section data-region="R1" aria-label="<!-- fill in: region name -->">
-          <p><!-- fill in: contents and copy --></p>
-          <button type="button" data-control="C1"><!-- fill in: control name --></button>
-        </section>
+        <div class="card">
+          <section data-region="R1" aria-label="<!-- fill in: region name -->">
+            <p><!-- fill in: contents and copy --></p>
+            <button type="button" class="btn" data-control="C1"><!-- fill in: control name --></button>
+          </section>
+        </div>
       </section>
       <section id="ex-loading" data-state="EX.loading">
-        <p><!-- fill in: what EX.loading shows on this screen --></p>
+        <div class="card">
+          <p><!-- fill in: what EX.loading shows on this screen --></p>
+        </div>
       </section>
     </div>
   </article>

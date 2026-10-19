@@ -6,26 +6,57 @@
   <title>Journey: <!-- fill in: name --></title>
   <style>
     :root {
-      --fg: #1a1a1a;
-      --bg: #f7f6f3;
-      --line: #c8c4bc;
-      --accent: #0b57d0;
+      --bg: #F7F1E8;
+      --surface: #FFF9F0;
+      --fg: #2C2A28;
       --muted: #5c574e;
+      --border: color-mix(in oklch, #5C3A2A 28%, #F7F1E8);
+      --accent: #B8940C;
+      --table: #5C3A2A;
+      --font-display: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --gap-md: 20px;
+      --radius-lg: 12px;
     }
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      font: 16px/1.4 system-ui, sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(120% 80% at 50% -10%, color-mix(in oklch, var(--table) 22%, transparent), transparent 55%),
+        var(--bg);
       color: var(--fg);
-      background: var(--bg);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
     }
-    header, main { padding: 1rem; }
+    header, main { padding: var(--gap-md); }
     header p { color: var(--muted); margin: 0; }
-    .layout { display: grid; grid-template-columns: 16rem 1fr; gap: 1rem; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 600;
+      margin: 0.25rem 0;
+    }
+    .meta { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+    .layout { display: grid; grid-template-columns: 16rem 1fr; gap: var(--gap-md); }
+    nav[aria-label="Steps"] {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--gap-md);
+    }
     ol { margin: 0; padding-left: 1.25rem; }
     li { margin: 0.5rem 0; }
     a { color: var(--accent); }
-    iframe { width: 100%; min-height: 40rem; border: 1px solid var(--line); background: #fff; }
+    iframe {
+      width: 100%;
+      min-height: 40rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+    }
     .note { color: var(--muted); font-size: 0.875rem; }
     @media (max-width: 48rem) { .layout { grid-template-columns: 1fr; } }
   </style>
@@ -33,7 +64,7 @@
 <body>
   <!-- Template: copy to mockups/journeys/<kebab-name>.html and delete this comment. Authoring rules: .agents/specs/rules/ux/journey-mockup.md -->
   <header>
-    <p>J-<!-- fill in: kebab-name --></p>
+    <p class="meta">J-<!-- fill in: kebab-name --></p>
     <h1><!-- fill in: journey name --></h1>
     <p><!-- fill in: actor and goal --></p>
   </header>
