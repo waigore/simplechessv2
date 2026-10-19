@@ -1,0 +1,54 @@
+{
+  "id": "01a151ef-6a32-77ec-ace1-9190aa56b7dc",
+  "handle": "interface-art/style-anchor-sheet",
+  "kind_spec": "AK-interface-art",
+  "coverage": ["AK-interface-art.V1", "AK-interface-art.V2"],
+  "serves": ["Cafe calm"],
+  "state": "approved",
+  "version": 1,
+  "files": ["interface-art/style-anchor-sheet.svg"],
+  "source_type": "human-made",
+  "supplier": "agent",
+  "recipe": "AK-interface-art.R1",
+  "tool_role": {"role": "TL.1", "adr": "adr-free"},
+  "generation": {
+    "prompt": "Hand-authored SVG style sheet: left F1 panel (rounded rect, cream daylight linear gradient #FFFBF5→#F7F1E8→#E8D5B5→#D9C0A0, soft sheen, mahogany stroke #5C3A2A); right F2 chip (horizontal pill, lighter cream gradient, stroke #A18C7F). Plain white canvas. No text, no grain, no glassmorphism.",
+    "negative_prompt": "glassmorphism; neon; heavy shadow stacks; esports HUD; baked text; paper grain",
+    "tool": "local-SVG",
+    "operation": "author",
+    "settings": {
+      "medium": "SVG",
+      "gradients": ["panelFill", "panelSheen", "panelInner", "chipFill"]
+    },
+    "seed": "n/a",
+    "inputs": {
+      "style_anchors": [],
+      "refs": ["UI.F1", "UI.F2", "PAL.C10", "PAL.C5", "PAL.C1"],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "author",
+        "tool": "local-SVG",
+        "date": "2026-10-19",
+        "notes": "PO preferred cream gradient over flat Recraft bootstrap; rejected paper-grain variant"
+      }
+    ],
+    "series": {
+      "id": "AK-interface-art.SS1",
+      "recraft_style_id": "16e2245a-a7d1-41a3-bf06-2792ca253c1c"
+    }
+  },
+  "license": {
+    "grant": "Project-authored SVG; Recraft style created from rasterized sheet under account terms",
+    "tool": "local-SVG + Recraft create_style",
+    "terms": "https://www.recraft.ai/docs"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO kept no-grain cream-gradient sheet. Needs human signed off: K4/P3 cafe mood. Measured: B1 ~2KB; S3 no baked text; K1 clear; soft cream gradient within PAL family. Ship panel/chip files still pending series generate."
+  },
+  "guidance": "Interface-art SS1 style anchor (F1 panel + F2 chip). Recraft style 16e2245a-a7d1-41a3-bf06-2792ca253c1c. Not the final per-surface ship files alone."
+}
