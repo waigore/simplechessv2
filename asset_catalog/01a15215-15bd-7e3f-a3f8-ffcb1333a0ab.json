@@ -1,0 +1,32 @@
+{
+  "id": "01a15215-15bd-7e3f-a3f8-ffcb1333a0ab",
+  "handle": "fonts/noto-sans",
+  "kind_spec": "AK-fonts",
+  "coverage": ["AK-fonts.V1"],
+  "serves": ["Localization", "Accessibility"],
+  "state": "approved",
+  "version": 1,
+  "files": [
+    "fonts/noto-sans-latin-400.woff2",
+    "fonts/noto-sans-latin-500.woff2",
+    "fonts/noto-sans-latin-600.woff2",
+    "fonts/OFL-NotoSans.txt"
+  ],
+  "source_type": "third-party",
+  "supplier": "Google Fonts / Noto Project via @fontsource/noto-sans 5.3.0",
+  "license": {
+    "grant": "SIL Open Font License 1.1 — web embedding allowed",
+    "source": "https://github.com/notofonts/latin-greek-cyrillic",
+    "license": "OFL-1.1",
+    "attribution": "Copyright 2022 The Noto Project Authors",
+    "proof": "fonts/OFL-NotoSans.txt",
+    "terms": "http://scripts.sil.org/OFL"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO confirmed as soft SS1 anchor. S1 humanist sans with 400/500/600 for T2/T3/T1. S3/K3 OFL web-embed. S4/K6 WOFF2. Scripts: Latin here; zh-Hant/ja via paired fonts/noto-sans-cjk (K1). K2 needs human at phone width: PO specimen keep. K4: kind total with CJK pair ~2.07 MiB slightly over preferred 2 MB — accepted for full TC+JP Regular coverage; CJK 500/600 deferred."
+  },
+  "guidance": "SS1 soft style anchor — Latin weights. Pair with fonts/noto-sans-cjk."
+}
