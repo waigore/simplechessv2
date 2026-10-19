@@ -11,6 +11,7 @@ Part of [`experience.md`](../experience.md).
 | Check | Side to move's king is in check | high |
 | Checkmate, resign, or clock loss | Game over and who won or drew | high |
 | Wrong puzzle move | That move failed the puzzle | high |
+| Illegal place refused | The attempt did not move; the same piece stays selected | high |
 | Puzzle solved or abandoned | Result; next puzzle will deal | medium |
 | Advice ready (On and online) | Best move and eval up; move not delayed | medium |
 | Draw end | Game ended in a draw | medium |

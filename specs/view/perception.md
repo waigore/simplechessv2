@@ -15,6 +15,7 @@ Authoring rules: [`.agents/specs/rules/view/perception.md`](../../.agents/specs/
 | R5 | Advice ([F-move-advice](../design/features/move-advice.md)) | Best-move from/to highlights, arrow, and eval visible when set; never obscure R1 | all |
 | R6 | Side to move / check | A non-audio indicator of side to move and of check is inside the frame at all times | all |
 | R7 | Board coordinates (files a–h, ranks 1–8) | Letters and numbers along outer edges only; stay correct after [CAM-board.M2](cameras/board.md) White-seat flip; never drawn inside squares | all |
+| R8 | Refused place | The attempted square flashes [PAL.C8](../aesthetics/palette.md), then the selection and legal marks show as before | all |
 
 ## Depth cues
 
