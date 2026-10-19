@@ -14,11 +14,11 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../../.agents/
 | I13 | Castling form | PS1.3 |
 | I14 | Kingside squares | PS1.3 |
 | I15 | Queenside squares | PS1.4 |
-| I16 | King unmoved | PS1.5 |
-| I17 | Rook unmoved | PS1.6 |
-| I18 | Path empty | PS1.7 |
-| I19 | Not in check | PS1.8 |
-| I20 | Cross/end safe | PS1.9 |
+| I16 | King unmoved | PS1.3 PS1.5 |
+| I17 | Rook unmoved | PS1.3 PS1.6 |
+| I18 | Path empty | PS1.3 PS1.7 |
+| I19 | Not in check | PS1.3 PS1.8 |
+| I20 | Cross/end safe | PS1.3 PS1.9 |
 | I21 | Any fail → illegal | PS1.5 |
 | I22 | After castling rights | PS1.3 |
 
@@ -48,10 +48,11 @@ Then the move is illegal
 
 ### PS1.3: Kingside castling
 
-- **Proves**: I13, I14, I22
+- **Proves**: I13, I14, I16, I17, I18, I19, I20, I22
 
 ```gherkin
-Given White to move And castling rights hold for kingside
+Given White to move And White king on e1 (P4 false) And White h1 rook (P4 false)
+  And f1 and g1 empty And White is not in check And f1 and g1 not attacked
 When White castles kingside
 Then king is on g1 And rook from h1 is on f1 And both P4 are true
 ```

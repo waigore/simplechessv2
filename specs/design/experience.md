@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/design/experience.md`](../../.agents/specs/rules/design/experience.md).
 
+- **Serves**: Instant play, Clear board, and Cafe calm (vision); a commute session of about 15–40 minutes (definition scope).
+
 ## Experience goals
 
 | Vision quality | Moment the player feels it | How the design produces it |
@@ -14,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/design/experience.md`](../../.agents/spec
 
 - **Session arc**: Open → [mode pick](flows/mode-pick.md) → one [Shared game](glossary.md) or [Puzzle stream](glossary.md) stretch → leave when choosing, or start another Shared game after an end.
 - **Rhythm**: Think → move → short settle → next turn or puzzle. [Player Elo](glossary.md) nudges the next deal after each puzzle result.
-- **Durations**: One Shared game or several puzzles in a ~15–40 min sitting ([design.md](design.md)). Each puzzle is one short attempt.
+- **Durations**: One Shared game or several puzzles in a ~15–40 min session ([design.md](design.md)). Each puzzle is one short attempt.
 
 ## Feedback principles
 

@@ -12,7 +12,7 @@ Split from [`fields-play.md`](fields-play.md) by scope; that file proves the ses
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| GS.selectedPiece | Piece under select | PS1.1 PS1.2 |
+| GS.selectedPiece | Piece under select | PS1.1 PS1.2 PS1.5 |
 | GS.online | Connection observed | PS1.3 |
 | GS.adviceBestMove | Advice best move | PS1.4 |
 | GS.adviceEval | Advice eval | PS1.4 |
@@ -59,4 +59,14 @@ Then GS.online is false
 Given Advice On And online And a best move is ready
 When advice is set
 Then GS.adviceBestMove is that move And GS.adviceEval is its eval; with no best move both are none
+```
+
+### PS1.5: Only side-to-move piece selects
+
+- **Proves**: GS.selectedPiece
+
+```gherkin
+Given GS.sideToMove is White And a Black pawn on d5
+When the Black pawn is selected
+Then GS.selectedPiece remains none
 ```

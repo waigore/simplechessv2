@@ -20,9 +20,9 @@ None — no content or mode unlocks.
 
 | ID | What | Persists across | Lost or reset when |
 |----|------|-----------------|--------------------|
-| P1 | [Player Elo](glossary.md) (A1) | Sittings, in the browser's storage for this game | The browser clears this game's storage |
-| P2 | Last mode (Shared game or Puzzle stream) | Sittings, in the browser's storage for this game | The browser clears this game's storage |
-| P3 | `GS.recentSolved` (recent solved puzzle IDs) | Sittings, in the browser's storage for this game | The browser clears this game's storage |
+| P1 | [Player Elo](glossary.md) (A1) | Sessions | This game's saved data is cleared |
+| P2 | Last mode (Shared game or Puzzle stream) | Sessions | This game's saved data is cleared |
+| P3 | `GS.recentSolved` (recent solved puzzle IDs) | Sessions | This game's saved data is cleared |
 
 ## Committing progress
 
@@ -40,4 +40,4 @@ None — no content or mode unlocks.
 
 ## Experience intent
 
-Each puzzle result gently steers the next one via [Player Elo](glossary.md). A commute [Sitting](glossary.md) feels adaptive, not like climbing a career ladder.
+Each puzzle result gently steers the next one via [Player Elo](glossary.md). A commute [Session](glossary.md) feels adaptive, not like climbing a career ladder.

@@ -21,7 +21,7 @@ Authoring rules: [`.agents/specs/rules/design/scenarios.md`](../../../.agents/sp
 
 | ID | Player does | Game responds (rule applied) | Resulting state |
 |----|-------------|------------------------------|-----------------|
-| W1.1 | Opens the game | Mode pick starts ([FL-mode-pick.N1](../flows/mode-pick.md)); default highlight Shared game (no Last mode) | At mode pick |
+| W1.1 | Opens the game | Mode pick starts ([FL-mode-pick.N1](../flows/mode-pick.md)); default choice Shared game (no Last mode) | At mode pick |
 | W1.2 | Chooses Puzzle stream | [FL-mode-pick.T2](../flows/mode-pick.md); [L-puzzle-stream.K1](../loops/puzzle-stream.md): deal per [DIF.Y1](../difficulty.md) within ±`CFG.ELO_MATCH_RANGE` of `CFG.ELO_START`; store Last mode = Puzzle stream ([PRG.P2](../progression.md)) | Puzzle dealt; `GS.sequenceIndex` 0; `GS.wrongMoveOnPuzzle` false |
 | W1.3 | Plays each move of the required sequence | Each legal move advances the sequence ([L-puzzle-stream.K2](../loops/puzzle-stream.md); `E-pieces.I10`) | `GS.sequenceIndex` reaches the end |
 | W1.4 | Completes the sequence | [END.W1](../end-conditions/conditions.md): Elo update S = 1 per [DIF.Y1](../difficulty.md); `GS.recentSolved` appends the id, trimmed to `CFG.ELO_RECENT_WINDOW` ([PRG.P3](../progression.md), [PRG.M1](../progression.md)); next deal prefers the raised band ([L-puzzle-stream.K3](../loops/puzzle-stream.md)) | `GS.playerElo` up; new puzzle open |
@@ -38,7 +38,7 @@ Authoring rules: [`.agents/specs/rules/design/scenarios.md`](../../../.agents/sp
 | W2.3 | Abandons that puzzle | [END.L6](../end-conditions/conditions.md): failed; the next puzzle follows the Elo update S = 0 ([L-puzzle-stream.K3](../loops/puzzle-stream.md); [PRG.M1](../progression.md)) | `GS.playerElo` down again; new puzzle open |
 | W2.4 | Leaves the stream | [L-puzzle-stream.K4](../loops/puzzle-stream.md); [FL-mode-pick.T4](../flows/mode-pick.md): Elo kept ([PRG.P1](../progression.md)); open puzzle not scored as END.L6 | At mode pick |
 
-- **Outcome**: END.L5 then END.L6 — two failures, each followed by the next deal; the open puzzle at leave is unscored; the sitting continues at mode pick.
+- **Outcome**: END.L5 then END.L6 — two failures, each followed by the next deal; the open puzzle at leave is unscored; the session continues at mode pick.
 - **Player experience**: Failure never ends the stream; leaving costs nothing on the open puzzle.
 
 ## Edge cases covered
