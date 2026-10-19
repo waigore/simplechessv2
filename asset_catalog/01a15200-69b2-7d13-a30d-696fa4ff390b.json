@@ -1,0 +1,56 @@
+{
+  "id": "01a15200-69b2-7d13-a30d-696fa4ff390b",
+  "handle": "music/cafe-ambient-a",
+  "kind_spec": "AK-music",
+  "coverage": ["AK-music.V1"],
+  "serves": ["Cafe calm", "Instant play"],
+  "state": "approved",
+  "version": 1,
+  "files": ["music/cafe-ambient-a.ogg"],
+  "source_type": "ai-generation",
+  "tool_role": {"role": "TL.3", "adr": "adr-free"},
+  "recipe": "AK-music.R1",
+  "generation": {
+    "prompt": "Soft instrumental cafe ambient bed A for a zen chess web game. Slightly brighter morning acoustic lead, soft upright-bass hints, sparse brushes. Acoustic guitar, gentle brushed light jazz, warm room tone. quiet cafe ambient; acoustic / light jazz; no lyrics; unhurried table; about 80 BPM.",
+    "negative_prompt": "EDM drop; vocals; stadium anthem; horror drones; loud mastering; trap; heavy drums; synthwave",
+    "tool": "ElevenLabs CLI",
+    "operation": "music.compose",
+    "settings": {
+      "model_id": "music_v2",
+      "music_length_ms": 180000,
+      "force_instrumental": true,
+      "output_format": "mp3_44100_128",
+      "post": "edge fades; loudnorm I=-18; libopus OGG 96k"
+    },
+    "seed": "n/a",
+    "inputs": {
+      "style_anchors": [],
+      "refs": ["SND.M1", "SND.L1"],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "music.compose",
+        "tool": "ElevenLabs CLI",
+        "date": "2026-10-19",
+        "notes": "SS1 hard anchor M1/V1; PO confirmed; used to train finetune emkyd6q7yw5tfkcdajro"
+      }
+    ],
+    "series": {
+      "id": "AK-music.SS1",
+      "elevenlabs_finetune_id": "emkyd6q7yw5tfkcdajro"
+    }
+  },
+  "license": {
+    "grant": "Generated with ElevenLabs under account terms for project use",
+    "tool": "ElevenLabs music.compose",
+    "terms": "https://elevenlabs.io/terms"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO confirmed as SS1 anchor. Measured: ~180s within K3; ~2.2MB under B1; ~-18 LUFS (L1/K2); OGG/Opus (S5/K7). Character K1/K5/K6 needs human: PO keep on listen; instrumental cafe acoustic/jazz, no lyrics."
+  },
+  "guidance": "SS1 style anchor for M1 bed A. Finetune emkyd6q7yw5tfkcdajro."
+}
