@@ -34,20 +34,20 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ### SS1 — primary
 
-- **State**: none
+- **State**: active
 - **Modality**: visual
 - **Enforce**: hard
-- **Style anchors**: None yet
-- **Style binding**: TBD — Recraft style id after `APR.establish-style`?
+- **Style anchors**: `01a151ef-6a32-77ec-ace1-9190aa56b7dc` (`interface-art/style-anchor-sheet`)
+- **Style binding**: Recraft `recraft_style_id` `16e2245a-a7d1-41a3-bf06-2792ca253c1c`; model `recraftv4_1_vector`; name `simplechessv2-interface-art-SS1`
 - **Aesthetics**: P3; UI.F1 F2; PAL.S3
-- **Built from**: None
+- **Built from**: `01a151ef-6a32-77ec-ace1-9190aa56b7dc` on 2026-10-19 (cream gradient panel+chip; no grain)
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
 
 #### Prompt policy
 
 - **Compose**: subject-first when `active`; append master + negative.
-- **Master**: quiet cafe UI panel; flat cream; soft radius; warm thin border; no chrome (UI.F1; PAL.C10; P3)
-- **Negative**: glassmorphism; neon; heavy shadow stacks; esports HUD; baked text (vs UI.F1 F2; PAL.S3)
+- **Master**: quiet cafe UI panel; soft cream daylight gradient (PAL.C10 family); soft radius; warm thin border; no chrome (UI.F1; P3)
+- **Negative**: glassmorphism; neon; heavy shadow stacks; esports HUD; baked text; paper grain noise (vs UI.F1 F2; PAL.S3)
 
 ## Recipes
 
