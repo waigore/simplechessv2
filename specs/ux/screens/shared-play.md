@@ -24,27 +24,18 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Position and coordinates | 8×8; edge letters/numbers only; selection and legal marks; C1/C2 tap squares |
+| R1 | Board | Position and coordinates | 8×8; edge letters/numbers; selection and legal marks. `IN.deselect` clears the selection |
 | R2 | Status | Turn, clocks, check | Side to move; clocks when timed; check |
 | R3 | Advice | Shared Advice chrome | Toggle; best-move marks when On |
-| R4 | Resign | End as loss | Resign control |
+| R4 | End | Resign or draw | Resign; Offer draw |
 
 ## Controls
 
-| ID | Control | UI action | Available when | Result |
-|----|---------|-----------|----------------|--------|
-| C1 | Select piece | `IN.select` | Actor’s seat is side to move; not ended | Sets selection ([GS.selectedPiece](../../design/game-state/fields-play.md)) |
-| C2 | Place move | `IN.move` | Selection set; actor’s seat is side to move | Asks legal place; clears selection |
-| C3 | Advice | `IN.activate` | always (one shared control) | Toggles `GS.advice`; when On, advice is for side to move |
-| C4 | Resign | `IN.activate` | Actor’s seat is side to move; not ended | → `EX.confirm` resign |
+C1–C9 are in [`shared-play-controls.md`](shared-play-controls.md). Focus order is that table.
 
 ## States
 
-| ID | State | Entered when | Actor sees | Actor can |
-|----|-------|--------------|------------|-----------|
-| S1 | Default | In play | R1–R4 | C1–C4 per availability |
-| S2 | `EX.confirm` | C4 | Resign confirm | Confirm → end → `shared-result`; Cancel → S1 |
-| S3 | `EX.error` | Advice fetch failed | Error; board still playable | Dismiss → S1; C1–C4 still as S1 |
+S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
@@ -54,6 +45,12 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | advice_off | Advice Off | C3 |
 | resign | Resign | C4 |
 | resign_confirm | Resign this game? | S2 |
+| offer_draw | Offer draw | C5 |
+| offer_confirm | Offer a draw? | S2 |
+| accept | Accept | C7 |
+| decline | Decline | C8 |
+| withdraw | Withdraw | C9 |
+| draw_offered | Draw offered | S6 |
 | confirm | Confirm | S2 |
 | cancel | Cancel | S2 |
 | advice_error | Advice unavailable. Play continues. | S3 |
@@ -62,4 +59,4 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 ## Experience intent
 
-Clear seats and turn; one Advice switch; moves never wait on the network. Meets Accessibility: pieces read by shape; no status by color alone; 44px-class touch targets.
+Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone; 44px-class targets.

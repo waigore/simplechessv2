@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Web touch | definition | [`controls.md`](controls.md) bindings |
 | Accessibility; Localization | quality | presentation craft; screen copy tables; mode-pick Switch locale (C4) |
 | Mode pick; loops; configuration; Advice | design | navigation, screens, journeys |
-| PER.R1–R7; no camera controls | view | play screens; controls (no CC bindings) |
+| PER.R1–R8; no camera controls | view | play screens; controls (no CC bindings) |
 | UIS interface style | aesthetics | [`presentation.md`](presentation.md) |
 
 ## Topic coverage

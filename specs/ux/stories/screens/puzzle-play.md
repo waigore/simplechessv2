@@ -18,12 +18,17 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C3 | Reveal confirm | US1.3 |
 | C4 | Abandon confirm | US1.4 |
 | C5 | Leave confirm | US1.5 US1.6 |
-| C5 unavailable | N/A — always available | US1.5 |
+| C3 unavailable | Not on S4 | US3.5 |
+| C4 unavailable | Not on S4 | US3.6 |
+| C5 unavailable | Not on S4 | US3.7 |
 | S1 | Default | US2.1 |
 | S2 | EX.confirm | US1.5 US1.6 US1.7 US1.9 |
 | S3 | EX.save-failure | US1.8 |
+| C6 | Promotion piece | US3.1 US3.2 US3.8 US3.9 |
+| S4 | EX.promote | US3.1 US3.4 |
+| S5 | EX.rejected | US3.3 |
 
-US2 region scenarios live in [`puzzle-play-regions.md`](puzzle-play-regions.md).
+US2 region scenarios live in [`puzzle-play-regions.md`](puzzle-play-regions.md). US3 choice scenarios live in [`puzzle-play-choices.md`](puzzle-play-choices.md).
 
 ## US1: Puzzle stream controls
 

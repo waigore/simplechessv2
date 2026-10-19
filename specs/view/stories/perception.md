@@ -13,7 +13,8 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../.agents/specs/ru
 | R1 | VS1.1 | R2 | VS1.2 VS1.3 |
 | R3 | VS1.4 | R4 | VS1.5 |
 | R5 | VS1.6 | R6 | VS1.7 |
-| R7 | VS1.8 VS1.9 | D1 | VS1.10 |
+| R7 | VS1.8 VS1.9 | R8 | VS1.12 |
+| D1 | VS1.10 | | |
 | M1 | VS1.11 | | |
 
 ## VS1: Glanceable board
@@ -43,4 +44,12 @@ Given CAM-board Web, any PRJ.A1 aspect And White seat Bottom When coordinates sh
 Given CAM-board Web, any PRJ.A1 aspect And White seat Top after CAM-board.M2 When coordinates shown Then letters and numbers stay correct for the White-fixed board
 Given CAM-board Web, any PRJ.A1 aspect And a flat board When depth cues checked Then D1 holds: no depth bands
 Given fixed CAM-board Web, any PRJ.A1 aspect When comfort options checked Then M1 is N/A And no shake or bob comfort toggle is required
+```
+
+### VS1.12: Refused place
+
+- **Proves**: R8
+
+```gherkin
+Given CAM-board Web, PRJ.A1 And a selected piece And a refused place When refusal shows Then that square flashes PAL.C8 And selection and legal marks show as before
 ```

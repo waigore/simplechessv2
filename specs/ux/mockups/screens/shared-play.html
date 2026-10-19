@@ -38,6 +38,9 @@
       <a href="#state-default">state-default</a>
       <a href="#ex-confirm">ex-confirm</a>
       <a href="#ex-error">ex-error</a>
+      <a href="#ex-promote">ex-promote</a>
+      <a href="#ex-rejected">ex-rejected</a>
+      <a href="#ex-draw-offer">ex-draw-offer</a>
     </nav>
     <div class="states">
       <section id="state-default" data-state="default">
@@ -65,14 +68,28 @@
         <section data-region="R3" aria-label="Advice">
           <button type="button" data-control="C3">Advice On</button>
         </section>
-        <section data-region="R4" aria-label="Resign">
+        <section data-region="R4" aria-label="End">
           <button type="button" data-control="C4">Resign</button>
+          <button type="button" data-control="C5">Offer draw</button>
         </section>
 
       </section>
 
-      <section id="ex-confirm" data-state="EX.confirm"><p>Resign this game?</p><button type="button">Confirm</button><button type="button">Cancel</button></section>
+      <section id="ex-confirm" data-state="EX.confirm"><p>Resign this game?</p><p>Offer a draw?</p><button type="button">Confirm</button><button type="button">Cancel</button></section>
       <section id="ex-error" data-state="EX.error"><p>Advice unavailable. Play continues.</p><button type="button">Dismiss</button></section>
+      <section id="ex-promote" data-state="EX.promote">
+        <button type="button" data-control="C6">&#9813;</button>
+        <button type="button" data-control="C6">&#9814;</button>
+        <button type="button" data-control="C6">&#9815;</button>
+        <button type="button" data-control="C6">&#9816;</button>
+      </section>
+      <section id="ex-rejected" data-state="EX.rejected"><div class="sq flash" data-perception="PER.R8"></div></section>
+      <section id="ex-draw-offer" data-state="EX.draw-offer">
+        <p>Draw offered</p>
+        <button type="button" data-control="C7">Accept</button>
+        <button type="button" data-control="C8">Decline</button>
+        <button type="button" data-control="C9">Withdraw</button>
+      </section>
 
     </div>
   </article>

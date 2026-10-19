@@ -10,11 +10,13 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| C1 | Select, move, resign on Top turn | US1.1 US1.2 US1.3 |
+| C1 | Select, move, promote, resign, offer on Top turn | US1.1 US1.2 US1.3 US2.1 US2.2 US2.3 US2.4 |
 | C2 | Shared Advice toggle | US1.4 |
-| C3 | Resign confirm | US1.5 |
+| C3 | Resign or offer confirm | US1.5 |
+| C4 | Answer Bottom's offer | US2.5 US2.6 |
 | K1 | Host screens do not activate | US1.6 US1.7 US1.8 US1.9 |
-| K2 | Cannot move on Bottom turn | US1.10 |
+| K2 | Cannot move on Bottom turn | US1.10 US2.7 |
+| K3 | Cannot answer own offer | US2.8 |
 
 ## US1: Top seat only
 
@@ -119,3 +121,5 @@ Given Top player is on shared-play S1 and Bottom seat is side to move
 When Top activates UI-shared-play.C2
 Then the position is unchanged
 ```
+
+Choice scenarios: [`top-player-choices.md`](top-player-choices.md).

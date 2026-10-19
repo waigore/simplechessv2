@@ -22,19 +22,13 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Puzzle position | 8×8; edge coordinates; selection and legal marks; C1/C2 tap squares |
+| R1 | Board | Puzzle position | 8×8; edge coordinates; selection and legal marks. `IN.deselect` clears the selection |
 | R2 | Elo and status | Rating and feedback | Player Elo; wrong-move / solved cues |
 | R3 | Stream actions | Reveal, abandon, leave | Reveal, Abandon, Leave stream |
 
 ## Controls
 
-| ID | Control | UI action | Available when | Result |
-|----|---------|-----------|----------------|--------|
-| C1 | Select piece | `IN.select` | puzzle open; not in confirm | Sets selection |
-| C2 | Place move | `IN.move` | selection set | Asks puzzle move / wrong-move handling |
-| C3 | Reveal | `IN.activate` | puzzle open | → `EX.confirm` reveal |
-| C4 | Abandon | `IN.activate` | puzzle open | → `EX.confirm` abandon |
-| C5 | Leave stream | `IN.activate` | always | → `EX.confirm` leave → `mode-pick` (NAV.T9) |
+C1–C6 are in [`puzzle-play-controls.md`](puzzle-play-controls.md). Focus order is that table.
 
 ## States
 
@@ -43,6 +37,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | S1 | Default | In stream | R1–R3 | C1–C5 |
 | S2 | `EX.confirm` | C3, C4, or C5 | Named confirm | Confirm runs action; Cancel → S1 |
 | S3 | `EX.save-failure` | Elo persist failed | Save-failure | Dismiss → S1 |
+| S4 | `EX.promote` | Legal pawn place on the last rank | Queen, rook, bishop, knight sprites at that square, that order | C6. `IN.deselect` drops the choice and leaves the pawn selected |
+| S5 | `EX.rejected` | Place the piece rules refuse | Danger flash on that square ([PER.R8](../../view/perception.md)); selection stays | C1–C5 as S1. No Dismiss |
 
 ## Copy
 

@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/ux/actors.md`](../../../.agents/specs/rul
 
 ## Who they are
 
-The person at the near edge of the shared device. They host mode pick, setup, results, and Puzzle stream. In Shared play they move and resign when their seat is the side to move.
+The person at the near edge of the shared device. They host mode pick, setup, results, and Puzzle stream. In Shared play they move, promote, resign, and offer a draw when their seat is the side to move, and they answer the other seat's offer.
 
 ## Goals
 
@@ -19,12 +19,14 @@ The person at the near edge of the shared device. They host mode pick, setup, re
 ## Can operate
 
 - **C1**: All controls on `mode-pick`, `shared-setup`, `shared-result`, and `puzzle-play`
-- **C2**: On `shared-play`: select and move when Bottom’s seat is [Side to move](../../design/glossary.md); resign then; Advice toggle anytime
+- **C2**: On `shared-play`, when Bottom’s seat is [Side to move](../../design/glossary.md): select, move, clear selection, promotion choice, resign, offer draw, and withdraw Bottom’s offer. Advice toggle anytime
 - **C3**: Confirm and Cancel on exceptions those screens use
+- **C4**: On `shared-play` `EX.draw-offer` opened by Top: Accept and Decline
 
 ## Cannot operate
 
-- **K1**: On `shared-play`, select, move, or resign when Top’s seat is side to move — those controls do not activate for Bottom
+- **K1**: On `shared-play`, select, move, clear, promote, resign, or offer when Top’s seat is side to move — those controls do not activate for Bottom
+- **K2**: Accept or Decline an offer Bottom made — those controls do not activate for Bottom
 
 ## Relationship to play
 

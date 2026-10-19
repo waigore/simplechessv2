@@ -16,6 +16,9 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 | EX.save-failure | Prior commit kept | US1.4 |
 | EX.error | Dismiss continue | US1.5 |
 | EX.unsupported-input | Non-touch | US1.6 |
+| EX.promote | Choose type or drop | US1.8 US1.9 |
+| EX.rejected | Flash, stay in play | US1.10 US1.11 |
+| EX.draw-offer | Answer or withdraw | US1.12 US1.13 |
 
 ## US1: Shared exceptions
 
@@ -90,4 +93,6 @@ Given the side-to-move actor is on shared-play S1
 When that actor activates UI-shared-play.C4
 Then EX.confirm is shown and names resign
 ```
+
+US1.8–US1.13 live in [`exceptions-play.md`](exceptions-play.md).
 
