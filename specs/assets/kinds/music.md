@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 - **Style**: P3; [SND.M1](../../aesthetics/sound.md) [SND.M2](../../aesthetics/sound.md); [SND.L1](../../aesthetics/sound.md)
 - **Tool roles**: TL.3
 - **Approval**: As hub
-- **Serves**: Cafe calm; mode pick and all play; Instant play; [experience.md](../../design/experience.md) playlist
+- **Serves**: Cafe calm; Instant play; [experience.md](../../design/experience.md) playlist
 
 ## Coverage
 
@@ -41,14 +41,14 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 - **Modality**: music
 - **Enforce**: hard
 - **Style anchors**: `01a15200-69b2-7d13-a30d-696fa4ff390b` (`music/cafe-ambient-a`), `01a15200-69b2-7964-a602-ad5b19583125` (`music/cafe-ambient-b`)
-- **Style binding**: ElevenLabs `elevenlabs_finetune_id` `emkyd6q7yw5tfkcdajro`; model `music_v2`; name `simplechessv2-music-SS1`; Audio Reference policy `optional`
+- **Style binding**: ElevenLabs `elevenlabs_finetune_id` `emkyd6q7yw5tfkcdajro`; model `music_v2`; name `simplechessv2-music-SS1`; Audio Reference `optional`
 - **Aesthetics**: P3; SND.M1 M2; SND.L1
-- **Built from**: the two anchors above on 2026-10-19 (PO-confirmed cafe ambient beds)
+- **Built from**: the two anchors above on 2026-10-19
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
 
 #### Prompt policy
 
-- **Compose**: subject-first when `active`; append master + negative; cite IDs only.
+- **Compose**: subject-first when `active`; append master + negative.
 - **Master**: quiet cafe ambient; acoustic / light jazz; no lyrics; unhurried table (M1/M2)
 - **Negative**: EDM drop; vocals; stadium anthem; horror drones; loud mastering
 
@@ -63,8 +63,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 - **Prompt template (series)**: ambient bed {a\|b}; compose with prompt_policy
 - **Settings**: duration ~3 min; finetune_id when active
 - **Seed policy**: `n/a` when tool has no seed
-- **Post-processing**: trim ends for playlist handoff; loudness toward L1; OGG encode
-- **Outputs**: one file per V1 and V2
+- **Post-processing**: trim ends for playlist handoff; loudness toward L1; OGG
+- **Outputs**: one file per V row
 
 ## Checks
 
