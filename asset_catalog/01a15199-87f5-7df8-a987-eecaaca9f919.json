@@ -1,0 +1,92 @@
+{
+  "id": "01a15199-87f5-7df8-a987-eecaaca9f919",
+  "handle": "icons/style-anchor-sheet",
+  "kind_spec": "AK-icons",
+  "coverage": [
+    "AK-icons.V1",
+    "AK-icons.V2",
+    "AK-icons.V3",
+    "AK-icons.V4",
+    "AK-icons.V5"
+  ],
+  "serves": ["Cafe calm"],
+  "state": "approved",
+  "version": 1,
+  "files": ["icons/style-anchor-sheet.svg"],
+  "source_type": "ai-generation",
+  "tool_role": {"role": "TL.1", "adr": "adr-free"},
+  "recipe": "AK-icons.R1",
+  "generation": {
+    "prompt": "Flat vector UI icon style sheet for a quiet mahogany cafe chess web app. Exactly one row of five simple 24×24-grid monochrome icons on plain white, equal cell size, soft-round corners, flat fill preferred. Left to right: (1) Staunton knight silhouette — Shared game; (2) classic jigsaw puzzle piece — Puzzle stream; (3) door frame with arrow out — Quit / leave sitting; (4) left-pointing chevron — Back; (5) circle with stylized lightbulb — Advice. Ink #2C2A28 on white. Soft cafe calm, flat perspective, simple silhouettes, no text labels, no skeuomorphism, no 3D, no emoji style, no busy detail, no esports badges. Game UI icon set.",
+    "negative_prompt": "skeuomorphic; 3D; emoji style; busy detail; esports badges; text labels",
+    "tool": "Recraft",
+    "operation": "generate_image",
+    "settings": {
+      "model": "recraftv4_1_pro_vector",
+      "image_size": "1:1"
+    },
+    "seed": "n/a — tool has no seed",
+    "inputs": {
+      "style_anchors": [],
+      "refs": [],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "generate_image",
+        "tool": "Recraft",
+        "date": "2026-10-19",
+        "notes": "Bootstrap icons style-anchor sheet (preview-v3 composition; PO-confirmed)"
+      }
+    ],
+    "series": {
+      "id": "AK-icons.SS1",
+      "recraft_style_id": "7056f68a-dd20-4ae0-a3e5-186803e00f4d"
+    }
+  },
+  "touchups": [
+    {
+      "operation": "palette_remap",
+      "tool": "local-script",
+      "terms": "project-local; no third-party API",
+      "date": "2026-10-19",
+      "reason": "Remap fills to exact PAL.C9 ink; strip metadata",
+      "run_by": "agent",
+      "prompt": "Remap SVG rgb fills to ink #2C2A28 (PAL.C9); keep white",
+      "inputs": {
+        "file": "icons/style-anchor-sheet.svg",
+        "palette": ["PAL.C9"]
+      },
+      "settings": {
+        "C9": "#2C2A28"
+      }
+    },
+    {
+      "operation": "strip_labels",
+      "tool": "local-script",
+      "terms": "project-local; no third-party API",
+      "date": "2026-10-19",
+      "reason": "Remove baked text label band above icons",
+      "run_by": "agent",
+      "prompt": "Remove SVG paths in the label band (y1 < 820); keep the five icons",
+      "inputs": {
+        "file": "icons/style-anchor-sheet.svg"
+      },
+      "settings": {
+        "label_y_max": 820
+      }
+    }
+  ],
+  "license": {
+    "grant": "Generated with Recraft; project use under Recraft terms for the signing account",
+    "tool": "Recraft",
+    "terms": "https://www.recraft.ai/docs"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO (waigore) confirmed preview-v3 composition as style anchor. Needs human signed off: K2 readability at UI size; K4/P3 cafe mood. Measured: B1 8KB; S3 SVG; PAL.C9 ink; labels removed. Kind K5 per-icon ship files still pending series generate."
+  },
+  "guidance": "Icons SS1 style anchor (Shared=knight, Puzzle, Quit, Back, Advice). Not final per-icon ship files. Recraft style 7056f68a-dd20-4ae0-a3e5-186803e00f4d."
+}

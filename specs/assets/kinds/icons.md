@@ -38,13 +38,13 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ### SS1 — primary
 
-- **State**: none
+- **State**: active
 - **Modality**: visual
 - **Enforce**: hard
-- **Style anchors**: None yet
-- **Style binding**: TBD — Recraft style id after `APR.establish-style`?
+- **Style anchors**: `01a15199-87f5-7df8-a987-eecaaca9f919` (`icons/style-anchor-sheet`)
+- **Style binding**: Recraft `recraft_style_id` `7056f68a-dd20-4ae0-a3e5-186803e00f4d`; model `recraftv4_1_vector`; name `simplechessv2-icons-SS1`
 - **Aesthetics**: P3; UI.I1; PAL.C9 C6
-- **Built from**: None
+- **Built from**: `01a15199-87f5-7df8-a987-eecaaca9f919` on 2026-10-19 (PO-confirmed preview-v3; labels stripped)
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
 
 #### Prompt policy
