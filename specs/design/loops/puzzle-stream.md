@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/rules/design/loops.md).
 
 - **Level**: session
-- **Timescale**: One [Puzzle](../glossary.md) per iteration, as many as fit a [Sitting](../glossary.md) of about 15–40 minutes.
+- **Timescale**: One [Puzzle](../glossary.md) per iteration, as many as fit a [Session](../glossary.md) of about 15–40 minutes.
 - **Serves**: Instant play and Cafe calm. Scope: continuous solo Puzzle stream matched to level.
 - **Parent / child loops**: None. Entered from [mode-pick](../flows/mode-pick.md) P3; Leave stream returns there.
 
@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/
 
 ## Motivation
 
-Quiet practice at their level, for as long as the commute sitting allows.
+Quiet practice at their level, for as long as the commute session allows.
 
 ## Inputs and outputs
 

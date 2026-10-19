@@ -4,25 +4,25 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 
 - **Design spec**: [`progression.md`](../progression.md)
 - **Spec key**: `PRG`
-- **Glossary terms**: [Player Elo](../glossary.md), [Last mode](../glossary.md), [Sitting](../glossary.md)
+- **Glossary terms**: [Player Elo](../glossary.md), [Last mode](../glossary.md), [Session](../glossary.md)
 
 ## Coverage
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | A1 | Player Elo axis | PS1.1 |
-| P1 | Elo persists | PS1.2 PS1.3 |
+| P1 | Elo persists | PS1.2 PS1.3 PS1.5 |
 | P2 | Last mode persists | PS1.4 |
 | P3 | Solved IDs persist | PS1.8 PS1.9 |
-| M1 | Commit timing | PS1.1 PS1.4 PS1.5 |
+| M1 | Commit timing | PS1.1 PS1.4 PS1.10 |
 | F1 | Failure continues stream | PS1.6 |
 | Z1 | No completion | PS1.7 |
 | Z2 | Ends | PS1.7 |
 | Z3 | Same as finishing | PS1.7 |
 
-## PS1: Keep Elo across sittings
+## PS1: Keep Elo across sessions
 
-As a casual player, I keep my Elo and last mode so that the next sitting continues calmly.
+As a casual player, I keep my Elo and last mode so that the next session continues calmly.
 
 ### PS1.1: Elo advances on puzzle result
 
@@ -39,18 +39,18 @@ Then A1 updates per DIF.Y1 And the new Elo is committed
 - **Proves**: P1
 
 ```gherkin
-Given GS.playerElo is 1120 And the sitting ends
+Given GS.playerElo is 1120 And the session ends
 When the player opens again
 Then GS.playerElo is 1120
 ```
 
-### PS1.3: Elo lost only when storage cleared
+### PS1.3: Elo lost only when saved data cleared
 
 - **Proves**: P1
 
 ```gherkin
 Given GS.playerElo is 1120
-When the browser clears this game's storage
+When this game's saved data is cleared
 Then GS.playerElo resets to CFG.ELO_START on next use
 ```
 
@@ -64,14 +64,14 @@ When the player chooses Shared game (FL-mode-pick.T1)
 Then GS.lastMode is Shared game And it is committed
 ```
 
-### PS1.5: After interrupt, mode pick then Elo deal
+### PS1.5: After interrupt, reopen returns to mode pick
 
-- **Proves**: M1
+- **Proves**: P1, FL-mode-pick.U1
 
 ```gherkin
 Given Puzzle stream interrupted And GS.playerElo is 1080
-When the player reopens and chooses Puzzle stream
-Then the phase is FL-mode-pick.P1 And the deal uses GS.playerElo 1080
+When the player reopens
+Then the phase is FL-mode-pick.P1 And GS.playerElo is 1080
 ```
 
 ### PS1.6: Puzzle failure continues
@@ -89,9 +89,9 @@ Then the stream continues And only A1 updates And Shared game still carries noth
 - **Proves**: Z1, Z2, Z3
 
 ```gherkin
-Given Puzzle stream
+Given Puzzle stream And GS.playerElo is 1000
 When the player leaves the stream
-Then there is no completion requirement And the sitting may end
+Then the phase is FL-mode-pick.P1 And no completion condition gates leaving And GS.playerElo is 1000
 ```
 
 ### PS1.8: Solved IDs commit on W1
@@ -109,7 +109,17 @@ Then GS.recentSolved holds p1, p2 And the new list is committed
 - **Proves**: P3
 
 ```gherkin
-Given GS.recentSolved holds p1, p2 And the sitting ends
+Given GS.recentSolved holds p1, p2 And the session ends
 When the player reopens
 Then GS.recentSolved holds p1, p2
+```
+
+### PS1.10: Choosing Puzzle stream deals at committed Elo
+
+- **Proves**: M1
+
+```gherkin
+Given the phase is FL-mode-pick.P1 And GS.playerElo is 1080
+When the player chooses Puzzle stream
+Then the phase is FL-mode-pick.P3 And the deal uses GS.playerElo 1080
 ```

@@ -15,6 +15,8 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 | CFG.ELO_K | Default K | PS1.1 |
 | CFG.ELO_MATCH_RANGE | ± band | PS1.3 |
 | CFG.ELO_START | First Elo | PS1.6 |
+| CFG.ELO_RECENT_WINDOW | Solved-memory window | PS1.7 |
+| CFG.ELO_BAND_WIDEN | Band-widen step | PS1.8 |
 
 ## PS1: Match puzzles to level
 
@@ -78,4 +80,24 @@ Then GS.playerElo remains 1100
 Given this game's storage has no Player Elo
 When the player first enters Puzzle stream
 Then GS.playerElo is CFG.ELO_START (1000)
+```
+
+### PS1.7: Solved memory window
+
+- **Proves**: CFG.ELO_RECENT_WINDOW
+
+```gherkin
+Given GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20) IDs
+When END.W1 appends a new ID
+Then GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20), newest last, the oldest dropped
+```
+
+### PS1.8: Band widens when none fit
+
+- **Proves**: CFG.ELO_BAND_WIDEN
+
+```gherkin
+Given GS.playerElo is 1000 And no unsolved puzzle is within CFG.ELO_MATCH_RANGE (100)
+When the next puzzle is dealt
+Then the dealer widens the band by CFG.ELO_BAND_WIDEN (50) until a puzzle fits
 ```

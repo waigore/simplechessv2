@@ -1,10 +1,12 @@
-# Stories: Piece common rules
+# Stories: Piece common rules — board, capture, attack
 
 Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../../.agents/specs/rules/design/story.md).
 
 - **Design spec**: [`entities/pieces/common.md`](../../../entities/pieces/common.md)
 - **Spec key**: `E-pieces`
 - **Glossary terms**: [Piece](../../../glossary.md), [Side to move](../../../glossary.md)
+
+Check and legality: [`common-legality.md`](common-legality.md).
 
 ## Coverage
 
@@ -13,13 +15,11 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../../.agents/
 | I1 | PS1.1 | I2 | PS1.2 |
 | I35 | PS1.3 | I3 | PS1.4 |
 | I4 | PS1.5 PS1.6 | I5 | PS1.7 PS1.8 |
-| I6 | PS1.9 | I7 | PS1.10 |
-| I8 | PS1.11 | I9 | PS1.12 |
-| I10 | PS1.13 PS1.14 | I11 | PS1.15 |
+| I6 | PS1.9 | | |
 
-## PS1: Board, capture, check, legality
+## PS1: Board, capture, attack
 
-As a casual player, I make only legal moves so that check and capture stay orthodox.
+As a casual player, I make only legal moves so that capture and attack stay orthodox.
 
 ### PS1.1: Board form
 
@@ -46,9 +46,9 @@ Then +rank toward Black
 - **Proves**: I35
 
 ```gherkin
-Given the board
-When colors are checked
-Then a1 dark And orthogonal neighbors differ
+Given the orthodox board And a White pawn on e2
+When White plays e2→e4
+Then a1 is dark And each pair of orthogonally adjacent squares differs in color
 ```
 
 ### PS1.4: Capture removes
@@ -76,9 +76,9 @@ Then illegal, position unchanged
 - **Proves**: I4
 
 ```gherkin
-Given a king-capture would be next
-When legality applies
-Then an end condition comes first; the king is never captured
+Given a Shared game And Black to move And Black king h8 And White queen g7 And White king f6
+When Black attempts any move
+Then Black has no legal move And END.L1 (checkmate) applies And the king is never captured
 ```
 
 ### PS1.7: Pawn attacks
@@ -86,9 +86,9 @@ Then an end condition comes first; the king is never captured
 - **Proves**: I5
 
 ```gherkin
-Given White pawn e4
-When attacks are listed
-Then d5 and f5 yes, e5 no
+Given White pawn on e4 And a Black piece on d5
+When White attempts the pawn capture e4→d5 and the step e4→e5
+Then e4→d5 captures the Black piece And e5 is not attacked by that pawn
 ```
 
 ### PS1.8: Rook ray
@@ -96,9 +96,9 @@ Then d5 and f5 yes, e5 no
 - **Proves**: I5
 
 ```gherkin
-Given White rook a1, piece a3, a2 empty
-When attacks are listed
-Then a2 and a3 yes, a4 no
+Given White rook a1, a White piece a3, a2 and a4 empty
+When White attempts a1→a2 and a1→a4
+Then a1→a2 is legal And a1→a4 is illegal, blocked by the a3 piece
 ```
 
 ### PS1.9: Pins ignored
@@ -106,67 +106,7 @@ Then a2 and a3 yes, a4 no
 - **Proves**: I6
 
 ```gherkin
-Given pinned White rook
-When its attacks are tested
-Then still attacks; knights jump; king attacks every adjacent square
-```
-
-### PS1.10: Check
-
-- **Proves**: I7
-
-```gherkin
-Given White to move with king e1 attacked
-When check is evaluated
-Then White in check
-```
-
-### PS1.11: Self-check illegal
-
-- **Proves**: I8
-
-```gherkin
-Given a move would leave White's king in check
-When attempted
-Then illegal
-```
-
-### PS1.12: Pseudo-legal first
-
-- **Proves**: I9
-
-```gherkin
-Given White to move
-When a move matches piece rules (castle, en passant, promotion)
-Then pseudo-legal before the self-check filter
-```
-
-### PS1.13: Safe is legal
-
-- **Proves**: I10
-
-```gherkin
-Given pseudo-legal And White's king not in check after
-When legality applies
-Then the move is legal
-```
-
-### PS1.14: Into check illegal
-
-- **Proves**: I10
-
-```gherkin
-Given pseudo-legal And White's king in check after
-When legality applies
-Then the move is illegal
-```
-
-### PS1.15: Only side to move
-
-- **Proves**: I11
-
-```gherkin
-Given GS.sideToMove is White
-When Black attempts a move
-Then GS.position is unchanged
+Given White king e1, White rook e2 pinned by a Black rook e8, e3 empty And a Black king e4
+When Black attempts to move the king e4→e3
+Then e3 is attacked by the pinned White rook: the move is illegal
 ```
