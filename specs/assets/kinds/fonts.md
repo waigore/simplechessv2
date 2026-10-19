@@ -34,13 +34,13 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ### SS1 — primary
 
-- **State**: none
+- **State**: active
 - **Modality**: visual
 - **Enforce**: soft
-- **Style anchors**: None yet
-- **Style binding**: None — fonts are not Recraft-generated
+- **Style anchors**: `01a15215-15bd-7e3f-a3f8-ffcb1333a0ab` (`fonts/noto-sans`), `01a15215-15bd-77a5-b804-9ea4d95880a4` (`fonts/noto-sans-cjk`)
+- **Style binding**: None — third-party soft exemplars (not Recraft)
 - **Aesthetics**: P3; UI.T1–T3
-- **Built from**: None
+- **Built from**: the two anchors above on 2026-10-19 (Noto Sans OFL; PO-confirmed)
 - **Refresh when**: UI type roles or locale set change
 
 #### Prompt policy
