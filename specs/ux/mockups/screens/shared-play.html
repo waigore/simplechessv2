@@ -5,36 +5,191 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Screen: Shared play</title>
   <style>
-    :root { --fg:#2C2A28; --bg:#F7F1E8; --line:#5C3A2A; --accent:#B8940C; --legal:#6EA746; --muted:#5c574e; --panel:#F7F1E8; }
-    * { box-sizing: border-box; }
-    body { margin:0; font:16px/1.4 system-ui,sans-serif; color:var(--fg); background:var(--bg); }
-    article { max-width:40rem; margin:0 auto; padding:1rem; }
-    header p { color:var(--muted); margin:0; }
-    nav[aria-label="States"] { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1rem 0; }
-    nav[aria-label="States"] a { color:var(--accent); }
-    .states > section { display:none; border:1px solid var(--line); padding:1rem; background:#fff; }
-    .states:not(:has(:target)) > section[data-state="default"] { display:block; }
-    .states:has(:target) > section:target { display:block; }
-    [data-region] { border:1px dashed var(--line); padding:0.75rem; margin:0.5rem 0; }
-    [data-region]::before { content:attr(data-region) " " attr(aria-label); display:block; font-size:0.75rem; color:var(--muted); }
-    button { min-height:44px; min-width:44px; margin:0.25rem; background:var(--panel); border:1px solid var(--line); border-radius:6px; }
-    .board { display:grid; grid-template-columns:1.5rem repeat(8,2.75rem) 1.5rem; grid-template-rows:1.25rem repeat(8,2.75rem) 1.25rem; gap:0; width:max-content; margin:0.5rem auto; }
-    .sq { width:2.75rem; height:2.75rem; }
-    .light { background:#E8D5B5; } .dark { background:#8B5A3C; }
-    .coord { font-size:0.65rem; color:var(--muted); display:flex; align-items:center; justify-content:center; }
-    .piece { font-size:1.75rem; display:flex; align-items:center; justify-content:center; color:var(--fg); }
-    .sel { outline:3px solid var(--accent); outline-offset:-3px; }
-    .dot { font-size:1.75rem; display:flex; align-items:center; justify-content:center; color:var(--legal); }
+    /* play UI: local skeleton + linear-app spacing; colors/type → UIS + PAL */
+    :root {
+      --bg: #F7F1E8;
+      --surface: #FFF9F0;
+      --fg: #2C2A28;
+      --muted: #5c574e;
+      --border: color-mix(in oklch, #5C3A2A 28%, #F7F1E8);
+      --accent: #B8940C;
+      --accent-soft: color-mix(in oklch, var(--accent) 16%, transparent);
+      --legal: #6EA746;
+      --advice: #53A2BE;
+      --danger: #C28A86;
+      --table: #5C3A2A;
+      --sq-light: #E8D5B5;
+      --sq-dark: #8B5A3C;
+      --font-display: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Segoe UI', 'Helvetica Neue', ui-sans-serif, system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --fs-h1: clamp(28px, 4vw, 36px);
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --container: 36rem;
+      --sq: 2.75rem;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(120% 80% at 50% -10%, color-mix(in oklch, var(--table) 22%, transparent), transparent 55%),
+        var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; margin: 0; }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .lead { margin: 0; color: var(--muted); max-width: 40ch; }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 510; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; min-width: 44px;
+      padding: 11px 16px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      font-size: 15px; font-weight: 510;
+      transition: background 0.15s ease-out, border-color 0.15s ease-out, transform 0.05s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-secondary { background: var(--surface); color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--table); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; }
+    .btn-advice-on {
+      background: color-mix(in oklch, var(--advice) 18%, var(--surface));
+      color: var(--fg);
+      border-color: color-mix(in oklch, var(--advice) 45%, var(--border));
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: 0 1px 0 color-mix(in oklch, var(--table) 8%, transparent);
+    }
+    .chip {
+      display: inline-flex; align-items: center;
+      min-height: 32px;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: color-mix(in oklch, var(--surface) 80%, var(--bg));
+      font-size: 14px;
+    }
+    .chip.check { border-color: var(--danger); color: color-mix(in oklch, var(--danger) 70%, var(--fg)); }
+    .spec-chrome {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--gap-md) var(--gap-md) 0;
+    }
+    .spec-chrome h1 { font-size: 1.25rem; }
+    .states-nav {
+      display: flex; flex-wrap: wrap; gap: var(--gap-xs);
+      max-width: var(--container);
+      margin: var(--gap-sm) auto 0;
+      padding-inline: var(--gap-md);
+    }
+    .states-nav a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      border-bottom: 1px solid transparent;
+      padding-block: 4px;
+    }
+    .states-nav a:hover, .states-nav a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
+    .stage {
+      max-width: var(--container);
+      margin: var(--gap-md) auto;
+      padding: 0 var(--gap-md) var(--gap-md);
+    }
+    .states > section { display: none; }
+    .states:not(:has(:target)) > section[data-state="default"] { display: block; }
+    .states:has(:target) > section:target { display: block; }
+    [data-region] { margin: 0 0 var(--gap-sm); }
+    [data-region]::before {
+      content: attr(data-region) " · " attr(aria-label);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--gap-xs);
+    }
+    .play-layout { display: flex; flex-direction: column; gap: var(--gap-sm); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: var(--gap-xs); align-items: center; }
+    .board {
+      display: grid;
+      grid-template-columns: 1.5rem repeat(8, var(--sq)) 1.5rem;
+      grid-template-rows: 1.25rem repeat(8, var(--sq)) 1.25rem;
+      gap: 0;
+      width: max-content;
+      max-width: 100%;
+      margin: 0 auto;
+      border: 1px solid var(--table);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--table);
+    }
+    .sq { width: var(--sq); height: var(--sq); min-width: 44px; min-height: 44px; }
+    .light { background: var(--sq-light); }
+    .dark { background: var(--sq-dark); }
+    .coord {
+      font-size: 0.65rem;
+      color: color-mix(in oklch, #FFF9F0 75%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--table);
+    }
+    .piece {
+      font-size: 1.75rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--fg);
+      line-height: 1;
+    }
+    .sel { outline: 3px solid var(--accent); outline-offset: -3px; }
+    .dot {
+      font-size: 1.75rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--legal);
+    }
+    .flash {
+      width: var(--sq); height: var(--sq);
+      background: var(--danger);
+      animation: flash-pulse 0.35s ease-out 2;
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+    @keyframes flash-pulse {
+      from { opacity: 0.35; }
+      to { opacity: 1; }
+    }
+    .dialog { text-align: center; max-width: 22rem; margin-inline: auto; }
+    .dialog p { margin: 0 0 var(--gap-sm); }
+    .dialog .actions { display: flex; gap: var(--gap-sm); justify-content: center; flex-wrap: wrap; margin-top: var(--gap-md); }
+    .promote-row { display: flex; gap: var(--gap-xs); justify-content: center; flex-wrap: wrap; }
+    .promote-row .btn { font-size: 1.75rem; width: 52px; padding: 0; }
   </style>
 </head>
 <body>
   <article data-screen="UI-shared-play">
-    <header>
-      <p>UI-shared-play</p>
+    <header class="spec-chrome">
+      <p class="meta">UI-shared-play</p>
       <h1>Shared play</h1>
-      <p>Play one Shared game on the shared board</p>
+      <p class="lead">Play one Shared game on the shared board</p>
     </header>
-    <nav aria-label="States">
+    <nav class="states-nav" aria-label="States">
       <a href="#state-default">state-default</a>
       <a href="#ex-confirm">ex-confirm</a>
       <a href="#ex-error">ex-error</a>
@@ -42,55 +197,98 @@
       <a href="#ex-rejected">ex-rejected</a>
       <a href="#ex-draw-offer">ex-draw-offer</a>
     </nav>
-    <div class="states">
+    <div class="stage states">
       <section id="state-default" data-state="default">
+        <div class="card play-layout" data-od-id="shared-play-default">
+          <section data-region="R1" aria-label="Board">
+            <div class="board" aria-label="Board with edge coordinates">
+              <div></div>
+              <div class="coord">a</div><div class="coord">b</div><div class="coord">c</div><div class="coord">d</div><div class="coord">e</div><div class="coord">f</div><div class="coord">g</div><div class="coord">h</div>
+              <div></div>
+              <div class="coord">8</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light piece" aria-label="Black king">&#9818;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">8</div>
+              <div class="coord">7</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">7</div>
+              <div class="coord">6</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">6</div>
+              <div class="coord">5</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">5</div>
+              <div class="coord">4</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light dot" data-control="C2" role="button" tabindex="0" aria-label="Place move">&#8226;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">4</div>
+              <div class="coord">3</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">3</div>
+              <div class="coord">2</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light piece sel" data-control="C1" role="button" tabindex="0" aria-label="Select piece">&#9817;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">2</div>
+              <div class="coord">1</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark piece" aria-label="White king">&#9812;</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">1</div>
+              <div></div>
+              <div class="coord">a</div><div class="coord">b</div><div class="coord">c</div><div class="coord">d</div><div class="coord">e</div><div class="coord">f</div><div class="coord">g</div><div class="coord">h</div>
+              <div></div>
+            </div>
+          </section>
 
-        <section data-region="R1" aria-label="Board">
-          <div class="board" aria-label="Board with edge coordinates">
-            <div></div>
-<div class="coord">a</div><div class="coord">b</div><div class="coord">c</div><div class="coord">d</div><div class="coord">e</div><div class="coord">f</div><div class="coord">g</div><div class="coord">h</div>
-            <div></div>
-            <div class="coord">8</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light piece" aria-label="Black king">&#9818;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">8</div>
-            <div class="coord">7</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">7</div>
-            <div class="coord">6</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">6</div>
-            <div class="coord">5</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">5</div>
-            <div class="coord">4</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light dot" data-control="C2" role="button" tabindex="0" aria-label="Place move">&#8226;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">4</div>
-            <div class="coord">3</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">3</div>
-            <div class="coord">2</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light piece sel" data-control="C1" role="button" tabindex="0" aria-label="Select piece">&#9817;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">2</div>
-            <div class="coord">1</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark piece" aria-label="White king">&#9812;</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">1</div>
-            <div></div>
-<div class="coord">a</div><div class="coord">b</div><div class="coord">c</div><div class="coord">d</div><div class="coord">e</div><div class="coord">f</div><div class="coord">g</div><div class="coord">h</div>
-            <div></div>
+          <section data-region="R2" aria-label="Status">
+            <div class="toolbar">
+              <span class="chip">White to move</span>
+              <span class="chip num" aria-label="White clock">5:00</span>
+              <span class="chip num" aria-label="Black clock">5:00</span>
+            </div>
+          </section>
+
+          <section data-region="R3" aria-label="Advice">
+            <button type="button" class="btn btn-advice-on" data-control="C3">Advice On</button>
+          </section>
+
+          <section data-region="R4" aria-label="End">
+            <div class="toolbar">
+              <button type="button" class="btn btn-secondary" data-control="C4">Resign</button>
+              <button type="button" class="btn btn-secondary" data-control="C5">Offer draw</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="ex-confirm" data-state="EX.confirm">
+        <div class="card dialog" data-od-id="shared-play-confirm">
+          <p>Resign this game?</p>
+          <p class="meta">Offer a draw?</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary">Confirm</button>
+            <button type="button" class="btn btn-secondary">Cancel</button>
           </div>
-        </section>
-
-        <section data-region="R2" aria-label="Status"><p>White to move</p></section>
-        <section data-region="R3" aria-label="Advice">
-          <button type="button" data-control="C3">Advice On</button>
-        </section>
-        <section data-region="R4" aria-label="End">
-          <button type="button" data-control="C4">Resign</button>
-          <button type="button" data-control="C5">Offer draw</button>
-        </section>
-
+        </div>
       </section>
 
-      <section id="ex-confirm" data-state="EX.confirm"><p>Resign this game?</p><p>Offer a draw?</p><button type="button">Confirm</button><button type="button">Cancel</button></section>
-      <section id="ex-error" data-state="EX.error"><p>Advice unavailable. Play continues.</p><button type="button">Dismiss</button></section>
+      <section id="ex-error" data-state="EX.error">
+        <div class="card dialog" data-od-id="shared-play-error">
+          <p>Advice unavailable. Play continues.</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary">Dismiss</button>
+          </div>
+        </div>
+      </section>
+
       <section id="ex-promote" data-state="EX.promote">
-        <button type="button" data-control="C6">&#9813;</button>
-        <button type="button" data-control="C6">&#9814;</button>
-        <button type="button" data-control="C6">&#9815;</button>
-        <button type="button" data-control="C6">&#9816;</button>
-      </section>
-      <section id="ex-rejected" data-state="EX.rejected"><div class="sq flash" data-perception="PER.R8"></div></section>
-      <section id="ex-draw-offer" data-state="EX.draw-offer">
-        <p>Draw offered</p>
-        <button type="button" data-control="C7">Accept</button>
-        <button type="button" data-control="C8">Decline</button>
-        <button type="button" data-control="C9">Withdraw</button>
+        <div class="card dialog" data-od-id="shared-play-promote">
+          <p class="meta">Choose promotion</p>
+          <div class="promote-row">
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Queen">&#9813;</button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Rook">&#9814;</button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Bishop">&#9815;</button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Knight">&#9816;</button>
+          </div>
+        </div>
       </section>
 
+      <section id="ex-rejected" data-state="EX.rejected">
+        <div class="card dialog" data-od-id="shared-play-rejected">
+          <p class="meta">Refused place</p>
+          <div class="flash" data-perception="PER.R8" aria-label="Danger flash"></div>
+        </div>
+      </section>
+
+      <section id="ex-draw-offer" data-state="EX.draw-offer">
+        <div class="card dialog" data-od-id="shared-play-draw-offer">
+          <p>Draw offered</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" data-control="C7">Accept</button>
+            <button type="button" class="btn btn-secondary" data-control="C8">Decline</button>
+            <button type="button" class="btn btn-ghost" data-control="C9">Withdraw</button>
+          </div>
+        </div>
+      </section>
     </div>
   </article>
 </body>
