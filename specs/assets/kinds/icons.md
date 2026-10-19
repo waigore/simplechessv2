@@ -42,7 +42,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 - **Modality**: visual
 - **Enforce**: hard
 - **Style anchors**: `01a15199-87f5-7df8-a987-eecaaca9f919` (`icons/style-anchor-sheet`)
-- **Style binding**: Recraft `recraft_style_id` `7056f68a-dd20-4ae0-a3e5-186803e00f4d`; model `recraftv4_1_vector`; name `simplechessv2-icons-SS1`
+- **Style binding**: Recraft `recraft_style_id` `7056f68a-dd20-4ae0-a3e5-186803e00f4d`; model per [`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md); name `simplechessv2-icons-SS1`
 - **Aesthetics**: P3; UI.I1; PAL.C9 C6
 - **Built from**: `01a15199-87f5-7df8-a987-eecaaca9f919` on 2026-10-19 (PO-confirmed preview-v3; labels stripped)
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
@@ -76,6 +76,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K3 | Budget | File size | ≤ 20 KB |
 | K4 | Style | Look vs P3 | Quiet, flat |
 | K5 | Spec S3 | File inspect | SVG shipped (preferred), or justified PNG |
+| K6 | Spec S4 | Inspect | Monochrome ink (C9) / gold (C6); tint-safe |
 
 ## Naming
 

@@ -23,11 +23,11 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S2 | Colors | Light C1 / dark C2 / table C5 (PAL.S1); contrast [PAL.K1](../../aesthetics/palette.md) |
 | S3 | Medium | SVG or PNG; square or board-aspect |
 | S4 | Overlays | No piece art; no chrome badges |
-| S5 | Orientation | Light square bottom-right (h1); rotate SVG if needed |
-| S6 | Rasterize | Recraft SVG → PNG via Chrome headless only (not qlmanage/rsvg) |
+| S5 | Orientation | Light square bottom-right (h1) |
+| S6 | Rasterize | SVG → PNG via the pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); no mixing |
 | S7 | Square layout | Centers + pitch in `starting-position.layout.json`; pieces 0.88 fill ([piece S9](piece-sprites.md)) |
 
-S5–S7 definitive for SS1 look. Reproduce: [`docs/asset-previews/README.md`](../../../docs/asset-previews/README.md).
+S5–S7 definitive for SS1 look.
 
 ## Budgets
 
@@ -51,8 +51,8 @@ S5–S7 definitive for SS1 look. Reproduce: [`docs/asset-previews/README.md`](..
 #### Prompt policy
 
 - **Compose**: subject-first when `active`; append master + negative; cite IDs only.
-- **Master**: quiet mahogany cafe chessboard; warm wood; soft daylight (SRF.L1); square readability first
-- **Negative**: neon; esports chrome; 3D perspective board; cluttered props; blood
+- **Master**: quiet mahogany cafe chessboard; warm wood; soft daylight (SRF.L1); square readability (PAL.C1 C2 C5; PAL.K1; FRM.S2)
+- **Negative**: neon; esports chrome; 3D board; cluttered props; blood (vs PAL.C1 C2 C5; PAL.K1; FRM.S2)
 
 ## Recipes
 
@@ -63,9 +63,9 @@ S5–S7 definitive for SS1 look. Reproduce: [`docs/asset-previews/README.md`](..
 - **Inputs**: style anchors when set
 - **Prompt template (bootstrap)**: mahogany 8×8 on cafe table; compose with prompt_policy
 - **Prompt template (series)**: board plane {slot}; compose with prompt_policy
-- **Settings**: Recraft style when active; high square clarity
+- **Settings**: Recraft style when active; palette-locked C1 C2 C5; square canvas
 - **Seed policy**: record or `n/a`
-- **Post-processing**: S5–S7 (orient BR light; Chrome rasterize; layout JSON); crush
+- **Post-processing**: S5–S7 (orient BR light; rasterize; layout JSON)
 - **Outputs**: one V1 file; preview via `docs/asset-previews/rebuild_starting_position.py`
 
 ## Checks

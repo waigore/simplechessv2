@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 - **Date**: 2026-10-18
 - **Category**: Integration
 - **Supersedes**: None
-- **Informed by**: Playtest `ENV.1` `ENV.2` `DBG.*` `TEL.*`; Observability; ADR-0001
+- **Informed by**: Playtest `ENV.1` `ENV.2` `DBG.*` `TEL.*`; Observability; Cafe calm; ADR-0001
 
 ## Context
 
@@ -25,7 +25,7 @@ The Godot **4.7.2** project (ADR-0001) exposes **two playtest session kinds**:
 1. **Headless** — Godot **`--headless`** (no display) for all Design protocols and UX Headless runs (`ENV.1`).
 2. **Graphical** — **Web/HTML5** (or editor with display) for UX Graphical runs and screenshots (`ENV.2`).
 
-**Must** debug UI (`DBG.1–4`) and telemetry (`TEL.1–5`) work in both. Debug UI and story-ID overlay ship in **playtest builds only**, not the public release Web export. Seams: `specs/technical/verification.md` when authored.
+**Must** debug UI (`DBG.1–4`) and telemetry (`TEL.1–5`) work in both. Debug UI and story-ID overlay ship in **playtest builds only**, not the public release Web export. Seams: `specs/technical/verification.md`.
 
 ## Reasoning
 

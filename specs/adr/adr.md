@@ -12,7 +12,7 @@ The game is a Godot Web client ([ADR-0001](decisions/0001-godot-engine.md)) that
 |------|--------|-----|
 | Engine | Godot 4.7.2, GDScript, Web export | [ADR-0001](decisions/0001-godot-engine.md) |
 | Frameworks | N/A — Godot is the runtime; no separate web framework | — |
-| Libraries | N/A — no third-party runtime library chosen yet | — |
+| Libraries | N/A — turn-based 2D board play needs no runtime library beyond the engine | — |
 | Data storage | Origin `localStorage` JSON document | [ADR-0003](decisions/0003-localstorage-persistence.md) |
 | Integrations | Advice backend ↔ Stockfish; dual playtest environments; asset catalog/roots | [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0004](decisions/0004-dual-playtest-environments.md), [ADR-0005](decisions/0005-asset-catalog-roots.md) |
 | Game architecture | Layered client (Presentation / Session / Domain / Edge), contract-bound | [ADR-0006](decisions/0006-layered-client-architecture.md) |

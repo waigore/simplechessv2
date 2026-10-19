@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/assets/tools.md`](../../.agents/specs/rul
 |----|------|-------------|--------------|-----------------------|-------------|
 | TL.1 | Visual generation | AI generation | [`piece-sprites`](kinds/piece-sprites.md), [`board-backgrounds`](kinds/board-backgrounds.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md) | Transparent or clean vector/PNG; fixed canvas; Recraft `create_style` / `input_style_id`; palette-aware | ADR-free — Recraft per [`docs/asset-tools.md`](../../docs/asset-tools.md) |
 | TL.2 | Sound-effect generation | AI generation | [`sound-effects`](kinds/sound-effects.md) | Short cues; duration ranges; soft style via anchors | ADR-free — ElevenLabs CLI per [`docs/asset-tools.md`](../../docs/asset-tools.md) |
-| TL.3 | Music generation | AI generation | [`music`](kinds/music.md) | Loopable ambient; finetune / Audio Reference; loudness toward [SND.L1](../aesthetics/sound.md) | ADR-free — ElevenLabs CLI per [`docs/asset-tools.md`](../../docs/asset-tools.md) |
+| TL.3 | Music generation | AI generation | [`music`](kinds/music.md) | Continuous ~3 min bed per [SND.M1](../aesthetics/sound.md) [SND.M2](../aesthetics/sound.md); finetune / Audio Reference; loudness toward [SND.L1](../aesthetics/sound.md) | ADR-free — ElevenLabs CLI per [`docs/asset-tools.md`](../../docs/asset-tools.md) |
 
 Fonts use third-party or human-made sources only (no generate role).
 

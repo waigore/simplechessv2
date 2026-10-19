@@ -22,10 +22,10 @@ Authoring rules: [`.agents/specs/rules/technical/verification.md`](../../.agents
 
 | ID | Invariant | Level | When checked |
 |----|-----------|-------|--------------|
-| I1 | Local move completes with no await on advice I/O | Integration | During Shared play with Advice On |
-| I2 | Persist failed write leaves prior document | Integration | Forced `localStorage` failure |
-| I3 | DBG/TEL overlay absent in release Web export | Smoke | Release export review |
-| I4 | Headless and Graphical both expose S3–S7 | Integration | Playtest protocol smoke |
+| I1 | Local move completes with no await on advice I/O ([`CTR-local-move.G1`](contracts/local-move.md)) | Integration | During Shared play with Advice On |
+| I2 | Persist failed write leaves prior document ([`CTR-persist-document.G2`](contracts/persist-document.md)) | Integration | Forced `localStorage` failure |
+| I3 | DBG/TEL overlay and drive ops absent in release Web export ([`CTR-playtest-drive.G2`](contracts/playtest-drive.md)) | Smoke | Release export review |
+| I4 | Headless and Graphical both expose S3–S7 ([`CTR-playtest-drive.G1`](contracts/playtest-drive.md)) | Integration | Playtest protocol smoke |
 
 ## Harness expectations
 
