@@ -10,8 +10,8 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../.agents/specs/ru
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| P1 | VS1.1 | V1 | VS1.2 VS1.3 VS1.4 |
-| A1 | VS1.2 VS1.3 VS1.4 | A2 | VS1.5 |
+| P1 | VS1.1 | V1 | VS1.2 VS1.3 VS1.4 VS1.9 |
+| A1 | VS1.2 VS1.3 VS1.4 VS1.9 | A2 | VS1.5 |
 | X1 | VS1.6 | D1 | VS1.7 VS1.8 |
 
 ## VS1: Full board in frame
@@ -23,7 +23,7 @@ As a casual player, I always see the whole board in the browser so that no squar
 - **Proves**: P1
 
 ```gherkin
-Given CAM-board Web 9:16, a 1×1 square at board center
+Given CAM-board Web 1:1, a 1×1 square at board center
 When framed
 Then visible height is 10 units (8 board + 1 margin each side) And the square occupies 1/10 of it
 ```
@@ -35,7 +35,7 @@ Then visible height is 10 units (8 board + 1 margin each side) And the square oc
 ```gherkin
 Given CAM-board Web 9:16
 When play opens
-Then visible area is 10×10 containing the full board And letterbox or pillarbox may appear outside
+Then visible area is 10 units wide × 17.8 units high And the full 8×8 board is centered And the extra height is cafe background
 ```
 
 ### VS1.3: Wide end, 16:9
@@ -45,7 +45,7 @@ Then visible area is 10×10 containing the full board And letterbox or pillarbox
 ```gherkin
 Given CAM-board Web 16:9
 When play opens
-Then visible area is 10×10 containing the full board And letterbox or pillarbox may appear outside
+Then visible area is 17.8 units wide × 10 units high And the full 8×8 board is centered And the extra width is cafe background
 ```
 
 ### VS1.4: Outside the range
@@ -53,9 +53,9 @@ Then visible area is 10×10 containing the full board And letterbox or pillarbox
 - **Proves**: V1, A1
 
 ```gherkin
-Given CAM-board Web, aspect outside 9:16–16:9
+Given CAM-board Web, aspect 9:20
 When play opens
-Then bars appear And no board square is cropped
+Then letterbox bars appear above and below And the board keeps its 10-unit width And no board square is cropped
 ```
 
 ### VS1.5: Safe area
@@ -96,4 +96,14 @@ Then each square and piece is inside the frame
 Given CAM-board Web 9:16, no off-board hide distance
 When D1 applied
 Then D1 limit is none And no on-board piece is hidden by distance
+```
+
+### VS1.9: Wider than the range
+
+- **Proves**: V1, A1
+
+```gherkin
+Given CAM-board Web, aspect 21:9
+When play opens
+Then pillarbox bars appear left and right And the board keeps its 10-unit height And no board square is cropped
 ```

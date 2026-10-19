@@ -1,4 +1,4 @@
-# Loop: Two-player game
+# Loop: Shared game
 
 Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/rules/design/loops.md).
 
@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/
 | ID | Player does | Game responds | Player gains or learns |
 |----|-------------|---------------|------------------------|
 | K1 | Choose who is White. Choose untimed, blitz, or rapid. When timed, choose the [Increment](../glossary.md) option ([configuration.md](../configuration.md)). | The game starts from the orthodox opening. White is to move. Clocks are equal, or there is no clock. In a timed game only White's clock runs. | Both players know the clock and that White moves first. |
-| K2 | The side to move makes one legal move, or resigns. | A legal move updates the position. In a timed game, only that side's clock runs. It stops when the move is completed, the chosen seconds are added, and the other clock starts. Seconds are added only for a completed move. A clock that has reached zero does not receive them. An illegal attempt is refused, the same side is still to move, and that clock keeps running. Advice never delays this response. | The position and whose turn it is are clear. |
+| K2 | The side to move makes a move, resigns, or offers a draw; the other side accepts or declines, or the offerer withdraws. | A legal move completes at acceptance: position and side to move update at once. In a timed game, only that side's clock runs. It stops at completion, the chosen seconds are added, and the other clock starts. Seconds are added only for a completed move. A clock that has reached zero does not receive them. An illegal attempt is refused; the same side stays to move and its clock keeps running. Advice never delays this response. A draw offer follows [END.D2](../end-conditions/conditions.md). | The position, turn, and draw-offer state are clear. |
 | K3 | After a result, begin another game or stop. | Another game returns to K1. Stopping returns to [mode pick](../flows/mode-pick.md). Endings stop both clocks. | They can play again or choose a mode. |
 
 A move is legal when it matches [`E-pieces.I10`](../entities/pieces/common.md) (piece rules in [`entities/pieces.md`](../entities/pieces.md), including castling, en passant, and promotion).

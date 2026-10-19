@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/view/view.md`](../../.agents/specs/rules/view/view.md).
 
+- **Serves**: Clear board, Instant play, and Cafe calm (vision); Web touch primary (definition); Shared game and Puzzle stream play ([design](../design/design.md)).
+
 ## Dimensionality
 
 - **Gameplay space**: 2D board plane. Axes: file (x) and rank (y). Positions resolve on the 8×8 grid ([E-pieces.I1](../design/entities/pieces/common.md)).
@@ -9,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/view/view.md`](../../.agents/specs/rules/
 
 ## Embodiment
 
-- **Viewpoint**: Fixed board. White’s near rank edge faces the [White seat](../design/glossary.md) player. When Top is White, the board is rotated 180° so White stays toward that seat (Bottom may be Black).
+- **Viewpoint**: Fixed board. In Shared game, White’s near rank edge faces the [White seat](../design/glossary.md) player; when Top is White, the board is rotated 180° so White stays toward that seat (Bottom may be Black). In Puzzle stream, the [Solving side](../design/glossary.md)’s near rank edge faces the player.
 - **Player presence**: No avatar. Attention anchors on the selected piece and the [Side to move](../design/glossary.md).
 
 ## Platform implications

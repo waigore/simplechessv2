@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 
 - **Design spec**: [`end-conditions/conditions.md`](../../end-conditions/conditions.md)
 - **Spec key**: `END`
-- **Glossary terms**: [Puzzle)](../../glossary.md), [Wrong move)](../../glossary.md), [Required sequence)](../../glossary.md)
+- **Glossary terms**: [Puzzle](../../glossary.md), [Wrong move](../../glossary.md), [Required sequence](../../glossary.md)
 
 Split from [`conditions.md`](conditions.md) by logical unit; that file proves the Shared-game rows.
 

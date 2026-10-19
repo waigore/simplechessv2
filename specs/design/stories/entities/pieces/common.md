@@ -1,4 +1,4 @@
-# Stories: Piece common rules — board, capture, attack
+# Stories: Piece common rules — board, capture, placement
 
 Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../../.agents/specs/rules/design/story.md).
 
@@ -6,16 +6,15 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../../.agents/
 - **Spec key**: `E-pieces`
 - **Glossary terms**: [Piece](../../../glossary.md), [Side to move](../../../glossary.md)
 
-Check and legality: [`common-legality.md`](common-legality.md).
+Check and legality: [`common-legality.md`](common-legality.md). Attacked squares: [`common-attack.md`](common-attack.md).
 
 ## Coverage
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| I1 | PS1.1 | I2 | PS1.2 |
+| I1 | PS1.1 | I2 | PS1.2 PS1.10 |
 | I35 | PS1.3 | I3 | PS1.4 |
-| I4 | PS1.5 PS1.6 | I5 | PS1.7 PS1.8 |
-| I6 | PS1.9 | | |
+| I4 | PS1.5 PS1.6 | | |
 
 ## PS1: Board, capture, attack
 
@@ -81,32 +80,12 @@ When Black attempts any move
 Then Black has no legal move And END.L1 (checkmate) applies And the king is never captured
 ```
 
-### PS1.7: Pawn attacks
+### PS1.10: Black pawn forward
 
-- **Proves**: I5
-
-```gherkin
-Given White pawn on e4 And a Black piece on d5
-When White attempts the pawn capture e4→d5 and the step e4→e5
-Then e4→d5 captures the Black piece And e5 is not attacked by that pawn
-```
-
-### PS1.8: Rook ray
-
-- **Proves**: I5
+- **Proves**: I2
 
 ```gherkin
-Given White rook a1, a White piece a3, a2 and a4 empty
-When White attempts a1→a2 and a1→a4
-Then a1→a2 is legal And a1→a4 is illegal, blocked by the a3 piece
-```
-
-### PS1.9: Pins ignored
-
-- **Proves**: I6
-
-```gherkin
-Given White king e1, White rook e2 pinned by a Black rook e8, e3 empty And a Black king e4
-When Black attempts to move the king e4→e3
-Then e3 is attacked by the pinned White rook: the move is illegal
+Given Black pawn e7
+When it steps forward
+Then −rank toward White
 ```

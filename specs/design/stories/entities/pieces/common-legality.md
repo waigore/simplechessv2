@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../../.agents/
 - **Spec key**: `E-pieces`
 - **Glossary terms**: [Piece](../../../glossary.md), [Side to move](../../../glossary.md)
 
-Split from [`common.md`](common.md) by logical unit; that file proves board, capture, and attack.
+Split from [`common.md`](common.md) by logical unit; that file proves board, capture, and placement.
 
 ## Coverage
 

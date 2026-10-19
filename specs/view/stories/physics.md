@@ -29,7 +29,7 @@ As a casual player, I see moves finish quickly on the device so that Instant pla
 ```gherkin
 Given CAM-board Web 9:16, Shared game, a legal place e2→e4 (E-pieces.I10)
 When the move is played
-Then the piece travels straight origin→destination in ≤ 0.15 s ease-out And the position updates at travel end with no network wait
+Then travel starts at acceptance, runs straight origin→destination in ≤ 0.15 s ease-out And the design move completion (L-two-player-game.K2) is not delayed to travel end, with no network wait
 ```
 
 ### VS1.2: Travel ends
@@ -89,5 +89,5 @@ Then K1 holds: no simulated blocking shapes And placement follows SPC.P1
 ```gherkin
 Given CAM-board Web 9:16, M1 lands
 When settle measured
-Then settle lasts ≤ 0.03 s And camera shake is none And selection clears to the new occupancy
+Then settle lasts ≤ 0.03 s And camera shake is none And the landing has no design effect
 ```

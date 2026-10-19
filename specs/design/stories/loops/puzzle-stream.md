@@ -27,7 +27,7 @@ As a casual player, I solve adaptive puzzles so that Elo drifts without ending t
 ```gherkin
 Given the player enters Puzzle stream And GS.playerElo is 1000
 When K1 runs
-Then a puzzle is dealt per DIF.Y1 And GS.puzzleId is set And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false And the player can know GS.playerElo
+Then a puzzle is dealt per DIF.Y1 And GS.puzzleId is set And GS.solvingSide is the dealt side to move And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false And the player can know GS.playerElo
 ```
 
 ### PS1.2: Matching move advances
@@ -35,9 +35,9 @@ Then a puzzle is dealt per DIF.Y1 And GS.puzzleId is set And GS.sequenceIndex is
 - **Proves**: K2
 
 ```gherkin
-Given an open puzzle And GS.sequenceIndex is 0 And the next required move is e2e4
+Given an open puzzle And GS.sequenceIndex is 0 And the next required player move is e2e4 And the required reply is e7e5
 When the player plays e2e4
-Then GS.sequenceIndex is 1 And GS.position reflects that move And the next puzzle is not dealt
+Then GS.sequenceIndex is 2 And GS.position reflects both moves And the next puzzle is not dealt
 ```
 
 ### PS1.3: Wrong move resets puzzle
@@ -45,7 +45,7 @@ Then GS.sequenceIndex is 1 And GS.position reflects that move And the next puzzl
 - **Proves**: K2
 
 ```gherkin
-Given an open puzzle And GS.sequenceIndex is 1 And GS.wrongMoveOnPuzzle is false
+Given an open puzzle And GS.sequenceIndex is 2 And GS.wrongMoveOnPuzzle is false
 When the player plays a Wrong move
 Then GS.position returns to the puzzle start And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is true And the next puzzle is not dealt
 ```

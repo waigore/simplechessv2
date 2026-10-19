@@ -15,7 +15,7 @@ The player opens the game at mode pick, chooses Shared game or Puzzle stream, pl
 | ID | Phase | Purpose | What the player can do | Detailed in |
 |----|-------|---------|------------------------|-------------|
 | P1 | Mode pick | Choose how to play this session | Choose Shared game or Puzzle stream. Quit the session. Unavailable: moving pieces, Advice, clocks | here |
-| P2 | Shared game | Two people play on one device | Per the two-player loop. Leave only via stop after a result (returns to P1). No direct switch to Puzzle stream | [`loops/two-player-game.md`](../loops/two-player-game.md) |
+| P2 | Shared game | Two people play on one device | Per the Shared-game loop. Leave only via stop after a result (returns to P1). No direct switch to Puzzle stream | [`loops/two-player-game.md`](../loops/two-player-game.md) |
 | P3 | Puzzle stream | Solo adaptive puzzles | Per the puzzle-stream loop. Leave stream returns to P1. No direct switch to Shared game | [`loops/puzzle-stream.md`](../loops/puzzle-stream.md) |
 
 ## Transitions

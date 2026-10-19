@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 | ID | Element | Value |
 |----|---------|-------|
 | F1 | Target | Board center (4, 4) in [SPC](../spatial-model.md) units |
-| F2 | Rest | Board fills the frame per [PRJ.V1](../projection.md); center at frame center |
+| F2 | Rest | Board centered at frame center; 1-unit margin on the short axis and extra cafe background on the long axis ([PRJ.V1](../projection.md)) |
 | F3 | Offset | None — looking straight at the board plane |
 | F4 | Dead zone | None — camera does not follow motion |
 | F5 | Lookahead | None |
@@ -24,14 +24,14 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 | ID | Behavior | Value |
 |----|----------|-------|
 | M1 | Follow | None — camera stays fixed while pieces move |
-| M2 | Seat flip | When [White seat](../../design/glossary.md) is Top player, rotate the framed board 180° about F1 so White’s near edge faces Top; when Bottom, no rotation |
+| M2 | Orientation | Shared game: [White seat](../../design/glossary.md) Top → rotate 180° about F1 so White’s near edge faces Top; Bottom → 0°. Puzzle: [Solving side](../../design/glossary.md) Black → 180°; White → 0°, so that side’s near edge faces the player |
 
 ## Limits
 
 | ID | Limit | Value |
 |----|-------|-------|
 | L1 | Bounds | Stay on [SPC.B1](../spatial-model.md); no pan past the board |
-| L2 | Zoom | Fixed to [PRJ.P1](../projection.md) visible height |
+| L2 | Zoom | Fixed to [PRJ.P1](../projection.md) short-axis extent |
 
 ## Occlusion
 
@@ -43,7 +43,7 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 
 | ID | To or from | Trigger | Cut or blend (s) | Carries over |
 |----|------------|---------|------------------|--------------|
-| T1 | Enter / leave play | Mode pick ↔ play ([FL-mode-pick](../../design/flows/mode-pick.md)) | Cut 0 | None |
+| T1 | None (mode pick) ↔ CAM-board | Enter on [FL-mode-pick.T1](../../design/flows/mode-pick.md) or [T2](../../design/flows/mode-pick.md); leave on [T3](../../design/flows/mode-pick.md) or [T4](../../design/flows/mode-pick.md) | Cut 0 s | None |
 
 ## Effects
 
@@ -59,4 +59,4 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 
 ## Experience intent
 
-A quiet fixed table view. Orientation always favors the White-seat player without asking anyone to walk around the device.
+A quiet fixed table view. Orientation favors the White-seat player in a Shared game and the Solving side in a Puzzle without asking anyone to walk around the device.

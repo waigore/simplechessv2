@@ -34,5 +34,5 @@ Authoring rules: [`.agents/specs/rules/design/traceability.md`](../../.agents/sp
 | Sub-games | [`sub-games/`](sub-games/) | N/A — the puzzle stream is a primary mode, not a minigame inside a match |
 | Win and loss conditions | [`end-conditions.md`](end-conditions.md) | Applies |
 | Economy and resources | [`features/`](features/) | N/A — no economy |
-| Opponent and NPC behavior | [`characters/`](characters/), [`features/`](features/) | N/A — both seats are people; no NPC |
+| Opponent and NPC behavior | [`loops/puzzle-stream.md`](loops/puzzle-stream.md), [`end-conditions/conditions.md`](end-conditions/conditions.md) | Applies — scripted required replies in a puzzle only; no NPC or AI opponent |
 | Experience and feel | [`experience.md`](experience.md) | Applies |

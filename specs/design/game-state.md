@@ -35,7 +35,7 @@ Field tables: [`game-state/fields.md`](game-state/fields.md).
 
 ## Hidden and visible state
 
-- **H1**: The full [Required sequence](glossary.md) is not knowable until played or revealed. `GS.position` and `GS.sideToMove` are always knowable in play.
+- **H1**: The full [Required sequence](glossary.md) is not knowable until played or revealed. `GS.position` and `GS.sideToMove` are always knowable in play, and `GS.solvingSide` in Puzzle stream.
 - **H2**: `GS.adviceBestMove` and `GS.adviceEval` are knowable only when set (Advice On, online, ready).
 
 ## Randomness and determinism

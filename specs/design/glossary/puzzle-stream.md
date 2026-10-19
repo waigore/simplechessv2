@@ -15,4 +15,5 @@ Part of [`glossary.md`](../glossary.md).
 | Puzzle stream | Solo continuous puzzles; next pick follows Player Elo | [`loops/puzzle-stream.md`](../loops/puzzle-stream.md) |
 | Required sequence | Correct move sequence that solves a puzzle | [`end-conditions.md`](../end-conditions.md) |
 | Reveal solution | Show the required sequence; the puzzle fails ([END.L5](../end-conditions/conditions.md)) | [`end-conditions/conditions.md`](../end-conditions/conditions.md) |
-| Wrong move | Puzzle move that is not the next move of the required sequence | [`end-conditions.md`](../end-conditions.md) |
+| Solving side | The side the player moves in a Puzzle: the side to move in the dealt position | [`loops/puzzle-stream.md`](../loops/puzzle-stream.md) |
+| Wrong move | Solving side move that is not the next move of the required sequence | [`end-conditions.md`](../end-conditions.md) |

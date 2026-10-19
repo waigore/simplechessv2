@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/design/end-conditions.md`](../../.agents/
 
 ## Precedence
 
-- **P1**: After a move, before the other clock starts, apply L1, then D1, then D3 and D4. L3 and D5 apply only while a clock runs and no position ending has occurred. L3 if the other side can checkmate; D5 if not. L2 on resign; if the resign coincides with that side's clock hitting zero, L2 still applies — the player loses, even when the other side cannot checkmate (not D5). D2 applies only on a legal accept, and only while no other ending has already applied: a clock ending (L3, D5) or a position ending (L1, D1, D3, D4) that has already applied wins. W1 only with no wrong move; otherwise completion is L4. L5 on reveal. L6 on abandon. W1, L4, L5, and L6 are never true together.
+- **P1**: After a move, before the other clock starts, apply L1, then D1, then D3 and D4. L3 and D5 apply only while a clock runs and no position ending has occurred. L3 if the other side can checkmate; D5 if not. L2 on resign; if the resign coincides with that side's clock hitting zero, L2 still applies — the player loses, even when the other side cannot checkmate (not D5). D2 applies only on a legal accept, while the game is open, and while no other ending is true at that moment: L2, a clock ending (L3, D5), or a position ending (L1, D1, D3, D4) wins over D2. A decline or withdraw is not an ending. W1 only with no wrong move; otherwise completion is L4. L5 on reveal. L6 on abandon. W1, L4, L5, and L6 are never true together.
 
 ## Rewards and penalties
 

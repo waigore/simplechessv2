@@ -4,21 +4,21 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../../.agents/specs
 
 - **View spec**: [`cameras/board.md`](../../cameras/board.md)
 - **Spec key**: `CAM-board`
-- **Glossary terms**: [Board camera](../../glossary.md), [Seat flip](../../glossary.md), [Frame](../../glossary.md)
+- **Glossary terms**: [Board camera](../../glossary.md), [Board orientation](../../glossary.md), [Frame](../../glossary.md)
 
 ## Coverage
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
 | F1 F2 | VS1.1 | F3 F4 F5 | VS1.2 |
-| M1 | VS1.3 | M2 | VS1.4 VS1.5 |
+| M1 | VS1.3 | M2 | VS1.4 VS1.5 VS1.12 |
 | L1 L2 | VS1.6 | O1 | VS1.7 |
 | T1 | VS1.8 VS1.9 | E1 | VS1.10 |
 | P1 | VS1.11 | | |
 
 ## VS1: Fixed table view
 
-As a casual player, I look straight down at a fixed board so that White’s near edge faces the White seat without panning.
+As a casual player, I look straight down at a fixed board so that my side faces me without panning.
 
 ### VS1.1: Target and rest
 
@@ -27,7 +27,7 @@ As a casual player, I look straight down at a fixed board so that White’s near
 ```gherkin
 Given CAM-board Web 9:16, White seat Bottom
 When CAM-board is active
-Then target is board center (4, 4), frame center matches, board fills per PRJ.V1
+Then target is board center (4, 4), frame center matches, and the board has a 1-unit short-axis margin per PRJ.V1
 ```
 
 ### VS1.2: No offset, dead zone, or lookahead
@@ -37,7 +37,7 @@ Then target is board center (4, 4), frame center matches, board fills per PRJ.V1
 ```gherkin
 Given CAM-board Web 9:16
 When framing checked
-Then offset is none And dead zone is none And lookahead is none
+Then offset, dead zone, and lookahead are none
 ```
 
 ### VS1.3: No follow
@@ -47,7 +47,7 @@ Then offset is none And dead zone is none And lookahead is none
 ```gherkin
 Given CAM-board Web 9:16, a piece travels under PHY.M1
 When travel runs
-Then camera world position and zoom stay unchanged
+Then camera position and zoom stay unchanged
 ```
 
 ### VS1.4: Bottom seat, no rotation
@@ -77,7 +77,7 @@ Then framed board rotates 180° about F1 And White near edge faces Top
 ```gherkin
 Given CAM-board Web 9:16
 When pan or zoom attempted
-Then camera stays on SPC.B1 And visible height stays PRJ.P1
+Then camera stays on SPC.B1 And short-axis extent stays PRJ.P1
 ```
 
 ### VS1.7: Open table
@@ -96,7 +96,7 @@ Then O1 holds: no scenery between camera and board
 
 ```gherkin
 Given mode pick Web 9:16, CAM-board as the target camera
-When Shared or Puzzle play starts (FL-mode-pick)
+When FL-mode-pick.T1 or T2 fires
 Then CAM-board is in use within 0 s cut And nothing carries over
 ```
 
@@ -106,7 +106,7 @@ Then CAM-board is in use within 0 s cut And nothing carries over
 
 ```gherkin
 Given CAM-board Web 9:16, Shared or Puzzle play
-When returning to mode pick
+When FL-mode-pick.T3 or T4 fires
 Then CAM-board leaves by 0 s cut
 ```
 
@@ -128,4 +128,14 @@ Then no shake or zoom punch runs
 Given CAM-board Web 9:16
 When any camera action is attempted
 Then position, angle, and zoom are unchanged (CC has no actions)
+```
+
+### VS1.12: Puzzle orientation
+
+- **Proves**: M2
+
+```gherkin
+Given CAM-board Web 9:16, Puzzle stream, Solving side Black
+When the puzzle is dealt
+Then board rotation about F1 is 180° And Black's near edge faces the player
 ```

@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/design/design.md`](../../.agents/specs/ru
 - **Conventions adopted**:
   - Orthodox chess on an 8×8 board. Two sides alternate a single piece move. The shared game and every puzzle use the same movement and capture rules.
   - Clocked and unclocked play. A timed game is blitz or rapid, with the same starting time on both clocks and time added after each move. An untimed game has no clock.
-  - A puzzle stream. One puzzle is dealt at a time. Solving it makes the next puzzle harder. Failing or abandoning it makes the next puzzle easier. The player stops when they choose.
+  - A puzzle stream. One puzzle is dealt at a time. The player moves the [Solving side](glossary.md); the game plays each required reply. Solving it makes the next puzzle harder. Failing or abandoning it makes the next puzzle easier. The player stops when they choose.
 - **Conventions rejected or changed**:
   - A computer opponent. Both seats in a shared game are people, because a computer opponent is a vision non-goal.
   - Online matchmaking. Both people share one device, because matchmaking is a vision non-goal.

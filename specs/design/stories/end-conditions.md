@@ -12,7 +12,7 @@ Condition rows L1–L3, D1–D5: [`stories/end-conditions/conditions.md`](end-co
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| P1 | Ending precedence | PS1.1 PS1.2 |
+| P1 | Ending precedence | PS1.1 PS1.2 PS1.3 |
 
 ## PS1: One ending at a time
 
@@ -36,4 +36,14 @@ Then END.L1 applies And END.D1 does not
 Given a timed game And White's clock hits zero as White resigns And Black cannot checkmate
 When the coinciding endings resolve
 Then END.L2 applies, White loses And END.D5 does not
+```
+
+### PS1.3: Accept loses to clock expiry
+
+- **Proves**: P1
+
+```gherkin
+Given a timed game And White has offered a draw And White's clock has reached zero And Black can checkmate
+When Black accepts the offer
+Then END.L3 applies, White loses And END.D2 does not
 ```
