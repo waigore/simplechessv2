@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/ux/navigation.md`](../../.agents/specs/rules/ux/navigation.md).
 
+- **Serves**: Instant play, Cafe calm; Shared game, Puzzle stream, new session (definition); [mode-pick](../design/flows/mode-pick.md), [two-player-game](../design/loops/two-player-game.md), [puzzle-stream](../design/loops/puzzle-stream.md).
+
 ## Screens
 
 | Screen | Job | Actors | Spec | Mockup |
@@ -19,7 +21,7 @@ Authoring rules: [`.agents/specs/rules/ux/navigation.md`](../../.agents/specs/ru
 | T1 | `mode-pick` | `UI-mode-pick.C1` | `shared-setup` | None | Bottom player |
 | T2 | `mode-pick` | `UI-mode-pick.C2` | `puzzle-play` | None | Bottom player |
 | T3 | `mode-pick` | `UI-mode-pick.C3` then `EX.confirm` Confirm | (session end) | Confirm quit | Bottom player |
-| T4 | `shared-setup` | `UI-shared-setup.C5` | `shared-play` | Options set | Bottom player |
+| T4 | `shared-setup` | `UI-shared-setup.C5` | `shared-play` | None | Bottom player |
 | T5 | `shared-setup` | `UI-shared-setup.C6` | `mode-pick` | None | Bottom player |
 | T6 | `shared-play` | resign confirmed (`UI-shared-play.C4` + `EX.confirm`) or game end | `shared-result` | `GS.gameEnded` true | Bottom or Top (resign: side to move) |
 | T7 | `shared-result` | `UI-shared-result.C1` | `shared-setup` | None | Bottom player |

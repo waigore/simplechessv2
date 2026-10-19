@@ -21,7 +21,7 @@ Authoring rules: [`.agents/specs/rules/view/projection.md`](../../.agents/specs/
 
 | ID | Rule | Statement |
 |----|------|-----------|
-| A1 | Aspect | Supported from about 9:16 to 16:9. Outside: bars; board never cropped. |
+| A1 | Aspect | Supported 9:16 to 16:9. Outside: bars; board never cropped. |
 | A2 | Safe area | Inner 90% of the frame; selection, legal moves, Advice marks, and piece identities stay inside. |
 
 ## Pixel scale
