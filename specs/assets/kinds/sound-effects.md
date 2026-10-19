@@ -38,20 +38,20 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ### SS1 — primary
 
-- **State**: none
+- **State**: active
 - **Modality**: sfx
 - **Enforce**: soft
-- **Style anchors**: None yet
-- **Style binding**: None — soft exemplars only
+- **Style anchors**: `01a151f8-b7d8-7ae6-84af-767ba53d09f6` (`sound-effects/touch-select`), `01a151f8-b7d8-710a-b767-92c9137bfd63` (`sound-effects/move-settle`), `01a151f8-b7d8-7e05-9921-e892e9a2e064` (`sound-effects/check`), `01a151f8-b7d8-7fe3-b94f-e3a562395d96` (`sound-effects/end-resolve`), `01a151f8-b7d8-759c-89c5-e1be5eecb2b2` (`sound-effects/puzzle-fail`)
+- **Style binding**: None — soft exemplars only (`soft_enforce`)
 - **Aesthetics**: P1 P3; SND.X1–X5; SND.L2
-- **Built from**: None
+- **Built from**: the five anchors above on 2026-10-19 (PO-confirmed; X1 feather-light touch)
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
 
 #### Prompt policy
 
 - **Compose**: subject-first when `active`; append master + negative.
-- **Master**: soft wood cafe SFX; short; unhurried table; never harsh (SND.X1–X5; SND.L2; P3)
-- **Negative**: stadium crowd; synth laser; gore impact; loud alarm; voice (vs SND.X1–X5 character; SND.L2; SND.V1)
+- **Master**: soft wood cafe SFX; short; unhurried table; never harsh; X1 feather-light muted brush (SND.X1–X5; SND.L2; P3)
+- **Negative**: stadium crowd; synth laser; gore impact; loud alarm; voice; sharp click; hard knock (vs SND.X1–X5 character; SND.L2; SND.V1)
 
 ## Recipes
 
