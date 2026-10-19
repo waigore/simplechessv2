@@ -6,7 +6,7 @@ Part of [`fields.md`](fields.md).
 
 | Field | Scope | Meaning | Initial value | Changed by | Invariants |
 |-------|-------|---------|---------------|------------|------------|
-| `GS.selectedPiece` | Moment | Piece under select, or none | none | Shared-game and puzzle loops | Empty, or one piece of the side to move |
+| `GS.selectedPiece` | Moment | Piece under select, or none | none | Select or clear on Shared and Puzzle play; cleared when a move completes | Empty, or one piece of the side to move |
 | `GS.position` | Session / run | Board and rights needed for legality | Opening (Shared); dealt start (Puzzle) | Legal moves; wrong move resets puzzle start | Always a legal position for the mode |
 | `GS.sideToMove` | Session / run | White or Black to move | White (Shared); as dealt (Puzzle) | Completed legal move | Alternates on each legal move |
 | `GS.whiteClock` | Session / run | White seconds left, or none if Untimed | Equal CFG start, or none | Tick; stop and add on move; stop on end | Timed: ≥ 0 |

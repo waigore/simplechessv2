@@ -11,9 +11,11 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | C1 | Host screens' controls | US1.1 US1.2 US1.3 US1.4 |
-| C2 | Shared play on Bottom turn | US1.5 US1.6 US1.7 US1.8 |
+| C2 | Shared play on Bottom turn | US1.5 US1.6 US1.7 US1.8 US2.1 US2.2 US2.3 US2.4 |
 | C3 | Exceptions Confirm/Cancel | US1.9 |
-| K1 | No move when Top to move | US1.10 |
+| C4 | Answer Top's offer | US2.5 US2.6 |
+| K1 | No move when Top to move | US1.10 US2.7 |
+| K2 | Cannot answer own offer | US2.8 |
 
 ## US1: Host and Bottom seat
 
@@ -118,3 +120,5 @@ Given Bottom player is on shared-play S1 and Top seat is side to move
 When Bottom activates UI-shared-play.C1
 Then selection is unchanged and no move is asked
 ```
+
+Choice scenarios: [`bottom-player-choices.md`](bottom-player-choices.md).

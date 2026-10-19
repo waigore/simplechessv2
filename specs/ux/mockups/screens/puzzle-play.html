@@ -38,6 +38,8 @@
       <a href="#state-default">state-default</a>
       <a href="#ex-confirm">ex-confirm</a>
       <a href="#ex-save-failure">ex-save-failure</a>
+      <a href="#ex-promote">ex-promote</a>
+      <a href="#ex-rejected">ex-rejected</a>
     </nav>
     <div class="states">
       <section id="state-default" data-state="default">
@@ -72,6 +74,13 @@
 
       <section id="ex-confirm" data-state="EX.confirm"><p>Leave the puzzle stream?</p><button type="button">Confirm</button><button type="button">Cancel</button></section>
       <section id="ex-save-failure" data-state="EX.save-failure"><p>Save failed. Prior Elo kept.</p><button type="button">Dismiss</button></section>
+      <section id="ex-promote" data-state="EX.promote">
+        <button type="button" data-control="C6">&#9813;</button>
+        <button type="button" data-control="C6">&#9814;</button>
+        <button type="button" data-control="C6">&#9815;</button>
+        <button type="button" data-control="C6">&#9816;</button>
+      </section>
+      <section id="ex-rejected" data-state="EX.rejected"><div class="sq flash" data-perception="PER.R8"></div></section>
 
     </div>
   </article>

@@ -19,10 +19,18 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C3 | Advice shared | US1.4 |
 | C4 | Resign | US1.1 US1.5 |
 | S1 | Default | US2.1 |
-| S2 | EX.confirm | US1.1 US1.8 |
+| S2 | EX.confirm | US1.1 US1.8 US3.12 |
 | S3 | EX.error | US1.9 |
+| C5 | Offer draw | US3.1 US3.2 |
+| C6 | Promotion piece | US3.3 US3.4 |
+| C7 | Accept draw | US3.5 US3.6 |
+| C8 | Decline draw | US3.7 US3.8 |
+| C9 | Withdraw offer | US3.9 US3.10 |
+| S4 | EX.promote | US3.3 US3.13 |
+| S5 | EX.rejected | US3.11 |
+| S6 | EX.draw-offer | US3.5 |
 
-US2 region scenarios live in [`shared-play-regions.md`](shared-play-regions.md).
+US2: [`shared-play-regions.md`](shared-play-regions.md). US3: [`shared-play-choices.md`](shared-play-choices.md).
 
 ## US1: Shared board play
 
@@ -75,7 +83,7 @@ Then GS.advice is On
 ```gherkin
 Given Bottom seat is not side to move on shared-play S1
 When Bottom activates C4
-Then EX.confirm is not shown and the game is not ended
+Then no confirm and the game continues
 ```
 
 ### US1.6: Select unavailable off turn
@@ -95,7 +103,7 @@ Then GS.selectedPiece is unchanged
 ```gherkin
 Given Bottom seat is not side to move on shared-play S1
 When Bottom activates C2 on a square
-Then the position is unchanged and no place is asked
+Then position unchanged and no place asked
 ```
 
 ### US1.8: Cancel resign
@@ -115,5 +123,5 @@ Then the screen is shared-play S1
 ```gherkin
 Given shared-play S3 EX.error after Advice fetch failed
 When the actor dismisses
-Then the screen is shared-play S1 and C1–C2 remain usable for the side to move
+Then shared-play S1 and C1–C5 stay usable
 ```
