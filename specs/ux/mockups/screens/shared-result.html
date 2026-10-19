@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg: #F7F1E8;
-      --surface: #FFF9F0;
+      --surface: #F7F1E8;
       --fg: #2C2A28;
       --muted: #5c574e;
       --border: color-mix(in oklch, #5C3A2A 28%, #F7F1E8);
@@ -46,7 +46,7 @@
     h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; margin: 0; }
     .eyebrow {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 16px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--accent);
@@ -60,12 +60,12 @@
       padding: 11px 20px;
       border-radius: var(--radius);
       border: 1px solid transparent;
-      font-size: 15px; font-weight: 510;
+      font-size: 16px; font-weight: 510;
       letter-spacing: -0.005em;
       transition: background 0.15s ease-out, border-color 0.15s ease-out, transform 0.05s ease;
     }
     .btn:active { transform: translateY(1px); }
-    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary { background: var(--accent); color: var(--fg); border-color: var(--accent); }
     .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
     .btn-secondary { background: var(--surface); color: var(--fg); border-color: var(--border); }
     .btn-secondary:hover { border-color: var(--table); }

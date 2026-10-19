@@ -81,7 +81,7 @@ Then R2 shows no clock
 ```gherkin
 Given the side to move is in check (derived from GS.position, game-state)
 When the screen is shown
-Then R2 shows the check cue
+Then R2 shows the word Check and the PAL.C8 mark
 ```
 
 ### US2.8: Advice overlays
@@ -102,4 +102,14 @@ Then R3 shows best-move marks and eval without hiding piece silhouettes
 Given GS.advice is Off or GS.online is false (not knowable, game-state H2)
 When the screen is shown
 Then R3 shows no best-move marks and no eval
+```
+
+### US2.10: Legal marks visible
+
+- **Proves**: R1
+
+```gherkin
+Given GS.selectedPiece is the White king on e1 (legal moves derived from GS.position, game-state)
+When the screen is shown
+Then R1 marks each legal destination square
 ```

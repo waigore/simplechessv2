@@ -50,7 +50,7 @@ Then the prior screen state returns
 
 ```gherkin
 Given Shared play was open and the session refreshed
-When the sitting reopens
+When the session reopens
 Then the screen is mode-pick
 ```
 

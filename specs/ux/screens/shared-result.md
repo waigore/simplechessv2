@@ -39,6 +39,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | Key | String | Used in |
 |-----|--------|---------|
 | title | Game over | header |
+| shared_game | Shared game | R1 |
 | result_white | White wins | R1 |
 | result_black | Black wins | R1 |
 | result_draw | Draw | R1 |

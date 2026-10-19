@@ -30,5 +30,5 @@ Authoring rules: [`.agents/specs/rules/ux/navigation.md`](../../.agents/specs/ru
 
 ## Entry and resume
 
-- **N1**: A new sitting opens on `mode-pick` for Bottom player ([mode-pick N1](../design/flows/mode-pick.md)).
+- **N1**: A new session opens on `mode-pick` for Bottom player ([mode-pick N1](../design/flows/mode-pick.md)).
 - **N2**: Interrupt during Shared or Puzzle play resumes on `mode-pick` ([mode-pick U1](../design/flows/mode-pick.md); `EX.interrupt`).

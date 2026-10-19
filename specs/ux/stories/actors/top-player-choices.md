@@ -83,13 +83,3 @@ Given Top player is on shared-play S1 and Bottom seat is side to move
 When Top activates UI-shared-play.C5
 Then EX.confirm is not shown
 ```
-
-### US2.8: Cannot accept own offer
-
-- **Proves**: K3
-
-```gherkin
-Given Top opened shared-play S6
-When Top activates UI-shared-play.C7
-Then the screen stays S6
-```

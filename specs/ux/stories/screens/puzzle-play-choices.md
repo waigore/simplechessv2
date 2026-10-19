@@ -71,7 +71,7 @@ Then the puzzle judges that place with a White bishop and S4 closes
 ```gherkin
 Given puzzle-play S1 with a selection and a place the piece rules refuse
 When Bottom asks that place
-Then S5 flashes that square and GS.wrongMoveOnPuzzle stays false and C1 stays usable
+Then S5 flashes that square, GS.selectedPiece stays set, and C1 stays usable
 ```
 
 ### US3.5: Reveal unavailable during promotion
@@ -102,4 +102,34 @@ Then EX.confirm is not shown and S4 stays
 Given puzzle-play S4
 When Bottom activates C5
 Then EX.confirm is not shown and S4 stays
+```
+
+### US3.10: Reveal unavailable in confirm
+
+- **Proves**: C3
+
+```gherkin
+Given puzzle-play S2 leave confirm
+When Bottom activates C3
+Then EX.confirm is unchanged and S2 stays
+```
+
+### US3.11: Abandon unavailable in confirm
+
+- **Proves**: C4
+
+```gherkin
+Given puzzle-play S2 leave confirm
+When Bottom activates C4
+Then EX.confirm is unchanged and S2 stays
+```
+
+### US3.12: Leave unavailable in confirm
+
+- **Proves**: C5
+
+```gherkin
+Given puzzle-play S2 leave confirm
+When Bottom activates C5
+Then EX.confirm is unchanged and S2 stays
 ```

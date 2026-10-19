@@ -8,7 +8,7 @@
     /* play UI: local skeleton + linear-app spacing; colors/type → UIS + PAL */
     :root {
       --bg: #F7F1E8;
-      --surface: #FFF9F0;
+      --surface: #F7F1E8;
       --fg: #2C2A28;
       --muted: #5c574e;
       --border: color-mix(in oklch, #5C3A2A 28%, #F7F1E8);
@@ -59,11 +59,11 @@
       padding: 11px 16px;
       border-radius: var(--radius);
       border: 1px solid transparent;
-      font-size: 15px; font-weight: 510;
+      font-size: 16px; font-weight: 510;
       transition: background 0.15s ease-out, border-color 0.15s ease-out, transform 0.05s ease;
     }
     .btn:active { transform: translateY(1px); }
-    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary { background: var(--accent); color: var(--fg); border-color: var(--accent); }
     .btn-secondary { background: var(--surface); color: var(--fg); border-color: var(--border); }
     .btn-secondary:hover { border-color: var(--table); }
     .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; }
@@ -86,7 +86,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: color-mix(in oklch, var(--surface) 80%, var(--bg));
-      font-size: 14px;
+      font-size: 16px;
     }
     .chip.check { border-color: var(--danger); color: color-mix(in oklch, var(--danger) 70%, var(--fg)); }
     .spec-chrome {
@@ -147,7 +147,7 @@
     .light { background: var(--sq-light); }
     .dark { background: var(--sq-dark); }
     .coord {
-      font-size: 0.65rem;
+      font-size: 16px;
       color: color-mix(in oklch, #FFF9F0 75%, transparent);
       display: flex; align-items: center; justify-content: center;
       background: var(--table);
@@ -243,7 +243,6 @@
       <section id="ex-confirm" data-state="EX.confirm">
         <div class="card dialog" data-od-id="shared-play-confirm">
           <p>Resign this game?</p>
-          <p class="meta">Offer a draw?</p>
           <div class="actions">
             <button type="button" class="btn btn-primary">Confirm</button>
             <button type="button" class="btn btn-secondary">Cancel</button>
@@ -262,7 +261,7 @@
 
       <section id="ex-promote" data-state="EX.promote">
         <div class="card dialog" data-od-id="shared-play-promote">
-          <p class="meta">Choose promotion</p>
+          <p>Choose promotion</p>
           <div class="promote-row">
             <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Queen">&#9813;</button>
             <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Rook">&#9814;</button>
@@ -274,7 +273,7 @@
 
       <section id="ex-rejected" data-state="EX.rejected">
         <div class="card dialog" data-od-id="shared-play-rejected">
-          <p class="meta">Refused place</p>
+          <p>Refused place</p>
           <div class="flash" data-perception="PER.R8" aria-label="Danger flash"></div>
         </div>
       </section>

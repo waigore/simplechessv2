@@ -12,11 +12,9 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 |---------|---------|-----------|
 | C1 | Select, move, promote, resign, offer on Top turn | US1.1 US1.2 US1.3 US2.1 US2.2 US2.3 US2.4 |
 | C2 | Shared Advice toggle | US1.4 |
-| C3 | Resign or offer confirm | US1.5 |
+| C3 | Resign or offer confirm | US1.5 US1.6 |
 | C4 | Answer Bottom's offer | US2.5 US2.6 |
-| K1 | Host screens do not activate | US1.6 US1.7 US1.8 US1.9 |
 | K2 | Cannot move on Bottom turn | US1.10 US2.7 |
-| K3 | Cannot answer own offer | US2.8 |
 
 ## US1: Top seat only
 
@@ -72,44 +70,14 @@ When Top activates Confirm
 Then the screen is shared-result
 ```
 
-### US1.6: Mode pick forbidden
+### US1.6: Cancel resign
 
-- **Proves**: K1
-
-```gherkin
-Given Top player is present during mode-pick S1
-When Top activates UI-mode-pick.C1
-Then the screen stays mode-pick
-```
-
-### US1.7: Setup forbidden
-
-- **Proves**: K1
+- **Proves**: C3
 
 ```gherkin
-Given Top player is present during shared-setup S1
-When Top activates UI-shared-setup.C5
-Then the screen stays shared-setup
-```
-
-### US1.8: Result forbidden
-
-- **Proves**: K1
-
-```gherkin
-Given Top player is present during shared-result S1
-When Top activates UI-shared-result.C2
-Then the screen stays shared-result
-```
-
-### US1.9: Puzzle forbidden
-
-- **Proves**: K1
-
-```gherkin
-Given Top player is present during puzzle-play S1
-When Top activates UI-puzzle-play.C5
-Then the screen stays puzzle-play
+Given Top player is on shared-play S2 resign confirm and Top seat is side to move
+When Top activates Cancel
+Then the screen is shared-play S1
 ```
 
 ### US1.10: No move on Bottom turn

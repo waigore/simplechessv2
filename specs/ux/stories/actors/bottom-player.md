@@ -10,16 +10,15 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| C1 | Host screens' controls | US1.1 US1.2 US1.3 US1.4 |
+| C1 | Host screens' controls | US1.1 US1.2 US1.3 US1.4 US3.1 US3.2 US3.3 US3.4 US3.5 US3.6 US3.7 US3.8 US4.1 US4.2 US4.3 US4.4 US4.5 US4.6 |
 | C2 | Shared play on Bottom turn | US1.5 US1.6 US1.7 US1.8 US2.1 US2.2 US2.3 US2.4 |
-| C3 | Exceptions Confirm/Cancel | US1.9 |
+| C3 | Exceptions Confirm/Cancel | US5.1 US5.2 |
 | C4 | Answer Top's offer | US2.5 US2.6 |
 | K1 | No move when Top to move | US1.10 US2.7 |
-| K2 | Cannot answer own offer | US2.8 |
 
 ## US1: Host and Bottom seat
 
-As Bottom player, I operate mode pick through play so that we can finish a sitting.
+As Bottom player, I operate mode pick through play so that we can finish a session.
 
 ### US1.1: Mode pick Shared game
 
@@ -101,16 +100,6 @@ When Bottom activates UI-shared-play.C3
 Then GS.advice is On
 ```
 
-### US1.9: Cancel resign
-
-- **Proves**: C3
-
-```gherkin
-Given Bottom player is on shared-play S2 EX.confirm resign
-When Bottom activates Cancel
-Then the screen is shared-play S1 and GS.gameEnded is false
-```
-
 ### US1.10: Cannot move on Top turn
 
 - **Proves**: K1
@@ -121,4 +110,4 @@ When Bottom activates UI-shared-play.C1
 Then selection is unchanged and no move is asked
 ```
 
-Choice scenarios: [`bottom-player-choices.md`](bottom-player-choices.md).
+Choice scenarios: [`bottom-player-choices.md`](bottom-player-choices.md). Host controls: [`bottom-player-host.md`](bottom-player-host.md), [`bottom-player-puzzle.md`](bottom-player-puzzle.md). Exceptions: [`bottom-player-exceptions.md`](bottom-player-exceptions.md).

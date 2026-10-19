@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/ux/controls.md`](../../.agents/specs/rule
 | `IN.activate` | Activate | Invoke the focused control. |
 | `IN.select` | Select | Select a piece of the side to move. |
 | `IN.move` | Move | Place the selected piece on a legal destination. |
-| `IN.deselect` | Clear selection | Clear `GS.selectedPiece` on shared-play or puzzle-play without asking for a move. |
+| `IN.deselect` | Clear selection | Clear `GS.selectedPiece` on shared-play or puzzle-play without asking for a move. In `EX.promote`, dismiss the choice and leave the pawn selected. |
 
 ## Bindings
 

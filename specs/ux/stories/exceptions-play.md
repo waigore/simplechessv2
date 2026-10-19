@@ -61,7 +61,7 @@ Then the screen stays shared-play and the side to move can place again
 ```gherkin
 Given the side to move confirmed Offer a draw?
 When EX.draw-offer opens
-Then the other seat sees Accept and Decline and the offering seat sees Withdraw
+Then one shared panel shows Accept, Decline, and Withdraw
 ```
 
 ### US1.13: Draw offer declined
@@ -70,6 +70,6 @@ Then the other seat sees Accept and Decline and the offering seat sees Withdraw
 
 ```gherkin
 Given EX.draw-offer is open
-When the other seat activates Decline
-Then play returns with the same side to move
+When an actor activates Decline
+Then S6 closes and play continues with the same side to move and clocks unchanged
 ```

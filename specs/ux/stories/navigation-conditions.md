@@ -21,7 +21,7 @@ As Bottom or Top player, I stay put when a transition does not apply so that nav
 ```gherkin
 Given Bottom player is on mode-pick S3 quit confirm
 When Bottom activates Cancel
-Then the screen stays mode-pick and the sitting does not end
+Then the screen stays mode-pick and the session does not end
 ```
 
 ### US2.3: T6 fail-stay
@@ -44,12 +44,22 @@ When Bottom activates Cancel
 Then the screen stays puzzle-play
 ```
 
-### US2.5: T8 cannot-use
+### US2.6: T1 unavailable in loading
 
-- **Proves**: T8
+- **Proves**: T1
 
 ```gherkin
-Given Top player is present at shared-result S1
-When Top activates UI-shared-result.C2
-Then the screen stays shared-result
+Given mode-pick S2 EX.loading
+When Bottom activates UI-mode-pick.C1
+Then the screen stays mode-pick
+```
+
+### US2.7: T2 unavailable in loading
+
+- **Proves**: T2
+
+```gherkin
+Given mode-pick S2 EX.loading
+When Bottom activates UI-mode-pick.C2
+Then the screen stays mode-pick
 ```

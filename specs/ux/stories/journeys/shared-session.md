@@ -28,7 +28,7 @@ As Bottom player, I walk Shared session so that a game can finish and restart.
 - **Proves**: N1, S1, S2
 
 ```gherkin
-Given Bottom player opens a sitting on mode-pick
+Given Bottom player opens a session on mode-pick
 When Bottom activates UI-mode-pick.C1
 Then the screen is shared-setup
 When Bottom activates UI-shared-setup.C5
