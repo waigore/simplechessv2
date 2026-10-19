@@ -43,4 +43,13 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 ## Diagram
 
-None — small surface.
+```mermaid
+flowchart LR
+  H[harness]
+  P[CMP-playtest-seams]
+  T[telemetry sink]
+  R[CMP-session-router]
+  H -->|O1-O5| P
+  P -.->|E1 tel_event| T
+  P -.->|E2 jump_requested| R
+```

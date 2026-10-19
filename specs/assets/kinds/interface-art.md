@@ -38,7 +38,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 - **Modality**: visual
 - **Enforce**: hard
 - **Style anchors**: `01a151ef-6a32-77ec-ace1-9190aa56b7dc` (`interface-art/style-anchor-sheet`)
-- **Style binding**: Recraft `recraft_style_id` `16e2245a-a7d1-41a3-bf06-2792ca253c1c`; model `recraftv4_1_vector`; name `simplechessv2-interface-art-SS1`
+- **Style binding**: Recraft `recraft_style_id` `16e2245a-a7d1-41a3-bf06-2792ca253c1c`; model per [`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md); name `simplechessv2-interface-art-SS1`
 - **Aesthetics**: P3; UI.F1 F2; PAL.S3
 - **Built from**: `01a151ef-6a32-77ec-ace1-9190aa56b7dc` on 2026-10-19 (cream gradient panel+chip; no grain)
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
@@ -72,6 +72,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K3 | Budget | File size | ≤ 100 KB |
 | K4 | Quiet UI | Look vs P3 | Apart from board; calm |
 | K5 | Spec S2 | File inspect | SVG or 9-slice PNG with alpha |
+| K6 | Spec S1 | Inspect | Flat cream fill; thin warm border; soft radius (UI.F1) |
 
 ## Naming
 

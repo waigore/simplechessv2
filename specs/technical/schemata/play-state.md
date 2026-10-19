@@ -27,7 +27,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | I1 | Only Domain mutates F1 F2 via [`CTR-local-move`](../contracts/local-move.md) |
 | I2 | F4/F5 never gate F1 updates |
 | I3 | Only side-to-move clock runs when timed |
-| I4 | Only the active L2 session mutates F3–F7 |
+| I4 | Only the active L2 session mutates F3, F6, F7; F4/F5 are written only by [`CMP-advice-client`](../components/advice-client.md) (never gating position, per I2) |
 
 ## Lifecycle
 

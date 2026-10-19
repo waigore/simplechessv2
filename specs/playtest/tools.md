@@ -38,7 +38,7 @@ Sink and format are set by the technical design in [`specs/technical/verificatio
 
 ## Capture affordance
 
-A running playtest session must be observable so logs (and screenshots when Graphical) can be written under `docs/playtest/evidence/` per [`evidence.md`](evidence.md).
+A running playtest session must be observable so logs and the screenshots [`evidence.md`](evidence.md) requires can be written under `docs/playtest/evidence/`.
 
 ## Situational
 
