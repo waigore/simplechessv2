@@ -9,8 +9,10 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | Skill | Purpose |
 |-------|---------|
 | [`ensure-project-setup`](ensure-project-setup/SKILL.md) | Check first-time setup is done; apply gaps via `setup-github-repo` |
-| [`ensure-dev-env-setup`](ensure-dev-env-setup/SKILL.md) | Explicit-only: invent and best-effort install/verify game stack + asset tools from Accepted ADRs |
+| [`ensure-dev-env-setup`](ensure-dev-env-setup/SKILL.md) | Explicit-only: invent and best-effort install/verify game stack + asset tools from Accepted ADRs; then `setup-unit-test-ci` |
+| [`ensure-open-design-skill-setup`](ensure-open-design-skill-setup/SKILL.md) | Explicit-only: git clone/pull Open Design skill + content under `~/.open-design-skill/`; optional user-local Cursor/OpenCode/Grok symlinks |
 | [`setup-github-repo`](setup-github-repo/SKILL.md) | Apply and verify first-time GitHub settings (Actions, `main` ruleset, squash-only, auto-merge, labels) |
+| [`setup-unit-test-ci`](setup-unit-test-ci/SKILL.md) | Wire Unit tests + Coverage CI from sources or Engine/framework ADRs; sync conventions + workflow; require both checks |
 | [`setup-project-mcp`](setup-project-mcp/SKILL.md) | Add, enable, disable, or smoke-test MCP servers for Cursor / OpenCode / Grok; credentials never in-repo |
 | [`create-project-label`](create-project-label/SKILL.md) | Add a label to config + docs and sync to GitHub |
 | [`create-project-epic`](create-project-epic/SKILL.md) | Create an Epic issue (`type:epic`) on GitHub |
@@ -36,7 +38,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`author-spec`](author-spec/SKILL.md) | Write or edit a spec from `.agents/specs/rules/`; do not copy the rules into the spec |
 | [`capture-requirements`](capture-requirements/SKILL.md) | Interview for specs, high-level stage first; detail saved as notes; confirm, `author-spec`, open a spec PR |
 | [`review-spec`](review-spec/SKILL.md) | Review a spec doc or the whole set; whole-spec also runs applicability, terminology, and TBD audits; report verdict |
-| [`review-code`](review-code/SKILL.md) | Review code vs `docs/solid.md` (SOLID + continuity) and `docs/coding-conventions.md` (project rules + `Code lint`); Pass/Fail, read-only |
+| [`review-code`](review-code/SKILL.md) | Review code vs `docs/solid.md` (SOLID + continuity) and `docs/coding-conventions.md` (project rules + Code lint / Unit tests / Coverage); Pass/Fail, read-only |
 | [`audit-spec-applicability`](audit-spec-applicability/SKILL.md) | Audit Applies/N/A upstream grounds and downstream carry-outs; report for author-spec |
 | [`audit-spec-terminology`](audit-spec-terminology/SKILL.md) | Audit glossary ownership and term usage (undefined, drift, synonyms, homonyms); report for author-spec |
 | [`audit-spec-tbd`](audit-spec-tbd/SKILL.md) | Find TBDs (undecided aspects), propose grounded answers, confirm with the user, then author-spec |

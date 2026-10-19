@@ -1,8 +1,8 @@
 # Dev environment setup
 
-Ensure the local machine has the **game stack** and **asset tools** needed to build and run this project. Invoke only when the user asks (`ensure-dev-env-setup`); other skills do not require it.
+Ensure the local machine has the **game stack** and **asset tools** needed to build and run this project, then wire **Unit tests** / **Coverage** CI via `setup-unit-test-ci`. Invoke only when the user asks (`ensure-dev-env-setup`); other skills do not require it.
 
-This doc is the contract: the **outcomes** below. Install and verify commands are the agent's judgement from Accepted ADRs — there is no project-filled tool checklist.
+This doc is the contract for **local** outcomes below. Install and verify commands are the agent's judgement from Accepted ADRs — there is no project-filled tool checklist. Unit-test CI outcomes live in [`coding-conventions.md`](coding-conventions.md) and [`github-repo-setup.md`](github-repo-setup.md).
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ Build an in-scope list from:
 
 Skip unfilled, N/A, or Proposed-only ADR areas. Do not invent stack items the specs do not authorize.
 
-**Out of scope:** GitHub/`gh`, MCP, IDEs, and unrelated CLIs (`ensure-project-setup`, `setup-project-mcp`).
+**Out of scope (except via `setup-unit-test-ci`):** GitHub/`gh`, MCP, IDEs, and unrelated CLIs (`ensure-project-setup`, `setup-project-mcp`).
 
 ## Install (best-effort)
 
@@ -36,7 +36,7 @@ For each item: present on PATH or at the expected location; version compatible w
 
 ## Pass / Fail
 
-Report pass/fail per inventory item (and noted transitive deps). Setup **Passes** only when every in-scope item verifies. Partial installs with remaining failures → **Fail**, with what the user must do next.
+After local verify, run `setup-unit-test-ci`. Report pass/fail per inventory item (and noted transitive deps) and for unit-test CI. Setup **Passes** only when every in-scope local item verifies **and** unit-test CI Passes. Partial installs or CI gaps → **Fail**, with what the user must do next.
 
 ## Blockers
 
@@ -44,6 +44,6 @@ When an item cannot be installed or verified (no permission, interactive license
 
 ## Related
 
-- Skill: `ensure-dev-env-setup`
+- Skill: `ensure-dev-env-setup`; delegate: `setup-unit-test-ci`
 - Stack authority: [`specs/adr/adr.md`](../specs/adr/adr.md); asset tools: [`asset-tools.md`](asset-tools.md)
-- Not this skill: [`github-repo-setup.md`](github-repo-setup.md), [`mcp.md`](mcp.md)
+- CI tables: [`coding-conventions.md`](coding-conventions.md); ruleset: [`github-repo-setup.md`](github-repo-setup.md); MCP: [`mcp.md`](mcp.md)

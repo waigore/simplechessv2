@@ -39,7 +39,8 @@ gh api -X POST "repos/$REPO/rulesets" --input - <<'EOF'
     {"type": "required_status_checks", "parameters": {
       "strict_required_status_checks_policy": true,
       "required_status_checks": [
-        {"context": "Spec lint"}, {"context": "PR hygiene"}, {"context": "Code lint"}]}}
+        {"context": "Spec lint"}, {"context": "PR hygiene"}, {"context": "Code lint"},
+        {"context": "Unit tests"}, {"context": "Coverage"}]}}
   ]
 }
 EOF
