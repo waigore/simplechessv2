@@ -4,7 +4,7 @@
   "kind_spec": "AK-piece-sprites",
   "coverage": ["AK-piece-sprites.V1"],
   "serves": ["E-pieces", "PER.R1"],
-  "state": "draft",
+  "state": "approved",
   "version": 1,
   "files": ["piece-sprites/style-anchor-sheet.svg"],
   "source_type": "ai-generation",
@@ -32,12 +32,42 @@
         "date": "2026-10-18",
         "notes": "Bootstrap style-anchor sheet; equal-size clause on 12-piece sheet prompt"
       }
-    ]
+    ],
+    "series": {
+      "id": "AK-piece-sprites.SS1",
+      "recraft_style_id": "58840487-cf72-41fa-b83f-5773ea7a1c11"
+    }
   },
+  "touchups": [
+    {
+      "operation": "palette_remap",
+      "tool": "local-script",
+      "terms": "project-local; no third-party API",
+      "date": "2026-10-19",
+      "reason": "Remap fills to PAL.C3/C4 and SRF.S1 soft-cel companions; keep #FDFDFC for S6 flood-fill canvas",
+      "run_by": "agent",
+      "prompt": "Remap SVG fills to ivory #F5F0E6 (PAL.C3), charcoal #2C2A28 (PAL.C4), and SRF.S1 soft-cel companions; keep #FDFDFC canvas for S6 flood-fill",
+      "inputs": {
+        "file": "piece-sprites/style-anchor-sheet.svg",
+        "palette": ["PAL.C3", "PAL.C4"]
+      },
+      "settings": {
+        "C3": "#F5F0E6",
+        "C4": "#2C2A28",
+        "keep_flood_fill": "#FDFDFC"
+      }
+    }
+  ],
   "license": {
     "grant": "Generated with Recraft; project use under Recraft terms for the signing account",
     "tool": "Recraft",
     "terms": "https://www.recraft.ai/docs"
   },
-  "guidance": "Style-series bootstrap sheet (all 12 types/sides). Not the final per-piece ship files; used as style_anchor for APR.establish-style / create_style."
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass after palette remap. Needs human signed off by PO (waigore): FRM.L1/K1 silhouette at 1/12; K4/P3 cafe mood; S1 opaque sheet canvas intentional for bootstrap create_style + S6. Exact PAL.C3/C4 present; B1 65KB; K5 twelve ship entries still pending series generate."
+  },
+  "guidance": "Style-series bootstrap sheet (all 12 types/sides). Not the final per-piece ship files; style_anchor for SS1. Recraft style 58840487-cf72-41fa-b83f-5773ea7a1c11 built 2026-10-19."
 }

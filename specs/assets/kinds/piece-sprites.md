@@ -44,7 +44,7 @@ Full fields: [`piece-sprites/style-series.md`](piece-sprites/style-series.md).
 
 ### SS1 — primary
 
-- **State**: bootstrapping — see style-series.md for binding, anchors, aesthetics
+- **State**: active — see style-series.md for binding, anchors, aesthetics
 
 #### Prompt policy
 

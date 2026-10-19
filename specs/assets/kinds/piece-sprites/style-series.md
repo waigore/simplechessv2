@@ -20,13 +20,13 @@ N/A — see parent.
 
 ### SS1 — primary
 
-- **State**: bootstrapping
+- **State**: active
 - **Modality**: visual
 - **Enforce**: hard
-- **Style anchors**: `01a14f87-eeee-7f30-aa10-4516f0191610` (`piece-sprites/style-anchor-sheet`) — pending Pass then `create_style`
-- **Style binding**: TBD — Recraft style id after `APR.establish-style`?
+- **Style anchors**: `01a14f87-eeee-7f30-aa10-4516f0191610` (`piece-sprites/style-anchor-sheet`)
+- **Style binding**: Recraft `recraft_style_id` `58840487-cf72-41fa-b83f-5773ea7a1c11`; model `recraftv4_1_vector` (created as `recraftv4_pro_vector`); name `simplechessv2-piece-sprites-SS1`
 - **Aesthetics**: P2 P3; PAL.S1; FRM.S1 L1 D1
-- **Built from**: None — pending Pass + binding
+- **Built from**: `01a14f87-eeee-7f30-aa10-4516f0191610` on 2026-10-19 (palette-remapped sheet; replaces prior id `f64728cc-6e43-4790-b35d-3bec39015879`)
 - **Refresh when**: aesthetics / anchors change, or review Fail pattern
 
 #### Prompt policy

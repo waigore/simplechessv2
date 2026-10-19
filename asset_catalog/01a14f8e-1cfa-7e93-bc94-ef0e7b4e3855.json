@@ -8,7 +8,7 @@
   "serves": [
     "PER.R2"
   ],
-  "state": "draft",
+  "state": "approved",
   "version": 1,
   "files": [
     "board-backgrounds/play-table.svg"
@@ -20,7 +20,7 @@
   },
   "recipe": "AK-board-backgrounds.R1",
   "generation": {
-    "prompt": "Flat orthographic 2D web chess play board only \u2014 no pieces, no labels, no UI chrome. Output as clean vector SVG game art.\n\nCanvas: square. Full readable 8\u00d78 grid on a quiet mahogany cafe table plane with a clear wooden feel.\n- Light squares: warm pale wood #E8D5B5 (PAL.C1) \u2014 not stark white; soft wood tone\n- Dark squares: deep mahogany #8B5A3C (PAL.C2) \u2014 dominant warm brown\n- Table / frame / margin: rich mahogany #5C3A2A (PAL.C5) surrounding the grid\n- Wooden feel: visible but soft wood grain and warm lacquered wood surface on table, frame, and squares; grain never breaks square edges or contrast (SRF.M1)\n\nMood: quiet mahogany cafe (P3); warm soft daylight (SRF.L1); square readability first. Soft-matte flat vector language matching the piece style \u2014 calm wooden board, not plastic, not chrome, not photoreal macro wood.\n\nNo perspective, no isometric tilt, no heavy 3D bevels.\n\nAvoid: neon; esports chrome; cold grey board; bright white squares; 3D perspective board; cluttered props; blood; piece sprites; text; badges; plastic laminate look.",
+    "prompt": "Flat orthographic 2D web chess play board only — no pieces, no labels, no UI chrome. Output as clean vector SVG game art.\n\nCanvas: square. Full readable 8×8 grid on a quiet mahogany cafe table plane with a clear wooden feel.\n- Light squares: warm pale wood #E8D5B5 (PAL.C1) — not stark white; soft wood tone\n- Dark squares: deep mahogany #8B5A3C (PAL.C2) — dominant warm brown\n- Table / frame / margin: rich mahogany #5C3A2A (PAL.C5) surrounding the grid\n- Wooden feel: visible but soft wood grain and warm lacquered wood surface on table, frame, and squares; grain never breaks square edges or contrast (SRF.M1)\n\nMood: quiet mahogany cafe (P3); warm soft daylight (SRF.L1); square readability first. Soft-matte flat vector language matching the piece style — calm wooden board, not plastic, not chrome, not photoreal macro wood.\n\nNo perspective, no isometric tilt, no heavy 3D bevels.\n\nAvoid: neon; esports chrome; cold grey board; bright white squares; 3D perspective board; cluttered props; blood; piece sprites; text; badges; plastic laminate look.",
     "negative_prompt": "neon; esports chrome; 3D perspective board; cluttered props; blood; piece sprites; text; badges",
     "tool": "Recraft",
     "operation": "generate_image",
@@ -29,7 +29,7 @@
       "image_size": "1:1",
       "input_style_id": "f64728cc-6e43-4790-b35d-3bec39015879"
     },
-    "seed": "n/a \u2014 tool has no seed",
+    "seed": "n/a — tool has no seed",
     "inputs": {
       "style_anchors": [
         "01a14f87-eeee-7f30-aa10-4516f0191610"
@@ -42,18 +42,44 @@
         "operation": "generate_image",
         "tool": "Recraft",
         "date": "2026-10-18",
-        "notes": "Board with piece style id; post: rotate(90) so light square at bottom-right (chess)"
+        "notes": "Board with then-current piece style id; post: rotate(90) so light square at bottom-right (chess)"
       }
     ],
     "series": {
       "id": "AK-board-backgrounds.SS1",
-      "recraft_style_id": "f64728cc-6e43-4790-b35d-3bec39015879"
+      "recraft_style_id": "58840487-cf72-41fa-b83f-5773ea7a1c11"
     }
   },
+  "touchups": [
+    {
+      "operation": "palette_remap",
+      "tool": "local-script",
+      "terms": "project-local; no third-party API",
+      "date": "2026-10-19",
+      "reason": "Remap fills to exact PAL.C1/C2/C5 (+ soft grain deepen of C5)",
+      "run_by": "agent",
+      "prompt": "Remap board SVG rgb fills to light #E8D5B5 (PAL.C1), dark #8B5A3C (PAL.C2), table #5C3A2A (PAL.C5)",
+      "inputs": {
+        "file": "board-backgrounds/play-table.svg",
+        "palette": ["PAL.C1", "PAL.C2", "PAL.C5"]
+      },
+      "settings": {
+        "C1": "#E8D5B5",
+        "C2": "#8B5A3C",
+        "C5": "#5C3A2A"
+      }
+    }
+  ],
   "license": {
     "grant": "Generated with Recraft; project use under Recraft terms for the signing account",
     "tool": "Recraft",
     "terms": "https://www.recraft.ai/docs"
   },
-  "guidance": "Oriented with light square bottom-right (h1) via SVG rotate(90). Generated with piece-sprites Recraft style during bootstrap; board series not yet active."
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass after palette remap. Needs human signed off by PO (waigore): K4/P3 cafe mood. Measured: PAL.K1 ΔL≈0.55 on C1/C2; h1 light (S5); B1 27KB; S4 no pieces. Series reuses piece-sprites SS1 style id."
+  },
+  "guidance": "Oriented with light square bottom-right (h1) via SVG rotate(90). Board SS1 reuses piece-sprites Recraft style 58840487-cf72-41fa-b83f-5773ea7a1c11."
 }
