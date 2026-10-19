@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 | ID | Property | Value |
 |----|----------|-------|
-| S1 | Durations | X1 0.05–0.15 s; X2 0.08–0.20 s; X3 0.10–0.25 s; X4 0.20–0.40 s; X5 0.08–0.20 s |
+| S1 | Durations | X1 0.05–0.15 s; X2 0.08–0.15 s; X3 0.10–0.25 s; X4 0.20–0.40 s; X5 0.08–0.20 s |
 | S2 | Character | Wood / tactile; soft cafe; never gates a move (P1) |
 | S3 | Loudness | Peaks toward −14 LUFS (L2) |
 | S4 | Format | OGG |

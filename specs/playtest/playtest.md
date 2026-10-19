@@ -33,7 +33,7 @@ When required: every in-scope **Design** protocol must pass on **Headless**; eve
 
 ## Evidence
 
-Root: [`docs/playtest/evidence/`](../../docs/playtest/evidence/). Schema: [`evidence.md`](evidence.md). One run folder per environment: `issue-<n>/headless-<run-id>/` and, for UX, `issue-<n>/graphical-<run-id>/`. Required artifacts per run: story IDs, pass/fail, screenshots (Graphical runs), notes, logs.
+Root: [`docs/playtest/evidence/`](../../docs/playtest/evidence/). Schema: [`evidence.md`](evidence.md). One run folder per environment: `issue-<n>/headless-<run-id>/` and, for UX, `issue-<n>/graphical-<run-id>/`. Required artifacts per run: story IDs, pass/fail, screenshots per [`evidence.md`](evidence.md), notes, logs.
 
 ## Architecture constraints
 

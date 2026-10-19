@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 ## Context
 
-The Godot Web client (ADR-0001) runs everything on-device except Advice (ADR-0002); saves sit in origin `localStorage` (ADR-0003); full depth demands verifiable rules and seams (ADR-0004). No layer or ownership decision existed.
+The Godot Web client (ADR-0001) runs everything on-device except Advice (ADR-0002); saves sit in origin `localStorage` (ADR-0003); full depth demands verifiable rules and seams (ADR-0004). No layer decision existed.
 
 ## Purpose
 
@@ -35,7 +35,7 @@ Cross-layer calls use typed contracts (`CTR-*`); upward flow uses callbacks — 
 2. **Observability / playtest Must tools**: seams and telemetry live in L4.
 3. **Reliability**: single-writer state, downward-only imports — L3 headless-testable (ADR-0004).
 
-Costs accepted: contract boilerplate; upward flows are events; the advice split adds an operational boundary.
+Costs accepted: contract boilerplate; upward flows are events; the advice split adds a boundary.
 
 ## Rejected alternatives
 

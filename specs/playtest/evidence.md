@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/playtest/evidence.md`](../../.agents/spec
 |----------|-------------|
 | Story IDs | Every design/UX story (or protocol) in the run's scope |
 | Pass / fail | One outcome per story or protocol |
-| Screenshots | Graphical runs only — see below |
+| Screenshots | Per the screenshot rule below |
 | Notes | Judgement text for the run |
 | Logs | Session excerpt for the judged window |
 | `manifest.md` | Index of the above; includes environment |
@@ -33,8 +33,7 @@ Authoring rules: [`.agents/specs/rules/playtest/evidence.md`](../../.agents/spec
 
 ## Screenshots, logs, notes
 
-- **Screenshots (Graphical)**: ≥1 image per **failed** protocol; for each **pass**, ≥1 image of the judged state unless the protocol says none. Store under `screenshots/`.
-- **Screenshots (Headless)**: none required (N/A). Judge via `DBG.2` / `TEL.*` and notes.
+- **Screenshots**: ≥1 image per **failed** protocol; for each **pass**, ≥1 image of the judged state unless the protocol says none. A protocol that judges no rendered state says "none" where that protocol defines its evidence; otherwise the run captures per this rule. Store under `screenshots/`.
 - **Logs**: file under `logs/` covering the judged window so `TEL.1`–`TEL.5` can be correlated.
 - **Notes**: `notes.md` — what was judged, blockers, and non-blocking marks only when the protocol allows.
 

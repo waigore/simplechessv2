@@ -14,6 +14,8 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Asset catalog + manifest | assets access; ADR-0005 | [`asset-access.md`](asset-access.md); [`CMP-asset-resolver`](components/asset-resolver.md); [`CTR-asset-resolve`](contracts/asset-resolve.md) |
 | Shared + Puzzle modes | design configuration / loops | Session components; [`SEQ-cold-open`](sequences/cold-open.md); [`SEQ-shared-end-new-session`](sequences/shared-end-new-session.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
 | Design `CFG.*` | design configuration | [`configuration.md`](configuration.md) |
+| Piece rules entity `E-pieces` | design | [`CMP-chess-rules`](components/chess-rules.md); [`CTR-local-move`](contracts/local-move.md) |
+| Mode pick flow `FL-mode-pick` | design | [`CMP-session-router`](components/session-router.md); [`SEQ-cold-open`](sequences/cold-open.md) |
 | Advice stream DTO | F-move-advice | [`SCH-advice-update`](schemata/advice-update.md); [`CMP-advice-backend`](components/advice-backend.md) |
 | Puzzle attempt / Elo commit | puzzle stream; DIF; PRG | [`SCH-puzzle-attempt`](schemata/puzzle-attempt.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
 
