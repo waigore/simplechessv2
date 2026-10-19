@@ -37,13 +37,13 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ### SS1 — primary
 
-- **State**: none
+- **State**: active
 - **Modality**: music
 - **Enforce**: hard
-- **Style anchors**: None yet
-- **Style binding**: Audio Reference policy `optional`; finetune id TBD — ElevenLabs finetune id after `APR.establish-style`?
+- **Style anchors**: `01a15200-69b2-7d13-a30d-696fa4ff390b` (`music/cafe-ambient-a`), `01a15200-69b2-7964-a602-ad5b19583125` (`music/cafe-ambient-b`)
+- **Style binding**: ElevenLabs `elevenlabs_finetune_id` `emkyd6q7yw5tfkcdajro`; model `music_v2`; name `simplechessv2-music-SS1`; Audio Reference policy `optional`
 - **Aesthetics**: P3; SND.M1 M2; SND.L1
-- **Built from**: None
+- **Built from**: the two anchors above on 2026-10-19 (PO-confirmed cafe ambient beds)
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
 
 #### Prompt policy
