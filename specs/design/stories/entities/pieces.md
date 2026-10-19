@@ -29,8 +29,8 @@ As a casual player, I rely on piece color, type, and state so that moves stay le
 
 ```gherkin
 Given Shared game at the orthodox opening
-When White's piece on e2 is observed
-Then Color is White And Type is Pawn And Origin square is e2 And state is S1
+When L-two-player-game.K1 completes
+Then White's piece on e2 has Color White And Type Pawn And Origin square e2 And state S1
 ```
 
 ### PS1.2: Has moved false at start
@@ -39,8 +39,8 @@ Then Color is White And Type is Pawn And Origin square is e2 And state is S1
 
 ```gherkin
 Given Shared game start
-When White's king on e1 is observed
-Then P4 is false
+When L-two-player-game.K1 completes
+Then White's king on e1 has P4 false
 ```
 
 ### PS1.3: Has moved after move
@@ -68,9 +68,9 @@ Then the Black pawn is in S2 And out of play
 - **Proves**: S3
 
 ```gherkin
-Given a White pawn completes a move to e8
-When promotion is required
-Then the pawn is in S3 until replaced by Q, R, B, or N of White And then S1 as that type
+Given a White pawn on e7 And e8 empty
+When the player moves the pawn e7→e8
+Then the pawn is in S3 (promotion required) until replaced by Q, R, B, or N of White And then S1 as that type
 ```
 
 ### PS1.6: Orthodox placement
@@ -78,7 +78,7 @@ Then the pawn is in S3 until replaced by Q, R, B, or N of White And then S1 as t
 - **Proves**: Placement
 
 ```gherkin
-Given Shared game K1 completes
-When the board is observed
+Given the Shared game begins
+When L-two-player-game.K1 completes
 Then White occupies ranks 1–2 And Black 7–8 And back ranks are R N B Q K B N R And pawns fill the rank in front
 ```

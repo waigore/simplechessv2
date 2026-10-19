@@ -14,7 +14,7 @@ Part of [`stories/game-state.md`](../game-state.md). Play fields: [`fields-play.
 |---------|---------|-----------|
 | GS.playerElo | Persistent Elo | PS1.1 PS1.2 |
 | GS.lastMode | Persistent last mode | PS1.2 PS1.3 |
-| GS.recentSolved | Last solved IDs | PS1.4 PS1.5 |
+| GS.recentSolved | Last solved IDs | PS1.4 PS1.5 PS1.11 |
 | GS.whiteSeat | White seat option | PS1.6 PS1.7 |
 | GS.clock | Clock option | PS1.6 PS1.7 |
 | GS.increment | Increment option | PS1.6 PS1.7 |
@@ -23,7 +23,7 @@ Part of [`stories/game-state.md`](../game-state.md). Play fields: [`fields-play.
 
 ## PS1: Kept fields
 
-As a casual player, I keep my settings and Elo so that each sitting starts as expected.
+As a casual player, I keep my settings and Elo so that each session starts as expected.
 
 ### PS1.1: Elo initial
 
@@ -40,7 +40,7 @@ Then GS.playerElo is CFG.ELO_START (1000)
 - **Proves**: GS.playerElo, GS.lastMode
 
 ```gherkin
-Given GS.playerElo is 1100 And GS.lastMode is Puzzle stream And the sitting ends
+Given GS.playerElo is 1100 And GS.lastMode is Puzzle stream And the session ends
 When the player reopens
 Then GS.playerElo is 1100 And GS.lastMode is Puzzle stream
 ```
@@ -123,4 +123,14 @@ Then GS.locale is en
 Given the player sets the locale to zh-Hant
 When the setting applies
 Then GS.locale is zh-Hant, one of en, zh-Hant, ja
+```
+
+### PS1.11: Solved IDs lost when saved data cleared
+
+- **Proves**: GS.recentSolved
+
+```gherkin
+Given GS.recentSolved holds p1, p2
+When this game's saved data is cleared
+Then GS.recentSolved is empty on next use
 ```

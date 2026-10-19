@@ -14,11 +14,10 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 | White seat | PS1.3 PS1.4 | Clock | PS1.5 PS1.6 PS1.7 |
 | Increment | PS1.8 | Advice | PS1.9 PS1.10 |
 | K1 | PS1.11 PS1.12 | K2, K3 | PS1.13 |
-| CFG.ELO_RECENT_WINDOW | PS1.14 | CFG.ELO_BAND_WIDEN | PS1.15 |
 
 ## PS1: Choose session options
 
-As a casual player, I set options so that clocks and seats fit the sitting.
+As a casual player, I set options so that clocks and seats fit the session.
 
 ### PS1.1: Shared mode
 
@@ -148,24 +147,4 @@ Then Increment is unavailable
 Given Puzzle stream
 When it starts
 Then White seat, Clock, Increment, and Advice do not apply
-```
-
-### PS1.14: Window trims
-
-- **Proves**: CFG.ELO_RECENT_WINDOW
-
-```gherkin
-Given GS.recentSolved holds 20 IDs
-When END.W1 appends a new ID
-Then GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20)
-```
-
-### PS1.15: Band widens
-
-- **Proves**: CFG.ELO_BAND_WIDEN
-
-```gherkin
-Given GS.playerElo 1000 And no unsolved puzzle within CFG.ELO_MATCH_RANGE (100)
-When the next puzzle is dealt
-Then the band widens CFG.ELO_BAND_WIDEN (50) until one fits
 ```

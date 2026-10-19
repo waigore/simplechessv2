@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/design/design.md`](../../.agents/specs/ru
   - Online matchmaking. Both people share one device, because matchmaking is a vision non-goal.
   - A required clock. Untimed play stays available so a commute game can stay calm.
   - Chess variants, including Chess960. Play is orthodox chess only.
-- **Platform implications**: Web sessions of about 15–40 minutes → one shared game is meant to finish in that sitting, and a puzzle sitting is as many single puzzles as fit that window.
+- **Platform implications**: Web sessions of about 15–40 minutes → one shared game is meant to finish in that session, and a puzzle session is as many single puzzles as fit that window.
 
 ## Traceability
 

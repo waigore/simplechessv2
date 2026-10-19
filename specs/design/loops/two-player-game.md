@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/design/loops.md`](../../../.agents/specs/rules/design/loops.md).
 
 - **Level**: session
-- **Timescale**: One game, inside a sitting of about 15–40 minutes. Blitz is shorter than rapid.
+- **Timescale**: One game, inside a session of about 15–40 minutes. Blitz is shorter than rapid.
 - **Serves**: Instant play and Cafe calm. Scope: two people play on one device, untimed and timed play, and a new session after a result.
 - **Parent / child loops**: None. Entered from [mode-pick](../flows/mode-pick.md) P2; stop returns there.
 

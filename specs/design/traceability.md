@@ -13,7 +13,7 @@ Authoring rules: [`.agents/specs/rules/design/traceability.md`](../../.agents/sp
 | Puzzle stream + Elo matching | definition | [`loops/puzzle-stream.md`](loops/puzzle-stream.md); [`difficulty.md`](difficulty.md); [`progression.md`](progression.md) |
 | Optional Stockfish advice | definition | [`features/move-advice.md`](features/move-advice.md) |
 | Win / lose (shared + puzzle) | definition | [`end-conditions.md`](end-conditions.md) |
-| Web / commute sitting | definition | Genre profile in [`design.md`](design.md); loop timescales |
+| Web / commute session | definition | Genre profile in [`design.md`](design.md); loop timescales |
 | No computer opponent / matchmaking | definition (out of scope) | Conventions rejected in [`design.md`](design.md) — not served as a goal |
 
 ## Topic coverage

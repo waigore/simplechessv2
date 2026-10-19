@@ -14,8 +14,8 @@ Split from [`stories/game-state.md`](../game-state.md) by scope. Moment fields: 
 |---------|-----------|---------|-----------|
 | GS.position | PS1.1 PS1.2 | GS.sideToMove | PS1.2 |
 | GS.whiteClock, GS.blackClock | PS1.3 PS1.4 | GS.gameEnded | PS1.2 PS1.5 |
-| GS.puzzleId | PS1.6 PS1.9 | GS.puzzleElo | PS1.6 |
-| GS.requiredSequence, GS.sequenceIndex | PS1.7 PS1.9 | GS.wrongMoveOnPuzzle | PS1.8 PS1.9 |
+| GS.puzzleId | PS1.6 PS1.9 PS1.10 | GS.puzzleElo | PS1.6 |
+| GS.requiredSequence, GS.sequenceIndex | PS1.7 PS1.9 PS1.11 | GS.wrongMoveOnPuzzle | PS1.8 PS1.9 |
 
 ## PS1: Session fields
 
@@ -109,4 +109,24 @@ Then GS.wrongMoveOnPuzzle is true until a new deal
 Given an ended puzzle with sequenceIndex 3, wrongMoveOnPuzzle true
 When the next puzzle is dealt
 Then GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle false And GS.puzzleId is the new puzzle
+```
+
+### PS1.10: Puzzle id only in Puzzle stream
+
+- **Proves**: GS.puzzleId
+
+```gherkin
+Given a Shared game And GS.puzzleId is none
+When a puzzle id would be set during that game
+Then GS.puzzleId remains none
+```
+
+### PS1.11: Sequence never empty while open
+
+- **Proves**: GS.requiredSequence
+
+```gherkin
+Given a dealt puzzle is open
+When GS.requiredSequence would be emptied
+Then GS.requiredSequence still has length ≥ 1
 ```
