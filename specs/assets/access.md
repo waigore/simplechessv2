@@ -24,5 +24,6 @@ Authoring rules: [`.agents/specs/rules/assets/access.md`](../../.agents/specs/ru
 
 | ID | Group | Members | Load point | Unload point | Serves |
 |----|-------|---------|------------|--------------|--------|
-| G1 | Boot | [`fonts`](kinds/fonts.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md), [`music`](kinds/music.md) | Cold open / mode pick (`EX.loading` → ready) | Never in a sitting | Load time; [mode-pick](../ux/screens/mode-pick.md) |
+| G1 | Boot | [`fonts`](kinds/fonts.md), [`interface-art`](kinds/interface-art.md), [`icons`](kinds/icons.md) | Cold open / mode pick (`EX.loading` → ready) | Never in a sitting | Load time; [mode-pick](../ux/screens/mode-pick.md) |
 | G2 | Play | [`piece-sprites`](kinds/piece-sprites.md), [`board-backgrounds`](kinds/board-backgrounds.md), [`sound-effects`](kinds/sound-effects.md) | First enter Shared play or Puzzle play | Never in a sitting | Instant play; Clear board; [SND.X*](../aesthetics/sound.md) |
+| G3 | Ambient | [`music`](kinds/music.md) | First point music starts, after board is playable | Never in a sitting | Load time; Cafe calm; [experience.md](../design/experience.md) playlist |

@@ -9,7 +9,7 @@ In-repo evidence from AI-agent playtesting. Schema and requirements: [`specs/pla
 - `manifest.md` — issue, environment, build/session id, coverage mode, results table, paths
 - `notes.md`
 - `logs/`
-- `screenshots/` — Graphical runs only (Headless: omit)
+- `screenshots/` — per the screenshot rule in [`specs/playtest/evidence.md`](../../../specs/playtest/evidence.md)
 
 ## When required
 

@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S2 | Medium | SVG preferred ([ADR-0005](../../adr/decisions/0005-asset-catalog-roots.md)); PNG alpha OK |
 | S3 | Detail | ≤ 3 fills; Staunton; height [FRM.P2](../../aesthetics/form.md) |
 | S4 | Anchor | Center of square |
-| S5 | Rasterize | Recraft SVG → PNG via Chrome headless only (not qlmanage/rsvg) |
+| S5 | Rasterize | SVG → PNG via one pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); never mix rasterizers |
 | S6 | Transparency | Edge flood-fill near-white (RGB ≥ 250); never global white punch |
 | S7 | Sheet crop | Ivory top / charcoal bottom; KQRBNP; 6-col projection; ~8px pad |
 | S8 | Fit | `fit_contain` square (LANCZOS); center; no stretch |

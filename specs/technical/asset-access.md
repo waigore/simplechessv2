@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents/specs/rules/technical/asset-access.md).
 
-- **Serves**: Load time; Instant play; Reliability; [`ACC`](../assets/access.md) G1 G2
+- **Serves**: Load time; Instant play; Reliability; [`ACC`](../assets/access.md) G1 G2 G3
 - **Informed by**: [`specs/assets/access.md`](../assets/access.md); [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md); [ADR-0001](../adr/decisions/0001-godot-engine.md)
 - **ADRs**: [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md), [ADR-0001](../adr/decisions/0001-godot-engine.md)
 
@@ -33,7 +33,8 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 |----|----------|-----------|-------|----------|
 | G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Cold open → manifest Boot IDs → mark ready |
 | G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Enter Shared/Puzzle play → Play IDs |
+| G3 | `ACC.G3` | Load Ambient group when music first starts | [`CMP-asset-resolver`](components/asset-resolver.md) | Board playable → Ambient IDs |
 
 ## Diagram
 
-None — two sequential groups; no overlap unload.
+None — three sequential groups; no overlap unload.

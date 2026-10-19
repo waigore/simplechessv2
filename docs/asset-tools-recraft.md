@@ -6,6 +6,8 @@ Primary graphic design and 2D generation product for image generation, editing, 
 
 - **ADR**: generation, editing, touch-up, and style series need **no** Integration ADR. Catalog `tool_role.adr` is `adr-free` when Recraft realizes the role.
 - **Style series**: for **visual** kinds only. `APR.establish-style` uploads anchors and calls `create_style`; the kind registry stores `recraft_style_id`. Series-active `APR.generate` / `APR.update` must pass that id as `input_style_id`. Do not invent a parallel style. fal must not replace Recraft for these steps. Audio kinds use the ElevenLabs CLI ([`asset-tools-elevenlabs.md`](asset-tools-elevenlabs.md)).
+- **Models**: vector base `recraftv4_1_vector`. A style may be created on `recraftv4_pro_vector` and consumed as `recraftv4_1_vector`; style ids are model-scoped, so record the created-on base. A kind style binding cites this doc for the model instead of naming it.
+- **Rasterization**: SVG → PNG with one headless-browser rasterizer (`chrome` / Chromium `--headless`). Do not mix rasterizers (`qlmanage`, `rsvg` render differently and are not used). Use one method per kind; the recipe records the step.
 - **Options**: before choosing an operation, read [`https://www.recraft.ai/docs/llms.txt`](https://www.recraft.ai/docs/llms.txt) and linked pages, then the connected MCP tool list.
 - **Access**: hosted MCP `https://mcp.recraft.ai/mcp`, OAuth on first use, no API key in-repo. Usage billed to the signer. If MCP lacks an operation, a person runs it in the web app; record them as `run_by`.
 - **Terms**: confirm rights fit the definition's market constraints; record in `terms` / generation license fields.

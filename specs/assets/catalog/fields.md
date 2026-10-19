@@ -44,6 +44,6 @@ Part of [`catalog.md`](../catalog.md). Keys are the JSON keys of an entry file p
   "source_type": "human-made",
   "license": {"grant": "All rights assigned to the project"},
   "supplier": "A. Artist",
-  "exemption": {"granted_by": "A. Artist", "date": "2026-10-15", "reason": "Hand-drawn to the style sheet"}
+  "exemption": {"granted_by": "A. Artist", "date": "2026-10-15", "reason": "Hand-drawn to the sprite sheet"}
 }
 ```

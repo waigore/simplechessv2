@@ -37,7 +37,7 @@ N/A — see [`style-series.md`](style-series.md).
 - **Prompt template (series)**: {type} {side} only; compose with prompt_policy
 - **Settings**: transparent; square; Recraft `input_style_id` when active
 - **Seed policy**: record when returned; else `n/a`
-- **Post-processing**: parent S5–S9 (Chrome → edge flood-fill → crop → fit_contain → on-board 0.88); crush
+- **Post-processing**: parent S5–S9 (rasterize per S5 → edge flood-fill → crop → fit_contain → on-board 0.88)
 - **Outputs**: one V1 file; preview via `docs/asset-previews/rebuild_starting_position.py`
 
 ## Checks

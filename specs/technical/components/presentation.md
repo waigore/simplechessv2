@@ -41,10 +41,12 @@ flowchart LR
   S[CMP-shared-game-session]
   Q[CMP-puzzle-session]
   V[CMP-presentation]
-  R -->|CTR-presentation O1-O5| V
-  S -->|CTR-presentation| V
-  Q -->|CTR-presentation| V
-  V -.->|E1-E3| R
+  R -->|CTR-presentation O1/O5| V
+  S -->|CTR-presentation O2-O4| V
+  Q -->|CTR-presentation O2-O3| V
+  V -.->|E2/E3| R
+  V -.->|E1| S
+  V -.->|E1| Q
 ```
 
 ## Failure / concurrency / persistence

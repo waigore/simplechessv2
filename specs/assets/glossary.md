@@ -19,6 +19,8 @@ Authoring rules: [`.agents/specs/rules/assets/glossary.md`](../../.agents/specs/
 | Load group | A set of assets loaded and unloaded together at stated points in play. | [`access.md`](access.md) |
 | Recipe | The repeatable way to make an asset: inputs, prompt, settings, and post-processing. | [`kinds/`](kinds/) |
 | Review exemption | A person's recorded decision that one asset skips `review-asset`. | [`assets.md`](assets.md) |
+| Source type | Where an asset came from: one fixed value from `ai-generation`, `procedural-generation`, `third-party`, or `human-made`. | [`catalog/fields.md`](catalog/fields.md) |
+| Sprite sheet | One image file holding many pieces or frames on a grid (the asset sense); not the aesthetics [Reference sheet](../aesthetics/glossary.md). | [`kinds/`](kinds/) |
 | Style anchor | An approved catalog asset that seeds or maintains a kind's style series. | [`procedures.md`](procedures.md) |
 | Style series | The kind-level registry of modality, enforce mode, anchors, style binding (Recraft / ElevenLabs / soft), prompt policy, and state that constrains generation. | [`kinds/`](kinds/) |
 | Tool role | A capability the pipeline needs, realized by an Accepted ADR or an ADR-free tool in [`docs/asset-tools.md`](../../docs/asset-tools.md). | [`tools.md`](tools.md) |
