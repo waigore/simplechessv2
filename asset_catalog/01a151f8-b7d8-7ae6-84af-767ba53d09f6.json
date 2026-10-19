@@ -1,0 +1,69 @@
+{
+  "id": "01a151f8-b7d8-7ae6-84af-767ba53d09f6",
+  "handle": "sound-effects/touch-select",
+  "kind_spec": "AK-sound-effects",
+  "coverage": [
+    "AK-sound-effects.V1"
+  ],
+  "serves": [
+    "Instant play",
+    "Cafe calm"
+  ],
+  "state": "approved",
+  "version": 1,
+  "files": [
+    "sound-effects/touch-select.ogg"
+  ],
+  "source_type": "ai-generation",
+  "tool_role": {
+    "role": "TL.2",
+    "adr": "adr-free"
+  },
+  "recipe": "AK-sound-effects.R1",
+  "generation": {
+    "prompt": "Extremely soft barely-there wooden fingertip caress on a chess piece; muted felt-soft wood brush; quiet cafe; whisper-level tactile select. soft wood cafe SFX; short; feather-light",
+    "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang; sharp click; hard knock; loud snap; percussive hit; bright transient",
+    "tool": "ElevenLabs CLI",
+    "operation": "text-to-sound-effects.convert",
+    "settings": {
+      "model_id": "eleven_text_to_sound_v2",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.85,
+      "output_format": "mp3_44100_128",
+      "post": "silence trim; lowpass 3.5k; fade-in; loudnorm I=-20; volume 0.75; atrim\u22640.14s; libopus OGG"
+    },
+    "seed": "n/a",
+    "inputs": {
+      "style_anchors": [],
+      "refs": [
+        "SND.X1",
+        "SND.L2"
+      ],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "text-to-sound-effects.convert",
+        "tool": "ElevenLabs CLI",
+        "date": "2026-10-19",
+        "notes": "SS1 soft anchor X1; PO kept feather-light regen"
+      }
+    ],
+    "series": {
+      "id": "AK-sound-effects.SS1",
+      "soft_enforce": true
+    }
+  },
+  "license": {
+    "grant": "Generated with ElevenLabs under account terms for project use",
+    "tool": "ElevenLabs text-to-sound-effects",
+    "terms": "https://elevenlabs.io/terms"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO confirmed as soft SS1 anchor. Measured: duration 0.14s within X1 S1; size ~1.9KB under B1; OGG/Opus (S4/K5). Character K3: PO kept feather-light touch. Loudness toward L2 for short cue (post I=-20 quieter than settle peers by design)."
+  },
+  "guidance": "SS1 soft style anchor for X1 (feather-light). Exemplar for soft enforce; not a hard binding id."
+}

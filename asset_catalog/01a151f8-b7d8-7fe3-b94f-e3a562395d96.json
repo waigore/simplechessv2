@@ -1,0 +1,56 @@
+{
+  "id": "01a151f8-b7d8-7fe3-b94f-e3a562395d96",
+  "handle": "sound-effects/end-resolve",
+  "kind_spec": "AK-sound-effects",
+  "coverage": ["AK-sound-effects.V4"],
+  "serves": ["Instant play", "Cafe calm"],
+  "state": "approved",
+  "version": 1,
+  "files": ["sound-effects/end-resolve.ogg"],
+  "source_type": "ai-generation",
+  "tool_role": {"role": "TL.2", "adr": "adr-free"},
+  "recipe": "AK-sound-effects.R1",
+  "generation": {
+    "prompt": "Slightly longer soft resolved wood chime-like place for game end; calm cafe. soft wood cafe SFX; short; unhurried table; never harsh",
+    "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang",
+    "tool": "ElevenLabs CLI",
+    "operation": "text-to-sound-effects.convert",
+    "settings": {
+      "model_id": "eleven_text_to_sound_v2",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.55,
+      "output_format": "mp3_44100_128",
+      "post": "silence trim; loudnorm I=-14; atrim≤0.39s; libopus OGG"
+    },
+    "seed": "n/a",
+    "inputs": {
+      "style_anchors": [],
+      "refs": ["SND.X4", "SND.L2"],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "text-to-sound-effects.convert",
+        "tool": "ElevenLabs CLI",
+        "date": "2026-10-19",
+        "notes": "SS1 soft anchor X4; PO confirmed"
+      }
+    ],
+    "series": {
+      "id": "AK-sound-effects.SS1",
+      "soft_enforce": true
+    }
+  },
+  "license": {
+    "grant": "Generated with ElevenLabs under account terms for project use",
+    "tool": "ElevenLabs text-to-sound-effects",
+    "terms": "https://elevenlabs.io/terms"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO confirmed as soft SS1 anchor. Measured: duration 0.39s within X4 S1; size ~3.3KB ≪ B1; OGG/Opus. Character K3: PO listen keep."
+  },
+  "guidance": "SS1 soft style anchor for X4."
+}

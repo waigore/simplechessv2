@@ -1,0 +1,56 @@
+{
+  "id": "01a151f8-b7d8-710a-b767-92c9137bfd63",
+  "handle": "sound-effects/move-settle",
+  "kind_spec": "AK-sound-effects",
+  "coverage": ["AK-sound-effects.V2"],
+  "serves": ["Instant play", "Cafe calm"],
+  "state": "approved",
+  "version": 1,
+  "files": ["sound-effects/move-settle.ogg"],
+  "source_type": "ai-generation",
+  "tool_role": {"role": "TL.2", "adr": "adr-free"},
+  "recipe": "AK-sound-effects.R1",
+  "generation": {
+    "prompt": "Soft wooden chess piece settling onto a board square; gentle place. soft wood cafe SFX; short; unhurried table; never harsh",
+    "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang",
+    "tool": "ElevenLabs CLI",
+    "operation": "text-to-sound-effects.convert",
+    "settings": {
+      "model_id": "eleven_text_to_sound_v2",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.55,
+      "output_format": "mp3_44100_128",
+      "post": "silence trim; loudnorm I=-14; atrim≤0.19s; libopus OGG"
+    },
+    "seed": "n/a",
+    "inputs": {
+      "style_anchors": [],
+      "refs": ["SND.X2", "SND.L2"],
+      "base_assets": []
+    },
+    "steps": [
+      {
+        "operation": "text-to-sound-effects.convert",
+        "tool": "ElevenLabs CLI",
+        "date": "2026-10-19",
+        "notes": "SS1 soft anchor X2; PO confirmed"
+      }
+    ],
+    "series": {
+      "id": "AK-sound-effects.SS1",
+      "soft_enforce": true
+    }
+  },
+  "license": {
+    "grant": "Generated with ElevenLabs under account terms for project use",
+    "tool": "ElevenLabs text-to-sound-effects",
+    "terms": "https://elevenlabs.io/terms"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-19",
+    "reviewer": "agent",
+    "report": "Pass. PO confirmed as soft SS1 anchor. Measured: duration 0.19s within X2 S1; size ~1.9KB ≪ B1; OGG/Opus. Character K3: PO listen keep."
+  },
+  "guidance": "SS1 soft style anchor for X2."
+}
