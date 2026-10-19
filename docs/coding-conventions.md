@@ -2,7 +2,7 @@
 
 Project-owned conventions for code in this repo: language idioms, naming, formatting, file layout, errors, logging, and tests. Once the Engine ADR is Accepted, replace every `<!-- fill in -->`. Template sync keeps this file's project content.
 
-Project conventions are optional. To use only [`solid.md`](solid.md), write `None — SOLID only (<reason>)` as the single Rules row and `None — <reason>` as the single Tooling row. Leftover placeholders mean the choice is still open, not SOLID only.
+Optional. SOLID only: one Rules row `None — SOLID only (<reason>)` and Tooling `None — <reason>`. Placeholders mean still open.
 
 Review code with [`review-code`](../.agents/skills/review-code/SKILL.md), which checks this file together with [`solid.md`](solid.md).
 
@@ -12,9 +12,9 @@ Review code with [`review-code`](../.agents/skills/review-code/SKILL.md), which 
 2. This file: project conventions.
 3. Structure continuity: patterns inferred from existing code.
 
-A higher level wins. Conventions extend `solid.md` and never contradict it: no rule may require what a principle forbids, such as a central switch over every type (OCP) or core rules importing a vendor SDK (DIP). Do not restate SOLID here; add only what it leaves open. A reviewer ignores a contradicting rule and files a must-fix against this file.
+Higher wins. Extend `solid.md`; never contradict it (e.g. no central type switch, no core→vendor SDK). Do not restate SOLID. Reviewers ignore contradicting rules and file a must-fix here.
 
-Technology choices are ADRs in [`specs/adr/`](../specs/adr/adr.md); layers, modules, and contracts are in [`specs/technical/`](../specs/technical/technical.md). Conventions may cite them but never decide them.
+ADRs ([`specs/adr/`](../specs/adr/adr.md)) and technical design ([`specs/technical/`](../specs/technical/technical.md)) decide tech; cite them, do not choose them here.
 
 Conventions do not apply under `demos/` ([demos](demos.md#what-is-relaxed)).
 
@@ -38,3 +38,20 @@ Every lint or format command listed here runs as a step in [`code-lint.yml`](../
 | Tool | Command | Enforces |
 |------|---------|----------|
 | <!-- fill in: e.g. formatter --> | <!-- fill in: e.g. `fmt --check .` --> | <!-- fill in: CC IDs --> |
+
+## Unit tests
+
+Each command runs as a step in the `Unit tests` job of [`unit-tests.yml`](../.github/workflows/unit-tests.yml). Main code only (not `demos/` or `.github/scripts`). Placeholders or `None — <reason>`: job passes with a notice. Wire via `setup-unit-test-ci`.
+
+| Tool | Command | Scope |
+|------|---------|-------|
+| <!-- fill in: e.g. test runner --> | <!-- fill in: e.g. `dotnet test` --> | <!-- fill in: main-code paths --> |
+
+## Coverage
+
+Runs after `Unit tests` succeeds (`needs`). Default Threshold **80** (% line coverage, main code); change to override. Sync with the `Coverage` job. Placeholders or `None — <reason>`: notice pass.
+
+| | |
+|--|--|
+| Threshold | 80 |
+| <!-- fill in: coverage tool --> | <!-- fill in: command that fails below Threshold --> |

@@ -22,11 +22,11 @@ A **ruleset** (**Settings → Rules → Rulesets**) targeting `main`, enforcemen
 | Restrict deletions | On |
 | Block force pushes | On |
 | Require a pull request before merging | On; 0 required approvals (baseline; tighten later if needed) |
-| Require status checks to pass | On; **require branches to be up to date**; checks `Spec lint` ([`spec-lint.yml`](../.github/workflows/spec-lint.yml)), `PR hygiene` ([`pr-hygiene.yml`](../.github/workflows/pr-hygiene.yml)), `Code lint` ([`code-lint.yml`](../.github/workflows/code-lint.yml)) |
+| Require status checks to pass | On; **require branches to be up to date**; checks: `Spec lint`, `PR hygiene`, `Code lint`, `Unit tests`, `Coverage` (workflows under [`.github/workflows/`](../.github/workflows/)) |
 
 Existing classic branch protection on `main` may stay; GitHub enforces the stricter of both. Do not weaken it without the user's confirmation. The API accepts check names before the UI lists them.
 
-Outcome: changes reach `main` only via PR; no one bypasses; PRs merge (or auto-merge) only when the three checks pass on a branch up to date with `main`.
+Outcome: changes reach `main` only via PR; no one bypasses; PRs merge (or auto-merge) only when the five checks pass on a branch up to date with `main`.
 
 ## 3. Merge settings
 
@@ -36,7 +36,7 @@ Outcome: changes reach `main` only via PR; no one bypasses; PRs merge (or auto-m
 - Squash commit message default: **Pull request title and description**.
 - **Always suggest updating pull request branches** on, since up-to-date checks hold back stale PRs.
 - **Allow auto-merge** on. Same-repo, non-draft PRs then squash-merge once mergeable unless labeled `no-automerge` ([`automerge.yml`](../.github/workflows/automerge.yml)).
-- **Automatically delete head branches** on. After a same-repo PR merges, GitHub deletes that PR's head branch.
+- **Automatically delete head branches** on. After merge, GitHub deletes the head branch.
 
 ## 4. Labels
 

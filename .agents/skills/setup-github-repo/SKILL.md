@@ -44,7 +44,7 @@ First-time GitHub workflow configuration for repositories using this template.
 
 - Without an apply request, **do not** change repository settings.
 - Never add bypass actors, allow force pushes or deletions on `main`, or substitute a weaker setting when blocked.
-- Baseline: 0 required approvals; required checks `Spec lint`, `PR hygiene`, and `Code lint`, with branches up to date. Add more only if the user asks.
+- Baseline: 0 required approvals; required checks `Spec lint`, `PR hygiene`, `Code lint`, `Unit tests`, and `Coverage`, with branches up to date. Add more only if the user asks.
 - Do not delete unrelated labels, or remove or weaken existing stricter protection (rulesets or classic), without confirmation.
 - Keep guidance aligned with the contract and [`docs/labels.md`](../../../docs/labels.md).
 

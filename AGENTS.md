@@ -37,6 +37,8 @@ Epic / Task / Defect forms live in `.github/ISSUE_TEMPLATE/`. Agents create issu
 
 Canonical skills and catalog: [`.agents/`](.agents/) ([README](.agents/README.md)). Authoring and native facades: [`docs/skills.md`](docs/skills.md). MCP setup (add / enable / test; no credentials in-repo): `setup-project-mcp` — [`docs/mcp.md`](docs/mcp.md).
 
+Open Design (user-local, not in this repo): install/verify with `ensure-open-design-skill-setup` — wrapper `~/.open-design-skill/skill`, content `~/.open-design-skill/repo` (or `OPEN_DESIGN_ROOT`); optional symlinks under `~/.cursor/skills/open-design`, `~/.config/opencode/skills/open-design`, `~/.grok/skills/open-design`. Contract: [`docs/open-design-skill-setup.md`](docs/open-design-skill-setup.md).
+
 ## Key files and directories
 
 - `AGENTS.md` — this file (agent orientation)
