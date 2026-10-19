@@ -39,14 +39,14 @@ S5–S7 definitive for SS1 look. Reproduce: [`docs/asset-previews/README.md`](..
 
 ### SS1 — primary
 
-- **State**: bootstrapping
+- **State**: active
 - **Modality**: visual
 - **Enforce**: hard
-- **Style anchors**: `01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855` (`board-backgrounds/play-table`) — pending Pass; piece style `f64728cc-6e43-4790-b35d-3bec39015879` used for gen
-- **Style binding**: TBD — own Recraft id after `APR.establish-style`? (or reuse piece binding)
+- **Style anchors**: `01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855` (`board-backgrounds/play-table`)
+- **Style binding**: reuses piece-sprites SS1 Recraft `recraft_style_id` `58840487-cf72-41fa-b83f-5773ea7a1c11` (no separate board style)
 - **Aesthetics**: P3; PAL.C1 C2 C5; SRF.M1; FRM.S2
-- **Built from**: None — pending Pass + binding
-- **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
+- **Built from**: `01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855` on 2026-10-19 (palette-remapped; binding shared with piece-sprites SS1)
+- **Refresh when**: aesthetics / anchors change, piece SS1 refresh, or review Fail pattern
 
 #### Prompt policy
 
