@@ -12,8 +12,11 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../.agents/specs/ru
 |---------|-----------|---------|-----------|
 | M1 | VS1.1 VS1.2 | M2 | VS1.3 |
 | M3 | VS1.4 | M4 | VS1.5 |
-| K1 | VS1.6 | I1 | VS1.7 |
-| I2 | VS1.3 | I3 | VS1.4 |
+| M5 | VS1.8 VS1.9 VS1.10 VS1.11 | K1 | VS1.6 |
+| I1 | VS1.7 | I2 | VS1.3 |
+| I3 | VS1.4 | | |
+
+VS1.8–VS1.11: [`physics-drag.md`](physics-drag.md).
 
 ## VS1: Snappy place and capture
 
