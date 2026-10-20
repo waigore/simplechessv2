@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Move advice ([F-move-advice](../design/features/move-advice.md)) | design | [`perception.md`](perception.md) |
 | Experience clarity / feedback | design | [`perception.md`](perception.md), [`physics.md`](physics.md) |
 | Mode pick flow ([FL-mode-pick](../design/flows/mode-pick.md)) | design | [`cameras/board.md`](cameras/board.md) (Used in P2/P3; T1 trigger) |
-| Two-player game loop ([loops/two-player-game.md](../design/loops/two-player-game.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
+| Shared-game loop ([loops/two-player-game.md](../design/loops/two-player-game.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
 | Puzzle stream loop ([loops/puzzle-stream.md](../design/loops/puzzle-stream.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
 | Accessibility (shape, not color alone) | quality | [`perception.md`](perception.md) R1–R2 |
 

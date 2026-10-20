@@ -30,7 +30,7 @@
     <header>
       <p>PRJ</p>
       <h1>Projection</h1>
-      <p>Orthographic PRJ.P1 · visible height 10 units · scale 32 px = 1 world unit · PRJ.X1 N/A (vector)</p>
+      <p>Orthographic PRJ.P1 · visible short axis 10 units · drawn to scale · PRJ.X1 N/A (vector)</p>
     </header>
 
     <figure>
@@ -45,16 +45,18 @@
         <g data-element="PRJ.A1">
           <rect class="aspect" x="35.6" y="140" width="568.9" height="320" />
           <rect class="aspect" x="160" y="15.6" width="320" height="568.9" />
-          <text x="160" y="128">PRJ.A1 about 9:16–16:9; outside: bars; board never cropped</text>
+          <text x="160" y="128">PRJ.A1 9:16–16:9; outside: letterbox or pillarbox; board never cropped</text>
         </g>
 
         <g data-element="PRJ.V1">
           <rect class="frame" x="160" y="140" width="320" height="320" />
-          <text x="164" y="156">PRJ.V1 10×10 units (Web; letterbox/pillarbox outside)</text>
+          <text x="164" y="156">PRJ.V1 10 units short axis; 17.8 long axis at aspect ends</text>
         </g>
 
-        <rect class="board" x="192" y="172" width="256" height="256" />
-        <text x="196" y="188" fill="#5c574e">8×8 board · 1 unit margin each side (PRJ.P1)</text>
+        <g data-element="E-pieces.I1">
+          <rect class="board" x="192" y="172" width="256" height="256" />
+          <text x="196" y="188" fill="#5c574e">E-pieces.I1 8×8 board · 1 unit margin each side (PRJ.P1)</text>
+        </g>
 
         <g data-element="PRJ.A2">
           <rect class="safe" x="176" y="156" width="288" height="288" />
@@ -64,16 +66,16 @@
         <g data-element="SPC.A1">
           <line class="axis" x1="192" y1="428" x2="256" y2="428" />
           <line class="axis" x1="192" y1="428" x2="192" y2="364" />
-          <text x="260" y="432">+x files a→h</text>
+          <text x="260" y="432">SPC.A1 +x files a→h</text>
           <text x="196" y="358">+y ranks 1→8</text>
         </g>
 
-        <g data-element="scale">
+        <g>
           <line class="scale" x1="160" y1="560" x2="192" y2="560" />
-          <text x="198" y="564">1 unit (32 px)</text>
+          <text x="198" y="564">Scale: 1 unit</text>
         </g>
       </svg>
-      <figcaption>Front view of the frame. Square visible area always contains the full board; display aspects use bars outside the 10×10.</figcaption>
+      <figcaption>Front view of the frame. The 10-unit short axis always contains the full board; extra background fills the long axis inside 9:16–16:9, and bars appear outside that range.</figcaption>
     </figure>
 
     <figure>
@@ -84,10 +86,14 @@
           <line class="ray" x1="80" y1="210" x2="560" y2="210" />
           <line class="vh" x1="300" y1="50" x2="300" y2="210" />
           <text x="304" y="134">10 u</text>
-          <text x="88" y="40">PRJ.P1 Orthographic · visible height 10 units · parallel rays</text>
+          <text x="88" y="40">PRJ.P1 Orthographic · visible short axis 10 units · parallel rays</text>
         </g>
         <g data-element="PRJ.D1">
           <text x="80" y="242">PRJ.D1 None — full board always in frame; no hide distance</text>
+        </g>
+        <g>
+          <line class="scale" x1="480" y1="238" x2="496" y2="238" />
+          <text x="502" y="242">Scale: 1 unit</text>
         </g>
       </svg>
       <figcaption>Side view. Orthographic rays stay parallel; no PRJ.D1 cut plane.</figcaption>

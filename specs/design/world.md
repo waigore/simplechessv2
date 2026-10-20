@@ -2,6 +2,8 @@
 
 Authoring rules: [`.agents/specs/rules/design/world.md`](../../.agents/specs/rules/design/world.md).
 
+- **Serves**: Cafe calm (vision); the cafe-table frame for Shared game and Puzzle stream (definition scope).
+
 ## Setting
 
 - **Place and time**: A quiet cafe table in the present day. Framing only — not a simulated place, clock-of-day, or travel between locations.

@@ -1,4 +1,4 @@
-# Stories: Two-player game
+# Stories: Shared game
 
 Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/specs/rules/design/story.md).
 

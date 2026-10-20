@@ -17,6 +17,5 @@ Part of [`glossary.md`](../glossary.md).
 | Resign | Side to move ends the Shared game and loses | [`end-conditions.md`](../end-conditions.md) |
 | Shared game | Two people play orthodox chess on one device in one session | [`loops/two-player-game.md`](../loops/two-player-game.md) |
 | Top player | Seat at the top of the shared device | [`configuration.md`](../configuration.md) |
-| Two-player game | See Shared game | here |
 | Untimed | Shared game with no clocks | [`configuration.md`](../configuration.md) |
 | White seat | Which seat plays White and moves first | [`configuration.md`](../configuration.md) |

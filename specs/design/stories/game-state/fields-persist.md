@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 
 - **Design spec**: [`game-state/fields-persist.md`](../../game-state/fields-persist.md)
 - **Spec key**: `GS`
-- **Glossary terms**: [Player Elo)](../../glossary.md), [Last mode)](../../glossary.md), [White seat)](../../glossary.md)
+- **Glossary terms**: [Player Elo](../../glossary.md), [Last mode](../../glossary.md), [White seat](../../glossary.md)
 
 Part of [`stories/game-state.md`](../game-state.md). Play fields: [`fields-play.md`](fields-play.md).
 

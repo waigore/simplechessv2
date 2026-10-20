@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 |---------|-----------|---------|-----------|
 | Shared game mode | PS1.1 | Puzzle stream mode | PS1.2 |
 | White seat | PS1.3 PS1.4 | Clock | PS1.5 PS1.6 PS1.7 |
-| Increment | PS1.8 | Advice | PS1.9 PS1.10 |
+| Increment | PS1.8 PS1.14 | Advice | PS1.9 PS1.10 |
 | K1 | PS1.11 PS1.12 | K2, K3 | PS1.13 |
 
 ## PS1: Choose session options
@@ -34,9 +34,9 @@ Then GS.clock Untimed And GS.whiteClock none
 - **Proves**: Puzzle stream mode
 
 ```gherkin
-Given GS.playerElo 1000
+Given GS.playerElo 1000 And catalog puzzles at 950, 1000, and 1200
 When Puzzle stream deals its first puzzle
-Then dealt GS.puzzleElo is 1050, within CFG.ELO_MATCH_RANGE (100) of GS.playerElo 1000
+Then the dealt GS.puzzleElo is 950 or 1000, within CFG.ELO_MATCH_RANGE (100) of GS.playerElo 1000
 ```
 
 ### PS1.3: Bottom seat White
@@ -106,7 +106,7 @@ Then GS.whiteClock is 105
 ```gherkin
 Given Shared game And Advice On And online
 When the turn passes
-Then advice may run for side to move
+Then the engine evaluates for the side to move
 ```
 
 ### PS1.10: Advice Off
@@ -147,4 +147,14 @@ Then Increment is unavailable
 Given Puzzle stream
 When it starts
 Then White seat, Clock, Increment, and Advice do not apply
+```
+
+### PS1.14: Default increment
+
+- **Proves**: Increment
+
+```gherkin
+Given Blitz And Increment 3 s And GS.whiteClock is 50
+When White completes a legal move
+Then GS.whiteClock is 53 And Black's clock starts
 ```

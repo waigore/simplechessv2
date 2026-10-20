@@ -28,7 +28,7 @@ As a casual player, I leave a mode only by its own exit so that each mode is ent
 ```gherkin
 Given phase is P1
 When the player attempts a piece move
-Then GS.position is unchanged
+Then GS.position is unchanged And no clock runs And no Advice evaluation runs
 ```
 
 ### PS1.2: No direct switch from Shared game

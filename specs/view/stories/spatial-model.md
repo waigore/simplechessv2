@@ -36,9 +36,9 @@ Then center is 0.5 units +x +y from a1's corner, files +x, ranks +y
 - **Proves**: A2
 
 ```gherkin
-Given CAM-board Web 9:16, White seat Top, axes White-fixed
-When Top is White
-Then CAM-board.M2 rotates the display 180°, names stay White-fixed
+Given CAM-board Web 9:16, White seat Top or Puzzle Solving side Black, axes White-fixed
+When M2 applies
+Then the display rotates 180° for either case, names stay White-fixed
 ```
 
 ### VS1.3: World unit
@@ -46,7 +46,7 @@ Then CAM-board.M2 rotates the display 180°, names stay White-fixed
 - **Proves**: U1
 
 ```gherkin
-Given CAM-board Web 9:16, square a1
+Given square a1
 When measured
 Then edge is 1 world unit, board spans 8×8 units
 ```
@@ -68,7 +68,7 @@ Then time is in seconds
 ```gherkin
 Given CAM-board Web 9:16, a piece on e4
 When placement applied
-Then body center is square-center (4.5, 3.5), travel presentation only
+Then body center is (4.5, 3.5), travel presentation only
 ```
 
 ### VS1.6: One piece per square
@@ -88,7 +88,7 @@ Then at most one body remains (E-pieces.I1)
 ```gherkin
 Given CAM-board Web 9:16, a piece on e4
 When extent measured
-Then body is 0.85×0.85 units about square center, facing none
+Then body is 0.85×0.85 units about center, facing none
 ```
 
 ### VS1.8: Square extent
@@ -148,5 +148,5 @@ Then x and y stay in 0–8 inclusive
 ```gherkin
 Given CAM-board Web 9:16, a move that would leave 0–8
 When presentation runs
-Then no piece center rests outside B1, E-pieces legality owns the reject
+Then no piece center rests outside B1; E-pieces legality rejects
 ```

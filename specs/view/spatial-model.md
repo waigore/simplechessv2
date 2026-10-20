@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/view/spatial-model.md`](../../.agents/spe
 | ID | Convention | Statement |
 |----|------------|-----------|
 | A1 | Axes | x along files a→h; y along ranks 1→8. Origin at the outer corner of a1. Angles unused (no facing in plane). |
-| A2 | Orientation | Frame is White-fixed. Display rotation when Top is White is owned by [CAM-board](cameras/board.md), not by renaming axes. |
+| A2 | Orientation | Frame is White-fixed. Display rotation for White seat and Puzzle Solving side is owned by [CAM-board](cameras/board.md), not by renaming axes. |
 
 ## Units and scale
 

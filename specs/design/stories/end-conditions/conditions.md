@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 
 - **Design spec**: [`end-conditions/conditions.md`](../../end-conditions/conditions.md)
 - **Spec key**: `END`
-- **Glossary terms**: [Shared game)](../../glossary.md), [Draw)](../../glossary.md), [Resign)](../../glossary.md)
+- **Glossary terms**: [Shared game](../../glossary.md), [Draw](../../glossary.md), [Resign](../../glossary.md)
 
 Split from [`stories/end-conditions.md`](../end-conditions.md) by logical unit. Puzzle rows: [`conditions-puzzle.md`](conditions-puzzle.md).
 
@@ -96,9 +96,9 @@ Then play continues
 - **Proves**: D2
 
 ```gherkin
-Given White offers a draw
+Given White offers a draw And GS.drawOffer is White
 When Black accepts
-Then draw
+Then draw And GS.drawOffer is none And GS.gameEnded true
 ```
 
 ### PS1.9: Declined draw
@@ -106,9 +106,9 @@ Then draw
 - **Proves**: D2
 
 ```gherkin
-Given White offers a draw
+Given White offers a draw And GS.drawOffer is White
 When Black declines
-Then play continues, same side to move, clock running
+Then play continues, same side to move, clock running And GS.drawOffer is none
 ```
 
 ### PS1.10: Third repetition draws

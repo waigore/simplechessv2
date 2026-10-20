@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | Y1 | Elo update and deal | PS1.1 PS1.2 PS1.3 PS1.4 |
-| C1 | No manual Elo | PS1.5 |
+| C1 | No manual Elo | PS1.5 PS1.9 |
 | CFG.ELO_K | Default K | PS1.1 |
 | CFG.ELO_MATCH_RANGE | ± band | PS1.3 |
 | CFG.ELO_START | First Elo | PS1.6 |
@@ -100,4 +100,14 @@ Then GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20), newest last, the oldest d
 Given GS.playerElo is 1000 And no unsolved puzzle is within CFG.ELO_MATCH_RANGE (100)
 When the next puzzle is dealt
 Then the dealer widens the band by CFG.ELO_BAND_WIDEN (50) until a puzzle fits
+```
+
+### PS1.9: Saved-data clear resets Elo
+
+- **Proves**: C1
+
+```gherkin
+Given GS.playerElo is 1100
+When this game's saved data is cleared
+Then the next game uses GS.playerElo CFG.ELO_START (1000)
 ```

@@ -60,7 +60,7 @@ Then GS.adviceBestMove is none And GS.adviceEval is none
 ```gherkin
 Given a dealt puzzle before any reveal
 When play begins on it
-Then the player can know GS.position and GS.sideToMove And cannot know the full Required sequence
+Then the player can know GS.position, GS.sideToMove, and GS.solvingSide And cannot know the full Required sequence
 ```
 
 ### PS1.5: Sequence knowable after reveal

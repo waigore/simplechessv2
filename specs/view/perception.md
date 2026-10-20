@@ -8,14 +8,14 @@ Authoring rules: [`.agents/specs/rules/view/perception.md`](../../.agents/specs/
 
 | ID | Subject | Guarantee | Cameras |
 |----|---------|-----------|---------|
-| R1 | Each piece type | Recognizable by shape alone inside [PRJ.A2](projection.md); overlays never hide silhouette identity | all |
-| R2 | Light vs dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Alternation distinguishable with hue removed — luminance contrast per [palette K1](../aesthetics/palette.md) — including after [CAM-board.M2](cameras/board.md) flip | all |
-| R3 | Selected piece | Occupied square and piece both highlighted while selected | all |
-| R4 | Legal destinations | Empty and capture targets for the selection are marked on those squares while selected | all |
-| R5 | Advice ([F-move-advice](../design/features/move-advice.md)) | Best-move from/to highlights, arrow, and eval visible when set; never obscure R1 | all |
-| R6 | Side to move / check | A non-audio indicator of side to move and of check is inside the frame at all times | all |
-| R7 | Board coordinates (files a–h, ranks 1–8) | Letters and numbers along outer edges only; stay correct after [CAM-board.M2](cameras/board.md) White-seat flip; never drawn inside squares | all |
-| R8 | Refused place | The attempted square flashes [PAL.C8](../aesthetics/palette.md), then the selection and legal marks show as before | all |
+| R1 | Each piece type | Named from a solid-black silhouette at ≥ 1/12 frame height ([FRM.L1](../aesthetics/form.md)) inside [PRJ.A2](projection.md); overlays cover ≤ 10% of the body | all |
+| R2 | Light vs dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Alternation distinguishable with hue removed — luminance contrast ≥ 0.25 per [PAL.K1](../aesthetics/palette.md) — including after [CAM-board.M2](cameras/board.md) flip | all |
+| R3 | Selected piece | Square and piece highlighted with [PAL.C6](../aesthetics/palette.md) at ≥ 2:1 on both square colors ([PAL.K5](../aesthetics/palette.md)); ≥ 90% of the body stays visible | all |
+| R4 | Legal destinations | Empty and capture targets marked with [PAL.C11](../aesthetics/palette.md) at ≥ 2:1 on both square colors ([PAL.K6](../aesthetics/palette.md)); each mark covers ≥ 1/4 square | all |
+| R5 | Advice ([F-move-advice](../design/features/move-advice.md)) | From/to marks and arrow use [PAL.C7](../aesthetics/palette.md) at ≥ 2:1 on both squares ([PAL.K5](../aesthetics/palette.md)); eval text is ≥ [UIS.T2](../aesthetics/ui-style.md); together they cover ≤ 10% of any body | all |
+| R6 | Side to move / check | A non-audio indicator at ≥ 1/12 frame height inside the frame at all times, with ≥ 4.5:1 contrast ([PAL.K4](../aesthetics/palette.md)); check also uses [PAL.C8](../aesthetics/palette.md) | all |
+| R7 | Board coordinates (files a–h, ranks 1–8) | Letters and numbers on the outer 1-unit margin only, in ≥ [UIS.T2](../aesthetics/ui-style.md) at ≥ 4.5:1 against the background; correct after [CAM-board.M2](cameras/board.md); never inside squares | all |
+| R8 | Refused place | The square flashes [PAL.C8](../aesthetics/palette.md) for 0.3 s at ≥ 2:1 on both square colors ([PAL.K5](../aesthetics/palette.md)), then selection and legal marks show as before | all |
 
 ## Depth cues
 

@@ -54,7 +54,7 @@ Then the move is illegal
 Given White to move And White king on e1 (P4 false) And White h1 rook (P4 false)
   And f1 and g1 empty And White is not in check And f1 and g1 not attacked
 When White castles kingside
-Then king is on g1 And rook from h1 is on f1 And both P4 are true
+Then king is on g1 And rook from h1 is on f1 And both P4 are true And that side's castling rights are false
 ```
 
 ### PS1.4: Queenside castling

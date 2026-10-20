@@ -10,7 +10,7 @@ Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop b
 | L2 | Shared game | loss | Side to move resigns | On resign | Side to move loses |
 | L3 | Shared game | loss | A running clock hits zero and the other side can checkmate | While that clock runs | Side to move loses. No seconds added |
 | D1 | Shared game | draw | Side to move is not in check and has no legal move | After a move, before the other clock starts | Draw |
-| D2 | Shared game | draw | Side to move offers a draw and the other accepts | On accept | Draw. A decline continues, same side to move, clock running; an unanswered offer lapses when the side to move makes its move |
+| D2 | Shared game | draw | `GS.drawOffer` is the side to move and the other side accepts, while the game is open and no other ending applies | On accept | Draw. A decline or withdraw continues, same side to move, clock running; an unanswered offer lapses when the side to move moves |
 | D3 | Shared game | draw | Same position, side to move, castling and en passant rights, three times | After a move, before the other clock starts | Draw |
 | D4 | Shared game | draw | Fifty moves by each side with no capture and no pawn move | After a move, before the other clock starts | Draw |
 | D5 | Shared game | draw | A running clock hits zero and the other side cannot checkmate | While that clock runs | Draw. No seconds added |
@@ -21,4 +21,4 @@ Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop b
 
 **Can checkmate** (L3/D5): the other side can checkmate when some series of legal moves from the current position leads to checkmate, whether or not either side plays its best move — the FIDE Laws of Chess "possible checkmate" (provenance cited in [pieces.md](../entities/pieces.md)). D5 is its negation.
 
-A wrong move may be any move of a multi-move sequence. It blocks W1, returns the puzzle to its start, and does not deal the next puzzle. The player may try again until L4, L5, or L6.
+A [Wrong move](../glossary.md) is any [Solving side](../glossary.md) move not next in the sequence. It blocks W1, returns the puzzle to its start, and does not deal the next puzzle. The player may try again until L4, L5, or L6.
