@@ -10,26 +10,30 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| IN.confirm | Confirm binding | US1.1 |
-| IN.cancel | Cancel binding | US1.2 |
-| IN.back | Back binding | US1.3 |
-| IN.point | Focus order | US1.4 |
-| IN.activate | Tap activate | US1.5 |
-| IN.select | Tap select | US1.6 |
-| IN.move | Tap move | US1.7 |
-| IN.deselect | Tap clear | US1.8 US1.9 |
-| B1 | Tap → activate | US1.5 |
-| B2 | Tap → select | US1.6 |
-| B3 | Tap → move | US1.7 |
-| B4 | Confirm tap | US1.1 |
-| B5 | Cancel tap | US1.2 |
-| B6 | Back tap | US1.3 |
-| B7 | Pointer/focus → point | US1.4 |
-| B8 | Tap selected piece → clear | US1.8 |
-| B9 | Tap empty non-destination → clear | US1.9 |
-| F1 | Focus order | US1.4 |
+| IN.confirm | Confirm | US1.1 |
+| IN.cancel | Cancel | US1.2 |
+| IN.back | Back | US1.3 |
+| IN.point | Point | US1.4 |
+| IN.activate | Activate | US1.5 |
+| IN.select | Select | US1.6 |
+| IN.move | Move | US1.7 US2.1 |
+| IN.deselect | Clear | US1.8 US1.9 US2.2 |
+| B1 | Activate | US1.5 |
+| B2 | Select | US1.6 |
+| B3 | Move | US1.7 |
+| B4 | Confirm | US1.1 |
+| B5 | Cancel | US1.2 |
+| B6 | Back | US1.3 |
+| B7 | Point | US1.4 |
+| B8 | Clear piece | US1.8 |
+| B9 | Clear empty | US1.9 |
+| B10 | Drag move | US2.1 |
+| B11 | Drag clear | US2.2 |
+| F1 | Focus | US1.4 |
 
-## US1: Web touch bindings
+US2: [`controls-drag.md`](controls-drag.md).
+
+## US1: Web tap bindings
 
 As an actor on Web, I tap so the matching action fires.
 
@@ -93,7 +97,7 @@ When the actor taps their piece
 Then IN.select fires on UI-shared-play.C1 and no other action activates
 ```
 
-### US1.7: Move
+### US1.7: Tap move
 
 - **Proves**: IN.move, B3
 
@@ -122,4 +126,3 @@ Given shared-play S1, selection set, empty non-destination
 When the actor taps that square
 Then IN.deselect fires and GS.selectedPiece is none and no place is asked
 ```
-
