@@ -17,7 +17,7 @@ N/A — [`shared-play.md`](shared-play.md).
 | ID | Control | UI action | Available when | Result |
 |----|---------|-----------|----------------|--------|
 | C1 | Select piece | `IN.select` | Side to move; not ended; not S2 or S4 | Sets `GS.selectedPiece` |
-| C2 | Place move | `IN.move` | Selection set; side to move; not ended; not S2 or S4 | Legal place clears selection and lapses S6. Last-rank pawn → S4. Refused place → S5; selection stays |
+| C2 | Place move | `IN.move` | Side to move; not ended; not S2 or S4 | Legal place clears selection and lapses S6. Last-rank pawn → S4. Refused place → S5; selection stays. Pick-and-drag may place without a prior selection |
 | C3 | Advice | `IN.activate` | Not ended; not S2 | Toggles `GS.advice` |
 | C4 | Resign | `IN.activate` | Side to move; not ended; not S2 or S6 | → `EX.confirm` resign |
 | C5 | Offer draw | `IN.activate` | Side to move; not ended; not S2 or S6 | → `EX.confirm` offer |
