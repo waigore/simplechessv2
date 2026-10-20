@@ -4,7 +4,7 @@ Project-owned conventions for code in this repo: language idioms, naming, format
 
 Optional. SOLID only: one Rules row `None — SOLID only (<reason>)` and Tooling `None — <reason>`. Placeholders mean still open.
 
-Review code with [`review-code`](../.agents/skills/review-code/SKILL.md), which checks this file together with [`solid.md`](solid.md).
+Review a diff with [`review-code`](../.agents/skills/review-code/SKILL.md), which checks this file together with [`solid.md`](solid.md). A structure pass uses [`suggest-code-refactors`](../.agents/skills/suggest-code-refactors/SKILL.md).
 
 ## Precedence
 

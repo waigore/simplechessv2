@@ -50,6 +50,7 @@ Open Design (user-local, not in this repo): install/verify with `ensure-open-des
 - [`docs/`](docs/) — ([README](docs/README.md))
 - [`specs/`](specs/) — ([README](specs/README.md))
 - [`demos/`](demos/) — gameplay demos, kept apart from main code ([README](demos/README.md))
+- [`agent-orc/`](agent-orc/) — skill-agent orchestrator daemon ([README](agent-orc/README.md)); config under [`.orc/`](.orc/)
 - `asset_catalog/` / `game_assets/` — catalog entries and asset files ([ADR-0005](specs/adr/decisions/0005-asset-catalog-roots.md)); Godot project root `game/`
 
 ## Rules to live by

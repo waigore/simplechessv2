@@ -25,5 +25,6 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 | [requirements/](requirements/README.md) | Unconfirmed requirement notes awaiting capture into specs (not specs) |
 | [playtest/evidence/](playtest/evidence/) | AI-agent playtest evidence (story IDs, pass/fail, screenshots, notes, logs); requirements in `specs/playtest/` |
 | [skills.md](skills.md) | Skill authoring and native wiring |
+| [../agent-orc/](../agent-orc/) | agent-orc daemon: spin up workflow skill agents ([usage](../agent-orc/docs/usage.md)) |
 | [solid.md](solid.md) | SOLID principles + structure continuity for agents; owned by the template |
 | [spec-lint.md](spec-lint.md) | CI checks for spec structure (rules line, templates, links, glossaries) |

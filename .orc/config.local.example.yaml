@@ -1,0 +1,20 @@
+# Copy to config.local.yaml (gitignored). Child projects own this file; do not edit config.yaml.
+#
+# Example: remap implement to opencode, shorten cooldown, disable planner.
+#
+# orchestrator:
+#   cooldown_seconds: 10
+#
+# agents:
+#   project-planner-agent:
+#     enabled: false
+#   issue-workflow-implement-agent:
+#     provider: opencode
+#
+# providers:
+#   cursor:
+#     command: ["cursor-agent", "-p", "--force", "--trust", "--workspace", "{workdir}", "{prompt}"]
+#   grok:
+#     command: ["grok", "-p", "{prompt}", "--cwd", "{workdir}", "--always-approve"]
+#   opencode:
+#     command: ["opencode", "run", "--auto", "{prompt}"]

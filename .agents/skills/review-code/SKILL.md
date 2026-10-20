@@ -75,3 +75,4 @@ When called from chat, reply with the report. When called from `verify-project-i
 - Do not invent principles beyond `docs/solid.md` or rules beyond `docs/coding-conventions.md`.
 - Never file a `CONV` or `CONT` must-fix for a change SOLID requires, nor a `CONT` must-fix for a change a convention requires.
 - A Fail from this skill fails verification when invoked by `verify-project-issue`.
+- A structure or technical-debt pass over the tree or a named portion is [`suggest-code-refactors`](../suggest-code-refactors/SKILL.md). Do not stretch this skill into that audit.

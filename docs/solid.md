@@ -4,7 +4,7 @@ Agents that write or change code follow these principles. They **complement** re
 
 This file is owned by the template and applies to every project made from it. Each project adds its own language and engine conventions in [`coding-conventions.md`](coding-conventions.md), which extends this file and never contradicts it.
 
-Review with the [`review-code`](../.agents/skills/review-code/SKILL.md) skill.
+Review a diff with the [`review-code`](../.agents/skills/review-code/SKILL.md) skill. Suggest structural refactors with [`suggest-code-refactors`](../.agents/skills/suggest-code-refactors/SKILL.md).
 
 ## Structure continuity
 
