@@ -1,3 +1,3 @@
 # View requirement notes
 
-- Bad drag drop clears selection and snap back — target: `specs/view/` (piece return after B11 / IN.deselect)
+- Stories prove M5: the piece follows the pointer while a drag is held; a legal drop uses M1; a bad drop returns to the origin square center in ≤ 0.15 s, ease-out, with no new cue — target: `specs/view/stories/physics.md`
