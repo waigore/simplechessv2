@@ -145,12 +145,9 @@
       display: flex; align-items: center; justify-content: center;
       background: var(--table);
     }
-    .piece {
-      font-size: 1.75rem;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--fg);
-      line-height: 1;
-    }
+    .piece { display: flex; align-items: center; justify-content: center; }
+    /* piece S8 square fit_contain, S9 box = 0.88 × square */
+    .glyph { width: 88%; height: 88%; display: block; pointer-events: none; }
     .sel { outline: 3px solid var(--accent); outline-offset: -3px; }
     .dot {
       font-size: 1.75rem;
@@ -172,7 +169,7 @@
     .dialog p { margin: 0 0 var(--gap-sm); }
     .dialog .actions { display: flex; gap: var(--gap-sm); justify-content: center; flex-wrap: wrap; margin-top: var(--gap-md); }
     .promote-row { display: flex; gap: var(--gap-xs); justify-content: center; flex-wrap: wrap; }
-    .promote-row .btn { font-size: 1.75rem; width: 52px; padding: 0; }
+    .promote-row .btn { width: 52px; height: 52px; padding: 0; }
   </style>
 </head>
 <body>
@@ -197,14 +194,14 @@
               <div></div>
               <div class="coord">a</div><div class="coord">b</div><div class="coord">c</div><div class="coord">d</div><div class="coord">e</div><div class="coord">f</div><div class="coord">g</div><div class="coord">h</div>
               <div></div>
-              <div class="coord">8</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light piece" aria-label="Black king">&#9818;</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">8</div>
+              <div class="coord">8</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light piece" aria-label="Black king"><svg class="glyph" viewBox="0 0 1 1" aria-hidden="true"><use href="../pieces/glyphs.svg#b-K" width="1" height="1"/></svg></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">8</div>
               <div class="coord">7</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">7</div>
               <div class="coord">6</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">6</div>
               <div class="coord">5</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="coord">5</div>
               <div class="coord">4</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">4</div>
               <div class="coord">3</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light dot" data-control="C2" role="button" tabindex="0" aria-label="Place move">&#8226;</div><div class="sq dark"></div><div class="sq light"></div><div class="coord">3</div>
               <div class="coord">2</div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="coord">2</div>
-              <div class="coord">1</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark piece sel" data-control="C1" role="button" tabindex="0" aria-label="Select piece">&#9816;</div><div class="sq light"></div><div class="coord">1</div>
+              <div class="coord">1</div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark piece sel" data-control="C1" role="button" tabindex="0" aria-label="Select piece"><svg class="glyph" viewBox="0 0 1 1" aria-hidden="true"><use href="../pieces/glyphs.svg#w-N" width="1" height="1"/></svg></div><div class="sq light"></div><div class="coord">1</div>
               <div></div>
               <div class="coord">a</div><div class="coord">b</div><div class="coord">c</div><div class="coord">d</div><div class="coord">e</div><div class="coord">f</div><div class="coord">g</div><div class="coord">h</div>
               <div></div>
@@ -250,10 +247,10 @@
         <div class="card dialog" data-od-id="puzzle-play-promote">
           <p>Choose promotion</p>
           <div class="promote-row">
-            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Queen">&#9813;</button>
-            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Rook">&#9814;</button>
-            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Bishop">&#9815;</button>
-            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Knight">&#9816;</button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Queen"><svg class="glyph" viewBox="0 0 1 1" aria-hidden="true"><use href="../pieces/glyphs.svg#w-Q" width="1" height="1"/></svg></button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Rook"><svg class="glyph" viewBox="0 0 1 1" aria-hidden="true"><use href="../pieces/glyphs.svg#w-R" width="1" height="1"/></svg></button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Bishop"><svg class="glyph" viewBox="0 0 1 1" aria-hidden="true"><use href="../pieces/glyphs.svg#w-B" width="1" height="1"/></svg></button>
+            <button type="button" class="btn btn-secondary" data-control="C6" aria-label="Knight"><svg class="glyph" viewBox="0 0 1 1" aria-hidden="true"><use href="../pieces/glyphs.svg#w-N" width="1" height="1"/></svg></button>
           </div>
         </div>
       </section>
