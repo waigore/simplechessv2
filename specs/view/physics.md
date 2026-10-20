@@ -12,6 +12,7 @@ Authoring rules: [`.agents/specs/rules/view/physics.md`](../../.agents/specs/rul
 | M2 | Capture ([E-pieces.I3](../design/entities/pieces/common.md)) | Captured piece breaks apart and clears during M1 travel (same ≤ 0.15 s budget) | Captured unit gone when the mover lands |
 | M3 | Promotion ([E-pieces.I33](../design/entities/pieces/pawn.md)) | Arriving pawn morphs into the chosen type within the same ≤ 0.15 s budget as M1 | New type visible when the move settles |
 | M4 | Castling ([E-pieces.I13](../design/entities/pieces/king.md)) | King and rook each use M1 concurrently to their end squares | Both end on castling squares together |
+| M5 | Uncommitted drag ([SPC.P1](spatial-model.md)) | While held, the piece follows the pointer. A legal drop ([B10](../ux/controls.md)) places with M1. A bad drop ([B11](../ux/controls.md)) returns to the origin square center in ≤ 0.15 s, ease-out | Position unchanged until a legal place completes. No new cue |
 
 ## Collision
 
@@ -29,4 +30,4 @@ Authoring rules: [`.agents/specs/rules/view/physics.md`](../../.agents/specs/rul
 
 ## Experience intent
 
-Moves feel snappy and decisive. Captures break; promotions morph. Instant play stays obvious.
+Moves feel snappy and decisive. Captures break; promotions morph. A dragged piece follows the pointer and snaps back when the drop does not place. Instant play stays obvious.
