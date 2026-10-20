@@ -256,6 +256,44 @@ class CatalogTest(unittest.TestCase):
         self.assertIn("fields: 'successor' is null", found)
         self.assertTrue(any(f.startswith("catalog: only entry files") for f in found))
 
+    def test_empty_coverage_requires_style_anchor(self) -> None:
+        self.add(entry(supplier=..., coverage=[], source_type="ai-generation",
+                       tool_role={"role": "TL.1", "adr": "adr-free"},
+                       recipe="AK-character-sprites.R1",
+                       generation={
+                           "prompt": "x", "tool": "Recraft", "operation": "generate_image",
+                           "settings": {"model": "m"}, "inputs": {"style_anchors": [], "refs": [], "base_assets": []},
+                           "seed": "n/a — tool has no seed",
+                       }))
+        found = self.checks()
+        self.assertIn("I9: empty 'coverage' is only allowed for SS1 style anchors", found)
+
+    def test_style_anchor_may_have_empty_coverage(self) -> None:
+        asset_id = str(uuid7())
+        kinds = self.root / "specs/assets/kinds"
+        kinds.mkdir(parents=True)
+        (kinds / "character-sprites.md").write_text(
+            f"# Sprites\n\n- **Style anchors**: `{asset_id}` (`character-sprites/player-idle`)\n",
+            encoding="utf-8",
+        )
+        self.add(entry(
+            id=asset_id,
+            supplier=...,
+            coverage=[],
+            source_type="ai-generation",
+            tool_role={"role": "TL.1", "adr": "adr-free"},
+            recipe="AK-character-sprites.R1",
+            generation={
+                "prompt": "sheet", "tool": "Recraft", "operation": "generate_image",
+                "settings": {"model": "m"}, "inputs": {"style_anchors": [], "refs": [], "base_assets": []},
+                "seed": "n/a — tool has no seed",
+            },
+            review={"verdict": "Pass", "date": "2026-10-20", "reviewer": "agent", "report": "ok"},
+            state="approved",
+        ))
+        self.assertEqual(self.checks(), [])
+        self.assertIn(asset_id, read_hub(self.root).style_anchors)
+
 
 if __name__ == "__main__":
     unittest.main()

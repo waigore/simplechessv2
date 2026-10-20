@@ -10,8 +10,8 @@ script.
 
 Checks (catalog integrity IDs): I1 files, I2 asset IDs, I3 approval,
 I4 kind specs and successors, I6 exemptions, I7 handles, I8 banned tools (the
-Banned tools table in docs/asset-tools.md); plus required fields and value
-shapes.
+Banned tools table in docs/asset-tools.md), I9 empty coverage only for SS1
+style anchors; plus required fields and value shapes.
 
 Usage: asset_catalog.py [--root DIR]
 """
@@ -30,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from new_asset_id import is_asset_id  # noqa: E402
 
 HUB = "specs/assets/assets.md"
+KINDS_DIR = "specs/assets/kinds"
 TOOLS_DOC = "docs/asset-tools.md"
 TOUCHUP_PARTS = ("operation", "tool", "terms", "date", "reason", "run_by")
 GENERATION_PARTS = ("prompt", "tool", "operation", "settings", "inputs", "seed")
@@ -49,6 +50,10 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 CODE_RE = re.compile(r"`([^`]+)`")
 KIND_LINK_RE = re.compile(rf"kinds/({KEBAB})\.md")
+STYLE_ANCHORS_RE = re.compile(r"^\s*-\s+\*\*Style anchors\*\*:\s*(.*)$", re.M)
+UUID7_RE = re.compile(
+    r"\b([0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\b"
+)
 
 
 @dataclass(frozen=True)
@@ -67,6 +72,7 @@ class Hub:
     asset_root: str | None
     kind_specs: frozenset[str]
     banned_tools: frozenset[str] = frozenset()
+    style_anchors: frozenset[str] = frozenset()
 
 
 def _bullet_path(text: str, label: str) -> str | None:
@@ -94,6 +100,20 @@ def _banned_tools(text: str) -> frozenset[str]:
     return frozenset(name for name in names if name)
 
 
+def _style_anchor_ids(root: Path) -> frozenset[str]:
+    kinds = root / KINDS_DIR
+    if not kinds.is_dir():
+        return frozenset()
+    ids: set[str] = set()
+    for path in kinds.rglob("*.md"):
+        for match in STYLE_ANCHORS_RE.finditer(_read(path)):
+            body = match.group(1).strip()
+            if body.lower().startswith("none"):
+                continue
+            ids.update(UUID7_RE.findall(body))
+    return frozenset(ids)
+
+
 def _read(path: Path) -> str:
     return COMMENT_RE.sub("", path.read_text(encoding="utf-8")) if path.exists() else ""
 
@@ -101,7 +121,13 @@ def _read(path: Path) -> str:
 def read_hub(root: Path) -> Hub:
     text = _read(root / HUB)
     banned = _banned_tools(_read(root / TOOLS_DOC))
-    return Hub(_bullet_path(text, "Catalog root"), _bullet_path(text, "Asset root"), _kind_specs(text), banned)
+    return Hub(
+        _bullet_path(text, "Catalog root"),
+        _bullet_path(text, "Asset root"),
+        _kind_specs(text),
+        banned,
+        _style_anchor_ids(root),
+    )
 
 
 def _non_empty(entry: dict[str, Any], key: str) -> bool:
@@ -148,7 +174,14 @@ def check_entry(rel: str, stem: str, entry: dict[str, Any], hub: Hub) -> list[Fi
         findings.append(Finding(rel, "fields", "'files' must list paths relative to the asset root"))
     person_supplied = _non_empty(entry, "supplier")
     if not person_supplied and not _non_empty(entry, "coverage"):
-        findings.append(Finding(rel, "fields", "missing 'coverage'"))
+        if isinstance(asset_id, str) and asset_id in hub.style_anchors:
+            pass  # I9: SS1 style anchors may carry empty production coverage
+        elif entry.get("coverage") == []:
+            findings.append(
+                Finding(rel, "I9", "empty 'coverage' is only allowed for SS1 style anchors")
+            )
+        else:
+            findings.append(Finding(rel, "fields", "missing 'coverage'"))
     if source in GENERATED:
         if not _non_empty(entry, "generation"):
             findings.append(Finding(rel, "fields", "generated asset is missing 'generation'"))

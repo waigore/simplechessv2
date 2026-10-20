@@ -2,16 +2,10 @@
   "id": "01a15199-87f5-7df8-a987-eecaaca9f919",
   "handle": "icons/style-anchor-sheet",
   "kind_spec": "AK-icons",
-  "coverage": [
-    "AK-icons.V1",
-    "AK-icons.V2",
-    "AK-icons.V3",
-    "AK-icons.V4",
-    "AK-icons.V5"
-  ],
+  "coverage": [],
   "serves": ["Cafe calm"],
   "state": "approved",
-  "version": 1,
+  "version": 2,
   "files": ["icons/style-anchor-sheet.svg"],
   "source_type": "ai-generation",
   "tool_role": {"role": "TL.1", "adr": "adr-free"},
@@ -88,5 +82,5 @@
     "reviewer": "agent",
     "report": "Pass. PO (waigore) confirmed preview-v3 composition as style anchor. Needs human signed off: K2 readability at UI size; K4/P3 cafe mood. Measured: B1 8KB; S3 SVG; PAL.C9 ink; labels removed. Kind K5 per-icon ship files still pending series generate."
   },
-  "guidance": "Icons SS1 style anchor (Shared=knight, Puzzle, Quit, Back, Advice). Not final per-icon ship files. Recraft style 7056f68a-dd20-4ae0-a3e5-186803e00f4d."
+  "guidance": "Icons SS1 style anchor (Shared=knight, Puzzle, Quit, Back, Advice). Coverage empty until #49 files per-icon ship assets. Recraft style 7056f68a-dd20-4ae0-a3e5-186803e00f4d."
 }

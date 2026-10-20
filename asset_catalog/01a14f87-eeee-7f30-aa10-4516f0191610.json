@@ -2,10 +2,10 @@
   "id": "01a14f87-eeee-7f30-aa10-4516f0191610",
   "handle": "piece-sprites/style-anchor-sheet",
   "kind_spec": "AK-piece-sprites",
-  "coverage": ["AK-piece-sprites.V1"],
+  "coverage": [],
   "serves": ["E-pieces", "PER.R1"],
   "state": "approved",
-  "version": 1,
+  "version": 2,
   "files": ["piece-sprites/style-anchor-sheet.svg"],
   "source_type": "ai-generation",
   "tool_role": {"role": "TL.1", "adr": "adr-free"},
@@ -69,5 +69,5 @@
     "reviewer": "agent",
     "report": "Pass after palette remap. Needs human signed off by PO (waigore): FRM.L1/K1 silhouette at 1/12; K4/P3 cafe mood; S1 opaque sheet canvas intentional for bootstrap create_style + S6. Exact PAL.C3/C4 present; B1 65KB; K5 twelve ship entries still pending series generate."
   },
-  "guidance": "Style-series bootstrap sheet (all 12 types/sides). Not the final per-piece ship files; style_anchor for SS1. Recraft style 58840487-cf72-41fa-b83f-5773ea7a1c11 built 2026-10-19."
+  "guidance": "Style-series bootstrap sheet (all 12 types/sides). SS1 style anchor only — coverage is empty until #48 files the twelve per-piece ship assets. Recraft style 58840487-cf72-41fa-b83f-5773ea7a1c11 built 2026-10-19."
 }

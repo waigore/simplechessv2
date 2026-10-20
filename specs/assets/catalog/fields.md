@@ -10,7 +10,7 @@ Part of [`catalog.md`](../catalog.md). Keys are the JSON keys of an entry file p
 |----|-------|-----|----------|---------|
 | `F1` | Asset ID | `id` | Always | UUID version 7, per **Asset IDs** in [`catalog.md`](../catalog.md) |
 | `F2` | Kind spec | `kind_spec` | Always | `AK-<name>`; may be planned |
-| `F3` | Coverage | `coverage` | Unless demo-only and person-supplied | List of `V` IDs this asset satisfies |
+| `F3` | Coverage | `coverage` | Unless demo-only and person-supplied, or SS1 style anchor with no production `V` IDs | List of `V` IDs this asset satisfies as a shippable asset; style anchors that do not ship use `[]` |
 | `F4` | Serves | `serves` | Always | List of design, view, or UX IDs it depicts or sounds for |
 | `F5` | State | `state` | Always | `draft`, `approved`, or `deprecated` |
 | `F6` | Version | `version` | Always | Integer from 1, raised on every update |

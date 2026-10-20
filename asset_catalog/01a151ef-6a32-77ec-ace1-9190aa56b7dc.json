@@ -2,10 +2,10 @@
   "id": "01a151ef-6a32-77ec-ace1-9190aa56b7dc",
   "handle": "interface-art/style-anchor-sheet",
   "kind_spec": "AK-interface-art",
-  "coverage": ["AK-interface-art.V1", "AK-interface-art.V2"],
+  "coverage": [],
   "serves": ["Cafe calm"],
   "state": "approved",
-  "version": 1,
+  "version": 2,
   "files": ["interface-art/style-anchor-sheet.svg"],
   "source_type": "human-made",
   "supplier": "agent",
@@ -50,5 +50,5 @@
     "reviewer": "agent",
     "report": "Pass. PO kept no-grain cream-gradient sheet. Needs human signed off: K4/P3 cafe mood. Measured: B1 ~2KB; S3 no baked text; K1 clear; soft cream gradient within PAL family. Ship panel/chip files still pending series generate."
   },
-  "guidance": "Interface-art SS1 style anchor (F1 panel + F2 chip). Recraft style 16e2245a-a7d1-41a3-bf06-2792ca253c1c. Not the final per-surface ship files alone."
+  "guidance": "Interface-art SS1 style anchor (F1 panel + F2 chip). Coverage empty until #49 files panel/chip ship assets. Recraft style 16e2245a-a7d1-41a3-bf06-2792ca253c1c."
 }
