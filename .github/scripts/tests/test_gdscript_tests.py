@@ -201,15 +201,58 @@ class InstrumentTest(unittest.TestCase):
         )
         self.assertEqual(gate.statement_lines(inner), {7})
 
-    def _coverage(self, hits: str) -> int:
+    CLASS_LAMBDA = (
+        "extends RefCounted\n"
+        "\n"
+        "var double := func(x: int): return x * 2\n"
+        "\n"
+        "func clamp_n(n: int) -> int:\n"
+        "\tif n > 0:\n"
+        "\t\treturn double.call(n)\n"
+        "\telif n == 0:\n"
+        "\t\treturn 0\n"
+        "\treturn n\n"
+    )
+
+    def test_class_inline_lambda_is_not_probed_at_class_scope(self) -> None:
+        lines = gate.statement_lines(self.CLASS_LAMBDA)
+        self.assertEqual(lines, {6, 7, 8, 9, 10})
+        text = gate.instrument(self.CLASS_LAMBDA, "bag.gd", lines)
+        gate._parser().parse(text)
+        self.assertNotIn('hit("bag.gd", 3)', text)
+        for line in text.splitlines():
+            if "_CiLineCov.hit" in line:
+                self.assertTrue(line[0].isspace(), line)
+
+    def test_multiline_lambda_body_still_counts(self) -> None:
+        src = (
+            "extends RefCounted\n"
+            "\n"
+            "var double := func(x: int):\n"
+            "\treturn x * 2\n"
+        )
+        self.assertEqual(gate.statement_lines(src), {4})
+        text = gate.instrument(src, "double.gd", gate.statement_lines(src))
+        gate._parser().parse(text)
+        self.assertIn('\t_CiLineCov.hit("double.gd", 4)', text)
+
+    def test_one_line_func_body_is_not_probed_at_class_scope(self) -> None:
+        src = "extends RefCounted\n\nfunc use() -> int: return 1\n"
+        self.assertEqual(gate.statement_lines(src), set())
+        text = gate.instrument(src, "use.gd", set())
+        gate._parser().parse(text)
+        self.assertNotIn("_CiLineCov.hit", text)
+
+    def _coverage(self, hits: str, source: str | None = None) -> int:
         def runner(cmd: list[str], env: dict[str, str]) -> subprocess.CompletedProcess[str]:
             Path(env["CI_COV_OUT"]).write_text(hits, encoding="utf-8")
             return _completed(cmd, 0)
 
+        text = self.CLASS_CONST if source is None else source
         with tempfile.TemporaryDirectory() as tmp:
             game = Path(tmp)
             (game / "project.godot").write_text("config_version=5\n", encoding="utf-8")
-            (game / "bag.gd").write_text(self.CLASS_CONST, encoding="utf-8")
+            (game / "bag.gd").write_text(text, encoding="utf-8")
             (game / "bag_test.gd").write_text("extends SceneTree\n", encoding="utf-8")
             return gate.run_command(
                 "coverage",
@@ -224,6 +267,15 @@ class InstrumentTest(unittest.TestCase):
 
     def test_coverage_fails_under_80_with_class_const(self) -> None:
         self.assertEqual(self._coverage("bag.gd:6\nbag.gd:7\n"), 1)
+
+    def test_coverage_passes_at_80_with_class_lambda(self) -> None:
+        self.assertEqual(
+            self._coverage("bag.gd:6\nbag.gd:7\nbag.gd:8\nbag.gd:9\n", self.CLASS_LAMBDA),
+            0,
+        )
+
+    def test_coverage_fails_under_80_with_class_lambda(self) -> None:
+        self.assertEqual(self._coverage("bag.gd:6\nbag.gd:7\n", self.CLASS_LAMBDA), 1)
 
     def test_low_coverage_fails(self) -> None:
         def runner(cmd: list[str], env: dict[str, str]) -> subprocess.CompletedProcess[str]:

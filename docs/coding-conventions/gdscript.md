@@ -20,6 +20,6 @@ Command: `python3 .github/scripts/gdscript_tests.py coverage`. Threshold 80.
 
 The same skip applies: no `*_test.gd` means exit 0 and Godot is not invoked. Otherwise the command runs the headless tests against a temporary instrumented copy and fails when coverage is under 80. A failing test fails this command too.
 
-Statement-line coverage is the share of executable statement lines in main `game/**/*.gd` (every `*_test.gd`, `addons/`, and `.godot/` excluded) that ran. A statement line is the first line of a function-body statement: `if`, `elif`, `while`, `for`, `match`, `return`, call, assignment, local `var` or `const`, `break`, `continue`, or `pass`. Declarations, blanks, and comments do not count. Exactly 80 passes.
+Statement-line coverage is the share of executable statement lines in main `game/**/*.gd` (every `*_test.gd`, `addons/`, and `.godot/` excluded) that ran. A statement line is the first line of a function-body statement: `if`, `elif`, `while`, `for`, `match`, `return`, call, assignment, local `var` or `const`, `break`, `continue`, or `pass`. Declarations, blanks, and comments do not count. A body statement on the same line as the declaration that opens that body does not count, so a class-level inline lambda is not probed at class scope. A statement on a later line inside the body still counts. Exactly 80 passes.
 
 gdtoolkit 4.5.0 parses those lines once test scripts exist. The Coverage workflow installs it. The measurement copy is not committed under `game/`.
