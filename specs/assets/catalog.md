@@ -23,14 +23,4 @@ Moved to [`catalog/fields.md`](catalog/fields.md).
 
 ## Integrity
 
-| ID | Rule | How checked |
-|----|------|-------------|
-| `I1` | Every file under the asset root, except engine import sidecars, belongs to one entry, and every entry's files exist | CI: `asset_catalog.py` |
-| `I2` | Asset IDs are valid UUIDs version 7, unique, and never reused | CI: `asset_catalog.py` |
-| `I3` | Every approved entry has a Pass review for its current version, or a review exemption | CI: `asset_catalog.py` |
-| `I4` | Every cited ID exists; a planned kind spec named in the hub counts | CI for kind specs and successors; `review-asset` for the rest |
-| `I5` | Main code uses no draft or deprecated asset | Code review + CI: main code cites only approved asset IDs from the generated manifest; no path/handle literals |
-| `I6` | Every review exemption names the person who granted it | CI: `asset_catalog.py` |
-| `I7` | Handles are unique, deprecated entries included, and prefixed by a kind spec the hub names | CI: `asset_catalog.py` |
-| `I8` | No entry was generated or touched up with a tool that [`docs/asset-tools.md`](../../docs/asset-tools.md) bans | CI: `asset_catalog.py` |
-| `I9` | Empty or omitted `coverage` on a non–person-supplied entry is allowed only when the asset ID is listed under Style anchors in its kind's `SS1` | CI: `asset_catalog.py` |
+Moved to [`catalog/integrity.md`](catalog/integrity.md) (`CAT.I1`–`CAT.I10`). `CAT.I10` checks a draft or approved entry with non-empty `coverage`, including the person-supplied anchors `fonts/noto-sans` and `fonts/noto-sans-cjk`. A deprecated entry adds no claim. Under-claim is a listed `V` ID whose handle or files cannot carry it. CI: `asset_catalog.py`.

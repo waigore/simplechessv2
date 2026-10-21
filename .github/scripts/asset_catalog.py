@@ -11,7 +11,8 @@ script.
 Checks (catalog integrity IDs): I1 files, I2 asset IDs, I3 approval,
 I4 kind specs and successors, I6 exemptions, I7 handles, I8 banned tools (the
 Banned tools table in docs/asset-tools.md), I9 empty coverage only for SS1
-style anchors; plus required fields and value shapes.
+style anchors, I10 in-scope coverage against kind Coverage, Naming, and recipe
+Outputs (specs/assets/catalog/integrity.md); plus required fields and value shapes.
 
 Usage: asset_catalog.py [--root DIR]
 """
@@ -46,6 +47,9 @@ ENGINE_SIDECARS = (".meta", ".import", ".uid")
 ROOT_PLACEHOLDERS = (".gitkeep",)
 KEBAB = r"[a-z0-9]+(?:-[a-z0-9]+)*"
 HANDLE_RE = re.compile(rf"^({KEBAB})/{KEBAB}$")
+QUALIFIED_COVERAGE_RE = re.compile(rf"^AK-({KEBAB})\.(V\d+)$")
+HANDLE_TOKEN_RE = re.compile(rf"`({KEBAB}/{KEBAB})`")
+NAMING_EXCEPTION_DOCS = ("specs/assets/catalog.md", "specs/assets/catalog/integrity.md")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 CODE_RE = re.compile(r"`([^`]+)`")
@@ -271,6 +275,236 @@ def _check_banned(rel: str, entry: dict[str, Any], banned: frozenset[str]) -> li
             for tool in tools if isinstance(tool, str) and any(name in tool.lower() for name in banned)]
 
 
+@dataclass(frozen=True)
+class _KindCoverage:
+    rows: dict[str, int]
+    templates: tuple[str, ...]
+    patterns: tuple[re.Pattern[str], ...]
+    paired: dict[str, str] | None
+    outputs: str
+
+
+def _section(text: str, heading: str) -> str:
+    match = re.search(rf"^## {re.escape(heading)}\s*$(.*?)(?=^## |\Z)", text, re.M | re.S)
+    return match.group(1) if match else ""
+
+
+def _coverage_rows(text: str) -> dict[str, int]:
+    rows: dict[str, int] = {}
+    for line in text.splitlines():
+        if not line.lstrip().startswith("|"):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if len(cells) < 4 or not re.fullmatch(r"V\d+", cells[0]):
+            continue
+        numbers = [int(number) for number in re.findall(r"\d+", cells[-1])]
+        if numbers:
+            rows[cells[0]] = max(numbers)
+    return rows
+
+
+def _handle_templates(text: str) -> tuple[str, ...]:
+    match = re.search(r"^\s*-\s+\*\*Handle name\*\*:\s*(.*)$", text, re.M)
+    return tuple(re.findall(r"`([^`]+)`", match.group(1))) if match else ()
+
+
+def _compile_template(template: str) -> re.Pattern[str]:
+    template = template.replace("\\|", "|")
+    parts: list[str] = []
+    index = 0
+    while index < len(template):
+        if template[index] != "<":
+            nxt = template.find("<", index)
+            chunk = template[index:] if nxt < 0 else template[index:nxt]
+            parts.append(re.escape(chunk))
+            if nxt < 0:
+                break
+            index = nxt
+            continue
+        end = template.find(">", index)
+        if end < 0:
+            parts.append(re.escape(template[index:]))
+            break
+        inner = template[index + 1:end]
+        if "|" in inner:
+            parts.append("(?:%s)" % "|".join(re.escape(piece) for piece in inner.split("|")))
+        else:
+            parts.append(KEBAB)
+        index = end + 1
+    return re.compile("^" + "".join(parts) + "$")
+
+
+def _collect_outputs(root: Path, kind: str, main: str) -> str:
+    texts = [main]
+    sub = root / KINDS_DIR / kind
+    if sub.is_dir():
+        texts.extend(_read(path) for path in sorted(sub.glob("*.md")))
+    lines: list[str] = []
+    for text in texts:
+        for match in re.finditer(r"^\s*-\s+\*\*Outputs\*\*:\s*(.*)$", text, re.M):
+            line = match.group(1).strip()
+            if not line.lower().startswith("n/a"):
+                lines.append(line)
+    return " ".join(lines)
+
+
+def _load_kind(root: Path, kind: str) -> _KindCoverage | None:
+    main = _read(root / KINDS_DIR / f"{kind}.md")
+    rows = _coverage_rows(_section(main, "Coverage"))
+    if not rows:
+        return None
+    templates = _handle_templates(_section(main, "Naming"))
+    paired = None
+    if templates and all("<" not in template for template in templates) and len(templates) == len(rows):
+        paired = dict(zip(rows, templates))
+    return _KindCoverage(
+        rows,
+        templates,
+        tuple(_compile_template(template) for template in templates),
+        paired,
+        _collect_outputs(root, kind, main),
+    )
+
+
+def _naming_exceptions(root: Path) -> frozenset[str]:
+    found: set[str] = set()
+    for rel in NAMING_EXCEPTION_DOCS:
+        text = _read(root / rel)
+        blobs = [match.group(1) for match in re.finditer(r"(?ms)^### CAT\.I10\s*$(.*?)(?=^#{1,3} |\Z)", text)]
+        blobs.extend(line for line in text.splitlines() if "CAT.I10" in line or re.search(r"\|\s*`I10`\s*\|", line))
+        for blob in blobs:
+            found.update(HANDLE_TOKEN_RE.findall(blob))
+    return frozenset(found)
+
+
+def _entry_kind(entry: dict[str, Any]) -> str:
+    handle = entry.get("handle")
+    if isinstance(handle, str) and "/" in handle:
+        return handle.split("/", 1)[0]
+    kind_spec = entry.get("kind_spec")
+    if isinstance(kind_spec, str) and kind_spec.startswith("AK-"):
+        return kind_spec[3:]
+    return ""
+
+
+def _coverage_in_scope(entry: dict[str, Any]) -> bool:
+    coverage = entry.get("coverage")
+    return entry.get("state") in ("draft", "approved") and isinstance(coverage, list) and len(coverage) > 0
+
+
+def _file_rule(outputs: str) -> tuple[str, tuple[str, ...]]:
+    lowered = outputs.lower()
+    if "one file per coverage row" in lowered or "one file per v row" in lowered:
+        return "one-row", ()
+    if "one v1 file" in lowered:
+        return "v1-only", ()
+    vids: list[str] = []
+    for number in re.findall(r"\bV(\d+)\b", outputs):
+        vid = f"V{number}"
+        if vid not in vids:
+            vids.append(vid)
+    if len(vids) >= 2:
+        return "one-of", tuple(vids)
+    return "open", ()
+
+
+def _cited_ids(rel: str, entry: dict[str, Any], kind: str, rules: _KindCoverage, findings: list[Finding]) -> list[str]:
+    ok: list[str] = []
+    for item in entry.get("coverage", []):
+        match = QUALIFIED_COVERAGE_RE.fullmatch(item) if isinstance(item, str) else None
+        if match is None:
+            shown = item if isinstance(item, str) else type(item).__name__
+            findings.append(Finding(rel, "I10", f"'{shown}' is not a qualified coverage ID 'AK-<kind>.V<n>'"))
+            continue
+        if match.group(1) != kind or match.group(2) not in rules.rows:
+            findings.append(Finding(rel, "I10", f"'{item}' is not a Coverage row of {kind}"))
+            continue
+        ok.append(item)
+    return ok
+
+
+def _check_handle(
+    rel: str,
+    entry: dict[str, Any],
+    rules: _KindCoverage,
+    cited: list[str],
+    exceptions: frozenset[str],
+    findings: list[Finding],
+) -> None:
+    handle = entry.get("handle")
+    if not isinstance(handle, str) or not cited or handle in exceptions:
+        return
+    if rules.paired is not None:
+        vids = []
+        for qid in dict.fromkeys(cited):
+            match = QUALIFIED_COVERAGE_RE.fullmatch(qid)
+            if match is not None:
+                vids.append(match.group(2))
+        expected = {rules.paired[vid] for vid in vids if vid in rules.paired}
+        if handle not in expected:
+            findings.append(Finding(rel, "I10", f"handle '{handle}' does not match Naming for {', '.join(dict.fromkeys(cited))}"))
+        return
+    if any(pattern.fullmatch(handle) for pattern in rules.patterns):
+        return
+    shown = ", ".join(rules.templates) or "(none)"
+    findings.append(Finding(rel, "I10", f"handle '{handle}' does not match Naming {shown}"))
+
+
+def _check_files(rel: str, entry: dict[str, Any], kind: str, rules: _KindCoverage, cited: list[str], findings: list[Finding]) -> None:
+    if not cited:
+        return
+    mode, vids = _file_rule(rules.outputs)
+    unique = list(dict.fromkeys(cited))
+    files = entry.get("files")
+    if mode in ("one-row", "v1-only"):
+        if isinstance(files, list) and len(files) != 1:
+            findings.append(Finding(rel, "I10", "files must have one path when Outputs say one file per coverage row or one V1 file"))
+        if mode == "one-row" and len(unique) != 1:
+            findings.append(Finding(rel, "I10", "one file carries one Coverage row; this entry lists more"))
+        elif mode == "v1-only" and unique != [f"AK-{kind}.V1"]:
+            findings.append(Finding(rel, "I10", f"one V1 file carries only 'AK-{kind}.V1'"))
+    elif mode == "one-of":
+        allowed = [f"AK-{kind}.{vid}" for vid in vids]
+        if len(unique) != 1 or unique[0] not in allowed:
+            findings.append(Finding(rel, "I10", f"Outputs name {', '.join(allowed)} for the kind; one entry lists one of them"))
+
+
+def check_coverage_integrity(root: Path, entries: dict[str, dict[str, Any]]) -> list[Finding]:
+    """CAT.I10: in-scope coverage must match kind Coverage, Naming, and Outputs."""
+    exceptions = _naming_exceptions(root)
+    cache: dict[str, _KindCoverage | None] = {}
+
+    def kind_rules(kind: str) -> _KindCoverage | None:
+        if kind not in cache:
+            cache[kind] = _load_kind(root, kind) if kind else None
+        return cache[kind]
+
+    findings: list[Finding] = []
+    claims: dict[str, list[str]] = {}
+    for rel, entry in entries.items():
+        if not _coverage_in_scope(entry):
+            continue
+        kind = _entry_kind(entry)
+        rules = kind_rules(kind)
+        if rules is None:
+            findings.append(Finding(rel, "I10", f"kind '{kind}' has no Coverage rows"))
+            continue
+        cited = _cited_ids(rel, entry, kind, rules, findings)
+        _check_handle(rel, entry, rules, cited, exceptions, findings)
+        _check_files(rel, entry, kind, rules, cited, findings)
+        for qid in dict.fromkeys(cited):
+            claims.setdefault(qid, []).append(rel)
+    for qid, rels in claims.items():
+        match = QUALIFIED_COVERAGE_RE.fullmatch(qid)
+        rules = kind_rules(match.group(1)) if match else None
+        if match is None or rules is None:
+            continue
+        cap = rules.rows[match.group(2)]
+        if len(rels) > cap:
+            findings.append(Finding(rels[0], "I10", f"'{qid}' is claimed by {len(rels)} entries; maximum is {cap}"))
+    return findings
+
+
 def check_catalog(entries: dict[str, dict[str, Any]]) -> list[Finding]:
     findings: list[Finding] = []
     ids = {e.get("id") for e in entries.values()}
@@ -344,6 +578,7 @@ def check(root: Path) -> tuple[list[Finding], list[str]]:
         findings += check_entry(rel, path.stem, entry, hub)
         entries[rel] = entry
     findings += check_catalog(entries)
+    findings += check_coverage_integrity(root, entries)
     notes: list[str] = []
     if hub.asset_root is None:
         notes.append(f"asset root not set in {HUB}; file checks skipped")
