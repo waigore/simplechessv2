@@ -58,6 +58,8 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _promotion_choice_s4()
 	if _error.is_empty():
+		_error = _promotion_overlay_at_destination()
+	if _error.is_empty():
 		_error = _draw_offer_flow()
 	if _error.is_empty():
 		_error = _resign_flow()
@@ -316,6 +318,34 @@ func _promotion_choice_s4() -> String:
 			[session.play_ui_state == "S1", "commit returns S1"],
 		]
 	)
+
+
+func _promotion_overlay_at_destination() -> String:
+	## EX.promote sprites sit on the destination square (2×2), not off last-rank.
+	var board := _board()
+	board.show_promotion_choice("e8", "white", SharedGameSession.PROMOTE_ORDER)
+	var dest := BoardGeometry.square_center("e8")
+	var seen: Dictionary = {}
+	for child in board.get_node("World/Seat/Content/Overlays/PromoteChoice").get_children():
+		var node := child as Node2D
+		if node == null:
+			continue
+		var kind := str(node.get_meta("promote_kind", ""))
+		seen[kind] = true
+		if node.position.distance_to(dest) > 0.55:
+			board.clear_promotion_choice()
+			return (
+				"promote sprite %s off destination (d=%s)" % [kind, node.position.distance_to(dest)]
+			)
+		# Last-rank must stay inside the board plane (0..8).
+		if node.position.y < 0.0 or node.position.y > 8.0:
+			board.clear_promotion_choice()
+			return "promote sprite %s leaves board (y=%s)" % [kind, node.position.y]
+	board.clear_promotion_choice()
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		if not seen.has(kind):
+			return "missing promote kind %s" % kind
+	return ""
 
 
 func _draw_offer_flow() -> String:

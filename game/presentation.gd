@@ -173,6 +173,7 @@ func _build_shell() -> void:
 	_board.visible = false
 	_board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_board.assets_needed.connect(func(ids: PackedStringArray) -> void: asset_needed.emit(ids))
+	_board.reject_flash_finished.connect(func() -> void: _router.finish_reject_flash())
 	_host.add_child(_board)
 
 	_shared_play = SharedPlayPanel.new()
@@ -341,14 +342,13 @@ func _show_shared_play(state: Dictionary) -> void:
 		"reject_square": str(state.get("reject_square", "")),
 		"pending_promote_to": str(state.get("pending_promote_to", "")),
 		"side_to_move": str(state.get("side_to_move", "white")),
+		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
 	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
 		opts["move"] = move_var
 	_board.set_white_seat(str(opts["white_seat"]))
 	_board.render_position(position, selection, legal, opts)
-	if str(state.get("ui_state", "")) == "S5":
-		_schedule_reject_clear()
 	var board_dim := bool(state.get("board_unavailable", false))
 	var board_alpha := 0.45 if board_dim else 1.0
 	if not _board.visible:
@@ -578,12 +578,6 @@ func _on_pointer_up_tap(drag_from: String, to_sq: String, was_dragging: bool) ->
 	else:
 		# Idle release with no action.
 		_finish_drag(true)
-
-
-func _schedule_reject_clear() -> void:
-	get_tree().create_timer(SharedGameSession.REJECT_FLASH_S).timeout.connect(
-		func() -> void: _router.finish_reject_flash()
-	)
 
 
 func _finish_drag(legal_or_idle: bool) -> void:

@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+{"TEL.1":"shared.start","TEL.2":1792618860860,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/01-shared-play-s1.png
+{"TEL.1":"shared.select","TEL.2":1792618860894,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/02-selection-legal.png
+{"TEL.1":"shared.deselect","TEL.2":1792618860918,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/03-deselect-cleared.png
+{"TEL.1":"shared.select","TEL.2":1792618860942,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792618860948,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/04-b9-empty-deselect.png
+{"TEL.1":"shared.select","TEL.2":1792618860971,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792618860976,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/05-reject-flash-s5.png
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/06-promote-s4.png
+{"TEL.1":"shared.resign","TEL.2":1792618861030,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792618861031,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792618861031,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.again","TEL.2":1792618861034,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792618861035,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.draw","TEL.2":1792618861042,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"confirm"}
+{"TEL.1":"shared.draw","TEL.2":1792618861047,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"offered"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/07-draw-offer-s6.png
+{"TEL.1":"shared.draw","TEL.2":1792618861069,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"END.D2"}
+{"TEL.1":"shared.end","TEL.2":1792618861070,"TEL.3":"sess-1792618860774-71986-playtest","TEL.4":"NAV.T6","TEL.5":"END.D2"}
+SAVE_PNG err=0 size=720x1280 path=user://issue94_graphical/08-draw-accepted-result.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/03-deselect-cleared.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/01-shared-play-s1.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/05-reject-flash-s5.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/08-draw-accepted-result.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/02-selection-legal.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/04-b9-empty-deselect.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/07-draw-offer-s6.png
+COPIED ../docs/playtest/evidence/issue-94/graphical-20261021T213840Z/screenshots/06-promote-s4.png
+ISSUE94_GRAPHICAL pass
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
