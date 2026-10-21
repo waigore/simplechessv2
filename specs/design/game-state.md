@@ -40,4 +40,4 @@ Field tables: [`game-state/fields.md`](game-state/fields.md).
 
 ## Randomness and determinism
 
-- **Q1**: Which puzzle is dealt among candidates matching [DIF.Y1](difficulty.md) need not be identical for the same Elo and history (catalog order may vary).
+- **Q1**: The random outcome is which [Puzzle](glossary.md) is dealt. The range is any puzzle in the [DIF.Y1](difficulty.md) candidate set. That set is the in-band puzzles ([Puzzle Elo](glossary.md) within ±`CFG.ELO_MATCH_RANGE` of current [Player Elo](glossary.md)) outside the recent-solved window (not solved among the last `CFG.ELO_RECENT_WINDOW` puzzles), then the specified widen (`CFG.ELO_BAND_WIDEN`) and/or allow-recent relax, until at least one candidate exists. Any puzzle in that set may be dealt. The same Elo and history need not deal the same puzzle.
