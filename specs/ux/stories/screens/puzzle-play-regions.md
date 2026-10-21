@@ -20,7 +20,7 @@ As Bottom player, I see the dealt puzzle and my Elo so that practice stays clear
 
 ```gherkin
 Given Bottom player is on puzzle-play S1
-When the screen is shown
+When puzzle-play S1 is shown
 Then R1 shows a–h and 1–8 only on the outer edges And C1–C5 are available
 ```
 
@@ -30,7 +30,7 @@ Then R1 shows a–h and 1–8 only on the outer edges And C1–C5 are available
 
 ```gherkin
 Given a puzzle is open with dealt GS.position (always knowable in play, game-state H1)
-When the screen is shown
+When puzzle-play S1 is shown
 Then R1 shows that position
 ```
 
@@ -40,7 +40,7 @@ Then R1 shows that position
 
 ```gherkin
 Given GS.selectedPiece is a White knight on g1
-When the screen is shown
+When puzzle-play S1 is shown
 Then R1 highlights that piece and square
 ```
 
@@ -50,7 +50,7 @@ Then R1 highlights that piece and square
 
 ```gherkin
 Given GS.playerElo is 1000 (shown on deal, puzzle-stream K1)
-When puzzle-play is shown
+When puzzle-play S1 is shown
 Then R2 shows Elo 1000
 ```
 
@@ -70,7 +70,7 @@ Then R2 shows Wrong move
 
 ```gherkin
 Given puzzle-play S1
-When the screen is shown
+When puzzle-play S1 is shown
 Then R3 shows Reveal, Abandon, and Leave stream
 ```
 
@@ -100,6 +100,6 @@ Then R2 shows Abandoned
 
 ```gherkin
 Given GS.selectedPiece is a White knight on g1 (legal moves derived from GS.position, game-state)
-When the screen is shown
+When puzzle-play S1 is shown
 Then R1 marks each legal destination square
 ```
