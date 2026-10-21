@@ -1,29 +1,24 @@
-# Stories: Game-state persistent and configuration fields
+# Stories: Game-state persistent fields
 
 Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/specs/rules/design/story.md).
 
 - **Design spec**: [`game-state/fields-persist.md`](../../game-state/fields-persist.md)
 - **Spec key**: `GS`
-- **Glossary terms**: [Player Elo](../../glossary.md), [Last mode](../../glossary.md), [White seat](../../glossary.md)
+- **Glossary terms**: [Player Elo](../../glossary.md), [Last mode](../../glossary.md)
 
-Part of [`stories/game-state.md`](../game-state.md). Play fields: [`fields-play.md`](fields-play.md).
+Part of [`stories/game-state.md`](../game-state.md). Configuration fields: [`fields-persist-config.md`](fields-persist-config.md). Play fields: [`fields-play.md`](fields-play.md).
 
 ## Coverage
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| GS.playerElo | Persistent Elo | PS1.1 PS1.2 |
-| GS.lastMode | Persistent last mode | PS1.2 PS1.3 |
-| GS.recentSolved | Last solved IDs | PS1.4 PS1.5 PS1.11 |
-| GS.whiteSeat | White seat option | PS1.6 PS1.7 |
-| GS.clock | Clock option | PS1.6 PS1.7 |
-| GS.increment | Increment option | PS1.6 PS1.7 |
-| GS.advice | Advice option | PS1.6 PS1.7 |
-| GS.locale | Shipped locale | PS1.8 PS1.9 PS1.10 |
+| GS.playerElo | Persistent Elo | PS1.1 PS1.2 PS1.6 PS1.7 |
+| GS.lastMode | Persistent last mode | PS1.2 PS1.3 PS1.6 |
+| GS.recentSolved | Last solved IDs | PS1.4 PS1.5 PS1.8 |
 
-## PS1: Kept fields
+## PS1: Kept persistent fields
 
-As a casual player, I keep my settings and Elo so that each session starts as expected.
+As a casual player, I keep Elo and mode so that each session starts as expected.
 
 ### PS1.1: Elo initial
 
@@ -75,57 +70,27 @@ When END.W1 appends a new ID
 Then GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20) IDs, newest last And the oldest is dropped
 ```
 
-### PS1.6: Option defaults
+### PS1.6: Elo and last mode reset on clear
 
-- **Proves**: GS.whiteSeat, GS.clock, GS.increment, GS.advice
-
-```gherkin
-Given no stored options
-When the game first runs
-Then GS.whiteSeat is Bottom player And GS.clock is Untimed And GS.increment is 3 s And GS.advice is On
-```
-
-### PS1.7: Options lock at start
-
-- **Proves**: GS.whiteSeat, GS.clock, GS.increment, GS.advice
+- **Proves**: GS.playerElo, GS.lastMode
 
 ```gherkin
-Given a Shared game started with White seat, Clock, and Increment chosen
-When play proceeds
-Then those stay locked And Advice may still toggle
+Given GS.playerElo is 1120 And GS.lastMode is Puzzle stream
+When this game's saved data is cleared
+Then GS.playerElo is CFG.ELO_START (1000) And GS.lastMode is none on next use
 ```
 
-### PS1.8: Locale from shipped browser locale
+### PS1.7: Elo update stays uncapped
 
-- **Proves**: GS.locale
+- **Proves**: GS.playerElo
 
 ```gherkin
-Given the browser locale is ja And ja is shipped
-When the game first runs
-Then GS.locale is ja
+Given Puzzle stream And GS.playerElo is 3000 And puzzleElo is 3000 And END.W1 holds
+When DIF.Y1 runs
+Then GS.playerElo becomes 3000 + CFG.ELO_K × (1 − 0.5) = 3010 And no Elo cap applies
 ```
 
-### PS1.9: Locale fallback
-
-- **Proves**: GS.locale
-
-```gherkin
-Given the browser locale is fr And fr is not shipped
-When the game first runs
-Then GS.locale is en
-```
-
-### PS1.10: Locale stays shipped
-
-- **Proves**: GS.locale
-
-```gherkin
-Given the player sets the locale to zh-Hant
-When the setting applies
-Then GS.locale is zh-Hant, one of en, zh-Hant, ja
-```
-
-### PS1.11: Solved IDs lost when saved data cleared
+### PS1.8: Solved IDs lost when saved data cleared
 
 - **Proves**: GS.recentSolved
 

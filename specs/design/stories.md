@@ -19,7 +19,7 @@ Authoring rules: [`.agents/specs/rules/design/stories.md`](../../.agents/specs/r
 | [`game-state.md`](game-state.md) | yes | Full | [`stories/game-state.md`](stories/game-state.md) |
 | [`game-state/fields-play.md`](game-state/fields-play.md) | yes | Full | [`stories/game-state/fields-play.md`](stories/game-state/fields-play.md), [`stories/game-state/fields-play-moment.md`](stories/game-state/fields-play-moment.md), [`stories/game-state/fields-play-puzzle.md`](stories/game-state/fields-play-puzzle.md), [`stories/game-state/fields-play-reset.md`](stories/game-state/fields-play-reset.md) |
 | [`game-state/fields-play-end.md`](game-state/fields-play-end.md) | yes | Full | [`stories/game-state/fields-play-end.md`](stories/game-state/fields-play-end.md), [`stories/game-state/fields-play-draw.md`](stories/game-state/fields-play-draw.md) |
-| [`game-state/fields-persist.md`](game-state/fields-persist.md) | yes | Full | [`stories/game-state/fields-persist.md`](stories/game-state/fields-persist.md) |
+| [`game-state/fields-persist.md`](game-state/fields-persist.md) | yes | Full | [`stories/game-state/fields-persist.md`](stories/game-state/fields-persist.md), [`stories/game-state/fields-persist-config.md`](stories/game-state/fields-persist-config.md) |
 | [`configuration.md`](configuration.md) | yes | Full | [`stories/configuration.md`](stories/configuration.md) |
 | [`difficulty.md`](difficulty.md) | yes | Full | [`stories/difficulty.md`](stories/difficulty.md), [`stories/difficulty-tunables.md`](stories/difficulty-tunables.md), [`stories/difficulty-repeat.md`](stories/difficulty-repeat.md) |
 | [`progression.md`](progression.md) | yes | Full | [`stories/progression.md`](stories/progression.md), [`stories/progression-mode.md`](stories/progression-mode.md) |
