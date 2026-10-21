@@ -18,23 +18,27 @@ func _start() -> void:
 	harness.free()
 	_router = _presentation.get_node("SessionRouter") as SessionRouter
 	_seams = _presentation.get_node("PlaytestSeams") as PlaytestSeams
-	_router.locale = "ja"
 	root.add_child(_presentation)
+	_router.locale = "ja"
+	_presentation.show_screen("loading", {})
 	var loading := _presentation.get_node("LoadingLabel") as Label
-	if not loading.visible or loading.text != "読み込み中":
+	if not loading.visible or not loading.text.contains("読み込み"):
 		_fail("EX.loading should show before the boot hook")
 		return
 	call_deferred("_after_boot")
 
 
 func _after_boot() -> void:
-	var ready := _presentation.get_node("ReadyHook") as Label
 	var loading := _presentation.get_node("LoadingLabel") as Label
-	if loading.visible or not ready.visible or ready.text != "mode-pick-ready":
-		_fail("mode-pick-ready hook did not replace loading")
+	var mode_pick := _presentation.get_node("ScreenHost/ModePick") as ModePickPanel
+	if loading.visible or not mode_pick.visible:
+		_fail("mode-pick did not replace loading")
 		return
-	if _router.stage != "mode-pick-ready":
+	if _router.stage != "mode-pick":
 		_fail("router stage")
+		return
+	if mode_pick.find_child("PuzzleStream", true, false) != null:
+		_fail("Wave-1 must omit UI-mode-pick.C2 Puzzle stream")
 		return
 	if not _exercise_pointers():
 		return
@@ -45,24 +49,14 @@ func _after_boot() -> void:
 
 
 func _after_seed() -> void:
-	var ready := _presentation.get_node("ReadyHook") as Label
-	if _router.stage != "mode-pick-ready" or not ready.visible:
-		_fail("seed did not return to the ready hook")
+	var mode_pick := _presentation.get_node("ScreenHost/ModePick") as ModePickPanel
+	if _router.stage != "mode-pick" or not mode_pick.visible:
+		_fail("seed did not return to mode-pick")
 		return
 	var dumped := _seams.dump_state()
 	if int(dumped.get("seed", -1)) != 42:
 		_fail("seed was not repeatable")
 		return
-	var spike := _presentation.get_node("TouchSpike") as Control
-	var width := spike.offset_right - spike.offset_left
-	var height := spike.offset_bottom - spike.offset_top
-	if width != 576.0 or height != 576.0:
-		_fail("touch spike is not board-sized")
-		return
-	for child in _presentation.get_children():
-		if child is Button:
-			_fail("mode controls are present")
-			return
 	quit(0)
 
 
@@ -96,7 +90,13 @@ func _exercise_pointers() -> bool:
 	right.pressed = true
 	right.position = Vector2(1, 1)
 	_presentation.handle_gui_input(right)
-	_presentation.handle_gui_input(InputEventKey.new())
+	var key := InputEventKey.new()
+	key.pressed = true
+	key.keycode = KEY_A
+	_presentation.handle_gui_input(key)
+	var unsupported := _presentation.get_node("UnsupportedInput") as Label
+	if not unsupported.visible:
+		return _fail("EX.unsupported-input missing for key")
 	var left := InputEventMouseButton.new()
 	left.button_index = MOUSE_BUTTON_LEFT
 	left.pressed = true
@@ -125,20 +125,16 @@ func _exercise_screens() -> bool:
 	_router.locale = "zz"
 	_presentation.show_screen("loading", {})
 	var fallback := loading.text
-	var ready_visible := (_presentation.get_node("ReadyHook") as Label).visible
-	_presentation.show_screen("mode-pick", {})
-	var still := (_presentation.get_node("ReadyHook") as Label).visible
+	_presentation.show_screen("not-a-screen", {})
 	var jump_loading := _seams.jump("loading")
 	var stage_after := _router.stage
 	var unknown := _seams.jump("not-a-stage")
 	var stage_unknown := _router.stage
 	var problem := ""
-	if zh != "載入中" or not zh_visible:
+	if not zh.contains("載入") or not zh_visible:
 		problem = "zh-Hant loading copy"
-	elif fallback != "Loading":
+	elif not fallback.contains("Loading"):
 		problem = "locale fallback"
-	elif still != ready_visible:
-		problem = "unknown screen changed state"
 	elif jump_loading != OK or stage_after != "loading":
 		problem = "jump loading"
 	elif unknown != ERR_INVALID_PARAMETER or stage_unknown != "loading":

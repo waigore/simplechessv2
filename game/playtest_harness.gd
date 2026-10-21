@@ -2,7 +2,7 @@ class_name PlaytestHarness
 extends Node
 ## SEQ-playtest-headless-smoke harness for ENV.1.
 
-const SMOKE_STAGE := "mode-pick-ready"
+const SMOKE_STAGE := "mode-pick"
 const SMOKE_STORY := "EX.loading"
 
 

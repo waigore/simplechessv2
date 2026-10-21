@@ -14,7 +14,7 @@ func _start() -> void:
 	seams.name = "PlaytestSeams"
 	seams.playtest_override = 1
 	var stage := {"id": "loading"}
-	seams.register_stages(PackedStringArray(["loading", "mode-pick-ready"]))
+	seams.register_stages(PackedStringArray(["loading", "mode-pick"]))
 	seams.bind_state(_provider.bind(stage))
 	seams.jump_requested.connect(_remember_stage.bind(stage))
 	_probe = ProbeHarness.new()
@@ -32,7 +32,7 @@ func _start() -> void:
 	if harness.run_smoke(bare) != 1:
 		_fail("expected unknown jump to fail smoke")
 		return
-	bare.register_stages(PackedStringArray(["mode-pick-ready"]))
+	bare.register_stages(PackedStringArray(["mode-pick"]))
 	bare.bind_state(_stale_stage)
 	if harness.run_smoke(bare) != 1:
 		_fail("expected inspect mismatch to fail smoke")
