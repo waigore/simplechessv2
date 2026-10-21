@@ -24,7 +24,7 @@ The advice backend (Stockfish UCI peer) is outside this client stack ([ADR-0002]
 | D2 | L3 Domain never references L1, L2, or L4 types; sessions call Domain via contracts. |
 | D3 | L4 adapters implement ports; Domain and Session depend on contract shapes, not storage or HTTP types. |
 | D4 | Cycles forbidden; review fails any bidirectional layer import. |
-| D5 | Upward flow is contract events/callbacks only (e.g. `CTR-presentation` E1–E3, `CTR-local-move` E1): the inner layer publishes on a contract, the outer layer subscribes. Not an import, so D1 and D4 still hold. |
+| D5 | Upward flow is contract events only — inner publishes, outer subscribes (e.g. L2 publishes `CTR-presentation` E1–E5; L3 publishes `CTR-local-move` E1–E2). Not an import, so D1 and D4 still hold; Presentation→Session stays L1→L2 only. |
 | D6 | Playtest builds only: `CMP-playtest-seams` observes L2/L1 and publishes drive events on `CTR-playtest-drive`; stripped or no-op in release (ADR-0004). |
 
 ## Diagram
