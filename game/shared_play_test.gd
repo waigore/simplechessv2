@@ -66,6 +66,8 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = await _layout_reserves_chrome()
 	if _error.is_empty():
+		_error = _focus_order_c1_to_c4()
+	if _error.is_empty():
 		quit(0)
 		return
 	_fail(_error)
@@ -349,11 +351,69 @@ func _clocks_visible_when_timed() -> String:
 func _layout_reserves_chrome() -> String:
 	_presentation.size = Vector2(800, 450)
 	await process_frame
+	await process_frame
 	var board := _board()
 	if board.offset_top < Presentation.PLAY_CHROME_TOP_PX - 0.5:
 		return "16:9 board must sit below chrome"
+	var err := _assert_board_fully_visible(board)
+	if not err.is_empty():
+		return err
+	err = _assert_coords_on_board(board)
+	if not err.is_empty():
+		return err
 	_presentation.size = Vector2(720, 1280)
 	await process_frame
+	await process_frame
+	err = _assert_board_fully_visible(board)
+	if not err.is_empty():
+		return "9:16 %s" % err
+	return _assert_coords_on_board(board)
+
+
+func _assert_board_fully_visible(board: BoardPresentation) -> String:
+	## PRJ.A1 / D1 — every corner square centre stays inside the board rect.
+	var rect := board.get_global_rect()
+	for square in ["a1", "h1", "a8", "h8", "e4"]:
+		var screen := board.world_to_screen(board.framed_center(square))
+		if not rect.has_point(screen):
+			return "square %s cropped at %s in %s" % [square, screen, rect]
+	return ""
+
+
+func _assert_coords_on_board(board: BoardPresentation) -> String:
+	## R1 edge coordinates track the board after chrome offset.
+	var rect := board.get_global_rect().grow(8.0)
+	var coords := board.get_node("Coordinates") as Control
+	if coords == null:
+		return "coordinates root missing"
+	for child in coords.get_children():
+		var chip := child as Control
+		if chip == null:
+			continue
+		var center := chip.get_global_rect().get_center()
+		if not rect.has_point(center):
+			return "coord chip %s at %s outside board" % [chip.name, center]
+	return ""
+
+
+func _focus_order_c1_to_c4() -> String:
+	## controls.md F1 — C1 → C2 → C3 → C4 among available controls.
+	var play := _play_panel()
+	if play.ui_state != "S1":
+		return "focus order expects S1"
+	var controls := play.focusable_controls()
+	if controls.size() < 4:
+		return "focusable count %d" % controls.size()
+	var names: PackedStringArray = PackedStringArray()
+	for c in controls:
+		names.append(c.name)
+	if names[0] != "SelectFocus" or names[1] != "PlaceFocus":
+		return "focus C1/C2 order %s" % ",".join(names)
+	if names[2] != "AdviceToggle" or names[3] != "Resign":
+		return "focus C3/C4 order %s" % ",".join(names)
+	play.focus_first()
+	if play.get_viewport().gui_get_focus_owner() != controls[0]:
+		return "focus_first did not land on C1"
 	return ""
 
 

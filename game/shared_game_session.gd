@@ -122,6 +122,10 @@ func game_ended() -> bool:
 	return bool(rules.game_ended_field().get("ended", false))
 
 
+func _end_reason() -> String:
+	return str(rules.game_ended_field().get("reason", ""))
+
+
 func gestures_available() -> bool:
 	return play_ui_state == UI_S1 and not game_ended()
 
@@ -189,7 +193,7 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 		"move": {"from": from_square, "to": to_square},
 		"check": _in_check_now(),
 		"ended": game_ended(),
-		"end_reason": str(rules.game_ended_field().get("reason", "")),
+		"end_reason": _end_reason(),
 	}
 	return result
 
@@ -258,7 +262,7 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"white_clock_ms": white_clock_ms,
 		"black_clock_ms": black_clock_ms,
 		"game_ended": ended,
-		"end_reason": str(rules.game_ended_field().get("reason", "")),
+		"end_reason": _end_reason(),
 		"resign_available": not ended and play_ui_state == UI_S1,
 		"board_unavailable": play_ui_state == UI_S2 or ended,
 		"last_reject": last_reject,

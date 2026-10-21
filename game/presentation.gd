@@ -16,7 +16,7 @@ const SHARED_RESULT := "shared-result"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
 ## Reserve R2–R4 chrome so R1 is not covered at 16:9 (PRJ.A1).
-const PLAY_CHROME_TOP_PX := 168.0
+const PLAY_CHROME_TOP_PX := SharedPlayPanel.CHROME_RESERVED_PX
 
 var pointer_count := 0
 var last_pointer: Dictionary = {}
@@ -501,7 +501,7 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 			_board.cancel_drag()
 		else:
 			_board.end_drag_illegal()
-		_router.handle_input_commit(drag_from, to_sq, "")
+		input_commit.emit(drag_from, to_sq, "")
 		return
 	# B2 before B3: tap an own piece (including changing selection).
 	if not was_dragging and not to_sq.is_empty():

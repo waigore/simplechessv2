@@ -111,6 +111,17 @@ func _check_viewport(board: BoardPresentation) -> String:
 		return "16:9 visible height stays 10"
 	if BoardGeometry.board_bounds().size != Vector2(8, 8):
 		return "SPC.B1 bounds"
+	# Wider than 16:9 (chrome-reserved strip): pillarbox inside rect, never crop.
+	board.size = Vector2(800, 282)
+	await process_frame
+	var rect := board.get_global_rect()
+	for square in ["a1", "h1", "a8", "h8"]:
+		var screen := board.world_to_screen(board.framed_center(square))
+		if not rect.has_point(screen):
+			return "ultra-wide crops %s at %s" % [square, screen]
+	var clamped := board.visible_world_size()
+	if not is_equal_approx(clamped.y, 10.0):
+		return "pillarbox visible height stays 10"
 	return ""
 
 
