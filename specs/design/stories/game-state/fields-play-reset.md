@@ -6,14 +6,12 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `GS`
 - **Glossary terms**: [Side to move](../../glossary.md), [Shared game](../../glossary.md)
 
-Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other session fields.
+Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other session fields. Ending-field initials and resets: [`fields-play-end.md`](fields-play-end.md).
 
 ## Coverage
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| GS.gameEnded | Initial and reset | PS1.1 PS1.2 |
-| GS.drawOffer | Initial and end clear | PS1.1 |
 | GS.whiteClock, GS.blackClock | Initial and reset | PS1.1 PS1.2 |
 | GS.puzzleId, GS.puzzleElo | None outside a puzzle | PS1.1 |
 | GS.requiredSequence, GS.sequenceIndex | None/zero outside a puzzle | PS1.1 |
@@ -25,20 +23,20 @@ As a casual player, I get a clean run state so that a previous game cannot leak 
 
 ### PS1.1: Shared start clears session state
 
-- **Proves**: GS.gameEnded, GS.drawOffer, GS.whiteClock, GS.blackClock, GS.puzzleId, GS.puzzleElo, GS.requiredSequence, GS.sequenceIndex, GS.wrongMoveOnPuzzle
+- **Proves**: GS.whiteClock, GS.blackClock, GS.puzzleId, GS.puzzleElo, GS.requiredSequence, GS.sequenceIndex, GS.wrongMoveOnPuzzle
 
 ```gherkin
 Given no session is open
 When an Untimed Shared game starts
-Then GS.gameEnded is false And GS.drawOffer is none And both clocks are none And GS.puzzleId and GS.puzzleElo are none And GS.requiredSequence is none And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false
+Then both clocks are none And GS.puzzleId and GS.puzzleElo are none And GS.requiredSequence is none And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false
 ```
 
 ### PS1.2: New game resets the last run
 
-- **Proves**: GS.gameEnded, GS.whiteClock, GS.blackClock
+- **Proves**: GS.whiteClock, GS.blackClock
 
 ```gherkin
 Given a Blitz Shared game ended And GS.whiteClock is 40 And GS.blackClock is 55
 When an Untimed Shared game starts
-Then GS.gameEnded is false And GS.whiteClock is none And GS.blackClock is none
+Then GS.whiteClock is none And GS.blackClock is none
 ```
