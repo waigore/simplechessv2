@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"TEL.1":"shared.start","TEL.2":1792613320541,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792613320542,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792613320544,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792613320545,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792613320546,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.select","TEL.2":1792613320547,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792613320549,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792613320550,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792613320785,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792613320789,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.start","TEL.2":1792613320994,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792613320997,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792613321002,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792613321005,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792613321005,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.start","TEL.2":1792613321017,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792613321020,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"pause","TEL.2":1792613321026,"TEL.3":"sess-1792613320485-61272-playtest","TEL.5":"pass"}
+{"TEL.1":"resume","TEL.2":1792613321026,"TEL.3":"sess-1792613320485-61272-playtest","TEL.5":"pass"}
+{"TEL.1":"shared.advice","TEL.2":1792613321026,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.4","TEL.5":"toggled"}
+{"TEL.1":"shared.resign","TEL.2":1792613321028,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792613321030,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792613321030,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.start","TEL.2":1792613321034,"TEL.3":"sess-1792613320485-61272-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
