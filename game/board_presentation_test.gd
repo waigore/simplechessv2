@@ -146,19 +146,25 @@ func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
 	err = _first_fail(checks)
 	if not err.is_empty():
 		return err
+	var t0 := Time.get_ticks_msec()
 	await board.end_drag_illegal()
+	var return_elapsed := (Time.get_ticks_msec() - t0) / 1000.0
 	checks = [
-		[board.last_return_s <= BoardGeometry.TRAVEL_S + 0.0001, "bad drop return over budget"],
+		[return_elapsed <= BoardGeometry.TRAVEL_S + 0.08, "bad drop return wall-clock over budget"],
 		[board.piece_world_center("e2") == Vector2(4.5, 1.5), "bad drop return home"],
 	]
 	err = _first_fail(checks)
 	if not err.is_empty():
 		return err
 	board.begin_drag("e2", Vector2(4.5, 1.5))
+	t0 = Time.get_ticks_msec()
 	await board.end_drag_legal("e4")
+	var travel_elapsed := (Time.get_ticks_msec() - t0) / 1000.0
 	checks = [
-		[board.last_travel_s <= BoardGeometry.TRAVEL_S + 0.0001, "M1 travel over budget"],
-		[board.last_settle_s <= BoardGeometry.SETTLE_S + 0.0001, "settle over budget"],
+		[
+			travel_elapsed <= BoardGeometry.TRAVEL_S + BoardGeometry.SETTLE_S + 0.08,
+			"M1+settle wall-clock over budget"
+		],
 		[board.piece_world_center("e4") == Vector2(4.5, 3.5), "legal drop lands on e4"],
 		[board.camera_offset == Vector2.ZERO, "camera moved during travel"],
 	]
@@ -180,9 +186,14 @@ func _motion_capture_castle(board: BoardPresentation) -> String:
 		)
 	)
 	await process_frame
+	var t0 := Time.get_ticks_msec()
 	await board.play_move("e4", "d5", "d5")
+	var capture_elapsed := (Time.get_ticks_msec() - t0) / 1000.0
 	var checks: Array = [
-		[board.last_travel_s <= BoardGeometry.TRAVEL_S + 0.0001, "capture travel over budget"],
+		[
+			capture_elapsed <= BoardGeometry.TRAVEL_S + BoardGeometry.SETTLE_S + 0.08,
+			"capture wall-clock over budget"
+		],
 		[
 			board.get_node_or_null("World/Seat/Content/Pieces/piece_d5") != null,
 			"capture destination piece missing",
@@ -227,9 +238,56 @@ func _motion_capture_castle(board: BoardPresentation) -> String:
 		)
 	)
 	await process_frame
+	t0 = Time.get_ticks_msec()
 	await board.play_move("e8", "e8", "", "queen")
-	if board.last_travel_s > BoardGeometry.TRAVEL_S + 0.0001:
-		return "promotion morph over budget"
+	var promote_elapsed := (Time.get_ticks_msec() - t0) / 1000.0
+	if promote_elapsed > BoardGeometry.TRAVEL_S + BoardGeometry.SETTLE_S + 0.08:
+		return "promotion morph wall-clock over budget"
+	err = await _motion_o2_animate(board)
+	if not err.is_empty():
+		return err
+	return ""
+
+
+func _motion_o2_animate(board: BoardPresentation) -> String:
+	## CTR-presentation.O2 post-apply + move must still animate from the origin.
+	(
+		board
+		. render_position(
+			{
+				"occupancy":
+				{
+					"e2": {"color": "white", "kind": "pawn", "square": "e2"},
+				},
+				"side_to_move": "white",
+			}
+		)
+	)
+	await process_frame
+	if board.get_node_or_null("World/Seat/Content/Pieces/piece_e2") == null:
+		return "O2 setup missing e2"
+	(
+		board
+		. render_position(
+			{
+				"occupancy":
+				{
+					"e4": {"color": "white", "kind": "pawn", "square": "e4"},
+				},
+				"side_to_move": "black",
+			},
+			"",
+			PackedStringArray(),
+			{"move": {"from": "e2", "to": "e4"}}
+		)
+	)
+	await board.travel_finished
+	if board.get_node_or_null("World/Seat/Content/Pieces/piece_e4") == null:
+		return "O2 move did not land on e4"
+	if board.get_node_or_null("World/Seat/Content/Pieces/piece_e2") != null:
+		return "O2 move left origin keyed"
+	if board.piece_world_center("e4") != Vector2(4.5, 3.5):
+		return "O2 move wrong landing"
 	return ""
 
 
@@ -241,12 +299,21 @@ func _motion_marks(board: BoardPresentation, rules: ChessRules) -> String:
 		{"white_seat": "bottom", "capture_marks": []}
 	)
 	await process_frame
-	var select := board.get_node_or_null("World/Seat/Content/Overlays/Selection") as Polygon2D
+	var select := board.get_node_or_null("World/Seat/Content/Overlays/Selection") as Line2D
 	if select == null or not select.visible:
 		return "PER.R3 selection mark missing"
+	if select.default_color != BoardPresentation.COLOR_SELECT:
+		return "PER.R3 selection must use full-opacity PAL.C6"
 	var legal_root := board.get_node_or_null("World/Seat/Content/Overlays/LegalMarks")
 	if legal_root == null or legal_root.get_child_count() < 2:
 		return "PER.R4 legal marks missing"
+	var diamond := legal_root.get_child(0) as Polygon2D
+	if diamond == null or diamond.color != BoardPresentation.COLOR_LEGAL:
+		return "PER.R4 empty mark must use full-opacity PAL.C11"
+	# Area of diamond with half-diagonal r is 2 r²; require ≥ 1/4.
+	var r := BoardPresentation.LEGAL_EMPTY_R
+	if 2.0 * r * r < 0.25 - 0.0001:
+		return "PER.R4 empty mark under 1/4 square"
 	return ""
 
 

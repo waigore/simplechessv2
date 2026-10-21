@@ -3,6 +3,8 @@ extends Control
 ## CMP-presentation: EX.loading, mode-pick, shared-setup, board view, entry exceptions.
 
 signal control_activate(screen_id: String, control_id: String)
+## CTR-presentation.E3 — L1 never resolves assets; L2 returns them via O5.
+signal asset_needed(asset_ids: PackedStringArray)
 
 const LOADING_SCREEN := "loading"
 const MODE_PICK := "mode-pick"
@@ -24,13 +26,11 @@ var _ended_label: Label
 var _unsupported: Label
 var _ui_font: Font
 var _router: SessionRouter
-var _resolver: AssetResolver
 var _play_assets_bound := false
 
 
 func _ready() -> void:
 	_router = $SessionRouter as SessionRouter
-	_resolver = $AssetResolver as AssetResolver
 	_build_shell()
 	_router.screen_requested.connect(_on_screen_requested)
 	_router.replay_pointer.connect(apply_recorded_pointer)
@@ -136,7 +136,7 @@ func _build_shell() -> void:
 	_board.name = "BoardPresentation"
 	_board.visible = false
 	_board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_board.assets_needed.connect(_on_board_assets_needed)
+	_board.assets_needed.connect(func(ids: PackedStringArray) -> void: asset_needed.emit(ids))
 	_host.add_child(_board)
 
 	_ended_label = Label.new()
@@ -162,23 +162,6 @@ func _build_shell() -> void:
 	gui_input.connect(handle_gui_input)
 
 
-func _bind_boot_assets() -> void:
-	if _ui_font != null:
-		return
-	var latin := _resolver.resolve(UiChrome.FONT_LATIN)
-	var cjk := _resolver.resolve(UiChrome.FONT_CJK)
-	if latin is Font:
-		_ui_font = latin as Font
-		if cjk is Font:
-			var faces: Array[Font] = [cjk as Font]
-			_ui_font.fallbacks = faces
-	_resolver.resolve(UiChrome.ICON_SHARED)
-	_resolver.resolve(UiChrome.ICON_QUIT)
-	_resolver.resolve(UiChrome.ICON_ADVICE)
-	_resolver.resolve(UiChrome.ICON_BACK)
-	_resolver.resolve(UiChrome.ART_PANEL)
-
-
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
 	show_screen(screen_id, state)
 
@@ -199,7 +182,6 @@ func render_position(
 	## CTR-presentation.O2 — board portion (status R2 is #58).
 	if _board == null:
 		return
-	_bind_play_assets()
 	var opts := options.duplicate()
 	if not opts.has("white_seat"):
 		opts["white_seat"] = _router.white_seat
@@ -207,15 +189,28 @@ func render_position(
 
 
 func provide_assets(resources_by_id: Dictionary) -> void:
-	## CTR-presentation.O5 — bind catalog resources by asset ID.
-	if _board == null:
-		return
-	_board.provide_assets(resources_by_id)
-	_play_assets_bound = true
+	## CTR-presentation.O5 — bind catalog resources by asset ID (from L2 only).
+	_apply_ui_fonts(resources_by_id)
+	if _board != null:
+		_board.provide_assets(resources_by_id)
+	if not resources_by_id.is_empty():
+		_play_assets_bound = true
+
+
+func _apply_ui_fonts(resources_by_id: Dictionary) -> void:
+	var latin: Variant = resources_by_id.get(UiChrome.FONT_LATIN, null)
+	if latin is Font:
+		_ui_font = latin as Font
+		var cjk: Variant = resources_by_id.get(UiChrome.FONT_CJK, null)
+		if cjk is Font:
+			var faces: Array[Font] = [cjk as Font]
+			_ui_font.fallbacks = faces
+		UiChrome.apply_font(_loading, _ui_font)
+		UiChrome.apply_font(_ended_label, _ui_font)
+		UiChrome.apply_font(_unsupported, _ui_font)
 
 
 func _show_mode_pick(state: Dictionary) -> void:
-	_bind_boot_assets()
 	current_screen = MODE_PICK
 	_loading.visible = false
 	_shared_setup.visible = false
@@ -232,7 +227,6 @@ func _show_mode_pick(state: Dictionary) -> void:
 
 
 func _show_shared_setup(state: Dictionary) -> void:
-	_bind_boot_assets()
 	current_screen = SHARED_SETUP
 	_loading.visible = false
 	_mode_pick.visible = false
@@ -257,7 +251,6 @@ func _show_shared_play(state: Dictionary) -> void:
 	_mode_pick.visible = false
 	_shared_setup.visible = false
 	_ended_label.visible = false
-	_bind_play_assets()
 	var position: Dictionary = state.get("position", {}) as Dictionary
 	if position.is_empty():
 		var rules := ChessRules.new()
@@ -267,6 +260,14 @@ func _show_shared_play(state: Dictionary) -> void:
 	_board.render_position(position, str(state.get("selection", "")), PackedStringArray())
 	UiChrome.transition_in(_board)
 	_router.note_board_playable()
+	if not _play_assets_bound:
+		# Ask L2 for play IDs if O5 has not arrived yet (CTR-presentation.E3).
+		var needed: PackedStringArray = PackedStringArray()
+		for asset_id in BoardPresentation.PIECE_IDS.values():
+			needed.append(str(asset_id))
+		needed.append(BoardPresentation.BOARD_BG_ID)
+		needed.append(UiChrome.FONT_LATIN)
+		asset_needed.emit(needed)
 
 
 func _show_ended() -> void:
@@ -285,34 +286,6 @@ func _hide_panels() -> void:
 	_board.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
-
-
-func _bind_play_assets() -> void:
-	if _play_assets_bound or _resolver == null:
-		return
-	_resolver.preload_play()
-	var bound: Dictionary = {}
-	for asset_id in BoardPresentation.PIECE_IDS.values():
-		var resource := _resolver.resolve(str(asset_id))
-		if resource != null:
-			bound[str(asset_id)] = resource
-	var board_tex := _resolver.resolve(BoardPresentation.BOARD_BG_ID)
-	if board_tex != null:
-		bound[BoardPresentation.BOARD_BG_ID] = board_tex
-	provide_assets(bound)
-
-
-func _on_board_assets_needed(asset_ids: PackedStringArray) -> void:
-	if _resolver == null:
-		return
-	var bound: Dictionary = {}
-	for asset_id in asset_ids:
-		var resource := _resolver.resolve(str(asset_id))
-		if resource != null:
-			bound[str(asset_id)] = resource
-	if not bound.is_empty():
-		_board.provide_assets(bound)
-		_play_assets_bound = true
 
 
 func _on_mode_pick_control(control_id: String) -> void:

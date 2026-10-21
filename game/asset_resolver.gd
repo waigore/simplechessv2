@@ -63,6 +63,26 @@ func resolve(asset_id: String) -> Resource:
 	return loaded[0]
 
 
+## Resolve every ID in a load group (for CTR-presentation.O5 via L2).
+func resolve_group(group_name: String) -> Dictionary:
+	var out: Dictionary = {}
+	for asset_id in _group_ids(group_name):
+		var resource := resolve(str(asset_id))
+		if resource != null:
+			out[str(asset_id)] = resource
+	return out
+
+
+## Resolve an ad-hoc ID set from CTR-presentation.E3.
+func resolve_ids(asset_ids: PackedStringArray) -> Dictionary:
+	var out: Dictionary = {}
+	for asset_id in asset_ids:
+		var resource := resolve(str(asset_id))
+		if resource != null:
+			out[str(asset_id)] = resource
+	return out
+
+
 func group_loaded(group_name: String) -> bool:
 	return bool(_loaded_groups.get(group_name, false))
 
