@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../.agents/specs/ru
 - **Spec key**: `PER`
 - **Glossary terms**: [Board camera](../glossary.md), [Frame](../glossary.md)
 
-Marks and coordinates: [`perception-marks.md`](perception-marks.md).
+Marks and coordinates: [`perception-marks.md`](perception-marks.md). Threshold sides and CAM-board.T1: [`perception-bounds.md`](perception-bounds.md).
 
 ## Coverage
 
@@ -14,6 +14,8 @@ Marks and coordinates: [`perception-marks.md`](perception-marks.md).
 |---------|-----------|---------|-----------|
 | R1 | VS1.1 VS1.1b | R2 | VS1.2 VS1.3 |
 | D1 | VS1.10 | M1 | VS1.11 |
+
+R1/R2 bound and T1 scenarios: [`perception-bounds.md`](perception-bounds.md).
 
 ## VS1: Glanceable board
 
