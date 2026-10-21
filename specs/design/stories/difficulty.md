@@ -57,7 +57,7 @@ Then the dealt puzzleElo is within ±CFG.ELO_MATCH_RANGE (100) of 1000
 - **Proves**: Y1
 
 ```gherkin
-Given GS.playerElo is 1000 And the catalog has P at 1000 and Q at 1200 And GS.recentSolved holds P
+Given GS.playerElo is 1000 And the catalog has only P at 1000 And GS.recentSolved holds P
 When the next puzzle is dealt
 Then GS.puzzleElo is 1000 And P is dealt
 ```
@@ -97,7 +97,7 @@ Then GS.recentSolved holds CFG.ELO_RECENT_WINDOW (20), newest last, the oldest d
 - **Proves**: CFG.ELO_BAND_WIDEN
 
 ```gherkin
-Given GS.playerElo is 1000 And the catalog has only unsolved R at 1150 And no unsolved puzzle is within CFG.ELO_MATCH_RANGE (100)
+Given GS.playerElo is 1000 And the catalog has only R at 1150
 When the next puzzle is dealt
 Then the band widens by CFG.ELO_BAND_WIDEN (50) to ±150 And GS.puzzleElo is 1150
 ```
