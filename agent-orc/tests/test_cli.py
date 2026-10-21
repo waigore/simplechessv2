@@ -8,7 +8,7 @@ from agent_orc.cli import build_parser, run
 from helpers import write_test_config
 
 
-def test_cli_smoke_all_seven(
+def test_cli_smoke_all_eight(
     temp_git_repo: Path, fake_cli: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setenv("ORC_FAKE_RECORD", str(tmp_path / "r.jsonl"))
@@ -21,6 +21,7 @@ def test_cli_smoke_all_seven(
         "issue-workflow-implement-agent",
         "issue-workflow-verify-agent",
         "issue-workflow-accept-agent",
+        "babysit-pr-agent",
     ]
     cfg_dir = temp_git_repo / ".orc"
     write_test_config(

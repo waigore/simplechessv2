@@ -144,3 +144,15 @@ agents:
     prompt: |
       Run the issue-workflow-accept-agent skill unattended.
       Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
+
+  babysit-pr-agent:
+    skill: babysit-pr-agent
+    provider: cursor
+    enabled: true
+    gate:
+      command:
+        - sh
+        - .agents/skills/babysit-pr-agent/scripts/gate.sh
+    prompt: |
+      Run the babysit-pr-agent skill unattended.
+      One same-repo pull request, then exit. Skip fork PRs.

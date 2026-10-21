@@ -63,6 +63,8 @@ gate:
 
 `project-planner-agent` has no gate (always eligible).
 
+`babysit-pr-agent` gates with [`.agents/skills/babysit-pr-agent/scripts/gate.sh`](../../.agents/skills/babysit-pr-agent/scripts/gate.sh) (exit 0 when a same-repo open PR is conflicted, behind its base, or has a failing check). Provider: `cursor`.
+
 ## Child projects
 
 Only add/edit `.orc/config.local.yaml`. Keep template `config.yaml` intact for upstream sync.
