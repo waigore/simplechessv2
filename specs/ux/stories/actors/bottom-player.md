@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C2 | Shared play on Bottom turn | US1.5 US1.6 US1.7 US1.8 US2.1 US2.2 US2.3 US2.4 |
 | C3 | Exceptions Confirm/Cancel | US5.1 US5.2 |
 | C4 | Answer Top's offer | US2.5 US2.6 |
-| K1 | No move when Top to move | US1.10 US2.7 |
+| K1 | No move when Top to move | US1.10 US1.11 US2.7 US2.8 US2.9 US2.10 |
 
 ## US1: Host and Bottom seat
 
@@ -100,7 +100,7 @@ When Bottom activates UI-shared-play.C3
 Then GS.advice is On
 ```
 
-### US1.10: Cannot move on Top turn
+### US1.10: Cannot select on Top turn
 
 - **Proves**: K1
 
@@ -108,6 +108,16 @@ Then GS.advice is On
 Given Bottom player is on shared-play S1 and Top seat is side to move
 When Bottom activates UI-shared-play.C1
 Then selection is unchanged and no move is asked
+```
+
+### US1.11: Cannot place on Top turn
+
+- **Proves**: K1
+
+```gherkin
+Given Bottom player is on shared-play S1 and Top seat is side to move
+When Bottom activates UI-shared-play.C2
+Then the interface asks the game for no place And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
 ```
 
 Choice scenarios: [`bottom-player-choices.md`](bottom-player-choices.md). Host controls: [`bottom-player-host.md`](bottom-player-host.md), [`bottom-player-puzzle.md`](bottom-player-puzzle.md). Exceptions: [`bottom-player-exceptions.md`](bottom-player-exceptions.md).
