@@ -59,7 +59,7 @@ func _check_playtest() -> bool:
 	seams.bind_state(_provider.bind(stage))
 	seams.jump_requested.connect(_remember_stage.bind(stage))
 	seams.tel_event.connect(_remember_tel.bind(tel_events))
-	seams.register_stages(PackedStringArray(["loading", "mode-pick-ready"]))
+	seams.register_stages(PackedStringArray(["loading", "mode-pick"]))
 	if not _check_drive(seams, stage, tel_events):
 		return false
 	seams.record_input(true)
@@ -97,16 +97,16 @@ func _check_playtest() -> bool:
 func _check_drive(seams: PlaytestSeams, stage: Dictionary, tel_events: Array) -> bool:
 	var unknown := seams.jump("missing")
 	var stage_after_unknown := str(stage["id"])
-	var known := seams.jump("mode-pick-ready")
+	var known := seams.jump("mode-pick")
 	var inspected := seams.inspect(PackedStringArray(["stage", "absent"]))
 	seams.emit_tel("smoke_inspect", "pass", "EX.loading")
 	seams.emit_tel("note", "pass", "")
 	var problem := ""
 	if unknown != ERR_INVALID_PARAMETER or stage_after_unknown != "loading":
 		problem = "unknown jump"
-	elif known != OK or str(stage["id"]) != "mode-pick-ready":
+	elif known != OK or str(stage["id"]) != "mode-pick":
 		problem = "known jump"
-	elif str(inspected.get("stage", "")) != "mode-pick-ready" or inspected.has("absent"):
+	elif str(inspected.get("stage", "")) != "mode-pick" or inspected.has("absent"):
 		problem = "inspect"
 	elif tel_events.size() < 2 or not _tel_complete(tel_events[-2], true):
 		problem = "telemetry fields"

@@ -1,44 +1,63 @@
 class_name Presentation
 extends Control
-## CMP-presentation scaffold: EX.loading, then the mode-pick-ready hook.
+## CMP-presentation: EX.loading, mode-pick, shared-setup, entry exceptions.
+
+signal control_activate(screen_id: String, control_id: String)
 
 const LOADING_SCREEN := "loading"
-const READY_HOOK_ID := "mode-pick-ready"
-const LOADING_COPY := {
-	"en": "Loading",
-	"zh-Hant": "載入中",
-	"ja": "読み込み中",
-}
+const MODE_PICK := "mode-pick"
+const SHARED_SETUP := "shared-setup"
+const SHARED_PLAY := "shared-play"
+const SESSION_ENDED := "session-ended"
 
 var pointer_count := 0
 var last_pointer: Dictionary = {}
+var last_point_control := ""
+var current_screen := LOADING_SCREEN
 
-@onready var _loading: Label = $LoadingLabel
-@onready var _ready_hook: Label = $ReadyHook
-@onready var _touch_spike: Control = $TouchSpike
-@onready var _router: SessionRouter = $SessionRouter
+var _loading: Label
+var _host: Control
+var _mode_pick: ModePickPanel
+var _shared_setup: SharedSetupPanel
+var _shared_play_stub: Label
+var _ended_label: Label
+var _unsupported: Label
+var _ui_font: Font
+var _router: SessionRouter
+var _resolver: AssetResolver
 
 
 func _ready() -> void:
-	_ready_hook.text = READY_HOOK_ID
-	_touch_spike.gui_input.connect(handle_gui_input)
+	_router = $SessionRouter as SessionRouter
+	_resolver = $AssetResolver as AssetResolver
+	_build_shell()
 	_router.screen_requested.connect(_on_screen_requested)
 	_router.replay_pointer.connect(apply_recorded_pointer)
+	control_activate.connect(_router.handle_control)
 	_show_loading()
 	_router.start()
 
 
-func show_screen(screen_id: String, _state: Dictionary) -> void:
-	if screen_id == LOADING_SCREEN:
-		_show_loading()
-		return
-	if screen_id == READY_HOOK_ID:
-		_show_ready()
-		return
-	push_error("Unknown screen id: %s" % screen_id)
+func show_screen(screen_id: String, state: Dictionary) -> void:
+	match screen_id:
+		LOADING_SCREEN:
+			_show_loading()
+		MODE_PICK:
+			_show_mode_pick(state)
+		SHARED_SETUP:
+			_show_shared_setup(state)
+		SHARED_PLAY:
+			_show_shared_play(state)
+		SESSION_ENDED:
+			_show_ended()
+		_:
+			push_error("Unknown screen id: %s" % screen_id)
 
 
 func handle_gui_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		_flash_unsupported()
+		return
 	var record := pointer_record(event)
 	if record.is_empty():
 		return
@@ -66,30 +85,194 @@ func pointer_record(event: InputEvent) -> Dictionary:
 	return {}
 
 
+func _build_shell() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+	var bg := ColorRect.new()
+	bg.name = "Background"
+	bg.color = UiChrome.COLOR_BG
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(bg)
+	move_child(bg, 0)
+
+	_loading = Label.new()
+	_loading.name = "LoadingLabel"
+	_loading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_loading.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_loading.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	UiChrome.style_label(_loading, true)
+	add_child(_loading)
+
+	_host = Control.new()
+	_host.name = "ScreenHost"
+	_host.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_host.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_host)
+
+	_mode_pick = ModePickPanel.new()
+	_mode_pick.name = "ModePick"
+	_mode_pick.visible = false
+	_mode_pick.set_anchors_preset(Control.PRESET_CENTER)
+	_mode_pick.custom_minimum_size = Vector2(320, 280)
+	_mode_pick.position = Vector2(40, 80)
+	_mode_pick.control_activated.connect(_on_mode_pick_control)
+	_mode_pick.pointed.connect(_on_pointed)
+	_host.add_child(_mode_pick)
+
+	_shared_setup = SharedSetupPanel.new()
+	_shared_setup.name = "SharedSetup"
+	_shared_setup.visible = false
+	_shared_setup.set_anchors_preset(Control.PRESET_CENTER)
+	_shared_setup.custom_minimum_size = Vector2(320, 360)
+	_shared_setup.position = Vector2(40, 60)
+	_shared_setup.control_activated.connect(_on_shared_setup_control)
+	_shared_setup.pointed.connect(_on_pointed)
+	_host.add_child(_shared_setup)
+
+	_shared_play_stub = Label.new()
+	_shared_play_stub.name = "SharedPlayStub"
+	_shared_play_stub.visible = false
+	_shared_play_stub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_shared_play_stub.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_shared_play_stub.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_shared_play_stub.text = SHARED_PLAY
+	UiChrome.style_label(_shared_play_stub, true)
+	_host.add_child(_shared_play_stub)
+
+	_ended_label = Label.new()
+	_ended_label.name = "SessionEnded"
+	_ended_label.visible = false
+	_ended_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_ended_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_ended_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_ended_label.text = SESSION_ENDED
+	UiChrome.style_label(_ended_label)
+	_host.add_child(_ended_label)
+
+	_unsupported = Label.new()
+	_unsupported.name = "UnsupportedInput"
+	_unsupported.visible = false
+	_unsupported.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_unsupported.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_unsupported.offset_top = -72
+	UiChrome.style_label(_unsupported)
+	_unsupported.add_theme_color_override("font_color", UiChrome.COLOR_DANGER)
+	add_child(_unsupported)
+
+	gui_input.connect(handle_gui_input)
+
+
+func _bind_boot_assets() -> void:
+	if _ui_font != null:
+		return
+	var latin := _resolver.resolve(UiChrome.FONT_LATIN)
+	var cjk := _resolver.resolve(UiChrome.FONT_CJK)
+	if latin is Font:
+		_ui_font = latin as Font
+		if cjk is Font:
+			var faces: Array[Font] = [cjk as Font]
+			_ui_font.fallbacks = faces
+	_resolver.resolve(UiChrome.ICON_SHARED)
+	_resolver.resolve(UiChrome.ICON_QUIT)
+	_resolver.resolve(UiChrome.ICON_ADVICE)
+	_resolver.resolve(UiChrome.ICON_BACK)
+	_resolver.resolve(UiChrome.ART_PANEL)
+
+
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
 	show_screen(screen_id, state)
 
 
 func _show_loading() -> void:
+	current_screen = LOADING_SCREEN
 	_loading.visible = true
-	_loading.text = _loading_text()
-	_ready_hook.visible = false
+	_loading.text = StringTable.mode_pick("loading", _router.locale)
+	_hide_panels()
 
 
-func _show_ready() -> void:
+func _show_mode_pick(state: Dictionary) -> void:
+	_bind_boot_assets()
+	current_screen = MODE_PICK
 	_loading.visible = false
-	_ready_hook.visible = true
+	_shared_setup.visible = false
+	_shared_play_stub.visible = false
+	_ended_label.visible = false
+	_mode_pick.visible = true
+	var ui_state := str(state.get("ui_state", "S1"))
+	_mode_pick.configure(
+		str(state.get("locale", _router.locale)),
+		str(state.get("last_mode", _router.last_mode)),
+		_ui_font
+	)
+	_mode_pick.set_ui_state(ui_state)
+
+
+func _show_shared_setup(state: Dictionary) -> void:
+	_bind_boot_assets()
+	current_screen = SHARED_SETUP
+	_loading.visible = false
+	_mode_pick.visible = false
+	_shared_play_stub.visible = false
+	_ended_label.visible = false
+	_shared_setup.visible = true
+	_shared_setup.configure(
+		str(state.get("locale", _router.locale)),
+		str(state.get("white_seat", _router.white_seat)),
+		str(state.get("clock", _router.clock)),
+		int(state.get("increment", _router.increment)),
+		bool(state.get("advice", _router.advice_on)),
+		bool(state.get("options_locked", _router.options_locked)),
+		_ui_font
+	)
+
+
+func _show_shared_play(_state: Dictionary) -> void:
+	current_screen = SHARED_PLAY
+	_loading.visible = false
+	_mode_pick.visible = false
+	_shared_setup.visible = false
+	_ended_label.visible = false
+	_shared_play_stub.visible = true
+	_router.note_board_playable()
+
+
+func _show_ended() -> void:
+	current_screen = SESSION_ENDED
+	_loading.visible = false
+	_hide_panels()
+	_ended_label.visible = true
+
+
+func _hide_panels() -> void:
+	_mode_pick.visible = false
+	_shared_setup.visible = false
+	_shared_play_stub.visible = false
+	_ended_label.visible = false
+
+
+func _on_mode_pick_control(control_id: String) -> void:
+	control_activate.emit(MODE_PICK, control_id)
+
+
+func _on_shared_setup_control(control_id: String) -> void:
+	control_activate.emit(SHARED_SETUP, control_id)
+
+
+func _on_pointed(control_id: String) -> void:
+	last_point_control = control_id
+
+
+func _flash_unsupported() -> void:
+	_unsupported.text = StringTable.exception_text("unsupported_input", _router.locale)
+	_unsupported.visible = true
+	get_tree().create_timer(1.2).timeout.connect(func() -> void: _unsupported.visible = false)
 
 
 func _accept_pointer(record: Dictionary) -> void:
 	pointer_count += 1
 	last_pointer = record
-
-
-func _loading_text() -> String:
-	if LOADING_COPY.has(_router.locale):
-		return str(LOADING_COPY[_router.locale])
-	return str(LOADING_COPY["en"])
 
 
 func _pointer_dict(kind: String, pressed: bool, index: int, at: Vector2) -> Dictionary:
