@@ -207,28 +207,40 @@ func _turn_rejects(rules: ChessRules) -> String:
 
 
 func _turn_applies(rules: ChessRules) -> String:
-	var before := _snapshot(rules)
+	var problem := ""
 	var applied := _attempt(rules, "e2", "e4")
-	if not applied["ok"] or not _only_apply(applied, "e2", "e4", ChessRules.SIDE_BLACK):
-		return "E-pieces.I11 PS1.7 E1"
 	var moved: bool = (
 		rules.piece_on("e2").is_empty() and rules.piece_on("e4")["kind"] == ChessRules.KIND_PAWN
 	)
-	if not moved or not _rights_unchanged(before, rules):
-		return "SCH-play-state F1 F2 e2-e4"
-	var black := _attempt(rules, "a7", "a5")
-	if not black["ok"] or not _only_apply(black, "a7", "a5", ChessRules.SIDE_WHITE):
-		return "E-pieces.I11 black turn"
-	var quiet := _attempt(rules, "e4", "e5")
-	if not quiet["ok"] or rules.piece_on("e5")["color"] != ChessRules.SIDE_WHITE:
-		return "E-pieces.I11 single step"
-	var black_quiet := _attempt(rules, "a5", "a4")
+	if not applied["ok"] or not _only_apply(applied, "e2", "e4", ChessRules.SIDE_BLACK):
+		problem = "E-pieces.I11 PS1.7 E1"
+	elif not moved or str(rules.castling_ep()["en_passant"]) != "e3":
+		problem = "SCH-play-state F1 F2 e2-e4 I29"
+	var black := _attempt(rules, "a7", "a5") if problem.is_empty() else {}
+	if (
+		problem.is_empty()
+		and (not black["ok"] or not _only_apply(black, "a7", "a5", ChessRules.SIDE_WHITE))
+	):
+		problem = "E-pieces.I11 black turn"
+	elif problem.is_empty() and str(rules.castling_ep()["en_passant"]) != "a6":
+		problem = "SCH-play-state F2 a7-a5 ep"
+	var quiet := _attempt(rules, "e4", "e5") if problem.is_empty() else {}
+	if (
+		problem.is_empty()
+		and (not quiet["ok"] or rules.piece_on("e5")["color"] != ChessRules.SIDE_WHITE)
+	):
+		problem = "E-pieces.I11 single step"
+	elif problem.is_empty() and str(rules.castling_ep()["en_passant"]) != "":
+		problem = "E-pieces.I32 ep cleared"
+	var black_quiet := _attempt(rules, "a5", "a4") if problem.is_empty() else {}
 	var black_step: bool = (
-		black_quiet["ok"] and rules.piece_on("a4")["color"] == ChessRules.SIDE_BLACK
+		problem.is_empty()
+		and black_quiet["ok"]
+		and rules.piece_on("a4")["color"] == ChessRules.SIDE_BLACK
 	)
-	if not black_step or not rules.legal_targets("z9").is_empty():
-		return "E-pieces.I11 black single step"
-	return ""
+	if problem.is_empty() and (not black_step or not rules.legal_targets("z9").is_empty()):
+		problem = "E-pieces.I11 black single step"
+	return problem
 
 
 func _check_capture_and_friendly() -> String:
@@ -295,13 +307,14 @@ func _last_rank_pawns() -> String:
 			_man("h8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
 		]
 	)
-	var excluded := last_rank.legal_targets("e7")
-	if (
-		excluded.has("e8")
-		or excluded.has("d8")
-		or not last_rank.attacks(ChessRules.SIDE_WHITE, "d8")
-	):
+	var targets := last_rank.legal_targets("e7")
+	if not targets.has("e8") or not targets.has("d8"):
+		return "E-pieces.I33 promotion targets"
+	if not last_rank.attacks(ChessRules.SIDE_WHITE, "d8"):
 		return "E-pieces.I5 last-rank pawn attack"
+	var missing := _attempt(last_rank, "e7", "e8")
+	if not _only_reject(missing, ChessRules.REASON_PROMOTION):
+		return "E-pieces.I33 promotion required"
 	var stranded := _with(
 		[
 			_man("e8", ChessRules.SIDE_WHITE, ChessRules.KIND_PAWN),
@@ -321,8 +334,8 @@ func _last_rank_pawns() -> String:
 		ChessRules.SIDE_BLACK,
 	)
 	var black_targets := black_last.legal_targets("e2")
-	if black_targets.has("e1") or black_targets.has("d1"):
-		return "black last-rank pawn move excluded"
+	if not black_targets.has("e1") or not black_targets.has("d1"):
+		return "E-pieces.I33 black promotion targets"
 	return ""
 
 
@@ -746,9 +759,14 @@ func _ptd_s5() -> String:
 	return ""
 
 
-func _with(pieces: Array, side: String = ChessRules.SIDE_WHITE) -> ChessRules:
+func _with(
+	pieces: Array,
+	side: String = ChessRules.SIDE_WHITE,
+	castling: Dictionary = {},
+	en_passant: String = "",
+) -> ChessRules:
 	var rules := ChessRules.new()
-	rules.load_position(pieces, side)
+	rules.load_position(pieces, side, castling, en_passant)
 	return rules
 
 
