@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"TEL.1":"shared.start","TEL.2":1792618553884,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792618553892,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792618553894,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792618553895,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792618553896,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792618553896,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.stop","TEL.2":1792618553896,"TEL.3":"sess-1792618553820-68329-playtest","TEL.4":"NAV.T8","TEL.5":"ok"}
+WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
