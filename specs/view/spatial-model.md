@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/view/spatial-model.md`](../../.agents/spe
 | ID | Convention | Statement |
 |----|------------|-----------|
 | A1 | Axes | x along files a→h; y along ranks 1→8. Origin at the outer corner of a1. Angles unused (no facing in plane). |
-| A2 | Orientation | Frame is White-fixed. Display rotation for White seat and Puzzle Solving side is owned by [CAM-board](cameras/board.md), not by renaming axes. |
+| A2 | Orientation | Axes are White-fixed. Display rotation for White seat and Puzzle Solving side is owned by [CAM-board](cameras/board.md), not by renaming axes. |
 
 ## Units and scale
 
@@ -34,7 +34,7 @@ Authoring rules: [`.agents/specs/rules/view/spatial-model.md`](../../.agents/spe
 
 ## Render layers and depth
 
-Render layers (draw bands), farthest to nearest. This L1–L4 set is render order only, independent of the technical layers in [`technical/layers.md`](../technical/layers.md).
+Render layers (draw bands), farthest to nearest.
 
 | ID | Render layer | Holds | Depth order | Parallax |
 |----|--------------|-------|-------------|----------|
@@ -47,4 +47,4 @@ Render layers (draw bands), farthest to nearest. This L1–L4 set is render orde
 
 | ID | Stage | Extent (units) | Edge |
 |----|-------|----------------|------|
-| B1 | Play board | x 0–8, y 0–8 | Hard edge of the 8×8; no off-board play |
+| B1 | Play board | x 0–8, y 0–8 | Hard edge of the 8×8 ([E-pieces.I1](../design/entities/pieces/common.md)) |
