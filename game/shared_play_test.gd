@@ -2,6 +2,28 @@ class_name SharedPlayTest
 extends SceneTree
 ## Headless coverage for UI-shared-play (#58/#94): gestures, choices, clocks, resign.
 
+const _FOCUS_S1 := [
+	"SelectFocus", "ClearFocus", "PlaceFocus", "AdviceToggle", "Resign", "OfferDraw"
+]
+const _FOCUS_S4 := [
+	"AdviceToggle",
+	"Resign",
+	"OfferDraw",
+	"PromoteQueen",
+	"PromoteRook",
+	"PromoteBishop",
+	"PromoteKnight",
+]
+const _FOCUS_S6 := [
+	"SelectFocus",
+	"ClearFocus",
+	"PlaceFocus",
+	"AdviceToggle",
+	"AcceptDraw",
+	"DeclineDraw",
+	"WithdrawDraw",
+]
+
 var _presentation: Presentation
 var _router: SessionRouter
 var _seams: PlaytestSeams
@@ -74,7 +96,7 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = await _layout_reserves_chrome()
 	if _error.is_empty():
-		_error = _focus_order_c1_to_c5()
+		_error = _focus_order_states()
 	if _error.is_empty():
 		quit(0)
 		return
@@ -602,24 +624,104 @@ func _assert_coords_on_board(board: BoardPresentation) -> String:
 	return ""
 
 
-func _focus_order_c1_to_c5() -> String:
-	## controls.md F1 — C1 → C2 → C3 → C4 → C5 among available controls.
+func _focus_order_states() -> String:
+	## controls.md F1 — table order on S1/S4/S5/S6 including C10 and C6.
 	var play := _play_panel()
-	if play.ui_state != "S1":
-		return "focus order expects S1"
+	_router._emit_play_screen()
+	var err := _assert_focus_names(play, "S1", _FOCUS_S1)
+	if err.is_empty():
+		err = _focus_order_s5(play)
+	if err.is_empty():
+		err = _focus_order_s4(play)
+	if err.is_empty():
+		err = _focus_order_s6(play)
+	if err.is_empty():
+		err = _focus_order_c10_activate()
+	return err
+
+
+func _focus_order_s5(play: SharedPlayPanel) -> String:
+	_router.shared_session.play_ui_state = SharedGameSession.UI_S5
+	_router.shared_session.reject_square = "e4"
+	_router._emit_play_screen()
+	var err := _assert_focus_names(play, "S5", _FOCUS_S1)
+	_router.shared_session.finish_reject_flash()
+	return err
+
+
+func _focus_order_s4(play: SharedPlayPanel) -> String:
+	_setup_s4_for_focus()
+	_router._emit_play_screen()
+	var err := _assert_focus_names(play, "S4", _FOCUS_S4)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "C6:queen")
+	if _router.play_ui_state != SharedGameSession.UI_S1:
+		return "C6 focus commit did not leave S4"
+	return ""
+
+
+func _focus_order_s6(play: SharedPlayPanel) -> String:
+	_router.handle_control("shared-play", "C5")
+	_router.handle_control("shared-play", "confirm")
+	if _router.play_ui_state != "S6":
+		return "focus S6 setup confirm offer"
+	return _assert_focus_names(play, "S6", _FOCUS_S6)
+
+
+func _focus_order_c10_activate() -> String:
+	_router.handle_control("shared-play", "C8")
+	var session := _router.shared_session
+	session.rules.reset_opening()
+	session._sync_active_to_side_to_move()
+	session.play_ui_state = SharedGameSession.UI_S1
+	session.draw_offer = ""
+	var selected := session.select_own("e2")
+	if not bool(selected.get("ok", false)):
+		return "C10 setup select e2"
+	_router._emit_play_screen()
+	_router.handle_control("shared-play", "C10")
+	if not str(session.selected_piece).is_empty():
+		return "C10 focus did not clear selection"
+	return ""
+
+
+func _setup_s4_for_focus() -> void:
+	## Minimal white-to-move position with a last-rank pawn choice pending.
+	var session := _router.shared_session
+	var pieces: Array = [
+		{"square": "e7", "color": "white", "kind": "pawn"},
+		{"square": "a1", "color": "white", "kind": "king"},
+		{"square": "h8", "color": "black", "kind": "king"},
+	]
+	session.rules.load_position(pieces, "white")
+	session._sync_active_to_side_to_move()
+	session.selected_piece = "e7"
+	session.pending_promote_from = "e7"
+	session.pending_promote_to = "e8"
+	session.play_ui_state = SharedGameSession.UI_S4
+	session.confirm_kind = ""
+	session.draw_offer = ""
+
+
+func _assert_focus_names(play: SharedPlayPanel, state_id: String, expected: Array) -> String:
+	if play.ui_state != state_id:
+		return "focus order expects %s got %s" % [state_id, play.ui_state]
 	var controls := play.focusable_controls()
-	if controls.size() < 5:
-		return "focusable count %d" % controls.size()
 	var names: PackedStringArray = PackedStringArray()
 	for c in controls:
 		names.append(c.name)
-	if names[0] != "SelectFocus" or names[1] != "PlaceFocus":
-		return "focus C1/C2 order %s" % ",".join(names)
-	if names[2] != "AdviceToggle" or names[3] != "Resign" or names[4] != "OfferDraw":
-		return "focus C3/C4/C5 order %s" % ",".join(names)
+	if names.size() != expected.size():
+		return (
+			"focus %s count %d want %d (%s)"
+			% [state_id, names.size(), expected.size(), ",".join(names)]
+		)
+	for i in range(expected.size()):
+		if names[i] != str(expected[i]):
+			return "focus %s order %s" % [state_id, ",".join(names)]
 	play.focus_first()
 	if play.get_viewport().gui_get_focus_owner() != controls[0]:
-		return "focus_first did not land on C1"
+		return "focus_first %s did not land on %s" % [state_id, expected[0]]
 	return ""
 
 

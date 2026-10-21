@@ -491,6 +491,13 @@ func _start_shared_game() -> void:
 func _on_shared_play_control(control_id: String) -> void:
 	if shared_session == null:
 		return
+	# C10 / C6 focus activations reuse the board-gesture entrypoints.
+	if control_id == "C10":
+		handle_deselect()
+		return
+	if control_id.begins_with("C6:"):
+		handle_promotion_commit(control_id.get_slice(":", 1))
+		return
 	var result := shared_session.handle_play_control(control_id)
 	if not bool(result.get("ok", false)):
 		return
