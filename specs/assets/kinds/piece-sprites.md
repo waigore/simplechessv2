@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Sprites
 - **Source types**: AI generation; human-made
-- **Style**: P2, P3; [FRM.S1 L1 D1](../../aesthetics/form.md); [PAL.S1](../../aesthetics/palette.md) C3 C4
+- **Style**: [AES.P2](../../aesthetics/aesthetics.md); [AES.P3](../../aesthetics/aesthetics.md); [FRM.S1 L1 D1](../../aesthetics/form.md); [PAL.S1](../../aesthetics/palette.md) [C3](../../aesthetics/palette.md) [C4](../../aesthetics/palette.md)
 - **Tool roles**: TL.1
 - **Approval**: As hub
 - **Serves**: Clear board; Instant play; [E-pieces](../../design/entities/pieces.md); [PER.R1](../../view/perception.md)
@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S4 | Anchor | Center of square |
 | S5 | Rasterize | SVG → PNG via one pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); never mix rasterizers |
 | S6 | Transparency | Edge flood-fill near-white (RGB ≥ 250); never global white punch |
-| S7 | Sheet crop | Ivory top / charcoal bottom; KQRBNP; 6-col projection; ~8px pad |
+| S7 | Sheet crop | Pipeline input only: crop AI/human sheet (ivory top / charcoal bottom; KQRBNP; 6-col; ~8px pad) into twelve cell files; catalog result is V1 (twelve files), never the sheet |
 | S8 | Fit | `fit_contain` square (LANCZOS); center; no stretch |
 | S9 | On-board | Box = 0.88 × square; centers from board layout JSON |
 
@@ -58,6 +58,10 @@ Full recipe: [`piece-sprites/recipes.md`](piece-sprites/recipes.md).
 
 - **Post-processing**: S5–S9; see recipes.md for prompts/settings/outputs
 
+### R2 — Human-made piece
+
+- **Source type**: human-made — see recipes.md for N/A tool/prompts/settings/seed
+
 ## Checks
 
 | ID | Check | Method | Pass criterion |
@@ -65,11 +69,12 @@ Full recipe: [`piece-sprites/recipes.md`](piece-sprites/recipes.md).
 | K1 | Silhouette | Solid-black at FRM.L1 (~1/21 @ 9:16; ~1/12 @ 16:9) | Type named (FRM.L1) |
 | K2 | Spec S1–S9 | Review + inspect | Spec met |
 | K3 | Budget B1 | File size | ≤ 80 KB |
-| K4 | Style | Look vs P2 P3 | Quiet mahogany mood |
-| K5 | Budget B2 | Catalog vs V1 | 12 entries |
-| K6 | Fit / crop | Rebuild; compare golden PNG | No stretch; ivory intact |
+| K4 | Style | Look vs [AES.P2](../../aesthetics/aesthetics.md) [AES.P3](../../aesthetics/aesthetics.md) | Quiet mahogany mood |
+| K5 | Budget B2 | Catalog vs V1 | 12 entries (one file each; not a sheet) |
+| K6 | Fit / crop | Rebuild; compare catalog PNGs by asset ID for each V1 handle | No stretch; ivory intact |
+| K7 | Side fills | Inspect vs [PAL.C3](../../aesthetics/palette.md) [PAL.C4](../../aesthetics/palette.md) | Ivory = C3; charcoal = C4 |
 
 ## Naming
 
-- **Handle name**: `piece-sprites/<type>-<white\|black>`
-- **Path**: `piece-sprites/<name>.svg` (or `.png`) under `game_assets/`
+- **Handle name**: `piece-sprites/<type>-<white\|black>` (twelve V1 handles)
+- **Path**: `piece-sprites/<name>.svg` (or `.png`) under `game_assets/` — one file per handle; sheets are not catalog outputs
