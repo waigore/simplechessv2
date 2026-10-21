@@ -55,6 +55,6 @@ Then the mover body center is on the e4 square center And settle is not yet past
 ```gherkin
 Given CAM-board Web 9:16, M1 landed on e4
 When settle measured at elapsed 0.03 s after land
-Then settle is complete (≤ 0.03 s) And camera shake is none And only the landing cue plays And selection clear is the design outcome (not a cue)
+Then settle is complete (≤ 0.03 s) And camera shake is none And linked cues are none And selection clear is the design outcome (not a cue)
 And at elapsed 0.04 s settle remains complete And the body center stays on e4
 ```
