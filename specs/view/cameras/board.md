@@ -24,7 +24,7 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 | ID | Behavior | Value |
 |----|----------|-------|
 | M1 | Follow | None — camera stays fixed while pieces move |
-| M2 | Orientation | Shared game: [White seat](../../design/glossary.md) Top → rotate 180° about F1 so White’s near edge faces Top; Bottom → 0°. Puzzle: [Solving side](../../design/glossary.md) Black → 180°; White → 0°, so that side’s near edge faces the player. Cut 0 s (instantaneous) at deal or seat change — no motion over time |
+| M2 | Orientation | Shared game: [White seat](../../design/glossary.md) Top → rotate 180° about F1 so White’s near edge faces Top; Bottom → 0°. Puzzle: [Solving side](../../design/glossary.md) Black → 180°; White → 0°, so that side’s near edge faces the player. Cut 0 s (instantaneous) at deal or seat change — no motion over time; settles within 0° (exact) |
 
 ## Limits
 
@@ -43,7 +43,7 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 
 | ID | To or from | Trigger | Cut or blend (s) | Carries over |
 |----|------------|---------|------------------|--------------|
-| T1 | None (mode pick) ↔ CAM-board | Enter on [FL-mode-pick.T1](../../design/flows/mode-pick.md) or [T2](../../design/flows/mode-pick.md); leave on [T3](../../design/flows/mode-pick.md) or [T4](../../design/flows/mode-pick.md) | Cut 0 s | None |
+| T1 | [FL-mode-pick.P1](../../design/flows/mode-pick.md) ↔ CAM-board | Enter on [FL-mode-pick.T1](../../design/flows/mode-pick.md) or [T2](../../design/flows/mode-pick.md); leave on [T3](../../design/flows/mode-pick.md) or [T4](../../design/flows/mode-pick.md) | Cut 0 s | None |
 
 ## Effects
 
