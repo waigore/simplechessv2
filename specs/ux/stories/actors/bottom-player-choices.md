@@ -89,9 +89,9 @@ Then EX.confirm is not shown
 - **Proves**: K1
 
 ```gherkin
-Given Bottom player is on shared-play S1 and Top seat is side to move and GS.selectedPiece is set
+Given Bottom player is on shared-play S4 and Top seat is side to move and Top's legal pawn place is on the last rank
 When Bottom uses IN.deselect
-Then GS.selectedPiece is unchanged And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
+Then the promotion choice still offers queen, rook, bishop, and knight And GS.selectedPiece is unchanged
 ```
 
 ### US2.9: Cannot promote on Top's turn
@@ -99,9 +99,9 @@ Then GS.selectedPiece is unchanged And the board still shows the same position (
 - **Proves**: K1
 
 ```gherkin
-Given Bottom player is on shared-play S1 and Top seat is side to move
-When Bottom activates UI-shared-play.C6
-Then the interface asks the game for no place And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
+Given Bottom player is on shared-play S4 and Top seat is side to move and Top's legal pawn place is on the last rank
+When Bottom activates UI-shared-play.C6 on the rook sprite
+Then no piece type is committed, the promotion choice still offers queen, rook, bishop, and knight, and GS.position is unchanged (game-state H1)
 ```
 
 ### US2.10: Cannot resign on Top's turn
