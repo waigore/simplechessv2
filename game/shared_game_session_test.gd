@@ -44,7 +44,7 @@ func _run_all() -> String:
 
 func _check_end_l2() -> String:
 	var session := SharedGameSession.new()
-	session.start_opening()
+	session._start_opening()
 	if not session.resign():
 		return "END.L2 resign failed"
 	var ended: Dictionary = session.play_state()["game_ended"]
@@ -62,8 +62,8 @@ func _check_end_l2() -> String:
 
 func _check_end_l2_clock_zero() -> String:
 	var session := SharedGameSession.new()
-	session.start_opening(60_000)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 0)
+	session._start_opening(60_000)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 0)
 	if not session.resign():
 		return "END.L2 resign at zero failed"
 	var reason := str(session.play_state()["game_ended"].get("reason", ""))
@@ -74,12 +74,12 @@ func _check_end_l2_clock_zero() -> String:
 
 func _check_end_d2_accept() -> String:
 	var session := SharedGameSession.new()
-	session.start_opening(60_000)
-	if not session.offer_draw():
+	session._start_opening(60_000)
+	if not session._offer_draw():
 		return "END.D2 offer failed"
 	if str(session.play_state().get("draw_offer", "")) != ChessRules.SIDE_WHITE:
 		return "END.D2 drawOffer must be side to move"
-	if not session.accept_draw():
+	if not session._accept_draw():
 		return "END.D2 accept failed"
 	var ended: Dictionary = session.play_state()["game_ended"]
 	if str(ended.get("reason", "")) != SharedGameSession.END_D2:
@@ -98,9 +98,9 @@ func _check_end_d2_decline_withdraw_lapse() -> String:
 
 func _check_end_d2_decline() -> String:
 	var session := SharedGameSession.new()
-	session.start_opening(60_000)
-	session.offer_draw()
-	if not session.decline_draw():
+	session._start_opening(60_000)
+	session._offer_draw()
+	if not session._decline_draw():
 		return "END.D2 decline failed"
 	var state: Dictionary = session.play_state()
 	if not str(state.get("draw_offer", "")).is_empty():
@@ -116,11 +116,11 @@ func _check_end_d2_decline() -> String:
 
 func _check_end_d2_withdraw_and_lapse() -> String:
 	var session := SharedGameSession.new()
-	session.start_opening(60_000)
-	session.offer_draw()
-	if not session.withdraw_draw():
+	session._start_opening(60_000)
+	session._offer_draw()
+	if not session._withdraw_draw():
 		return "END.D2 withdraw failed"
-	session.offer_draw()
+	session._offer_draw()
 	if not session.try_move("e2", "e4"):
 		return "END.D2 lapse move failed"
 	if not str(session.play_state().get("draw_offer", "")).is_empty():
@@ -145,13 +145,13 @@ func _check_end_d2_blocked_by_position() -> String:
 			_no_castle(),
 		)
 	)
-	session.offer_draw()
+	session._offer_draw()
 	if not session.try_move("c7", "b7"):
 		return "END.D2 blocked: mate move failed"
 	var reason := str(session.play_state()["game_ended"].get("reason", ""))
 	if reason != ChessRules.END_L1:
 		return "END.P1 position ending wins over D2 offer, got %s" % reason
-	if session.accept_draw():
+	if session._accept_draw():
 		return "END.D2 must not apply after L1"
 	return ""
 
@@ -177,7 +177,7 @@ func _check_ptd_s1_s3() -> String:
 	if s1.result_copy_key() != SharedGameSession.RESULT_WHITE:
 		return "PTD-end-conditions S1 white wins"
 	var s2 := SharedGameSession.new()
-	s2.start_opening()
+	s2._start_opening()
 	s2.resign()
 	if str(s2.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L2:
 		return "PTD-end-conditions S2 L2"
@@ -199,9 +199,9 @@ func _check_ptd_s1_s3() -> String:
 	if str(s3.play_state()["game_ended"].get("reason", "")) != ChessRules.END_D1:
 		return "PTD-end-conditions S3 D1"
 	var d2 := SharedGameSession.new()
-	d2.start_opening()
-	d2.offer_draw()
-	d2.accept_draw()
+	d2._start_opening()
+	d2._offer_draw()
+	d2._accept_draw()
 	if str(d2.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_D2:
 		return "PTD-end-conditions S3 D2"
 	return ""
@@ -209,7 +209,7 @@ func _check_ptd_s1_s3() -> String:
 
 func _check_refuse_after_end() -> String:
 	var session := SharedGameSession.new()
-	session.start_opening()
+	session._start_opening()
 	session.resign()
 	if session.try_move("e2", "e4"):
 		return "ended session must refuse moves"
@@ -310,7 +310,7 @@ func _check_side_to_move_black_tick(session: SharedGameSession) -> String:
 func _check_increment_applied() -> String:
 	var session := SharedGameSession.new()
 	session.start_shared(SharedGameSession.CLOCK_BLITZ, 3)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 50_000)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 50_000)
 	if not session.try_move("e2", "e4"):
 		return "increment move failed"
 	if int(session.play_state()["clocks"]["white"]) != 53_000:
@@ -321,7 +321,7 @@ func _check_increment_applied() -> String:
 func _check_increment_denied_at_zero() -> String:
 	var session := SharedGameSession.new()
 	session.start_shared(SharedGameSession.CLOCK_BLITZ, 3)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 0)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 0)
 	# Move completes at zero without a prior tick expiry: no increment (design story).
 	if not session.try_move("e2", "e4"):
 		return "zero-clock completed move failed"
@@ -365,9 +365,9 @@ func _check_expiry_l3() -> String:
 			_no_castle(),
 		)
 	)
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 100)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 100)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(100)
 	var state: Dictionary = session.play_state()
 	if str(state["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
@@ -400,9 +400,9 @@ func _check_expiry_d5() -> String:
 			_no_castle(),
 		)
 	)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 50)
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 50)
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(50)
 	var reason := str(session.play_state()["game_ended"].get("reason", ""))
 	if reason != SharedGameSession.END_D5:
@@ -432,9 +432,9 @@ func _check_knn_not_material_shortcut() -> String:
 	)
 	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
 		return "K+N+N vs K must allow possible checkmate (O4)"
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(10)
 	if str(session.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
 		return "KNN vs K expiry must be L3, not D5 from a material shortcut"
@@ -461,9 +461,9 @@ func _check_o4_kb_vs_kn() -> String:
 	)
 	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
 		return "O4 K+B vs K+N must allow possible checkmate"
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(10)
 	var reason := str(session.play_state()["game_ended"].get("reason", ""))
 	if reason != SharedGameSession.END_L3:
@@ -490,9 +490,9 @@ func _check_o4_kn_vs_kb() -> String:
 	)
 	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
 		return "O4 K+N vs K+B must allow possible checkmate"
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(10)
 	if str(session.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
 		return "K+N vs K+B expiry must be END.L3"
@@ -526,9 +526,9 @@ func _check_o4_opposite_bishops_l3() -> String:
 	)
 	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
 		return "O4 opposite-colored K+B vs K+B must allow possible checkmate"
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(10)
 	if str(session.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
 		return "opposite-bishop expiry must be END.L3"
@@ -555,9 +555,9 @@ func _check_o4_same_bishops_d5() -> String:
 	)
 	if session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
 		return "O4 same-colored K+B vs K+B must deny possible checkmate"
-	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
-	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
-	session.sync_active_to_side_to_move()
+	session._set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session._set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session._sync_active_to_side_to_move()
 	session.tick(10)
 	var reason := str(session.play_state()["game_ended"].get("reason", ""))
 	if reason != SharedGameSession.END_D5:

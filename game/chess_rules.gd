@@ -387,6 +387,10 @@ func is_pseudo_legal(from_square: String, to_square: String) -> bool:
 	return _candidate_squares(from_square, piece, false).has(to_square)
 
 
+func _can_apply_move(from_square: String, to_square: String, promotion: String = "") -> bool:
+	return _reject_reason(from_square, to_square, promotion).is_empty()
+
+
 func try_move(from_square: String, to_square: String, promotion: String = "") -> bool:
 	var reason := _reject_reason(from_square, to_square, promotion)
 	if not reason.is_empty():

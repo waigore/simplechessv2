@@ -28,17 +28,30 @@ var increment := 3
 var advice_on := true
 var options_locked := false
 var session_ended := false
-var selected_piece := ""
-var play_ui_state := "S1"
 
 var shared_session: SharedGameSession
+
+## Proxies onto CMP-shared-game-session (tests and presentation).
+var selected_piece: String:
+	get:
+		return shared_session.selected_piece if shared_session != null else ""
+	set(value):
+		if shared_session != null:
+			shared_session.selected_piece = value
+
+var play_ui_state: String:
+	get:
+		return shared_session.play_ui_state if shared_session != null else SharedGameSession.UI_S1
+	set(value):
+		if shared_session != null:
+			shared_session.play_ui_state = value
 
 var _resolver: AssetResolver
 var _seams: PlaytestSeams
 var _persist: PersistStore
 var _board_playable := false
-var _last_reject := ""
 var _clock_accum_ms := 0.0
+var _last_clock_display := ""
 
 
 func _ready() -> void:
@@ -63,18 +76,26 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return
-	if play_ui_state != "S1":
+	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
+	if _seams.is_paused():
 		return
 	if shared_session.white_clock_ms == null:
 		return
+	# Clocks keep running during resign confirm (S2); only board input is blocked.
 	_clock_accum_ms += delta * 1000.0
 	var whole := int(_clock_accum_ms)
 	if whole <= 0:
 		return
 	_clock_accum_ms -= float(whole)
 	shared_session.tick(whole)
-	_emit_play_screen()
-	if bool(shared_session.rules.game_ended_field().get("ended", false)):
+	var display := shared_session.clock_display_key()
+	if display != _last_clock_display:
+		_last_clock_display = display
+		_emit_play_screen()
+	if shared_session.game_ended():
+		_seams.emit_tel(
+			"shared.end", str(shared_session.rules.game_ended_field().get("reason", "")), "NAV.T6"
+		)
 		_go_shared_result()
 
 
@@ -104,6 +125,8 @@ func start_music() -> void:
 func handle_control(screen_id: String, control_id: String) -> void:
 	if session_ended:
 		return
+	if screen_id == STAGE_SHARED_PLAY and _seams.is_paused():
+		return
 	match screen_id:
 		STAGE_MODE_PICK:
 			_on_mode_pick_control(control_id)
@@ -115,18 +138,17 @@ func handle_control(screen_id: String, control_id: String) -> void:
 			_on_shared_result_control(control_id)
 
 
-## CTR-presentation.E1 — select (to empty) or place (from/to).
-func handle_input_commit(from_square: String, to_square: String) -> void:
+## CTR-presentation.E1 — select (to empty) or place (from/to + optional promotion).
+func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return
-	if play_ui_state != "S1":
-		return
-	if bool(shared_session.rules.game_ended_field().get("ended", false)):
-		return
+		return false
+	if _seams.is_paused():
+		return false
+	if not shared_session.gestures_available():
+		return false
 	if to_square.is_empty():
-		_try_select(from_square)
-		return
-	_try_place(from_square, to_square)
+		return _apply_select(from_square)
+	return _apply_place(from_square, to_square, promotion)
 
 
 func show_save_failure() -> void:
@@ -154,8 +176,8 @@ func play_snapshot() -> Dictionary:
 		"increment": increment,
 		"advice": advice_on,
 		"options_locked": options_locked,
-		"selected_piece": selected_piece,
-		"play_ui_state": play_ui_state,
+		"selected_piece": "",
+		"play_ui_state": SharedGameSession.UI_S1,
 	}
 	if shared_session == null:
 		return base
@@ -166,6 +188,9 @@ func play_snapshot() -> Dictionary:
 	base["game_ended"] = live.get("game_ended", base["game_ended"])
 	base["mode"] = "shared"
 	base["result_copy"] = live.get("result_copy", "")
+	base["selected_piece"] = live.get("selected_piece", "")
+	base["play_ui_state"] = live.get("play_ui_state", SharedGameSession.UI_S1)
+	base["advice"] = live.get("advice", advice_on)
 	return base
 
 
@@ -180,29 +205,33 @@ func session_is_paused() -> bool:
 func legal_targets_for(square: String) -> PackedStringArray:
 	if shared_session == null:
 		return PackedStringArray()
-	return shared_session.rules.legal_targets(square)
+	return shared_session.legal_targets_for(square)
 
 
 func occupancy_at(square: String) -> Dictionary:
 	if shared_session == null:
 		return {}
-	var occ: Dictionary = shared_session.rules.position_field().get("occupancy", {})
-	return occ.get(square, {}) as Dictionary
+	return shared_session.occupancy_at(square)
 
 
 func side_to_move() -> String:
 	if shared_session == null:
 		return ChessRules.SIDE_WHITE
-	return str(shared_session.rules.position_field().get("side_to_move", ChessRules.SIDE_WHITE))
+	return shared_session.side_to_move()
 
 
 func play_gestures_available() -> bool:
 	return (
 		stage == STAGE_SHARED_PLAY
-		and play_ui_state == "S1"
 		and shared_session != null
-		and not bool(shared_session.rules.game_ended_field().get("ended", false))
+		and shared_session.gestures_available()
 	)
+
+
+func can_place(from_square: String, to_square: String, promotion: String = "") -> bool:
+	if shared_session == null:
+		return false
+	return shared_session.can_place(from_square, to_square, promotion)
 
 
 func _known_stages() -> PackedStringArray:
@@ -249,8 +278,7 @@ func _go_mode_pick(ui_state: String = "S1") -> void:
 	stage = STAGE_MODE_PICK
 	options_locked = false
 	shared_session = null
-	selected_piece = ""
-	play_ui_state = "S1"
+	_last_clock_display = ""
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state(ui_state))
 
 
@@ -274,44 +302,29 @@ func _shared_setup_state() -> Dictionary:
 
 
 func _shared_play_state() -> Dictionary:
-	var pos := {}
-	var ended := false
-	var reason := ""
-	var in_check := false
-	var white_ms: Variant = null
-	var black_ms: Variant = null
-	if shared_session != null:
-		var field := shared_session.rules.position_field()
-		pos = field
-		var ended_field: Dictionary = shared_session.rules.game_ended_field()
-		ended = bool(ended_field.get("ended", false))
-		reason = str(ended_field.get("reason", ""))
-		in_check = shared_session.rules.in_check(str(field.get("side_to_move", "white")))
-		white_ms = shared_session.white_clock_ms
-		black_ms = shared_session.black_clock_ms
-	var legal := PackedStringArray()
-	if not selected_piece.is_empty():
-		legal = legal_targets_for(selected_piece)
-	return {
-		"locale": locale,
-		"white_seat": white_seat,
-		"clock": clock,
-		"increment": increment,
-		"advice": advice_on,
-		"options_locked": options_locked,
-		"ui_state": play_ui_state,
-		"position": pos,
-		"selection": selected_piece,
-		"legal": legal,
-		"side_to_move": side_to_move(),
-		"in_check": in_check,
-		"white_clock_ms": white_ms,
-		"black_clock_ms": black_ms,
-		"game_ended": ended,
-		"end_reason": reason,
-		"resign_available": not ended and play_ui_state == "S1",
-		"last_reject": _last_reject,
-	}
+	if shared_session == null:
+		return {
+			"locale": locale,
+			"white_seat": white_seat,
+			"clock": clock,
+			"increment": increment,
+			"advice": advice_on,
+			"options_locked": options_locked,
+			"ui_state": SharedGameSession.UI_S1,
+			"position": {},
+			"selection": "",
+			"legal": PackedStringArray(),
+			"side_to_move": ChessRules.SIDE_WHITE,
+			"in_check": false,
+			"white_clock_ms": null,
+			"black_clock_ms": null,
+			"game_ended": false,
+			"end_reason": "",
+			"resign_available": false,
+			"board_unavailable": false,
+			"last_reject": "",
+		}
+	return shared_session.chrome_state(locale, white_seat)
 
 
 func _emit_play_screen(move: Dictionary = {}) -> void:
@@ -383,12 +396,10 @@ func _on_shared_setup_control(control_id: String) -> void:
 func _start_shared_game() -> void:
 	options_locked = true
 	last_mode = MODE_SHARED
-	selected_piece = ""
-	play_ui_state = "S1"
-	_last_reject = ""
 	_clock_accum_ms = 0.0
+	_last_clock_display = ""
 	shared_session = SharedGameSession.new()
-	shared_session.start_shared(clock, increment)
+	shared_session.start_shared(clock, increment, advice_on)
 	stage = STAGE_SHARED_PLAY
 	enter_shared_play()
 	_seams.emit_tel("shared.start", "ok", "UI-shared-play.US1")
@@ -396,35 +407,33 @@ func _start_shared_game() -> void:
 
 
 func _on_shared_play_control(control_id: String) -> void:
+	if shared_session == null:
+		return
 	match control_id:
 		"C3":
-			if play_ui_state != "S1" or shared_session == null:
+			var advice := shared_session.toggle_advice()
+			if not bool(advice.get("ok", false)):
 				return
-			if bool(shared_session.rules.game_ended_field().get("ended", false)):
-				return
-			# F-move-advice.R2: toggle only; no evaluation / display / blocking error.
-			advice_on = not advice_on
-			_seams.emit_tel("shared.advice", "toggled", "UI-shared-play.US1.4")
+			advice_on = shared_session.advice_on
+			_emit_tel_result(advice)
 			_emit_play_screen()
 		"C4":
-			if play_ui_state != "S1" or shared_session == null:
+			var resign_open := shared_session.open_resign_confirm()
+			if not bool(resign_open.get("ok", false)):
 				return
-			if bool(shared_session.rules.game_ended_field().get("ended", false)):
-				return
-			play_ui_state = "S2"
-			_seams.emit_tel("shared.resign", "confirm", "UI-shared-play.US1.1")
+			_emit_tel_result(resign_open)
 			_emit_play_screen()
 		"confirm":
-			if play_ui_state != "S2" or shared_session == null:
+			var resigned := shared_session.confirm_resign()
+			if not bool(resigned.get("ok", false)):
 				return
-			if shared_session.resign():
-				_seams.emit_tel("shared.resign", "end", "UI-shared-play.US1.1")
-				_seams.emit_tel("shared.end", SharedGameSession.END_L2, "NAV.T6")
-				_go_shared_result()
+			_emit_tel_result(resigned)
+			_seams.emit_tel("shared.end", SharedGameSession.END_L2, "NAV.T6")
+			_go_shared_result()
 		"cancel":
-			if play_ui_state != "S2":
+			var cancelled := shared_session.cancel_resign()
+			if not bool(cancelled.get("ok", false)):
 				return
-			play_ui_state = "S1"
 			_emit_play_screen()
 
 
@@ -433,8 +442,7 @@ func _on_shared_result_control(control_id: String) -> void:
 		"C1":
 			# NAV.T7 — full journey owned by #59; unlock setup for a new game.
 			shared_session = null
-			selected_piece = ""
-			play_ui_state = "S1"
+			_last_clock_display = ""
 			options_locked = false
 			stage = STAGE_SHARED_SETUP
 			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
@@ -443,56 +451,48 @@ func _on_shared_result_control(control_id: String) -> void:
 			_go_mode_pick("S1")
 
 
-func _try_select(square: String) -> void:
-	var piece := occupancy_at(square)
-	if piece.is_empty():
-		return
-	var side := side_to_move()
-	if str(piece.get("color", "")) != side:
-		return
-	if selected_piece == square:
-		return
-	selected_piece = square
-	_last_reject = ""
-	_seams.emit_tel("shared.select", square, "UI-shared-play.US1.2")
+func _apply_select(square: String) -> bool:
+	var result := shared_session.select_own(square)
+	if not bool(result.get("ok", false)):
+		return false
+	_emit_tel_result(result)
 	_emit_play_screen()
+	return true
 
 
-func _try_place(from_square: String, to_square: String) -> void:
-	_last_reject = ""
-	var before_side := side_to_move()
-	var ok := shared_session.try_move(from_square, to_square, "")
-	if not ok:
-		# Rules-level refuse: keep selection; no auto-queen (REASON_PROMOTION stays refused).
-		if selected_piece.is_empty():
-			var piece := occupancy_at(from_square)
-			if not piece.is_empty() and str(piece.get("color", "")) == before_side:
-				selected_piece = from_square
-		_last_reject = "illegal"
-		_seams.emit_tel("shared.move", "illegal", "UI-shared-play.US1.3")
+func _apply_place(from_square: String, to_square: String, promotion: String = "") -> bool:
+	var result := shared_session.place(from_square, to_square, promotion)
+	_emit_tel_result(result)
+	if bool(result.get("illegal", false)):
 		_emit_play_screen()
-		return
-	selected_piece = ""
-	_seams.emit_tel("shared.move", "ok", "UI-shared-play.US1.3")
-	var stm := side_to_move()
-	if shared_session.rules.in_check(stm):
-		_seams.emit_tel("shared.check", stm, "UI-shared-play.US2")
-	var move := {"from": from_square, "to": to_square}
+		return false
+	if not bool(result.get("ok", false)):
+		return false
+	if bool(result.get("check", false)):
+		_seams.emit_tel("shared.check", "shown", "UI-shared-play.US2")
+	var move: Dictionary = result.get("move", {}) as Dictionary
 	_emit_play_screen(move)
-	if bool(shared_session.rules.game_ended_field().get("ended", false)):
-		_seams.emit_tel(
-			"shared.end", str(shared_session.rules.game_ended_field().get("reason", "")), "NAV.T6"
-		)
+	if bool(result.get("ended", false)):
+		_seams.emit_tel("shared.end", str(result.get("end_reason", "")), "NAV.T6")
 		_go_shared_result()
+	return true
+
+
+func _emit_tel_result(result: Dictionary) -> void:
+	var event := str(result.get("event", ""))
+	if event.is_empty():
+		return
+	_seams.emit_tel(event, str(result.get("outcome", "ok")), str(result.get("story", "")))
 
 
 func _go_shared_result() -> void:
 	stage = STAGE_SHARED_RESULT
-	play_ui_state = "S1"
-	selected_piece = ""
+	_last_clock_display = ""
 	var result_key := ""
 	if shared_session != null:
 		result_key = shared_session.result_copy_key()
+		shared_session.play_ui_state = SharedGameSession.UI_S1
+		shared_session.selected_piece = ""
 	screen_requested.emit(
 		STAGE_SHARED_RESULT, {"locale": locale, "result_key": result_key, "last_mode": last_mode}
 	)
@@ -531,7 +531,7 @@ func _on_jump_requested(stage_id: String) -> void:
 		STAGE_SHARED_PLAY:
 			if shared_session == null:
 				shared_session = SharedGameSession.new()
-				shared_session.start_shared(clock, increment)
+				shared_session.start_shared(clock, increment, advice_on)
 			_emit_play_screen()
 		STAGE_SHARED_RESULT:
 			_go_shared_result()
@@ -546,8 +546,7 @@ func _on_seed_changed(_value: int) -> void:
 	session_ended = false
 	options_locked = false
 	shared_session = null
-	selected_piece = ""
-	play_ui_state = "S1"
+	_last_clock_display = ""
 	screen_requested.emit(STAGE_LOADING, {})
 	_resolver.preload_boot()
 

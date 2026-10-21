@@ -3,8 +3,8 @@ extends Control
 ## CMP-presentation: screens, board gestures (B2/B3/B10), status chrome (#58).
 
 signal control_activate(screen_id: String, control_id: String)
-## CTR-presentation.E1 — from/to; empty to means select-only.
-signal input_commit(from_square: String, to_square: String)
+## CTR-presentation.E1 — from/to (+ optional promotion); empty to means select-only.
+signal input_commit(from_square: String, to_square: String, promotion: String)
 ## CTR-presentation.E3 — L1 never resolves assets; L2 returns them via O5.
 signal asset_needed(asset_ids: PackedStringArray)
 
@@ -15,6 +15,8 @@ const SHARED_PLAY := "shared-play"
 const SHARED_RESULT := "shared-result"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
+## Reserve R2–R4 chrome so R1 is not covered at 16:9 (PRJ.A1).
+const PLAY_CHROME_TOP_PX := 168.0
 
 var pointer_count := 0
 var last_pointer: Dictionary = {}
@@ -48,7 +50,10 @@ func _ready() -> void:
 	_router.screen_requested.connect(_on_screen_requested)
 	_router.replay_pointer.connect(apply_recorded_pointer)
 	control_activate.connect(_router.handle_control)
-	input_commit.connect(_router.handle_input_commit)
+	input_commit.connect(
+		func(from_sq: String, to_sq: String, promotion: String = "") -> void:
+			_router.handle_input_commit(from_sq, to_sq, promotion)
+	)
 	_show_loading()
 	_router.start()
 
@@ -75,6 +80,8 @@ func handle_gui_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		_flash_unsupported()
 		return
+	if _router.session_is_paused():
+		return
 	if event is InputEventMouseMotion:
 		var motion := event as InputEventMouseMotion
 		if _press_active and (motion.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0:
@@ -87,8 +94,6 @@ func handle_gui_input(event: InputEvent) -> void:
 		return
 	var record := pointer_record(event)
 	if record.is_empty():
-		return
-	if _router.session_is_paused():
 		return
 	_accept_pointer(record)
 	_router.note_pointer(record)
@@ -172,6 +177,7 @@ func _build_shell() -> void:
 	_shared_play.control_activated.connect(_on_shared_play_control)
 	_shared_play.pointed.connect(_on_pointed)
 	_host.add_child(_shared_play)
+	_layout_shared_play_regions()
 
 	_shared_result = SharedResultPanel.new()
 	_shared_result.name = "SharedResult"
@@ -302,6 +308,7 @@ func _show_shared_play(state: Dictionary) -> void:
 	_shared_setup.visible = false
 	_shared_result.visible = false
 	_ended_label.visible = false
+	_layout_shared_play_regions()
 	var position: Dictionary = state.get("position", {}) as Dictionary
 	if position.is_empty():
 		var rules := ChessRules.new()
@@ -321,14 +328,19 @@ func _show_shared_play(state: Dictionary) -> void:
 		opts["move"] = move_var
 	_board.set_white_seat(str(opts["white_seat"]))
 	_board.render_position(position, selection, legal, opts)
+	var board_dim := bool(state.get("board_unavailable", false))
+	var board_alpha := 0.45 if board_dim else 1.0
 	if not _board.visible:
 		UiChrome.transition_in(_board)
+		_board.modulate.a = board_alpha
 	else:
 		_board.visible = true
-		_board.modulate.a = 1.0
+		_board.modulate.a = board_alpha
+	var first_show := not _shared_play.visible
 	_shared_play.configure(state, _ui_font)
-	if not _shared_play.visible:
+	if first_show:
 		UiChrome.transition_in(_shared_play)
+		_shared_play.focus_first()
 	else:
 		_shared_play.visible = true
 		_shared_play.modulate.a = 1.0
@@ -341,6 +353,18 @@ func _show_shared_play(state: Dictionary) -> void:
 		needed.append(BoardPresentation.BOARD_BG_ID)
 		needed.append(UiChrome.FONT_LATIN)
 		asset_needed.emit(needed)
+
+
+func _layout_shared_play_regions() -> void:
+	## R2–R4 stay in the top strip; R1 board fills the remaining viewport.
+	if _board == null or _shared_play == null:
+		return
+	_board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_board.offset_top = PLAY_CHROME_TOP_PX
+	_board.offset_bottom = 0.0
+	_board.offset_left = 0.0
+	_board.offset_right = 0.0
+	_shared_play.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
 func _show_shared_result(state: Dictionary) -> void:
@@ -458,7 +482,6 @@ func _on_pointer_move(at: Vector2) -> void:
 func _on_pointer_up(at: Vector2, index: int) -> void:
 	if not _press_active or index != _press_index:
 		return
-	var press_sq := _press_square
 	var drag_from := _drag_from
 	var to_sq := _square_at_screen(at)
 	var was_dragging := _dragging
@@ -467,36 +490,47 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 	_press_square = ""
 	_drag_from = ""
 	if not _router.play_gestures_available():
-		_board.cancel_drag()
+		_finish_drag(false)
 		return
 	var selected := _router.selected_piece
+	var side := _router.side_to_move()
 	# B10: drag own piece onto a destination (may start unselected).
 	if was_dragging and not drag_from.is_empty() and not to_sq.is_empty() and to_sq != drag_from:
-		_board.cancel_drag()
-		input_commit.emit(drag_from, to_sq)
+		# PHY.M5 before chrome emit so _motion_busy skips piece rebuild on refuse.
+		if _router.can_place(drag_from, to_sq, ""):
+			_board.cancel_drag()
+		else:
+			_board.end_drag_illegal()
+		_router.handle_input_commit(drag_from, to_sq, "")
 		return
-	# B3: tap a destination while a piece is selected.
-	if (
-		not was_dragging
-		and not selected.is_empty()
-		and not to_sq.is_empty()
-		and to_sq != selected
-		and (
-			press_sq == to_sq
-			or press_sq.is_empty()
-			or _router.occupancy_at(press_sq).is_empty()
-			or str(_router.occupancy_at(press_sq).get("color", "")) != _router.side_to_move()
-		)
-	):
-		_board.cancel_drag()
-		input_commit.emit(selected, to_sq)
+	# B2 before B3: tap an own piece (including changing selection).
+	if not was_dragging and not to_sq.is_empty():
+		var at_dest := _router.occupancy_at(to_sq)
+		if not at_dest.is_empty() and str(at_dest.get("color", "")) == side:
+			_finish_drag(true)
+			input_commit.emit(to_sq, "", "")
+			return
+	# B3: tap empty or capture target while a piece is selected.
+	if not was_dragging and not selected.is_empty() and not to_sq.is_empty() and to_sq != selected:
+		_finish_drag(true)
+		input_commit.emit(selected, to_sq, "")
 		return
-	# B2: tap an own piece → select.
+	# B2: tap an own piece in place → select.
 	if not was_dragging and not drag_from.is_empty() and (to_sq.is_empty() or to_sq == drag_from):
-		_board.cancel_drag()
-		input_commit.emit(drag_from, "")
+		_finish_drag(true)
+		input_commit.emit(drag_from, "", "")
 		return
-	_board.cancel_drag()
+	# Bad drop / off-board / empty non-destination: PHY.M5 return when a drag ran.
+	_finish_drag(not was_dragging)
+
+
+func _finish_drag(legal_or_idle: bool) -> void:
+	if _board == null:
+		return
+	if legal_or_idle:
+		_board.cancel_drag()
+	else:
+		_board.end_drag_illegal()
 
 
 func _square_at_screen(at: Vector2) -> String:
