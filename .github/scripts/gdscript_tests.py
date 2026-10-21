@@ -7,7 +7,7 @@ test fails. `coverage` runs the same tests and fails when main-code
 statement-line coverage is under 80.
 
 Main code is game/**/*.gd excluding *_test.gd, addons/, and .godot/.
-Not the playtest ENV.1 smoke.
+Class-body declarations are not statement lines. Not the playtest ENV.1 smoke.
 """
 from __future__ import annotations
 
@@ -73,6 +73,14 @@ COVERABLE = {
     "for_stmt_typed",
     "match_stmt",
 }
+# Children of these nodes are function-body statements. Class-body const and
+# var stay outside so a coverage probe is never inserted at class scope.
+BODY_ROOTS = frozenset({
+    "func_def",
+    "lambda",
+    "property_custom_getter",
+    "property_custom_setter",
+})
 HELPER_GD = """extends RefCounted
 
 static func hit(path: String, line: int) -> void:
@@ -143,20 +151,64 @@ def _parser():
 
 
 def statement_lines(source: str) -> set[int]:
+    """Statement lines inside functions, lambdas, getters, and setters.
+
+    A class-body ``const`` shares the ``const_stmt`` node with a local const.
+    Only the local one is executable. A probe on the class declaration is not
+    valid GDScript and fails the instrumented script before coverage is measured.
+    """
     tree = _parser().parse(source, gather_metadata=True)
     found: set[int] = set()
 
-    def walk(node: object) -> None:
+    def walk(node: object, in_body: bool) -> None:
         data = getattr(node, "data", None)
-        if data in COVERABLE:
+        if data == "class_def":
+            in_body = False
+        if in_body and data in COVERABLE:
             line = getattr(getattr(node, "meta", None), "line", None)
             if isinstance(line, int):
                 found.add(line)
+        child_body = True if data in BODY_ROOTS else in_body
         for child in getattr(node, "children", ()):
-            walk(child)
+            walk(child, child_body)
 
-    walk(tree)
+    walk(tree, False)
     return found
+
+
+def _indent_of(line: str) -> str:
+    match = re.match(r"[ \t]*", line)
+    return match.group(0) if match else ""
+
+
+def _probe(indent: str, rel: str, line_no: int) -> str:
+    return f'{indent}_CiLineCov.hit("{rel}", {line_no})'
+
+
+def _is_elif(line: str) -> bool:
+    return line.lstrip().startswith("elif")
+
+
+def _split_inline_suite(body: list[str], idx: int) -> None:
+    """Move `elif cond: stmt` onto the next line so a probe can sit in the suite."""
+    header, colon, tail = body[idx].rstrip().rpartition(":")
+    if colon and tail.strip():
+        body[idx] = header + ":"
+        body.insert(idx + 1, _indent_of(body[idx]) + "\t" + tail.strip())
+
+
+def _elif_insert_at(body: list[str], header_idx: int) -> tuple[int, str]:
+    _split_inline_suite(body, header_idx)
+    idx = header_idx
+    while idx < len(body) and not body[idx].rstrip().endswith(":"):
+        idx += 1
+    insert_at = idx + 1
+    header_indent = _indent_of(body[header_idx])
+    if insert_at < len(body):
+        indent = _indent_of(body[insert_at])
+        if len(indent) > len(header_indent):
+            return insert_at, indent
+    return insert_at, header_indent + "\t"
 
 
 def instrument(source: str, rel: str, lines: Iterable[int]) -> str:
@@ -166,8 +218,13 @@ def instrument(source: str, rel: str, lines: Iterable[int]) -> str:
         idx = line_no - 1
         if idx < 0 or idx >= len(body):
             raise CiError(f"{rel}: statement line {line_no} is outside the file")
-        indent = re.match(r"[ \t]*", body[idx]).group(0)  # type: ignore[union-attr]
-        body.insert(idx, f'{indent}_CiLineCov.hit("{escaped}", {line_no})')
+        # A call between `if` and `elif` is a parse error. Record the elif line
+        # from the first statement of its suite instead.
+        if _is_elif(body[idx]):
+            insert_at, indent = _elif_insert_at(body, idx)
+            body.insert(insert_at, _probe(indent, escaped, line_no))
+        else:
+            body.insert(idx, _probe(_indent_of(body[idx]), escaped, line_no))
     body.append('const _CiLineCov = preload("res://_ci_line_cov.gd")')
     return "\n".join(body) + "\n"
 
