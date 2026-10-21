@@ -12,10 +12,10 @@ Split from [`fields-play.md`](fields-play.md) by scope; that file proves the ses
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| GS.selectedPiece | Piece under select | PS1.1 PS1.2 PS1.5 PS1.6 |
+| GS.selectedPiece | Piece under select | PS1.1 PS1.2 PS1.5 PS1.6 PS1.9 |
 | GS.online | Connection observed | PS1.3 PS1.7 |
-| GS.adviceBestMove | Advice best move | PS1.4 PS1.8 |
-| GS.adviceEval | Advice eval | PS1.4 PS1.8 |
+| GS.adviceBestMove | Advice best move | PS1.4 PS1.8 PS1.10 PS1.11 |
+| GS.adviceEval | Advice eval | PS1.4 PS1.8 PS1.10 PS1.11 |
 
 ## PS1: Moment fields
 
@@ -98,5 +98,35 @@ Then GS.online is false
 ```gherkin
 Given Advice Off
 When a Shared game starts
+Then GS.adviceBestMove is none And GS.adviceEval is none
+```
+
+### PS1.9: Selection initial none
+
+- **Proves**: GS.selectedPiece
+
+```gherkin
+Given a Shared game is about to start
+When play starts
+Then GS.selectedPiece is none
+```
+
+### PS1.10: Move completion clears advice
+
+- **Proves**: GS.adviceBestMove, GS.adviceEval
+
+```gherkin
+Given Advice On And online And GS.adviceBestMove and GS.adviceEval are set
+When a legal move completes
+Then GS.adviceBestMove is none And GS.adviceEval is none
+```
+
+### PS1.11: Offline clears advice
+
+- **Proves**: GS.adviceBestMove, GS.adviceEval
+
+```gherkin
+Given Advice On And GS.online is true And GS.adviceBestMove and GS.adviceEval are set
+When the browser goes offline
 Then GS.adviceBestMove is none And GS.adviceEval is none
 ```
