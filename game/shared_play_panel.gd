@@ -33,12 +33,16 @@ var c6_available := false
 var c7_available := false
 var c8_available := false
 var c9_available := false
+var c10_available := true
 
 var _status: Label
 var _check: Label
 var _clocks: Label
 var _promote_hint: Label
+var _promote_row: HBoxContainer
+var _promote_btns: Dictionary = {}
 var _select_focus: Button
+var _clear_focus: Button
 var _place_focus: Button
 var _advice: Button
 var _resign: Button
@@ -85,6 +89,7 @@ func configure(state: Dictionary, font: Font = null) -> void:
 	c7_available = bool(state.get("c7_available", false))
 	c8_available = bool(state.get("c8_available", false))
 	c9_available = bool(state.get("c9_available", false))
+	c10_available = bool(state.get("c10_available", true))
 	_ui_font = font
 	if is_inside_tree():
 		_apply_font()
@@ -92,45 +97,27 @@ func configure(state: Dictionary, font: Font = null) -> void:
 
 
 func focusable_controls() -> Array[Control]:
+	## shared-play-controls.md top→bottom among available controls (F1).
+	var out: Array[Control] = []
+	for ctrl in _focus_order_for_state():
+		if ctrl is BaseButton and (ctrl as BaseButton).disabled:
+			continue
+		out.append(ctrl)
+	return out
+
+
+func _focus_order_for_state() -> Array[Control]:
 	if ui_state == "S2":
 		return [_confirm_ok, _confirm_cancel]
-	if ui_state == "S6":
-		var s6: Array[Control] = []
-		if not _select_focus.disabled:
-			s6.append(_select_focus)
-		if not _place_focus.disabled:
-			s6.append(_place_focus)
-		if not _advice.disabled:
-			s6.append(_advice)
-		if not _accept.disabled:
-			s6.append(_accept)
-		if not _decline.disabled:
-			s6.append(_decline)
-		if not _withdraw.disabled:
-			s6.append(_withdraw)
-		return s6
 	if ui_state == "S4":
-		var s4: Array[Control] = []
-		if not _advice.disabled:
-			s4.append(_advice)
-		if not _resign.disabled:
-			s4.append(_resign)
-		if not _offer.disabled:
-			s4.append(_offer)
+		var s4: Array[Control] = [_advice, _resign, _offer]
+		for kind in SharedGameSession.PROMOTE_ORDER:
+			s4.append(_promote_btns[kind] as Control)
 		return s4
-	# controls.md F1 / shared-play: C1 → C2 → C3 → C4 → C5 among available controls.
-	var out: Array[Control] = []
-	if not _select_focus.disabled:
-		out.append(_select_focus)
-	if not _place_focus.disabled:
-		out.append(_place_focus)
-	if not _advice.disabled:
-		out.append(_advice)
-	if not _resign.disabled:
-		out.append(_resign)
-	if not _offer.disabled:
-		out.append(_offer)
-	return out
+	if ui_state == "S6":
+		return [_select_focus, _clear_focus, _place_focus, _advice, _accept, _decline, _withdraw]
+	# S1 / S5 — C1 → C10 → C2 → C3 → C4 → C5.
+	return [_select_focus, _clear_focus, _place_focus, _advice, _resign, _offer]
 
 
 func focus_first() -> void:
@@ -188,7 +175,22 @@ func _build() -> void:
 	UiChrome.style_label(_promote_hint)
 	_chrome.add_child(_promote_hint)
 
-	# C1/C2 are board gestures; off-strip focus sentinels keep F1 order (44px).
+	_promote_row = HBoxContainer.new()
+	_promote_row.name = "PromoteChoices"
+	_promote_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_promote_row.add_theme_constant_override("separation", 12)
+	_promote_row.visible = false
+	_chrome.add_child(_promote_row)
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		var btn := Button.new()
+		btn.name = "Promote%s" % kind.capitalize()
+		btn.focus_entered.connect(_on_point.bind("C6:%s" % kind))
+		btn.mouse_entered.connect(_on_point.bind("C6:%s" % kind))
+		btn.pressed.connect(_on_activate.bind("C6:%s" % kind))
+		_promote_row.add_child(btn)
+		_promote_btns[kind] = btn
+
+	# C1/C10/C2 are board gestures; off-strip focus sentinels keep F1 order (44px).
 	_select_focus = Button.new()
 	_select_focus.name = "SelectFocus"
 	_select_focus.text = "C1"
@@ -198,6 +200,16 @@ func _build() -> void:
 	_select_focus.focus_entered.connect(_on_point.bind("C1"))
 	_select_focus.pressed.connect(_on_activate.bind("C1"))
 	add_child(_select_focus)
+
+	_clear_focus = Button.new()
+	_clear_focus.name = "ClearFocus"
+	_clear_focus.text = "C10"
+	_clear_focus.modulate.a = 0.0
+	_clear_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_clear_focus.position = Vector2(-200, -170)
+	_clear_focus.focus_entered.connect(_on_point.bind("C10"))
+	_clear_focus.pressed.connect(_on_activate.bind("C10"))
+	add_child(_clear_focus)
 
 	_place_focus = Button.new()
 	_place_focus.name = "PlaceFocus"
@@ -324,25 +336,29 @@ func _build() -> void:
 
 
 func _wire_focus_order() -> void:
-	## controls.md F1 — top to bottom among C1–C5 (confirm / draw pairs separate).
-	_select_focus.focus_next = _place_focus.get_path()
-	_place_focus.focus_next = _advice.get_path()
-	_advice.focus_next = _resign.get_path()
-	_resign.focus_next = _offer.get_path()
-	_offer.focus_next = _select_focus.get_path()
-	_confirm_ok.focus_next = _confirm_cancel.get_path()
-	_confirm_cancel.focus_next = _confirm_ok.get_path()
-	_accept.focus_next = _decline.get_path()
-	_decline.focus_next = _withdraw.get_path()
-	_withdraw.focus_next = _accept.get_path()
+	## Single chain from focusable_controls() so S1–S6 stay one edit.
+	_link_focus_chain(focusable_controls())
+
+
+func _link_focus_chain(controls: Array[Control]) -> void:
+	if controls.is_empty():
+		return
+	for i in range(controls.size()):
+		var cur := controls[i] as Control
+		var nxt := controls[(i + 1) % controls.size()] as Control
+		cur.focus_next = nxt.get_path()
+		cur.focus_previous = controls[(i - 1 + controls.size()) % controls.size()].get_path()
 
 
 func _style_all() -> void:
 	UiChrome.style_button(_select_focus)
+	UiChrome.style_button(_clear_focus)
 	UiChrome.style_button(_place_focus)
 	UiChrome.style_button(_advice)
 	UiChrome.style_button(_resign)
 	UiChrome.style_button(_offer)
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		UiChrome.style_button(_promote_btns[kind] as Button)
 	UiChrome.style_button(_confirm_ok, true)
 	UiChrome.style_button(_confirm_cancel)
 	UiChrome.style_button(_accept, true)
@@ -353,12 +369,13 @@ func _style_all() -> void:
 func _apply_font() -> void:
 	if _ui_font == null:
 		return
-	for node in [
+	var nodes: Array = [
 		_status,
 		_check,
 		_clocks,
 		_promote_hint,
 		_select_focus,
+		_clear_focus,
 		_place_focus,
 		_advice,
 		_resign,
@@ -370,7 +387,10 @@ func _apply_font() -> void:
 		_accept,
 		_decline,
 		_withdraw
-	]:
+	]
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		nodes.append(_promote_btns[kind])
+	for node in nodes:
 		UiChrome.apply_font(node, _ui_font)
 
 
@@ -393,6 +413,8 @@ func _apply_copy() -> void:
 	_decline.text = StringTable.shared_play("decline", locale)
 	_withdraw.text = StringTable.shared_play("withdraw", locale)
 	_promote_hint.text = StringTable.shared_play("choose_promotion", locale)
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		(_promote_btns[kind] as Button).text = StringTable.shared_play(kind, locale)
 	_refresh_clocks()
 
 
@@ -417,14 +439,18 @@ func _format_clock(ms: int) -> String:
 
 func _apply_availability() -> void:
 	_select_focus.disabled = not c1_available or game_ended
+	_clear_focus.disabled = not c10_available or game_ended
 	_place_focus.disabled = not c2_available or game_ended
 	_advice.disabled = not c3_available or game_ended
 	_resign.disabled = not c4_available or game_ended or not resign_available
 	_offer.disabled = not c5_available or game_ended or not offer_available
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		(_promote_btns[kind] as Button).disabled = not c6_available
 	_accept.disabled = not c7_available
 	_decline.disabled = not c8_available
 	_withdraw.disabled = not c9_available
 	_style_all()
+	_wire_focus_order()
 
 
 func _show_state(state_id: String) -> void:
@@ -433,8 +459,10 @@ func _show_state(state_id: String) -> void:
 	_confirm_box.visible = confirm
 	_draw_box.visible = state_id == "S6"
 	_promote_hint.visible = state_id == "S4"
+	_promote_row.visible = state_id == "S4"
 	# Keep R2/R4 readable; board dimming is owned by presentation via board_unavailable.
 	_chrome.modulate.a = 1.0
+	_wire_focus_order()
 	if (confirm or state_id == "S6" or state_id == "S4") and visible:
 		focus_first()
 
@@ -444,6 +472,8 @@ func _on_activate(control_id: String) -> void:
 	match control_id:
 		"C1":
 			disabled = _select_focus.disabled
+		"C10":
+			disabled = _clear_focus.disabled
 		"C2":
 			disabled = _place_focus.disabled
 		"C3":
@@ -458,6 +488,10 @@ func _on_activate(control_id: String) -> void:
 			disabled = _decline.disabled
 		"C9":
 			disabled = _withdraw.disabled
+		_:
+			if control_id.begins_with("C6:"):
+				var kind := control_id.get_slice(":", 1)
+				disabled = not _promote_btns.has(kind) or (_promote_btns[kind] as Button).disabled
 	if disabled:
 		return
 	# C1/C2 activate via board gestures (B2/B3/B10); focus sentinels only emit point.

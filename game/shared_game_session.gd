@@ -519,6 +519,7 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"c7_available": in_s6,
 		"c8_available": in_s6,
 		"c9_available": in_s6,
+		"c10_available": playable_board,
 	}
 
 
