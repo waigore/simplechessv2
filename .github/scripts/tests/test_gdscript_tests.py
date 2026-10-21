@@ -298,3 +298,25 @@ class InstrumentTest(unittest.TestCase):
                 check_version=False,
             )
         self.assertEqual(code, 1)
+
+
+class AssetRootLinkTest(unittest.TestCase):
+    def test_coverage_copy_links_the_sibling_asset_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            game = root / "game"
+            assets = root / "game_assets"
+            game.mkdir()
+            assets.mkdir()
+            (game / "asset_manifest.json").write_text('{"asset_root": "game_assets"}\n', encoding="utf-8")
+            project = root / "cov" / "proj"
+            project.parent.mkdir()
+            project.mkdir()
+            (root / "audio_runtime").mkdir()
+            gate._link_asset_root(game, project)
+            linked = project.parent / "game_assets"
+            self.assertTrue(linked.is_symlink())
+            self.assertEqual(linked.resolve(), assets.resolve())
+            runtime = project.parent / "audio_runtime"
+            self.assertTrue(runtime.is_symlink())
+            self.assertEqual(runtime.resolve(), (root / "audio_runtime").resolve())
