@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/design/stories.md`](../../.agents/specs/r
 |------|------|----------|------------|
 | [`entities/pieces.md`](entities/pieces.md) | yes | Full | [`stories/entities/pieces.md`](stories/entities/pieces.md) |
 | [`entities/pieces/common.md`](entities/pieces/common.md) | yes | Full | [`stories/entities/pieces/common.md`](stories/entities/pieces/common.md), [`stories/entities/pieces/common-legality.md`](stories/entities/pieces/common-legality.md), [`stories/entities/pieces/common-attack.md`](stories/entities/pieces/common-attack.md) |
-| [`entities/pieces/king.md`](entities/pieces/king.md) | yes | Full | [`stories/entities/pieces/king.md`](stories/entities/pieces/king.md) |
+| [`entities/pieces/king.md`](entities/pieces/king.md) | yes | Full | [`stories/entities/pieces/king.md`](stories/entities/pieces/king.md), [`stories/entities/pieces/king-castling.md`](stories/entities/pieces/king-castling.md) |
 | [`entities/pieces/officers.md`](entities/pieces/officers.md) | yes | Full | [`stories/entities/pieces/officers.md`](stories/entities/pieces/officers.md) |
 | [`entities/pieces/pawn.md`](entities/pieces/pawn.md) | yes | Full | [`stories/entities/pieces/pawn.md`](stories/entities/pieces/pawn.md) |
 | [`loops/two-player-game.md`](loops/two-player-game.md) | yes | Full | [`stories/loops/two-player-game.md`](stories/loops/two-player-game.md), [`stories/loops/two-player-draw.md`](stories/loops/two-player-draw.md), [`stories/loops/two-player-tunables.md`](stories/loops/two-player-tunables.md) |
