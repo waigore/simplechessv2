@@ -13,10 +13,10 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 | ID | From | To | Via | Action / message |
 |----|------|----|-----|------------------|
-| S1 | presentation | session | CTR-presentation.E1 | Commit from/to (+ promotion) |
+| S1 | presentation | session | CTR-presentation.O1 | Commit from/to (+ promotion) |
 | S2 | session | chess-rules | CTR-local-move.O1 | try_move |
 | S3 | chess-rules | session | CTR-local-move.E1 | move_applied |
-| S4 | session | presentation | CTR-presentation.O2 O3 | Animate / SFX; update board |
+| S4 | session | presentation | CTR-presentation.E2 E3 | Animate / SFX; update board |
 | S5 | session | advice-client | CTR-advice-stream.O2 | cancel + clear (Shared, if any) |
 | S6 | session | advice-client | CTR-advice-stream.O1 | start new position if Advice still allowed |
 

@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | [`CMP-chess-rules`](chess-rules.md) | calls | [`CTR-local-move`](../contracts/local-move.md) | Puzzle sequence checks |
-| C2 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Board and feedback: O2–O3 down; E1 up |
+| C2 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Board and feedback: O1 up; E2–E3 down |
 | C3 | [`CMP-persist-store`](persist-store.md) | calls | [`CTR-persist-document`](../contracts/persist-document.md) | Elo / recentSolved commit |
 | C4 | [`CMP-session-router`](session-router.md) | listens | internal | Enter / leave stream |
 

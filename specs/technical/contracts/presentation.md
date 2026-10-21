@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents/specs/rules/technical/contracts.md).
 
 - **Kind**: API — render and input surface between L1 and L2
-- **Provider**: L2 Session — [`CMP-session-router`](../components/session-router.md), [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-puzzle-session`](../components/puzzle-session.md)
+- **Provider**: Any in L2 Session ([`CMP-session-router`](../components/session-router.md), [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-puzzle-session`](../components/puzzle-session.md))
 - **Consumers**: [`CMP-presentation`](../components/presentation.md)
 - **Serves**: Clear board; Cafe calm; Instant play; UX screens
 - **Informed by**: [`specs/ux/navigation.md`](../../ux/navigation.md); [`specs/view/cameras/board.md`](../../view/cameras/board.md); [`layers.md`](../layers.md) D1 D4 D5
@@ -33,7 +33,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 |----|-----------|
 | G1 | E2 and E3 handling completes on-device; neither awaits network (Instant play) |
 | G2 | L1 decides no rules outcome; O1–O3 carry input only |
-| G3 | L1 never calls L4: asset needs rise as O3 and return as E5 |
+| G3 | L1 never calls L4: asset needs go down as O3 and return as E5 |
 
 ## Errors
 
