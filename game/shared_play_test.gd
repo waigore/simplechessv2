@@ -581,12 +581,15 @@ func _layout_reserves_chrome() -> String:
 	await process_frame
 	await process_frame
 	var board := _board()
+	var err := ""
 	if board.offset_top < Presentation.PLAY_CHROME_TOP_PX - 0.5:
-		return "16:9 board must sit below chrome"
-	var err := _assert_board_fully_visible(board)
-	if not err.is_empty():
-		return err
-	err = _assert_coords_on_board(board)
+		err = "16:9 board must sit below chrome"
+	if err.is_empty():
+		err = _assert_board_fully_visible(board)
+	if err.is_empty():
+		err = _assert_coords_on_board(board)
+	if err.is_empty():
+		err = await _assert_chrome_in_reserve_states("16:9")
 	if not err.is_empty():
 		return err
 	_presentation.size = Vector2(720, 1280)
@@ -595,7 +598,82 @@ func _layout_reserves_chrome() -> String:
 	err = _assert_board_fully_visible(board)
 	if not err.is_empty():
 		return "9:16 %s" % err
-	return _assert_coords_on_board(board)
+	err = _assert_coords_on_board(board)
+	if not err.is_empty():
+		return err
+	return await _assert_chrome_in_reserve_states("9:16")
+
+
+func _assert_chrome_in_reserve_states(aspect: String) -> String:
+	## PRJ.D1 / A1 — every visible PlayChrome child stays above the board top.
+	var play := _play_panel()
+	if _router.stage != "shared-play":
+		_router.handle_control("mode-pick", "C1")
+		_router.handle_control("shared-setup", "C5")
+	_router.shared_session.play_ui_state = SharedGameSession.UI_S1
+	_router.shared_session.confirm_kind = ""
+	_router.shared_session.draw_offer = ""
+	_router._emit_play_screen()
+	await process_frame
+	var err := _assert_chrome_children_in_reserve(play, "%s S1 untimed" % aspect)
+	if not err.is_empty():
+		return err
+	_setup_s4_for_focus()
+	_router._emit_play_screen()
+	await process_frame
+	err = _assert_chrome_children_in_reserve(play, "%s S4 untimed" % aspect)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "C6:queen")
+	# Timed Blitz S4 — clocks row must still fit the reserved strip.
+	if _router.stage == "shared-play":
+		_router.handle_control("shared-play", "C4")
+		_router.handle_control("shared-play", "confirm")
+		_router.handle_control("shared-result", "C2")
+	_router.handle_control("mode-pick", "C1")
+	_router.handle_control("shared-setup", "C2")  # blitz
+	_router.handle_control("shared-setup", "C5")
+	_setup_s4_for_focus()
+	_router._emit_play_screen()
+	await process_frame
+	err = _assert_chrome_children_in_reserve(play, "%s S4 blitz" % aspect)
+	if not err.is_empty():
+		return err
+	# Fresh opening for S6 so a post-promote check cue is not in chrome.
+	_router.handle_control("shared-play", "C4")
+	_router.handle_control("shared-play", "confirm")
+	_router.handle_control("shared-result", "C2")
+	_router.handle_control("mode-pick", "C1")
+	_router.handle_control("shared-setup", "C2")
+	_router.handle_control("shared-setup", "C5")
+	_router.handle_control("shared-play", "C5")
+	_router.handle_control("shared-play", "confirm")
+	if _router.play_ui_state != "S6":
+		return "%s S6 setup" % aspect
+	await process_frame
+	err = _assert_chrome_children_in_reserve(play, "%s S6" % aspect)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "C8")
+	return ""
+
+
+func _assert_chrome_children_in_reserve(play: SharedPlayPanel, label: String) -> String:
+	var chrome := play.find_child("PlayChrome", true, false) as Control
+	if chrome == null:
+		return "%s PlayChrome missing" % label
+	var limit_y := play.get_global_rect().position.y + Presentation.PLAY_CHROME_TOP_PX
+	for child in chrome.get_children():
+		var node := child as Control
+		if node == null or not node.visible:
+			continue
+		var bottom := node.get_global_rect().end.y
+		if bottom > limit_y + 0.5:
+			return (
+				"%s chrome child %s bottom %.1f past reserve %.1f"
+				% [label, node.name, bottom, limit_y]
+			)
+	return ""
 
 
 func _assert_board_fully_visible(board: BoardPresentation) -> String:
