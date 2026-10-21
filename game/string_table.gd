@@ -28,31 +28,31 @@ const _MODE_PICK := {
 	},
 	"zh-Hant":
 	{
-		"title": "Choose how to play",
-		"last": "Last",
-		"shared": "Shared game",
-		"puzzle": "Puzzle stream",
-		"quit": "Quit",
-		"quit_confirm": "End this session?",
-		"confirm": "Confirm",
-		"cancel": "Cancel",
+		"title": "選擇遊玩方式",
+		"last": "上次",
+		"shared": "共用對局",
+		"puzzle": "謎題串流",
+		"quit": "結束",
+		"quit_confirm": "結束本次遊玩？",
+		"confirm": "確認",
+		"cancel": "取消",
 		"loading": "載入中…",
-		"save_failed": "Save failed. Prior values kept.",
-		"dismiss": "Dismiss",
+		"save_failed": "儲存失敗。已保留先前數值。",
+		"dismiss": "關閉",
 	},
 	"ja":
 	{
-		"title": "Choose how to play",
-		"last": "Last",
-		"shared": "Shared game",
-		"puzzle": "Puzzle stream",
-		"quit": "Quit",
-		"quit_confirm": "End this session?",
-		"confirm": "Confirm",
-		"cancel": "Cancel",
+		"title": "遊び方を選ぶ",
+		"last": "前回",
+		"shared": "シェア対局",
+		"puzzle": "パズルストリーム",
+		"quit": "終了",
+		"quit_confirm": "このセッションを終了しますか？",
+		"confirm": "確認",
+		"cancel": "キャンセル",
 		"loading": "読み込み中…",
-		"save_failed": "Save failed. Prior values kept.",
-		"dismiss": "Dismiss",
+		"save_failed": "保存に失敗しました。以前の値を保持します。",
+		"dismiss": "閉じる",
 	},
 }
 
@@ -76,6 +76,44 @@ const _SHARED_SETUP := {
 		"start": "Start",
 		"back": "Back",
 	},
+	"zh-Hant":
+	{
+		"title": "共用對局設定",
+		"white_seat": "白方座位",
+		"seat_top": "上方",
+		"seat_bottom": "下方",
+		"clock": "時鐘",
+		"clock_untimed": "無計時",
+		"clock_blitz": "快棋",
+		"clock_rapid": "中速棋",
+		"increment": "加秒",
+		"increment_3s": "3 秒",
+		"increment_5s": "5 秒",
+		"advice": "建議",
+		"advice_on": "開",
+		"advice_off": "關",
+		"start": "開始",
+		"back": "返回",
+	},
+	"ja":
+	{
+		"title": "シェア対局の設定",
+		"white_seat": "白の席",
+		"seat_top": "上",
+		"seat_bottom": "下",
+		"clock": "時計",
+		"clock_untimed": "時間なし",
+		"clock_blitz": "ブリッツ",
+		"clock_rapid": "ラピッド",
+		"increment": "加算",
+		"increment_3s": "3 秒",
+		"increment_5s": "5 秒",
+		"advice": "アドバイス",
+		"advice_on": "オン",
+		"advice_off": "オフ",
+		"start": "開始",
+		"back": "戻る",
+	},
 }
 
 const _SHARED_PLAY := {
@@ -93,6 +131,8 @@ const _SHARED_PLAY := {
 		"draw_offered": "Draw offered",
 		"confirm": "Confirm",
 		"cancel": "Cancel",
+		"advice_error": "Advice unavailable. Play continues.",
+		"dismiss": "Dismiss",
 		"white_to_move": "White to move",
 		"black_to_move": "Black to move",
 		"check": "Check",
@@ -102,6 +142,58 @@ const _SHARED_PLAY := {
 		"rook": "Rook",
 		"bishop": "Bishop",
 		"knight": "Knight",
+	},
+	"zh-Hant":
+	{
+		"advice_on": "建議：開",
+		"advice_off": "建議：關",
+		"resign": "認輸",
+		"resign_confirm": "確定認輸？",
+		"offer_draw": "提議和棋",
+		"offer_confirm": "提議和棋？",
+		"accept": "接受",
+		"decline": "拒絕",
+		"withdraw": "撤回",
+		"draw_offered": "已提議和棋",
+		"confirm": "確認",
+		"cancel": "取消",
+		"advice_error": "建議無法使用。對局繼續。",
+		"dismiss": "關閉",
+		"white_to_move": "白方行棋",
+		"black_to_move": "黑方行棋",
+		"check": "將軍",
+		"choose_promotion": "選擇升變",
+		"refused_place": "無法落子",
+		"queen": "后",
+		"rook": "車",
+		"bishop": "象",
+		"knight": "馬",
+	},
+	"ja":
+	{
+		"advice_on": "アドバイス オン",
+		"advice_off": "アドバイス オフ",
+		"resign": "投了",
+		"resign_confirm": "投了しますか？",
+		"offer_draw": "引き分けを提案",
+		"offer_confirm": "引き分けを提案しますか？",
+		"accept": "受諾",
+		"decline": "拒否",
+		"withdraw": "取り消し",
+		"draw_offered": "引き分け提案中",
+		"confirm": "確認",
+		"cancel": "キャンセル",
+		"advice_error": "アドバイスを利用できません。対局は続きます。",
+		"dismiss": "閉じる",
+		"white_to_move": "白の手番",
+		"black_to_move": "黒の手番",
+		"check": "チェック",
+		"choose_promotion": "プロモーションを選択",
+		"refused_place": "置けません",
+		"queen": "クイーン",
+		"rook": "ルーク",
+		"bishop": "ビショップ",
+		"knight": "ナイト",
 	},
 }
 
@@ -116,6 +208,26 @@ const _SHARED_RESULT := {
 		"play_again": "Play again",
 		"stop": "Stop",
 	},
+	"zh-Hant":
+	{
+		"title": "對局結束",
+		"shared_game": "共用對局",
+		"result_white": "白方勝",
+		"result_black": "黑方勝",
+		"result_draw": "和棋",
+		"play_again": "再來一局",
+		"stop": "停止",
+	},
+	"ja":
+	{
+		"title": "対局終了",
+		"shared_game": "シェア対局",
+		"result_white": "白の勝ち",
+		"result_black": "黒の勝ち",
+		"result_draw": "引き分け",
+		"play_again": "もう一度",
+		"stop": "やめる",
+	},
 }
 
 const _EXCEPTIONS := {
@@ -125,11 +237,11 @@ const _EXCEPTIONS := {
 	},
 	"zh-Hant":
 	{
-		"unsupported_input": "Touch to play",
+		"unsupported_input": "請以觸控遊玩",
 	},
 	"ja":
 	{
-		"unsupported_input": "Touch to play",
+		"unsupported_input": "タッチで操作してください",
 	},
 }
 
@@ -179,6 +291,33 @@ static func shared_result(key: String, locale: String) -> String:
 
 static func exception_text(key: String, locale: String) -> String:
 	return _lookup(_EXCEPTIONS, key, locale)
+
+
+static func mode_pick_keys() -> PackedStringArray:
+	return _keys_of(_MODE_PICK)
+
+
+static func shared_setup_keys() -> PackedStringArray:
+	return _keys_of(_SHARED_SETUP)
+
+
+static func shared_play_keys() -> PackedStringArray:
+	return _keys_of(_SHARED_PLAY)
+
+
+static func shared_result_keys() -> PackedStringArray:
+	return _keys_of(_SHARED_RESULT)
+
+
+static func exception_keys() -> PackedStringArray:
+	return _keys_of(_EXCEPTIONS)
+
+
+static func _keys_of(tables: Dictionary) -> PackedStringArray:
+	var en: Variant = tables.get("en", {})
+	if not en is Dictionary:
+		return PackedStringArray()
+	return PackedStringArray((en as Dictionary).keys())
 
 
 static func _lookup(tables: Dictionary, key: String, locale: String) -> String:

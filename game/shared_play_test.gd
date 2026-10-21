@@ -114,34 +114,15 @@ func _geometry_hit() -> String:
 
 
 func _string_keys() -> String:
-	for key in [
-		"resign",
-		"resign_confirm",
-		"offer_draw",
-		"offer_confirm",
-		"accept",
-		"decline",
-		"withdraw",
-		"draw_offered",
-		"confirm",
-		"cancel",
-		"white_to_move",
-		"black_to_move",
-		"check",
-		"advice_on",
-		"advice_off",
-		"choose_promotion",
-		"refused_place",
-		"queen",
-		"rook",
-		"bishop",
-		"knight",
-	]:
-		var text := StringTable.shared_play(key, "en")
-		if text.is_empty() or text == key:
-			return "missing copy %s" % key
+	for locale in StringTable.LOCALES:
+		for key in StringTable.shared_play_keys():
+			var text := StringTable.shared_play(key, locale)
+			if text.is_empty() or text == key:
+				return "missing copy %s in %s" % [key, locale]
 	if StringTable.shared_result("result_white", "en") != "White wins":
 		return "shared-result copy"
+	if StringTable.shared_play("resign", "zh-Hant") == StringTable.shared_play("resign", "en"):
+		return "shared-play resign still English in zh-Hant"
 	return ""
 
 

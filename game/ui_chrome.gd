@@ -32,6 +32,7 @@ const FONT_CJK := "01a15215-15bd-77a5-b804-9ea4d95880a4"
 
 static func style_button(button: Button, primary: bool = false, last_mode: bool = false) -> void:
 	button.custom_minimum_size = Vector2(MIN_TOUCH, MIN_TOUCH)
+	button.clip_text = false
 	button.focus_mode = Control.FOCUS_ALL
 	button.add_theme_font_size_override("font_size", BODY_PX)
 	button.add_theme_color_override("font_color", COLOR_INK)
