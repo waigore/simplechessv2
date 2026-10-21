@@ -1,6 +1,7 @@
 # Template defaults for agent-orc. Child projects override via config.local.yaml only.
 orchestrator:
   cooldown_seconds: 10
+  # gate_backoff_initial_seconds omitted: tracks cooldown_seconds after merge.
   gate_backoff_max_seconds: 60
   stagger_seconds: 5
   worktrees_dir: .orc/worktrees
@@ -61,6 +62,7 @@ agents:
     skill: project-planner-agent
     provider: opencode-qwen38-max
     enabled: true
+    cooldown_seconds: 3600
     prompt: |
       Run the project-planner-agent skill unattended.
       One breadth or depth pass; mutate issues only; do not edit the repo; then exit.

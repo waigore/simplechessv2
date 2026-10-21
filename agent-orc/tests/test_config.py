@@ -5,7 +5,15 @@ from pathlib import Path
 import pytest
 import yaml
 
-from agent_orc.config import ConfigError, deep_merge, enabled_agents, load_config
+from agent_orc.config import (
+    ConfigError,
+    deep_merge,
+    enabled_agents,
+    load_config,
+    resolved_cooldown_seconds,
+    resolved_gate_backoff_initial_seconds,
+    resolved_gate_backoff_max_seconds,
+)
 
 
 def test_deep_merge_nested() -> None:
@@ -98,12 +106,183 @@ def test_shipped_config_loads() -> None:
     root = Path(__file__).resolve().parents[2]
     cfg = load_config(root / ".orc")
     assert "project-planner-agent" in cfg.agents
-    assert cfg.agents["project-planner-agent"].gate is None
-    assert cfg.agents["project-planner-agent"].provider == "opencode-qwen38-max"
+    planner = cfg.agents["project-planner-agent"]
+    assert planner.gate is None
+    assert planner.provider == "opencode-qwen38-max"
+    assert planner.cooldown_seconds == 3600
+    assert resolved_cooldown_seconds(planner, cfg.orchestrator) == 3600
+    assert planner.gate_backoff_initial_seconds is None
+    assert resolved_gate_backoff_initial_seconds(planner, cfg.orchestrator) == 10
     assert "opencode-go/qwen3.8-max" in cfg.providers["opencode-qwen38-max"]
     assert cfg.agents["issue-workflow-refine-agent"].provider == "grok"
     assert cfg.agents["issue-workflow-verify-agent"].provider == "opencode-deepseek-v41-flash"
     assert "opencode-go/deepseek-v4.1-flash" in cfg.providers["opencode-deepseek-v41-flash"]
     assert cfg.agents["issue-workflow-review-agent"].gate is not None
     assert cfg.orchestrator.cooldown_seconds == 10
+    assert cfg.orchestrator.gate_backoff_initial_seconds == 10
+    assert cfg.orchestrator.gate_backoff_max_seconds == 60
+    implement = cfg.agents["issue-workflow-implement-agent"]
+    assert implement.cooldown_seconds is None
+    assert resolved_cooldown_seconds(implement, cfg.orchestrator) == 10
+    assert resolved_gate_backoff_initial_seconds(implement, cfg.orchestrator) == 10
+    assert resolved_gate_backoff_max_seconds(implement, cfg.orchestrator) == 60
     assert len(enabled_agents(cfg)) == 7
+
+
+def _write_agent_config(cfg_dir: Path, body: dict) -> None:
+    cfg_dir.mkdir()
+    (cfg_dir / "config.yaml").write_text(yaml.dump(body), encoding="utf-8")
+
+
+def _agent_body(**agent_fields: object) -> dict:
+    agent = {
+        "skill": "a",
+        "provider": "p",
+        "enabled": True,
+        "prompt": "go",
+    }
+    agent.update(agent_fields)
+    return {
+        "providers": {"p": {"command": ["echo"]}},
+        "agents": {"a": agent},
+    }
+
+
+def test_omitted_gate_initial_tracks_cooldown(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    body = _agent_body()
+    body["orchestrator"] = {"cooldown_seconds": 3}
+    _write_agent_config(cfg_dir, body)
+    cfg = load_config(cfg_dir)
+    assert cfg.orchestrator.cooldown_seconds == 3
+    assert cfg.orchestrator.gate_backoff_initial_seconds == 3
+    agent = cfg.agents["a"]
+    assert resolved_cooldown_seconds(agent, cfg.orchestrator) == 3
+    assert resolved_gate_backoff_initial_seconds(agent, cfg.orchestrator) == 3
+
+
+def test_local_cooldown_override_still_tracks_gate_initial(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    cfg_dir.mkdir()
+    (cfg_dir / "config.yaml").write_text(
+        yaml.dump(
+            {
+                "orchestrator": {"cooldown_seconds": 10},
+                "providers": {"p": {"command": ["echo"]}},
+                "agents": {
+                    "a": {
+                        "skill": "a",
+                        "provider": "p",
+                        "enabled": True,
+                        "prompt": "go",
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (cfg_dir / "config.local.yaml").write_text(
+        yaml.dump({"orchestrator": {"cooldown_seconds": 4}}),
+        encoding="utf-8",
+    )
+    cfg = load_config(cfg_dir)
+    assert cfg.orchestrator.cooldown_seconds == 4
+    assert cfg.orchestrator.gate_backoff_initial_seconds == 4
+
+
+def test_explicit_gate_initial_stays_when_cooldown_changes(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    cfg_dir.mkdir()
+    (cfg_dir / "config.yaml").write_text(
+        yaml.dump(
+            {
+                "orchestrator": {
+                    "cooldown_seconds": 10,
+                    "gate_backoff_initial_seconds": 10,
+                },
+                "providers": {"p": {"command": ["echo"]}},
+                "agents": {
+                    "a": {
+                        "skill": "a",
+                        "provider": "p",
+                        "enabled": True,
+                        "prompt": "go",
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (cfg_dir / "config.local.yaml").write_text(
+        yaml.dump({"orchestrator": {"cooldown_seconds": 3}}),
+        encoding="utf-8",
+    )
+    cfg = load_config(cfg_dir)
+    assert cfg.orchestrator.cooldown_seconds == 3
+    assert cfg.orchestrator.gate_backoff_initial_seconds == 10
+
+
+def test_per_agent_timing_falls_back_independently(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    body = _agent_body(cooldown_seconds=30)
+    body["orchestrator"] = {
+        "cooldown_seconds": 10,
+        "gate_backoff_initial_seconds": 15,
+        "gate_backoff_max_seconds": 60,
+    }
+    _write_agent_config(cfg_dir, body)
+    cfg = load_config(cfg_dir)
+    agent = cfg.agents["a"]
+    assert resolved_cooldown_seconds(agent, cfg.orchestrator) == 30
+    assert resolved_gate_backoff_initial_seconds(agent, cfg.orchestrator) == 15
+    assert resolved_gate_backoff_max_seconds(agent, cfg.orchestrator) == 60
+
+
+def test_per_agent_timing_override_from_local(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    cfg_dir.mkdir()
+    (cfg_dir / "config.yaml").write_text(
+        yaml.dump(
+            {
+                "orchestrator": {"cooldown_seconds": 10, "gate_backoff_max_seconds": 60},
+                "providers": {"p": {"command": ["echo"]}},
+                "agents": {
+                    "a": {
+                        "skill": "a",
+                        "provider": "p",
+                        "enabled": True,
+                        "prompt": "go",
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (cfg_dir / "config.local.yaml").write_text(
+        yaml.dump(
+            {
+                "agents": {
+                    "a": {
+                        "cooldown_seconds": 0,
+                        "gate_backoff_initial_seconds": 0,
+                        "gate_backoff_max_seconds": 120,
+                    }
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    cfg = load_config(cfg_dir)
+    agent = cfg.agents["a"]
+    assert agent.prompt == "go"
+    assert resolved_cooldown_seconds(agent, cfg.orchestrator) == 0
+    assert resolved_gate_backoff_initial_seconds(agent, cfg.orchestrator) == 0
+    assert resolved_gate_backoff_max_seconds(agent, cfg.orchestrator) == 120
+
+
+def test_negative_timing_rejected(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    body = _agent_body(gate_backoff_initial_seconds=-1)
+    _write_agent_config(cfg_dir, body)
+    with pytest.raises(ConfigError, match="gate_backoff_initial_seconds"):
+        load_config(cfg_dir)
