@@ -2,8 +2,8 @@
 """Headless GDScript unit tests and statement-line coverage for game/.
 
 No game/**/*_test.gd: exit 0 and do not invoke Godot.
-When those scripts exist, `test` runs Godot 4.7.2 --headless and fails if a
-test fails. `coverage` runs the same tests and fails when main-code
+When those scripts exist, `test` imports the project so `class_name` resolves, runs
+Godot 4.7.2 --headless, and fails if a test fails. `coverage` runs the same tests and fails when main-code
 statement-line coverage is under 80.
 
 Main code is game/**/*.gd excluding *_test.gd, addons/, and .godot/.
@@ -329,6 +329,17 @@ def _version_ok(runner: Runner, binary: Path) -> bool:
     return True
 
 
+def _import_project(runner: Runner, binary: Path, project: Path, env: dict[str, str]) -> int:
+    """Build the class cache so ``class_name`` resolves under ``-s``."""
+    cmd = [str(binary), "--headless", "--path", str(project), "--import", "--quit"]
+    proc = runner(cmd, env)
+    if _failed(proc):
+        sys.stderr.write(_output(proc))
+        print(f"Fail: import {project}", file=sys.stderr)
+        return 1
+    return 0
+
+
 def _run_one(
     runner: Runner,
     binary: Path,
@@ -390,6 +401,8 @@ def _run_suite(
     env: dict[str, str],
 ) -> int:
     failed = 0
+    if _import_project(runner, binary, project, env) != 0:
+        return 1
     for path in tests:
         res = "res://" + rel_game(project, path)
         failed |= _run_one(runner, binary, project, res, env)

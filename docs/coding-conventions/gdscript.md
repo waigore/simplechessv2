@@ -10,7 +10,7 @@ Linked from [coding conventions](../coding-conventions.md). Godot 4.7.2 and GDSc
 
 Command: `python3 .github/scripts/gdscript_tests.py test`.
 
-A unit test is `game/**/*_test.gd` (not under `addons/` or `.godot/`). It extends `SceneTree` and calls `quit(0)` on success and `quit` with a non-zero code on failure. The runner is `godot --headless --path game -s res://…` (Godot 4.7.2). Set `GODOT_BIN` to that binary; on linux x86_64 the script downloads 4.7.2 when the variable is unset.
+A unit test is `game/**/*_test.gd` (not under `addons/` or `.godot/`). It extends `SceneTree` and calls `quit(0)` on success and `quit` with a non-zero code on failure. The runner imports the project (`--import`) so `class_name` resolves, then runs `godot --headless --path game -s res://…` (Godot 4.7.2). Set `GODOT_BIN` to that binary; on linux x86_64 the script downloads 4.7.2 when the variable is unset.
 
 While `game/` has no `*_test.gd` scripts, the command exits 0 and does not invoke Godot. When those scripts exist, a failing test fails the job. Missing `game/project.godot` fails the job (this task does not create it). This is not the playtest `ENV.1` smoke.
 

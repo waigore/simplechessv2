@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://presentation.gd" id="1_pres"]
+[ext_resource type="Script" path="res://session_router.gd" id="2_router"]
+[ext_resource type="Script" path="res://asset_resolver.gd" id="3_assets"]
+[ext_resource type="Script" path="res://playtest_seams.gd" id="4_seams"]
+[ext_resource type="Script" path="res://playtest_harness.gd" id="5_harness"]
+
+[node name="Presentation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pres")
+
+[node name="LoadingLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -24.0
+offset_right = 160.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Loading"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReadyHook" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -24.0
+offset_right = 160.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "mode-pick-ready"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TouchSpike" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -288.0
+offset_right = 288.0
+offset_bottom = 288.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="SessionRouter" type="Node" parent="."]
+script = ExtResource("2_router")
+
+[node name="AssetResolver" type="Node" parent="."]
+script = ExtResource("3_assets")
+
+[node name="PlaytestSeams" type="Node" parent="."]
+script = ExtResource("4_seams")
+
+[node name="PlaytestHarness" type="Node" parent="."]
+script = ExtResource("5_harness")
