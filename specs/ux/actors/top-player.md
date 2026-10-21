@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/ux/actors.md`](../../../.agents/specs/rul
 
 ## Who they are
 
-The person at the far edge of the shared device. By convention they join only Shared play: move, promote, resign, and offer a draw on their turn, and answer Bottom's offer. The interface does not identify people, so host screens remain operable if touched; hosting is Bottom's social role.
+The person at the far edge of the shared device. By convention they join only Shared play: move, promote, resign, and offer a draw on their turn, and answer Bottom's offer. TBD — Are host-screen transitions identity-gated, or operable by whoever touches them? Hosting is Bottom's social role.
 
 ## Goals
 
@@ -24,7 +24,7 @@ The person at the far edge of the shared device. By convention they join only Sh
 
 ## Cannot operate
 
-- **K2**: On `shared-play`, select, move, clear, promote, resign, or offer when Bottom’s seat is side to move — the interface ignores them
+- **K2**: On `shared-play`, when Bottom’s seat is side to move — the interface ignores `IN.select`, `IN.move`, `IN.deselect`, promote, resign, and offer (same off-turn seat gate for each)
 
 ## Relationship to play
 
