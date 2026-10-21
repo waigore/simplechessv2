@@ -61,7 +61,7 @@ Then no promotion type is committed
 ```gherkin
 Given shared-play S6 and Top offered the draw
 When Bottom activates C7
-Then the screen is shared-result and R1 shows Draw ([END.D2](../../../design/end-conditions/conditions.md))
+Then the screen is shared-result and C7, C8, and C9 are not shown
 ```
 
 ### US3.7: Decline the offer
@@ -89,7 +89,7 @@ Then the screen is shared-play S1 and R2 shows White to move and that clock stil
 - **Proves**: S2, S6
 
 ```gherkin
-Given shared-play S2 showing Offer a draw?
+Given shared-play S2 showing Offer a draw? and Clock is Blitz
 When the side to move activates Confirm
 Then the screen is shared-play S6 and R2 still shows both clocks
 ```
