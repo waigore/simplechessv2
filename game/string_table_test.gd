@@ -51,7 +51,8 @@ func _no_english_leak_in_cjk() -> String:
 		"shared-setup.start": [Callable(StringTable, "shared_setup"), "start"],
 		"shared-play.resign": [Callable(StringTable, "shared_play"), "resign"],
 		"shared-result.title": [Callable(StringTable, "shared_result"), "title"],
-		"exceptions.unsupported_input": [Callable(StringTable, "exception_text"), "unsupported_input"],
+		"exceptions.unsupported_input":
+		[Callable(StringTable, "exception_text"), "unsupported_input"],
 	}
 	for label in samples:
 		var pair: Array = samples[label]
