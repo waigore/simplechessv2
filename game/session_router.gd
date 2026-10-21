@@ -14,7 +14,6 @@ var stage := STAGE_LOADING
 var _resolver: AssetResolver
 var _seams: PlaytestSeams
 var _board_playable := false
-var _music_started := false
 
 
 func _ready() -> void:
@@ -46,9 +45,8 @@ func note_board_playable() -> void:
 
 
 func start_music() -> void:
-	if not _board_playable or _music_started:
+	if not _board_playable or _resolver.group_loaded("ambient"):
 		return
-	_music_started = true
 	_resolver.preload_ambient()
 
 

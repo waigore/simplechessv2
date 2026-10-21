@@ -34,12 +34,14 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | G2 | Manifest is read-only to runtime; never hand-edited |
 | G3 | Unresolved IDs follow [`AST.R3`](../asset-access.md) |
 | G4 | L1 never calls this contract; asset needs route through L2 (ADR-0006) |
+| G5 | Approved Opus files stay in the asset root; resolve returns the Vorbis copy ([`AST.O3`](../asset-access.md)) |
 
 ## Errors
 
 | Condition | Result |
 |-----------|--------|
 | Unknown ID / load fail | Unresolved path per AST.R3; [`FAIL.T4`](../failures.md) |
+| Preload leaves an approved ID unresolved | Group stays not ready; ready event withheld; that ID still follows AST.R3 |
 
 ## Diagram
 

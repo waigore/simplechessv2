@@ -54,8 +54,8 @@ func _after_boot() -> void:
 	_router.start_music()
 	if not _resolver.group_loaded("play") or _resolver.group_loaded("ambient"):
 		problem = "play entry"
-	elif _resolver.resolve(play_id) == null:
-		problem = "piece sprite did not resolve"
+	elif _resolver.resolve(play_id) == null or not _resolver.is_cached(sfx_id):
+		problem = "play id did not resolve"
 	if not problem.is_empty():
 		_fail(problem)
 		return
@@ -66,14 +66,16 @@ func _after_boot() -> void:
 	_router.start_music()
 	if not _resolver.group_loaded("ambient") or not _resolver.session_playable:
 		problem = "ambient after the board is playable"
-	elif _resolver.is_cached(sfx_id) or _resolver.is_cached(music_id):
-		problem = "undecodable audio was cached"
+	elif not _resolver.is_cached(sfx_id) or not _resolver.is_cached(music_id):
+		problem = "approved audio did not resolve"
+	elif _resolver.unresolved_count("play") != 0 or _resolver.unresolved_count("ambient") != 0:
+		problem = "preload left approved IDs unresolved"
 	elif not before or not _resolver.is_cached(play_id):
 		problem = "group reload dropped a cached asset"
 	if not problem.is_empty():
 		_fail(problem)
 		return
-	if not _check_unresolved():
+	if not _check_unresolved() or not _check_preload_gap() or not _check_vorbis_copy(music_id):
 		return
 	quit(0)
 
@@ -102,6 +104,74 @@ func _check_unresolved() -> bool:
 	if int(probe.log_counts.get("missing", 0)) != 1 or not probe.session_playable:
 		return _fail("release log once")
 	return true
+
+
+func _check_preload_gap() -> bool:
+	var probe := AssetResolver.new()
+	probe.playtest_override = 1
+	root.add_child(probe)
+	var asset_root := str(_manifest.get("asset_root", ""))
+	var sfx_path := _first_file("sound-effects")
+	(
+		probe
+		. apply_manifest(
+			{
+				"asset_root": asset_root,
+				"groups": {"boot": [], "play": ["missing-runtime"], "ambient": []},
+				"assets":
+				{
+					"missing-runtime":
+					{"state": "approved", "kind": "sound-effects", "files": [sfx_path]},
+				},
+			}
+		)
+	)
+	var ready: Array[bool] = [false]
+	probe.play_ready.connect(func() -> void: ready[0] = true)
+	probe.preload_play()
+	if probe.group_loaded("play") or ready[0] or probe.unresolved_count("play") != 1:
+		return _fail("partial play preload was marked ready")
+	if probe.resolve("missing-runtime") != null or not probe.session_playable:
+		return _fail("missing Vorbis copy resolved")
+	return true
+
+
+func _check_vorbis_copy(music_id: String) -> bool:
+	var probe := AssetResolver.new()
+	probe.playtest_override = 1
+	root.add_child(probe)
+	(
+		probe
+		. apply_manifest(
+			{
+				"asset_root": "audio_runtime",
+				"groups": {"boot": [], "play": [], "ambient": []},
+				"assets":
+				{
+					music_id:
+					{"state": "approved", "kind": "music", "files": ["%s.ogg" % music_id]},
+				},
+			}
+		)
+	)
+	if probe.resolve(music_id) == null:
+		return _fail("vorbis copy did not resolve")
+	return true
+
+
+func _first_file(kind: String) -> String:
+	var assets: Dictionary = _manifest.get("assets", {})
+	var ids: Array = assets.keys()
+	ids.sort()
+	for asset_id in ids:
+		var entry: Dictionary = assets[asset_id]
+		if str(entry.get("kind", "")) != kind:
+			continue
+		for relative in entry.get("files", []):
+			var path := str(relative)
+			if path.get_extension().to_lower() == "ogg":
+				return path
+	return ""
 
 
 func _bad_manifest() -> Dictionary:

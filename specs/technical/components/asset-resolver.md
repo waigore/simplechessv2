@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Responsibility |
 |----|----------------|
-| R1 | Read generated asset manifest by asset ID only ([`AST.R1`](../asset-access.md)) |
+| R1 | Read generated asset manifest by asset ID only ([`AST.R1`](../asset-access.md)); Opus audio loads [`AST.O3`](../asset-access.md) |
 | R2 | Preload Boot group before mode pick ready ([`AST.G1`](../asset-access.md)) |
 | R3 | Preload Play group on first play screen ([`AST.G2`](../asset-access.md)) |
 | R4 | Handle unresolved IDs per [`AST.R3`](../asset-access.md) |

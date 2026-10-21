@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -9,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from asset_manifest import check, generate, manifest_document, render  # noqa: E402
+from asset_manifest import check, generate, manifest_document, render, write_runtime  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[3]
 
@@ -84,6 +85,78 @@ class CommittedManifestTests(unittest.TestCase):
             manifest.write_text("{}\n", encoding="utf-8")
             problems = check(root)
             self.assertTrue(any("disagrees" in problem for problem in problems))
+
+    def test_check_fails_when_runtime_audio_is_stale(self) -> None:
+        asset_id = "0192f3a4-7c1e-7b2a-9d4e-5f6a7b8c9d11"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._hub(root)
+            source = root / "game_assets" / "music" / "a.ogg"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"OggS" + b"\x00" * 16 + b"OpusHead")
+            runtime = root / "audio_runtime" / f"{asset_id}.ogg"
+            runtime.parent.mkdir()
+            runtime.write_bytes(b"OggS" + b"\x00" * 16 + b"\x01vorbis")
+            catalog = root / "asset_catalog"
+            catalog.mkdir()
+            (catalog / f"{asset_id}.json").write_text(
+                json.dumps(_entry(asset_id, "music", "approved", ["music/a.ogg"])),
+                encoding="utf-8",
+            )
+            self._write_manifest(root)
+            self._write_checksums(root, asset_id, source, runtime)
+            self.assertEqual(check(root), [])
+            source.write_bytes(source.read_bytes() + b"x")
+            problems = check(root)
+            self.assertTrue(any("stale" in problem for problem in problems))
+
+    def test_transcode_writes_vorbis(self) -> None:
+        if shutil.which("ffmpeg") is None:
+            self.skipTest("ffmpeg not installed")
+        sample = next((REPO / "game_assets").rglob("*.ogg"))
+        asset_id = "0192f3a4-7c1e-7b2a-9d4e-5f6a7b8c9d11"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._hub(root)
+            source = root / "game_assets" / "music" / "a.ogg"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(sample.read_bytes())
+            catalog = root / "asset_catalog"
+            catalog.mkdir()
+            (catalog / f"{asset_id}.json").write_text(
+                json.dumps(_entry(asset_id, "music", "approved", ["music/a.ogg"])),
+                encoding="utf-8",
+            )
+            self._write_manifest(root)
+            write_runtime(root, json.loads(generate(root)))
+            copy = root / "audio_runtime" / f"{asset_id}.ogg"
+            self.assertIn(b"vorbis", copy.read_bytes()[:64])
+            self.assertNotIn(b"OpusHead", copy.read_bytes()[:64])
+            self.assertEqual(check(root), [])
+
+    def _hub(self, root: Path) -> None:
+        (root / "specs" / "assets").mkdir(parents=True)
+        (root / "specs" / "assets" / "assets.md").write_text(
+            (REPO / "specs" / "assets" / "assets.md").read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+
+    def _write_manifest(self, root: Path) -> None:
+        manifest = root / "game" / "asset_manifest.json"
+        manifest.parent.mkdir(parents=True, exist_ok=True)
+        manifest.write_text(generate(root), encoding="utf-8")
+
+    def _write_checksums(self, root: Path, asset_id: str, source: Path, runtime: Path) -> None:
+        import hashlib
+
+        def digest(path: Path) -> str:
+            return hashlib.sha256(path.read_bytes()).hexdigest()
+
+        payload = {asset_id: {"source_sha256": digest(source), "runtime_sha256": digest(runtime)}}
+        (root / "audio_runtime" / "checksums.json").write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
 
     def test_main_code_does_not_name_the_asset_root_path(self) -> None:
         offenders: list[str] = []

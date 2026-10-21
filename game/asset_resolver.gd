@@ -8,6 +8,7 @@ signal ambient_ready
 signal must_overlay(asset_id: String)
 
 const MANIFEST_PATH := "res://asset_manifest.json"
+const AUDIO_RUNTIME := "audio_runtime"
 const _LICENSE_EXT := "txt"
 
 ## Headless and editor runs are playtest unless this is 0 or 1.
@@ -18,6 +19,7 @@ var log_counts: Dictionary = {}
 var _manifest: Dictionary = {}
 var _cache: Dictionary = {}
 var _loaded_groups: Dictionary = {}
+var _unresolved_counts: Dictionary = {}
 
 
 func _ready() -> void:
@@ -49,7 +51,7 @@ func resolve(asset_id: String) -> Resource:
 		var path := str(relative)
 		if path.get_extension().to_lower() == _LICENSE_EXT:
 			continue
-		var resource := _load_media(_absolute(path))
+		var resource := _load_media(asset_id, _absolute(path))
 		if resource == null:
 			_reject(asset_id)
 			return null
@@ -69,18 +71,31 @@ func is_cached(asset_id: String) -> bool:
 	return _cache.has(asset_id)
 
 
+func unresolved_count(group_name: String) -> int:
+	return int(_unresolved_counts.get(group_name, 0))
+
+
 func apply_manifest(data: Dictionary) -> void:
 	_manifest = data
 	_cache.clear()
 	_loaded_groups.clear()
+	_unresolved_counts.clear()
 	log_counts.clear()
 
 
 func _preload(group_name: String, done: Signal) -> void:
-	if not group_loaded(group_name):
-		for asset_id in _group_ids(group_name):
-			resolve(str(asset_id))
-		_loaded_groups[group_name] = true
+	if group_loaded(group_name):
+		done.emit()
+		return
+	var missing := 0
+	for asset_id in _group_ids(group_name):
+		if resolve(str(asset_id)) == null:
+			missing += 1
+	_unresolved_counts[group_name] = missing
+	if missing > 0:
+		push_error("Preload %s left %d approved IDs unresolved" % [group_name, missing])
+		return
+	_loaded_groups[group_name] = true
 	done.emit()
 
 
@@ -121,14 +136,14 @@ func _absolute(relative: String) -> String:
 	return project.get_base_dir().path_join(root_name).path_join(relative)
 
 
-func _load_media(path: String) -> Resource:
+func _load_media(asset_id: String, path: String) -> Resource:
 	var ext := path.get_extension().to_lower()
 	if ext == "png" or ext == "svg":
 		return _load_texture(path)
 	if ext == "woff2" or ext == "ttf" or ext == "otf":
 		return _load_font(path)
 	if ext == "ogg":
-		return _load_audio(path)
+		return _load_audio(asset_id, path)
 	push_error("Unsupported asset file: %s" % path.get_file())
 	return null
 
@@ -147,8 +162,38 @@ func _load_font(path: String) -> Resource:
 	return font
 
 
-func _load_audio(path: String) -> Resource:
+func _load_audio(asset_id: String, path: String) -> Resource:
+	if _header_contains(path, "OpusHead"):
+		var runtime := _runtime_audio_path(asset_id)
+		if not FileAccess.file_exists(runtime):
+			return null
+		return AudioStreamOggVorbis.load_from_file(runtime)
 	return AudioStreamOggVorbis.load_from_file(path)
+
+
+func _runtime_audio_path(asset_id: String) -> String:
+	var project := ProjectSettings.globalize_path("res://").trim_suffix("/")
+	return project.get_base_dir().path_join(AUDIO_RUNTIME).path_join("%s.ogg" % asset_id)
+
+
+func _header_contains(path: String, needle: String) -> bool:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return false
+	var header := file.get_buffer(64)
+	file.close()
+	var pattern := needle.to_ascii_buffer()
+	if header.size() < pattern.size():
+		return false
+	for start in range(header.size() - pattern.size() + 1):
+		var matched := true
+		for index in pattern.size():
+			if header[start + index] != pattern[index]:
+				matched = false
+				break
+		if matched:
+			return true
+	return false
 
 
 func _reject(asset_id: String) -> void:

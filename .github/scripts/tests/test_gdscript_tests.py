@@ -312,7 +312,11 @@ class AssetRootLinkTest(unittest.TestCase):
             project = root / "cov" / "proj"
             project.parent.mkdir()
             project.mkdir()
+            (root / "audio_runtime").mkdir()
             gate._link_asset_root(game, project)
             linked = project.parent / "game_assets"
             self.assertTrue(linked.is_symlink())
             self.assertEqual(linked.resolve(), assets.resolve())
+            runtime = project.parent / "audio_runtime"
+            self.assertTrue(runtime.is_symlink())
+            self.assertEqual(runtime.resolve(), (root / "audio_runtime").resolve())

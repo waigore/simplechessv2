@@ -427,21 +427,26 @@ def _coverable_map(game: Path, scripts: list[Path]) -> set[tuple[str, int]]:
     return coverable
 
 
-def _link_asset_root(game: Path, project: Path) -> None:
-    """Coverage copies only game/. The asset root stays a sibling (ADR-0005)."""
-    manifest = game / "asset_manifest.json"
-    if not manifest.is_file():
-        return
-    try:
-        name = json.loads(manifest.read_text(encoding="utf-8")).get("asset_root")
-    except (OSError, json.JSONDecodeError, UnicodeError):
-        return
-    if not isinstance(name, str) or not name or name.startswith(".") or "/" in name:
+def _link_named_sibling(game: Path, project: Path, name: str) -> None:
+    if not name or name.startswith(".") or "/" in name:
         return
     source = (game.parent / name).resolve()
     dest = project.parent / name
     if source.is_dir() and not dest.exists():
         dest.symlink_to(source, target_is_directory=True)
+
+
+def _link_asset_root(game: Path, project: Path) -> None:
+    """Coverage copies only game/. Catalog files and Vorbis copies stay siblings."""
+    manifest = game / "asset_manifest.json"
+    if manifest.is_file():
+        try:
+            name = json.loads(manifest.read_text(encoding="utf-8")).get("asset_root")
+        except (OSError, json.JSONDecodeError, UnicodeError):
+            name = ""
+        if isinstance(name, str):
+            _link_named_sibling(game, project, name)
+    _link_named_sibling(game, project, "audio_runtime")
 
 
 def _prepare_coverage_project(
