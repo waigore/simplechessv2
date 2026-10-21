@@ -13,7 +13,7 @@ Split from [`perception.md`](perception.md) by logical unit; that file proves id
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
 | R3 | VS2.1 | R4 | VS2.2 |
-| R5 | VS2.3 | R6 | VS2.4 |
+| R5 | VS2.3 | R6 | VS2.4 VS2.4b |
 | R7 | VS2.5 VS2.6 | R8 | VS2.7 |
 
 ## VS2: Read the marks
@@ -58,6 +58,16 @@ Then from/to and arrow show PAL.C7 at ≥ 2:1 on both squares (PAL.K5) And eval 
 Given CAM-board Web 9:16, side to move White in check, sound off
 When viewed
 Then the side-to-move and check indicator is ≥ 1/12 frame height, in-frame, at ≥ 4.5:1 (PAL.K4) And check uses PAL.C8
+```
+
+### VS2.4b: Turn without check
+
+- **Proves**: R6
+
+```gherkin
+Given CAM-board Web 9:16, side to move White not in check, sound off
+When viewed
+Then the side-to-move indicator is ≥ 1/12 frame height, in-frame, at ≥ 4.5:1 (PAL.K4) And PAL.C8 is absent
 ```
 
 ### VS2.5: Coordinates, Bottom seat
