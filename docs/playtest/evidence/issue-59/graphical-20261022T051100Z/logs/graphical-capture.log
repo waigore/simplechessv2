@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/01-mode-pick-n1.png
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/02-shared-setup.png
+{"TEL.1":"shared.start","TEL.2":1792617193623,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/03-shared-play.png
+{"TEL.1":"shared.resign","TEL.2":1792617193650,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792617193656,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792617193656,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/04-shared-result.png
+{"TEL.1":"shared.again","TEL.2":1792617193676,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/05-play-again-setup.png
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/06-mode-pick-after-back.png
+{"TEL.1":"shared.start","TEL.2":1792617193716,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792617193723,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792617193724,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792617193724,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.stop","TEL.2":1792617193727,"TEL.3":"sess-1792617193508-44072-playtest","TEL.4":"NAV.T8","TEL.5":"ok"}
+SAVE_PNG err=0 size=720x1280 path=user://issue59_graphical/07-mode-pick-after-stop.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/01-mode-pick-n1.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/07-mode-pick-after-stop.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/03-shared-play.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/05-play-again-setup.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/04-shared-result.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/02-shared-setup.png
+COPIED ../docs/playtest/evidence/issue-59/graphical-20261022T051100Z/screenshots/06-mode-pick-after-back.png
+ISSUE59_GRAPHICAL pass
