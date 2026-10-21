@@ -78,6 +78,33 @@ const _SHARED_SETUP := {
 	},
 }
 
+const _SHARED_PLAY := {
+	"en":
+	{
+		"advice_on": "Advice On",
+		"advice_off": "Advice Off",
+		"resign": "Resign",
+		"resign_confirm": "Resign this game?",
+		"confirm": "Confirm",
+		"cancel": "Cancel",
+		"white_to_move": "White to move",
+		"black_to_move": "Black to move",
+		"check": "Check",
+	},
+}
+
+const _SHARED_RESULT := {
+	"en":
+	{
+		"title": "Game over",
+		"result_white": "White wins",
+		"result_black": "Black wins",
+		"result_draw": "Draw",
+		"play_again": "Play again",
+		"stop": "Stop",
+	},
+}
+
 const _EXCEPTIONS := {
 	"en":
 	{
@@ -127,6 +154,14 @@ static func mode_pick(key: String, locale: String) -> String:
 
 static func shared_setup(key: String, locale: String) -> String:
 	return _lookup(_SHARED_SETUP, key, locale)
+
+
+static func shared_play(key: String, locale: String) -> String:
+	return _lookup(_SHARED_PLAY, key, locale)
+
+
+static func shared_result(key: String, locale: String) -> String:
+	return _lookup(_SHARED_RESULT, key, locale)
 
 
 static func exception_text(key: String, locale: String) -> String:
