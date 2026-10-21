@@ -12,7 +12,8 @@ Checks (catalog integrity IDs): I1 files, I2 asset IDs, I3 approval,
 I4 kind specs and successors, I6 exemptions, I7 handles, I8 banned tools (the
 Banned tools table in docs/asset-tools.md), I9 empty coverage only for SS1
 style anchors, I10 in-scope coverage against kind Coverage, Naming, and recipe
-Outputs (specs/assets/catalog/integrity.md); plus required fields and value shapes.
+Outputs (specs/assets/catalog/integrity.md), I11 approved sound-effects and music
+duration (specs/assets/catalog/audio-duration.md); plus required fields and value shapes.
 
 Usage: asset_catalog.py [--root DIR]
 """
@@ -23,6 +24,7 @@ import json
 import re
 import sys
 from dataclasses import dataclass
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 from typing import Any
 
@@ -58,6 +60,16 @@ STYLE_ANCHORS_RE = re.compile(r"^\s*-\s+\*\*Style anchors\*\*:\s*(.*)$", re.M)
 UUID7_RE = re.compile(
     r"\b([0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\b"
 )
+OPUS_RATE = 48000
+OPUS_HEAD = b"OpusHead"
+OGG_CAPTURE = b"OggS"
+GRANULE_NONE = -1
+DURATION_KINDS = ("sound-effects", "music")
+_NUMBER = r"\d+(?:\.\d+)?"
+_DASH = r"[\u2013\u2014-]"
+DURATION_RANGE_RE = re.compile(rf"({_NUMBER})\s*{_DASH}\s*({_NUMBER})\s*s\b")
+SFX_RANGE_RE = re.compile(rf"X(\d+)\s+({_NUMBER})\s*{_DASH}\s*({_NUMBER})\s*s\b")
+SFX_COVERAGE_RE = re.compile(r"^AK-sound-effects\.V(\d+)$")
 
 
 @dataclass(frozen=True)
@@ -505,6 +517,183 @@ def check_coverage_integrity(root: Path, entries: dict[str, dict[str, Any]]) -> 
     return findings
 
 
+@dataclass(frozen=True)
+class _DurationBand:
+    low_samples: int
+    high_samples: int
+    low_text: str
+    high_text: str
+    label: str
+
+
+def _samples(text: str) -> int:
+    return int((Decimal(text) * Decimal(OPUS_RATE)).to_integral_value(rounding=ROUND_HALF_UP))
+
+
+def _format_seconds(samples: int) -> str:
+    text = format(Decimal(samples) / Decimal(OPUS_RATE), "f")
+    return text.rstrip("0").rstrip(".") if "." in text else text
+
+
+def _table_row(section: str, row_id: str) -> str:
+    for line in section.splitlines():
+        if not line.lstrip().startswith("|"):
+            continue
+        cells = [cell.strip().strip("`") for cell in line.strip().strip("|").split("|")]
+        if cells and cells[0] == row_id:
+            return line
+    return ""
+
+
+def _band(low: str, high: str, label: str) -> _DurationBand | None:
+    low_samples, high_samples = _samples(low), _samples(high)
+    if low_samples > high_samples:
+        return None
+    return _DurationBand(low_samples, high_samples, low, high, label)
+
+
+def _parse_sfx_bands(text: str) -> dict[str, _DurationBand]:
+    bands: dict[str, _DurationBand] = {}
+    bad: set[str] = set()
+    for number, low, high in SFX_RANGE_RE.findall(_table_row(_section(text, "Specification"), "S1")):
+        label = f"X{number}"
+        if label in bands or label in bad:
+            bad.add(label)
+            bands.pop(label, None)
+            continue
+        parsed = _band(low, high, label)
+        if parsed is not None:
+            bands[label] = parsed
+    return bands
+
+
+def _parse_music_band(text: str) -> _DurationBand | None:
+    spec = DURATION_RANGE_RE.findall(_table_row(_section(text, "Specification"), "S4"))
+    check = DURATION_RANGE_RE.findall(_table_row(_section(text, "Checks"), "K3"))
+    if len(spec) != 1 or len(check) != 1:
+        return None
+    if (_samples(spec[0][0]), _samples(spec[0][1])) != (_samples(check[0][0]), _samples(check[0][1])):
+        return None
+    return _band(spec[0][0], spec[0][1], "S4/K3")
+
+
+def _ogg_pages(data: bytes) -> list[tuple[int, bytes]] | None:
+    pages: list[tuple[int, bytes]] = []
+    index, size = 0, len(data)
+    while index < size:
+        if size - index < 27 or data[index:index + 4] != OGG_CAPTURE:
+            return None
+        granule = int.from_bytes(data[index + 6:index + 14], "little", signed=True)
+        segments = data[index + 26]
+        table = index + 27
+        if size < table + segments:
+            return None
+        body = sum(data[table:table + segments])
+        start = table + segments
+        end = start + body
+        if size < end:
+            return None
+        pages.append((granule, data[start:end]))
+        index = end
+    return pages
+
+
+def _measure_opus(data: bytes) -> tuple[int | None, str]:
+    """Return pre-skip-corrected 48 kHz samples, or (None, reason)."""
+    if not data.startswith(OGG_CAPTURE):
+        return None, "non-ogg"
+    pages = _ogg_pages(data)
+    if not pages:
+        return None, "unreadable"
+    head = pages[0][1]
+    if not head.startswith(OPUS_HEAD) or len(head) < 12:
+        return None, "non-opus"
+    pre_skip = int.from_bytes(head[10:12], "little")
+    last = next((granule for granule, _payload in reversed(pages) if granule != GRANULE_NONE), None)
+    if last is None or last < pre_skip:
+        return None, "unreadable"
+    return last - pre_skip, ""
+
+
+def _sfx_band(entry: dict[str, Any], bands: dict[str, _DurationBand]) -> _DurationBand | None:
+    coverage = entry.get("coverage")
+    if not isinstance(coverage, list) or not coverage:
+        return None
+    labels: list[str] = []
+    for item in coverage:
+        match = SFX_COVERAGE_RE.fullmatch(item) if isinstance(item, str) else None
+        if match is None:
+            return None
+        labels.append(f"X{match.group(1)}")
+    unique = list(dict.fromkeys(labels))
+    if len(unique) != 1 or unique[0] not in bands:
+        return None
+    return bands[unique[0]]
+
+
+def _duration_files(rel: str, entry: dict[str, Any], asset_root: Path, band: _DurationBand) -> list[Finding]:
+    files = entry.get("files")
+    if not isinstance(files, list) or not files:
+        return [Finding(rel, "I11", "no audio file to measure")]
+    findings: list[Finding] = []
+    for rel_file in files:
+        shown = rel_file if isinstance(rel_file, str) else type(rel_file).__name__
+        path = asset_root / rel_file if isinstance(rel_file, str) else None
+        if path is None or not path.is_file():
+            findings.append(Finding(rel, "I11", f"'{shown}' is unreadable"))
+            continue
+        try:
+            samples, reason = _measure_opus(path.read_bytes())
+        except OSError:
+            findings.append(Finding(rel, "I11", f"'{shown}' is unreadable"))
+            continue
+        if samples is None:
+            message = {"non-ogg": "is not an OGG file", "non-opus": "is Ogg but not Opus"}.get(reason, "is unreadable")
+            findings.append(Finding(rel, "I11", f"'{shown}' {message}"))
+            continue
+        if band.low_samples <= samples <= band.high_samples:
+            continue
+        findings.append(Finding(
+            rel,
+            "I11",
+            f"'{shown}' measures {_format_seconds(samples)} s, outside {band.label} {band.low_text}–{band.high_text} s",
+        ))
+    return findings
+
+
+def check_audio_duration(root: Path, hub: Hub, entries: dict[str, dict[str, Any]]) -> list[Finding]:
+    """CAT.I11: approved sound-effects and music durations, read from the kind specs."""
+    if not hub.asset_root:
+        return []
+    asset_root = root / hub.asset_root
+    if not asset_root.is_dir():
+        return []
+    sfx_bands = _parse_sfx_bands(_read(root / KINDS_DIR / "sound-effects.md"))
+    music_band = _parse_music_band(_read(root / KINDS_DIR / "music.md"))
+    findings: list[Finding] = []
+    for rel, entry in entries.items():
+        if entry.get("state") != "approved":
+            continue
+        kind = _entry_kind(entry)
+        if kind not in DURATION_KINDS:
+            continue
+        if kind == "sound-effects":
+            if not sfx_bands:
+                findings.append(Finding(rel, "I11", "kind spec S1 does not state Xn duration ranges"))
+                continue
+            band = _sfx_band(entry, sfx_bands)
+            if band is None:
+                findings.append(Finding(rel, "I11", "coverage does not resolve to exactly one Xn range in S1"))
+                continue
+        else:
+            if music_band is None:
+                findings.append(Finding(rel, "I11", "kind spec S4 and K3 do not state one inclusive duration band"))
+                continue
+            band = music_band
+        findings += _duration_files(rel, entry, asset_root, band)
+    return findings
+
+
 def check_catalog(entries: dict[str, dict[str, Any]]) -> list[Finding]:
     findings: list[Finding] = []
     ids = {e.get("id") for e in entries.values()}
@@ -584,6 +773,7 @@ def check(root: Path) -> tuple[list[Finding], list[str]]:
         notes.append(f"asset root not set in {HUB}; file checks skipped")
     else:
         findings += check_files(root, hub, entries)
+        findings += check_audio_duration(root, hub, entries)
     return findings, notes
 
 

@@ -23,4 +23,4 @@ Moved to [`catalog/fields.md`](catalog/fields.md).
 
 ## Integrity
 
-Moved to [`catalog/integrity.md`](catalog/integrity.md) (`CAT.I1`–`CAT.I10`). `CAT.I10` checks a draft or approved entry with non-empty `coverage`, including the person-supplied anchors `fonts/noto-sans` and `fonts/noto-sans-cjk`. A deprecated entry adds no claim. Under-claim is a listed `V` ID whose handle or files cannot carry it. CI: `asset_catalog.py`.
+Moved to [`catalog/integrity.md`](catalog/integrity.md) (`CAT.I1`–`CAT.I11`). `CAT.I10` checks a draft or approved entry with non-empty `coverage`, including the person-supplied anchors `fonts/noto-sans` and `fonts/noto-sans-cjk`. A deprecated entry adds no claim. Under-claim is a listed `V` ID whose handle or files cannot carry it. CI: `asset_catalog.py`. `CAT.I11` checks approved `sound-effects` and `music`: map `AK-sound-effects.Vn` to the inclusive `Xn` range in `S1`, and read the music band from `S4` and `K3`. Duration is Ogg Opus `(last granule − OpusHead pre-skip) / 48000`. CI: `asset_catalog.py`. Rule: [`catalog/audio-duration.md`](catalog/audio-duration.md).

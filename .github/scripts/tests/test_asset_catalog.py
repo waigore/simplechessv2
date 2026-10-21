@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import json
 import os
+import struct
 import sys
 import tempfile
 import unittest
+from decimal import Decimal
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -493,6 +495,232 @@ class CoverageIntegrityTest(unittest.TestCase):
     def test_omitted_coverage_on_person_supplied_entry_is_outside_i10(self) -> None:
         self.add(handle="fonts/demo-only", kind_spec="AK-fonts", files=["fonts/demo-only.ttf"])
         self.assertEqual(self.checks(), [])
+
+
+def _ogg_page(granule: int, header_type: int, payload: bytes, sequence: int) -> bytes:
+    header = bytearray(b"OggS")
+    header.append(0)
+    header.append(header_type)
+    header += struct.pack("<q", granule)
+    header += struct.pack("<I", 1)
+    header += struct.pack("<I", sequence)
+    header += struct.pack("<I", 0)
+    header.append(1)
+    header.append(len(payload))
+    return bytes(header) + payload
+
+
+def opus_bytes(samples: int, *, pre_skip: int = 0, input_rate: int = 48000) -> bytes:
+    ident = bytearray(b"OpusHead")
+    ident += bytes((1, 1))
+    ident += struct.pack("<H", pre_skip)
+    ident += struct.pack("<I", input_rate)
+    ident += struct.pack("<h", 0)
+    ident.append(0)
+    return _ogg_page(0, 2, bytes(ident), 0) + _ogg_page(samples + pre_skip, 4, b"\x00" * 8, 1)
+
+
+def opus_seconds(text: str, **kwargs: int) -> bytes:
+    samples = int((Decimal(text) * Decimal(48000)).to_integral_value())
+    return opus_bytes(samples, **kwargs)
+
+
+class AudioDurationTest(unittest.TestCase):
+    """CAT.I11 fixtures. They do not write the live catalog."""
+
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        real = Path(__file__).resolve().parents[3]
+        assets = self.root / "specs/assets"
+        assets.mkdir(parents=True)
+        os.symlink(real / "specs/assets/kinds", assets / "kinds")
+        os.symlink(real / "specs/assets/catalog.md", assets / "catalog.md")
+        os.symlink(real / "specs/assets/catalog", assets / "catalog")
+        (assets / "assets.md").write_text((real / "specs/assets/assets.md").read_text(encoding="utf-8"), encoding="utf-8")
+        (self.root / "asset_catalog").mkdir()
+        (self.root / "game_assets").mkdir()
+        self.review = {"verdict": "Pass", "date": "2026-10-20", "reviewer": "agent", "report": "ok"}
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def add(self, payload: bytes | None = b"asset", **overrides: object) -> str:
+        data = entry(**overrides)
+        (self.root / "asset_catalog" / f"{data['id']}.json").write_text(json.dumps(data), encoding="utf-8")
+        rels = [str(rel) for rel in data.get("files", [])]  # type: ignore[union-attr]
+        if payload is not None:
+            for rel in rels:
+                path = self.root / "game_assets" / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+        return rels[0] if rels else ""
+
+    def i11(self) -> list[str]:
+        findings, _ = check(self.root)
+        return [f.message for f in findings if f.check == "I11"]
+
+    def checks(self) -> list[str]:
+        findings, _ = check(self.root)
+        return [str(f) for f in findings]
+
+    def sfx(self, handle: str, vid: str, payload: bytes, **overrides: object) -> str:
+        fields: dict[str, object] = {
+            "handle": handle,
+            "kind_spec": "AK-sound-effects",
+            "coverage": [f"AK-sound-effects.{vid}"],
+            "files": [f"{handle}.ogg"],
+            "state": "approved",
+            "review": self.review,
+        }
+        fields.update(overrides)
+        return self.add(payload, **fields)
+
+    def test_in_band_sound_effects_pass(self) -> None:
+        cues = (
+            ("sound-effects/touch-select", "V1", "0.10"),
+            ("sound-effects/move-settle", "V2", "0.10"),
+            ("sound-effects/check", "V3", "0.15"),
+            ("sound-effects/end-resolve", "V4", "0.30"),
+            ("sound-effects/puzzle-fail", "V5", "0.12"),
+        )
+        for handle, vid, seconds in cues:
+            self.sfx(handle, vid, opus_seconds(seconds))
+        self.assertEqual(self.checks(), [])
+
+    def test_x2_at_0_190_seconds_fails(self) -> None:
+        self.sfx("sound-effects/move-settle", "V2", opus_seconds("0.190"))
+        found = self.i11()
+        self.assertEqual(len(found), 1)
+        self.assertIn("outside", found[0])
+        self.assertIn("X2", found[0])
+        self.assertIn("0.08", found[0])
+        self.assertIn("0.15", found[0])
+
+    def test_x2_inclusive_edges_pass_and_just_outside_fails(self) -> None:
+        rel = self.sfx("sound-effects/move-settle", "V2", opus_seconds("0.08"))
+        self.assertEqual(self.i11(), [])
+        path = self.root / "game_assets" / rel
+        path.write_bytes(opus_seconds("0.15"))
+        self.assertEqual(self.i11(), [])
+        path.write_bytes(opus_seconds("0.079"))
+        self.assertTrue(self.i11())
+        path.write_bytes(opus_seconds("0.151"))
+        self.assertTrue(any("outside" in message for message in self.i11()))
+
+    def test_pre_skip_correction_passes_when_other_clocks_are_outside(self) -> None:
+        # 0.125 s after pre-skip. Granule-only is 0.225 s. Input-rate division is 0.375 s.
+        # Both sit outside X2 (0.08–0.15 s); only (granule − pre-skip) / 48000 is inside.
+        self.sfx("sound-effects/move-settle", "V2", opus_bytes(6000, pre_skip=4800, input_rate=16000))
+        self.assertEqual(self.checks(), [])
+
+    def test_music_inclusive_edges_pass(self) -> None:
+        self.add(
+            opus_seconds("150"),
+            handle="music/cafe-ambient-a",
+            kind_spec="AK-music",
+            coverage=["AK-music.V1"],
+            files=["music/cafe-ambient-a.ogg"],
+            state="approved",
+            review=self.review,
+        )
+        self.add(
+            opus_seconds("210"),
+            handle="music/cafe-ambient-b",
+            kind_spec="AK-music",
+            coverage=["AK-music.V2"],
+            files=["music/cafe-ambient-b.ogg"],
+            state="approved",
+            review=self.review,
+        )
+        self.assertEqual(self.checks(), [])
+
+    def test_music_outside_band_fails(self) -> None:
+        self.add(
+            opus_seconds("149"),
+            handle="music/cafe-ambient-a",
+            kind_spec="AK-music",
+            coverage=["AK-music.V1"],
+            files=["music/cafe-ambient-a.ogg"],
+            state="approved",
+            review=self.review,
+        )
+        low = self.i11()
+        self.assertTrue(any("outside" in message and "150" in message and "210" in message for message in low))
+        path = self.root / "game_assets/music/cafe-ambient-a.ogg"
+        path.write_bytes(opus_seconds("211"))
+        high = self.i11()
+        self.assertTrue(any("outside" in message for message in high))
+        self.assertFalse(any("X2" in message or "S1" in message for message in high))
+
+    def test_draft_deprecated_and_non_audio_are_not_duration_checked(self) -> None:
+        self.sfx("sound-effects/move-settle", "V2", b"not-ogg", state="draft", review=...)
+        self.sfx(
+            "sound-effects/check",
+            "V3",
+            b"not-ogg",
+            state="deprecated",
+            review=...,
+            deprecation_reason="retired",
+        )
+        self.add(
+            b"png",
+            handle="piece-sprites/k-white",
+            kind_spec="AK-piece-sprites",
+            coverage=["AK-piece-sprites.V1"],
+            files=["piece-sprites/k-white.svg"],
+            state="approved",
+            review=self.review,
+        )
+        self.assertEqual(self.i11(), [])
+        self.assertEqual(self.checks(), [])
+
+    def test_unreadable_non_ogg_and_non_opus_fail(self) -> None:
+        self.sfx("sound-effects/touch-select", "V1", b"OggS" + b"\x00" * 8)
+        self.sfx("sound-effects/move-settle", "V2", b"not-an-ogg")
+        self.sfx("sound-effects/check", "V3", _ogg_page(48000, 2, b"\x01vorbis" + b"\x00" * 8, 0))
+        found = self.i11()
+        self.assertTrue(any("unreadable" in message for message in found))
+        self.assertTrue(any("not an OGG file" in message for message in found))
+        self.assertTrue(any("not Opus" in message for message in found))
+
+    def test_coverage_must_resolve_to_one_xn_range(self) -> None:
+        self.add(
+            opus_seconds("0.10"),
+            handle="sound-effects/move-settle",
+            kind_spec="AK-sound-effects",
+            coverage=["AK-sound-effects.V1", "AK-sound-effects.V2"],
+            files=["sound-effects/move-settle.ogg"],
+            state="approved",
+            review=self.review,
+        )
+        self.add(
+            opus_seconds("0.10"),
+            handle="sound-effects/touch-select",
+            kind_spec="AK-sound-effects",
+            coverage=[],
+            files=["sound-effects/touch-select.ogg"],
+            state="approved",
+            review=self.review,
+        )
+        self.sfx("sound-effects/check", "V9", opus_seconds("0.10"), coverage=["AK-sound-effects.V9"])
+        self.sfx("sound-effects/end-resolve", "V4", opus_seconds("0.30"), coverage=["AK-music.V1"])
+        found = self.i11()
+        self.assertEqual(len(found), 4)
+        self.assertTrue(all("exactly one Xn range" in message for message in found))
+
+    def test_duplicate_coverage_row_uses_that_one_range(self) -> None:
+        self.sfx(
+            "sound-effects/move-settle",
+            "V2",
+            opus_seconds("0.10"),
+            coverage=["AK-sound-effects.V2", "AK-sound-effects.V2"],
+        )
+        self.assertEqual(self.i11(), [])
+
+    def test_shipped_cues_pass(self) -> None:
+        findings, _ = check(Path(__file__).resolve().parents[3])
+        self.assertEqual([f.message for f in findings if f.check == "I11"], [])
 
 
 if __name__ == "__main__":

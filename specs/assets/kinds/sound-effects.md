@@ -71,7 +71,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 | ID | Check | Method | Pass criterion |
 |----|-------|--------|----------------|
-| K1 | Duration | Measure | Within S1 for category |
+| K1 | Duration | Measure | Within S1 for category; [`CAT.I11`](../catalog/audio-duration.md) |
 | K2 | Loudness | Meter | ~L2 peaks |
 | K3 | Character | Listen vs X* | Wood/cafe; not chrome |
 | K4 | Budget | File size | ≤ 100 KB |

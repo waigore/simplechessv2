@@ -18,6 +18,7 @@ Part of [`catalog.md`](../catalog.md).
 | `I8` | No entry was generated or touched up with a tool that [`docs/asset-tools.md`](../../../docs/asset-tools.md) bans | CI: `asset_catalog.py` |
 | `I9` | Empty or omitted `coverage` on a non–person-supplied entry is allowed only when the asset ID is listed under Style anchors in its kind's `SS1` | CI: `asset_catalog.py` |
 | `I10` | In-scope `coverage` matches that kind's Coverage, Naming, and recipe Outputs | CI: `asset_catalog.py` |
+| `I11` | Approved `sound-effects` and `music` stay in the kind duration band | CI: `asset_catalog.py`; [`audio-duration.md`](audio-duration.md) |
 
 ### CAT.I10
 
