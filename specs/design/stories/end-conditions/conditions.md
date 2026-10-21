@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `END`
 - **Glossary terms**: [Shared game](../../glossary.md), [Draw](../../glossary.md), [Resign](../../glossary.md)
 
-Split from [`stories/end-conditions.md`](../end-conditions.md) by logical unit. Puzzle rows: [`conditions-puzzle.md`](conditions-puzzle.md).
+Split from [`stories/end-conditions.md`](../end-conditions.md) by logical unit. Puzzle rows: [`conditions-puzzle.md`](conditions-puzzle.md). Draw offer: [`conditions-draw.md`](conditions-draw.md). Counts D3/D4: [`conditions-counts.md`](conditions-counts.md).
 
 ## Coverage
 
@@ -14,8 +14,7 @@ Split from [`stories/end-conditions.md`](../end-conditions.md) by logical unit. 
 |---------|-----------|---------|-----------|
 | L1 | PS1.1 PS1.2 | L2 | PS1.3 |
 | L3 | PS1.4 PS1.5 | D1 | PS1.6 PS1.7 |
-| D2 | PS1.8 PS1.9 | D3 | PS1.10 PS1.11 |
-| D4 | PS1.12 PS1.13 | D5 | PS1.5 PS1.14 |
+| D2 | PS1.8 PS1.9 | D5 | PS1.5 PS1.14 |
 
 ## PS1: Reach a result
 
@@ -109,46 +108,6 @@ Then draw And GS.drawOffer is none And GS.gameEnded true
 Given White offers a draw And GS.drawOffer is White
 When Black declines
 Then play continues, same side to move, clock running And GS.drawOffer is none
-```
-
-### PS1.10: Third repetition draws
-
-- **Proves**: D3
-
-```gherkin
-Given same position, side, rights a third time
-When checked after a move
-Then draw
-```
-
-### PS1.11: Second repetition continues
-
-- **Proves**: D3
-
-```gherkin
-Given same position, side, rights a second time
-When checked after a move
-Then play continues
-```
-
-### PS1.12: Fifty moves draw
-
-- **Proves**: D4
-
-```gherkin
-Given fifty moves each, no capture or pawn move
-When checked after a move
-Then draw
-```
-
-### PS1.13: Forty-nine moves continue
-
-- **Proves**: D4
-
-```gherkin
-Given forty-nine moves each, no capture or pawn move
-When checked after a move
-Then play continues
 ```
 
 ### PS1.14: Clock expiry draws
