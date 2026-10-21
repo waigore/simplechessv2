@@ -84,6 +84,8 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _draw_offer_flow()
 	if _error.is_empty():
+		_error = _c4_c5_open_from_s4_s5()
+	if _error.is_empty():
 		_error = _resign_flow()
 	if _error.is_empty():
 		_error = _s2_board_unavailable_and_clock()
@@ -433,6 +435,107 @@ func _draw_offer_withdraw_lapse_accept() -> String:
 	if not end_ok:
 		return "Accept → shared-result END.D2"
 	return ""
+
+
+func _c4_c5_open_from_s4_s5() -> String:
+	## AC: C4/C5 available in S4/S5 open EX.confirm; unavailable in S6.
+	_router.handle_control("mode-pick", "C1")
+	_router.clock = "untimed"
+	_router.handle_control("shared-setup", "C5")
+	var err := _c5_opens_confirm_in_s4()
+	if not err.is_empty():
+		return err
+	err = _c4_opens_confirm_in_s5()
+	if not err.is_empty():
+		return err
+	return _c4_c5_closed_in_s6()
+
+
+func _c5_opens_confirm_in_s4() -> String:
+	_setup_s4_for_focus()
+	_router._emit_play_screen()
+	var chrome := _shared_play_state()
+	if not bool(chrome.get("c5_available", false)):
+		return "S4 chrome c5_available"
+	_router.handle_control("shared-play", "C5")
+	var play := _play_panel()
+	var session := _router.shared_session
+	return _first_fail(
+		[
+			[
+				(
+					_router.play_ui_state == "S2"
+					and play.confirm_kind == SharedGameSession.CONFIRM_OFFER
+				),
+				"S4 C5 → offer confirm S2",
+			],
+			[str(session.pending_promote_from).is_empty(), "S4 C5 clears pending promote"],
+			[session.selected_piece == "e7", "S4 C5 leaves pawn selected"],
+		]
+	)
+
+
+func _c4_opens_confirm_in_s5() -> String:
+	_router.handle_control("shared-play", "cancel")
+	if _router.play_ui_state != "S1":
+		return "S5 setup cancel → S1"
+	var session := _router.shared_session
+	session.rules.reset_opening()
+	session._sync_active_to_side_to_move()
+	session.select_own("e2")
+	# Occupied non-legal target → EX.rejected / S5 (empty non-dest is IN.deselect).
+	session.place("e2", "e7")
+	if session.play_ui_state != SharedGameSession.UI_S5:
+		return "S5 setup refused place"
+	_router._emit_play_screen()
+	if not bool(_shared_play_state().get("c4_available", false)):
+		return "S5 chrome c4_available"
+	_router.handle_control("shared-play", "C4")
+	var play := _play_panel()
+	return _first_fail(
+		[
+			[
+				(
+					_router.play_ui_state == "S2"
+					and play.confirm_kind == SharedGameSession.CONFIRM_RESIGN
+				),
+				"S5 C4 → resign confirm S2",
+			],
+			[str(session.reject_square).is_empty(), "S5 C4 clears reject flash"],
+		]
+	)
+
+
+func _c4_c5_closed_in_s6() -> String:
+	_router.handle_control("shared-play", "cancel")
+	_router.handle_control("shared-play", "C5")
+	_router.handle_control("shared-play", "confirm")
+	if _router.play_ui_state != "S6":
+		return "S6 setup confirm offer"
+	_router._emit_play_screen()
+	var chrome := _shared_play_state()
+	var err := _first_fail(
+		[
+			[not bool(chrome.get("c4_available", true)), "S6 c4 unavailable"],
+			[not bool(chrome.get("c5_available", true)), "S6 c5 unavailable"],
+		]
+	)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "C5")
+	if _router.play_ui_state != "S6":
+		return "S6 C5 must stay closed"
+	_router.handle_control("shared-play", "C4")
+	if _router.play_ui_state != "S6":
+		return "S6 C4 must stay closed"
+	_router.handle_control("shared-play", "C8")
+	if _router.play_ui_state != "S1":
+		return "S6 decline cleanup"
+	# Leave mode-pick so later flows can re-enter shared-play.
+	_router.handle_control("shared-play", "C4")
+	_router.handle_control("shared-play", "confirm")
+	_router.handle_control("shared-result", "C2")
+	return "" if _router.stage == "mode-pick" else "C4/C5 test → mode-pick"
 
 
 func _resign_flow() -> String:

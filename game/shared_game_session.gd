@@ -355,9 +355,27 @@ func handle_play_control(control_id: String) -> Dictionary:
 	return result
 
 
+## C4/C5 available in S1/S4/S5 (not S2/S6); see shared-play-controls.md.
+func _confirm_openable() -> bool:
+	if game_ended():
+		return false
+	return play_ui_state == UI_S1 or play_ui_state == UI_S4 or play_ui_state == UI_S5
+
+
+## Drop S4 pending choice / S5 flash before entering EX.confirm (Cancel → S1).
+func _leave_choice_for_confirm() -> void:
+	if play_ui_state == UI_S4:
+		pending_promote_from = ""
+		pending_promote_to = ""
+	elif play_ui_state == UI_S5:
+		reject_square = ""
+		last_reject = ""
+
+
 func _open_resign_confirm() -> Dictionary:
-	if play_ui_state != UI_S1 or game_ended():
+	if not _confirm_openable():
 		return {"ok": false}
+	_leave_choice_for_confirm()
 	play_ui_state = UI_S2
 	confirm_kind = CONFIRM_RESIGN
 	return {
@@ -366,8 +384,9 @@ func _open_resign_confirm() -> Dictionary:
 
 
 func _open_offer_confirm() -> Dictionary:
-	if play_ui_state != UI_S1 or game_ended():
+	if not _confirm_openable():
 		return {"ok": false}
+	_leave_choice_for_confirm()
 	play_ui_state = UI_S2
 	confirm_kind = CONFIRM_OFFER
 	return {
