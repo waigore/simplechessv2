@@ -12,7 +12,7 @@ Marks and coordinates: [`perception-marks.md`](perception-marks.md).
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| R1 | VS1.1 | R2 | VS1.2 VS1.3 |
+| R1 | VS1.1 VS1.1b | R2 | VS1.2 VS1.3 |
 | D1 | VS1.10 | M1 | VS1.11 |
 
 ## VS1: Glanceable board
@@ -24,7 +24,17 @@ As a casual player, I read piece type and the board at a glance so that Clear bo
 - **Proves**: R1
 
 ```gherkin
-Given CAM-board Web 9:16, a piece of each type at 1/12 frame height
+Given CAM-board Web 9:16, each piece type at SPC.E1 (0.85 units) under PRJ.V1 (~1/21 frame height)
+When viewed in PRJ.A2
+Then each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
+```
+
+### VS1.1b: Identity at 16:9
+
+- **Proves**: R1
+
+```gherkin
+Given CAM-board Web 16:9, each piece type at SPC.E1 (0.85 units) under PRJ.V1 (~1/12 frame height)
 When viewed in PRJ.A2
 Then each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
 ```

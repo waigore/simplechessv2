@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/aesthetics.md`](../../.agents/
 
 - **Medium**: Vector 2D. Matches the flat board plane ([view.md](../view/view.md)); pieces and board are crisp shapes, not pixel art or 3D.
 - **Resolution and scale**: Art is resolution-independent. Proportions use world units ([SPC.U1](../view/spatial-model.md)): 1 unit = 1 square. Piece bodies fill [SPC.E1](../view/spatial-model.md) (0.85 × 0.85).
-- **Platform implications**: Web touch → the board dominates the play area; each piece silhouette remains readable at about 1/12 of frame height.
+- **Platform implications**: Web touch → the board dominates the play area; each piece silhouette remains readable at the size in [FRM.L1](form.md) (about 1/21 of frame height at 9:16 and about 1/12 at 16:9).
 
 ## Style pillars
 
