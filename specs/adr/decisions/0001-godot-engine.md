@@ -24,10 +24,10 @@ In scope: version, scripting, Web export, input. Out of scope: Stockfish, persis
 
 ## Reasoning
 
-1. Definition chose Godot for Web 2D and on-device presentation.
-2. 4.7.2 was latest stable (not 4.8 beta).
-3. GDScript fits a small 2D Web project.
-4. Instant play over waiting on servers for moves.
+1. Definition Engine (Godot): Godot for Web 2D and on-device presentation (Web; 2D view).
+2. Reliability: ship latest stable — 4.7.2 — not a beta line.
+3. Web and 2D view: GDScript fits a small 2D Web project.
+4. Instant play: local moves must not wait on the network.
 
 Costs accepted: Web export size/performance limits of a browser runtime.
 
@@ -35,7 +35,7 @@ Costs accepted: Web export size/performance limits of a browser runtime.
 
 | Alternative | Why rejected |
 |-------------|--------------|
-| None — engine set in the definition | Only version/scripting were open |
+| Godot 4.8 beta | Reliability — not stable; prefer latest stable 4.7.2 |
 
 ## Non-functional requirements
 
