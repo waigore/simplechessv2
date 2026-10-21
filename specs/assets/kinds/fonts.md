@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Fonts
 - **Source types**: Third-party; human-made
-- **Style**: P3; [UI.T1 T2 T3](../../aesthetics/ui-style.md); Accessibility; Localization
+- **Style**: [AES.P3](../../aesthetics/aesthetics.md); [UIS.T1](../../aesthetics/ui-style.md) [UIS.T2](../../aesthetics/ui-style.md) [UIS.T3](../../aesthetics/ui-style.md); Accessibility; Localization
 - **Tool roles**: None — import/register only
 - **Approval**: As hub
 - **Serves**: Localization (`en`, `zh-Hant`, `ja`); Accessibility text size; all UX screens
@@ -13,13 +13,13 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 | ID | Subject | Required variants | Count |
 |----|---------|-------------------|-------|
-| V1 | UI family for T1–T3 | One family (or paired) covering Latin, Traditional Chinese, Japanese; tabular figures preferred for T3 | 1–2 files |
+| V1 | UI family for UIS.T1–T3 | One family (or paired) covering Latin, Traditional Chinese, Japanese; tabular figures preferred for UIS.T3 | 1–2 files |
 
 ## Specification
 
 | ID | Property | Value |
 |----|----------|-------|
-| S1 | Classification | Humanist sans; weights for semibold (T1), regular (T2), medium (T3) |
+| S1 | Classification | Humanist sans; weights for semibold (UIS.T1), regular (UIS.T2), medium (UIS.T3) |
 | S2 | Scripts | Latin + zh-Hant + ja glyphs needed for shipped UI copy |
 | S3 | License | Allows Web embedding / no-install browser game |
 | S4 | Format | TTF/OTF/WOFF2 ([ADR-0005](../../adr/decisions/0005-asset-catalog-roots.md)) |
@@ -28,7 +28,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 | ID | Limit | Value | Traces to |
 |----|-------|-------|-----------|
-| B1 | Kind total download | ≤ 2 MB compressed preferred | Load time; G1 |
+| B1 | Kind total download | ≤ 2 MB compressed (sum of shipped font file sizes under this kind) | Load time; G1 |
 
 ## Style series
 
@@ -38,8 +38,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 - **Modality**: visual
 - **Enforce**: soft
 - **Style anchors**: `01a15215-15bd-7e3f-a3f8-ffcb1333a0ab` (`fonts/noto-sans`), `01a15215-15bd-77a5-b804-9ea4d95880a4` (`fonts/noto-sans-cjk`)
-- **Style binding**: None — third-party soft exemplars (not Recraft)
-- **Aesthetics**: P3; UI.T1–T3
+- **Style binding**: TBD — may a third-party visual kind stay soft exemplars with no Recraft style id?
+- **Aesthetics**: [AES.P3](../../aesthetics/aesthetics.md); [UIS.T1](../../aesthetics/ui-style.md)–[UIS.T3](../../aesthetics/ui-style.md)
 - **Built from**: the two anchors above on 2026-10-19 (Noto Sans OFL; PO-confirmed)
 - **Refresh when**: UI type roles or locale set change
 
@@ -70,8 +70,8 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K1 | Scripts | Spot-check UI strings in three locales | No tofu for shipped copy |
 | K2 | Legibility | Smallest shipped size on phone-width | Accessibility |
 | K3 | License | Catalog F12 | Web-embed allowed |
-| K4 | Budget | Total size | ≤ ~2 MB or justified exception in review |
-| K5 | Spec S1 | Font file inspect | Humanist sans; T1–T3 weights present |
+| K4 | Budget | Sum compressed byte sizes of all shipped font files for this kind | ≤ 2 MB |
+| K5 | Spec S1 | Font file inspect | Humanist sans; UIS.T1–T3 weights present |
 | K6 | Spec S4 | File extension | TTF / OTF / WOFF2 |
 
 ## Naming
