@@ -8,7 +8,7 @@ Part of [`catalog.md`](../catalog.md).
 
 | ID | Rule | How checked |
 |----|------|-------------|
-| `I1` | Every file under the asset root, except engine import sidecars, belongs to one entry, and every entry's files exist | CI: `asset_catalog.py` |
+| `I1` | Every file under the asset root, except engine import sidecars (`.meta`, `.import`, and `.uid`), belongs to one entry, and every entry's files exist | CI: `asset_catalog.py` |
 | `I2` | Asset IDs are valid UUIDs version 7, unique, and never reused | CI: `asset_catalog.py` |
 | `I3` | Every approved entry has a Pass review for its current version, or a review exemption | CI: `asset_catalog.py` |
 | `I4` | Every cited ID exists; a planned kind spec named in the hub counts | CI for kind specs and successors; `review-asset` for the rest |
@@ -22,7 +22,7 @@ Part of [`catalog.md`](../catalog.md).
 
 ### CAT.I10
 
-Check a `draft` or `approved` entry whose `coverage` list is non-empty, including a person-supplied entry. `draft` matches `approved`. Empty `coverage`, omitted `coverage`, and a `deprecated` entry stay out. A deprecated entry adds no claim. `CAT.I9` still covers the three sheet anchors with empty `coverage`.
+Check a `draft` or `approved` entry whose `coverage` list is non-empty, including a person-supplied entry. `draft` matches `approved`. Empty `coverage`, omitted `coverage`, and a `deprecated` entry stay out. `CAT.I9` covers the three sheet anchors with empty `coverage`.
 
 Each cited ID is a Coverage row of that entry's kind, written `AK-<kind>.V<n>`. Another kind, an unknown row, or an unqualified `V<n>` fails. The handle matches that kind's Naming for the claimed subject. `fonts/noto-sans` and `fonts/noto-sans-cjk` may both list `AK-fonts.V1`; their multi-file `files` lists stay valid without a fonts Naming edit.
 
