@@ -65,31 +65,33 @@ func _locale_cycle() -> String:
 	var mode_pick := _mode_pick()
 	var title := mode_pick.find_child("Title", true, false) as Label
 	var en_title := StringTable.mode_pick("title", "en")
+	var err := ""
 	if title == null or title.text != en_title:
-		return "mode-pick title before locale switch"
+		err = "mode-pick title before locale switch"
+	if err.is_empty():
+		err = _locale_after_c4(
+			"zh-Hant", "繁體中文", "en→zh-Hant", "mode-pick copy did not switch to zh-Hant"
+		)
+	if err.is_empty():
+		err = _locale_after_c4("ja", "日本語", "zh-Hant→ja", "mode-pick copy did not switch to ja")
+	if err.is_empty():
+		_router.handle_control("mode-pick", "C4")
+		if _router.locale != "en":
+			err = "locale ja→en"
+	return err
+
+
+func _locale_after_c4(locale: String, own_name: String, step: String, copy_fail: String) -> String:
 	_router.handle_control("mode-pick", "C4")
-	if _router.locale != "zh-Hant":
-		return "locale en→zh-Hant"
-	mode_pick = _mode_pick()
-	title = mode_pick.find_child("Title", true, false) as Label
+	if _router.locale != locale:
+		return "locale %s" % step
+	var mode_pick := _mode_pick()
+	var title := mode_pick.find_child("Title", true, false) as Label
 	var locale_btn := mode_pick.find_child("SwitchLocale", true, false) as Button
-	if locale_btn == null or locale_btn.text != "繁體中文":
-		return "R3 own-name zh-Hant"
-	if title == null or title.text != StringTable.mode_pick("title", "zh-Hant"):
-		return "mode-pick copy did not switch to zh-Hant"
-	_router.handle_control("mode-pick", "C4")
-	if _router.locale != "ja":
-		return "locale zh-Hant→ja"
-	mode_pick = _mode_pick()
-	title = mode_pick.find_child("Title", true, false) as Label
-	locale_btn = mode_pick.find_child("SwitchLocale", true, false) as Button
-	if locale_btn == null or locale_btn.text != "日本語":
-		return "R3 own-name ja"
-	if title == null or title.text != StringTable.mode_pick("title", "ja"):
-		return "mode-pick copy did not switch to ja"
-	_router.handle_control("mode-pick", "C4")
-	if _router.locale != "en":
-		return "locale ja→en"
+	if locale_btn == null or locale_btn.text != own_name:
+		return "R3 own-name %s" % locale
+	if title == null or title.text != StringTable.mode_pick("title", locale):
+		return copy_fail
 	return ""
 
 

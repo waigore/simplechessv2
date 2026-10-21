@@ -67,25 +67,26 @@ func _no_english_leak_in_cjk() -> String:
 
 
 func _locale_helpers() -> String:
+	var err := ""
 	if StringTable.next_locale("en") != "zh-Hant":
-		return "next_locale en"
-	if StringTable.next_locale("zh-Hant") != "ja":
-		return "next_locale zh-Hant"
-	if StringTable.next_locale("ja") != "en":
-		return "next_locale ja"
-	if StringTable.locale_from_os("zh_TW") != "zh-Hant":
-		return "os zh"
-	if StringTable.locale_from_os("ja_JP") != "ja":
-		return "os ja"
-	if StringTable.mode_pick("locale", "en") != "English":
-		return "own name en"
-	if StringTable.mode_pick("locale", "zh-Hant") != "繁體中文":
-		return "own name zh"
-	if StringTable.mode_pick("locale", "ja") != "日本語":
-		return "own name ja"
-	if StringTable.shared_setup("start", "zz") != "Start":
-		return "unshipped locale falls back to en"
-	return ""
+		err = "next_locale en"
+	elif StringTable.next_locale("zh-Hant") != "ja":
+		err = "next_locale zh-Hant"
+	elif StringTable.next_locale("ja") != "en":
+		err = "next_locale ja"
+	elif StringTable.locale_from_os("zh_TW") != "zh-Hant":
+		err = "os zh"
+	elif StringTable.locale_from_os("ja_JP") != "ja":
+		err = "os ja"
+	elif StringTable.mode_pick("locale", "en") != "English":
+		err = "own name en"
+	elif StringTable.mode_pick("locale", "zh-Hant") != "繁體中文":
+		err = "own name zh"
+	elif StringTable.mode_pick("locale", "ja") != "日本語":
+		err = "own name ja"
+	elif StringTable.shared_setup("start", "zz") != "Start":
+		err = "unshipped locale falls back to en"
+	return err
 
 
 func _layout_growth_chrome() -> String:
