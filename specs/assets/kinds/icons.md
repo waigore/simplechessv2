@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Icons
 - **Source types**: AI generation; human-made
-- **Style**: P3; [UI.I1](../../aesthetics/ui-style.md); [PAL.C9 C6](../../aesthetics/palette.md)
+- **Style**: [AES.P3](../../aesthetics/aesthetics.md); [UIS.I1](../../aesthetics/ui-style.md); [PAL.C9 C6](../../aesthetics/palette.md)
 - **Tool roles**: TL.1
 - **Approval**: As hub
 - **Serves**: Mode pick C1–C3; play controls; Cafe calm
@@ -17,13 +17,13 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | V2 | Mode: Puzzle stream | One glyph | 1 |
 | V3 | Quit / leave sitting | One glyph | 1 |
 | V4 | Back | One glyph | 1 |
-| V5 | Advice on/off | One glyph (or two states) | 1–2 |
+| V5 | Advice on/off | One on/off glyph | 1 |
 
 ## Specification
 
 | ID | Property | Value |
 |----|----------|-------|
-| S1 | Grid | 24×24 art units (UI.I1) |
+| S1 | Grid | 24×24 art units (UIS.I1) |
 | S2 | Style | Flat fill preferred; stroke 1.5 art units if stroked; soft round; flat perspective |
 | S3 | Medium | SVG preferred |
 | S4 | Color | Monochrome ink/gold; tinted in engine OK |
@@ -36,45 +36,36 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ## Style series
 
+Full fields: [`icons/style-series.md`](icons/style-series.md).
+
 ### SS1 — primary
 
-- **State**: active
-- **Modality**: visual
-- **Enforce**: hard
-- **Style anchors**: `01a15199-87f5-7df8-a987-eecaaca9f919` (`icons/style-anchor-sheet`)
-- **Style binding**: Recraft `recraft_style_id` `7056f68a-dd20-4ae0-a3e5-186803e00f4d`; model per [`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md); name `simplechessv2-icons-SS1`
-- **Aesthetics**: P3; UI.I1; PAL.C9 C6
-- **Built from**: `01a15199-87f5-7df8-a987-eecaaca9f919` on 2026-10-19 (PO-confirmed preview-v3; labels stripped)
-- **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
+- **State**: active — see style-series.md for binding, anchors, aesthetics
 
 #### Prompt policy
 
-- **Compose**: subject-first when `active`; append master + negative.
-- **Master**: flat 24 grid cafe UI icon; soft round; simple silhouette (UI.I1; PAL.C9 C6; P3)
-- **Negative**: skeuomorphic; 3D; emoji style; busy detail; esports badges (vs UI.I1; PAL.S3)
+N/A — see [`icons/style-series.md`](icons/style-series.md).
 
 ## Recipes
 
+Full recipes: [`icons/recipes.md`](icons/recipes.md).
+
 ### R1 — Recraft icon
 
-- **Source type**: AI generation
-- **Tool role**: TL.1
-- **Inputs**: style anchors when set
-- **Prompt template (bootstrap)**: 24 grid flat icon {subject}; compose with prompt_policy
-- **Prompt template (series)**: {subject} icon; compose with prompt_policy
-- **Settings**: transparent; Recraft style when active
-- **Seed policy**: record or `n/a`
-- **Post-processing**: fit 24 grid; mono SVG clean
-- **Outputs**: one file per coverage row
+- **Post-processing**: fit 24 grid; mono SVG clean; see recipes.md
+
+### R2 — Human-made icon
+
+- **Source type**: human-made — see recipes.md for N/A tool/prompts/settings/seed
 
 ## Checks
 
 | ID | Check | Method | Pass criterion |
 |----|-------|--------|----------------|
-| K1 | Grid / stroke | Inspect | UI.I1 |
+| K1 | Grid / stroke | Inspect | UIS.I1 |
 | K2 | Readable at UI size | Look on phone-width | Recognizable subject |
 | K3 | Budget | File size | ≤ 20 KB |
-| K4 | Style | Look vs P3 | Quiet, flat |
+| K4 | Style | Look vs AES.P3 | Quiet, flat |
 | K5 | Spec S3 | File inspect | SVG shipped (preferred), or justified PNG |
 | K6 | Spec S4 | Inspect | Monochrome ink (C9) / gold (C6); tint-safe |
 
