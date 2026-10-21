@@ -15,7 +15,7 @@ Split from [`mode-pick.md`](mode-pick.md) by logical unit; that file proves the 
 | P1 | Unavailable verbs | PS1.1 |
 | P2 | No direct switch | PS1.2 |
 | P3 | No direct switch | PS1.3 |
-| U1 | Interrupt → P1 | PS1.4 |
+| U1 | Interrupt → P1 | PS1.4, PS1.5 |
 
 ## PS1: Unavailable verbs and interruptions
 
@@ -51,7 +51,7 @@ When the player attempts to switch to Shared game
 Then the phase remains P3 And GS.lastMode is Puzzle stream
 ```
 
-### PS1.4: Interrupt mid-mode
+### PS1.4: Interrupt mid Puzzle stream
 
 - **Proves**: U1
 
@@ -59,4 +59,14 @@ Then the phase remains P3 And GS.lastMode is Puzzle stream
 Given phase is P3 And a puzzle is open And GS.playerElo is 1200
 When the player closes and reopens
 Then phase is P1 And GS.playerElo is 1200 And the open puzzle was not abandon-scored
+```
+
+### PS1.5: Interrupt mid Shared game
+
+- **Proves**: U1
+
+```gherkin
+Given phase is P2 And a Shared game is in progress And GS.playerElo is 1200
+When the player closes and reopens
+Then phase is P1 And GS.playerElo is 1200 And the Shared game is not resumed
 ```
