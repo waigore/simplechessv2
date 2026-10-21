@@ -9,7 +9,9 @@ Approved look for the SS1 mahogany board and ivory/charcoal piece set. Lives und
 | Path | Role |
 |------|------|
 | `README.md` | This summary |
-| `rebuild_starting_position.py` | Implements the kind-spec pipeline |
+| `piece_sprite_pipeline.py` | Shared S5–S8 steps (one Chrome/Chromium rasterizer) |
+| `rebuild_starting_position.py` | Board composite (S9) |
+| `derive_piece_sprites.py` | Writes the twelve ship PNGs from the sheet only |
 | `starting-position.layout.json` | Authoritative square centers / fill / fit (board S7, piece S9) |
 | `starting-position.preview.png` | Golden approved composite (rewritten by rebuild) |
 
@@ -36,4 +38,12 @@ Everything else under `_work/` is regenerable and not kept.
 python3 docs/asset-previews/rebuild_starting_position.py
 ```
 
-Requires Chrome and Pillow. Writes `starting-position.preview.png` and regenerable `_work/` artifacts.
+Requires Chrome/Chromium and Pillow. Set `CHROME` to the binary when it is not on `PATH`. Writes `starting-position.preview.png` and regenerable `_work/` artifacts.
+
+## Ship sprites
+
+```bash
+python3 docs/asset-previews/derive_piece_sprites.py
+```
+
+Same S5–S7 crop, then one shared LANCZOS scale so the tallest body is about 85% of the square and shorter types stay shorter. Writes `game_assets/piece-sprites/<type>-<white|black>.png`. No generative API.
