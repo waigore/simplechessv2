@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+{"TEL.1":"shared.start","TEL.2":1792613378908,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue58_graphical/01-shared-play-bottom.png
+{"TEL.1":"shared.select","TEL.2":1792613378986,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue58_graphical/02-shared-play-selection-legal.png
+{"TEL.1":"shared.move","TEL.2":1792613379036,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue58_graphical/03-shared-play-after-place.png
+{"TEL.1":"shared.resign","TEL.2":1792613379093,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+SAVE_PNG err=0 size=1280x720 path=user://issue58_graphical/04-resign-confirm-s2.png
+{"TEL.1":"shared.resign","TEL.2":1792613379132,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792613379132,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.start","TEL.2":1792613379149,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue58_graphical/05-shared-play-top-blitz.png
+{"TEL.1":"shared.advice","TEL.2":1792613379211,"TEL.3":"sess-1792613378781-62127-playtest","TEL.4":"UI-shared-play.US1.4","TEL.5":"toggled"}
+SAVE_PNG err=0 size=1280x720 path=user://issue58_graphical/06-advice-toggle-stub.png
+COPIED ../docs/playtest/evidence/issue-58/graphical-20261021T200916Z/screenshots/04-resign-confirm-s2.png
+COPIED ../docs/playtest/evidence/issue-58/graphical-20261021T200916Z/screenshots/06-advice-toggle-stub.png
+COPIED ../docs/playtest/evidence/issue-58/graphical-20261021T200916Z/screenshots/02-shared-play-selection-legal.png
+COPIED ../docs/playtest/evidence/issue-58/graphical-20261021T200916Z/screenshots/01-shared-play-bottom.png
+COPIED ../docs/playtest/evidence/issue-58/graphical-20261021T200916Z/screenshots/03-shared-play-after-place.png
+COPIED ../docs/playtest/evidence/issue-58/graphical-20261021T200916Z/screenshots/05-shared-play-top-blitz.png
+ISSUE58_GRAPHICAL pass
