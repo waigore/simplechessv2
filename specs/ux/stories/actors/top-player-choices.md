@@ -83,3 +83,33 @@ Given Top player is on shared-play S1 and Bottom seat is side to move
 When Top activates UI-shared-play.C5
 Then EX.confirm is not shown
 ```
+
+### US2.8: Cannot clear on Bottom's turn
+
+- **Proves**: K2
+
+```gherkin
+Given Top player is on shared-play S1 and Bottom seat is side to move and GS.selectedPiece is set
+When Top uses IN.deselect
+Then GS.selectedPiece is unchanged And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
+```
+
+### US2.9: Cannot promote on Bottom's turn
+
+- **Proves**: K2
+
+```gherkin
+Given Top player is on shared-play S1 and Bottom seat is side to move
+When Top activates UI-shared-play.C6
+Then the interface asks the game for no place And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
+```
+
+### US2.10: Cannot resign on Bottom's turn
+
+- **Proves**: K2
+
+```gherkin
+Given Top player is on shared-play S1 and Bottom seat is side to move
+When Top activates UI-shared-play.C4
+Then EX.confirm is not shown And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
+```
