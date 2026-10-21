@@ -1,6 +1,6 @@
 class_name Presentation
 extends Control
-## CMP-presentation: screens, board gestures (B2/B3/B10), status chrome (#58).
+## CMP-presentation: screens, board gestures (B2/B3/B10), status chrome (#58), audio (#60).
 
 signal control_activate(screen_id: String, control_id: String)
 ## CTR-presentation.E1 — from/to (+ optional promotion); empty to means select-only.
@@ -34,6 +34,7 @@ var _ended_label: Label
 var _unsupported: Label
 var _ui_font: Font
 var _router: SessionRouter
+var _audio: PresentationAudio
 var _play_assets_bound := false
 
 var _press_active := false
@@ -120,6 +121,10 @@ func pointer_record(event: InputEvent) -> Dictionary:
 func _build_shell() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+	_audio = PresentationAudio.new()
+	_audio.name = "PresentationAudio"
+	add_child(_audio)
 
 	var bg := ColorRect.new()
 	bg.name = "Background"
@@ -241,10 +246,24 @@ func render_position(
 func provide_assets(resources_by_id: Dictionary) -> void:
 	## CTR-presentation.O5 — bind catalog resources by asset ID (from L2 only).
 	_apply_ui_fonts(resources_by_id)
+	if _audio != null:
+		_audio.bind_assets(resources_by_id)
 	if _board != null:
 		_board.provide_assets(resources_by_id)
 	if not resources_by_id.is_empty():
 		_play_assets_bound = true
+
+
+func play_cue(cue_id: String) -> void:
+	## CTR-presentation.O3 — Shared SFX; never awaits network (G1).
+	if _audio != null:
+		_audio.play_cue(cue_id)
+
+
+func start_ambient() -> void:
+	## Cafe beds after Ambient O4/O5; cold-open mode pick stays silent.
+	if _audio != null:
+		_audio.start_ambient()
 
 
 func _apply_ui_fonts(resources_by_id: Dictionary) -> void:
