@@ -8,21 +8,11 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 ## Coverage
 
-Part of [`puzzle-play.md`](puzzle-play.md). The coverage table lives there.
+Part of [`puzzle-play.md`](puzzle-play.md). The coverage table lives there. Place branches: [`puzzle-play-place.md`](puzzle-play-place.md).
 
 ## US3: Promotion and refusal
 
 As Bottom player, I choose a promotion or leave an illegal place so that the puzzle does not advance by mistake.
-
-### US3.4: Promotion shown
-
-- **Proves**: S4
-
-```gherkin
-Given puzzle-play S1 and a legal pawn place is on the last rank
-When Bottom asks that place
-Then S4 shows queen, rook, bishop, and knight sprites and C6 is usable
-```
 
 ### US3.1: Promotion commit
 
@@ -62,16 +52,6 @@ Then the puzzle judges that place with a White rook and S4 closes
 Given puzzle-play S4 and the pawn is White
 When Bottom activates C6 on the bishop sprite
 Then the puzzle judges that place with a White bishop and S4 closes
-```
-
-### US3.3: Refused place
-
-- **Proves**: S5
-
-```gherkin
-Given puzzle-play S1 with a selection and a place the piece rules refuse
-When Bottom asks that place
-Then S5 flashes that square, GS.selectedPiece stays set, and C1 stays usable
 ```
 
 ### US3.5: Reveal unavailable during promotion
