@@ -39,6 +39,8 @@ S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
+All keys below vary by locale (`en`, `zh-Hant`, `ja`).
+
 | Key | String | Used in |
 |-----|--------|---------|
 | advice_on | Advice On | C3 |
