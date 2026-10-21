@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Music
 - **Source types**: AI generation; human-made
-- **Style**: P3; [SND.M1](../../aesthetics/sound.md) [SND.M2](../../aesthetics/sound.md); [SND.L1](../../aesthetics/sound.md)
+- **Style**: [AES.P3](../../aesthetics/aesthetics.md); [SND.M1](../../aesthetics/sound.md) [SND.M2](../../aesthetics/sound.md); [SND.L1](../../aesthetics/sound.md)
 - **Tool roles**: TL.3
 - **Approval**: As hub
 - **Serves**: Cafe calm; Instant play; [experience.md](../../design/experience.md) playlist
@@ -52,6 +52,10 @@ Full recipe: [`music/recipes.md`](music/recipes.md).
 ### R1 — ElevenLabs music
 
 - **Post-processing**: trim ends; loudness L1; OGG; see recipes.md
+
+### R2 — Human-made music
+
+- **Source type**: human-made — see recipes.md for N/A tool/prompts/settings/seed
 
 ## Checks
 
