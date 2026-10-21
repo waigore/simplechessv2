@@ -1,6 +1,6 @@
 class_name Presentation
 extends Control
-## CMP-presentation: EX.loading, mode-pick, shared-setup, entry exceptions.
+## CMP-presentation: EX.loading, mode-pick, shared-setup, board view, entry exceptions.
 
 signal control_activate(screen_id: String, control_id: String)
 
@@ -19,12 +19,13 @@ var _loading: Label
 var _host: Control
 var _mode_pick: ModePickPanel
 var _shared_setup: SharedSetupPanel
-var _shared_play_stub: Label
+var _board: BoardPresentation
 var _ended_label: Label
 var _unsupported: Label
 var _ui_font: Font
 var _router: SessionRouter
 var _resolver: AssetResolver
+var _play_assets_bound := false
 
 
 func _ready() -> void:
@@ -131,15 +132,12 @@ func _build_shell() -> void:
 	_shared_setup.pointed.connect(_on_pointed)
 	_host.add_child(_shared_setup)
 
-	_shared_play_stub = Label.new()
-	_shared_play_stub.name = "SharedPlayStub"
-	_shared_play_stub.visible = false
-	_shared_play_stub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_shared_play_stub.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_shared_play_stub.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_shared_play_stub.text = SHARED_PLAY
-	UiChrome.style_label(_shared_play_stub, true)
-	_host.add_child(_shared_play_stub)
+	_board = BoardPresentation.new()
+	_board.name = "BoardPresentation"
+	_board.visible = false
+	_board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_board.assets_needed.connect(_on_board_assets_needed)
+	_host.add_child(_board)
 
 	_ended_label = Label.new()
 	_ended_label.name = "SessionEnded"
@@ -192,12 +190,36 @@ func _show_loading() -> void:
 	UiChrome.transition_in(_loading)
 
 
+func render_position(
+	position: Dictionary,
+	selection: String = "",
+	legal: PackedStringArray = PackedStringArray(),
+	options: Dictionary = {}
+) -> void:
+	## CTR-presentation.O2 — board portion (status R2 is #58).
+	if _board == null:
+		return
+	_bind_play_assets()
+	var opts := options.duplicate()
+	if not opts.has("white_seat"):
+		opts["white_seat"] = _router.white_seat
+	_board.render_position(position, selection, legal, opts)
+
+
+func provide_assets(resources_by_id: Dictionary) -> void:
+	## CTR-presentation.O5 — bind catalog resources by asset ID.
+	if _board == null:
+		return
+	_board.provide_assets(resources_by_id)
+	_play_assets_bound = true
+
+
 func _show_mode_pick(state: Dictionary) -> void:
 	_bind_boot_assets()
 	current_screen = MODE_PICK
 	_loading.visible = false
 	_shared_setup.visible = false
-	_shared_play_stub.visible = false
+	_board.visible = false
 	_ended_label.visible = false
 	var ui_state := str(state.get("ui_state", "S1"))
 	_mode_pick.configure(
@@ -214,7 +236,7 @@ func _show_shared_setup(state: Dictionary) -> void:
 	current_screen = SHARED_SETUP
 	_loading.visible = false
 	_mode_pick.visible = false
-	_shared_play_stub.visible = false
+	_board.visible = false
 	_ended_label.visible = false
 	_shared_setup.configure(
 		str(state.get("locale", _router.locale)),
@@ -229,13 +251,21 @@ func _show_shared_setup(state: Dictionary) -> void:
 	_shared_setup.focus_first()
 
 
-func _show_shared_play(_state: Dictionary) -> void:
+func _show_shared_play(state: Dictionary) -> void:
 	current_screen = SHARED_PLAY
 	_loading.visible = false
 	_mode_pick.visible = false
 	_shared_setup.visible = false
 	_ended_label.visible = false
-	UiChrome.transition_in(_shared_play_stub)
+	_bind_play_assets()
+	var position: Dictionary = state.get("position", {}) as Dictionary
+	if position.is_empty():
+		var rules := ChessRules.new()
+		rules.reset_opening()
+		position = rules.position_field()
+	_board.set_white_seat(str(state.get("white_seat", _router.white_seat)))
+	_board.render_position(position, str(state.get("selection", "")), PackedStringArray())
+	UiChrome.transition_in(_board)
 	_router.note_board_playable()
 
 
@@ -251,10 +281,38 @@ func _hide_panels() -> void:
 	_mode_pick.modulate.a = 1.0
 	_shared_setup.visible = false
 	_shared_setup.modulate.a = 1.0
-	_shared_play_stub.visible = false
-	_shared_play_stub.modulate.a = 1.0
+	_board.visible = false
+	_board.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
+
+
+func _bind_play_assets() -> void:
+	if _play_assets_bound or _resolver == null:
+		return
+	_resolver.preload_play()
+	var bound: Dictionary = {}
+	for asset_id in BoardPresentation.PIECE_IDS.values():
+		var resource := _resolver.resolve(str(asset_id))
+		if resource != null:
+			bound[str(asset_id)] = resource
+	var board_tex := _resolver.resolve(BoardPresentation.BOARD_BG_ID)
+	if board_tex != null:
+		bound[BoardPresentation.BOARD_BG_ID] = board_tex
+	provide_assets(bound)
+
+
+func _on_board_assets_needed(asset_ids: PackedStringArray) -> void:
+	if _resolver == null:
+		return
+	var bound: Dictionary = {}
+	for asset_id in asset_ids:
+		var resource := _resolver.resolve(str(asset_id))
+		if resource != null:
+			bound[str(asset_id)] = resource
+	if not bound.is_empty():
+		_board.provide_assets(bound)
+		_play_assets_bound = true
 
 
 func _on_mode_pick_control(control_id: String) -> void:
