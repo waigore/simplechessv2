@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 - **Date**: 2026-10-18
 - **Category**: Data storage
 - **Supersedes**: None
-- **Informed by**: PRG.P1 P2 M1; GS.playerElo lastMode recentSolved; Save durability; Reliability; no-install Web; ADR-0001
+- **Informed by**: PRG.P1 P2 M1; GS.playerElo lastMode recentSolved; CFG.ELO_RECENT_WINDOW; Save durability; Reliability; Load time / latency; no-install Web; ADR-0001
 
 ## Context
 
@@ -20,7 +20,7 @@ In scope: storage product, commit shape, failure semantics. Out of scope: field 
 
 ## Decision
 
-Persist in origin-scoped **`localStorage`** as one JSON document for this game: at least **Player Elo**, **Last mode**, and **recent solved IDs** (max 20) ([fields-persist](../../design/game-state/fields-persist.md)). A successful write replaces the whole document. A failed write leaves the previous document intact. Clearing this origin’s storage resets per [PRG](../../design/progression.md).
+Persist in origin-scoped **`localStorage`** as one JSON document for this game: at least **Player Elo**, **Last mode**, and **recent solved IDs** capped by [`CFG.ELO_RECENT_WINDOW`](../../design/configuration.md) ([fields-persist](../../design/game-state/fields-persist.md); [PRG.M1](../../design/progression.md)). A successful write replaces the whole document. A failed write leaves the previous document intact. Clearing this origin’s storage resets per [PRG](../../design/progression.md).
 
 ## Reasoning
 
