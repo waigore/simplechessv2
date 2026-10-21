@@ -47,27 +47,15 @@ Costs accepted: contract boilerplate; upward flows are events; the advice split 
 
 ## Non-functional requirements
 
+Quality and engineering rows: [non-functional requirements](0006-layered-client-architecture/non-functional.md).
+
 ### Quality expectations
 
-| Category | Effect | How met or limited |
-|----------|--------|--------------------|
-| Performance | No effect | In-process (ADR-0001) |
-| Load time / latency | No effect | ADR-0001, ADR-0005 |
-| Reliability | Affects | Single-owner state; quality.md soak |
-| Observability | Affects | Telemetry behind L4 ports only (quality.md) |
-| Save durability | Affects | Saves via L4 persist port only (quality.md) |
-| Accessibility | No effect | ADR-0001 |
-| Localization | No effect | `GS.locale` is design state |
+Reliability, Observability, and Save durability are Affects (Observability via L4 `TEL.*` playtest-log; Save durability via L4 persist for `GS.playerElo`/`GS.lastMode`). Detail is in the split.
 
 ### Engineering qualities
 
-| Quality | Assessment |
-|---------|------------|
-| Licensing and cost | Not relevant — no third-party code |
-| Maintainability | Engine upgrades touch L1/L4; rules stay in L3 |
-| Testability | L3 pure and headless-testable (ADR-0004) |
-| Portability | Web (ADR-0001); platform code in L4 only |
-| Security and privacy | Only advice leaves device (ADR-0002) |
+L3 headless-testable; Web-only platform code in L4. Detail is in the split.
 
 ## Imposes
 
@@ -79,3 +67,6 @@ None.
 |-------|--------|------|
 | Layer edges | Review rule: no upward/skip-layer/bidirectional imports | Every review |
 | Domain headless tests | Automated: L3 runs Headless (ADR-0004) | Every build |
+| Observability playtest logs | quality.md playtest-log check | Every release |
+| Quit/reload keeps Elo and Last mode | quality.md quit/reload | Every release |
+| Failed write keeps prior | quality.md forced fail | Every release |
