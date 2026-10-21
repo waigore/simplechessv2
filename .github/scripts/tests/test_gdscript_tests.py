@@ -77,8 +77,12 @@ class SuiteTest(unittest.TestCase):
                 check_version=False,
             )
         self.assertEqual(code, 0)
-        self.assertEqual(calls[0][1:4], ["--headless", "--path", str(game)])
-        self.assertEqual(calls[0][5], "res://add_test.gd")
+        imported = [cmd for cmd in calls if "--import" in cmd]
+        scripts = [cmd for cmd in calls if "-s" in cmd]
+        self.assertEqual(len(imported), 1)
+        self.assertEqual(imported[0][1:4], ["--headless", "--path", str(game)])
+        self.assertEqual(scripts[0][1:4], ["--headless", "--path", str(game)])
+        self.assertEqual(scripts[0][5], "res://add_test.gd")
 
     def test_failing_test_and_script_error_fail(self) -> None:
         def fail(cmd: list[str], env: dict[str, str]) -> subprocess.CompletedProcess[str]:
