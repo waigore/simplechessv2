@@ -31,7 +31,7 @@ When placed
 Then center is 0.5 units +x +y from a1's corner, files +x, ranks +y
 ```
 
-### VS1.2: White-fixed frame
+### VS1.2: White-fixed axes
 
 - **Proves**: A2
 
