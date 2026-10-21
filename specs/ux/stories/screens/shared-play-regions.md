@@ -20,7 +20,7 @@ As Bottom or Top player, I see the shared position and status so that both seats
 
 ```gherkin
 Given an actor is on shared-play S1
-When the screen is shown
+When shared-play S1 is shown
 Then R1 shows file letters a–h and rank numbers 1–8 only along the outer edges And C1–C5 are available
 ```
 
@@ -30,7 +30,7 @@ Then R1 shows file letters a–h and rank numbers 1–8 only along the outer edg
 
 ```gherkin
 Given GS.position is the orthodox opening (always knowable in play, game-state H1)
-When the screen is shown
+When shared-play S1 is shown
 Then R1 shows that position
 ```
 
@@ -40,7 +40,7 @@ Then R1 shows that position
 
 ```gherkin
 Given GS.selectedPiece is the White king on e1
-When the screen is shown
+When shared-play S1 is shown
 Then R1 highlights that piece and square
 ```
 
@@ -50,7 +50,7 @@ Then R1 highlights that piece and square
 
 ```gherkin
 Given GS.sideToMove is White (always knowable, game-state H1)
-When the screen is shown
+When shared-play S1 is shown
 Then R2 shows White to move
 ```
 
@@ -60,8 +60,8 @@ Then R2 shows White to move
 
 ```gherkin
 Given Clock is Blitz and GS.whiteClock and GS.blackClock are 60 (both players know the clock, two-player-game K1)
-When the screen is shown
-Then R2 shows both clocks
+When shared-play S1 is shown
+Then R2 shows both clocks at 60
 ```
 
 ### US2.6: No clocks when untimed
@@ -70,7 +70,7 @@ Then R2 shows both clocks
 
 ```gherkin
 Given Clock is Untimed
-When the screen is shown
+When shared-play S1 is shown
 Then R2 shows no clock
 ```
 
@@ -80,7 +80,7 @@ Then R2 shows no clock
 
 ```gherkin
 Given the side to move is in check (derived from GS.position, game-state)
-When the screen is shown
+When shared-play S1 is shown
 Then R2 shows the word Check and the PAL.C8 mark
 ```
 
@@ -89,9 +89,9 @@ Then R2 shows the word Check and the PAL.C8 mark
 - **Proves**: R3
 
 ```gherkin
-Given GS.advice is On and GS.online is true and GS.adviceBestMove is set
-When the screen is shown
-Then R3 shows best-move marks and eval without hiding piece silhouettes
+Given GS.advice is On and GS.online is true and GS.adviceBestMove is e2e4 and GS.adviceEval is +35
+When shared-play S1 is shown
+Then R3 shows best-move marks for e2e4 and eval +35 without hiding piece silhouettes
 ```
 
 ### US2.9: Advice absent
@@ -100,7 +100,7 @@ Then R3 shows best-move marks and eval without hiding piece silhouettes
 
 ```gherkin
 Given GS.advice is Off or GS.online is false (not knowable, game-state H2)
-When the screen is shown
+When shared-play S1 is shown
 Then R3 shows no best-move marks and no eval
 ```
 
@@ -110,6 +110,6 @@ Then R3 shows no best-move marks and no eval
 
 ```gherkin
 Given GS.selectedPiece is the White king on e1 (legal moves derived from GS.position, game-state)
-When the screen is shown
+When shared-play S1 is shown
 Then R1 marks each legal destination square
 ```
