@@ -160,6 +160,56 @@ func handle_input_commit(from_square: String, to_square: String, promotion: Stri
 	return _apply_place(from_square, to_square, promotion)
 
 
+## IN.deselect — B8 / B9 / B11 / S4 cancel.
+func handle_deselect() -> bool:
+	if stage != STAGE_SHARED_PLAY or shared_session == null:
+		return false
+	if _seams.is_paused():
+		return false
+	var result := shared_session.clear_selection()
+	if not bool(result.get("ok", false)):
+		return false
+	_emit_tel_result(result)
+	_emit_play_screen()
+	return true
+
+
+## C6 — commit promotion type.
+func handle_promotion_commit(kind: String) -> bool:
+	if stage != STAGE_SHARED_PLAY or shared_session == null:
+		return false
+	if _seams.is_paused():
+		return false
+	var result := shared_session.commit_promotion(kind)
+	_emit_tel_result(result)
+	if not bool(result.get("ok", false)):
+		_emit_play_screen()
+		return false
+	_play_cue(SharedAudioCues.CUE_MOVE)
+	var ended := bool(result.get("ended", false))
+	var end_reason := str(result.get("end_reason", ""))
+	if ended and _is_loss_end(end_reason):
+		_play_cue(SharedAudioCues.CUE_END)
+	elif bool(result.get("check", false)):
+		_play_cue(SharedAudioCues.CUE_CHECK)
+		_seams.emit_tel("shared.check", "shown", "UI-shared-play.US2")
+	var move: Dictionary = result.get("move", {}) as Dictionary
+	_emit_play_screen(move)
+	if ended:
+		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
+		_go_shared_result()
+	return true
+
+
+func finish_reject_flash() -> void:
+	if shared_session == null:
+		return
+	if shared_session.play_ui_state != SharedGameSession.UI_S5:
+		return
+	shared_session.finish_reject_flash()
+	_emit_play_screen()
+
+
 func show_save_failure() -> void:
 	## EX.save-failure (UI-mode-pick.S4); prior committed Last mode stays.
 	if stage != STAGE_MODE_PICK and stage != STAGE_READY_ALIAS:
@@ -441,33 +491,19 @@ func _start_shared_game() -> void:
 func _on_shared_play_control(control_id: String) -> void:
 	if shared_session == null:
 		return
-	match control_id:
-		"C3":
-			var advice := shared_session.toggle_advice()
-			if not bool(advice.get("ok", false)):
-				return
-			advice_on = shared_session.advice_on
-			_emit_tel_result(advice)
-			_emit_play_screen()
-		"C4":
-			var resign_open := shared_session.open_resign_confirm()
-			if not bool(resign_open.get("ok", false)):
-				return
-			_emit_tel_result(resign_open)
-			_emit_play_screen()
-		"confirm":
-			var resigned := shared_session.confirm_resign()
-			if not bool(resigned.get("ok", false)):
-				return
-			_play_cue(SharedAudioCues.CUE_END)
-			_emit_tel_result(resigned)
-			_seams.emit_tel("shared.end", SharedGameSession.END_L2, "NAV.T6")
-			_go_shared_result()
-		"cancel":
-			var cancelled := shared_session.cancel_resign()
-			if not bool(cancelled.get("ok", false)):
-				return
-			_emit_play_screen()
+	var result := shared_session.handle_play_control(control_id)
+	if not bool(result.get("ok", false)):
+		return
+	if control_id == "C3":
+		advice_on = shared_session.advice_on
+	if result.has("event"):
+		_emit_tel_result(result)
+	if bool(result.get("ended", false)):
+		_play_cue(SharedAudioCues.CUE_END)
+		_seams.emit_tel("shared.end", str(result.get("end_reason", "")), "NAV.T6")
+		_go_shared_result()
+	else:
+		_emit_play_screen()
 
 
 func _on_shared_result_control(control_id: String) -> void:
@@ -506,6 +542,12 @@ func _apply_select(square: String) -> bool:
 func _apply_place(from_square: String, to_square: String, promotion: String = "") -> bool:
 	var result := shared_session.place(from_square, to_square, promotion)
 	_emit_tel_result(result)
+	if str(result.get("event", "")) == "shared.deselect":
+		_emit_play_screen()
+		return true
+	if bool(result.get("promote", false)):
+		_emit_play_screen()
+		return true
 	if bool(result.get("illegal", false)):
 		_emit_play_screen()
 		return false
