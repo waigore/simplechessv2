@@ -26,9 +26,9 @@ As a casual player, I finish each puzzle so that the outcome matches the rules.
 - **Proves**: W1
 
 ```gherkin
-Given GS.wrongMoveOnPuzzle is false And the Required sequence is completed
+Given GS.wrongMoveOnPuzzle is false And the Required sequence is completed And GS.playerElo is 1000 And GS.puzzleElo is 1000
 When the sequence completes
-Then the puzzle is solved And the next puzzle is harder per DIF.Y1
+Then the puzzle is solved And GS.playerElo becomes 1000 + CFG.ELO_K × (1 − 0.5) = 1010 And GS.puzzleElo is unchanged And the next puzzle is dealt
 ```
 
 ### PS1.2: Completion after wrong move fails
@@ -36,9 +36,9 @@ Then the puzzle is solved And the next puzzle is harder per DIF.Y1
 - **Proves**: L4
 
 ```gherkin
-Given GS.wrongMoveOnPuzzle is true And the Required sequence is later completed
+Given GS.wrongMoveOnPuzzle is true And the Required sequence is later completed And GS.playerElo is 1000 And GS.puzzleElo is 1000
 When the sequence completes
-Then the puzzle is failed And the next puzzle is easier
+Then the puzzle is failed And GS.playerElo becomes 1000 + CFG.ELO_K × (0 − 0.5) = 990 And GS.puzzleElo is unchanged And the next puzzle is dealt
 ```
 
 ### PS1.3: Reveal fails
@@ -46,9 +46,9 @@ Then the puzzle is failed And the next puzzle is easier
 - **Proves**: L5
 
 ```gherkin
-Given an open puzzle
+Given an open puzzle And GS.playerElo is 1000 And GS.puzzleElo is 1000
 When the player reveals the solution
-Then the puzzle is failed And the next puzzle is easier
+Then the puzzle is failed And GS.playerElo becomes 1000 + CFG.ELO_K × (0 − 0.5) = 990 And GS.puzzleElo is unchanged And the next puzzle is dealt
 ```
 
 ### PS1.4: Abandon fails
@@ -56,7 +56,7 @@ Then the puzzle is failed And the next puzzle is easier
 - **Proves**: L6
 
 ```gherkin
-Given an open puzzle
+Given an open puzzle And GS.playerElo is 1000 And GS.puzzleElo is 1000
 When the player abandons the puzzle
-Then the puzzle is failed And GS.playerElo updates as a loss per DIF.Y1 And the next puzzle is dealt
+Then the puzzle is failed And GS.playerElo becomes 1000 + CFG.ELO_K × (0 − 0.5) = 990 And GS.puzzleElo is unchanged And the next puzzle is dealt
 ```

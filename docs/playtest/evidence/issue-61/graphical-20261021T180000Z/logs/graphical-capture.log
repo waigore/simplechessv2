@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+SAVE_PNG err=0 size=1280x720 path=user://issue61_graphical/01-mode-pick-last-mode-none.png
+SAVE_PNG err=0 size=1280x720 path=user://issue61_graphical/02-after-commit-shared-setup.png
+SAVE_PNG err=0 size=1280x720 path=user://issue61_graphical/03-mode-pick-last-mode-shared.png
+SAVE_PNG err=0 size=1280x720 path=user://issue61_graphical/04-ex-save-failure.png
+SAVE_PNG err=0 size=1280x720 path=user://issue61_graphical/05-dismiss-save-failure-s1.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T175515632097Z/game/../docs/playtest/evidence/issue-61/graphical-20261021T180000Z/screenshots/05-dismiss-save-failure-s1.png err=0
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T175515632097Z/game/../docs/playtest/evidence/issue-61/graphical-20261021T180000Z/screenshots/02-after-commit-shared-setup.png err=0
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T175515632097Z/game/../docs/playtest/evidence/issue-61/graphical-20261021T180000Z/screenshots/03-mode-pick-last-mode-shared.png err=0
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T175515632097Z/game/../docs/playtest/evidence/issue-61/graphical-20261021T180000Z/screenshots/01-mode-pick-last-mode-none.png err=0
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T175515632097Z/game/../docs/playtest/evidence/issue-61/graphical-20261021T180000Z/screenshots/04-ex-save-failure.png err=0
