@@ -8,17 +8,17 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 
 ## Coverage
 
-| Element | Summary | Scenarios |
-|---------|---------|-----------|
-| K1 | Game setup | PS1.1 PS1.2 PS1.3 |
-| K2 | Move and clock response | PS1.4 PS1.5 PS1.6 |
-| K3 | After a result | PS1.7 PS1.8 |
-| E1 | Checkmate exit | PS1.9 |
-| E2 | Resign exit | PS1.10 |
-| E3 | Draw exit | PS1.11 |
-| E4 | Clock expiry exit | PS1.12 PS1.13 |
-| CFG.BLITZ_START | Blitz start seconds | PS1.2 |
-| CFG.RAPID_START | Rapid start seconds | PS1.3 |
+| Element | Scenarios |
+|---------|-----------|
+| K1 | PS1.1 PS1.2 PS1.3 |
+| K2 | PS1.4 PS1.5 PS1.6 PS1.14 |
+| K3 | PS1.7 PS1.8 |
+| E1 | PS1.9 |
+| E2 | PS1.10 |
+| E3 | PS1.11 |
+| E4 | PS1.12 PS1.13 |
+| CFG.BLITZ_START | PS1.2 |
+| CFG.RAPID_START | PS1.3 |
 
 ## PS1: Play a Shared game
 
@@ -152,4 +152,14 @@ Then White loses, no seconds added, GS.gameEnded true
 Given Blitz, GS.whiteClock 0, Black cannot checkmate
 When White's clock expires
 Then a draw And GS.gameEnded true
+```
+
+### PS1.14: Zero clock gets no increment
+
+- **Proves**: K2
+
+```gherkin
+Given Blitz And Increment 3 s And GS.whiteClock is 0
+When White completes a legal move
+Then GS.whiteClock stays 0 And Black's starts
 ```
