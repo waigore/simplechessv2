@@ -27,7 +27,7 @@ Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md)
 - **Characters**: None — the people playing are not authored characters.
 - **Entities**: [`pieces.md`](entities/pieces.md) ([common](entities/pieces/common.md), [king](entities/pieces/king.md), [officers](entities/pieces/officers.md), [pawn](entities/pieces/pawn.md))
 - **Loops**: [`two-player-game.md`](loops/two-player-game.md), [`puzzle-stream.md`](loops/puzzle-stream.md)
-- **Features**: [`move-advice.md`](features/move-advice.md)
+- **Features**: [`move-advice.md`](features/move-advice.md), [`puzzle-catalog.md`](features/puzzle-catalog.md)
 - **Flows**: [`mode-pick.md`](flows/mode-pick.md)
 - **Stages**: None — no stages; board play only.
 - **Scenarios**: [`scenarios/puzzle-stream-visit.md`](scenarios/puzzle-stream-visit.md)

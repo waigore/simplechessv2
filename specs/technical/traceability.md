@@ -18,6 +18,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Mode pick flow `FL-mode-pick` | design | [`CMP-session-router`](components/session-router.md); [`SEQ-cold-open`](sequences/cold-open.md) |
 | Advice stream DTO | F-move-advice | [`SCH-advice-update`](schemata/advice-update.md); [`CMP-advice-backend`](components/advice-backend.md) |
 | Puzzle attempt / Elo commit | puzzle stream; DIF; PRG | [`SCH-puzzle-attempt`](schemata/puzzle-attempt.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
+| Puzzle catalog snapshot | [F-puzzle-catalog](../design/features/puzzle-catalog.md); ADR-0008 | [`SCH-puzzle-catalog`](schemata/puzzle-catalog.md) |
 
 ## Topic coverage
 
@@ -27,7 +28,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Modular decomposition | [`modules.md`](modules.md) | Applies |
 | Components | [`components/`](components/) | Applies — critical path + advice-backend + playtest-seams |
 | Contracts | [`contracts/`](contracts/) | Applies — includes asset-resolve, playtest-drive |
-| Schemata and lifecycles | [`schemata/`](schemata/) | Applies — includes advice-update, puzzle-attempt |
+| Schemata and lifecycles | [`schemata/`](schemata/) | Applies — includes advice-update, puzzle-attempt, puzzle-catalog |
 | Sequences | [`sequences/`](sequences/) | Applies — includes puzzle-result-commit, shared-end-new-session, playtest-headless-smoke |
 | Failure model | [`failures.md`](failures.md) | Applies |
 | Concurrency and update loop | [`concurrency.md`](concurrency.md) | Applies |
