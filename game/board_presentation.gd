@@ -699,9 +699,7 @@ func flash_reject(square: String) -> void:
 		_reject_tween.kill()
 	_reject_tween = create_tween()
 	_reject_tween.set_ease(Tween.EASE_OUT)
-	_reject_tween.tween_property(
-		_reject_flash, "color", Color(COLOR_DANGER, 0.0), REJECT_FLASH_S
-	)
+	_reject_tween.tween_property(_reject_flash, "color", Color(COLOR_DANGER, 0.0), REJECT_FLASH_S)
 	_reject_tween.tween_callback(clear_reject_flash)
 
 
