@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | K1 | Deal next puzzle | PS1.1 |
-| K2 | Move, reveal, abandon | PS1.2 PS1.3 PS1.4 PS1.5 |
+| K2 | Move, reveal, abandon, mate in one | PS1.2 PS1.3 PS1.4 PS1.5 PS1.8 |
 | K3 | Result then next deal | PS1.6 |
 | K4 | Leave stream | PS1.7 |
 | E1 | Leave exit | PS1.7 |
@@ -88,4 +88,14 @@ Then GS.playerElo updates per DIF.Y1 And a new puzzle is dealt And play returns 
 Given an open puzzle And GS.playerElo is 1150
 When the player leaves the stream
 Then phase is FL-mode-pick.P1 And GS.playerElo is 1150 And the open puzzle is not abandon-scored
+```
+
+### PS1.8: Mate in one accepts any checkmate
+
+- **Proves**: K2
+
+```gherkin
+Given an open mate-in-one puzzle And the recorded step is h1h8 And a1a8 is another legal checkmating move And GS.sequenceIndex is 0
+When the player plays a1a8
+Then the sequence step matches And GS.wrongMoveOnPuzzle is false And the next puzzle is not dealt
 ```

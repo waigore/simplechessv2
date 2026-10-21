@@ -5,14 +5,14 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 - **Layer**: L2 Session
 - **Module**: M1 `client`
 - **Serves**: Puzzle stream; Elo progression; recent solved
-- **Informed by**: [`L-puzzle-stream`](../../design/loops/puzzle-stream.md); [DIF](../../design/difficulty.md); [PRG](../../design/progression.md)
-- **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md), [ADR-0003](../../adr/decisions/0003-localstorage-persistence.md)
+- **Informed by**: [`L-puzzle-stream`](../../design/loops/puzzle-stream.md); [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md); [DIF](../../design/difficulty.md); [PRG](../../design/progression.md)
+- **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md), [ADR-0003](../../adr/decisions/0003-localstorage-persistence.md), [ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md)
 
 ## Responsibilities
 
 | ID | Responsibility |
 |----|----------------|
-| R1 | Deal next puzzle from Elo band and recent history |
+| R1 | Deal the next puzzle per DIF.Y1 from the host catalog |
 | R2 | Accept puzzle moves via chess-rules; detect solve vs wrong move |
 | R3 | On result, update Elo and recentSolved; commit via persist |
 | R4 | Never enable Advice |

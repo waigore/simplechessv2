@@ -19,6 +19,6 @@ Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop b
 | L5 | Puzzle | loss | Player reveals the solution | On reveal | Failed. Next puzzle is easier |
 | L6 | Puzzle | loss | Player abandons the puzzle | On abandon | Failed. Next puzzle follows the Elo update |
 
-**Can checkmate** (L3/D5): the other side can checkmate when some series of legal moves from the current position leads to checkmate, whether or not either side plays its best move — the FIDE Laws of Chess "possible checkmate" (provenance cited in [pieces.md](../entities/pieces.md)). D5 is its negation.
+**Can checkmate** (L3/D5): some legal-move series from here leads to checkmate, even if play is not best ([pieces.md](../entities/pieces.md)). D5 is its negation.
 
-A [Wrong move](../glossary.md) is any [Solving side](../glossary.md) move not next in the sequence. It blocks W1, returns the puzzle to its start, and does not deal the next puzzle. The player may try again until L4, L5, or L6.
+A [Wrong move](../glossary.md) is a [Solving side](../glossary.md) move that misses the next step. On a mate-in-one puzzle, any checkmating move is that step ([F-puzzle-catalog](../features/puzzle-catalog.md) R5). It blocks W1, resets the puzzle, and does not deal the next. The player may try again until L4, L5, or L6.

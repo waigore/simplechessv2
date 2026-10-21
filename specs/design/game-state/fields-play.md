@@ -13,9 +13,9 @@ Part of [`fields.md`](fields.md).
 | `GS.blackClock` | Session / run | Black seconds left, or none | Equal CFG start, or none | Same as white clock | Timed: ≥ 0 |
 | `GS.gameEnded` | Session / run | Shared game over | false | End conditions | True ⇒ no further Shared-game moves |
 | `GS.drawOffer` | Session / run | Side with a pending draw offer, or none | none | Offer; decline; withdraw; completed move (lapse); end | None or one side; only while the Shared game is open |
-| `GS.puzzleId` | Session / run | Current puzzle, or none | Dealt id, or none | Deal; leave | Only in Puzzle stream |
-| `GS.puzzleElo` | Session / run | Open puzzle's [Puzzle Elo](../glossary.md) | Catalog, or none | Deal; leave | Never changes for that puzzle |
-| `GS.requiredSequence` | Session / run | Open puzzle's correct move list | Catalog, or none | Deal; leave | Length ≥ 1 when a puzzle is open |
+| `GS.puzzleId` | Session / run | Current puzzle, or none | [`catalog`](../features/puzzle-catalog.md) PuzzleId, or none | Deal; leave | Only in Puzzle stream |
+| `GS.puzzleElo` | Session / run | Open puzzle's [Puzzle Elo](../glossary.md) | [`catalog`](../features/puzzle-catalog.md), or none | Deal; leave | Never changes for that puzzle |
+| `GS.requiredSequence` | Session / run | Open puzzle's correct move list | [`catalog`](../features/puzzle-catalog.md), or none | Deal; leave | Length ≥ 1 when a puzzle is open |
 | `GS.sequenceIndex` | Session / run | Next required step (0-based) | 0 | Matching move or required reply; wrong move → 0 | 0 ≤ index ≤ length |
 | `GS.solvingSide` | Session / run | Side the player moves | None; side to move at deal | Deal; leave | None, or side to move at deal; fixed for that puzzle |
 | `GS.wrongMoveOnPuzzle` | Session / run | Any [Wrong move](../glossary.md) this puzzle | false | Wrong move | Stays true until a new deal |
