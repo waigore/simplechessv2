@@ -489,66 +489,19 @@ func _start_shared_game() -> void:
 func _on_shared_play_control(control_id: String) -> void:
 	if shared_session == null:
 		return
-	match control_id:
-		"C3":
-			var advice := shared_session.toggle_advice()
-			if not bool(advice.get("ok", false)):
-				return
-			advice_on = shared_session.advice_on
-			_emit_tel_result(advice)
-			_emit_play_screen()
-		"C4":
-			var resign_open := shared_session.open_resign_confirm()
-			if not bool(resign_open.get("ok", false)):
-				return
-			_emit_tel_result(resign_open)
-			_emit_play_screen()
-		"C5":
-			var offer_open := shared_session.open_offer_confirm()
-			if not bool(offer_open.get("ok", false)):
-				return
-			_emit_tel_result(offer_open)
-			_emit_play_screen()
-		"C7":
-			var accepted := shared_session.accept_draw()
-			if not bool(accepted.get("ok", false)):
-				return
-			_play_cue(PresentationAudio.CUE_END)
-			_emit_tel_result(accepted)
-			_seams.emit_tel("shared.end", SharedGameSession.END_D2, "NAV.T6")
-			_go_shared_result()
-		"C8":
-			var declined := shared_session.decline_draw()
-			if not bool(declined.get("ok", false)):
-				return
-			_emit_tel_result(declined)
-			_emit_play_screen()
-		"C9":
-			var withdrawn := shared_session.withdraw_draw()
-			if not bool(withdrawn.get("ok", false)):
-				return
-			_emit_tel_result(withdrawn)
-			_emit_play_screen()
-		"confirm":
-			if shared_session.confirm_kind == SharedGameSession.CONFIRM_OFFER:
-				var offered := shared_session.confirm_offer()
-				if not bool(offered.get("ok", false)):
-					return
-				_emit_tel_result(offered)
-				_emit_play_screen()
-				return
-			var resigned := shared_session.confirm_resign()
-			if not bool(resigned.get("ok", false)):
-				return
-			_play_cue(PresentationAudio.CUE_END)
-			_emit_tel_result(resigned)
-			_seams.emit_tel("shared.end", SharedGameSession.END_L2, "NAV.T6")
-			_go_shared_result()
-		"cancel":
-			var cancelled := shared_session.cancel_confirm()
-			if not bool(cancelled.get("ok", false)):
-				return
-			_emit_play_screen()
+	var result := shared_session.handle_play_control(control_id)
+	if not bool(result.get("ok", false)):
+		return
+	if control_id == "C3":
+		advice_on = shared_session.advice_on
+	if result.has("event"):
+		_emit_tel_result(result)
+	if bool(result.get("ended", false)):
+		_play_cue(PresentationAudio.CUE_END)
+		_seams.emit_tel("shared.end", str(result.get("end_reason", "")), "NAV.T6")
+		_go_shared_result()
+	else:
+		_emit_play_screen()
 
 
 func _on_shared_result_control(control_id: String) -> void:

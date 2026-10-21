@@ -160,7 +160,7 @@ func gestures_available() -> bool:
 	return play_ui_state == UI_S1 or play_ui_state == UI_S5 or play_ui_state == UI_S6
 
 
-func board_gestures_blocked() -> bool:
+func _board_gestures_blocked() -> bool:
 	return play_ui_state == UI_S2 or play_ui_state == UI_S4 or game_ended()
 
 
@@ -228,7 +228,7 @@ func can_place(from_square: String, to_square: String, promotion: String = "") -
 	return rules._can_apply_move(from_square, to_square, promotion)
 
 
-func needs_promotion(from_square: String, to_square: String) -> bool:
+func _needs_promotion(from_square: String, to_square: String) -> bool:
 	return rules._reject_reason(from_square, to_square, "") == ChessRules.REASON_PROMOTION
 
 
@@ -248,7 +248,7 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 		and not legal_targets_for(selected_piece).has(to_square)
 	):
 		return clear_selection()
-	if promotion.is_empty() and needs_promotion(from_square, to_square):
+	if promotion.is_empty() and _needs_promotion(from_square, to_square):
 		if selected_piece.is_empty():
 			var piece := occupancy_at(from_square)
 			if not piece.is_empty() and str(piece.get("color", "")) == before_side:
@@ -333,7 +333,33 @@ func finish_reject_flash() -> Dictionary:
 	return {"ok": true}
 
 
-func open_resign_confirm() -> Dictionary:
+## Chrome controls C3–C9 / confirm / cancel — one public entry for max-public-methods.
+func handle_play_control(control_id: String) -> Dictionary:
+	var result := {"ok": false}
+	match control_id:
+		"C3":
+			result = _toggle_advice()
+		"C4":
+			result = _open_resign_confirm()
+		"C5":
+			result = _open_offer_confirm()
+		"C7":
+			result = _accept_draw_choice()
+		"C8":
+			result = _decline_draw_choice()
+		"C9":
+			result = _withdraw_draw_choice()
+		"confirm":
+			if confirm_kind == CONFIRM_OFFER:
+				result = _confirm_offer()
+			else:
+				result = _confirm_resign()
+		"cancel":
+			result = _cancel_confirm()
+	return result
+
+
+func _open_resign_confirm() -> Dictionary:
 	if play_ui_state != UI_S1 or game_ended():
 		return {"ok": false}
 	play_ui_state = UI_S2
@@ -343,7 +369,7 @@ func open_resign_confirm() -> Dictionary:
 	}
 
 
-func open_offer_confirm() -> Dictionary:
+func _open_offer_confirm() -> Dictionary:
 	if play_ui_state != UI_S1 or game_ended():
 		return {"ok": false}
 	play_ui_state = UI_S2
@@ -356,7 +382,7 @@ func open_offer_confirm() -> Dictionary:
 	}
 
 
-func confirm_resign() -> Dictionary:
+func _confirm_resign() -> Dictionary:
 	if play_ui_state != UI_S2 or confirm_kind != CONFIRM_RESIGN:
 		return {"ok": false}
 	if not resign():
@@ -374,7 +400,7 @@ func confirm_resign() -> Dictionary:
 	}
 
 
-func confirm_offer() -> Dictionary:
+func _confirm_offer() -> Dictionary:
 	if play_ui_state != UI_S2 or confirm_kind != CONFIRM_OFFER:
 		return {"ok": false}
 	if not _offer_draw():
@@ -389,11 +415,7 @@ func confirm_offer() -> Dictionary:
 	}
 
 
-func cancel_resign() -> Dictionary:
-	return cancel_confirm()
-
-
-func cancel_confirm() -> Dictionary:
+func _cancel_confirm() -> Dictionary:
 	if play_ui_state != UI_S2:
 		return {"ok": false}
 	play_ui_state = UI_S1
@@ -401,7 +423,7 @@ func cancel_confirm() -> Dictionary:
 	return {"ok": true}
 
 
-func accept_draw() -> Dictionary:
+func _accept_draw_choice() -> Dictionary:
 	if play_ui_state != UI_S6:
 		return {"ok": false}
 	if not _accept_draw():
@@ -418,7 +440,7 @@ func accept_draw() -> Dictionary:
 	}
 
 
-func decline_draw() -> Dictionary:
+func _decline_draw_choice() -> Dictionary:
 	if play_ui_state != UI_S6:
 		return {"ok": false}
 	if not _decline_draw():
@@ -432,7 +454,7 @@ func decline_draw() -> Dictionary:
 	}
 
 
-func withdraw_draw() -> Dictionary:
+func _withdraw_draw_choice() -> Dictionary:
 	if play_ui_state != UI_S6:
 		return {"ok": false}
 	if not _withdraw_draw():
@@ -446,7 +468,7 @@ func withdraw_draw() -> Dictionary:
 	}
 
 
-func toggle_advice() -> Dictionary:
+func _toggle_advice() -> Dictionary:
 	if play_ui_state == UI_S2 or game_ended():
 		return {"ok": false}
 	advice_on = not advice_on

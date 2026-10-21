@@ -440,21 +440,25 @@ func _show_state(state_id: String) -> void:
 
 
 func _on_activate(control_id: String) -> void:
-	if control_id == "C1" and _select_focus.disabled:
-		return
-	if control_id == "C2" and _place_focus.disabled:
-		return
-	if control_id == "C3" and _advice.disabled:
-		return
-	if control_id == "C4" and _resign.disabled:
-		return
-	if control_id == "C5" and _offer.disabled:
-		return
-	if control_id == "C7" and _accept.disabled:
-		return
-	if control_id == "C8" and _decline.disabled:
-		return
-	if control_id == "C9" and _withdraw.disabled:
+	var disabled := false
+	match control_id:
+		"C1":
+			disabled = _select_focus.disabled
+		"C2":
+			disabled = _place_focus.disabled
+		"C3":
+			disabled = _advice.disabled
+		"C4":
+			disabled = _resign.disabled
+		"C5":
+			disabled = _offer.disabled
+		"C7":
+			disabled = _accept.disabled
+		"C8":
+			disabled = _decline.disabled
+		"C9":
+			disabled = _withdraw.disabled
+	if disabled:
 		return
 	# C1/C2 activate via board gestures (B2/B3/B10); focus sentinels only emit point.
 	if control_id == "C1" or control_id == "C2":

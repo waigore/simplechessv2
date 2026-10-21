@@ -167,19 +167,19 @@ func _illegal_keeps_selection() -> String:
 	)
 	# Occupied non-legal target → EX.rejected / S5 (not empty-square deselect).
 	_router.handle_input_commit("e7", "e4")
-	if _router.selected_piece != "e7":
-		return "illegal keeps selection"
-	if _router.play_ui_state != "S5":
-		return "illegal enters S5"
-	if str(_router.shared_session.reject_square) != "e4":
-		return "PER.R8 reject square"
 	var after: Dictionary = _router.shared_session.rules.position_field()
-	if str(after["side_to_move"]) != "black":
-		return "illegal keeps side to move"
-	if (after["occupancy"] as Dictionary).has("e3"):
-		return "illegal changed position"
-	if not before_occ.has("e7"):
-		return "illegal cleared origin"
+	var fail := _first_fail(
+		[
+			[_router.selected_piece == "e7", "illegal keeps selection"],
+			[_router.play_ui_state == "S5", "illegal enters S5"],
+			[str(_router.shared_session.reject_square) == "e4", "PER.R8 reject square"],
+			[str(after["side_to_move"]) == "black", "illegal keeps side to move"],
+			[not (after["occupancy"] as Dictionary).has("e3"), "illegal changed position"],
+			[before_occ.has("e7"), "illegal cleared origin"],
+		]
+	)
+	if not fail.is_empty():
+		return fail
 	_router.finish_reject_flash()
 	if _router.play_ui_state != "S1":
 		return "S5 flash ends → S1"
@@ -282,26 +282,40 @@ func _promotion_choice_s4() -> String:
 	session.selected_piece = "e7"
 	session.play_ui_state = SharedGameSession.UI_S1
 	var result := session.place("e7", "e8", "")
-	if not bool(result.get("promote", false)) or session.play_ui_state != "S4":
-		return "last-rank place enters S4"
-	if session.pending_promote_to != "e8":
-		return "pending promote square"
+	var place_fail := _first_fail(
+		[
+			[
+				bool(result.get("promote", false)) and session.play_ui_state == "S4",
+				"last-rank place enters S4",
+			],
+			[session.pending_promote_to == "e8", "pending promote square"],
+		]
+	)
+	if not place_fail.is_empty():
+		return place_fail
 	var cancel := session.clear_selection()
-	if not bool(cancel.get("ok", false)) or session.play_ui_state != "S1":
-		return "S4 deselect drops choice"
-	if session.selected_piece != "e7":
-		return "S4 deselect leaves pawn selected"
+	var cancel_fail := _first_fail(
+		[
+			[
+				bool(cancel.get("ok", false)) and session.play_ui_state == "S1",
+				"S4 deselect drops choice",
+			],
+			[session.selected_piece == "e7", "S4 deselect leaves pawn selected"],
+		]
+	)
+	if not cancel_fail.is_empty():
+		return cancel_fail
 	session.place("e7", "e8", "")
 	var commit := session.commit_promotion("queen")
-	if not bool(commit.get("ok", false)):
-		return "C6 commit promotion"
 	var occ: Dictionary = session.rules.position_field()["occupancy"]
 	var on_e8: Dictionary = occ.get("e8", {})
-	if str(on_e8.get("kind", "")) != "queen":
-		return "promoted unit on board"
-	if session.play_ui_state != "S1":
-		return "commit returns S1"
-	return ""
+	return _first_fail(
+		[
+			[bool(commit.get("ok", false)), "C6 commit promotion"],
+			[str(on_e8.get("kind", "")) == "queen", "promoted unit on board"],
+			[session.play_ui_state == "S1", "commit returns S1"],
+		]
+	)
 
 
 func _draw_offer_flow() -> String:
@@ -309,23 +323,52 @@ func _draw_offer_flow() -> String:
 	_router.handle_control("mode-pick", "C1")
 	_router.clock = "untimed"
 	_router.handle_control("shared-setup", "C5")
+	var err := _draw_offer_open_decline()
+	if not err.is_empty():
+		return err
+	err = _draw_offer_withdraw_lapse_accept()
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-result", "C2")
+	return ""
+
+
+func _draw_offer_open_decline() -> String:
 	_router.handle_control("shared-play", "C5")
 	var play := _play_panel()
-	if _router.play_ui_state != "S2" or play.confirm_kind != SharedGameSession.CONFIRM_OFFER:
-		return "C5 opens offer confirm S2"
+	var err := _first_fail(
+		[
+			[
+				(
+					_router.play_ui_state == "S2"
+					and play.confirm_kind == SharedGameSession.CONFIRM_OFFER
+				),
+				"C5 opens offer confirm S2",
+			]
+		]
+	)
+	if not err.is_empty():
+		return err
 	_router.handle_control("shared-play", "confirm")
-	if _router.play_ui_state != "S6":
-		return "confirm offer → S6"
-	if not bool(_shared_play_state().get("c7_available", false)):
-		return "S6 Accept available"
-	# Board stays playable in S6.
-	if not _router.play_gestures_available():
-		return "S6 board stay playable"
+	err = _first_fail(
+		[
+			[_router.play_ui_state == "S6", "confirm offer → S6"],
+			[bool(_shared_play_state().get("c7_available", false)), "S6 Accept available"],
+			[_router.play_gestures_available(), "S6 board stay playable"],
+		]
+	)
+	if not err.is_empty():
+		return err
 	_router.handle_control("shared-play", "C8")
-	if _router.play_ui_state != "S1":
-		return "Decline → S1"
-	if not str(_router.shared_session.draw_offer).is_empty():
-		return "Decline clears offer"
+	return _first_fail(
+		[
+			[_router.play_ui_state == "S1", "Decline → S1"],
+			[str(_router.shared_session.draw_offer).is_empty(), "Decline clears offer"],
+		]
+	)
+
+
+func _draw_offer_withdraw_lapse_accept() -> String:
 	_router.handle_control("shared-play", "C5")
 	_router.handle_control("shared-play", "confirm")
 	_router.handle_control("shared-play", "C9")
@@ -336,10 +379,14 @@ func _draw_offer_flow() -> String:
 	# Legal place lapses offer.
 	_router.handle_input_commit("e2", "")
 	_router.handle_input_commit("e2", "e4")
-	if _router.play_ui_state != "S1":
-		return "place lapses S6 → S1"
-	if not str(_router.shared_session.draw_offer).is_empty():
-		return "place lapses draw offer"
+	var err := _first_fail(
+		[
+			[_router.play_ui_state == "S1", "place lapses S6 → S1"],
+			[str(_router.shared_session.draw_offer).is_empty(), "place lapses draw offer"],
+		]
+	)
+	if not err.is_empty():
+		return err
 	_router.handle_control("shared-play", "C5")
 	_router.handle_control("shared-play", "confirm")
 	_router.handle_control("shared-play", "C7")
@@ -352,7 +399,6 @@ func _draw_offer_flow() -> String:
 	)
 	if not end_ok:
 		return "Accept → shared-result END.D2"
-	_router.handle_control("shared-result", "C2")
 	return ""
 
 
@@ -608,6 +654,13 @@ func _result_panel() -> SharedResultPanel:
 
 func _board() -> BoardPresentation:
 	return _presentation.get_node("ScreenHost/BoardPresentation") as BoardPresentation
+
+
+func _first_fail(checks: Array) -> String:
+	for item in checks:
+		if not bool(item[0]):
+			return str(item[1])
+	return ""
 
 
 func _fail(message: String) -> void:

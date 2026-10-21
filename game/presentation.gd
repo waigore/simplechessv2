@@ -531,17 +531,13 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 		var kind := _board.promotion_kind_at(_board.screen_to_world(at))
 		if not kind.is_empty():
 			_router.handle_promotion_commit(kind)
-			return
-		# Tap selected pawn / empty → deselect drops choice.
-		_router.handle_deselect()
-		return
-	if not _router.play_gestures_available():
+		else:
+			# Tap selected pawn / empty → deselect drops choice.
+			_router.handle_deselect()
+	elif not _router.play_gestures_available():
 		_finish_drag(false)
-		return
-	var selected := _router.selected_piece
-	var side := _router.side_to_move()
-	# B10: drag own piece onto a destination (may start unselected).
-	if was_dragging and not drag_from.is_empty() and not to_sq.is_empty() and to_sq != drag_from:
+	elif was_dragging and not drag_from.is_empty() and not to_sq.is_empty() and to_sq != drag_from:
+		# B10: drag own piece onto a destination (may start unselected).
 		# PHY.M5 before chrome emit so _motion_busy skips piece rebuild on refuse.
 		if _router.can_place(drag_from, to_sq, ""):
 			_board.cancel_drag()
@@ -550,36 +546,44 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 			# B11: illegal / empty non-destination → clear selection (IN.deselect).
 			_board.end_drag_illegal()
 			_router.handle_deselect()
-		return
-	# B11: drag off-board or release with no destination.
-	if was_dragging and not drag_from.is_empty() and (to_sq.is_empty() or to_sq == drag_from):
+	elif was_dragging and not drag_from.is_empty() and (to_sq.is_empty() or to_sq == drag_from):
+		# B11: drag off-board or release with no destination.
 		_board.end_drag_illegal()
 		_router.handle_deselect()
-		return
+	else:
+		_on_pointer_up_tap(drag_from, to_sq, was_dragging)
+
+
+func _on_pointer_up_tap(drag_from: String, to_sq: String, was_dragging: bool) -> void:
+	var selected := _router.selected_piece
+	var side := _router.side_to_move()
 	# B8: tap the selected piece → IN.deselect (before B2 re-select).
 	if not was_dragging and not selected.is_empty() and to_sq == selected:
 		_finish_drag(true)
 		_router.handle_deselect()
-		return
-	# B2 before B3: tap an own piece (including changing selection).
-	if not was_dragging and not to_sq.is_empty():
+	elif not was_dragging and not to_sq.is_empty():
 		var at_dest := _router.occupancy_at(to_sq)
+		# B2 before B3: tap an own piece (including changing selection).
 		if not at_dest.is_empty() and str(at_dest.get("color", "")) == side:
 			_finish_drag(true)
 			input_commit.emit(to_sq, "", "")
-			return
-	# B3 / B9: tap empty or capture target while a piece is selected.
-	if not was_dragging and not selected.is_empty() and not to_sq.is_empty() and to_sq != selected:
-		_finish_drag(true)
-		input_commit.emit(selected, to_sq, "")
-		return
-	# B2: tap an own piece in place → select.
-	if not was_dragging and not drag_from.is_empty() and (to_sq.is_empty() or to_sq == drag_from):
+		elif not selected.is_empty() and to_sq != selected:
+			# B3 / B9: tap empty or capture target while a piece is selected.
+			_finish_drag(true)
+			input_commit.emit(selected, to_sq, "")
+		elif not drag_from.is_empty() and to_sq == drag_from:
+			# B2: tap an own piece in place → select.
+			_finish_drag(true)
+			input_commit.emit(drag_from, "", "")
+		else:
+			_finish_drag(true)
+	elif not was_dragging and not drag_from.is_empty() and (to_sq.is_empty() or to_sq == drag_from):
+		# B2: tap an own piece in place → select.
 		_finish_drag(true)
 		input_commit.emit(drag_from, "", "")
-		return
-	# Idle release with no action.
-	_finish_drag(true)
+	else:
+		# Idle release with no action.
+		_finish_drag(true)
 
 
 func _schedule_reject_clear() -> void:
