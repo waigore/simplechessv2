@@ -10,21 +10,21 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| Shared game mode | PS1.1 | Puzzle stream mode | PS1.2 |
+| Shared game mode | PS1.1 | Puzzle stream mode | PS1.2 PS1.13 |
 | White seat | PS1.3 PS1.4 | Clock | PS1.5 PS1.6 PS1.7 |
-| Increment | PS1.8 PS1.14 | Advice | PS1.9 PS1.10 |
+| Increment | PS1.8 PS1.14 PS1.15 | Advice | PS1.9 PS1.10 |
 | K1 | PS1.11 PS1.12 | K2, K3 | PS1.13 |
 
 ## PS1: Choose session options
 
-As a casual player, I set options so that clocks and seats fit the session.
+As a casual player, I set options so clocks and seats fit.
 
 ### PS1.1: Shared mode
 
 - **Proves**: Shared game mode
 
 ```gherkin
-Given Shared game with default options
+Given Shared game defaults
 When the game starts
 Then GS.clock Untimed And GS.whiteClock none
 ```
@@ -36,7 +36,7 @@ Then GS.clock Untimed And GS.whiteClock none
 ```gherkin
 Given GS.playerElo 1000 And catalog puzzles at 950, 1000, and 1200
 When Puzzle stream deals its first puzzle
-Then the dealt GS.puzzleElo is 950 or 1000, within CFG.ELO_MATCH_RANGE (100) of GS.playerElo 1000
+Then GS.puzzleElo is 950 or 1000, within CFG.ELO_MATCH_RANGE (100) of 1000
 ```
 
 ### PS1.3: Bottom seat White
@@ -106,7 +106,7 @@ Then GS.whiteClock is 105
 ```gherkin
 Given Shared game And Advice On And online
 When the turn passes
-Then the engine evaluates for the side to move
+Then GS.adviceBestMove is set for the side to move
 ```
 
 ### PS1.10: Advice Off
@@ -116,7 +116,7 @@ Then the engine evaluates for the side to move
 ```gherkin
 Given Shared game And Advice Off
 When the turn passes
-Then GS.adviceBestMove and GS.adviceEval are none
+Then GS.adviceBestMove and GS.adviceEval none
 ```
 
 ### PS1.11: Increment available
@@ -141,12 +141,12 @@ Then Increment is unavailable
 
 ### PS1.13: Shared-only
 
-- **Proves**: K2, K3
+- **Proves**: Puzzle stream mode, K2, K3
 
 ```gherkin
 Given Puzzle stream
 When it starts
-Then White seat, Clock, Increment, and Advice do not apply
+Then both clocks none And GS.adviceBestMove and GS.adviceEval none
 ```
 
 ### PS1.14: Default increment
@@ -155,6 +155,16 @@ Then White seat, Clock, Increment, and Advice do not apply
 
 ```gherkin
 Given Blitz And Increment 3 s And GS.whiteClock is 50
-When White completes a legal move
+When White completes a move
 Then GS.whiteClock is 53 And Black's clock starts
+```
+
+### PS1.15: Zero clock
+
+- **Proves**: Increment
+
+```gherkin
+Given Blitz And Increment 3 s And GS.whiteClock is 0
+When White completes a move
+Then GS.whiteClock is 0
 ```
