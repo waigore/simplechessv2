@@ -15,7 +15,7 @@ Field rows: [`stories/game-state/fields-play.md`](game-state/fields-play.md), [`
 | V1 | Only side to move changes position | PS1.1 |
 | V2 | At most one clock runs | PS1.2 |
 | V3 | No advice fields in Puzzle stream | PS1.3 |
-| H1 | Sequence hidden until played or revealed | PS1.4 PS1.5 |
+| H1 | Sequence hidden until played or revealed | PS1.4 PS1.5 PS1.9 |
 | H2 | Advice fields knowable only when set | PS1.6 PS1.7 |
 | Q1 | Deal need not repeat | PS1.8 |
 
@@ -93,12 +93,22 @@ When the position is ready
 Then GS.adviceBestMove is none And the player cannot know GS.adviceBestMove or GS.adviceEval
 ```
 
-### PS1.8: Deal may differ
+### PS1.8: Deal stays in DIF.Y1 candidate set
 
 - **Proves**: Q1
 
 ```gherkin
-Given the same GS.playerElo and history And multiple candidate puzzles
-When two deals occur
-Then the chosen puzzles need not match
+Given GS.playerElo is 1000 And CFG.ELO_MATCH_RANGE is 100 And CFG.ELO_RECENT_WINDOW is 20 And CFG.ELO_BAND_WIDEN is 50 And GS.recentSolved holds recent1 And the DIF.Y1 candidate set has at least two puzzles
+When two deals occur with that GS.playerElo and history
+Then each GS.puzzleId is a member of that DIF.Y1 candidate set And the two deals need not match
+```
+
+### PS1.9: Sequence knowable after play without reveal
+
+- **Proves**: H1
+
+```gherkin
+Given an open puzzle And GS.requiredSequence is e2e4 And GS.sequenceIndex is 0 And no reveal
+When the player plays e2e4 completing the Required sequence
+Then the player can know the full Required sequence
 ```
