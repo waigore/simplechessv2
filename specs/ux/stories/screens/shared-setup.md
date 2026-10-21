@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C4 | Advice | US1.8 |
 | C5 | Start | US1.3 |
 | C6 | Back | US1.9 |
-| S1 | Default | US1.1 |
+| S1 | Default | US1.1 US1.2 |
 
 ## US1: Configure and start
 
@@ -29,19 +29,19 @@ As Bottom player, I set options so that the Shared game matches our choice.
 - **Proves**: R1, S1
 
 ```gherkin
-Given Bottom player is on shared-setup S1
-When the screen is shown
-Then R1 shows White seat, Clock, and Advice
+Given Bottom player opens shared-setup and GS.whiteSeat is Bottom player and GS.clock is Blitz and GS.increment is 3 s and GS.advice is On
+When the interface opens
+Then the screen is shared-setup S1 And R1 shows GS.whiteSeat Bottom player, GS.clock Blitz, GS.increment 3 s, and GS.advice On And C1–C6 are available
 ```
 
 ### US1.2: Increment hidden when Untimed
 
-- **Proves**: R1
+- **Proves**: R1, S1
 
 ```gherkin
-Given Bottom player is on shared-setup and GS.clock is Untimed
-When the screen is shown
-Then Increment is not visible in R1
+Given Bottom player opens shared-setup and GS.whiteSeat is Top player and GS.clock is Untimed and GS.increment is 3 s and GS.advice is Off
+When the interface opens
+Then the screen is shared-setup S1 And R1 shows GS.whiteSeat Top player, GS.clock Untimed, and GS.advice Off And Increment is not visible in R1 And C1, C2, C4, C5, and C6 are available And C3 is unavailable
 ```
 
 ### US1.3: Start
