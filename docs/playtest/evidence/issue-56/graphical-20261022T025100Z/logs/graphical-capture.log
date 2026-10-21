@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+SAVE_PNG err=0 size=1280x720 path=user://issue56_graphical/01-shared-play-bottom.png
+SAVE_PNG err=0 size=1280x720 path=user://issue56_graphical/02-shared-play-top-flip.png
+SAVE_PNG err=0 size=1280x720 path=user://issue56_graphical/03-shared-play-selection-legal.png
+COPIED ../docs/playtest/evidence/issue-56/graphical-20261022T025100Z/screenshots/03-shared-play-selection-legal.png
+COPIED ../docs/playtest/evidence/issue-56/graphical-20261022T025100Z/screenshots/02-shared-play-top-flip.png
+COPIED ../docs/playtest/evidence/issue-56/graphical-20261022T025100Z/screenshots/01-shared-play-bottom.png
+ISSUE56_GRAPHICAL pass
