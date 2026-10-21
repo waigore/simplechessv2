@@ -12,9 +12,10 @@ Split from [`stories/game-state.md`](../game-state.md) by scope. Moment fields: 
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| GS.position | PS1.1 PS1.2 | GS.sideToMove | PS1.1 PS1.2 PS1.12 |
+| GS.position | PS1.1 PS1.2 PS1.5 | GS.sideToMove | PS1.1 PS1.2 PS1.12 |
 | GS.whiteClock, GS.blackClock | PS1.3 PS1.4 | GS.puzzleId | PS1.9 PS1.10 |
-| GS.wrongMoveOnPuzzle | PS1.8 PS1.9 | GS.requiredSequence, GS.sequenceIndex | PS1.9 PS1.11 |
+| GS.wrongMoveOnPuzzle | PS1.6 PS1.8 PS1.9 | GS.requiredSequence | PS1.9 PS1.11 |
+| GS.sequenceIndex | PS1.9 | | |
 
 ## PS1: Session fields
 
@@ -58,6 +59,26 @@ Then GS.whiteClock is 60 And GS.blackClock is 60
 Given Blitz And GS.whiteClock 2
 When 2 seconds elapse
 Then GS.whiteClock is 0, not below 0
+```
+
+### PS1.5: Illegal write leaves position legal
+
+- **Proves**: GS.position
+
+```gherkin
+Given an open Shared game And GS.position is legal for Shared
+When a write would make GS.position illegal for Shared
+Then GS.position remains legal for Shared
+```
+
+### PS1.6: Wrong-move flag stays on later move
+
+- **Proves**: GS.wrongMoveOnPuzzle
+
+```gherkin
+Given an open puzzle And GS.wrongMoveOnPuzzle is true
+When a later move is played on that puzzle
+Then GS.wrongMoveOnPuzzle is still true
 ```
 
 ### PS1.8: Wrong-move flag sticks
