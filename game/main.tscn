@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://presentation.gd" id="1_pres"]
 [ext_resource type="Script" path="res://session_router.gd" id="2_router"]
 [ext_resource type="Script" path="res://asset_resolver.gd" id="3_assets"]
 [ext_resource type="Script" path="res://playtest_seams.gd" id="4_seams"]
 [ext_resource type="Script" path="res://playtest_harness.gd" id="5_harness"]
+[ext_resource type="Script" path="res://persist_store.gd" id="6_persist"]
 
 [node name="Presentation" type="Control"]
 layout_mode = 3
@@ -18,9 +19,11 @@ script = ExtResource("1_pres")
 [node name="SessionRouter" type="Node" parent="."]
 script = ExtResource("2_router")
 
+[node name="PersistStore" type="Node" parent="."]
+script = ExtResource("6_persist")
+
 [node name="AssetResolver" type="Node" parent="."]
 script = ExtResource("3_assets")
-
 [node name="PlaytestSeams" type="Node" parent="."]
 script = ExtResource("4_seams")
 

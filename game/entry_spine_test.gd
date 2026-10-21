@@ -19,7 +19,12 @@ func _start() -> void:
 	harness.free()
 	_router = _presentation.get_node("SessionRouter") as SessionRouter
 	_router.locale = "en"
-	_router.last_mode = ""
+	_router.last_mode = "none"
+	## Isolate persist for this suite so cold open is Last mode none.
+	var persist := _presentation.get_node_or_null("PersistStore") as PersistStore
+	if persist != null:
+		persist.memory_backend = {}
+		persist.clear_storage()
 	root.add_child(_presentation)
 	call_deferred("_after_boot")
 
