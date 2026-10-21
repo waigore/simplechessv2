@@ -219,13 +219,18 @@
           <section data-region="R2" aria-label="Status">
             <div class="toolbar">
               <span class="chip">White to move</span>
+              <span class="chip">Black to move</span>
+              <span class="chip check">Check</span>
               <span class="chip num" aria-label="White clock">5:00</span>
               <span class="chip num" aria-label="Black clock">5:00</span>
             </div>
           </section>
 
           <section data-region="R3" aria-label="Advice">
-            <button type="button" class="btn btn-advice-on" data-control="C3">Advice On</button>
+            <div class="toolbar">
+              <button type="button" class="btn btn-advice-on" data-control="C3">Advice On</button>
+              <button type="button" class="btn btn-secondary" data-control="C3">Advice Off</button>
+            </div>
           </section>
 
           <section data-region="R4" aria-label="End">
@@ -240,6 +245,7 @@
       <section id="ex-confirm" data-state="EX.confirm">
         <div class="card dialog" data-od-id="shared-play-confirm">
           <p>Resign this game?</p>
+          <p>Offer a draw?</p>
           <div class="actions">
             <button type="button" class="btn btn-primary">Confirm</button>
             <button type="button" class="btn btn-secondary">Cancel</button>
