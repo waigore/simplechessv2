@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C2 | Shared Advice toggle | US1.4 |
 | C3 | Resign or offer confirm | US1.5 US1.6 |
 | C4 | Answer Bottom's offer | US2.5 US2.6 |
-| K2 | Cannot move on Bottom turn | US1.10 US2.7 |
+| K2 | Cannot move on Bottom turn | US1.10 US1.11 US2.7 US2.8 US2.9 US2.10 |
 
 ## US1: Top seat only
 
@@ -88,6 +88,16 @@ Then the screen is shared-play S1
 Given Top player is on shared-play S1 and Bottom seat is side to move
 When Top activates UI-shared-play.C2
 Then the interface asks the game for no place And the board still shows the same position ([GS.position](../../../design/game-state.md) unchanged)
+```
+
+### US1.11: Cannot select on Bottom turn
+
+- **Proves**: K2
+
+```gherkin
+Given Top player is on shared-play S1 and Bottom seat is side to move
+When Top activates UI-shared-play.C1
+Then selection is unchanged and no move is asked
 ```
 
 Choice scenarios: [`top-player-choices.md`](top-player-choices.md).
