@@ -7,6 +7,12 @@ tmp/
 *.egg-info/
 .mypy_cache/
 
+# Godot 4 import cache (rebuilt). Do not ignore .import or .uid beside game_assets/.
+.godot/
+
+# Web/HTML5 export output (ADR-0007); generated, not committed.
+/build/web/
+
 # agent-orc / .orc runtime
 .orc/config.local.yaml
 .orc/logs/
