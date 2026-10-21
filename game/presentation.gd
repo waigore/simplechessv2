@@ -255,15 +255,9 @@ func provide_assets(resources_by_id: Dictionary) -> void:
 
 
 func play_cue(cue_id: String) -> void:
-	## CTR-presentation.O3 — Shared SFX; never awaits network (G1).
+	## CTR-presentation.O3 — Shared SFX or Ambient start; never awaits network (G1).
 	if _audio != null:
 		_audio.play_cue(cue_id)
-
-
-func start_ambient() -> void:
-	## Cafe beds after Ambient O4/O5; cold-open mode pick stays silent.
-	if _audio != null:
-		_audio.start_ambient()
 
 
 func _apply_ui_fonts(resources_by_id: Dictionary) -> void:
