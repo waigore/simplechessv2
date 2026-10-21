@@ -63,6 +63,7 @@ func _build() -> void:
 	add_child(root)
 
 	_title = Label.new()
+	_title.name = "Title"
 	UiChrome.style_label(_title, true)
 	root.add_child(_title)
 

@@ -62,16 +62,31 @@ func _check_cold_open() -> String:
 
 
 func _locale_cycle() -> String:
+	var mode_pick := _mode_pick()
+	var title := mode_pick.find_child("Title", true, false) as Label
+	var en_title := StringTable.mode_pick("title", "en")
+	if title == null or title.text != en_title:
+		return "mode-pick title before locale switch"
 	_router.handle_control("mode-pick", "C4")
 	if _router.locale != "zh-Hant":
 		return "locale en→zh-Hant"
-	var mode_pick := _mode_pick()
+	mode_pick = _mode_pick()
+	title = mode_pick.find_child("Title", true, false) as Label
 	var locale_btn := mode_pick.find_child("SwitchLocale", true, false) as Button
 	if locale_btn == null or locale_btn.text != "繁體中文":
 		return "R3 own-name zh-Hant"
+	if title == null or title.text != StringTable.mode_pick("title", "zh-Hant"):
+		return "mode-pick copy did not switch to zh-Hant"
 	_router.handle_control("mode-pick", "C4")
 	if _router.locale != "ja":
 		return "locale zh-Hant→ja"
+	mode_pick = _mode_pick()
+	title = mode_pick.find_child("Title", true, false) as Label
+	locale_btn = mode_pick.find_child("SwitchLocale", true, false) as Button
+	if locale_btn == null or locale_btn.text != "日本語":
+		return "R3 own-name ja"
+	if title == null or title.text != StringTable.mode_pick("title", "ja"):
+		return "mode-pick copy did not switch to ja"
 	_router.handle_control("mode-pick", "C4")
 	if _router.locale != "en":
 		return "locale ja→en"

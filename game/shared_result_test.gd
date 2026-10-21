@@ -54,20 +54,15 @@ func _after_boot() -> void:
 
 
 func _copy_keys() -> String:
-	for key in [
-		"title",
-		"shared_game",
-		"result_white",
-		"result_black",
-		"result_draw",
-		"play_again",
-		"stop",
-	]:
-		var text := StringTable.shared_result(key, "en")
-		if text.is_empty() or text == key:
-			return "missing shared-result copy %s" % key
+	for locale in StringTable.LOCALES:
+		for key in StringTable.shared_result_keys():
+			var text := StringTable.shared_result(key, locale)
+			if text.is_empty() or text == key:
+				return "missing shared-result copy %s in %s" % [key, locale]
 	if StringTable.shared_result("shared_game", "en") != "Shared game":
 		return "shared_game copy"
+	if StringTable.shared_result("title", "ja") == StringTable.shared_result("title", "en"):
+		return "shared-result title still English in ja"
 	return ""
 
 
