@@ -87,3 +87,12 @@ static func is_light_square(square: String) -> bool:
 	if not is_square(square):
 		return false
 	return (file_index(square) + rank_index(square)) % 2 == 1
+
+
+## White-fixed world → algebraic square, or "" if outside the board.
+static func square_at(world: Vector2) -> String:
+	if world.x < 0.0 or world.y < 0.0 or world.x >= BOARD_SIZE or world.y >= BOARD_SIZE:
+		return ""
+	var file_i := int(floor(world.x))
+	var rank_i := int(floor(world.y))
+	return "%s%d" % [String.chr(97 + file_i), rank_i + 1]

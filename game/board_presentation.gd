@@ -256,6 +256,19 @@ func end_drag_illegal() -> void:
 	_motion_busy = false
 
 
+## Drop drag follow without tween so O2 can own the place animation.
+func cancel_drag() -> void:
+	if _drag_square.is_empty():
+		return
+	var square := _drag_square
+	_drag_square = ""
+	var node: Node2D = _piece_nodes.get(square) as Node2D
+	if node == null:
+		return
+	node.position = BoardGeometry.square_center(square)
+	node.z_index = 0
+
+
 func play_move(
 	from_square: String,
 	to_square: String,
