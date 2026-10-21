@@ -131,6 +131,42 @@ func _castling_rights_and_path() -> String:
 	)
 	if problem.is_empty() and path_block.legal_targets("e1").has("g1"):
 		problem = "E-pieces.I18 path occupied"
+	var dest_own := _with(
+		[
+			_man("e1", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+			_man("h1", ChessRules.SIDE_WHITE, ChessRules.KIND_ROOK),
+			_man("g1", ChessRules.SIDE_WHITE, ChessRules.KIND_KNIGHT),
+			_man("e8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+		]
+	)
+	var dest_own_before := _snapshot(dest_own)
+	if (
+		problem.is_empty()
+		and (
+			dest_own.legal_targets("e1").has("g1")
+			or _attempt(dest_own, "e1", "g1")["ok"]
+			or not _same(dest_own_before, dest_own)
+		)
+	):
+		problem = "E-pieces.I18 destination own piece"
+	var dest_enemy := _with(
+		[
+			_man("e1", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+			_man("h1", ChessRules.SIDE_WHITE, ChessRules.KIND_ROOK),
+			_man("g1", ChessRules.SIDE_BLACK, ChessRules.KIND_KNIGHT),
+			_man("e8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+		]
+	)
+	var dest_enemy_before := _snapshot(dest_enemy)
+	if (
+		problem.is_empty()
+		and (
+			dest_enemy.legal_targets("e1").has("g1")
+			or _attempt(dest_enemy, "e1", "g1")["ok"]
+			or not _same(dest_enemy_before, dest_enemy)
+		)
+	):
+		problem = "E-pieces.I18 destination enemy piece"
 	return problem
 
 

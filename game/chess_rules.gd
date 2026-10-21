@@ -383,7 +383,9 @@ func _castling_ready(color: String, kingside: bool, rank: String) -> bool:
 	var rook: Dictionary = _occupancy.get(rook_square, {})
 	if rook.is_empty() or str(rook["color"]) != color or str(rook["kind"]) != KIND_ROOK:
 		return false
-	var between: Array = ["f%s" % rank] if kingside else ["b%s" % rank, "c%s" % rank, "d%s" % rank]
+	var between: Array = (
+		["f%s" % rank, "g%s" % rank] if kingside else ["b%s" % rank, "c%s" % rank, "d%s" % rank]
+	)
 	for square in between:
 		if not (_occupancy.get(str(square), {}) as Dictionary).is_empty():
 			return false
