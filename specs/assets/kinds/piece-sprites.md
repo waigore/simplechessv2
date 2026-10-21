@@ -62,7 +62,7 @@ Full recipe: [`piece-sprites/recipes.md`](piece-sprites/recipes.md).
 
 | ID | Check | Method | Pass criterion |
 |----|-------|--------|----------------|
-| K1 | Silhouette | Solid-black ~1/12 frame | Type named (FRM.L1) |
+| K1 | Silhouette | Solid-black at FRM.L1 (~1/21 @ 9:16; ~1/12 @ 16:9) | Type named (FRM.L1) |
 | K2 | Spec S1–S9 | Review + inspect | Spec met |
 | K3 | Budget B1 | File size | ≤ 80 KB |
 | K4 | Style | Look vs P2 P3 | Quiet mahogany mood |

@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/form.md`](../../.agents/specs/
 
 | ID | Must be told apart | Smallest on-screen size | Test |
 |----|--------------------|------------------------|------|
-| L1 | King, Queen, Rook, Bishop, Knight, Pawn | About 1/12 of frame height (Web touch; [view.md](../view/view.md) platform; [PRJ.P1](../view/projection.md), [PRJ.V1](../view/projection.md)) | Each type named from a solid-black silhouette at that size ([PER.R1](../view/perception.md)) |
+| L1 | King, Queen, Rook, Bishop, Knight, Pawn | Drawn height of [SPC.E1](../view/spatial-model.md) (0.85 units) under [PRJ.V1](../view/projection.md): about 1/21 of frame height at 9:16 and about 1/12 at 16:9 (Web touch; [view.md](../view/view.md) platform; [PRJ.P1](../view/projection.md)) | Each type named from a solid-black silhouette at that size ([PER.R1](../view/perception.md)) |
 
 ## Detail
 
