@@ -2,13 +2,7 @@ class_name PresentationAudio
 extends Node
 ## CMP-presentation R3 / CTR-presentation.O3 — Shared cues and cafe beds (#60).
 
-## SND.X1–X4 approved IDs (Play group). SND.X5 is Wave 2 only — never play here.
-const CUE_SELECT := "01a151f8-b7d8-7ae6-84af-767ba53d09f6"
-const CUE_MOVE := "01a151f8-b7d8-710a-b767-92c9137bfd63"
-const CUE_CHECK := "01a151f8-b7d8-7e05-9921-e892e9a2e064"
-const CUE_END := "01a151f8-b7d8-7fe3-b94f-e3a562395d96"
-const CUE_PUZZLE_FAIL := "01a151f8-b7d8-759c-89c5-e1be5eecb2b2"
-## SND.M1 / M2 (Ambient group).
+## Playlist beds (Ambient). Same UUIDs as SharedAudioCues; L1 owns rotation only.
 const BED_M1 := "01a15200-69b2-7d13-a30d-696fa4ff390b"
 const BED_M2 := "01a15200-69b2-7964-a602-ad5b19583125"
 
@@ -54,10 +48,12 @@ func has_stream(asset_id: String) -> bool:
 
 
 func play_cue(cue_id: String) -> void:
-	## CTR-presentation.O3 — finishes on-device; unbound IDs stay silent (sound-off).
-	if cue_id.is_empty() or cue_id == CUE_PUZZLE_FAIL:
+	## CTR-presentation.O3 — SFX or ambient start; finishes on-device (G1).
+	## Unbound IDs stay silent (sound-off). Bed IDs start the M1→M2 playlist.
+	if cue_id.is_empty():
 		return
 	if cue_id == BED_M1 or cue_id == BED_M2:
+		_start_ambient()
 		return
 	if not _streams.has(cue_id):
 		return
@@ -73,7 +69,7 @@ func play_cue(cue_id: String) -> void:
 	player.play()
 
 
-func start_ambient() -> void:
+func _start_ambient() -> void:
 	## M1 → M2 → M1 with a clean join (no crossfade). Idempotent once started.
 	if music_started:
 		return

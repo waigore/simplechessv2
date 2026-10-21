@@ -50,6 +50,7 @@ var _resolver: AssetResolver
 var _seams: PlaytestSeams
 var _persist: PersistStore
 var _board_playable := false
+var _ambient_started := false
 var _clock_accum_ms := 0.0
 var _last_clock_display := ""
 
@@ -97,7 +98,7 @@ func _process(delta: float) -> void:
 		var ended_field: Dictionary = shared_session.play_state().get("game_ended", {})
 		var end_reason := str(ended_field.get("reason", ""))
 		if _is_loss_end(end_reason):
-			_play_cue(PresentationAudio.CUE_END)
+			_play_cue(SharedAudioCues.CUE_END)
 		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
 		_go_shared_result()
 
@@ -122,7 +123,7 @@ func note_board_playable() -> void:
 
 func start_music() -> void:
 	## Ambient O4 only after the board is playable — never on cold open (#51 / #60).
-	if not _board_playable:
+	if not _board_playable or _ambient_started:
 		return
 	if _resolver.group_loaded("ambient"):
 		_on_ambient_ready()
@@ -184,13 +185,13 @@ func handle_promotion_commit(kind: String) -> bool:
 	if not bool(result.get("ok", false)):
 		_emit_play_screen()
 		return false
-	_play_cue(PresentationAudio.CUE_MOVE)
+	_play_cue(SharedAudioCues.CUE_MOVE)
 	var ended := bool(result.get("ended", false))
 	var end_reason := str(result.get("end_reason", ""))
 	if ended and _is_loss_end(end_reason):
-		_play_cue(PresentationAudio.CUE_END)
+		_play_cue(SharedAudioCues.CUE_END)
 	elif bool(result.get("check", false)):
-		_play_cue(PresentationAudio.CUE_CHECK)
+		_play_cue(SharedAudioCues.CUE_CHECK)
 		_seams.emit_tel("shared.check", "shown", "UI-shared-play.US2")
 	var move: Dictionary = result.get("move", {}) as Dictionary
 	_emit_play_screen(move)
@@ -318,11 +319,12 @@ func _on_asset_needed(asset_ids: PackedStringArray) -> void:
 
 
 func _on_ambient_ready() -> void:
-	## Ambient O4 → O5 bind → presentation starts M1→M2→M1 (no unload this sitting).
+	## Ambient O4 → O5 bind → CTR-presentation.O3 with BED_M1 starts M1→M2→M1.
+	if _ambient_started:
+		return
 	_provide_assets(_resolver.resolve_group("ambient"))
-	var host := get_parent()
-	if host != null and host.has_method("start_ambient"):
-		host.call("start_ambient")
+	_ambient_started = true
+	_play_cue(SharedAudioCues.BED_M1)
 
 
 func _provide_assets(resources_by_id: Dictionary) -> void:
@@ -497,7 +499,7 @@ func _on_shared_play_control(control_id: String) -> void:
 	if result.has("event"):
 		_emit_tel_result(result)
 	if bool(result.get("ended", false)):
-		_play_cue(PresentationAudio.CUE_END)
+		_play_cue(SharedAudioCues.CUE_END)
 		_seams.emit_tel("shared.end", str(result.get("end_reason", "")), "NAV.T6")
 		_go_shared_result()
 	else:
@@ -531,7 +533,7 @@ func _apply_select(square: String) -> bool:
 	var result := shared_session.select_own(square)
 	if not bool(result.get("ok", false)):
 		return false
-	_play_cue(PresentationAudio.CUE_SELECT)
+	_play_cue(SharedAudioCues.CUE_SELECT)
 	_emit_tel_result(result)
 	_emit_play_screen()
 	return true
@@ -552,13 +554,13 @@ func _apply_place(from_square: String, to_square: String, promotion: String = ""
 	if not bool(result.get("ok", false)):
 		return false
 	## SEQ-apply-local-move S4 — move settle cue with travel; check / loss end after.
-	_play_cue(PresentationAudio.CUE_MOVE)
+	_play_cue(SharedAudioCues.CUE_MOVE)
 	var ended := bool(result.get("ended", false))
 	var end_reason := str(result.get("end_reason", ""))
 	if ended and _is_loss_end(end_reason):
-		_play_cue(PresentationAudio.CUE_END)
+		_play_cue(SharedAudioCues.CUE_END)
 	elif bool(result.get("check", false)):
-		_play_cue(PresentationAudio.CUE_CHECK)
+		_play_cue(SharedAudioCues.CUE_CHECK)
 		_seams.emit_tel("shared.check", "shown", "UI-shared-play.US2")
 	var move: Dictionary = result.get("move", {}) as Dictionary
 	_emit_play_screen(move)
