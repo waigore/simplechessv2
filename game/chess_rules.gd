@@ -1,6 +1,6 @@
 class_name ChessRules
 extends RefCounted
-## CMP-chess-rules (L3). CTR-local-move O1–O3, E1, and E2.
+## CMP-chess-rules (L3). CTR-local-move O1–O4, E1, and E2.
 
 signal move_applied(move: Dictionary, side_to_move: String)
 signal move_rejected(reason: String)
@@ -196,9 +196,90 @@ func end_signals() -> Dictionary:
 	}
 
 
+## CTR-local-move O4. FIDE possible checkmate for END.L3 / END.D5 (not forced mate).
+## True when some legal-move series can checkmate the other king (incl. K+N+N vs K).
+func possible_checkmate(mating_side: String) -> bool:
+	if mating_side != SIDE_WHITE and mating_side != SIDE_BLACK:
+		return false
+	return not _no_possible_mate(mating_side)
+
+
 func mark_ended(reason: String) -> void:
 	_game_ended = true
 	_ending_reason = reason
+
+
+func _no_possible_mate(mating_side: String) -> bool:
+	## Bare endings where no legal series can checkmate. K+N+N vs K is possible → false.
+	var counts := _piece_kind_counts()
+	var mating: Dictionary = counts[mating_side]
+	var victim: Dictionary = counts[_opponent(mating_side)]
+	var mating_total := _count_non_king(mating)
+	var victim_total := _count_non_king(victim)
+	var queens := int(mating.get(KIND_QUEEN, 0))
+	var rooks := int(mating.get(KIND_ROOK, 0))
+	var pawns := int(mating.get(KIND_PAWN, 0))
+	var knights := int(mating.get(KIND_KNIGHT, 0))
+	var bishops := int(mating.get(KIND_BISHOP, 0))
+	var has_force := (
+		queens > 0
+		or rooks > 0
+		or pawns > 0
+		or knights >= 2
+		or bishops >= 2
+		or (bishops >= 1 and knights >= 1)
+	)
+	if has_force:
+		return false
+	var bare_minor := victim_total == 0 and mating_total == 1 and (knights == 1 or bishops == 1)
+	var same_bishop := (
+		mating_total == 1
+		and victim_total == 1
+		and bishops == 1
+		and int(victim.get(KIND_BISHOP, 0)) == 1
+		and _bishops_same_color_only()
+	)
+	var lone_minors := mating_total <= 1 and victim_total <= 1
+	return mating_total == 0 or bare_minor or same_bishop or lone_minors
+
+
+func _piece_kind_counts() -> Dictionary:
+	var counts := {
+		SIDE_WHITE: {},
+		SIDE_BLACK: {},
+	}
+	for square in _occupancy.keys():
+		var piece: Dictionary = _occupancy[square]
+		var color := str(piece["color"])
+		var kind := str(piece["kind"])
+		var bucket: Dictionary = counts[color]
+		bucket[kind] = int(bucket.get(kind, 0)) + 1
+	return counts
+
+
+func _count_non_king(kinds: Dictionary) -> int:
+	var total := 0
+	for kind in kinds.keys():
+		if str(kind) == KIND_KING:
+			continue
+		total += int(kinds[kind])
+	return total
+
+
+func _bishops_same_color_only() -> bool:
+	var colors: Array = []
+	for square in _occupancy.keys():
+		var piece: Dictionary = _occupancy[square]
+		if str(piece["kind"]) != KIND_BISHOP:
+			continue
+		colors.append(is_dark_square(str(square)))
+	if colors.size() < 2:
+		return false
+	var first: bool = colors[0]
+	for entry in colors:
+		if bool(entry) != first:
+			return false
+	return true
 
 
 func piece_on(square: String) -> Dictionary:

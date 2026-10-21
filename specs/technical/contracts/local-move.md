@@ -16,6 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | O1 | try_move | from/to (and promotion if needed) | Applied position + flags, or reject | Player commits a move |
 | O2 | legal_targets | from square | Set of legal destinations | Selection / hint |
 | O3 | end_signals | — | Check / mate / draw signals per design | After successful apply |
+| O4 | possible_checkmate | mating side | bool: that side can checkmate via some legal-move series (FIDE possible checkmate; D5 is the negation) | Clock hits zero (`END.L3` / `END.D5`) |
 
 ## Events
 
@@ -40,4 +41,4 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 ## Diagram
 
-None — two events, three operations.
+None — two events, four operations.
