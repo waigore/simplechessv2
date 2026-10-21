@@ -126,7 +126,11 @@ def test_shipped_config_loads() -> None:
     assert resolved_cooldown_seconds(implement, cfg.orchestrator) == 10
     assert resolved_gate_backoff_initial_seconds(implement, cfg.orchestrator) == 10
     assert resolved_gate_backoff_max_seconds(implement, cfg.orchestrator) == 60
-    assert len(enabled_agents(cfg)) == 7
+    babysit = cfg.agents["babysit-pr-agent"]
+    assert babysit.provider == "cursor"
+    assert babysit.gate is not None
+    assert babysit.gate.command[-1].endswith("babysit-pr-agent/scripts/gate.sh")
+    assert len(enabled_agents(cfg)) == 8
 
 
 def _write_agent_config(cfg_dir: Path, body: dict) -> None:
