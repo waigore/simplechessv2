@@ -1,0 +1,44 @@
+# Local override. Bare `gh` prefers the remote named upstream
+# (waigore/game-dev-template). Pin gates to this repo's origin.
+agents:
+  issue-workflow-review-agent:
+    gate:
+      command:
+        - sh
+        - -c
+        - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-review --limit 1 --json number)" != "[]"
+
+  issue-workflow-refine-agent:
+    gate:
+      command:
+        - sh
+        - -c
+        - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-refinement --limit 1 --json number)" != "[]"
+
+  issue-workflow-clarify-agent:
+    gate:
+      command:
+        - sh
+        - -c
+        - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-clarification --limit 1 --json number)" != "[]"
+
+  issue-workflow-implement-agent:
+    gate:
+      command:
+        - sh
+        - -c
+        - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-implementation --limit 1 --json number)" != "[]"
+
+  issue-workflow-verify-agent:
+    gate:
+      command:
+        - sh
+        - -c
+        - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-verification --limit 1 --json number)" != "[]"
+
+  issue-workflow-accept-agent:
+    gate:
+      command:
+        - sh
+        - -c
+        - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-acceptance --limit 1 --json number)" != "[]"
