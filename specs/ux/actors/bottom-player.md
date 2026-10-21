@@ -25,7 +25,7 @@ The person at the near edge of the shared device. By convention they host mode p
 
 ## Cannot operate
 
-- **K1**: On `shared-play`, select, move, clear, promote, resign, or offer when Top’s seat is side to move — the interface ignores them
+- **K1**: On `shared-play`, when Top’s seat is side to move — the interface ignores `IN.select`, `IN.move`, `IN.deselect`, promote, resign, and offer (same off-turn seat gate for each)
 
 ## Relationship to play
 
