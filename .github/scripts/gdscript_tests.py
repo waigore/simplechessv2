@@ -7,7 +7,9 @@ test fails. `coverage` runs the same tests and fails when main-code
 statement-line coverage is under 80.
 
 Main code is game/**/*.gd excluding *_test.gd, addons/, and .godot/.
-Class-body declarations are not statement lines. Not the playtest ENV.1 smoke.
+Class-body declarations are not statement lines. A body statement on the
+same line as the declaration that opens that body is not a statement line
+either (a class-level inline lambda). Not the playtest ENV.1 smoke.
 """
 from __future__ import annotations
 
@@ -154,25 +156,37 @@ def statement_lines(source: str) -> set[int]:
     """Statement lines inside functions, lambdas, getters, and setters.
 
     A class-body ``const`` shares the ``const_stmt`` node with a local const.
-    Only the local one is executable. A probe on the class declaration is not
-    valid GDScript and fails the instrumented script before coverage is measured.
+    Only the local one is executable. A statement on the same line as the
+    declaration that opens its body is also skipped: ``var f := func(): return 1``
+    keeps the ``return`` on the class-level line, and a probe at that indent is
+    not valid GDScript. A body statement on a later line still counts.
     """
     tree = _parser().parse(source, gather_metadata=True)
     found: set[int] = set()
 
-    def walk(node: object, in_body: bool) -> None:
+    def walk(node: object, in_body: bool, body_line: int | None) -> None:
         data = getattr(node, "data", None)
         if data == "class_def":
             in_body = False
-        if in_body and data in COVERABLE:
-            line = getattr(getattr(node, "meta", None), "line", None)
-            if isinstance(line, int):
-                found.add(line)
-        child_body = True if data in BODY_ROOTS else in_body
+            body_line = None
+        line = getattr(getattr(node, "meta", None), "line", None)
+        if (
+            in_body
+            and data in COVERABLE
+            and isinstance(line, int)
+            and line != body_line
+        ):
+            found.add(line)
+        if data in BODY_ROOTS:
+            child_body = True
+            child_line = line if isinstance(line, int) else body_line
+        else:
+            child_body = in_body
+            child_line = body_line
         for child in getattr(node, "children", ()):
-            walk(child, child_body)
+            walk(child, child_body, child_line)
 
-    walk(tree, False)
+    walk(tree, False, None)
     return found
 
 
