@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 - **Layer**: L4 Edge
 - **Module**: M1 `client` (playtest builds only)
-- **Serves**: Observability; playtest `DBG.*` `TEL.*`; Cafe calm in release
+- **Serves**: Observability; playtest `DBG.*` `TEL.*` `SIT.1`–`SIT.3`; Cafe calm in release
 - **Informed by**: [`specs/playtest/tools.md`](../../playtest/tools.md); [`verification.md`](../verification.md)
 - **ADRs**: [ADR-0004](../../adr/decisions/0004-dual-playtest-environments.md)
 
@@ -16,6 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R2 | Emit telemetry events with `TEL.1–5` fields |
 | R3 | Compile or no-op out of public release Web export |
 | R4 | Work in both Headless and Graphical playtest runners |
+| R5 | Set seed, record and replay input, and dump full state (`SIT.1`–`SIT.3`) on playtest builds only |
 
 ## Communication
 
@@ -28,8 +29,8 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | Schema or state | Access |
 |-----------------|--------|
-| Pause flag; overlay visibility | write (playtest only) |
-| Play state | read via inspect |
+| Pause flag; overlay visibility; seed; input log | write (playtest only) |
+| Play state | read via inspect; full dump via `SIT.3` |
 
 ## Diagram
 
@@ -44,4 +45,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-[`failures.md`](../failures.md) T5; [`verification.md`](../verification.md) S3–S7; [`SEQ-playtest-headless-smoke`](../sequences/playtest-headless-smoke.md).
+[`failures.md`](../failures.md) T5; [`verification.md`](../verification.md) S3–S10; [`SEQ-playtest-headless-smoke`](../sequences/playtest-headless-smoke.md).

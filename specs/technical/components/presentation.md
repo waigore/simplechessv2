@@ -17,12 +17,13 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Play move/check/mate/resign SFX and cafe ambient when specified |
 | R4 | Show Advice highlights/arrow/eval when session supplies them |
 | R5 | Never await network before completing piece motion |
+| R6 | Select player-facing copy from the string table for the current `GS.locale` |
 
 ## Communication
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-session-router`](session-router.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens and asset routing: O1/O5 down; E2/E3 up |
+| C1 | [`CMP-session-router`](session-router.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens and asset routing: O1/O5 down; E2/E3 up. Reads the locale string table ([`configuration.md`](../configuration.md) B4) |
 | C2 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Shared play: O2–O4 down; E1 up |
 | C3 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Puzzle play: O2–O3 down; E1 up |
 
