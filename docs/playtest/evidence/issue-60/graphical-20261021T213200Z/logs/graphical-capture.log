@@ -1,0 +1,30 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/01-mode-pick-cold-open-silent.png
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/02-shared-setup-pre-ambient.png
+{"TEL.1":"shared.start","TEL.2":1792618643617,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/03-shared-play-ambient-started.png
+{"TEL.1":"shared.select","TEL.2":1792618643651,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/04-shared-play-select-x1.png
+{"TEL.1":"shared.move","TEL.2":1792618643677,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/05-shared-play-after-move-x2.png
+{"TEL.1":"shared.resign","TEL.2":1792618643703,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/06-resign-confirm-s2.png
+{"TEL.1":"shared.resign","TEL.2":1792618643727,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792618643727,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/07-shared-result-after-x4.png
+{"TEL.1":"shared.stop","TEL.2":1792618643747,"TEL.3":"sess-1792618643497-69247-playtest","TEL.4":"NAV.T8","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue60_graphical/08-mode-pick-ambient-continues.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/02-shared-setup-pre-ambient.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/01-mode-pick-cold-open-silent.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/04-shared-play-select-x1.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/07-shared-result-after-x4.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/08-mode-pick-ambient-continues.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/03-shared-play-ambient-started.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/05-shared-play-after-move-x2.png
+COPIED ../docs/playtest/evidence/issue-60/graphical-20261021T213200Z/screenshots/06-resign-confirm-s2.png
+ISSUE60_GRAPHICAL pass
+WARNING: 16 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
