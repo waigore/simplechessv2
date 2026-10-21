@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | R1 | Result | US1.1 |
-| R2 | Next actions | US1.2 |
+| R2 | Next actions | US1.1 |
 | C1 | Play again | US1.2 |
 | C2 | Stop | US1.3 |
 | S1 | Default | US1.1 |
@@ -22,17 +22,17 @@ As Bottom player, I choose play again or stop so that the session continues or r
 
 ### US1.1: Result shown
 
-- **Proves**: R1, S1
+- **Proves**: R1, R2, S1
 
 ```gherkin
 Given GS.gameEnded is true and White won
 When shared-result S1 is shown
-Then R1 shows the White win outcome
+Then R1 shows White wins And R2 shows Play again and Stop And C1 and C2 are available
 ```
 
 ### US1.2: Play again
 
-- **Proves**: R2, C1
+- **Proves**: C1
 
 ```gherkin
 Given Bottom player is on shared-result S1
@@ -49,4 +49,3 @@ Given Bottom player is on shared-result S1
 When Bottom activates C2
 Then the screen is mode-pick
 ```
-
