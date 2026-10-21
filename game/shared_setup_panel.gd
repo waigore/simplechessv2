@@ -27,6 +27,7 @@ var _ui_font: Font
 func _ready() -> void:
 	_build()
 	refresh()
+	focus_first()
 
 
 func configure(
@@ -74,6 +75,9 @@ func refresh() -> void:
 	_seat.disabled = options_locked
 	_clock.disabled = options_locked
 	_style_all()
+
+
+func focus_first() -> void:
 	_focus_first()
 
 
@@ -175,6 +179,17 @@ func _on_activate(control_id: String) -> void:
 	if options_locked and control_id in ["C1", "C2", "C3"]:
 		return
 	control_activated.emit(control_id)
+	match control_id:
+		"C1":
+			UiChrome.tween_value_modulate(_seat)
+		"C2":
+			UiChrome.tween_value_modulate(_clock)
+		"C3":
+			UiChrome.tween_value_modulate(_increment)
+		"C4":
+			UiChrome.tween_value_modulate(_advice)
+		_:
+			pass
 
 
 func _on_point(control_id: String) -> void:

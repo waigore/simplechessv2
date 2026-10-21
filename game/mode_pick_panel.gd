@@ -117,11 +117,13 @@ func _build() -> void:
 	_confirm_ok.name = "ConfirmQuit"
 	_confirm_ok.pressed.connect(_on_activate.bind("confirm"))
 	_confirm_ok.focus_entered.connect(_on_point.bind("confirm"))
+	_confirm_ok.mouse_entered.connect(_on_point.bind("confirm"))
 	confirm_row.add_child(_confirm_ok)
 	_confirm_cancel = Button.new()
 	_confirm_cancel.name = "CancelQuit"
 	_confirm_cancel.pressed.connect(_on_activate.bind("cancel"))
 	_confirm_cancel.focus_entered.connect(_on_point.bind("cancel"))
+	_confirm_cancel.mouse_entered.connect(_on_point.bind("cancel"))
 	confirm_row.add_child(_confirm_cancel)
 
 	_save_box = VBoxContainer.new()
@@ -136,6 +138,7 @@ func _build() -> void:
 	_dismiss.name = "DismissSave"
 	_dismiss.pressed.connect(_on_activate.bind("dismiss"))
 	_dismiss.focus_entered.connect(_on_point.bind("dismiss"))
+	_dismiss.mouse_entered.connect(_on_point.bind("dismiss"))
 	_save_box.add_child(_dismiss)
 
 	_style_all()
@@ -199,11 +202,31 @@ func _is_last_shared() -> bool:
 
 func _show_state(state_id: String) -> void:
 	ui_state = state_id
-	_default_box.visible = state_id == "S1" or state_id == "S4"
-	_confirm_box.visible = state_id == "S3"
-	_save_box.visible = state_id == "S4"
+	_confirm_box.visible = false
+	_save_box.visible = false
 	_style_all()
+	# Animate sub-panels only when this screen is already up (avoid nested M1 fade).
+	var animate := visible and modulate.a > 0.5
+	match state_id:
+		"S3":
+			_default_box.visible = false
+			_reveal_box(_confirm_box, animate)
+		"S4":
+			_default_box.visible = true
+			_default_box.modulate.a = 1.0
+			_reveal_box(_save_box, animate)
+		_:
+			_default_box.visible = false
+			_reveal_box(_default_box, animate)
 	_focus_first()
+
+
+func _reveal_box(box: Control, animate: bool) -> void:
+	if animate:
+		UiChrome.transition_in(box)
+	else:
+		box.visible = true
+		box.modulate.a = 1.0
 
 
 func _focus_first() -> void:

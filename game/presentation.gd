@@ -187,9 +187,9 @@ func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
 
 func _show_loading() -> void:
 	current_screen = LOADING_SCREEN
-	_loading.visible = true
-	_loading.text = StringTable.mode_pick("loading", _router.locale)
 	_hide_panels()
+	_loading.text = StringTable.mode_pick("loading", _router.locale)
+	UiChrome.transition_in(_loading)
 
 
 func _show_mode_pick(state: Dictionary) -> void:
@@ -199,7 +199,6 @@ func _show_mode_pick(state: Dictionary) -> void:
 	_shared_setup.visible = false
 	_shared_play_stub.visible = false
 	_ended_label.visible = false
-	_mode_pick.visible = true
 	var ui_state := str(state.get("ui_state", "S1"))
 	_mode_pick.configure(
 		str(state.get("locale", _router.locale)),
@@ -207,6 +206,7 @@ func _show_mode_pick(state: Dictionary) -> void:
 		_ui_font
 	)
 	_mode_pick.set_ui_state(ui_state)
+	UiChrome.transition_in(_mode_pick)
 
 
 func _show_shared_setup(state: Dictionary) -> void:
@@ -216,7 +216,6 @@ func _show_shared_setup(state: Dictionary) -> void:
 	_mode_pick.visible = false
 	_shared_play_stub.visible = false
 	_ended_label.visible = false
-	_shared_setup.visible = true
 	_shared_setup.configure(
 		str(state.get("locale", _router.locale)),
 		str(state.get("white_seat", _router.white_seat)),
@@ -226,6 +225,8 @@ func _show_shared_setup(state: Dictionary) -> void:
 		bool(state.get("options_locked", _router.options_locked)),
 		_ui_font
 	)
+	UiChrome.transition_in(_shared_setup)
+	_shared_setup.focus_first()
 
 
 func _show_shared_play(_state: Dictionary) -> void:
@@ -234,7 +235,7 @@ func _show_shared_play(_state: Dictionary) -> void:
 	_mode_pick.visible = false
 	_shared_setup.visible = false
 	_ended_label.visible = false
-	_shared_play_stub.visible = true
+	UiChrome.transition_in(_shared_play_stub)
 	_router.note_board_playable()
 
 
@@ -242,14 +243,18 @@ func _show_ended() -> void:
 	current_screen = SESSION_ENDED
 	_loading.visible = false
 	_hide_panels()
-	_ended_label.visible = true
+	UiChrome.transition_in(_ended_label)
 
 
 func _hide_panels() -> void:
 	_mode_pick.visible = false
+	_mode_pick.modulate.a = 1.0
 	_shared_setup.visible = false
+	_shared_setup.modulate.a = 1.0
 	_shared_play_stub.visible = false
+	_shared_play_stub.modulate.a = 1.0
 	_ended_label.visible = false
+	_ended_label.modulate.a = 1.0
 
 
 func _on_mode_pick_control(control_id: String) -> void:
