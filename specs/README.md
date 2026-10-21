@@ -29,6 +29,7 @@ Add a row for each new spec file. Each hub indexes its own unit specs; its rules
 | [`design/game-state.md`](design/game-state.md) | Conceptual game state | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/game-state/fields.md`](design/game-state/fields.md) | Game-state fields index | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/game-state/fields-play.md`](design/game-state/fields-play.md) | Play-scoped game-state fields | [`design-review.md`](../.agents/specs/design-review.md) |
+| [`design/game-state/fields-play-end.md`](design/game-state/fields-play-end.md) | Shared-game ending game-state fields | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/game-state/fields-persist.md`](design/game-state/fields-persist.md) | Persistent and configuration fields | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/entities/pieces.md`](design/entities/pieces.md) | Chess pieces entity | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/entities/pieces/common.md`](design/entities/pieces/common.md) | Board, attack, check, legality | [`design-review.md`](../.agents/specs/design-review.md) |

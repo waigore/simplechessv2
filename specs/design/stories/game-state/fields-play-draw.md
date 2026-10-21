@@ -2,11 +2,11 @@
 
 Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/specs/rules/design/story.md).
 
-- **Design spec**: [`game-state/fields-play.md`](../../game-state/fields-play.md)
+- **Design spec**: [`game-state/fields-play-end.md`](../../game-state/fields-play-end.md)
 - **Spec key**: `GS`
 - **Glossary terms**: [Draw](../../glossary.md), [Side to move](../../glossary.md), [Shared game](../../glossary.md)
 
-Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other session fields.
+Split from [`fields-play-end.md`](fields-play-end.md) by logical unit; that file proves `GS.gameEnded`, `GS.repetitionHistory`, and `GS.fiftyMoveCount`.
 
 ## Coverage
 
