@@ -16,6 +16,7 @@ Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves 
 | GS.puzzleId, GS.puzzleElo | None outside a puzzle | PS1.1 |
 | GS.requiredSequence, GS.sequenceIndex | None/zero outside a puzzle | PS1.1 |
 | GS.wrongMoveOnPuzzle | Initial false | PS1.1 |
+| GS.solvingSide | None outside a puzzle | PS1.1 |
 
 ## PS1: Start each run clean
 
@@ -23,12 +24,12 @@ As a casual player, I get a clean run state so that a previous game cannot leak 
 
 ### PS1.1: Shared start clears session state
 
-- **Proves**: GS.whiteClock, GS.blackClock, GS.puzzleId, GS.puzzleElo, GS.requiredSequence, GS.sequenceIndex, GS.wrongMoveOnPuzzle
+- **Proves**: GS.whiteClock, GS.blackClock, GS.puzzleId, GS.puzzleElo, GS.requiredSequence, GS.sequenceIndex, GS.wrongMoveOnPuzzle, GS.solvingSide
 
 ```gherkin
 Given no session is open
 When an Untimed Shared game starts
-Then both clocks are none And GS.puzzleId and GS.puzzleElo are none And GS.requiredSequence is none And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false
+Then both clocks are none And GS.puzzleId and GS.puzzleElo are none And GS.requiredSequence is none And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false And GS.solvingSide is none
 ```
 
 ### PS1.2: New game resets the last run
