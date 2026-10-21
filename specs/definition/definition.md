@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 - Two people play chess on one device in the browser.
 - Untimed play, and timed blitz and rapid with time added after each move.
 - A continuous solo puzzle stream that gets harder or easier from each result.
-- Optional Stockfish move advice when the browser is online and Advice is On.
+- Optional move advice when the browser is online and Advice is On.
 - Starting a new two-player session after a game ends.
 
 ### Out of scope
@@ -48,7 +48,7 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 
 ### Technical
 
-- A local move completes without waiting on the network — Stockfish advice is optional, asynchronous, and time-capped.
+- A local move completes without waiting on the network — optional move advice does not delay the move.
 
 ### Market
 
