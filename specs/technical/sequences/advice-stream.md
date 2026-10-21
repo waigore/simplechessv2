@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | S3 | advice-backend | Stockfish | UCI | Search (M2 only) |
 | S4 | advice-backend | advice-client | CTR-advice-stream.E1 | Stream updates |
 | S5 | advice-client | shared-game | CTR-advice-stream.E1 | Write best-move/eval |
-| S6 | shared-game | presentation | CTR-presentation.O4 | Show marks |
+| S6 | shared-game | presentation | CTR-presentation.E4 | Show marks |
 | S7 | advice-backend | advice-client | CTR-advice-stream.E2 | End at cap or cancel |
 
 ## Branches

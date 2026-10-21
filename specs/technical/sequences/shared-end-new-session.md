@@ -15,9 +15,9 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 |----|------|----|-----|------------------|
 | S1 | shared-game | chess-rules | CTR-local-move.O3 | Observe end signal; set game_ended |
 | S2 | shared-game | advice-client | CTR-advice-stream.O2 | cancel + clear |
-| S3 | shared-game | presentation | CTR-presentation.O1 | Show shared-result |
-| S4 | presentation | session-router | CTR-presentation.E2 | Play again → shared-setup |
-| S5 | presentation | session-router | CTR-presentation.E2 | Stop → mode-pick |
+| S3 | shared-game | presentation | CTR-presentation.E1 | Show shared-result |
+| S4 | presentation | session-router | CTR-presentation.O2 | Play again → shared-setup |
+| S5 | presentation | session-router | CTR-presentation.O2 | Stop → mode-pick |
 | S6 | session-router | shared-game | internal | If Play again: new Shared session (setup unlocked) |
 
 ## Branches
