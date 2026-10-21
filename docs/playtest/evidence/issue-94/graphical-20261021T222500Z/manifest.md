@@ -2,7 +2,7 @@
 
 - **Issue**: 94
 - **Environment**: graphical
-- **Build / session id**: Godot 4.7.2.stable.official.ed1daf0bf (see `logs/build-id.txt`; same tree as headless-20261021T222500Z). Display: macOS / Metal (editor display playtest path). Capture `TEL.3`: `sess-1792621574561-11265-playtest` (re-run for layout fix).
+- **Build / session id**: Godot 4.7.2.stable.official.ed1daf0bf (see `logs/build-id.txt`; same tree as headless-20261021T222500Z). Display: macOS / Metal (editor display playtest path). Capture `TEL.3`: `sess-1792621621396-12019-playtest` (re-run for layout fix).
 - **Coverage mode**: full (shared-play choice states after S4 chrome fix)
 - **Screenshots**: present under `screenshots/`.
 
