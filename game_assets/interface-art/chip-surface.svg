@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1210 870 660 380">
+  <defs>
+    <linearGradient id="chipFill" gradientUnits="userSpaceOnUse" x1="1200" y1="880" x2="1900" y2="1280">
+      <stop offset="0" stop-color="#FFFCF6" />
+      <stop offset="0.4" stop-color="#F7F1E8" />
+      <stop offset="1" stop-color="#E5D4BC" />
+    </linearGradient>
+  </defs>
+  <rect x="1220" y="880" width="640" height="360" rx="180" ry="180" fill="url(#chipFill)" stroke="#A18C7F" stroke-width="20"/>
+</svg>
