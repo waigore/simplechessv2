@@ -6,7 +6,7 @@ Part of [`glossary.md`](../glossary.md).
 
 | Term | Definition | Detailed in |
 |------|------------|-------------|
-| Advice | Best-move highlights, arrow, and eval when On and online | [`features/move-advice.md`](../features/move-advice.md) |
+| Advice | The best move and eval the player can know when On and online | [`features/move-advice.md`](../features/move-advice.md) |
 | Blitz | Timed Shared game; each side starts at `CFG.BLITZ_START` | [`configuration.md`](../configuration.md) |
 | Bottom player | Seat at the bottom of the shared device | [`configuration.md`](../configuration.md) |
 | Clock | Shared-game timing: Untimed, Blitz, or Rapid | [`configuration.md`](../configuration.md) |
