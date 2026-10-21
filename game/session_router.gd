@@ -14,7 +14,7 @@ const STAGE_ENDED := "session-ended"
 const STAGE_READY_ALIAS := "mode-pick-ready"
 
 const MODE_SHARED := "shared"
-const MODE_NONE := ""
+const MODE_NONE := "none"
 const CLOCKS := ["untimed", "blitz", "rapid"]
 
 var locale := "en"
@@ -29,12 +29,14 @@ var session_ended := false
 
 var _resolver: AssetResolver
 var _seams: PlaytestSeams
+var _persist: PersistStore
 var _board_playable := false
 
 
 func _ready() -> void:
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = get_node("../PlaytestSeams") as PlaytestSeams
+	_persist = get_node_or_null("../PersistStore") as PersistStore
 	locale = StringTable.locale_from_os(OS.get_locale())
 	_seams.register_stages(_known_stages())
 	_seams.bind_state(play_snapshot)
@@ -43,6 +45,8 @@ func _ready() -> void:
 	_seams.input_replayed.connect(_on_input_replayed)
 	_resolver.boot_ready.connect(_on_boot_ready)
 	_resolver.must_overlay.connect(_on_unresolved_overlay)
+	if _persist != null:
+		_persist.write_failed.connect(show_save_failure)
 
 
 func start() -> void:
@@ -79,9 +83,9 @@ func handle_control(screen_id: String, control_id: String) -> void:
 
 
 func show_save_failure() -> void:
-	## Driven by persist work (#61); panel state S4 exists on mode-pick.
+	## EX.save-failure (UI-mode-pick.S4); prior committed Last mode stays.
 	if stage != STAGE_MODE_PICK and stage != STAGE_READY_ALIAS:
-		_go_mode_pick()
+		stage = STAGE_MODE_PICK
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S4"))
 
 
@@ -128,7 +132,15 @@ func _known_stages() -> PackedStringArray:
 
 
 func _on_boot_ready() -> void:
+	_load_persist()
 	_go_mode_pick()
+
+
+func _load_persist() -> void:
+	if _persist == null:
+		return
+	var doc := _persist.load_document()
+	last_mode = str(doc.get("last_mode", MODE_NONE))
 
 
 func _go_mode_pick(ui_state: String = "S1") -> void:
@@ -159,6 +171,8 @@ func _shared_setup_state() -> Dictionary:
 func _on_mode_pick_control(control_id: String) -> void:
 	match control_id:
 		"C1":
+			if not _commit_last_mode(MODE_SHARED):
+				return
 			last_mode = MODE_SHARED
 			stage = STAGE_SHARED_SETUP
 			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
@@ -173,6 +187,17 @@ func _on_mode_pick_control(control_id: String) -> void:
 			_go_mode_pick("S1")
 		"dismiss":
 			_go_mode_pick("S1")
+
+
+func _commit_last_mode(mode: String) -> bool:
+	if _persist == null:
+		last_mode = mode
+		return true
+	if _persist.commit_last_mode(mode):
+		last_mode = mode
+		return true
+	# Failed write leaves prior commit; EX.save-failure via write_failed → show_save_failure.
+	return false
 
 
 func _on_shared_setup_control(control_id: String) -> void:

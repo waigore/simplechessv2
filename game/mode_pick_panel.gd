@@ -197,7 +197,8 @@ func _refresh_last_mode() -> void:
 
 
 func _is_last_shared() -> bool:
-	return last_mode.is_empty() or last_mode == "shared"
+	## FL-mode-pick.N1: Shared is the default when Last mode is none.
+	return last_mode.is_empty() or last_mode == "none" or last_mode == "shared"
 
 
 func _show_state(state_id: String) -> void:
