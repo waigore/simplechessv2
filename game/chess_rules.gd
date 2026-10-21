@@ -1,6 +1,6 @@
 class_name ChessRules
 extends RefCounted
-## CMP-chess-rules (L3). CTR-local-move O1, O2, E1, and E2.
+## CMP-chess-rules (L3). CTR-local-move O1–O3, E1, and E2.
 
 signal move_applied(move: Dictionary, side_to_move: String)
 signal move_rejected(reason: String)
@@ -18,6 +18,12 @@ const REASON_SQUARE := "square"
 const REASON_EMPTY := "empty"
 const REASON_SIDE := "wrong_side"
 const REASON_ILLEGAL := "illegal"
+const REASON_ENDED := "ended"
+const END_L1 := "END.L1"
+const END_D1 := "END.D1"
+const END_D3 := "END.D3"
+const END_D4 := "END.D4"
+const FIFTY_MOVE_LIMIT := 100
 
 const _PROMOTE_KINDS: Array = [KIND_QUEEN, KIND_ROOK, KIND_BISHOP, KIND_KNIGHT]
 const _ORTHO: Array = [
@@ -58,6 +64,10 @@ var _side_to_move := SIDE_WHITE
 var _castling: Dictionary = {}
 var _en_passant := ""
 var _geometries: Dictionary = {}
+var _repetition_history: Array = []
+var _fifty_move_count := 0
+var _game_ended := false
+var _ending_reason := ""
 
 
 func _init() -> void:
@@ -115,6 +125,10 @@ func load_position(
 			"black_queenside": bool(castling.get("black_queenside", false)),
 		}
 	_en_passant = en_passant if _is_square(en_passant) else ""
+	_clear_end_counters()
+	_record_occurrence()
+	_game_ended = false
+	_ending_reason = ""
 
 
 func position_field() -> Dictionary:
@@ -128,6 +142,63 @@ func castling_ep() -> Dictionary:
 	var rights := _castling.duplicate()
 	rights["en_passant"] = _en_passant
 	return rights
+
+
+func repetition_history() -> Array:
+	return _repetition_history.duplicate()
+
+
+func fifty_move_count() -> int:
+	return _fifty_move_count
+
+
+func game_ended_field() -> Dictionary:
+	return {"ended": _game_ended, "reason": _ending_reason}
+
+
+func has_legal_move(side: String = "") -> bool:
+	var target := side if not side.is_empty() else _side_to_move
+	var saved_side := _side_to_move
+	_side_to_move = target
+	var found := false
+	for square in _occupancy.keys():
+		var piece: Dictionary = _occupancy[square]
+		if str(piece["color"]) != target:
+			continue
+		if not legal_targets(str(square)).is_empty():
+			found = true
+			break
+	_side_to_move = saved_side
+	return found
+
+
+## CTR-local-move O3. After a successful apply (or session start), per END.P1.
+func end_signals() -> Dictionary:
+	var side := _side_to_move
+	var checked := in_check(side)
+	var legal := has_legal_move(side)
+	var ending := ""
+	if not legal and checked:
+		ending = END_L1
+	elif not legal and not checked:
+		ending = END_D1
+	elif _occurrence_count(_occurrence_key()) >= 3:
+		ending = END_D3
+	elif _fifty_move_count >= FIFTY_MOVE_LIMIT:
+		ending = END_D4
+	return {
+		"in_check": checked,
+		"has_legal_move": legal,
+		"ending": ending,
+		"side_to_move": side,
+		"fifty_move_count": _fifty_move_count,
+		"repetition_count": _occurrence_count(_occurrence_key()),
+	}
+
+
+func mark_ended(reason: String) -> void:
+	_game_ended = true
+	_ending_reason = reason
 
 
 func piece_on(square: String) -> Dictionary:
@@ -220,7 +291,9 @@ func try_move(from_square: String, to_square: String, promotion: String = "") ->
 func _reject_reason(from_square: String, to_square: String, promotion: String) -> String:
 	var reason := ""
 	var piece: Dictionary = _occupancy.get(from_square, {})
-	if not _is_square(from_square) or not _is_square(to_square):
+	if _game_ended:
+		reason = REASON_ENDED
+	elif not _is_square(from_square) or not _is_square(to_square):
 		reason = REASON_SQUARE
 	elif piece.is_empty():
 		reason = REASON_EMPTY
@@ -239,7 +312,9 @@ func _apply_move(from_square: String, to_square: String, promotion: String) -> v
 	var piece: Dictionary = _occupancy[from_square].duplicate(true)
 	var color := str(piece["color"])
 	var kind := str(piece["kind"])
+	var captured := not (_occupancy.get(to_square, {}) as Dictionary).is_empty()
 	if kind == KIND_PAWN and to_square == _en_passant:
+		captured = true
 		_occupancy.erase(_en_passant_capture_square(to_square, color))
 	if kind == KIND_KING and absi(_file_index(to_square) - _file_index(from_square)) == 2:
 		_move_castle_rook(from_square, to_square)
@@ -249,6 +324,11 @@ func _apply_move(from_square: String, to_square: String, promotion: String) -> v
 		_occupancy[to_square] = {"color": color, "kind": promotion}
 	_update_castling_ep(from_square, to_square, piece)
 	_side_to_move = _opponent(_side_to_move)
+	if captured or kind == KIND_PAWN:
+		_fifty_move_count = 0
+	else:
+		_fifty_move_count += 1
+	_record_occurrence()
 
 
 func _king_safe_after(from_square: String, to_square: String, color: String) -> bool:
@@ -483,6 +563,42 @@ func _full_castling() -> Dictionary:
 		"black_kingside": true,
 		"black_queenside": true,
 	}
+
+
+func _clear_end_counters() -> void:
+	_repetition_history = []
+	_fifty_move_count = 0
+
+
+func _record_occurrence() -> void:
+	_repetition_history.append(_occurrence_key())
+
+
+func _occurrence_key() -> String:
+	var squares: Array = _occupancy.keys()
+	squares.sort()
+	var parts: Array = []
+	for square in squares:
+		var piece: Dictionary = _occupancy[square]
+		parts.append("%s:%s:%s" % [square, piece["color"], piece["kind"]])
+	var rights := (
+		"%s%s%s%s"
+		% [
+			"K" if bool(_castling.get("white_kingside", false)) else "",
+			"Q" if bool(_castling.get("white_queenside", false)) else "",
+			"k" if bool(_castling.get("black_kingside", false)) else "",
+			"q" if bool(_castling.get("black_queenside", false)) else "",
+		]
+	)
+	return "%s|%s|%s|%s" % ["|".join(parts), _side_to_move, rights, _en_passant]
+
+
+func _occurrence_count(key: String) -> int:
+	var count := 0
+	for entry in _repetition_history:
+		if str(entry) == key:
+			count += 1
+	return count
 
 
 func _placed(square: String, color: String, kind: String) -> Dictionary:
