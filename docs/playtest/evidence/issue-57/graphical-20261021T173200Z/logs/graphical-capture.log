@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+SAVE_PNG err=0 size=1280x720 path=user://issue57_graphical/01-mode-pick-s1.png
+SAVE_PNG err=0 size=1280x720 path=user://issue57_graphical/02-mode-pick-locale-zh.png
+SAVE_PNG err=0 size=1280x720 path=user://issue57_graphical/03-mode-pick-quit-confirm.png
+SAVE_PNG err=0 size=1280x720 path=user://issue57_graphical/04-shared-setup.png
+SAVE_PNG err=0 size=1280x720 path=user://issue57_graphical/05-shared-setup-blitz.png
+SAVE_PNG err=0 size=1280x720 path=user://issue57_graphical/06-shared-play-stub.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T173112503769Z/game/../docs/playtest/evidence/issue-57/graphical-20261021T173200Z/screenshots/05-shared-setup-blitz.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T173112503769Z/game/../docs/playtest/evidence/issue-57/graphical-20261021T173200Z/screenshots/04-shared-setup.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T173112503769Z/game/../docs/playtest/evidence/issue-57/graphical-20261021T173200Z/screenshots/06-shared-play-stub.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T173112503769Z/game/../docs/playtest/evidence/issue-57/graphical-20261021T173200Z/screenshots/03-mode-pick-quit-confirm.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T173112503769Z/game/../docs/playtest/evidence/issue-57/graphical-20261021T173200Z/screenshots/02-mode-pick-locale-zh.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T173112503769Z/game/../docs/playtest/evidence/issue-57/graphical-20261021T173200Z/screenshots/01-mode-pick-s1.png
