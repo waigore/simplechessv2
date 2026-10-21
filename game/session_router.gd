@@ -93,9 +93,8 @@ func _process(delta: float) -> void:
 		_last_clock_display = display
 		_emit_play_screen()
 	if shared_session.game_ended():
-		_seams.emit_tel(
-			"shared.end", str(shared_session.rules.game_ended_field().get("reason", "")), "NAV.T6"
-		)
+		var ended_field: Dictionary = shared_session.play_state().get("game_ended", {})
+		_seams.emit_tel("shared.end", str(ended_field.get("reason", "")), "NAV.T6")
 		_go_shared_result()
 
 

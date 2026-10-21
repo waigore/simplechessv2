@@ -413,19 +413,23 @@ func _layout_camera() -> void:
 	if view.x <= 1.0 or view.y <= 1.0:
 		view = Vector2(1280, 720)
 	var raw_aspect := view.x / view.y
-	var clamped := BoardGeometry.clamp_aspect(raw_aspect)
-	var vis := BoardGeometry.visible_size(clamped)
+	# PRJ.A1: outside 9:16–16:9, letterbox/pillarbox *inside* the rect (never crop).
 	var content := view
+	var origin := Vector2.ZERO
 	if raw_aspect < BoardGeometry.ASPECT_MIN:
-		content.x = view.y * BoardGeometry.ASPECT_MIN
+		content.y = view.x / BoardGeometry.ASPECT_MIN
+		origin.y = (view.y - content.y) * 0.5
 	elif raw_aspect > BoardGeometry.ASPECT_MAX:
-		content.y = view.x / BoardGeometry.ASPECT_MAX
+		content.x = view.y * BoardGeometry.ASPECT_MAX
+		origin.x = (view.x - content.x) * 0.5
+	var clamped := BoardGeometry.clamp_aspect(content.x / content.y)
+	var vis := BoardGeometry.visible_size(clamped)
 	var ppu: float
 	if content.x / content.y >= 1.0:
 		ppu = content.y / vis.y
 	else:
 		ppu = content.x / vis.x
-	_world.position = view * 0.5
+	_world.position = origin + content * 0.5
 	_world.scale = Vector2(ppu, -ppu)
 	_seat.rotation = PI if white_seat == BoardGeometry.SEAT_TOP else 0.0
 	var pad := vis * 0.5 + Vector2(2, 2)
@@ -511,7 +515,7 @@ func _refresh_coordinate_fonts() -> void:
 
 
 func _refresh_coordinates() -> void:
-	if _content == null:
+	if _content == null or _coords_root == null:
 		return
 	var half := float(UiChrome.BODY_PX + 4) * 0.5
 	for key in _coord_meta.keys():
@@ -519,13 +523,14 @@ func _refresh_coordinates() -> void:
 		var label := entry["label"] as Label
 		var chip := label.get_parent() as Control
 		var world: Vector2 = entry["world"]
-		# Content rotates with CAM-board.M2; labels stay upright in screen space.
-		var screen := world_to_screen(world)
+		# Content rotates with CAM-board.M2; labels stay upright in board-local space.
+		var screen: Vector2 = world_to_screen(world)
+		var local: Vector2 = get_global_transform_with_canvas().affine_inverse() * screen
 		if chip != null:
-			chip.position = screen - Vector2(half, half)
+			chip.position = local - Vector2(half, half)
 			chip.size = Vector2(UiChrome.BODY_PX + 4, UiChrome.BODY_PX + 4)
 		else:
-			label.position = screen - Vector2(half, half)
+			label.position = local - Vector2(half, half)
 
 
 func _sync_pieces() -> void:

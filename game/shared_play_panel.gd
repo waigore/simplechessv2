@@ -6,6 +6,10 @@ signal control_activated(control_id: String)
 signal pointed(control_id: String)
 
 const SCREEN_ID := "shared-play"
+## Top strip for R2–R4; Presentation reserves this so R1 is never covered (PRJ.A1).
+const CHROME_TOP_PX := 12.0
+const CHROME_BOTTOM_PX := 156.0
+const CHROME_RESERVED_PX := 168.0
 
 var locale := "en"
 var ui_state := "S1"
@@ -22,6 +26,8 @@ var board_unavailable := false
 var _status: Label
 var _check: Label
 var _clocks: Label
+var _select_focus: Button
+var _place_focus: Button
 var _advice: Button
 var _resign: Button
 var _confirm_box: VBoxContainer
@@ -59,7 +65,12 @@ func configure(state: Dictionary, font: Font = null) -> void:
 func focusable_controls() -> Array[Control]:
 	if ui_state == "S2":
 		return [_confirm_ok, _confirm_cancel]
+	# controls.md F1 / shared-play: C1 → C2 → C3 → C4 among available controls.
 	var out: Array[Control] = []
+	if not _select_focus.disabled:
+		out.append(_select_focus)
+	if not _place_focus.disabled:
+		out.append(_place_focus)
 	if not _advice.disabled:
 		out.append(_advice)
 	if not _resign.disabled:
@@ -89,8 +100,8 @@ func _build() -> void:
 	_chrome.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	_chrome.offset_left = 16
 	_chrome.offset_right = -16
-	_chrome.offset_top = 12
-	_chrome.offset_bottom = 156
+	_chrome.offset_top = CHROME_TOP_PX
+	_chrome.offset_bottom = CHROME_BOTTOM_PX
 	_chrome.add_theme_constant_override("separation", 8)
 	add_child(_chrome)
 
@@ -114,6 +125,27 @@ func _build() -> void:
 	# UIS.T3 tabular figures when timed clocks show.
 	_clocks.add_theme_constant_override("outline_size", 0)
 	_chrome.add_child(_clocks)
+
+	# C1/C2 are board gestures; off-strip focus sentinels keep F1 order (44px).
+	_select_focus = Button.new()
+	_select_focus.name = "SelectFocus"
+	_select_focus.text = "C1"
+	_select_focus.modulate.a = 0.0
+	_select_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_select_focus.position = Vector2(-200, -200)
+	_select_focus.focus_entered.connect(_on_point.bind("C1"))
+	_select_focus.pressed.connect(_on_activate.bind("C1"))
+	add_child(_select_focus)
+
+	_place_focus = Button.new()
+	_place_focus.name = "PlaceFocus"
+	_place_focus.text = "C2"
+	_place_focus.modulate.a = 0.0
+	_place_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_place_focus.position = Vector2(-200, -140)
+	_place_focus.focus_entered.connect(_on_point.bind("C2"))
+	_place_focus.pressed.connect(_on_activate.bind("C2"))
+	add_child(_place_focus)
 
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -173,9 +205,22 @@ func _build() -> void:
 	confirm_row.add_child(_confirm_cancel)
 
 	_style_all()
+	_wire_focus_order()
+
+
+func _wire_focus_order() -> void:
+	## controls.md F1 — top to bottom among C1–C4 (confirm pair is separate in S2).
+	_select_focus.focus_next = _place_focus.get_path()
+	_place_focus.focus_next = _advice.get_path()
+	_advice.focus_next = _resign.get_path()
+	_resign.focus_next = _select_focus.get_path()
+	_confirm_ok.focus_next = _confirm_cancel.get_path()
+	_confirm_cancel.focus_next = _confirm_ok.get_path()
 
 
 func _style_all() -> void:
+	UiChrome.style_button(_select_focus)
+	UiChrome.style_button(_place_focus)
 	UiChrome.style_button(_advice)
 	UiChrome.style_button(_resign)
 	UiChrome.style_button(_confirm_ok, true)
@@ -186,7 +231,16 @@ func _apply_font() -> void:
 	if _ui_font == null:
 		return
 	for node in [
-		_status, _check, _clocks, _advice, _resign, _confirm_msg, _confirm_ok, _confirm_cancel
+		_status,
+		_check,
+		_clocks,
+		_select_focus,
+		_place_focus,
+		_advice,
+		_resign,
+		_confirm_msg,
+		_confirm_ok,
+		_confirm_cancel
 	]:
 		UiChrome.apply_font(node, _ui_font)
 
@@ -225,6 +279,8 @@ func _format_clock(ms: int) -> String:
 
 func _apply_availability() -> void:
 	var playable := not game_ended and ui_state != "S2"
+	_select_focus.disabled = not playable
+	_place_focus.disabled = not playable
 	_advice.disabled = not playable
 	_resign.disabled = not playable or not resign_available
 	_style_all()
@@ -241,9 +297,16 @@ func _show_state(state_id: String) -> void:
 
 
 func _on_activate(control_id: String) -> void:
+	if control_id == "C1" and _select_focus.disabled:
+		return
+	if control_id == "C2" and _place_focus.disabled:
+		return
 	if control_id == "C3" and _advice.disabled:
 		return
 	if control_id == "C4" and _resign.disabled:
+		return
+	# C1/C2 activate via board gestures (B2/B3/B10); focus sentinels only emit point.
+	if control_id == "C1" or control_id == "C2":
 		return
 	control_activated.emit(control_id)
 
