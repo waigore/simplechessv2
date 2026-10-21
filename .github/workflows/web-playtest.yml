@@ -1,7 +1,8 @@
 name: Web playtest
 
 # Exports the playtest Web build to build/web/ (ADR-0007) and runs the
-# headless playtest smoke (ENV.1). Not the Unit tests job.
+# headless playtest smoke (ENV.1). The smoke imports the project first so
+# class_name resolves on a clean checkout. Not the Unit tests job.
 
 on:
   pull_request:
@@ -66,6 +67,7 @@ jobs:
         run: |
           set -euo pipefail
           godot="$(python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())")"
+          "${godot}" --headless --path game --import --quit
           log="${RUNNER_TEMP}/headless-smoke.log"
           "${godot}" --headless --path game > "${log}"
           grep -q '"TEL.1"' "${log}"
