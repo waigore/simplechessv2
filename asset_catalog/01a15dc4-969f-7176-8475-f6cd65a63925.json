@@ -1,0 +1,74 @@
+{
+  "id": "01a15dc4-969f-7176-8475-f6cd65a63925",
+  "handle": "icons/quit",
+  "kind_spec": "AK-icons",
+  "coverage": [
+    "AK-icons.V3"
+  ],
+  "serves": [
+    "UIS.I1",
+    "P3"
+  ],
+  "state": "approved",
+  "version": 1,
+  "files": [
+    "icons/quit.svg"
+  ],
+  "source_type": "ai-generation",
+  "tool_role": {
+    "role": "TL.1",
+    "adr": "adr-free"
+  },
+  "recipe": "AK-icons.R1",
+  "generation": {
+    "prompt": "Derive the door with an arrow leaving the sitting from the approved icons SS1 sheet by local path grouping only. Flat 24 grid cafe UI icon; soft round; simple silhouette (UI.I1; PAL.C9 C6; P3). No new Recraft call.",
+    "negative_prompt": "skeuomorphic; 3D; emoji style; busy detail; esports badges",
+    "tool": "Python",
+    "operation": "svg-split",
+    "settings": {
+      "script": "docs/asset-previews/derive_ui_surfaces.py",
+      "grid": 24,
+      "pad_art_units": 2,
+      "ink": "#2C2A28",
+      "scale": 0.0642
+    },
+    "seed": "n/a \u2014 tool has no seed",
+    "inputs": {
+      "style_anchors": [
+        "01a15199-87f5-7df8-a987-eecaaca9f919"
+      ],
+      "refs": [
+        "UIS.I1",
+        "PAL.C9",
+        "P3"
+      ],
+      "base_assets": [
+        "01a15199-87f5-7df8-a987-eecaaca9f919"
+      ]
+    },
+    "steps": [
+      {
+        "operation": "svg-split",
+        "tool": "Python",
+        "date": "2026-10-21",
+        "notes": "Group sheet paths left to right; fit one glyph to the 24 grid; ink only"
+      }
+    ],
+    "series": {
+      "id": "AK-icons.SS1",
+      "recraft_style_id": "7056f68a-dd20-4ae0-a3e5-186803e00f4d"
+    }
+  },
+  "license": {
+    "grant": "Derived locally from a Recraft sheet; project use under Recraft terms for the signing account. The split step adds no third-party license.",
+    "tool": "Recraft",
+    "terms": "https://www.recraft.ai/docs"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-21",
+    "reviewer": "agent",
+    "report": "Pass. Local path-group from 01a15199-87f5-7df8-a987-eecaaca9f919; no Recraft call. 24\u00d724 SVG, 1402 bytes \u2264 20 KB (K3/B1). Opaque pixels are PAL.C9 #2C2A28 (antialias neighbors only) (K6/S4). No stroke, so the 1.5-unit stroke clause of UIS.I1 does not apply; soft-round silhouette kept by uniform scale 0.0642 and a 2 art-unit pad (K1/S1/S2). Subject reads as door with an arrow leaving the sitting (K2). Quiet flat ink, no chrome (K4/P3). SVG shipped (K5/S3)."
+  },
+  "guidance": "Ship icon derived from icons/style-anchor-sheet. Re-run docs/asset-previews/derive_ui_surfaces.py; do not call Recraft."
+}

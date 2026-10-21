@@ -47,3 +47,11 @@ python3 docs/asset-previews/derive_piece_sprites.py
 ```
 
 Same S5–S7 crop, then one shared LANCZOS scale so the tallest body is about 85% of the square and shorter types stay shorter. Writes `game_assets/piece-sprites/<type>-<white|black>.png`. No generative API.
+
+## Ship UI surfaces
+
+```bash
+python3 docs/asset-previews/derive_ui_surfaces.py
+```
+
+Splits `interface-art/style-anchor-sheet.svg` into `panel-surface` and `chip-surface`, and groups `icons/style-anchor-sheet.svg` left to right into five 24×24 ink SVGs (`mode-shared`, `mode-puzzle`, `quit`, `back`, `advice`). No generative API. The board file is not rewritten.

@@ -5,11 +5,50 @@
   "coverage": ["AK-sound-effects.V2"],
   "serves": ["Instant play", "Cafe calm"],
   "state": "approved",
-  "version": 1,
+  "version": 2,
   "files": ["sound-effects/move-settle.ogg"],
   "source_type": "ai-generation",
   "tool_role": {"role": "TL.2", "adr": "adr-free"},
   "recipe": "AK-sound-effects.R1",
+  "history": [
+    {
+      "version": 1,
+      "date": "2026-10-21",
+      "reason": "Measured 0.190 s, outside SND.X2 and AK-sound-effects.S1 (0.08–0.15 s). Superseded by the version 2 trim into that band.",
+      "generation": {
+        "prompt": "Soft wooden chess piece settling onto a board square; gentle place. soft wood cafe SFX; short; unhurried table; never harsh",
+        "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang",
+        "tool": "ElevenLabs CLI",
+        "operation": "text-to-sound-effects.convert",
+        "settings": {
+          "model_id": "eleven_text_to_sound_v2",
+          "duration_seconds": 0.5,
+          "prompt_influence": 0.55,
+          "output_format": "mp3_44100_128",
+          "post": "silence trim; loudnorm I=-14; atrim≤0.19s; libopus OGG"
+        },
+        "seed": "n/a",
+        "inputs": {
+          "style_anchors": [],
+          "refs": ["SND.X2", "SND.L2"],
+          "base_assets": []
+        },
+        "steps": [
+          {
+            "operation": "text-to-sound-effects.convert",
+            "tool": "ElevenLabs CLI",
+            "date": "2026-10-19",
+            "notes": "SS1 soft anchor X2; PO confirmed"
+          }
+        ],
+        "series": {
+          "id": "AK-sound-effects.SS1",
+          "soft_enforce": true
+        }
+      },
+      "touchups_added": []
+    }
+  ],
   "generation": {
     "prompt": "Soft wooden chess piece settling onto a board square; gentle place. soft wood cafe SFX; short; unhurried table; never harsh",
     "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang",
@@ -20,7 +59,7 @@
       "duration_seconds": 0.5,
       "prompt_influence": 0.55,
       "output_format": "mp3_44100_128",
-      "post": "silence trim; loudnorm I=-14; atrim≤0.19s; libopus OGG"
+      "post": "retain v1 samples and loudnorm gain; afade 0.115–0.130 s; atrim 0.130 s; libopus OGG mono 64 kb/s"
     },
     "seed": "n/a",
     "inputs": {
@@ -34,6 +73,12 @@
         "tool": "ElevenLabs CLI",
         "date": "2026-10-19",
         "notes": "SS1 soft anchor X2; PO confirmed"
+      },
+      {
+        "operation": "post-process",
+        "tool": "ffmpeg libopus",
+        "date": "2026-10-21",
+        "notes": "APR.update: trim v1 0.190 s cue to 0.130 s inside SND.X2 / S1; fade is on the noise-floor tail"
       }
     ],
     "series": {
@@ -48,9 +93,9 @@
   },
   "review": {
     "verdict": "Pass",
-    "date": "2026-10-19",
+    "date": "2026-10-21",
     "reviewer": "agent",
-    "report": "Pass. PO confirmed as soft SS1 anchor. Measured: duration 0.19s within X2 S1; size ~1.9KB ≪ B1; OGG/Opus. Character K3: PO listen keep."
+    "report": "Pass. K1: Opus last granule minus pre-skip is 6240 samples at 48 kHz = 0.130 s, inside SND.X2 and AK-sound-effects.S1 0.08–0.15 s. K4: 1572 bytes ≤ 100 KB. K5: OGG/Opus mono. K2: true peak −1.81 dBTP versus v1 −1.83 dBTP; integrated LUFS is unmeasurable under the 400 ms meter window (same as the other short X cues), so the v1 loudnorm gain was kept. K3: first 0.11 s correlation 0.998 against the PO-confirmed v1 body; the removed 0.13–0.19 s tail peaks at 247 against an attack peak of 26536. Series AK-sound-effects.SS1 soft_enforce matches the kind registry. No other catalog entry cites this asset."
   },
   "guidance": "SS1 soft style anchor for X2."
 }
