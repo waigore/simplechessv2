@@ -1,6 +1,6 @@
 class_name SharedPlayPanel
 extends Control
-## UI-shared-play R2/R3/R4 chrome and S2 resign confirm (#58). Board is R1.
+## UI-shared-play R2/R3/R4 chrome; S2 confirm; S4/S5/S6 choice states (#58/#94).
 
 signal control_activated(control_id: String)
 signal pointed(control_id: String)
@@ -21,19 +21,37 @@ var black_clock_ms: Variant = null
 var advice_on := true
 var game_ended := false
 var resign_available := true
+var offer_available := true
 var board_unavailable := false
+var confirm_kind := ""
+var c1_available := true
+var c2_available := true
+var c3_available := true
+var c4_available := true
+var c5_available := true
+var c6_available := false
+var c7_available := false
+var c8_available := false
+var c9_available := false
 
 var _status: Label
 var _check: Label
 var _clocks: Label
+var _promote_hint: Label
 var _select_focus: Button
 var _place_focus: Button
 var _advice: Button
 var _resign: Button
+var _offer: Button
 var _confirm_box: VBoxContainer
 var _confirm_msg: Label
 var _confirm_ok: Button
 var _confirm_cancel: Button
+var _draw_box: VBoxContainer
+var _draw_msg: Label
+var _accept: Button
+var _decline: Button
+var _withdraw: Button
 var _chrome: VBoxContainer
 var _ui_font: Font
 
@@ -55,7 +73,18 @@ func configure(state: Dictionary, font: Font = null) -> void:
 	advice_on = bool(state.get("advice", true))
 	game_ended = bool(state.get("game_ended", false))
 	resign_available = bool(state.get("resign_available", true))
+	offer_available = bool(state.get("offer_available", true))
 	board_unavailable = bool(state.get("board_unavailable", false))
+	confirm_kind = str(state.get("confirm_kind", ""))
+	c1_available = bool(state.get("c1_available", true))
+	c2_available = bool(state.get("c2_available", true))
+	c3_available = bool(state.get("c3_available", true))
+	c4_available = bool(state.get("c4_available", resign_available))
+	c5_available = bool(state.get("c5_available", offer_available))
+	c6_available = bool(state.get("c6_available", false))
+	c7_available = bool(state.get("c7_available", false))
+	c8_available = bool(state.get("c8_available", false))
+	c9_available = bool(state.get("c9_available", false))
 	_ui_font = font
 	if is_inside_tree():
 		_apply_font()
@@ -65,7 +94,31 @@ func configure(state: Dictionary, font: Font = null) -> void:
 func focusable_controls() -> Array[Control]:
 	if ui_state == "S2":
 		return [_confirm_ok, _confirm_cancel]
-	# controls.md F1 / shared-play: C1 → C2 → C3 → C4 among available controls.
+	if ui_state == "S6":
+		var s6: Array[Control] = []
+		if not _select_focus.disabled:
+			s6.append(_select_focus)
+		if not _place_focus.disabled:
+			s6.append(_place_focus)
+		if not _advice.disabled:
+			s6.append(_advice)
+		if not _accept.disabled:
+			s6.append(_accept)
+		if not _decline.disabled:
+			s6.append(_decline)
+		if not _withdraw.disabled:
+			s6.append(_withdraw)
+		return s6
+	if ui_state == "S4":
+		var s4: Array[Control] = []
+		if not _advice.disabled:
+			s4.append(_advice)
+		if not _resign.disabled:
+			s4.append(_resign)
+		if not _offer.disabled:
+			s4.append(_offer)
+		return s4
+	# controls.md F1 / shared-play: C1 → C2 → C3 → C4 → C5 among available controls.
 	var out: Array[Control] = []
 	if not _select_focus.disabled:
 		out.append(_select_focus)
@@ -75,6 +128,8 @@ func focusable_controls() -> Array[Control]:
 		out.append(_advice)
 	if not _resign.disabled:
 		out.append(_resign)
+	if not _offer.disabled:
+		out.append(_offer)
 	return out
 
 
@@ -126,6 +181,13 @@ func _build() -> void:
 	_clocks.add_theme_constant_override("outline_size", 0)
 	_chrome.add_child(_clocks)
 
+	_promote_hint = Label.new()
+	_promote_hint.name = "ChoosePromotion"
+	_promote_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_promote_hint.visible = false
+	UiChrome.style_label(_promote_hint)
+	_chrome.add_child(_promote_hint)
+
 	# C1/C2 are board gestures; off-strip focus sentinels keep F1 order (44px).
 	_select_focus = Button.new()
 	_select_focus.name = "SelectFocus"
@@ -167,6 +229,13 @@ func _build() -> void:
 	_resign.mouse_entered.connect(_on_point.bind("C4"))
 	row.add_child(_resign)
 
+	_offer = Button.new()
+	_offer.name = "OfferDraw"
+	_offer.pressed.connect(_on_activate.bind("C5"))
+	_offer.focus_entered.connect(_on_point.bind("C5"))
+	_offer.mouse_entered.connect(_on_point.bind("C5"))
+	row.add_child(_offer)
+
 	_confirm_box = VBoxContainer.new()
 	_confirm_box.name = "ResignConfirm"
 	_confirm_box.visible = false
@@ -204,18 +273,68 @@ func _build() -> void:
 	_confirm_cancel.mouse_entered.connect(_on_point.bind("cancel"))
 	confirm_row.add_child(_confirm_cancel)
 
+	# S6: one shared non-blocking panel — board stays playable (states.md).
+	_draw_box = VBoxContainer.new()
+	_draw_box.name = "DrawOffer"
+	_draw_box.visible = false
+	_draw_box.mouse_filter = Control.MOUSE_FILTER_STOP
+	_draw_box.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	_draw_box.offset_left = 16
+	_draw_box.offset_right = -16
+	_draw_box.offset_top = CHROME_BOTTOM_PX + 8
+	_draw_box.offset_bottom = CHROME_BOTTOM_PX + 120
+	_draw_box.add_theme_constant_override("separation", 8)
+	add_child(_draw_box)
+	var draw_panel := PanelContainer.new()
+	draw_panel.add_theme_stylebox_override("panel", UiChrome.panel_style())
+	_draw_box.add_child(draw_panel)
+	var draw_inner := VBoxContainer.new()
+	draw_inner.add_theme_constant_override("separation", 8)
+	draw_panel.add_child(draw_inner)
+	_draw_msg = Label.new()
+	_draw_msg.name = "DrawOfferedMsg"
+	_draw_msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	UiChrome.style_label(_draw_msg)
+	draw_inner.add_child(_draw_msg)
+	var draw_row := HBoxContainer.new()
+	draw_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	draw_row.add_theme_constant_override("separation", 12)
+	draw_inner.add_child(draw_row)
+	_accept = Button.new()
+	_accept.name = "AcceptDraw"
+	_accept.pressed.connect(_on_activate.bind("C7"))
+	_accept.focus_entered.connect(_on_point.bind("C7"))
+	_accept.mouse_entered.connect(_on_point.bind("C7"))
+	draw_row.add_child(_accept)
+	_decline = Button.new()
+	_decline.name = "DeclineDraw"
+	_decline.pressed.connect(_on_activate.bind("C8"))
+	_decline.focus_entered.connect(_on_point.bind("C8"))
+	_decline.mouse_entered.connect(_on_point.bind("C8"))
+	draw_row.add_child(_decline)
+	_withdraw = Button.new()
+	_withdraw.name = "WithdrawDraw"
+	_withdraw.pressed.connect(_on_activate.bind("C9"))
+	_withdraw.focus_entered.connect(_on_point.bind("C9"))
+	_withdraw.mouse_entered.connect(_on_point.bind("C9"))
+	draw_row.add_child(_withdraw)
+
 	_style_all()
 	_wire_focus_order()
 
 
 func _wire_focus_order() -> void:
-	## controls.md F1 — top to bottom among C1–C4 (confirm pair is separate in S2).
+	## controls.md F1 — top to bottom among C1–C5 (confirm / draw pairs separate).
 	_select_focus.focus_next = _place_focus.get_path()
 	_place_focus.focus_next = _advice.get_path()
 	_advice.focus_next = _resign.get_path()
-	_resign.focus_next = _select_focus.get_path()
+	_resign.focus_next = _offer.get_path()
+	_offer.focus_next = _select_focus.get_path()
 	_confirm_ok.focus_next = _confirm_cancel.get_path()
 	_confirm_cancel.focus_next = _confirm_ok.get_path()
+	_accept.focus_next = _decline.get_path()
+	_decline.focus_next = _withdraw.get_path()
+	_withdraw.focus_next = _accept.get_path()
 
 
 func _style_all() -> void:
@@ -223,8 +342,12 @@ func _style_all() -> void:
 	UiChrome.style_button(_place_focus)
 	UiChrome.style_button(_advice)
 	UiChrome.style_button(_resign)
+	UiChrome.style_button(_offer)
 	UiChrome.style_button(_confirm_ok, true)
 	UiChrome.style_button(_confirm_cancel)
+	UiChrome.style_button(_accept, true)
+	UiChrome.style_button(_decline)
+	UiChrome.style_button(_withdraw)
 
 
 func _apply_font() -> void:
@@ -234,13 +357,19 @@ func _apply_font() -> void:
 		_status,
 		_check,
 		_clocks,
+		_promote_hint,
 		_select_focus,
 		_place_focus,
 		_advice,
 		_resign,
+		_offer,
 		_confirm_msg,
 		_confirm_ok,
-		_confirm_cancel
+		_confirm_cancel,
+		_draw_msg,
+		_accept,
+		_decline,
+		_withdraw
 	]:
 		UiChrome.apply_font(node, _ui_font)
 
@@ -252,9 +381,18 @@ func _apply_copy() -> void:
 	_check.visible = in_check
 	_advice.text = StringTable.shared_play("advice_on" if advice_on else "advice_off", locale)
 	_resign.text = StringTable.shared_play("resign", locale)
-	_confirm_msg.text = StringTable.shared_play("resign_confirm", locale)
+	_offer.text = StringTable.shared_play("offer_draw", locale)
+	var confirm_key := (
+		"offer_confirm" if confirm_kind == SharedGameSession.CONFIRM_OFFER else "resign_confirm"
+	)
+	_confirm_msg.text = StringTable.shared_play(confirm_key, locale)
 	_confirm_ok.text = StringTable.shared_play("confirm", locale)
 	_confirm_cancel.text = StringTable.shared_play("cancel", locale)
+	_draw_msg.text = StringTable.shared_play("draw_offered", locale)
+	_accept.text = StringTable.shared_play("accept", locale)
+	_decline.text = StringTable.shared_play("decline", locale)
+	_withdraw.text = StringTable.shared_play("withdraw", locale)
+	_promote_hint.text = StringTable.shared_play("choose_promotion", locale)
 	_refresh_clocks()
 
 
@@ -278,11 +416,14 @@ func _format_clock(ms: int) -> String:
 
 
 func _apply_availability() -> void:
-	var playable := not game_ended and ui_state != "S2"
-	_select_focus.disabled = not playable
-	_place_focus.disabled = not playable
-	_advice.disabled = not playable
-	_resign.disabled = not playable or not resign_available
+	_select_focus.disabled = not c1_available or game_ended
+	_place_focus.disabled = not c2_available or game_ended
+	_advice.disabled = not c3_available or game_ended
+	_resign.disabled = not c4_available or game_ended or not resign_available
+	_offer.disabled = not c5_available or game_ended or not offer_available
+	_accept.disabled = not c7_available
+	_decline.disabled = not c8_available
+	_withdraw.disabled = not c9_available
 	_style_all()
 
 
@@ -290,20 +431,34 @@ func _show_state(state_id: String) -> void:
 	ui_state = state_id
 	var confirm := state_id == "S2"
 	_confirm_box.visible = confirm
+	_draw_box.visible = state_id == "S6"
+	_promote_hint.visible = state_id == "S4"
 	# Keep R2/R4 readable; board dimming is owned by presentation via board_unavailable.
 	_chrome.modulate.a = 1.0
-	if confirm and visible:
+	if (confirm or state_id == "S6" or state_id == "S4") and visible:
 		focus_first()
 
 
 func _on_activate(control_id: String) -> void:
-	if control_id == "C1" and _select_focus.disabled:
-		return
-	if control_id == "C2" and _place_focus.disabled:
-		return
-	if control_id == "C3" and _advice.disabled:
-		return
-	if control_id == "C4" and _resign.disabled:
+	var disabled := false
+	match control_id:
+		"C1":
+			disabled = _select_focus.disabled
+		"C2":
+			disabled = _place_focus.disabled
+		"C3":
+			disabled = _advice.disabled
+		"C4":
+			disabled = _resign.disabled
+		"C5":
+			disabled = _offer.disabled
+		"C7":
+			disabled = _accept.disabled
+		"C8":
+			disabled = _decline.disabled
+		"C9":
+			disabled = _withdraw.disabled
+	if disabled:
 		return
 	# C1/C2 activate via board gestures (B2/B3/B10); focus sentinels only emit point.
 	if control_id == "C1" or control_id == "C2":

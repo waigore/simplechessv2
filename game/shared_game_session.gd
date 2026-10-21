@@ -15,9 +15,17 @@ const CLOCK_BLITZ := "blitz"
 const CLOCK_RAPID := "rapid"
 const UI_S1 := "S1"
 const UI_S2 := "S2"
+const UI_S4 := "S4"
+const UI_S5 := "S5"
+const UI_S6 := "S6"
+const CONFIRM_RESIGN := "resign"
+const CONFIRM_OFFER := "offer"
+## PER.R8 refused-place flash duration (seconds).
+const REJECT_FLASH_S := 0.3
 ## CFG.BLITZ_START / CFG.RAPID_START (technical T1 / T2), seconds.
 const BLITZ_START_S := 60
 const RAPID_START_S := 600
+const PROMOTE_ORDER := ["queen", "rook", "bishop", "knight"]
 
 var rules: ChessRules
 var clock_id := CLOCK_UNTIMED
@@ -28,11 +36,18 @@ var draw_offer := ""
 var options_locked := false
 ## GS.selectedPiece — empty or one piece of the side to move.
 var selected_piece := ""
-## Play UI state: S1 default, S2 resign confirm.
+## Play UI state: S1 default; S2 confirm; S4 promote; S5 reject flash; S6 draw-offer.
 var play_ui_state := UI_S1
 ## GS.advice — toggle only until advice client is wired (F-move-advice.R2).
 var advice_on := true
 var last_reject := ""
+## Square that refused a place (PER.R8); cleared when S5 ends.
+var reject_square := ""
+## S2 confirm kind: resign or offer draw.
+var confirm_kind := ""
+## Pending last-rank place waiting on C6 (from/to squares).
+var pending_promote_from := ""
+var pending_promote_to := ""
 var _clocks_stopped := false
 ## Side whose clock is running; empty when none (untimed, stopped, or between moves).
 var _active_side := ""
@@ -54,6 +69,10 @@ func start_shared(
 	play_ui_state = UI_S1
 	advice_on = p_advice
 	last_reject = ""
+	reject_square = ""
+	confirm_kind = ""
+	pending_promote_from = ""
+	pending_promote_to = ""
 	_configure_clocks(p_clock, p_increment_s)
 
 
@@ -69,6 +88,10 @@ func _start_opening(timed_ms: Variant = null) -> void:
 	selected_piece = ""
 	play_ui_state = UI_S1
 	last_reject = ""
+	reject_square = ""
+	confirm_kind = ""
+	pending_promote_from = ""
+	pending_promote_to = ""
 	clock_id = CLOCK_BLITZ
 	increment_ms = 0
 	var ms := int(timed_ms)
@@ -98,6 +121,10 @@ func play_state() -> Dictionary:
 		"play_ui_state": play_ui_state,
 		"advice": advice_on,
 		"last_reject": last_reject,
+		"reject_square": reject_square,
+		"confirm_kind": confirm_kind,
+		"pending_promote_from": pending_promote_from,
+		"pending_promote_to": pending_promote_to,
 	}
 
 
@@ -127,7 +154,14 @@ func _end_reason() -> String:
 
 
 func gestures_available() -> bool:
-	return play_ui_state == UI_S1 and not game_ended()
+	## Board stays playable in S1, S5 (flash), and S6 (draw panel). S4 waits on C6.
+	if game_ended():
+		return false
+	return play_ui_state == UI_S1 or play_ui_state == UI_S5 or play_ui_state == UI_S6
+
+
+func _board_gestures_blocked() -> bool:
+	return play_ui_state == UI_S2 or play_ui_state == UI_S4 or game_ended()
 
 
 ## Display seconds for the running clock (null when untimed); used to throttle chrome.
@@ -142,6 +176,7 @@ func clock_display_key() -> String:
 func select_own(square: String) -> Dictionary:
 	if not gestures_available():
 		return {"ok": false}
+	_clear_reject_flash()
 	var piece := occupancy_at(square)
 	if piece.is_empty():
 		return {"ok": false}
@@ -154,6 +189,37 @@ func select_own(square: String) -> Dictionary:
 	return {"ok": true, "event": "shared.select", "outcome": "ok", "story": "UI-shared-play.US1.2"}
 
 
+## C10 / B8 / B9 / B11 — clear selection; in S4 drops promotion choice.
+func clear_selection() -> Dictionary:
+	if game_ended():
+		return {"ok": false}
+	if play_ui_state == UI_S2:
+		return {"ok": false}
+	if play_ui_state == UI_S4:
+		pending_promote_from = ""
+		pending_promote_to = ""
+		play_ui_state = UI_S1
+		# Leave the pawn selected (states.md S4).
+		return {
+			"ok": true,
+			"event": "shared.deselect",
+			"outcome": "promote_cancel",
+			"story": "UI-shared-play.US1.5",
+		}
+	if selected_piece.is_empty() and play_ui_state != UI_S5:
+		return {"ok": false}
+	selected_piece = ""
+	_clear_reject_flash()
+	if play_ui_state == UI_S5:
+		play_ui_state = UI_S1
+	return {
+		"ok": true,
+		"event": "shared.deselect",
+		"outcome": "ok",
+		"story": "UI-shared-play.US1.5",
+	}
+
+
 func can_place(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if not gestures_available():
 		return false
@@ -162,13 +228,44 @@ func can_place(from_square: String, to_square: String, promotion: String = "") -
 	return rules._can_apply_move(from_square, to_square, promotion)
 
 
-## C2 / B3 / B10 — place; rules-level refuse keeps selection (danger flash is #94).
-## Returns {ok, illegal, ended, check, move, event, outcome, story, end_reason}.
+func _needs_promotion(from_square: String, to_square: String) -> bool:
+	return rules._reject_reason(from_square, to_square, "") == ChessRules.REASON_PROMOTION
+
+
+## C2 / B3 / B10 — place; refused place → S5; last-rank without kind → S4.
+## Returns {ok, illegal, ended, check, move, event, outcome, story, end_reason, promote}.
 func place(from_square: String, to_square: String, promotion: String = "") -> Dictionary:
 	if not gestures_available():
 		return {"ok": false}
+	_clear_reject_flash()
 	last_reject = ""
 	var before_side := side_to_move()
+	# Empty non-destination while selected → IN.deselect (not EX.rejected).
+	if (
+		not selected_piece.is_empty()
+		and from_square == selected_piece
+		and occupancy_at(to_square).is_empty()
+		and not legal_targets_for(selected_piece).has(to_square)
+	):
+		return clear_selection()
+	if promotion.is_empty() and _needs_promotion(from_square, to_square):
+		if selected_piece.is_empty():
+			var piece := occupancy_at(from_square)
+			if not piece.is_empty() and str(piece.get("color", "")) == before_side:
+				selected_piece = from_square
+		pending_promote_from = from_square
+		pending_promote_to = to_square
+		play_ui_state = UI_S4
+		return {
+			"ok": true,
+			"illegal": false,
+			"promote": true,
+			"event": "shared.promote",
+			"outcome": "choose",
+			"story": "UI-shared-play.US1.6",
+			"pending_from": from_square,
+			"pending_to": to_square,
+		}
 	var applied := try_move(from_square, to_square, promotion)
 	if not applied:
 		if selected_piece.is_empty():
@@ -176,21 +273,31 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 			if not piece.is_empty() and str(piece.get("color", "")) == before_side:
 				selected_piece = from_square
 		last_reject = "illegal"
+		reject_square = to_square
+		play_ui_state = UI_S5
 		return {
 			"ok": false,
 			"illegal": true,
+			"reject_square": to_square,
 			"event": "shared.move",
 			"outcome": "illegal",
 			"story": "UI-shared-play.US1.3",
 		}
 	selected_piece = ""
+	pending_promote_from = ""
+	pending_promote_to = ""
+	if play_ui_state == UI_S6:
+		play_ui_state = UI_S1
+	var move_dict := {"from": from_square, "to": to_square}
+	if not promotion.is_empty():
+		move_dict["promote"] = promotion
 	var result := {
 		"ok": true,
 		"illegal": false,
 		"event": "shared.move",
 		"outcome": "ok",
 		"story": "UI-shared-play.US1.3",
-		"move": {"from": from_square, "to": to_square},
+		"move": move_dict,
 		"check": _in_check_now(),
 		"ended": game_ended(),
 		"end_reason": _end_reason(),
@@ -198,21 +305,90 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 	return result
 
 
-func open_resign_confirm() -> Dictionary:
+## C6 — commit promotion kind and apply the pending place.
+func commit_promotion(kind: String) -> Dictionary:
+	if play_ui_state != UI_S4:
+		return {"ok": false}
+	if not PROMOTE_ORDER.has(kind):
+		return {"ok": false}
+	var from_sq := pending_promote_from
+	var to_sq := pending_promote_to
+	play_ui_state = UI_S1
+	pending_promote_from = ""
+	pending_promote_to = ""
+	var result := place(from_sq, to_sq, kind)
+	if bool(result.get("ok", false)):
+		result["event"] = "shared.promote"
+		result["outcome"] = "commit"
+		result["story"] = "UI-shared-play.US1.6"
+	return result
+
+
+func finish_reject_flash() -> Dictionary:
+	if play_ui_state != UI_S5:
+		return {"ok": false}
+	reject_square = ""
+	last_reject = ""
+	play_ui_state = UI_S1
+	return {"ok": true}
+
+
+## Chrome controls C3–C9 / confirm / cancel — one public entry for max-public-methods.
+func handle_play_control(control_id: String) -> Dictionary:
+	var result := {"ok": false}
+	match control_id:
+		"C3":
+			result = _toggle_advice()
+		"C4":
+			result = _open_resign_confirm()
+		"C5":
+			result = _open_offer_confirm()
+		"C7":
+			result = _accept_draw_choice()
+		"C8":
+			result = _decline_draw_choice()
+		"C9":
+			result = _withdraw_draw_choice()
+		"confirm":
+			if confirm_kind == CONFIRM_OFFER:
+				result = _confirm_offer()
+			else:
+				result = _confirm_resign()
+		"cancel":
+			result = _cancel_confirm()
+	return result
+
+
+func _open_resign_confirm() -> Dictionary:
 	if play_ui_state != UI_S1 or game_ended():
 		return {"ok": false}
 	play_ui_state = UI_S2
+	confirm_kind = CONFIRM_RESIGN
 	return {
 		"ok": true, "event": "shared.resign", "outcome": "confirm", "story": "UI-shared-play.US1.1"
 	}
 
 
-func confirm_resign() -> Dictionary:
-	if play_ui_state != UI_S2:
+func _open_offer_confirm() -> Dictionary:
+	if play_ui_state != UI_S1 or game_ended():
+		return {"ok": false}
+	play_ui_state = UI_S2
+	confirm_kind = CONFIRM_OFFER
+	return {
+		"ok": true,
+		"event": "shared.draw",
+		"outcome": "confirm",
+		"story": "UI-shared-play.US1.7",
+	}
+
+
+func _confirm_resign() -> Dictionary:
+	if play_ui_state != UI_S2 or confirm_kind != CONFIRM_RESIGN:
 		return {"ok": false}
 	if not resign():
 		return {"ok": false}
 	play_ui_state = UI_S1
+	confirm_kind = ""
 	selected_piece = ""
 	return {
 		"ok": true,
@@ -224,15 +400,76 @@ func confirm_resign() -> Dictionary:
 	}
 
 
-func cancel_resign() -> Dictionary:
+func _confirm_offer() -> Dictionary:
+	if play_ui_state != UI_S2 or confirm_kind != CONFIRM_OFFER:
+		return {"ok": false}
+	if not _offer_draw():
+		return {"ok": false}
+	confirm_kind = ""
+	play_ui_state = UI_S6
+	return {
+		"ok": true,
+		"event": "shared.draw",
+		"outcome": "offered",
+		"story": "UI-shared-play.US1.7",
+	}
+
+
+func _cancel_confirm() -> Dictionary:
 	if play_ui_state != UI_S2:
 		return {"ok": false}
 	play_ui_state = UI_S1
+	confirm_kind = ""
 	return {"ok": true}
 
 
-func toggle_advice() -> Dictionary:
-	if not gestures_available():
+func _accept_draw_choice() -> Dictionary:
+	if play_ui_state != UI_S6:
+		return {"ok": false}
+	if not _accept_draw():
+		return {"ok": false}
+	play_ui_state = UI_S1
+	selected_piece = ""
+	return {
+		"ok": true,
+		"ended": true,
+		"end_reason": END_D2,
+		"event": "shared.draw",
+		"outcome": END_D2,
+		"story": "UI-shared-play.US1.7",
+	}
+
+
+func _decline_draw_choice() -> Dictionary:
+	if play_ui_state != UI_S6:
+		return {"ok": false}
+	if not _decline_draw():
+		return {"ok": false}
+	play_ui_state = UI_S1
+	return {
+		"ok": true,
+		"event": "shared.draw",
+		"outcome": "decline",
+		"story": "UI-shared-play.US1.7",
+	}
+
+
+func _withdraw_draw_choice() -> Dictionary:
+	if play_ui_state != UI_S6:
+		return {"ok": false}
+	if not _withdraw_draw():
+		return {"ok": false}
+	play_ui_state = UI_S1
+	return {
+		"ok": true,
+		"event": "shared.draw",
+		"outcome": "withdraw",
+		"story": "UI-shared-play.US1.7",
+	}
+
+
+func _toggle_advice() -> Dictionary:
+	if play_ui_state == UI_S2 or game_ended():
 		return {"ok": false}
 	advice_on = not advice_on
 	return {
@@ -244,8 +481,12 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 	var ended := game_ended()
 	var field := rules.position_field()
 	var legal := PackedStringArray()
-	if not selected_piece.is_empty():
+	if not selected_piece.is_empty() and play_ui_state != UI_S4:
 		legal = legal_targets_for(selected_piece)
+	var in_s2 := play_ui_state == UI_S2
+	var in_s4 := play_ui_state == UI_S4
+	var in_s6 := play_ui_state == UI_S6
+	var playable_board := not ended and not in_s2 and not in_s4
 	return {
 		"locale": locale,
 		"white_seat": white_seat,
@@ -263,10 +504,33 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"black_clock_ms": black_clock_ms,
 		"game_ended": ended,
 		"end_reason": _end_reason(),
-		"resign_available": not ended and play_ui_state == UI_S1,
-		"board_unavailable": play_ui_state == UI_S2 or ended,
+		"resign_available": not ended and not in_s2 and not in_s6,
+		"offer_available": not ended and not in_s2 and not in_s6,
+		"board_unavailable": in_s2 or ended,
 		"last_reject": last_reject,
+		"reject_square": reject_square,
+		"confirm_kind": confirm_kind,
+		"pending_promote_from": pending_promote_from,
+		"pending_promote_to": pending_promote_to,
+		"promote_kinds": PROMOTE_ORDER.duplicate() if in_s4 else [],
+		"draw_offer": draw_offer,
+		"c1_available": playable_board,
+		"c2_available": playable_board,
+		"c3_available": not ended and not in_s2,
+		"c4_available": not ended and not in_s2 and not in_s6,
+		"c5_available": not ended and not in_s2 and not in_s6,
+		"c6_available": in_s4,
+		"c7_available": in_s6,
+		"c8_available": in_s6,
+		"c9_available": in_s6,
 	}
+
+
+func _clear_reject_flash() -> void:
+	if play_ui_state == UI_S5:
+		play_ui_state = UI_S1
+	reject_square = ""
+	last_reject = ""
 
 
 func result_copy_key() -> String:

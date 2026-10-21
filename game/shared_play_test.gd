@@ -1,6 +1,6 @@
 class_name SharedPlayTest
 extends SceneTree
-## Headless coverage for UI-shared-play (#58): gestures, clocks, resign, NAV.T6.
+## Headless coverage for UI-shared-play (#58/#94): gestures, choices, clocks, resign.
 
 var _presentation: Presentation
 var _router: SessionRouter
@@ -44,6 +44,8 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _illegal_keeps_selection()
 	if _error.is_empty():
+		_error = _deselect_empty_non_destination()
+	if _error.is_empty():
 		_error = await _gesture_b2_changes_selection()
 	if _error.is_empty():
 		_error = await _gesture_b3_place()
@@ -53,6 +55,10 @@ func _after_boot() -> void:
 		_error = await _gesture_bad_drop_returns()
 	if _error.is_empty():
 		_error = _promotion_refused_no_auto_queen()
+	if _error.is_empty():
+		_error = _promotion_choice_s4()
+	if _error.is_empty():
+		_error = _draw_offer_flow()
 	if _error.is_empty():
 		_error = _resign_flow()
 	if _error.is_empty():
@@ -66,7 +72,7 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = await _layout_reserves_chrome()
 	if _error.is_empty():
-		_error = _focus_order_c1_to_c4()
+		_error = _focus_order_c1_to_c5()
 	if _error.is_empty():
 		quit(0)
 		return
@@ -87,6 +93,12 @@ func _string_keys() -> String:
 	for key in [
 		"resign",
 		"resign_confirm",
+		"offer_draw",
+		"offer_confirm",
+		"accept",
+		"decline",
+		"withdraw",
+		"draw_offered",
 		"confirm",
 		"cancel",
 		"white_to_move",
@@ -94,6 +106,12 @@ func _string_keys() -> String:
 		"check",
 		"advice_on",
 		"advice_off",
+		"choose_promotion",
+		"refused_place",
+		"queen",
+		"rook",
+		"bishop",
+		"knight",
 	]:
 		var text := StringTable.shared_play(key, "en")
 		if text.is_empty() or text == key:
@@ -147,21 +165,43 @@ func _illegal_keeps_selection() -> String:
 	var before_occ: Dictionary = (
 		(_router.shared_session.rules.position_field()["occupancy"] as Dictionary).duplicate(true)
 	)
-	_router.handle_input_commit("e7", "e3")
-	if _router.selected_piece != "e7":
-		return "illegal keeps selection"
+	# Occupied non-legal target → EX.rejected / S5 (not empty-square deselect).
+	_router.handle_input_commit("e7", "e4")
 	var after: Dictionary = _router.shared_session.rules.position_field()
-	if str(after["side_to_move"]) != "black":
-		return "illegal keeps side to move"
-	if (after["occupancy"] as Dictionary).has("e3"):
-		return "illegal changed position"
-	if not before_occ.has("e7"):
-		return "illegal cleared origin"
+	var fail := _first_fail(
+		[
+			[_router.selected_piece == "e7", "illegal keeps selection"],
+			[_router.play_ui_state == "S5", "illegal enters S5"],
+			[str(_router.shared_session.reject_square) == "e4", "PER.R8 reject square"],
+			[str(after["side_to_move"]) == "black", "illegal keeps side to move"],
+			[not (after["occupancy"] as Dictionary).has("e3"), "illegal changed position"],
+			[before_occ.has("e7"), "illegal cleared origin"],
+		]
+	)
+	if not fail.is_empty():
+		return fail
+	_router.finish_reject_flash()
+	if _router.play_ui_state != "S1":
+		return "S5 flash ends → S1"
+	return ""
+
+
+func _deselect_empty_non_destination() -> String:
+	## PTU-controls.S2 / B9 — unmarked empty clears selection, no flash.
+	_router.handle_input_commit("e7", "")
+	if _router.selected_piece != "e7":
+		return "deselect setup select"
+	_router.handle_input_commit("e7", "e3")
+	if _router.selected_piece != "":
+		return "B9 empty non-destination clears selection"
+	if _router.play_ui_state == "S5":
+		return "B9 must not flash S5"
 	return ""
 
 
 func _gesture_b2_changes_selection() -> String:
-	# Black selected e7; tap g8 (own knight) must select via B2, not attempt B3 place.
+	# Select e7 then tap g8 (own knight) must select via B2, not attempt B3 place.
+	_router.handle_input_commit("e7", "")
 	await _tap_square("g8")
 	if _router.selected_piece != "g8":
 		return "B2 tap own piece changes selection (got %s)" % _router.selected_piece
@@ -204,6 +244,9 @@ func _gesture_bad_drop_returns() -> String:
 	await create_timer(BoardGeometry.TRAVEL_S + 0.05).timeout
 	if not is_equal_approx(board.last_return_s, BoardGeometry.TRAVEL_S):
 		return "bad drop should run PHY.M5 return (last_return_s=%s)" % board.last_return_s
+	# PTU-controls.S5 / B11 — bad drop clears selection.
+	if _router.selected_piece != "":
+		return "B11 bad drop clears selection"
 	return ""
 
 
@@ -224,6 +267,139 @@ func _promotion_refused_no_auto_queen() -> String:
 		not ok and occ.has("e7") and not occ.has("e8") and str(piece.get("kind", "")) == "pawn"
 	)
 	return "" if passed else "last-rank place must refuse without auto-queen"
+
+
+func _promotion_choice_s4() -> String:
+	## EX.promote / S4 — last-rank place waits on C6; no auto-queen.
+	var session := _router.shared_session
+	var pieces: Array = [
+		{"square": "e7", "color": "white", "kind": "pawn"},
+		{"square": "a1", "color": "white", "kind": "king"},
+		{"square": "h8", "color": "black", "kind": "king"},
+	]
+	session.rules.load_position(pieces, "white")
+	session._sync_active_to_side_to_move()
+	session.selected_piece = "e7"
+	session.play_ui_state = SharedGameSession.UI_S1
+	var result := session.place("e7", "e8", "")
+	var place_fail := _first_fail(
+		[
+			[
+				bool(result.get("promote", false)) and session.play_ui_state == "S4",
+				"last-rank place enters S4",
+			],
+			[session.pending_promote_to == "e8", "pending promote square"],
+		]
+	)
+	if not place_fail.is_empty():
+		return place_fail
+	var cancel := session.clear_selection()
+	var cancel_fail := _first_fail(
+		[
+			[
+				bool(cancel.get("ok", false)) and session.play_ui_state == "S1",
+				"S4 deselect drops choice",
+			],
+			[session.selected_piece == "e7", "S4 deselect leaves pawn selected"],
+		]
+	)
+	if not cancel_fail.is_empty():
+		return cancel_fail
+	session.place("e7", "e8", "")
+	var commit := session.commit_promotion("queen")
+	var occ: Dictionary = session.rules.position_field()["occupancy"]
+	var on_e8: Dictionary = occ.get("e8", {})
+	return _first_fail(
+		[
+			[bool(commit.get("ok", false)), "C6 commit promotion"],
+			[str(on_e8.get("kind", "")) == "queen", "promoted unit on board"],
+			[session.play_ui_state == "S1", "commit returns S1"],
+		]
+	)
+
+
+func _draw_offer_flow() -> String:
+	## C5 → S2 offer confirm → S6; Accept → END.D2 → shared-result.
+	_router.handle_control("mode-pick", "C1")
+	_router.clock = "untimed"
+	_router.handle_control("shared-setup", "C5")
+	var err := _draw_offer_open_decline()
+	if not err.is_empty():
+		return err
+	err = _draw_offer_withdraw_lapse_accept()
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-result", "C2")
+	return ""
+
+
+func _draw_offer_open_decline() -> String:
+	_router.handle_control("shared-play", "C5")
+	var play := _play_panel()
+	var err := _first_fail(
+		[
+			[
+				(
+					_router.play_ui_state == "S2"
+					and play.confirm_kind == SharedGameSession.CONFIRM_OFFER
+				),
+				"C5 opens offer confirm S2",
+			]
+		]
+	)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "confirm")
+	err = _first_fail(
+		[
+			[_router.play_ui_state == "S6", "confirm offer → S6"],
+			[bool(_shared_play_state().get("c7_available", false)), "S6 Accept available"],
+			[_router.play_gestures_available(), "S6 board stay playable"],
+		]
+	)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "C8")
+	return _first_fail(
+		[
+			[_router.play_ui_state == "S1", "Decline → S1"],
+			[str(_router.shared_session.draw_offer).is_empty(), "Decline clears offer"],
+		]
+	)
+
+
+func _draw_offer_withdraw_lapse_accept() -> String:
+	_router.handle_control("shared-play", "C5")
+	_router.handle_control("shared-play", "confirm")
+	_router.handle_control("shared-play", "C9")
+	if _router.play_ui_state != "S1":
+		return "Withdraw → S1"
+	_router.handle_control("shared-play", "C5")
+	_router.handle_control("shared-play", "confirm")
+	# Legal place lapses offer.
+	_router.handle_input_commit("e2", "")
+	_router.handle_input_commit("e2", "e4")
+	var err := _first_fail(
+		[
+			[_router.play_ui_state == "S1", "place lapses S6 → S1"],
+			[str(_router.shared_session.draw_offer).is_empty(), "place lapses draw offer"],
+		]
+	)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-play", "C5")
+	_router.handle_control("shared-play", "confirm")
+	_router.handle_control("shared-play", "C7")
+	var result := _result_panel()
+	var end_ok := (
+		_router.stage == "shared-result"
+		and result != null
+		and result.visible
+		and result.result_key == "result_draw"
+	)
+	if not end_ok:
+		return "Accept → shared-result END.D2"
+	return ""
 
 
 func _resign_flow() -> String:
@@ -396,21 +572,21 @@ func _assert_coords_on_board(board: BoardPresentation) -> String:
 	return ""
 
 
-func _focus_order_c1_to_c4() -> String:
-	## controls.md F1 — C1 → C2 → C3 → C4 among available controls.
+func _focus_order_c1_to_c5() -> String:
+	## controls.md F1 — C1 → C2 → C3 → C4 → C5 among available controls.
 	var play := _play_panel()
 	if play.ui_state != "S1":
 		return "focus order expects S1"
 	var controls := play.focusable_controls()
-	if controls.size() < 4:
+	if controls.size() < 5:
 		return "focusable count %d" % controls.size()
 	var names: PackedStringArray = PackedStringArray()
 	for c in controls:
 		names.append(c.name)
 	if names[0] != "SelectFocus" or names[1] != "PlaceFocus":
 		return "focus C1/C2 order %s" % ",".join(names)
-	if names[2] != "AdviceToggle" or names[3] != "Resign":
-		return "focus C3/C4 order %s" % ",".join(names)
+	if names[2] != "AdviceToggle" or names[3] != "Resign" or names[4] != "OfferDraw":
+		return "focus C3/C4/C5 order %s" % ",".join(names)
 	play.focus_first()
 	if play.get_viewport().gui_get_focus_owner() != controls[0]:
 		return "focus_first did not land on C1"
@@ -478,6 +654,13 @@ func _result_panel() -> SharedResultPanel:
 
 func _board() -> BoardPresentation:
 	return _presentation.get_node("ScreenHost/BoardPresentation") as BoardPresentation
+
+
+func _first_fail(checks: Array) -> String:
+	for item in checks:
+		if not bool(item[0]):
+			return str(item[1])
+	return ""
 
 
 func _fail(message: String) -> void:
