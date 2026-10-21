@@ -6,7 +6,7 @@ Part of [`experience.md`](../experience.md).
 
 | Event | Player must understand | Priority |
 |-------|------------------------|----------|
-| Piece selected or touched | Which piece is active | high |
+| Piece selected | Which piece is active | high |
 | Move completed | Where it went; turn changed | high |
 | Check | Side to move's king is in check | high |
 | Checkmate, resign, or clock loss | Game over and who won or drew | high |
