@@ -11,14 +11,14 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
 | EX.loading | Cold open | US1.1 |
-| EX.confirm | Destructive confirm | US1.2 US1.7 |
-| EX.interrupt | Resume mode-pick | US1.3 |
-| EX.save-failure | Prior commit kept | US1.4 |
+| EX.confirm | Destructive confirm | US1.2 US1.7 US1.14 |
+| EX.interrupt | Resume mode-pick | US1.3 US1.15 |
+| EX.save-failure | Prior commit kept | US1.4 US1.16 |
 | EX.error | Dismiss continue | US1.5 |
 | EX.unsupported-input | Non-touch | US1.6 |
 | EX.promote | Choose type or drop | US1.8 US1.9 |
 | EX.rejected | Flash, stay in play | US1.10 US1.11 |
-| EX.draw-offer | Answer or withdraw | US1.12 US1.13 |
+| EX.draw-offer | Answer or withdraw | US1.12 US1.13 US1.17 US1.18 US1.19 |
 
 ## US1: Shared exceptions
 
@@ -94,5 +94,35 @@ When that actor activates UI-shared-play.C4
 Then EX.confirm is shown and names resign
 ```
 
-US1.8–US1.13 live in [`exceptions-play.md`](exceptions-play.md).
+### US1.14: Confirm runs resign
+
+- **Proves**: EX.confirm
+
+```gherkin
+Given EX.confirm resign is shown on shared-play
+When the actor activates Confirm
+Then the screen is shared-result
+```
+
+### US1.15: Interrupt from Puzzle play
+
+- **Proves**: EX.interrupt
+
+```gherkin
+Given Puzzle play was open and the session refreshed
+When the session reopens
+Then the screen is mode-pick
+```
+
+### US1.16: Save failure Last mode
+
+- **Proves**: EX.save-failure
+
+```gherkin
+Given a failed Last mode write shows EX.save-failure
+When the actor dismisses
+Then the copy is Save failed and the previous Last mode remains
+```
+
+US1.8–US1.13 and US1.17–US1.19 live in [`exceptions-play.md`](exceptions-play.md).
 
