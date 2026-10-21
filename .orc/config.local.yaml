@@ -1,6 +1,10 @@
 # Local override. Bare `gh` prefers the remote named upstream
 # (waigore/game-dev-template). Pin gates to this repo's origin.
+# Planner waits one hour after each run (same as the template default).
 agents:
+  project-planner-agent:
+    cooldown_seconds: 3600
+
   issue-workflow-review-agent:
     gate:
       command:
