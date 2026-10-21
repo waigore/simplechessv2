@@ -4,6 +4,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 Part of [`shared-play.md`](shared-play.md). State rows for `UI-shared-play`.
 
+- **Serves**: Instant play, Clear board, Accessibility; [two-player-game](../../design/loops/two-player-game.md); [PER.R*](../../view/perception.md)
+
 ## Shows
 
 N/A — [`shared-play.md`](shared-play.md).
