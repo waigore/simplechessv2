@@ -6,20 +6,25 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `F-move-advice`
 - **Glossary terms**: [Advice](../../glossary.md), [Shared game](../../glossary.md), [Side to move](../../glossary.md)
 
+Clear/stop: [`move-advice-clear.md`](move-advice-clear.md). Cap ends: [`move-advice-tunables.md`](move-advice-tunables.md).
+
 ## Coverage
 
-| Element | Scenarios | Element | Scenarios |
-|---------|-----------|---------|-----------|
-| R1 | PS1.1 PS1.2 | R2 | PS1.1 PS1.3 PS1.4 |
-| R3 | PS1.1 | R4, R5 | PS1.5 |
-| R6, I1 | PS1.6 | R7, CFG.ADVICE_TIME_MS | PS1.7 PS1.8 |
-| R8, X1 | PS1.9 | R9, X2 | PS1.10 |
-| R9, X3 | PS1.11 | R8, X4 | PS1.12 |
-| D1 | PS1.2 PS1.3 | | |
+| Element | Scenarios |
+|---------|-----------|
+| R1 | PS1.1 PS1.2 |
+| R2 | PS1.1 PS1.3 PS1.4 |
+| R3 | PS1.1 |
+| R4, R5 | PS1.5 PS1.13 |
+| R6, I1 | PS1.6 |
+| R7, CFG.ADVICE_TIME_MS | PS1.7 PS1.8 |
+| R8, X1 | PS1.9 |
+| R8 | PS1.14 |
+| D1 | PS1.2 PS1.3 |
 
 ## PS1: Optional board advice
 
-As a casual player, I may see best-move advice so that help never delays my move.
+As a casual player, I may see best-move advice so that help never delays a move.
 
 ### PS1.1: Shared may evaluate
 
@@ -61,14 +66,14 @@ When the position is ready
 Then no evaluation runs And GS.adviceBestMove and GS.adviceEval are none
 ```
 
-### PS1.5: Output for mover
+### PS1.5: White output
 
 - **Proves**: R4, R5
 
 ```gherkin
-Given R2 holds, GS.sideToMove White, a best move ready
+Given R2 holds, GS.sideToMove White, best move ready
 When advice is set
-Then GS.adviceBestMove is that move And GS.adviceEval is centipawns from White's view
+Then GS.adviceBestMove is that move And GS.adviceEval is centipawns from White's view And the player cannot know a principal line
 ```
 
 ### PS1.6: Move never waits
@@ -76,9 +81,9 @@ Then GS.adviceBestMove is that move And GS.adviceEval is centipawns from White's
 - **Proves**: R6, I1
 
 ```gherkin
-Given an evaluation is in flight
-When White completes a legal move
-Then move and turn complete without waiting on the engine
+Given evaluation in flight, GS.sideToMove White, GS.position P
+When White completes a legal move to P2
+Then GS.sideToMove is Black And GS.position is P2 And GS.adviceBestMove and GS.adviceEval are none
 ```
 
 ### PS1.7: Inside the cap
@@ -86,7 +91,7 @@ Then move and turn complete without waiting on the engine
 - **Proves**: R7, CFG.ADVICE_TIME_MS
 
 ```gherkin
-Given R2 holds And a best move ready at 1500 ms
+Given R2 holds And best move ready at 1500 ms
 When it is set
 Then GS.adviceBestMove is set within CFG.ADVICE_TIME_MS (2000)
 ```
@@ -96,7 +101,7 @@ Then GS.adviceBestMove is set within CFG.ADVICE_TIME_MS (2000)
 - **Proves**: R7, CFG.ADVICE_TIME_MS
 
 ```gherkin
-Given R2 holds And no best move is ready
+Given R2 holds And no best move ready
 When the search reaches CFG.ADVICE_TIME_MS (2000)
 Then the search stops And GS.adviceBestMove stays none
 ```
@@ -111,32 +116,22 @@ When a move completes
 Then advice clears And evaluation starts on the new position
 ```
 
-### PS1.10: Off clears
+### PS1.13: Black output
 
-- **Proves**: R9, X2
+- **Proves**: R4, R5
 
 ```gherkin
-Given advice is set
-When Advice is turned Off
-Then advice clears And evaluation stops
+Given R2 holds, GS.sideToMove Black, best move ready
+When advice is set
+Then GS.adviceBestMove is that Black move And GS.adviceEval is centipawns from White's view And the player cannot know a principal line
 ```
 
-### PS1.11: Offline clears
+### PS1.14: Off move, no search
 
-- **Proves**: R9, X3
-
-```gherkin
-Given an evaluation is in flight
-When the connection is lost
-Then advice clears And evaluation stops
-```
-
-### PS1.12: End clears
-
-- **Proves**: R8, X4
+- **Proves**: R8
 
 ```gherkin
-Given advice is set
-When GS.gameEnded becomes true
-Then advice clears
+Given advice is set And Advice Off
+When a move completes
+Then GS.adviceBestMove and GS.adviceEval are none And no evaluation starts
 ```
