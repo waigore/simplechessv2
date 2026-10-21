@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import platform
 import re
@@ -426,6 +427,28 @@ def _coverable_map(game: Path, scripts: list[Path]) -> set[tuple[str, int]]:
     return coverable
 
 
+def _link_named_sibling(game: Path, project: Path, name: str) -> None:
+    if not name or name.startswith(".") or "/" in name:
+        return
+    source = (game.parent / name).resolve()
+    dest = project.parent / name
+    if source.is_dir() and not dest.exists():
+        dest.symlink_to(source, target_is_directory=True)
+
+
+def _link_asset_root(game: Path, project: Path) -> None:
+    """Coverage copies only game/. Catalog files and Vorbis copies stay siblings."""
+    manifest = game / "asset_manifest.json"
+    if manifest.is_file():
+        try:
+            name = json.loads(manifest.read_text(encoding="utf-8")).get("asset_root")
+        except (OSError, json.JSONDecodeError, UnicodeError):
+            name = ""
+        if isinstance(name, str):
+            _link_named_sibling(game, project, name)
+    _link_named_sibling(game, project, "audio_runtime")
+
+
 def _prepare_coverage_project(
     game: Path, main_scripts: list[Path], lines_by_rel: dict[str, set[int]]
 ) -> Path:
@@ -434,6 +457,7 @@ def _prepare_coverage_project(
     temp = Path(tempfile.mkdtemp(prefix="gdscript-cov-"))
     project = temp / "proj"
     shutil.copytree(game, project, ignore=shutil.ignore_patterns(".godot"))
+    _link_asset_root(game, project)
     for path in main_scripts:
         rel = rel_game(game, path)
         target = project / rel

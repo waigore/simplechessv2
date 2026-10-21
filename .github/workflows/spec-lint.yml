@@ -29,3 +29,6 @@ jobs:
 
       - name: Check asset catalog
         run: python3 .github/scripts/asset_catalog.py
+
+      - name: Check asset manifest
+        run: python3 .github/scripts/asset_manifest.py --check
