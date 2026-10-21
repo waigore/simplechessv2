@@ -21,7 +21,7 @@ You sit down at a quiet cafe table, in the browser, and either play a friend on 
 |---|---------|-------------|-----------------|
 | 1 | Instant play | A move never waits on a server. | Piece motion and sound finish on the device with no network round-trip. |
 | 2 | Clear board | Every piece type is readable at a glance. | A casual player can name each piece from its shape alone. |
-| 3 | Cafe calm | The presentation feels like a quiet cafe, not a competitive chess site. | A commute session feels unhurried and simple. |
+| 3 | Cafe calm | The presentation feels like a quiet cafe, not a competitive chess site. | Cafe ambient music plays for the whole session, including blitz and rapid. |
 
 ## Tradeoffs
 
