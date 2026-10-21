@@ -210,7 +210,9 @@ func mark_ended(reason: String) -> void:
 
 
 func _no_possible_mate(mating_side: String) -> bool:
-	## Bare endings where no legal series can checkmate. K+N+N vs K is possible → false.
+	## True only for FIDE dead positions: no legal series can checkmate the other king.
+	## Defender material that enables helpmate (K+B vs K+N, opposite bishops, …) is possible.
+	## K+N+N vs K is possible. Do not use a lone-minors material shortcut.
 	var counts := _piece_kind_counts()
 	var mating: Dictionary = counts[mating_side]
 	var victim: Dictionary = counts[_opponent(mating_side)]
@@ -221,26 +223,38 @@ func _no_possible_mate(mating_side: String) -> bool:
 	var pawns := int(mating.get(KIND_PAWN, 0))
 	var knights := int(mating.get(KIND_KNIGHT, 0))
 	var bishops := int(mating.get(KIND_BISHOP, 0))
-	var has_force := (
-		queens > 0
-		or rooks > 0
-		or pawns > 0
-		or knights >= 2
-		or bishops >= 2
-		or (bishops >= 1 and knights >= 1)
+	var victim_bishops := int(victim.get(KIND_BISHOP, 0))
+	var dead := false
+	var strong := (
+		queens > 0 or rooks > 0 or pawns > 0 or knights >= 2 or (bishops >= 1 and knights >= 1)
 	)
-	if has_force:
+	if strong:
+		dead = false
+	elif bishops >= 2:
+		dead = _same_color_bishops_dead(mating_side, victim_total, victim_bishops)
+	elif mating_total == 0:
+		dead = true
+	elif knights == 1 and mating_total == 1:
+		# K+N vs bare K is dead; with defender pieces, helpmate is possible.
+		dead = victim_total == 0
+	elif bishops == 1 and mating_total == 1:
+		dead = _lone_bishop_dead(victim_total, victim_bishops)
+	return dead
+
+
+func _same_color_bishops_dead(mating_side: String, victim_total: int, victim_bishops: int) -> bool:
+	if not _side_bishops_same_color_only(mating_side):
 		return false
-	var bare_minor := victim_total == 0 and mating_total == 1 and (knights == 1 or bishops == 1)
-	var same_bishop := (
-		mating_total == 1
-		and victim_total == 1
-		and bishops == 1
-		and int(victim.get(KIND_BISHOP, 0)) == 1
-		and _bishops_same_color_only()
-	)
-	var lone_minors := mating_total <= 1 and victim_total <= 1
-	return mating_total == 0 or bare_minor or same_bishop or lone_minors
+	if victim_total == 0:
+		return true
+	return victim_bishops == victim_total and _all_bishops_same_color()
+
+
+func _lone_bishop_dead(victim_total: int, victim_bishops: int) -> bool:
+	if victim_total == 0:
+		return true
+	# K+B vs only same-color bishop(s) is dead; K+B vs K+N / opposite B is possible.
+	return victim_bishops == victim_total and _all_bishops_same_color()
 
 
 func _piece_kind_counts() -> Dictionary:
@@ -266,13 +280,19 @@ func _count_non_king(kinds: Dictionary) -> int:
 	return total
 
 
-func _bishops_same_color_only() -> bool:
+func _bishop_square_colors(side: String = "") -> Array:
 	var colors: Array = []
 	for square in _occupancy.keys():
 		var piece: Dictionary = _occupancy[square]
 		if str(piece["kind"]) != KIND_BISHOP:
 			continue
+		if not side.is_empty() and str(piece["color"]) != side:
+			continue
 		colors.append(is_dark_square(str(square)))
+	return colors
+
+
+func _colors_all_same(colors: Array) -> bool:
 	if colors.size() < 2:
 		return false
 	var first: bool = colors[0]
@@ -280,6 +300,14 @@ func _bishops_same_color_only() -> bool:
 		if bool(entry) != first:
 			return false
 	return true
+
+
+func _side_bishops_same_color_only(side: String) -> bool:
+	return _colors_all_same(_bishop_square_colors(side))
+
+
+func _all_bishops_same_color() -> bool:
+	return _colors_all_same(_bishop_square_colors())
 
 
 func piece_on(square: String) -> Dictionary:

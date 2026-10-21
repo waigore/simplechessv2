@@ -30,6 +30,9 @@ func _run_all() -> String:
 		_check_expiry_l3,
 		_check_expiry_d5,
 		_check_knn_not_material_shortcut,
+		_check_o4_kb_vs_kn,
+		_check_o4_kn_vs_kb,
+		_check_o4_bishops_opposite_and_same,
 		_check_new_session_reinit,
 	]
 	for check in checks:
@@ -435,6 +438,130 @@ func _check_knn_not_material_shortcut() -> String:
 	session.tick(10)
 	if str(session.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
 		return "KNN vs K expiry must be L3, not D5 from a material shortcut"
+	return ""
+
+
+func _check_o4_kb_vs_kn() -> String:
+	## Verification counterexample: K+B vs K+N is helpmate-capable → L3, not D5.
+	var session := SharedGameSession.new()
+	session.start_shared(SharedGameSession.CLOCK_BLITZ, 3)
+	(
+		session
+		. rules
+		. load_position(
+			[
+				_man("a8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+				_man("a7", ChessRules.SIDE_BLACK, ChessRules.KIND_KNIGHT),
+				_man("c7", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+				_man("b7", ChessRules.SIDE_WHITE, ChessRules.KIND_BISHOP),
+			],
+			ChessRules.SIDE_BLACK,
+			_no_castle(),
+		)
+	)
+	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
+		return "O4 K+B vs K+N must allow possible checkmate"
+	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session.sync_active_to_side_to_move()
+	session.tick(10)
+	var reason := str(session.play_state()["game_ended"].get("reason", ""))
+	if reason != SharedGameSession.END_L3:
+		return "K+B vs K+N expiry must be END.L3, got %s" % reason
+	return ""
+
+
+func _check_o4_kn_vs_kb() -> String:
+	var session := SharedGameSession.new()
+	session.start_shared(SharedGameSession.CLOCK_BLITZ, 3)
+	(
+		session
+		. rules
+		. load_position(
+			[
+				_man("a8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+				_man("a7", ChessRules.SIDE_BLACK, ChessRules.KIND_BISHOP),
+				_man("c7", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+				_man("b5", ChessRules.SIDE_WHITE, ChessRules.KIND_KNIGHT),
+			],
+			ChessRules.SIDE_BLACK,
+			_no_castle(),
+		)
+	)
+	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
+		return "O4 K+N vs K+B must allow possible checkmate"
+	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session.sync_active_to_side_to_move()
+	session.tick(10)
+	if str(session.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
+		return "K+N vs K+B expiry must be END.L3"
+	return ""
+
+
+func _check_o4_bishops_opposite_and_same() -> String:
+	var problem := _check_o4_opposite_bishops_l3()
+	if problem.is_empty():
+		problem = _check_o4_same_bishops_d5()
+	return problem
+
+
+func _check_o4_opposite_bishops_l3() -> String:
+	## b7 light, a7 dark — opposite-colored bishops; helpmate possible → L3.
+	var session := SharedGameSession.new()
+	session.start_shared(SharedGameSession.CLOCK_BLITZ, 3)
+	(
+		session
+		. rules
+		. load_position(
+			[
+				_man("a8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+				_man("a7", ChessRules.SIDE_BLACK, ChessRules.KIND_BISHOP),
+				_man("c7", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+				_man("b7", ChessRules.SIDE_WHITE, ChessRules.KIND_BISHOP),
+			],
+			ChessRules.SIDE_BLACK,
+			_no_castle(),
+		)
+	)
+	if not session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
+		return "O4 opposite-colored K+B vs K+B must allow possible checkmate"
+	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session.sync_active_to_side_to_move()
+	session.tick(10)
+	if str(session.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_L3:
+		return "opposite-bishop expiry must be END.L3"
+	return ""
+
+
+func _check_o4_same_bishops_d5() -> String:
+	## b7 light, c8 light — same-colored bishops; dead → D5.
+	var session := SharedGameSession.new()
+	session.start_shared(SharedGameSession.CLOCK_BLITZ, 3)
+	(
+		session
+		. rules
+		. load_position(
+			[
+				_man("a8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+				_man("c8", ChessRules.SIDE_BLACK, ChessRules.KIND_BISHOP),
+				_man("c7", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+				_man("b7", ChessRules.SIDE_WHITE, ChessRules.KIND_BISHOP),
+			],
+			ChessRules.SIDE_BLACK,
+			_no_castle(),
+		)
+	)
+	if session.rules.possible_checkmate(ChessRules.SIDE_WHITE):
+		return "O4 same-colored K+B vs K+B must deny possible checkmate"
+	session.set_clock_ms(ChessRules.SIDE_BLACK, 10)
+	session.set_clock_ms(ChessRules.SIDE_WHITE, 60_000)
+	session.sync_active_to_side_to_move()
+	session.tick(10)
+	var reason := str(session.play_state()["game_ended"].get("reason", ""))
+	if reason != SharedGameSession.END_D5:
+		return "same-bishop expiry must be END.D5, got %s" % reason
 	return ""
 
 
