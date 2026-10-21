@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | Puzzle catalog; DIF.Y1; GS.recentSolved | design | [ADR-0008](decisions/0008-puzzle-catalog-storage.md) |
 | 2D Web board view | view | [ADR-0001](decisions/0001-godot-engine.md) |
 | Playtest `ENV.1` `ENV.2` `DBG.*` `TEL.*` | playtest | [ADR-0004](decisions/0004-dual-playtest-environments.md), [ADR-0006](decisions/0006-layered-client-architecture.md) |
-| Asset catalog / asset roots; Recraft-only visual | assets | [ADR-0005](decisions/0005-asset-catalog-roots.md) |
+| Asset catalog / asset roots; Recraft-only visual; ElevenLabs SFX/music (TL.2, TL.3) | assets | [ADR-0005](decisions/0005-asset-catalog-roots.md) |
 | Godot project root `game/` | assets | [ADR-0005](decisions/0005-asset-catalog-roots.md), [ADR-0007](decisions/0007-web-export-output.md) |
 | Load time; Localization fonts | quality | [ADR-0005](decisions/0005-asset-catalog-roots.md) |
 
