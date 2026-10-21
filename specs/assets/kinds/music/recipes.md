@@ -40,6 +40,18 @@ N/A — see [`style-series.md`](style-series.md).
 - **Post-processing**: trim ends; loudness L1; OGG
 - **Outputs**: one file per V row
 
+### R2 — Human-made music
+
+- **Source type**: human-made
+- **Tool role**: N/A — human-made
+- **Inputs**: coverage subject; style series anchors when set
+- **Prompt template (bootstrap)**: N/A — human-made
+- **Prompt template (series)**: N/A — human-made
+- **Settings**: N/A — human-made
+- **Seed policy**: N/A — human-made
+- **Post-processing**: trim ends; loudness L1; OGG
+- **Outputs**: one file per V row
+
 ## Checks
 
 N/A — see parent.
