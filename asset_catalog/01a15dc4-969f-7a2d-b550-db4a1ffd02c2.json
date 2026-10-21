@@ -1,0 +1,78 @@
+{
+  "id": "01a15dc4-969f-7a2d-b550-db4a1ffd02c2",
+  "handle": "interface-art/panel-surface",
+  "kind_spec": "AK-interface-art",
+  "coverage": [
+    "AK-interface-art.V1"
+  ],
+  "serves": [
+    "UIS.F1",
+    "UIS.C1",
+    "P3"
+  ],
+  "state": "approved",
+  "version": 1,
+  "files": [
+    "interface-art/panel-surface.svg"
+  ],
+  "source_type": "procedural-generation",
+  "tool_role": {
+    "role": "TL.1",
+    "adr": "adr-free"
+  },
+  "recipe": "AK-interface-art.R1",
+  "generation": {
+    "prompt": "Split panel surface from the approved interface-art SS1 sheet. Quiet cafe UI panel; soft cream daylight gradient (PAL.C10 family); soft radius; warm thin border; no chrome (UI.F1; P3). No new Recraft call.",
+    "negative_prompt": "glassmorphism; neon; heavy shadow stacks; esports HUD; baked text; paper grain noise",
+    "tool": "Python",
+    "operation": "svg-split",
+    "settings": {
+      "script": "docs/asset-previews/derive_ui_surfaces.py",
+      "gradients": [
+        "panelFill",
+        "panelSheen",
+        "panelInner"
+      ]
+    },
+    "seed": "n/a \u2014 tool has no seed",
+    "inputs": {
+      "style_anchors": [
+        "01a151ef-6a32-77ec-ace1-9190aa56b7dc"
+      ],
+      "refs": [
+        "UIS.F1",
+        "UIS.F2",
+        "UIS.C1",
+        "PAL.C10",
+        "PAL.C5"
+      ],
+      "base_assets": [
+        "01a151ef-6a32-77ec-ace1-9190aa56b7dc"
+      ]
+    },
+    "steps": [
+      {
+        "operation": "svg-split",
+        "tool": "Python",
+        "date": "2026-10-21",
+        "notes": "Copy the sheet rects and their gradients into a tight viewBox; drop the white canvas"
+      }
+    ],
+    "series": {
+      "id": "AK-interface-art.SS1",
+      "recraft_style_id": "16e2245a-a7d1-41a3-bf06-2792ca253c1c"
+    }
+  },
+  "license": {
+    "grant": "Project-authored SVG split from the style-anchor sheet. No new third-party tool.",
+    "tool": "local-SVG",
+    "terms": "Project-owned"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-21",
+    "reviewer": "agent",
+    "report": "Pass. Split from 01a151ef-6a32-77ec-ace1-9190aa56b7dc; no Recraft call. 1285 bytes \u2264 100 KB (K3/B1). No text elements (K1/S3). PAL.C9 on sampled cream is 12.51:1 (upper), 11.01:1 (center), and 9.65:1 (lower), all \u2265 4.5:1, so PAL.K4 is feasible (K2); no color-role glyphs are baked in. SVG with the rounded rect only (K5/S2). Cream daylight gradient in the C10 family, stroke #5C3A2A (PAL.C5) width 30, rx 110 (K6/UIS.F1). Calm and apart from the board (K4/P3). Surface role UIS.C1 only. PAL.C10 vs PAL.C1 luminance difference is 0.204, under the 0.25 P3 cap."
+  },
+  "guidance": "Ship surface derived from interface-art/style-anchor-sheet. Re-run docs/asset-previews/derive_ui_surfaces.py; do not call Recraft."
+}
