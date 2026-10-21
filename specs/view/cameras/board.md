@@ -24,7 +24,7 @@ Authoring rules: [`.agents/specs/rules/view/cameras.md`](../../../.agents/specs/
 | ID | Behavior | Value |
 |----|----------|-------|
 | M1 | Follow | None — camera stays fixed while pieces move |
-| M2 | Orientation | Shared game: [White seat](../../design/glossary.md) Top → rotate 180° about F1 so White’s near edge faces Top; Bottom → 0°. Puzzle: [Solving side](../../design/glossary.md) Black → 180°; White → 0°, so that side’s near edge faces the player |
+| M2 | Orientation | Shared game: [White seat](../../design/glossary.md) Top → rotate 180° about F1 so White’s near edge faces Top; Bottom → 0°. Puzzle: [Solving side](../../design/glossary.md) Black → 180°; White → 0°, so that side’s near edge faces the player. Cut 0 s (instantaneous) at deal or seat change — no motion over time |
 
 ## Limits
 

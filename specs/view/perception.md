@@ -31,7 +31,7 @@ The board reads as a tabletop set: one square is the reference; pieces fill most
 
 | ID | Option | Changes | Choices or range | Default | Platforms |
 |----|--------|---------|------------------|---------|-----------|
-| M1 | N/A — no camera motion over time; reorients only by an instantaneous cut at deal or seat change | No shake or bob ([CAM-board](cameras/board.md)); [CAM-board.T1](cameras/board.md) is Cut 0 | — | — | — |
+| M1 | N/A — no camera motion over time; reorients only by [CAM-board.M2](cameras/board.md) Cut 0 s at deal or seat change | No shake or bob ([CAM-board](cameras/board.md)); [CAM-board.T1](cameras/board.md) is also Cut 0 s | — | — | — |
 
 ## Experience intent
 
