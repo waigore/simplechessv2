@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../.agents/specs/
 - **Spec key**: `GS`
 - **Glossary terms**: [Side to move](../glossary.md), [Required sequence](../glossary.md), [Advice](../glossary.md)
 
-Field rows: [`stories/game-state/fields-play.md`](game-state/fields-play.md), [`stories/game-state/fields-play-moment.md`](game-state/fields-play-moment.md), [`stories/game-state/fields-persist.md`](game-state/fields-persist.md).
+Field rows: [`stories/game-state/fields-play.md`](game-state/fields-play.md), [`stories/game-state/fields-play-moment.md`](game-state/fields-play-moment.md), [`stories/game-state/fields-play-end.md`](game-state/fields-play-end.md), [`stories/game-state/fields-persist.md`](game-state/fields-persist.md).
 
 ## Coverage
 

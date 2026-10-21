@@ -6,16 +6,15 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `GS`
 - **Glossary terms**: [Side to move](../../glossary.md), [Wrong move](../../glossary.md)
 
-Split from [`stories/game-state.md`](../game-state.md) by scope. Moment fields: [`fields-play-moment.md`](fields-play-moment.md). Draw offer: [`fields-play-draw.md`](fields-play-draw.md). Puzzle fields: [`fields-play-puzzle.md`](fields-play-puzzle.md). Start and reset: [`fields-play-reset.md`](fields-play-reset.md). Persistent fields: [`fields-persist.md`](fields-persist.md).
+Split from [`stories/game-state.md`](../game-state.md) by scope. Moment fields: [`fields-play-moment.md`](fields-play-moment.md). Ending fields: [`fields-play-end.md`](fields-play-end.md). Draw offer: [`fields-play-draw.md`](fields-play-draw.md). Puzzle fields: [`fields-play-puzzle.md`](fields-play-puzzle.md). Start and reset: [`fields-play-reset.md`](fields-play-reset.md). Persistent fields: [`fields-persist.md`](fields-persist.md).
 
 ## Coverage
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
 | GS.position | PS1.1 PS1.2 | GS.sideToMove | PS1.1 PS1.2 PS1.12 |
-| GS.whiteClock, GS.blackClock | PS1.3 PS1.4 | GS.gameEnded | PS1.2 PS1.5 |
-| GS.puzzleId | PS1.9 PS1.10 | GS.wrongMoveOnPuzzle | PS1.8 PS1.9 |
-| GS.requiredSequence, GS.sequenceIndex | PS1.9 PS1.11 | | |
+| GS.whiteClock, GS.blackClock | PS1.3 PS1.4 | GS.puzzleId | PS1.9 PS1.10 |
+| GS.wrongMoveOnPuzzle | PS1.8 PS1.9 | GS.requiredSequence, GS.sequenceIndex | PS1.9 PS1.11 |
 
 ## PS1: Session fields
 
@@ -33,12 +32,12 @@ Then GS.position is the dealt start And GS.sideToMove is the dealt side
 
 ### PS1.2: New game resets session fields
 
-- **Proves**: GS.position, GS.sideToMove, GS.gameEnded
+- **Proves**: GS.position, GS.sideToMove
 
 ```gherkin
 Given a Shared game ended mid-position
 When another game begins
-Then GS.position is the orthodox opening And GS.sideToMove is White And GS.gameEnded is false
+Then GS.position is the orthodox opening And GS.sideToMove is White
 ```
 
 ### PS1.3: Clock initials
@@ -59,16 +58,6 @@ Then GS.whiteClock is 60 And GS.blackClock is 60
 Given Blitz And GS.whiteClock 2
 When 2 seconds elapse
 Then GS.whiteClock is 0, not below 0
-```
-
-### PS1.5: End refuses moves
-
-- **Proves**: GS.gameEnded
-
-```gherkin
-Given GS.gameEnded is true
-When a move is attempted
-Then GS.position is unchanged
 ```
 
 ### PS1.8: Wrong-move flag sticks
