@@ -1,0 +1,58 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _start (res://_tmp_issue62_graphical.gd:35)
+DISPLAY=macOS
+SIZE=(720.0, 1280.0) WINDOW=(720, 1280)
+wait_stage mode-pick got=mode-pick frames=0
+stage=mode-pick locale=en
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/01-mode-pick-en.png
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/02-mode-pick-zh-Hant.png
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/03-mode-pick-ja.png
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/04-ex-quit-confirm-ja.png
+wait_stage shared-setup got=shared-setup frames=0
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/05-shared-setup-ja.png
+{"TEL.1":"shared.start","TEL.2":1792626550846,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+wait_stage shared-play got=shared-play frames=0
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/06-shared-play-s1-ja.png
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/07-shared-play-s5-ja.png
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/08-shared-play-s4-ja.png
+{"TEL.1":"shared.resign","TEL.2":1792626550945,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/09-ex-resign-confirm-ja.png
+{"TEL.1":"shared.resign","TEL.2":1792626550969,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792626550970,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+wait_stage shared-result got=shared-result frames=0
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/10-shared-result-ja.png
+{"TEL.1":"shared.stop","TEL.2":1792626550990,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"NAV.T8","TEL.5":"ok"}
+wait_stage mode-pick got=mode-pick frames=0
+wait_stage shared-setup got=shared-setup frames=0
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/11-shared-setup-zh-Hant.png
+{"TEL.1":"shared.start","TEL.2":1792626551023,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+wait_stage shared-play got=shared-play frames=0
+{"TEL.1":"shared.draw","TEL.2":1792626551026,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"confirm"}
+{"TEL.1":"shared.draw","TEL.2":1792626551028,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"offered"}
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/12-shared-play-s6-zh-Hant.png
+{"TEL.1":"shared.draw","TEL.2":1792626551056,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"END.D2"}
+{"TEL.1":"shared.end","TEL.2":1792626551056,"TEL.3":"sess-1792626550634-98763-playtest","TEL.4":"NAV.T6","TEL.5":"END.D2"}
+wait_stage shared-result got=shared-result frames=0
+SAVE_PNG err=0 size=720x1280 path=user://issue62_graphical/13-shared-result-zh-Hant.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/13-shared-result-zh-Hant.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/12-shared-play-s6-zh-Hant.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/06-shared-play-s1-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/05-shared-setup-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/03-mode-pick-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/04-ex-quit-confirm-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/11-shared-setup-zh-Hant.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/02-mode-pick-zh-Hant.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/07-shared-play-s5-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/10-shared-result-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/09-ex-resign-confirm-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/08-shared-play-s4-ja.png
+COPIED /Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-20261021T234318052709Z/game/../docs/playtest/evidence/issue-62/graphical-20261021T225828Z/screenshots/01-mode-pick-en.png
+ISSUE62_GRAPHICAL pass
+WARNING: 10 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
