@@ -97,6 +97,7 @@ const _SHARED_RESULT := {
 	"en":
 	{
 		"title": "Game over",
+		"shared_game": "Shared game",
 		"result_white": "White wins",
 		"result_black": "Black wins",
 		"result_draw": "Draw",

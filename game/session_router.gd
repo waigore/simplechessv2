@@ -1,6 +1,6 @@
 class_name SessionRouter
 extends Node
-## CMP-session-router: cold open through shared-play / shared-result (#58).
+## CMP-session-router: cold open through shared-result / J-shared-session (#59).
 
 signal screen_requested(screen_id: String, state: Dictionary)
 signal replay_pointer(record: Dictionary)
@@ -439,15 +439,24 @@ func _on_shared_play_control(control_id: String) -> void:
 func _on_shared_result_control(control_id: String) -> void:
 	match control_id:
 		"C1":
-			# NAV.T7 — full journey owned by #59; unlock setup for a new game.
-			shared_session = null
-			_last_clock_display = ""
-			options_locked = false
+			# NAV.T7 / J-shared-session.B1 / L-two-player-game.K3 / PRG.F1 —
+			# unlock setup; nothing from the finished game carries into the next.
+			_seams.emit_tel("shared.again", "ok", "NAV.T7")
+			_reset_after_shared_end()
 			stage = STAGE_SHARED_SETUP
 			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
 		"C2":
-			# NAV.T8
+			# NAV.T8 / J-shared-session.S4 / FL-mode-pick.T3
+			_seams.emit_tel("shared.stop", "ok", "NAV.T8")
 			_go_mode_pick("S1")
+
+
+func _reset_after_shared_end() -> void:
+	## PRG.F1 / K3: drop live game so the next Start is orthodox opening + fresh clocks.
+	shared_session = null
+	_clock_accum_ms = 0.0
+	_last_clock_display = ""
+	options_locked = false
 
 
 func _apply_select(square: String) -> bool:
@@ -485,15 +494,30 @@ func _emit_tel_result(result: Dictionary) -> void:
 
 
 func _go_shared_result() -> void:
+	## NAV.T6 — clocks already stopped by SharedGameSession._finish (K3); router
+	## _process only ticks on shared-play, so they stay stopped on this screen.
 	stage = STAGE_SHARED_RESULT
+	_clock_accum_ms = 0.0
 	_last_clock_display = ""
 	var result_key := ""
+	var clocks_stopped := true
 	if shared_session != null:
 		result_key = shared_session.result_copy_key()
 		shared_session.play_ui_state = SharedGameSession.UI_S1
 		shared_session.selected_piece = ""
-	screen_requested.emit(
-		STAGE_SHARED_RESULT, {"locale": locale, "result_key": result_key, "last_mode": last_mode}
+		clocks_stopped = bool(shared_session.play_state().get("clocks_stopped", true))
+	(
+		screen_requested
+		. emit(
+			STAGE_SHARED_RESULT,
+			{
+				"locale": locale,
+				"result_key": result_key,
+				"last_mode": last_mode,
+				"game_ended": true,
+				"clocks_stopped": clocks_stopped,
+			}
+		)
 	)
 
 
