@@ -418,12 +418,10 @@ class CoverageIntegrityTest(unittest.TestCase):
         ):
             self.add(handle=handle, kind_spec="AK-icons", supplier=...,
                      coverage=[f"AK-icons.{vid}"], files=[f"{handle}.svg"])
-        self.add(handle="icons/advice-on", kind_spec="AK-icons", supplier=...,
-                 coverage=["AK-icons.V5"], files=["icons/advice-on.svg"])
         self.assertEqual(self.i10(), [])
         self.add(handle="icons/advice-off", kind_spec="AK-icons", supplier=...,
                  coverage=["AK-icons.V5"], files=["icons/advice-off.svg"])
-        self.assertTrue(any("AK-icons.V5" in f and "maximum is 2" in f for f in self.i10()))
+        self.assertTrue(any("AK-icons.V5" in f and "maximum is 1" in f for f in self.i10()))
 
     def test_one_icons_entry_listing_v1_through_v5_fails(self) -> None:
         self.add(handle="icons/all", kind_spec="AK-icons", supplier=..., files=["icons/all.svg"],
