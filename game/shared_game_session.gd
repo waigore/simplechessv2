@@ -160,10 +160,6 @@ func gestures_available() -> bool:
 	return play_ui_state == UI_S1 or play_ui_state == UI_S5 or play_ui_state == UI_S6
 
 
-func _board_gestures_blocked() -> bool:
-	return play_ui_state == UI_S2 or play_ui_state == UI_S4 or game_ended()
-
-
 ## Display seconds for the running clock (null when untimed); used to throttle chrome.
 func clock_display_key() -> String:
 	if white_clock_ms == null:
