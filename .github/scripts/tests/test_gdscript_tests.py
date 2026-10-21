@@ -141,6 +141,90 @@ class InstrumentTest(unittest.TestCase):
         self.assertIn('preload("res://_ci_line_cov.gd")', text)
         self.assertLess(text.index('hit("add.gd", 4)'), text.index("if a > 0:"))
 
+    CLASS_CONST = (
+        "extends RefCounted\n"
+        "\n"
+        "const LIMIT := 4\n"
+        "\n"
+        "func clamp_n(n: int) -> int:\n"
+        "\tif n > LIMIT:\n"
+        "\t\treturn LIMIT\n"
+        "\telif n == 0:\n"
+        "\t\treturn 0\n"
+        "\treturn n\n"
+    )
+
+    def test_class_const_is_not_a_statement_line(self) -> None:
+        lines = gate.statement_lines(self.CLASS_CONST)
+        self.assertEqual(lines, {6, 7, 8, 9, 10})
+        text = gate.instrument(self.CLASS_CONST, "bag.gd", lines)
+        gate._parser().parse(text)
+        self.assertNotIn('hit("bag.gd", 3)', text)
+        self.assertLess(text.index("elif n == 0:"), text.index('hit("bag.gd", 8)'))
+        for line in text.splitlines():
+            if "_CiLineCov.hit" in line:
+                self.assertTrue(line[0].isspace(), line)
+
+    def test_inline_elif_probe_stays_in_the_suite(self) -> None:
+        src = (
+            "extends RefCounted\n"
+            "\n"
+            "func f(n: int) -> int:\n"
+            "\tif n > 0:\n"
+            "\t\treturn 1\n"
+            '\telif name == "a:b": return 0\n'
+            "\treturn n\n"
+        )
+        elif_line = next(
+            number
+            for number, line in enumerate(src.splitlines(), start=1)
+            if line.lstrip().startswith("elif")
+        )
+        self.assertIn(elif_line, gate.statement_lines(src))
+        text = gate.instrument(src, "f.gd", gate.statement_lines(src))
+        gate._parser().parse(text)
+        self.assertLess(text.index('elif name == "a:b":'), text.index(f'hit("f.gd", {elif_line})'))
+
+    def test_local_const_and_getter_body_count(self) -> None:
+        local = "extends RefCounted\n\nfunc f() -> int:\n\tconst LOCAL := 1\n\treturn LOCAL\n"
+        self.assertEqual(gate.statement_lines(local), {4, 5})
+        getter = "extends Node\n\nvar hp:\n\tget:\n\t\treturn _hp\n"
+        self.assertEqual(gate.statement_lines(getter), {5})
+        inner = (
+            "extends RefCounted\n"
+            "\n"
+            "class Inner:\n"
+            "\tconst LIMIT := 2\n"
+            "\n"
+            "\tfunc go() -> int:\n"
+            "\t\treturn LIMIT\n"
+        )
+        self.assertEqual(gate.statement_lines(inner), {7})
+
+    def _coverage(self, hits: str) -> int:
+        def runner(cmd: list[str], env: dict[str, str]) -> subprocess.CompletedProcess[str]:
+            Path(env["CI_COV_OUT"]).write_text(hits, encoding="utf-8")
+            return _completed(cmd, 0)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            game = Path(tmp)
+            (game / "project.godot").write_text("config_version=5\n", encoding="utf-8")
+            (game / "bag.gd").write_text(self.CLASS_CONST, encoding="utf-8")
+            (game / "bag_test.gd").write_text("extends SceneTree\n", encoding="utf-8")
+            return gate.run_command(
+                "coverage",
+                game,
+                godot_bin=Path("/opt/godot"),
+                runner=runner,
+                check_version=False,
+            )
+
+    def test_coverage_passes_at_80_with_class_const(self) -> None:
+        self.assertEqual(self._coverage("bag.gd:6\nbag.gd:7\nbag.gd:8\nbag.gd:9\n"), 0)
+
+    def test_coverage_fails_under_80_with_class_const(self) -> None:
+        self.assertEqual(self._coverage("bag.gd:6\nbag.gd:7\n"), 1)
+
     def test_low_coverage_fails(self) -> None:
         def runner(cmd: list[str], env: dict[str, str]) -> subprocess.CompletedProcess[str]:
             return _completed(cmd, 0)
