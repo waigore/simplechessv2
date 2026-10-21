@@ -60,14 +60,14 @@ When the player reveals the solution
 Then END.L5 applies And clocks remain none And Advice remains none
 ```
 
-### PS1.5: Abandon scores loss
+### PS1.5: Abandon reaches END.L6
 
 - **Proves**: K2
 
 ```gherkin
 Given an open puzzle And GS.playerElo is 1100
 When the player abandons the puzzle
-Then S is 0 for DIF.Y1 And the next puzzle is dealt
+Then END.L6 applies And GS.playerElo is 1100 And the next puzzle is not dealt
 ```
 
 ### PS1.6: After result, Elo updates and next deal
@@ -77,7 +77,7 @@ Then S is 0 for DIF.Y1 And the next puzzle is dealt
 ```gherkin
 Given END.W1 just held on the open puzzle
 When K3 runs
-Then GS.playerElo updates per DIF.Y1 And a new puzzle is dealt And play returns to K2
+Then GS.playerElo updates once per DIF.Y1 And the next puzzle is dealt once And play returns to K2
 ```
 
 ### PS1.7: Leave without abandon score
