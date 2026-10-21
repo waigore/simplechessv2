@@ -12,6 +12,8 @@ const COLOR_SELECT := Color("B8940C")
 const COLOR_LEGAL := Color("6EA746")
 const COLOR_INK := Color("2C2A28")
 const COLOR_CREAM := Color("F7F1E8")
+## PAL.C8 check rose — refused-place flash (PER.R8).
+const COLOR_DANGER := Color("C28A86")
 ## Empty legal diamond half-diagonal so area 2 r² ≥ 1/4 square (PER.R4).
 const LEGAL_EMPTY_R := 0.36
 ## Capture ring radius / stroke so ink area ≈ 2π r w ≥ 1/4 square.
@@ -19,6 +21,10 @@ const LEGAL_CAPTURE_R := 0.40
 const LEGAL_CAPTURE_W := 0.10
 ## Selection frame stroke in world units (≪ 10% of piece body — PER.R1 / R3).
 const SELECT_STROKE := 0.06
+## PER.R8 flash fill alpha — never hides piece silhouette identity (PER.R1).
+const REJECT_FLASH_A := 0.45
+const REJECT_FLASH_S := 0.3
+const PROMOTE_ORDER := ["queen", "rook", "bishop", "knight"]
 const BOARD_BG_ID := "01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855"
 const PIECE_IDS := {
 	"white|pawn": "01a15dab-051c-7db1-8f3e-9cb5e68058d8",
@@ -64,9 +70,14 @@ var _pieces_root: Node2D
 var _overlay_root: Node2D
 var _select_frame: Line2D
 var _legal_root: Node2D
+var _reject_flash: Polygon2D
+var _promote_root: Node2D
+var _promote_square := ""
+var _promote_color := ""
 var _board_sprite: Sprite2D
 var _coords_root: Control
 var _coord_font: Font
+var _reject_tween: Tween
 
 
 func _ready() -> void:
@@ -129,6 +140,16 @@ func _ready() -> void:
 	_legal_root = Node2D.new()
 	_legal_root.name = "LegalMarks"
 	_overlay_root.add_child(_legal_root)
+	_reject_flash = Polygon2D.new()
+	_reject_flash.name = "RejectFlash"
+	_reject_flash.visible = false
+	_reject_flash.z_index = 0
+	_overlay_root.add_child(_reject_flash)
+	_promote_root = Node2D.new()
+	_promote_root.name = "PromoteChoice"
+	_promote_root.visible = false
+	_promote_root.z_index = 2
+	_overlay_root.add_child(_promote_root)
 
 	_coords_root = Control.new()
 	_coords_root.name = "Coordinates"
@@ -184,6 +205,7 @@ func render_position(
 		if not _motion_busy:
 			_sync_pieces()
 		_sync_overlays()
+		_apply_choice_overlays(options)
 		_occupancy = post_occ
 		_play_move_dict(move)
 		return
@@ -191,6 +213,7 @@ func render_position(
 	if not _motion_busy:
 		_sync_pieces()
 	_sync_overlays()
+	_apply_choice_overlays(options)
 
 
 func set_white_seat(seat: String) -> void:
@@ -640,6 +663,109 @@ func _sync_overlays() -> void:
 				]
 			)
 			_legal_root.add_child(mark)
+
+
+func _apply_choice_overlays(options: Dictionary) -> void:
+	var reject := str(options.get("reject_square", ""))
+	if not reject.is_empty() and BoardGeometry.is_square(reject):
+		flash_reject(reject)
+	elif str(options.get("ui_state", "")) != "S5":
+		clear_reject_flash()
+	var promote_to := str(options.get("pending_promote_to", ""))
+	var promote_color := str(options.get("side_to_move", "white"))
+	if str(options.get("ui_state", "")) == "S4" and BoardGeometry.is_square(promote_to):
+		show_promotion_choice(promote_to, promote_color)
+	else:
+		clear_promotion_choice()
+
+
+## PER.R8 — PAL.C8 flash on the attempted square for 0.3 s (SPC.L4 overlay).
+func flash_reject(square: String) -> void:
+	if not BoardGeometry.is_square(square):
+		return
+	var c := BoardGeometry.square_center(square)
+	var half := 0.48
+	_reject_flash.polygon = PackedVector2Array(
+		[
+			c + Vector2(-half, -half),
+			c + Vector2(half, -half),
+			c + Vector2(half, half),
+			c + Vector2(-half, half),
+		]
+	)
+	_reject_flash.color = Color(COLOR_DANGER, REJECT_FLASH_A)
+	_reject_flash.visible = true
+	if _reject_tween != null:
+		_reject_tween.kill()
+	_reject_tween = create_tween()
+	_reject_tween.set_ease(Tween.EASE_OUT)
+	_reject_tween.tween_property(
+		_reject_flash, "color", Color(COLOR_DANGER, 0.0), REJECT_FLASH_S
+	)
+	_reject_tween.tween_callback(clear_reject_flash)
+
+
+func clear_reject_flash() -> void:
+	if _reject_tween != null:
+		_reject_tween.kill()
+		_reject_tween = null
+	_reject_flash.visible = false
+
+
+## EX.promote — four upright sprites at destination (queen, rook, bishop, knight).
+func show_promotion_choice(square: String, color: String) -> void:
+	_promote_square = square
+	_promote_color = color
+	for child in _promote_root.get_children():
+		child.queue_free()
+	var c := BoardGeometry.square_center(square)
+	# Stack Q/R/B/N above the destination so all four stay tappable (44px-class).
+	var offsets := [
+		Vector2(0, -1.35),
+		Vector2(0, -0.45),
+		Vector2(0, 0.45),
+		Vector2(0, 1.35),
+	]
+	for i in range(PROMOTE_ORDER.size()):
+		var kind := str(PROMOTE_ORDER[i])
+		var node := Node2D.new()
+		node.name = "Promote_%s" % kind
+		node.position = c + offsets[i]
+		node.set_meta("promote_kind", kind)
+		var sprite := Sprite2D.new()
+		sprite.name = "Sprite"
+		sprite.centered = true
+		node.add_child(sprite)
+		# Sprite orientation follows CAM-board.M2 seat rotation with the board;
+		# color/kind art is the side-to-move set (E-pieces.I33 / I34).
+		_apply_kind_texture(node, color, kind)
+		_promote_root.add_child(node)
+	_promote_root.visible = true
+
+
+func clear_promotion_choice() -> void:
+	_promote_square = ""
+	_promote_color = ""
+	for child in _promote_root.get_children():
+		child.queue_free()
+	_promote_root.visible = false
+
+
+## Hit-test C6 promotion sprites in world space; returns kind or "".
+func promotion_kind_at(world: Vector2) -> String:
+	if not _promote_root.visible:
+		return ""
+	var best := ""
+	var best_d := 0.55
+	for child in _promote_root.get_children():
+		var node := child as Node2D
+		if node == null:
+			continue
+		var d := node.position.distance_to(world)
+		if d < best_d:
+			best_d = d
+			best = str(node.get_meta("promote_kind", ""))
+	return best
 
 
 func _bind_board_backdrop() -> void:

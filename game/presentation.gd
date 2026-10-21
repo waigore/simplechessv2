@@ -1,6 +1,6 @@
 class_name Presentation
 extends Control
-## CMP-presentation: screens, board gestures (B2/B3/B10), status chrome (#58), audio (#60).
+## CMP-presentation: screens, board gestures (B2/B3/B8–B11), status chrome (#58/#94), audio (#60).
 
 signal control_activate(screen_id: String, control_id: String)
 ## CTR-presentation.E1 — from/to (+ optional promotion); empty to means select-only.
@@ -341,12 +341,20 @@ func _show_shared_play(state: Dictionary) -> void:
 	elif legal_var is Array:
 		for item in legal_var:
 			legal.append(str(item))
-	var opts := {"white_seat": str(state.get("white_seat", _router.white_seat))}
+	var opts := {
+		"white_seat": str(state.get("white_seat", _router.white_seat)),
+		"ui_state": str(state.get("ui_state", "S1")),
+		"reject_square": str(state.get("reject_square", "")),
+		"pending_promote_to": str(state.get("pending_promote_to", "")),
+		"side_to_move": str(state.get("side_to_move", "white")),
+	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
 		opts["move"] = move_var
 	_board.set_white_seat(str(opts["white_seat"]))
 	_board.render_position(position, selection, legal, opts)
+	if str(state.get("ui_state", "")) == "S5":
+		_schedule_reject_clear()
 	var board_dim := bool(state.get("board_unavailable", false))
 	var board_alpha := 0.45 if board_dim else 1.0
 	if not _board.visible:
@@ -468,6 +476,15 @@ func _accept_pointer(record: Dictionary) -> void:
 
 
 func _on_pointer_down(at: Vector2, index: int) -> void:
+	# S4: C6 promotion taps (board gestures otherwise blocked).
+	if _router.play_ui_state == SharedGameSession.UI_S4:
+		_press_active = true
+		_press_index = index
+		_press_screen = at
+		_dragging = false
+		_drag_from = ""
+		_press_square = ""
+		return
 	if not _router.play_gestures_available():
 		return
 	_press_active = true
@@ -508,6 +525,16 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 	_dragging = false
 	_press_square = ""
 	_drag_from = ""
+	# S4: tap a promotion sprite (C6) or deselect (IN.deselect drops choice).
+	if _router.play_ui_state == SharedGameSession.UI_S4:
+		_finish_drag(true)
+		var kind := _board.promotion_kind_at(_board.screen_to_world(at))
+		if not kind.is_empty():
+			_router.handle_promotion_commit(kind)
+			return
+		# Tap selected pawn / empty → deselect drops choice.
+		_router.handle_deselect()
+		return
 	if not _router.play_gestures_available():
 		_finish_drag(false)
 		return
@@ -518,9 +545,21 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 		# PHY.M5 before chrome emit so _motion_busy skips piece rebuild on refuse.
 		if _router.can_place(drag_from, to_sq, ""):
 			_board.cancel_drag()
+			input_commit.emit(drag_from, to_sq, "")
 		else:
+			# B11: illegal / empty non-destination → clear selection (IN.deselect).
 			_board.end_drag_illegal()
-		input_commit.emit(drag_from, to_sq, "")
+			_router.handle_deselect()
+		return
+	# B11: drag off-board or release with no destination.
+	if was_dragging and not drag_from.is_empty() and (to_sq.is_empty() or to_sq == drag_from):
+		_board.end_drag_illegal()
+		_router.handle_deselect()
+		return
+	# B8: tap the selected piece → IN.deselect (before B2 re-select).
+	if not was_dragging and not selected.is_empty() and to_sq == selected:
+		_finish_drag(true)
+		_router.handle_deselect()
 		return
 	# B2 before B3: tap an own piece (including changing selection).
 	if not was_dragging and not to_sq.is_empty():
@@ -529,7 +568,7 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 			_finish_drag(true)
 			input_commit.emit(to_sq, "", "")
 			return
-	# B3: tap empty or capture target while a piece is selected.
+	# B3 / B9: tap empty or capture target while a piece is selected.
 	if not was_dragging and not selected.is_empty() and not to_sq.is_empty() and to_sq != selected:
 		_finish_drag(true)
 		input_commit.emit(selected, to_sq, "")
@@ -539,8 +578,14 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 		_finish_drag(true)
 		input_commit.emit(drag_from, "", "")
 		return
-	# Bad drop / off-board / empty non-destination: PHY.M5 return when a drag ran.
-	_finish_drag(not was_dragging)
+	# Idle release with no action.
+	_finish_drag(true)
+
+
+func _schedule_reject_clear() -> void:
+	get_tree().create_timer(SharedGameSession.REJECT_FLASH_S).timeout.connect(
+		func() -> void: _router.finish_reject_flash()
+	)
 
 
 func _finish_drag(legal_or_idle: bool) -> void:
