@@ -13,25 +13,25 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../.agents/specs/rule
 | IN.confirm | Confirm | US1.1 |
 | IN.cancel | Cancel | US1.2 |
 | IN.back | Back | US1.3 |
-| IN.point | Point | US1.4 |
-| IN.activate | Activate | US1.5 |
-| IN.select | Select | US1.6 |
-| IN.move | Move | US1.7 US2.1 |
-| IN.deselect | Clear | US1.8 US1.9 US2.2 |
-| B1 | Activate | US1.5 |
-| B2 | Select | US1.6 |
-| B3 | Move | US1.7 |
+| IN.point | Point | US3.1 US3.2 US3.3 US3.4 US3.5 |
+| IN.activate | Activate | US1.4 |
+| IN.select | Select | US1.5 |
+| IN.move | Move | US1.6 US2.1 |
+| IN.deselect | Clear | US1.7 US1.8 US2.2 US2.3 US2.4 |
+| B1 | Activate | US1.4 |
+| B2 | Select | US1.5 |
+| B3 | Move | US1.6 |
 | B4 | Confirm | US1.1 |
 | B5 | Cancel | US1.2 |
 | B6 | Back | US1.3 |
-| B7 | Point | US1.4 |
-| B8 | Clear piece | US1.8 |
-| B9 | Clear empty | US1.9 |
+| B7 | Point | US3.1 US3.2 US3.3 US3.4 US3.5 |
+| B8 | Clear piece | US1.7 |
+| B9 | Clear empty | US1.8 |
 | B10 | Drag move | US2.1 |
-| B11 | Drag clear | US2.2 |
-| F1 | Focus | US1.4 |
+| B11 | Drag clear | US2.2 US2.3 US2.4 |
+| F1 | Focus | US3.1 US3.2 US3.3 US3.4 US3.5 |
 
-US2: [`controls-drag.md`](controls-drag.md).
+US2: [`controls-drag.md`](controls-drag.md). US3: [`controls-point.md`](controls-point.md).
 
 ## US1: Web tap bindings
 
@@ -67,17 +67,7 @@ When the actor taps Back
 Then IN.back activates and no other action activates
 ```
 
-### US1.4: Focus order
-
-- **Proves**: IN.point, B7, F1
-
-```gherkin
-Given mode-pick S1
-When the actor moves the pointer over, or moves focus to, a control
-Then focus order follows C1 then C2 then C3 then C4
-```
-
-### US1.5: Activate
+### US1.4: Activate
 
 - **Proves**: IN.activate, B1
 
@@ -87,7 +77,7 @@ When the actor taps Shared game
 Then IN.activate fires on UI-mode-pick.C1 and no other action activates
 ```
 
-### US1.6: Select
+### US1.5: Select
 
 - **Proves**: IN.select, B2
 
@@ -97,7 +87,7 @@ When the actor taps their piece
 Then IN.select fires on UI-shared-play.C1 and no other action activates
 ```
 
-### US1.7: Tap move
+### US1.6: Tap move
 
 - **Proves**: IN.move, B3
 
@@ -107,7 +97,7 @@ When the actor taps a legal destination square
 Then IN.move fires on UI-shared-play.C2 and no other action activates
 ```
 
-### US1.8: Clear on the piece
+### US1.7: Clear on the piece
 
 - **Proves**: IN.deselect, B8
 
@@ -117,7 +107,7 @@ When the actor taps that piece
 Then IN.deselect fires and GS.selectedPiece is none and no other action activates
 ```
 
-### US1.9: Clear on an empty square
+### US1.8: Clear on an empty square
 
 - **Proves**: IN.deselect, B9
 
