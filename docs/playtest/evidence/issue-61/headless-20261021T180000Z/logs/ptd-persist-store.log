@@ -1,0 +1,41 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] commit_last_mode (res://persist_store.gd:82)
+       [2] _forced_write_failure_keeps_prior (res://persist_store_test.gd:84)
+       [3] _run (res://persist_store_test.gd:15)
+ERROR: Parse JSON failed. Error at line 0: Expected key
+   at: parse_string (core/io/json.cpp:629)
+   GDScript backtrace (most recent call first):
+       [0] load_document (res://persist_store.gd:43)
+       [1] _corrupt_and_missing_fields (res://persist_store_test.gd:118)
+       [2] _run (res://persist_store_test.gd:19)
+WARNING: PersistStore: corrupt document; using defaults
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] load_document (res://persist_store.gd:45)
+         [1] _corrupt_and_missing_fields (res://persist_store_test.gd:118)
+         [2] _run (res://persist_store_test.gd:19)
+ERROR: Object '<Object#28219278801>' was freed or unreferenced while a signal is being emitted from it. Try connecting to the signal using 'CONNECT_DEFERRED' flag, or use queue_free() to free the object (if this object is a Node) to avoid this error and potential crashes.
+   at: ~Object (core/object/object.cpp:2324)
+   GDScript backtrace (most recent call first):
+       [0] _session_last_mode_roundtrip (res://persist_store_test.gd:151)
+       [1] _boot_router (res://persist_store_test.gd:197)
+       [2] _preload (res://asset_resolver.gd:99)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] commit_last_mode (res://persist_store.gd:82)
+       [2] _session_last_mode_roundtrip (res://persist_store_test.gd:165)
+       [3] _boot_router (res://persist_store_test.gd:197)
+       [4] _preload (res://asset_resolver.gd:99)
+ERROR: Object '<Object#29628564945>' was freed or unreferenced while a signal is being emitted from it. Try connecting to the signal using 'CONNECT_DEFERRED' flag, or use queue_free() to free the object (if this object is a Node) to avoid this error and potential crashes.
+   at: ~Object (core/object/object.cpp:2324)
+   GDScript backtrace (most recent call first):
+       [0] _session_last_mode_roundtrip (res://persist_store_test.gd:171)
+       [1] _boot_router (res://persist_store_test.gd:197)
+       [2] _preload (res://asset_resolver.gd:99)
