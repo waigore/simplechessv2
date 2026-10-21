@@ -75,7 +75,7 @@ Costs accepted: repo-root layout constraints; manifest tooling to maintain.
 | `specs/assets/assets.md` Catalog | Roots as Decision |
 | `specs/assets/access.md` | Uses these roots |
 | `specs/technical/asset-access.md` | Manifest outside roots |
-| `specs/assets/tools.md` | Recraft realizes visual generation/editing; fal is not used |
+| `specs/assets/tools.md` | fal is not used for visual generation |
 
 ## Validation
 
