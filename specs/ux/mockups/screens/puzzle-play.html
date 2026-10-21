@@ -211,6 +211,10 @@
           <section data-region="R2" aria-label="Elo and status">
             <div class="toolbar">
               <span class="chip num">Elo 1000</span>
+              <span class="chip solved">Solved</span>
+              <span class="chip wrong">Wrong move</span>
+              <span class="chip wrong">Failed</span>
+              <span class="chip">Abandoned</span>
             </div>
           </section>
 
@@ -226,6 +230,8 @@
 
       <section id="ex-confirm" data-state="EX.confirm">
         <div class="card dialog" data-od-id="puzzle-play-confirm">
+          <p>Reveal the solution?</p>
+          <p>Abandon this puzzle?</p>
           <p>Leave the puzzle stream?</p>
           <div class="actions">
             <button type="button" class="btn btn-primary">Confirm</button>

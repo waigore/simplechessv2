@@ -16,14 +16,14 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | R1 | Board coordinates (a–h, 1–8) | always — edges only |
 | R1 | `GS.selectedPiece` | piece selected |
 | R2 | `GS.playerElo` | always |
-| R2 | Puzzle result cue | after solve or fail ([W1, L4–L6](../../design/end-conditions/conditions.md)) before next deal |
+| R2 | Puzzle result cue | after [W1, L4–L6](../../design/end-conditions/conditions.md) before next deal |
 
 ## Regions
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Puzzle position | 8×8; edge coordinates; selection and legal marks. `IN.deselect` clears the selection |
-| R2 | Elo and status | Rating and feedback | Player Elo; wrong-move / solved cues |
+| R1 | Board | Puzzle position | 8×8; edge coords; selection and legal marks; `IN.deselect` clears |
+| R2 | Elo and status | Rating and feedback | Player Elo; Solved / Wrong move / Failed / Abandoned cues |
 | R3 | Stream actions | Reveal, abandon, leave | Reveal, Abandon, Leave stream |
 
 ## Controls
@@ -37,10 +37,12 @@ C1–C6 are in [`puzzle-play-controls.md`](puzzle-play-controls.md). Focus order
 | S1 | Default | In stream | R1–R3 | C1–C5 |
 | S2 | `EX.confirm` | C3, C4, or C5 | Named confirm | Confirm runs action; Cancel → S1 |
 | S3 | `EX.save-failure` | Elo persist failed | Save-failure | Dismiss; C1–C5 usable |
-| S4 | `EX.promote` | Legal pawn place on the last rank | Queen, rook, bishop, knight sprites at that square, that order | C6. `IN.deselect` drops the choice and leaves the pawn selected |
-| S5 | `EX.rejected` | Place the piece rules refuse | Danger flash on that square ([PER.R8](../../view/perception.md)); selection stays | C1–C5 as S1. No Dismiss |
+| S4 | `EX.promote` | Legal pawn place on last rank | Queen, rook, bishop, knight sprites at that square, that order | C6; `IN.deselect` leaves pawn selected |
+| S5 | `EX.rejected` | Illegal place | Danger flash ([PER.R8](../../view/perception.md)); selection stays | C1–C5 as S1. No Dismiss |
 
 ## Copy
+
+All keys below vary by locale (`en`, `zh-Hant`, `ja`).
 
 | Key | String | Used in |
 |-----|--------|---------|
@@ -55,9 +57,10 @@ C1–C6 are in [`puzzle-play-controls.md`](puzzle-play-controls.md). Focus order
 | cancel | Cancel | S2 |
 | save_failed | Save failed. Prior Elo kept. | S3 |
 | dismiss | Dismiss | S3 |
-| cue_solved | Solved | R2 |
+| cue_solved | Solved | R2 (END.W1) |
 | cue_wrong | Wrong move | R2 |
-| cue_abandon | Abandoned | R2 |
+| cue_failed | Failed | R2 (END.L4, END.L5) |
+| cue_abandon | Abandoned | R2 (END.L6) |
 | choose_promotion | Choose promotion | S4 |
 | refused_place | Refused place | S5 |
 | queen | Queen | C6 |
@@ -67,4 +70,4 @@ C1–C6 are in [`puzzle-play-controls.md`](puzzle-play-controls.md). Focus order
 
 ## Experience intent
 
-Untimed calm practice; leave without punishing an open puzzle; coordinates keep orientation clear. Meets Accessibility: pieces read by shape; no status by color alone; 44px-class touch targets.
+Untimed calm practice; leave without punishing an open puzzle. Accessibility: shape-readable pieces; no status by color alone; 44px-class targets.
