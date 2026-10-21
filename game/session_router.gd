@@ -38,7 +38,6 @@ var _board_playable := false
 var _clock_accum_ms := 0.0
 var _last_clock_display := ""
 
-
 ## Proxies onto CMP-shared-game-session (tests and presentation).
 var selected_piece: String:
 	get:
@@ -46,7 +45,6 @@ var selected_piece: String:
 	set(value):
 		if shared_session != null:
 			shared_session.selected_piece = value
-
 
 var play_ui_state: String:
 	get:
@@ -96,9 +94,7 @@ func _process(delta: float) -> void:
 		_emit_play_screen()
 	if shared_session.game_ended():
 		_seams.emit_tel(
-			"shared.end",
-			str(shared_session.rules.game_ended_field().get("reason", "")),
-			"NAV.T6"
+			"shared.end", str(shared_session.rules.game_ended_field().get("reason", "")), "NAV.T6"
 		)
 		_go_shared_result()
 
@@ -143,9 +139,7 @@ func handle_control(screen_id: String, control_id: String) -> void:
 
 
 ## CTR-presentation.E1 — select (to empty) or place (from/to + optional promotion).
-func handle_input_commit(
-	from_square: String, to_square: String, promotion: String = ""
-) -> bool:
+func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
 	if _seams.is_paused():
@@ -227,7 +221,11 @@ func side_to_move() -> String:
 
 
 func play_gestures_available() -> bool:
-	return stage == STAGE_SHARED_PLAY and shared_session != null and shared_session.gestures_available()
+	return (
+		stage == STAGE_SHARED_PLAY
+		and shared_session != null
+		and shared_session.gestures_available()
+	)
 
 
 func can_place(from_square: String, to_square: String, promotion: String = "") -> bool:

@@ -511,12 +511,7 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 			input_commit.emit(to_sq, "", "")
 			return
 	# B3: tap empty or capture target while a piece is selected.
-	if (
-		not was_dragging
-		and not selected.is_empty()
-		and not to_sq.is_empty()
-		and to_sq != selected
-	):
+	if not was_dragging and not selected.is_empty() and not to_sq.is_empty() and to_sq != selected:
 		_finish_drag(true)
 		input_commit.emit(selected, to_sq, "")
 		return
