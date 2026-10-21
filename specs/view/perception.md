@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/view/perception.md`](../../.agents/specs/
 
 | ID | Subject | Guarantee | Cameras |
 |----|---------|-----------|---------|
-| R1 | Each piece type | Named from a solid-black silhouette at ≥ 1/12 frame height ([FRM.L1](../aesthetics/form.md)) inside [PRJ.A2](projection.md); overlays cover ≤ 10% of the body | all |
+| R1 | Each piece type | Named from a solid-black silhouette at the drawn height of [SPC.E1](spatial-model.md) (0.85 units) under [PRJ.V1](projection.md) — ≥ about 1/21 of frame height at 9:16 and ≥ about 1/12 at 16:9 ([FRM.L1](../aesthetics/form.md)); identities stay inside [PRJ.A2](projection.md); overlays cover ≤ 10% of the body | all |
 | R2 | Light vs dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Alternation distinguishable with hue removed — luminance contrast ≥ 0.25 per [PAL.K1](../aesthetics/palette.md) — including after [CAM-board.M2](cameras/board.md) flip | all |
 | R3 | Selected piece | Square and piece highlighted with [PAL.C6](../aesthetics/palette.md) at ≥ 2:1 on both square colors ([PAL.K5](../aesthetics/palette.md)); ≥ 90% of the body stays visible | all |
 | R4 | Legal destinations | Empty and capture targets marked with [PAL.C11](../aesthetics/palette.md) at ≥ 2:1 on both square colors ([PAL.K6](../aesthetics/palette.md)); each mark covers ≥ 1/4 square | all |
