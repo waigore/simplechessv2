@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 |----|------|-------|-----------------|------|
 | O1 | show_screen | screen id + state | That screen and state rendered | Navigation |
 | O2 | render_position | position, selection, marks | Board and status updated | After apply or deal |
-| O3 | play_cue | cue id | That SFX or ambient cue played | Design feedback event |
+| O3 | play_cue | cue id | That SFX played, or Ambient playlist started (BED_M1/M2 → M1→M2→M1) | Design feedback event; first music start after board playable |
 | O4 | show_advice | best move + eval, or none | Advice marks shown or cleared | Advice fields change |
 | O5 | provide_assets | resolved resources by asset ID | Assets bound for draw and play | After L2 resolves via [`CTR-asset-resolve`](asset-resolve.md) |
 
