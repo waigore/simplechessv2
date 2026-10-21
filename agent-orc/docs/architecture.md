@@ -14,7 +14,7 @@
 
 ## Parallelism
 
-Skills run concurrently. Within a skill: at most one agent process. Gate misses never start a worktree or CLI.
+Skills run concurrently. Within a skill: at most one agent process. Gate misses never start a worktree or CLI. Post-run cooldown and gate-miss backoff resolve on the agent, then the orchestrator defaults.
 
 ## Extensibility
 

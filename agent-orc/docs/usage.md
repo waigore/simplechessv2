@@ -24,7 +24,7 @@ Startup multi-select (TTY, no `--yes`/`--agents`) defaults to every enabled agen
 
 ## Lifecycle
 
-Per skill (in parallel, staggered by 5s): gate → pull → worktree → agent CLI → delete worktree → cooldown (10s) → repeat. Gate misses use backoff 10→20→40→60s and do not count toward `-n`.
+Per skill (in parallel, staggered by 5s): gate → pull → worktree → agent CLI → delete worktree → cooldown → repeat. Cooldown and gate backoff are per agent (defaults 10s, then 10→20→40→60s). The planner waits 3600s after each run. Gate misses do not count toward `-n`. An initial of 0 does not increase.
 
 ## Shutdown
 

@@ -53,3 +53,8 @@ def test_backoff_doubles_and_caps() -> None:
     assert next_gate_backoff(0, initial=10, maximum=60, consecutive_misses=3) == 40
     assert next_gate_backoff(0, initial=10, maximum=60, consecutive_misses=4) == 60
     assert next_gate_backoff(0, initial=10, maximum=60, consecutive_misses=5) == 60
+
+
+def test_backoff_zero_initial_stays_zero() -> None:
+    assert next_gate_backoff(0, initial=0, maximum=60, consecutive_misses=1) == 0
+    assert next_gate_backoff(0, initial=0, maximum=60, consecutive_misses=5) == 0

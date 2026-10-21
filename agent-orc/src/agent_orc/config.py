@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -37,11 +38,15 @@ class AgentConfig:
     enabled: bool
     prompt: str
     gate: GateConfig | None = None
+    cooldown_seconds: float | None = None
+    gate_backoff_initial_seconds: float | None = None
+    gate_backoff_max_seconds: float | None = None
 
 
 @dataclass
 class OrchestratorConfig:
     cooldown_seconds: float = 10.0
+    gate_backoff_initial_seconds: float = 10.0
     gate_backoff_max_seconds: float = 60.0
     stagger_seconds: float = 5.0
     worktrees_dir: str = ".orc/worktrees"
@@ -67,10 +72,64 @@ def _as_command(value: Any, label: str) -> list[str]:
     raise ConfigError(f"{label} must be a string or list of strings")
 
 
+def _non_negative_seconds(value: Any, label: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ConfigError(f"{label} must be a number >= 0")
+    number = float(value)
+    if not math.isfinite(number) or number < 0:
+        raise ConfigError(f"{label} must be a number >= 0")
+    return number
+
+
+def _optional_seconds(body: dict[str, Any], key: str, label: str) -> float | None:
+    if key not in body or body[key] is None:
+        return None
+    return _non_negative_seconds(body[key], label)
+
+
+def resolved_cooldown_seconds(agent: AgentConfig, orch: OrchestratorConfig) -> float:
+    if agent.cooldown_seconds is None:
+        return orch.cooldown_seconds
+    return agent.cooldown_seconds
+
+
+def resolved_gate_backoff_initial_seconds(
+    agent: AgentConfig, orch: OrchestratorConfig
+) -> float:
+    if agent.gate_backoff_initial_seconds is None:
+        return orch.gate_backoff_initial_seconds
+    return agent.gate_backoff_initial_seconds
+
+
+def resolved_gate_backoff_max_seconds(
+    agent: AgentConfig, orch: OrchestratorConfig
+) -> float:
+    if agent.gate_backoff_max_seconds is None:
+        return orch.gate_backoff_max_seconds
+    return agent.gate_backoff_max_seconds
+
+
 def _parse_orchestrator(raw: dict[str, Any]) -> OrchestratorConfig:
+    cooldown = _non_negative_seconds(
+        raw.get("cooldown_seconds", 10), "orchestrator.cooldown_seconds"
+    )
+    if (
+        "gate_backoff_initial_seconds" in raw
+        and raw["gate_backoff_initial_seconds"] is not None
+    ):
+        gate_initial = _non_negative_seconds(
+            raw["gate_backoff_initial_seconds"],
+            "orchestrator.gate_backoff_initial_seconds",
+        )
+    else:
+        gate_initial = cooldown
     return OrchestratorConfig(
-        cooldown_seconds=float(raw.get("cooldown_seconds", 10)),
-        gate_backoff_max_seconds=float(raw.get("gate_backoff_max_seconds", 60)),
+        cooldown_seconds=cooldown,
+        gate_backoff_initial_seconds=gate_initial,
+        gate_backoff_max_seconds=_non_negative_seconds(
+            raw.get("gate_backoff_max_seconds", 60),
+            "orchestrator.gate_backoff_max_seconds",
+        ),
         stagger_seconds=float(raw.get("stagger_seconds", 5)),
         worktrees_dir=str(raw.get("worktrees_dir", ".orc/worktrees")),
         logs_dir=str(raw.get("logs_dir", ".orc/logs")),
@@ -116,6 +175,19 @@ def _parse_agents(
             enabled=bool(body.get("enabled", True)),
             prompt=str(body.get("prompt", "")).strip(),
             gate=gate,
+            cooldown_seconds=_optional_seconds(
+                body, "cooldown_seconds", f"agents.{name}.cooldown_seconds"
+            ),
+            gate_backoff_initial_seconds=_optional_seconds(
+                body,
+                "gate_backoff_initial_seconds",
+                f"agents.{name}.gate_backoff_initial_seconds",
+            ),
+            gate_backoff_max_seconds=_optional_seconds(
+                body,
+                "gate_backoff_max_seconds",
+                f"agents.{name}.gate_backoff_max_seconds",
+            ),
         )
         if not agents[name].prompt:
             raise ConfigError(f"agents.{name}.prompt is required")

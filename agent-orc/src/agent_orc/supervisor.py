@@ -6,7 +6,13 @@ import asyncio
 import logging
 from pathlib import Path
 
-from agent_orc.config import AgentConfig, AppConfig
+from agent_orc.config import (
+    AgentConfig,
+    AppConfig,
+    resolved_cooldown_seconds,
+    resolved_gate_backoff_initial_seconds,
+    resolved_gate_backoff_max_seconds,
+)
 from agent_orc.crew.factory import run_skill_once
 from agent_orc.gate import gate_passes, next_gate_backoff
 from agent_orc.shutdown import ShutdownController
@@ -99,8 +105,8 @@ async def _skill_loop(
             consecutive_misses += 1
             delay = next_gate_backoff(
                 0.0,
-                initial=orch.cooldown_seconds,
-                maximum=orch.gate_backoff_max_seconds,
+                initial=resolved_gate_backoff_initial_seconds(agent, orch),
+                maximum=resolved_gate_backoff_max_seconds(agent, orch),
                 consecutive_misses=consecutive_misses,
             )
             logger.info(
@@ -159,8 +165,9 @@ async def _skill_loop(
             logger.info("skill loop finished: %s (%s runs)", agent.name, runs_done)
             return 0
 
-        if orch.cooldown_seconds > 0:
-            await _sleep_interruptible(orch.cooldown_seconds, shutdown)
+        cooldown = resolved_cooldown_seconds(agent, orch)
+        if cooldown > 0:
+            await _sleep_interruptible(cooldown, shutdown)
 
 
 async def _sleep_interruptible(

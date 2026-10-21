@@ -148,6 +148,184 @@ async def test_cooldown_between_runs(
 
 
 @pytest.mark.asyncio
+async def test_per_agent_cooldown_is_independent(
+    temp_git_repo: Path, fake_cli: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    slept: list[float] = []
+
+    async def record(seconds: float, shutdown: ShutdownController) -> None:
+        slept.append(seconds)
+        _ = shutdown
+
+    from agent_orc import supervisor as sup
+
+    monkeypatch.setattr(sup, "_sleep_interruptible", record)
+    cfg_dir = temp_git_repo / ".orc"
+    write_test_config(
+        cfg_dir,
+        fake_cli=fake_cli,
+        agents=["project-planner-agent", "issue-workflow-review-agent"],
+        cooldown=10,
+        stagger=0,
+        agent_timing={
+            "project-planner-agent": {"cooldown_seconds": 4},
+            "issue-workflow-review-agent": {"cooldown_seconds": 7},
+        },
+    )
+    config = load_config(cfg_dir)
+    code = await run_supervisor(
+        config,
+        [
+            config.agents["project-planner-agent"],
+            config.agents["issue-workflow-review-agent"],
+        ],
+        count=2,
+        repo_root=temp_git_repo,
+    )
+    assert code == 0
+    assert sorted(slept) == [4, 7]
+
+
+@pytest.mark.asyncio
+async def test_agent_cooldown_zero_skips_orchestrator_pause(
+    temp_git_repo: Path, fake_cli: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    slept: list[float] = []
+
+    async def record(seconds: float, shutdown: ShutdownController) -> None:
+        slept.append(seconds)
+        _ = shutdown
+
+    from agent_orc import supervisor as sup
+
+    monkeypatch.setattr(sup, "_sleep_interruptible", record)
+    cfg_dir = temp_git_repo / ".orc"
+    write_test_config(
+        cfg_dir,
+        fake_cli=fake_cli,
+        agents=["project-planner-agent"],
+        cooldown=10,
+        stagger=0,
+        agent_timing={"project-planner-agent": {"cooldown_seconds": 0}},
+    )
+    config = load_config(cfg_dir)
+    code = await run_supervisor(
+        config,
+        [config.agents["project-planner-agent"]],
+        count=2,
+        repo_root=temp_git_repo,
+    )
+    assert code == 0
+    assert slept == []
+
+
+@pytest.mark.asyncio
+async def test_per_agent_gate_backoff(
+    temp_git_repo: Path, fake_cli: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    slept: list[float] = []
+
+    async def record(seconds: float, shutdown: ShutdownController) -> None:
+        slept.append(seconds)
+        _ = shutdown
+
+    from agent_orc import supervisor as sup
+
+    monkeypatch.setattr(sup, "_sleep_interruptible", record)
+    gate_script = tmp_path / "gate.sh"
+    state = tmp_path / "gate_state"
+    state.write_text("0", encoding="utf-8")
+    gate_script.write_text(
+        f"""#!/bin/sh
+n=$(cat "{state}")
+n=$((n+1))
+echo "$n" > "{state}"
+if [ "$n" -lt 4 ]; then exit 1; fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gate_script.chmod(0o755)
+    cfg_dir = temp_git_repo / ".orc"
+    write_test_config(
+        cfg_dir,
+        fake_cli=fake_cli,
+        agents=["issue-workflow-review-agent"],
+        cooldown=10,
+        gate_initial=11,
+        gate_max=60,
+        stagger=0,
+        gates={"issue-workflow-review-agent": [str(gate_script)]},
+        agent_timing={
+            "issue-workflow-review-agent": {
+                "cooldown_seconds": 9,
+                "gate_backoff_initial_seconds": 2,
+                "gate_backoff_max_seconds": 5,
+            }
+        },
+    )
+    config = load_config(cfg_dir)
+    code = await run_supervisor(
+        config,
+        [config.agents["issue-workflow-review-agent"]],
+        count=1,
+        repo_root=temp_git_repo,
+    )
+    assert code == 0
+    assert slept == [2, 4, 5]
+
+
+@pytest.mark.asyncio
+async def test_zero_gate_backoff_does_not_grow(
+    temp_git_repo: Path, fake_cli: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    slept: list[float] = []
+
+    async def record(seconds: float, shutdown: ShutdownController) -> None:
+        slept.append(seconds)
+        _ = shutdown
+
+    from agent_orc import supervisor as sup
+
+    monkeypatch.setattr(sup, "_sleep_interruptible", record)
+    gate_script = tmp_path / "gate.sh"
+    state = tmp_path / "gate_state"
+    state.write_text("0", encoding="utf-8")
+    gate_script.write_text(
+        f"""#!/bin/sh
+n=$(cat "{state}")
+n=$((n+1))
+echo "$n" > "{state}"
+if [ "$n" -lt 3 ]; then exit 1; fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gate_script.chmod(0o755)
+    cfg_dir = temp_git_repo / ".orc"
+    write_test_config(
+        cfg_dir,
+        fake_cli=fake_cli,
+        agents=["issue-workflow-review-agent"],
+        cooldown=10,
+        stagger=0,
+        gates={"issue-workflow-review-agent": [str(gate_script)]},
+        agent_timing={
+            "issue-workflow-review-agent": {"gate_backoff_initial_seconds": 0}
+        },
+    )
+    config = load_config(cfg_dir)
+    code = await run_supervisor(
+        config,
+        [config.agents["issue-workflow-review-agent"]],
+        count=1,
+        repo_root=temp_git_repo,
+    )
+    assert code == 0
+    assert slept == [0, 0]
+
+
+@pytest.mark.asyncio
 async def test_gate_skip_no_cli(
     temp_git_repo: Path, fake_cli: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

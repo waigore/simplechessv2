@@ -12,8 +12,9 @@ Load order: `config.yaml`, then deep-merge `config.local.yaml` if present. Neste
 
 ## Orchestrator keys
 
-- `cooldown_seconds` (default **10**): wait after a real agent run; also initial gate-miss backoff.
-- `gate_backoff_max_seconds` (default **60**): cap for consecutive gate misses (doubling).
+- `cooldown_seconds` (default **10**): pause after a real agent run. `0` skips the pause.
+- `gate_backoff_initial_seconds` (optional): first gate-miss delay. Later misses double it. When the merged config omits it, it equals the merged `cooldown_seconds`. `0` stays `0` on every miss, so the cap does not apply and the gate runs again immediately.
+- `gate_backoff_max_seconds` (default **60**): cap for that doubling.
 - `stagger_seconds` (default **5**): delay between skill loop starts.
 - `worktrees_dir` / `logs_dir`: relative to repo root.
 - `pull_before_run` / `default_branch`: `git pull` before each worktree.
@@ -36,7 +37,17 @@ Default agent→provider: planner → `opencode-qwen38-max`; refine → `grok`; 
 
 ## Agents
 
-Each entry: `skill`, `provider`, `enabled`, `prompt`, optional `gate.command`.
+Each entry: `skill`, `provider`, `enabled`, `prompt`, optional `gate.command`, and optional timing. Each timing key falls back to the orchestrator value on its own:
+
+| Key | Fallback |
+|-----|----------|
+| `cooldown_seconds` | `orchestrator.cooldown_seconds` |
+| `gate_backoff_initial_seconds` | `orchestrator.gate_backoff_initial_seconds` |
+| `gate_backoff_max_seconds` | `orchestrator.gate_backoff_max_seconds` |
+
+Values are numbers `>= 0`. Setting one key does not change the others. The template omits `gate_backoff_initial_seconds` so a local `cooldown_seconds` override still moves the gate start with it. Set the initial key to keep them apart.
+
+Shipped `project-planner-agent` sets `cooldown_seconds: 3600` (one hour after each run, success or failure). It has no gate, so gate backoff does not run. Other agents leave cooldown unset and use 10 seconds.
 
 **Gate:** exit code **0** = pass (run agent); non-zero = miss. Omit `gate` → always pass. Stdout ignored.
 
