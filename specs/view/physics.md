@@ -24,7 +24,7 @@ Authoring rules: [`.agents/specs/rules/view/physics.md`](../../.agents/specs/rul
 
 | ID | Event | Feedback | Linked cues |
 |----|-------|----------|-------------|
-| I1 | Move lands (M1) | Settle ≤ 0.03 s; no camera shake | Landing cue only; selection clear is the design outcome, not a cue |
+| I1 | Move lands (M1) | Settle ≤ 0.03 s; no camera shake; selection clear is the design outcome, not a cue | none |
 | I2 | Capture break (M2) | Break fragments fade within M1 | — |
 | I3 | Promotion morph (M3) | Continuous morph; no pop-cut | — |
 
