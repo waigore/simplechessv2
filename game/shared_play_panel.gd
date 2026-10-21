@@ -17,6 +17,7 @@ var black_clock_ms: Variant = null
 var advice_on := true
 var game_ended := false
 var resign_available := true
+var board_unavailable := false
 
 var _status: Label
 var _check: Label
@@ -48,6 +49,7 @@ func configure(state: Dictionary, font: Font = null) -> void:
 	advice_on = bool(state.get("advice", true))
 	game_ended = bool(state.get("game_ended", false))
 	resign_available = bool(state.get("resign_available", true))
+	board_unavailable = bool(state.get("board_unavailable", false))
 	_ui_font = font
 	if is_inside_tree():
 		_apply_font()
@@ -83,12 +85,12 @@ func _build() -> void:
 
 	_chrome = VBoxContainer.new()
 	_chrome.name = "PlayChrome"
-	_chrome.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_chrome.mouse_filter = Control.MOUSE_FILTER_STOP
 	_chrome.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	_chrome.offset_left = 16
 	_chrome.offset_right = -16
 	_chrome.offset_top = 12
-	_chrome.offset_bottom = 160
+	_chrome.offset_bottom = 156
 	_chrome.add_theme_constant_override("separation", 8)
 	add_child(_chrome)
 
@@ -232,7 +234,8 @@ func _show_state(state_id: String) -> void:
 	ui_state = state_id
 	var confirm := state_id == "S2"
 	_confirm_box.visible = confirm
-	_chrome.modulate.a = 0.45 if confirm else 1.0
+	# Keep R2/R4 readable; board dimming is owned by presentation via board_unavailable.
+	_chrome.modulate.a = 1.0
 	if confirm and visible:
 		focus_first()
 

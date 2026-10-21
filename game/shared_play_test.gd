@@ -1,9 +1,10 @@
 class_name SharedPlayTest
 extends SceneTree
-## Headless coverage for UI-shared-play (#58): select, place, refuse, resign, NAV.T6.
+## Headless coverage for UI-shared-play (#58): gestures, clocks, resign, NAV.T6.
 
 var _presentation: Presentation
 var _router: SessionRouter
+var _seams: PlaytestSeams
 var _error := ""
 
 
@@ -18,6 +19,7 @@ func _start() -> void:
 	_presentation.remove_child(harness)
 	harness.free()
 	_router = _presentation.get_node("SessionRouter") as SessionRouter
+	_seams = _presentation.get_node("PlaytestSeams") as PlaytestSeams
 	_router.locale = "en"
 	_router.last_mode = "none"
 	var persist := _presentation.get_node_or_null("PersistStore") as PersistStore
@@ -29,6 +31,9 @@ func _start() -> void:
 
 
 func _after_boot() -> void:
+	_presentation.set_deferred("size", Vector2(720, 1280))
+	await process_frame
+	await process_frame
 	_error = _geometry_hit()
 	if _error.is_empty():
 		_error = _string_keys()
@@ -39,15 +44,27 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _illegal_keeps_selection()
 	if _error.is_empty():
-		_error = _drag_place_without_selection()
+		_error = await _gesture_b2_changes_selection()
+	if _error.is_empty():
+		_error = await _gesture_b3_place()
+	if _error.is_empty():
+		_error = await _gesture_b10_pick_and_drag()
+	if _error.is_empty():
+		_error = await _gesture_bad_drop_returns()
 	if _error.is_empty():
 		_error = _promotion_refused_no_auto_queen()
 	if _error.is_empty():
 		_error = _resign_flow()
 	if _error.is_empty():
+		_error = _s2_board_unavailable_and_clock()
+	if _error.is_empty():
+		_error = _pause_halts_clock_and_input()
+	if _error.is_empty():
 		_error = _advice_stub()
 	if _error.is_empty():
 		_error = _clocks_visible_when_timed()
+	if _error.is_empty():
+		_error = await _layout_reserves_chrome()
 	if _error.is_empty():
 		quit(0)
 		return
@@ -98,6 +115,7 @@ func _enter_play() -> String:
 		and _router.selected_piece == ""
 		and board != null
 		and board.visible
+		and board.offset_top >= Presentation.PLAY_CHROME_TOP_PX - 0.5
 	)
 	return "" if ok else "Start → shared-play shell"
 
@@ -140,20 +158,54 @@ func _illegal_keeps_selection() -> String:
 	return ""
 
 
-func _drag_place_without_selection() -> String:
-	# Black to move; clear selection and place g8 knight via C2 without prior select.
-	_router.selected_piece = ""
-	_router.handle_input_commit("g8", "f6")
+func _gesture_b2_changes_selection() -> String:
+	# Black selected e7; tap g8 (own knight) must select via B2, not attempt B3 place.
+	await _tap_square("g8")
+	if _router.selected_piece != "g8":
+		return "B2 tap own piece changes selection (got %s)" % _router.selected_piece
+	return ""
+
+
+func _gesture_b3_place() -> String:
+	# g8 selected; tap f6 empty destination.
+	await _tap_square("f6")
 	if _router.selected_piece != "":
-		return "B10 clears selection"
+		return "B3 clears selection"
 	var occ: Dictionary = _router.shared_session.rules.position_field()["occupancy"]
 	if not occ.has("f6"):
-		return "B10 place without prior selection"
+		return "B3 place g8→f6"
+	return ""
+
+
+func _gesture_b10_pick_and_drag() -> String:
+	# White to move after black's knight move; drag unselected d2→d4 (e2 already moved).
+	if _router.side_to_move() != "white":
+		return "B10 expects white to move"
+	_router.selected_piece = ""
+	await _drag_square("d2", "d4")
+	if _router.selected_piece != "":
+		return "B10 clears selection (got %s)" % _router.selected_piece
+	var occ: Dictionary = _router.shared_session.rules.position_field()["occupancy"]
+	if not occ.has("d4") or occ.has("d2"):
+		return "B10 pick-and-drag place"
+	return ""
+
+
+func _gesture_bad_drop_returns() -> String:
+	# Wait out prior move tween so begin_drag is accepted, then drag far off-board.
+	await create_timer(BoardGeometry.TRAVEL_S + BoardGeometry.SETTLE_S + 0.05).timeout
+	_router.handle_input_commit("e7", "")
+	var board := _board()
+	var origin := _screen_for("e7")
+	var far := origin + Vector2(120, 120)
+	await _drag_to_screen("e7", far)
+	await create_timer(BoardGeometry.TRAVEL_S + 0.05).timeout
+	if not is_equal_approx(board.last_return_s, BoardGeometry.TRAVEL_S):
+		return "bad drop should run PHY.M5 return (last_return_s=%s)" % board.last_return_s
 	return ""
 
 
 func _promotion_refused_no_auto_queen() -> String:
-	# Build a last-rank pawn place and ensure no auto-queen (#58 defers S4 to #94).
 	var session := SharedGameSession.new()
 	session.start_shared("untimed", 3)
 	var pieces: Array = [
@@ -184,6 +236,7 @@ func _resign_flow() -> String:
 		and _router.play_ui_state == "S2"
 		and play.ui_state == "S2"
 		and _router.selected_piece == ""
+		and bool(_shared_play_state().get("board_unavailable", false))
 	)
 	if not s2_ok:
 		return "resign confirm S2 / C1 unavailable"
@@ -205,14 +258,67 @@ func _resign_flow() -> String:
 	return "" if _router.stage == "mode-pick" else "Stop → mode-pick"
 
 
-func _advice_stub() -> String:
+func _s2_board_unavailable_and_clock() -> String:
 	_router.handle_control("mode-pick", "C1")
+	_router.handle_control("shared-setup", "C2")  # blitz
 	_router.handle_control("shared-setup", "C5")
+	if _router.shared_session == null or _router.shared_session.white_clock_ms == null:
+		return "S2 clock setup"
+	_router.handle_control("shared-play", "C4")
+	var before := int(_router.shared_session.white_clock_ms)
+	_router.shared_session.tick(250)
+	var after := int(_router.shared_session.white_clock_ms)
+	if after >= before:
+		return "S2 must keep side-to-move clock running"
+	if not bool(_shared_play_state().get("board_unavailable", false)):
+		return "S2 board_unavailable"
+	if _router.play_gestures_available():
+		return "S2 gestures blocked"
+	_router.handle_control("shared-play", "cancel")
+	return ""
+
+
+func _pause_halts_clock_and_input() -> String:
+	if _router.shared_session == null or _router.shared_session.white_clock_ms == null:
+		_router.handle_control("shared-play", "C4")
+		_router.handle_control("shared-play", "confirm")
+		_router.handle_control("shared-result", "C2")
+		_router.handle_control("mode-pick", "C1")
+		_router.handle_control("shared-setup", "C2")
+		_router.handle_control("shared-setup", "C5")
+	_seams.pause()
+	var before := int(_router.shared_session.white_clock_ms)
+	# Simulate a process tick path: router must not advance while paused.
+	_router._process(0.5)
+	var after := int(_router.shared_session.white_clock_ms)
+	if after != before:
+		_seams.resume()
+		return "pause must halt clock tick"
+	_router.handle_control("shared-play", "C4")
+	if _router.play_ui_state == "S2":
+		_seams.resume()
+		return "pause must block resign control"
+	var count_before := _presentation.pointer_count
+	var down := InputEventScreenTouch.new()
+	down.pressed = true
+	down.index = 0
+	down.position = _screen_for("e2")
+	_presentation.handle_gui_input(down)
+	if _presentation.pointer_count != count_before:
+		_seams.resume()
+		return "pause must ignore pointers"
+	_seams.resume()
+	return ""
+
+
+func _advice_stub() -> String:
+	if _router.stage != "shared-play":
+		_router.handle_control("mode-pick", "C1")
+		_router.handle_control("shared-setup", "C5")
 	var before := _router.advice_on
 	_router.handle_control("shared-play", "C3")
 	if _router.advice_on == before:
 		return "advice toggle"
-	# No advice marks / eval in snapshot.
 	var snap := _router.play_snapshot()
 	if snap.get("advice_best_move") != null or snap.get("advice_eval") != null:
 		return "F-move-advice.R2 must not show eval"
@@ -220,10 +326,10 @@ func _advice_stub() -> String:
 
 
 func _clocks_visible_when_timed() -> String:
-	# Leave current play via resign → Stop, then start Blitz.
-	_router.handle_control("shared-play", "C4")
-	_router.handle_control("shared-play", "confirm")
-	_router.handle_control("shared-result", "C2")
+	if _router.stage == "shared-play":
+		_router.handle_control("shared-play", "C4")
+		_router.handle_control("shared-play", "confirm")
+		_router.handle_control("shared-result", "C2")
 	_router.handle_control("mode-pick", "C1")
 	_router.handle_control("shared-setup", "C2")  # blitz
 	_router.handle_control("shared-setup", "C5")
@@ -238,6 +344,68 @@ func _clocks_visible_when_timed() -> String:
 	if not clocks.text.contains(":"):
 		return "tabular clock text"
 	return ""
+
+
+func _layout_reserves_chrome() -> String:
+	_presentation.size = Vector2(800, 450)
+	await process_frame
+	var board := _board()
+	if board.offset_top < Presentation.PLAY_CHROME_TOP_PX - 0.5:
+		return "16:9 board must sit below chrome"
+	_presentation.size = Vector2(720, 1280)
+	await process_frame
+	return ""
+
+
+func _tap_square(square: String) -> void:
+	var at := _screen_for(square)
+	var down := InputEventScreenTouch.new()
+	down.pressed = true
+	down.index = 0
+	down.position = at
+	_presentation.handle_gui_input(down)
+	var up := InputEventScreenTouch.new()
+	up.pressed = false
+	up.index = 0
+	up.position = at
+	_presentation.handle_gui_input(up)
+	await process_frame
+
+
+func _drag_square(from_sq: String, to_sq: String) -> void:
+	await _drag_to_screen(from_sq, _screen_for(to_sq))
+
+
+func _drag_to_screen(from_sq: String, to_screen: Vector2) -> void:
+	var from := _screen_for(from_sq)
+	var down := InputEventScreenTouch.new()
+	down.pressed = true
+	down.index = 0
+	down.position = from
+	_presentation.handle_gui_input(down)
+	var mid := from.lerp(to_screen, 0.5)
+	# Exceed DRAG_THRESHOLD_PX.
+	if mid.distance_to(from) < Presentation.DRAG_THRESHOLD_PX:
+		mid = from + Vector2(Presentation.DRAG_THRESHOLD_PX + 4.0, 0)
+	var drag := InputEventScreenDrag.new()
+	drag.index = 0
+	drag.position = mid
+	_presentation.handle_gui_input(drag)
+	var up := InputEventScreenTouch.new()
+	up.pressed = false
+	up.index = 0
+	up.position = to_screen
+	_presentation.handle_gui_input(up)
+	await process_frame
+
+
+func _screen_for(square: String) -> Vector2:
+	var board := _board()
+	return board.world_to_screen(board.framed_center(square))
+
+
+func _shared_play_state() -> Dictionary:
+	return _router._shared_play_state()
 
 
 func _play_panel() -> SharedPlayPanel:
