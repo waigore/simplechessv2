@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/design/end-conditions.md`](../../.agents/
 
 | Unit | Win | Loss | Other endings |
 |------|-----|------|---------------|
-| Shared game | Checkmate, opponent resigns, or opponent's clock hits zero while you can checkmate | Checkmated, you resign, or your clock hits zero while they can checkmate | Stalemate, agreement, repetition, fifty-move rule, clock draw |
+| Shared game | Checkmate, opponent resigns, or opponent's clock hits zero while you can checkmate | Checkmated, you resign, or your clock hits zero while they can checkmate | Stalemate, agreement, Threefold repetition, fifty-move rule, clock draw |
 | Puzzle | Required sequence, with no wrong move on that puzzle | Sequence completed only after a wrong move, the solution revealed, or the puzzle abandoned | None — a wrong move does not end the puzzle |
 
 ## Conditions
@@ -25,4 +25,4 @@ A [Shared game](glossary.md) carries nothing forward. W1, L4, L5, and L6 update 
 
 ## Experience intent
 
-A shared-game loss is checkmate, resignation, or a clock that ran only on that side's turn. A win is one of those against the other side. A draw ends quietly. A puzzle failure still deals the next puzzle.
+A shared-game loss is checkmate, Resign, or a clock that ran only on that side's turn. A win is one of those against the other side. A draw ends quietly. A puzzle failure still deals the next puzzle.
