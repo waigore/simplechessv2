@@ -38,8 +38,6 @@ var c10_available := true
 var _status: Label
 var _check: Label
 var _clocks: Label
-var _promote_hint: Label
-var _promote_row: HBoxContainer
 var _promote_btns: Dictionary = {}
 var _select_focus: Button
 var _clear_focus: Button
@@ -168,29 +166,8 @@ func _build() -> void:
 	_clocks.add_theme_constant_override("outline_size", 0)
 	_chrome.add_child(_clocks)
 
-	_promote_hint = Label.new()
-	_promote_hint.name = "ChoosePromotion"
-	_promote_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_promote_hint.visible = false
-	UiChrome.style_label(_promote_hint)
-	_chrome.add_child(_promote_hint)
-
-	_promote_row = HBoxContainer.new()
-	_promote_row.name = "PromoteChoices"
-	_promote_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	_promote_row.add_theme_constant_override("separation", 12)
-	_promote_row.visible = false
-	_chrome.add_child(_promote_row)
-	for kind in SharedGameSession.PROMOTE_ORDER:
-		var btn := Button.new()
-		btn.name = "Promote%s" % kind.capitalize()
-		btn.focus_entered.connect(_on_point.bind("C6:%s" % kind))
-		btn.mouse_entered.connect(_on_point.bind("C6:%s" % kind))
-		btn.pressed.connect(_on_activate.bind("C6:%s" % kind))
-		_promote_row.add_child(btn)
-		_promote_btns[kind] = btn
-
-	# C1/C10/C2 are board gestures; off-strip focus sentinels keep F1 order (44px).
+	# C1/C10/C2/C6 are board surfaces; off-strip focus sentinels keep F1 order (44px).
+	# Visible C6 chooser stays on the board (PRJ.D1 / shared-play experience).
 	_select_focus = Button.new()
 	_select_focus.name = "SelectFocus"
 	_select_focus.text = "C1"
@@ -220,6 +197,20 @@ func _build() -> void:
 	_place_focus.focus_entered.connect(_on_point.bind("C2"))
 	_place_focus.pressed.connect(_on_activate.bind("C2"))
 	add_child(_place_focus)
+
+	var promote_y := -110.0
+	for kind in SharedGameSession.PROMOTE_ORDER:
+		var btn := Button.new()
+		btn.name = "Promote%s" % kind.capitalize()
+		btn.text = "C6:%s" % kind
+		btn.modulate.a = 0.0
+		btn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		btn.position = Vector2(-200, promote_y)
+		btn.focus_entered.connect(_on_point.bind("C6:%s" % kind))
+		btn.pressed.connect(_on_activate.bind("C6:%s" % kind))
+		add_child(btn)
+		_promote_btns[kind] = btn
+		promote_y += 30.0
 
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -373,7 +364,6 @@ func _apply_font() -> void:
 		_status,
 		_check,
 		_clocks,
-		_promote_hint,
 		_select_focus,
 		_clear_focus,
 		_place_focus,
@@ -412,7 +402,6 @@ func _apply_copy() -> void:
 	_accept.text = StringTable.shared_play("accept", locale)
 	_decline.text = StringTable.shared_play("decline", locale)
 	_withdraw.text = StringTable.shared_play("withdraw", locale)
-	_promote_hint.text = StringTable.shared_play("choose_promotion", locale)
 	for kind in SharedGameSession.PROMOTE_ORDER:
 		(_promote_btns[kind] as Button).text = StringTable.shared_play(kind, locale)
 	_refresh_clocks()
@@ -458,8 +447,6 @@ func _show_state(state_id: String) -> void:
 	var confirm := state_id == "S2"
 	_confirm_box.visible = confirm
 	_draw_box.visible = state_id == "S6"
-	_promote_hint.visible = state_id == "S4"
-	_promote_row.visible = state_id == "S4"
 	# Keep R2/R4 readable; board dimming is owned by presentation via board_unavailable.
 	_chrome.modulate.a = 1.0
 	_wire_focus_order()
