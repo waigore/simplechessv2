@@ -12,33 +12,53 @@ Split from [`common.md`](common.md) by logical unit; that file proves the board,
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| I5 | PS2.1 PS2.2 | I6 | PS2.3 PS2.4 PS2.5 |
+| I5 | PS2.1 PS2.2 PS2.3 PS2.4 | I6 | PS2.5 PS2.6 PS2.7 |
 
 ## PS2: Attacked squares
 
 As a casual player, I see check and king safety follow attack rules so that pins and jumps resolve correctly.
 
-### PS2.1: Pawn attacks
+### PS2.1: Pawn capture attacks
 
 - **Proves**: I5
 
 ```gherkin
 Given White pawn on e4 And a Black piece on d5
-When White attempts the pawn capture e4→d5 and the step e4→e5
-Then e4→d5 captures the Black piece And e5 is not attacked by that pawn
+When White attempts the pawn capture e4→d5
+Then e4→d5 captures the Black piece
 ```
 
-### PS2.2: Rook ray
+### PS2.2: Pawn step does not attack
+
+- **Proves**: I5
+
+```gherkin
+Given White pawn on e4 And e5 empty
+When White's attack on e5 is tested
+Then e5 is not attacked by that pawn
+```
+
+### PS2.3: Rook ray through empty
 
 - **Proves**: I5
 
 ```gherkin
 Given White rook a1, a White piece a3, a2 and a4 empty
-When White attempts a1→a2 and a1→a4
-Then a1→a2 is legal And a1→a4 is illegal, blocked by the a3 piece
+When White attempts a1→a2
+Then a1→a2 is legal
 ```
 
-### PS2.3: Pins ignored
+### PS2.4: Rook ray blocked
+
+- **Proves**: I5
+
+```gherkin
+Given White rook a1, a White piece a3, a2 and a4 empty
+When White attempts a1→a4
+Then a1→a4 is illegal, blocked by the a3 piece
+```
+
+### PS2.5: Pins ignored
 
 - **Proves**: I6
 
@@ -48,7 +68,7 @@ When Black attempts to move the king d4→e3
 Then e3 is attacked by the pinned White rook: the move is illegal
 ```
 
-### PS2.4: Knight attacks through blockers
+### PS2.6: Knight attacks through blockers
 
 - **Proves**: I6
 
@@ -58,7 +78,7 @@ When Black is in check tested
 Then c3 is attacked by the knight
 ```
 
-### PS2.5: King attacks adjacent
+### PS2.7: King attacks adjacent
 
 - **Proves**: I6
 
