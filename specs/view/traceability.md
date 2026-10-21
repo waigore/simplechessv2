@@ -29,7 +29,7 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Camera controls and settings | [`camera-controls.md`](camera-controls.md) | Applies — None (fixed board) |
 | Physics feel | [`physics.md`](physics.md) | Applies |
 | Readability and depth | [`perception.md`](perception.md) | Applies — depth N/A |
-| Motion comfort | [`perception.md`](perception.md) | N/A — no camera motion over time; the view reorients only by an instantaneous cut at deal or seat change ([CAM-board.M2](cameras/board.md); [CAM-board.T1](cameras/board.md) is Cut 0) |
+| Motion comfort | [`perception.md`](perception.md) | N/A — no camera motion over time; reorients only by [CAM-board.M2](cameras/board.md) Cut 0 s at deal or seat change ([CAM-board.T1](cameras/board.md) is also Cut 0 s) |
 | Spatial audio | [`audio.md`](audio.md) | N/A — non-positional event cues only |
 | Haptics | [`haptics.md`](haptics.md) | N/A — Web primary; no haptic platforms |
 | Diagrams | [`diagrams/`](diagrams/) | Applies — [`projection.html`](diagrams/projection.html), [`cameras/board.html`](diagrams/cameras/board.html) |
