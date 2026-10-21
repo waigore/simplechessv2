@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 ## Coverage
 
-Part of [`shared-play.md`](shared-play.md). The coverage table lives there.
+Part of [`shared-play.md`](shared-play.md). The coverage table lives there. Place branches: [`shared-play-place.md`](shared-play-place.md).
 
 ## US3: Promotion, refusal, and draw
 
@@ -32,16 +32,6 @@ Then EX.confirm shows Offer a draw?
 Given Bottom seat is not side to move on shared-play S1
 When Bottom activates C5
 Then EX.confirm is not shown
-```
-
-### US3.13: Promotion shown
-
-- **Proves**: S4
-
-```gherkin
-Given shared-play S1 and a legal pawn place is on the last rank
-When the side to move asks that place
-Then S4 shows queen, rook, bishop, and knight sprites and C6 is usable
 ```
 
 ### US3.3: Promotion commit
@@ -79,9 +69,9 @@ Then the screen is shared-result and R1 shows Draw ([END.D2](../../../design/end
 - **Proves**: C8
 
 ```gherkin
-Given shared-play S6 and Top offered the draw
+Given shared-play S6 and Top offered the draw and Clock is Blitz and GS.sideToMove is White
 When Bottom activates C8
-Then the screen is shared-play S1 and R2 shows White to move
+Then the screen is shared-play S1 and R2 shows White to move and that clock still runs
 ```
 
 ### US3.9: Withdraw the offer
@@ -89,9 +79,9 @@ Then the screen is shared-play S1 and R2 shows White to move
 - **Proves**: C9
 
 ```gherkin
-Given shared-play S6 and Top offered the draw
+Given shared-play S6 and Top offered the draw and Clock is Blitz and GS.sideToMove is White
 When Top activates C9
-Then the screen is shared-play S1 and R2 shows White to move
+Then the screen is shared-play S1 and R2 shows White to move and that clock still runs
 ```
 
 ### US3.12: Confirm opens the offer
@@ -104,16 +94,6 @@ When the side to move activates Confirm
 Then the screen is shared-play S6 and R2 still shows both clocks
 ```
 
-### US3.14: Move lapses the offer
-
-- **Proves**: S6
-
-```gherkin
-Given shared-play S6 and a piece is selected
-When the side to move activates C2 on a legal destination
-Then the screen is shared-play S1 and no draw offer panel is shown
-```
-
 ### US3.15: Offer panel controls
 
 - **Proves**: S6
@@ -121,15 +101,35 @@ Then the screen is shared-play S1 and no draw offer panel is shown
 ```gherkin
 Given shared-play S6
 When the screen is shown
-Then C7, C8, and C9 are shown as available
+Then C1–C3 are available per side-to-move and C7, C8, and C9 are shown as available
 ```
 
-### US3.11: Refused place
+### US1.8: Cancel resign
 
-- **Proves**: S5
+- **Proves**: S2
 
 ```gherkin
-Given shared-play S1 with a selection and a place the piece rules refuse
-When the side to move asks that place
-Then S5 flashes that square and GS.selectedPiece stays set and C1 stays usable
+Given S2 resign confirm
+When the actor activates Cancel
+Then the screen is shared-play S1
+```
+
+### US1.9: Advice error shown
+
+- **Proves**: S3
+
+```gherkin
+Given shared-play S1 and GS.advice is On
+When Advice fetch failed
+Then shared-play S3 shows Advice unavailable. Play continues. And C1–C5 are available
+```
+
+### US3.17: Dismiss advice error
+
+- **Proves**: S3
+
+```gherkin
+Given shared-play S3 EX.error after Advice fetch failed
+When the actor activates Dismiss
+Then the screen is shared-play S1 and C1–C5 stay usable
 ```
