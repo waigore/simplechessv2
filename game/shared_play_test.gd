@@ -214,7 +214,7 @@ func _promotion_refused_no_auto_queen() -> String:
 		{"square": "h8", "color": "black", "kind": "king"},
 	]
 	session.rules.load_position(pieces, "white")
-	session.sync_active_to_side_to_move()
+	session._sync_active_to_side_to_move()
 	var ok := session.try_move("e7", "e8", "")
 	var occ: Dictionary = session.rules.position_field()["occupancy"]
 	var piece: Dictionary = occ.get("e7", {})

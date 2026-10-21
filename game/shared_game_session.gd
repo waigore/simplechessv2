@@ -58,7 +58,7 @@ func start_shared(
 
 
 ## Legacy/test helper: untimed, or both clocks at timed_ms with no increment.
-func start_opening(timed_ms: Variant = null) -> void:
+func _start_opening(timed_ms: Variant = null) -> void:
 	if timed_ms == null:
 		start_shared(CLOCK_UNTIMED, 0)
 		return
@@ -114,7 +114,7 @@ func legal_targets_for(square: String) -> PackedStringArray:
 	return rules.legal_targets(square)
 
 
-func in_check_now() -> bool:
+func _in_check_now() -> bool:
 	return rules.in_check(side_to_move())
 
 
@@ -155,7 +155,7 @@ func can_place(from_square: String, to_square: String, promotion: String = "") -
 		return false
 	if game_ended():
 		return false
-	return rules.can_apply_move(from_square, to_square, promotion)
+	return rules._can_apply_move(from_square, to_square, promotion)
 
 
 ## C2 / B3 / B10 — place; rules-level refuse keeps selection (danger flash is #94).
@@ -187,7 +187,7 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 		"outcome": "ok",
 		"story": "UI-shared-play.US1.3",
 		"move": {"from": from_square, "to": to_square},
-		"check": in_check_now(),
+		"check": _in_check_now(),
 		"ended": game_ended(),
 		"end_reason": str(rules.game_ended_field().get("reason", "")),
 	}
@@ -254,7 +254,7 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"selection": selected_piece,
 		"legal": legal,
 		"side_to_move": side_to_move(),
-		"in_check": in_check_now(),
+		"in_check": _in_check_now(),
 		"white_clock_ms": white_clock_ms,
 		"black_clock_ms": black_clock_ms,
 		"game_ended": ended,
@@ -306,14 +306,14 @@ func resign() -> bool:
 	return true
 
 
-func offer_draw() -> bool:
+func _offer_draw() -> bool:
 	if bool(rules.game_ended_field().get("ended", false)):
 		return false
 	draw_offer = str(rules.position_field()["side_to_move"])
 	return true
 
 
-func withdraw_draw() -> bool:
+func _withdraw_draw() -> bool:
 	if bool(rules.game_ended_field().get("ended", false)):
 		return false
 	var side := str(rules.position_field()["side_to_move"])
@@ -323,7 +323,7 @@ func withdraw_draw() -> bool:
 	return true
 
 
-func decline_draw() -> bool:
+func _decline_draw() -> bool:
 	if bool(rules.game_ended_field().get("ended", false)):
 		return false
 	if draw_offer.is_empty():
@@ -335,7 +335,7 @@ func decline_draw() -> bool:
 	return true
 
 
-func accept_draw() -> bool:
+func _accept_draw() -> bool:
 	if bool(rules.game_ended_field().get("ended", false)):
 		return false
 	if draw_offer.is_empty():
@@ -347,7 +347,7 @@ func accept_draw() -> bool:
 	return true
 
 
-func set_clock_ms(side: String, ms: int) -> void:
+func _set_clock_ms(side: String, ms: int) -> void:
 	var clamped := maxi(0, ms)
 	if side == ChessRules.SIDE_WHITE:
 		white_clock_ms = clamped
@@ -356,7 +356,7 @@ func set_clock_ms(side: String, ms: int) -> void:
 
 
 ## After a custom position load: only the side-to-move clock runs (SCH I3 / GS.V2).
-func sync_active_to_side_to_move() -> void:
+func _sync_active_to_side_to_move() -> void:
 	if white_clock_ms == null or _clocks_stopped:
 		_active_side = ""
 		return
@@ -377,7 +377,7 @@ func tick(delta_ms: int) -> void:
 	var remaining := _clock_of(_active_side) - delta_ms
 	if remaining < 0:
 		remaining = 0
-	set_clock_ms(_active_side, remaining)
+	_set_clock_ms(_active_side, remaining)
 	if remaining == 0:
 		_expire_active_clock()
 
@@ -410,7 +410,7 @@ func _after_completed_move(mover: String) -> void:
 		# Increment only when that clock has not reached zero.
 		if ms > 0 and increment_ms > 0:
 			ms += increment_ms
-			set_clock_ms(mover, ms)
+			_set_clock_ms(mover, ms)
 		_active_side = ""
 	_apply_position_ending()
 	if bool(rules.game_ended_field().get("ended", false)):

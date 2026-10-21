@@ -31,13 +31,6 @@ var session_ended := false
 
 var shared_session: SharedGameSession
 
-var _resolver: AssetResolver
-var _seams: PlaytestSeams
-var _persist: PersistStore
-var _board_playable := false
-var _clock_accum_ms := 0.0
-var _last_clock_display := ""
-
 ## Proxies onto CMP-shared-game-session (tests and presentation).
 var selected_piece: String:
 	get:
@@ -52,6 +45,13 @@ var play_ui_state: String:
 	set(value):
 		if shared_session != null:
 			shared_session.play_ui_state = value
+
+var _resolver: AssetResolver
+var _seams: PlaytestSeams
+var _persist: PersistStore
+var _board_playable := false
+var _clock_accum_ms := 0.0
+var _last_clock_display := ""
 
 
 func _ready() -> void:
