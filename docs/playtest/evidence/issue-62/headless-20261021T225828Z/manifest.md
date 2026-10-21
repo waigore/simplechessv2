@@ -4,7 +4,7 @@
 - **Environment**: headless
 - **Build / session id**: Godot 4.7.2.stable.official.ed1daf0bf (see `logs/build-id.txt`).
 - **Coverage mode**: full (glyph coverage + per-screen ~40% layout)
-- **Screenshots**: waiting on graphical run of the same build (`../graphical-20261021T225828Z/screenshots/`).
+- **Screenshots**: present on graphical twin (`../graphical-20261021T225828Z/screenshots/`).
 
 ## Results
 
