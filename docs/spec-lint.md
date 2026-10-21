@@ -27,7 +27,7 @@ Errors fail the check. Warnings are printed but pass; add `--strict` to fail on 
 
 ## Asset catalog
 
-The same workflow runs [`asset_catalog.py`](../.github/scripts/asset_catalog.py) (`python3 .github/scripts/asset_catalog.py` locally). It checks the catalog's entry files against the default format and integrity rules in [`specs/assets/catalog.md`](../specs/assets/catalog.md): asset IDs, handles, required fields, approval and exemptions, successors, and that every file under the asset root belongs to one entry. It is skipped until the asset hub sets a catalog root.
+The same workflow runs [`asset_catalog.py`](../.github/scripts/asset_catalog.py) (`python3 .github/scripts/asset_catalog.py` locally). It checks the catalog's entry files against the default format in [`specs/assets/catalog.md`](../specs/assets/catalog.md) and the integrity rules in [`specs/assets/catalog/integrity.md`](../specs/assets/catalog/integrity.md): asset IDs, handles, required fields, approval and exemptions, successors, coverage versus kind Coverage and Naming (`CAT.I10`), and that every file under the asset root belongs to one entry. It is skipped until the asset hub sets a catalog root.
 
 ## Adding a check
 

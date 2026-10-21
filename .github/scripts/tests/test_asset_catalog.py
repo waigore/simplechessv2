@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -30,6 +31,32 @@ HUB = """# Asset Pipeline
 """
 
 
+CHARACTER_KIND = """# Asset Kind: Character sprites
+
+## Coverage
+
+| ID | Subject | Required variants | Count |
+|----|---------|-------------------|-------|
+| V1 | Idle | One pose | 8 |
+
+## Recipes
+
+### R1 — Idle
+
+- **Outputs**: one file per coverage row
+
+## Naming
+
+- **Handle name**: `character-sprites/<name>`
+"""
+
+SHEET_ANCHORS = (
+    ("01a14f87-eeee-7f30-aa10-4516f0191610", "piece-sprites/style-anchor-sheet", "AK-piece-sprites"),
+    ("01a15199-87f5-7df8-a987-eecaaca9f919", "icons/style-anchor-sheet", "AK-icons"),
+    ("01a151ef-6a32-77ec-ace1-9190aa56b7dc", "interface-art/style-anchor-sheet", "AK-interface-art"),
+)
+
+
 def entry(**overrides: object) -> dict[str, object]:
     base: dict[str, object] = {
         "id": str(uuid7()),
@@ -55,6 +82,9 @@ class CatalogTest(unittest.TestCase):
         self.hub("`game/catalog/`", "`game/assets`")
         (self.root / "game/catalog").mkdir(parents=True)
         (self.root / "game/assets/character-sprites").mkdir(parents=True)
+        kinds = self.root / "specs/assets/kinds"
+        kinds.mkdir(parents=True)
+        (kinds / "character-sprites.md").write_text(CHARACTER_KIND, encoding="utf-8")
 
     def tearDown(self) -> None:
         self.tmp.cleanup()
@@ -271,7 +301,7 @@ class CatalogTest(unittest.TestCase):
     def test_style_anchor_may_have_empty_coverage(self) -> None:
         asset_id = str(uuid7())
         kinds = self.root / "specs/assets/kinds"
-        kinds.mkdir(parents=True)
+        kinds.mkdir(parents=True, exist_ok=True)
         (kinds / "character-sprites.md").write_text(
             f"# Sprites\n\n- **Style anchors**: `{asset_id}` (`character-sprites/player-idle`)\n",
             encoding="utf-8",
@@ -293,6 +323,176 @@ class CatalogTest(unittest.TestCase):
         ))
         self.assertEqual(self.checks(), [])
         self.assertIn(asset_id, read_hub(self.root).style_anchors)
+
+
+class CoverageIntegrityTest(unittest.TestCase):
+    """CAT.I10 fixtures. They do not write the live catalog."""
+
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        real = Path(__file__).resolve().parents[3]
+        assets = self.root / "specs/assets"
+        assets.mkdir(parents=True)
+        os.symlink(real / "specs/assets/kinds", assets / "kinds")
+        os.symlink(real / "specs/assets/catalog.md", assets / "catalog.md")
+        os.symlink(real / "specs/assets/catalog", assets / "catalog")
+        (assets / "assets.md").write_text((real / "specs/assets/assets.md").read_text(encoding="utf-8"), encoding="utf-8")
+        (self.root / "asset_catalog").mkdir()
+        (self.root / "game_assets").mkdir()
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def add(self, **overrides: object) -> None:
+        data = entry(**overrides)
+        (self.root / "asset_catalog" / f"{data['id']}.json").write_text(json.dumps(data), encoding="utf-8")
+        for rel in data.get("files", []):  # type: ignore[union-attr]
+            path = self.root / "game_assets" / str(rel)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"asset")
+
+    def i10(self) -> list[str]:
+        findings, _ = check(self.root)
+        return [f"{f.check}: {f.message}" for f in findings if f.check == "I10"]
+
+    def checks(self) -> list[str]:
+        findings, _ = check(self.root)
+        return [str(f) for f in findings]
+
+    def _sheet_anchors(self) -> None:
+        for asset_id, handle, kind_spec in SHEET_ANCHORS:
+            self.add(id=asset_id, handle=handle, kind_spec=kind_spec, supplier=..., coverage=[], files=[f"{handle}.png"])
+
+    def test_live_catalog_passes(self) -> None:
+        findings, _ = check(Path(__file__).resolve().parents[3])
+        self.assertEqual([str(f) for f in findings], [])
+
+    def test_incomplete_catalog_passes(self) -> None:
+        self._sheet_anchors()
+        self.add(handle="board-backgrounds/play-table", kind_spec="AK-board-backgrounds", supplier=...,
+                 coverage=["AK-board-backgrounds.V1"], files=["board-backgrounds/play-table.png"])
+        for handle, vid in (
+            ("sound-effects/touch-select", "V1"),
+            ("sound-effects/move-settle", "V2"),
+            ("sound-effects/check", "V3"),
+            ("sound-effects/end-resolve", "V4"),
+            ("sound-effects/puzzle-fail", "V5"),
+        ):
+            self.add(handle=handle, kind_spec="AK-sound-effects", supplier=...,
+                     coverage=[f"AK-sound-effects.{vid}"], files=[f"{handle}.ogg"])
+        for handle, vid in (("music/cafe-ambient-a", "V1"), ("music/cafe-ambient-b", "V2")):
+            self.add(handle=handle, kind_spec="AK-music", supplier=...,
+                     coverage=[f"AK-music.{vid}"], files=[f"{handle}.ogg"])
+        for handle in ("fonts/noto-sans", "fonts/noto-sans-cjk"):
+            self.add(handle=handle, kind_spec="AK-fonts", supplier="Noto", source_type="third-party",
+                     coverage=["AK-fonts.V1"], files=[f"{handle}-400.woff2", f"{handle}-700.woff2", f"{handle}/OFL.txt"])
+        self.add(handle="fonts/demo-only", kind_spec="AK-fonts", files=["fonts/demo-only.ttf"])
+        self.assertEqual(self.checks(), [])
+
+    def test_one_piece_file_passes_and_thirteenth_claim_fails(self) -> None:
+        for side in ("white", "black"):
+            for piece in ("k", "q", "r", "b", "n", "p"):
+                name = f"{piece}-{side}"
+                self.add(handle=f"piece-sprites/{name}", kind_spec="AK-piece-sprites", supplier=...,
+                         coverage=["AK-piece-sprites.V1"], files=[f"piece-sprites/{name}.svg"])
+        self.assertEqual(self.i10(), [])
+        self.add(handle="piece-sprites/extra-white", kind_spec="AK-piece-sprites", supplier=...,
+                 coverage=["AK-piece-sprites.V1"], files=["piece-sprites/extra-white.svg"])
+        self.assertTrue(any("AK-piece-sprites.V1" in f and "maximum is 12" in f for f in self.i10()))
+
+    def test_one_handle_listing_every_piece_type_fails(self) -> None:
+        self.add(handle="piece-sprites/all-types", kind_spec="AK-piece-sprites", supplier=...,
+                 coverage=["AK-piece-sprites.V1"], files=["piece-sprites/all-types.svg"])
+        self.assertTrue(any("does not match Naming" in f for f in self.i10()))
+
+    def test_icons_per_subject_pass_and_one_entry_listing_every_row_fails(self) -> None:
+        for handle, vid in (
+            ("icons/mode-shared", "V1"),
+            ("icons/mode-puzzle", "V2"),
+            ("icons/quit", "V3"),
+            ("icons/back", "V4"),
+            ("icons/advice", "V5"),
+        ):
+            self.add(handle=handle, kind_spec="AK-icons", supplier=...,
+                     coverage=[f"AK-icons.{vid}"], files=[f"{handle}.svg"])
+        self.add(handle="icons/advice-on", kind_spec="AK-icons", supplier=...,
+                 coverage=["AK-icons.V5"], files=["icons/advice-on.svg"])
+        self.assertEqual(self.i10(), [])
+        self.add(handle="icons/advice-off", kind_spec="AK-icons", supplier=...,
+                 coverage=["AK-icons.V5"], files=["icons/advice-off.svg"])
+        self.assertTrue(any("AK-icons.V5" in f and "maximum is 2" in f for f in self.i10()))
+
+    def test_one_icons_entry_listing_v1_through_v5_fails(self) -> None:
+        self.add(handle="icons/all", kind_spec="AK-icons", supplier=..., files=["icons/all.svg"],
+                 coverage=["AK-icons.V1", "AK-icons.V2", "AK-icons.V3", "AK-icons.V4", "AK-icons.V5"])
+        self.assertTrue(any("one file carries one Coverage row" in f for f in self.i10()))
+
+    def test_interface_art_one_row_per_handle(self) -> None:
+        self.assertEqual(self.i10(), [])
+        self.add(handle="interface-art/panel-surface", kind_spec="AK-interface-art", supplier=...,
+                 coverage=["AK-interface-art.V1"], files=["interface-art/panel-surface.svg"])
+        self.add(handle="interface-art/chip-surface", kind_spec="AK-interface-art", supplier=...,
+                 coverage=["AK-interface-art.V2"], files=["interface-art/chip-surface.svg"])
+        self.assertEqual(self.i10(), [])
+        self.add(handle="interface-art/both-surface", kind_spec="AK-interface-art", supplier=...,
+                 coverage=["AK-interface-art.V1", "AK-interface-art.V2"], files=["interface-art/both-surface.svg"])
+        self.assertTrue(any("one entry lists one of them" in f for f in self.i10()))
+
+    def test_font_anchors_pass_and_third_claim_fails(self) -> None:
+        for handle in ("fonts/noto-sans", "fonts/noto-sans-cjk"):
+            self.add(handle=handle, kind_spec="AK-fonts", supplier="Noto", source_type="third-party",
+                     coverage=["AK-fonts.V1"], files=[f"{handle}-400.woff2", f"{handle}-700.woff2"])
+        self.assertEqual(self.i10(), [])
+        self.add(handle="fonts/other-regular", kind_spec="AK-fonts", supplier=...,
+                 coverage=["AK-fonts.V1"], files=["fonts/other-regular.woff2"])
+        self.assertTrue(any("AK-fonts.V1" in f and "maximum is 2" in f for f in self.i10()))
+
+    def test_second_count_one_claim_fails(self) -> None:
+        self.add(handle="music/cafe-ambient-a", kind_spec="AK-music", supplier=...,
+                 coverage=["AK-music.V1"], files=["music/cafe-ambient-a.ogg"])
+        self.add(handle="board-backgrounds/play-table", kind_spec="AK-board-backgrounds", supplier=...,
+                 coverage=["AK-board-backgrounds.V1"], files=["board-backgrounds/play-table.png"])
+        self.assertEqual(self.i10(), [])
+        self.add(handle="music/extra-bed", kind_spec="AK-music", supplier=...,
+                 coverage=["AK-music.V1"], files=["music/extra-bed.ogg"])
+        self.add(handle="board-backgrounds/other", kind_spec="AK-board-backgrounds", supplier=...,
+                 coverage=["AK-board-backgrounds.V1"], files=["board-backgrounds/other.png"])
+        found = self.i10()
+        self.assertTrue(any("AK-music.V1" in f and "maximum is 1" in f for f in found))
+        self.assertTrue(any("AK-board-backgrounds.V1" in f and "maximum is 1" in f for f in found))
+
+    def test_sheet_anchors_with_empty_coverage_stay_under_i9(self) -> None:
+        self._sheet_anchors()
+        self.assertEqual(self.checks(), [])
+
+    def test_draft_is_checked_like_approved_and_deprecated_adds_no_claim(self) -> None:
+        review = {"verdict": "Pass", "date": "2026-10-20", "reviewer": "agent", "report": "ok"}
+        self.add(handle="icons/all", kind_spec="AK-icons", supplier=..., state="approved", review=review,
+                 coverage=["AK-icons.V1", "AK-icons.V2"], files=["icons/all.svg"])
+        self.assertTrue(any("one file carries one Coverage row" in f for f in self.i10()))
+        self.add(handle="music/cafe-ambient-a", kind_spec="AK-music", supplier=...,
+                 coverage=["AK-music.V1"], files=["music/cafe-ambient-a.ogg"])
+        self.add(handle="music/retired", kind_spec="AK-music", supplier=..., state="deprecated",
+                 deprecation_reason="replaced", coverage=["AK-music.V1"], files=["music/retired.ogg"])
+        music = [f for f in self.i10() if "AK-music.V1" in f and "maximum" in f]
+        self.assertEqual(music, [])
+
+    def test_bad_coverage_ids_fail(self) -> None:
+        self.add(handle="icons/mode-shared", kind_spec="AK-icons", supplier=...,
+                 coverage=["V1"], files=["icons/mode-shared.svg"])
+        self.add(handle="icons/mode-puzzle", kind_spec="AK-icons", supplier=...,
+                 coverage=["AK-fonts.V1"], files=["icons/mode-puzzle.svg"])
+        self.add(handle="icons/quit", kind_spec="AK-icons", supplier=...,
+                 coverage=["AK-icons.V9"], files=["icons/quit.svg"])
+        found = self.i10()
+        self.assertTrue(any("not a qualified coverage ID" in f for f in found))
+        self.assertTrue(any("AK-fonts.V1" in f and "not a Coverage row of icons" in f for f in found))
+        self.assertTrue(any("AK-icons.V9" in f and "not a Coverage row of icons" in f for f in found))
+
+    def test_omitted_coverage_on_person_supplied_entry_is_outside_i10(self) -> None:
+        self.add(handle="fonts/demo-only", kind_spec="AK-fonts", files=["fonts/demo-only.ttf"])
+        self.assertEqual(self.checks(), [])
 
 
 if __name__ == "__main__":

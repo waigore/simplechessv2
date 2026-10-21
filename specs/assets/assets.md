@@ -38,7 +38,7 @@ Produces vector piece and board art, quiet UI chrome, icons, locale-capable font
 - **Catalog root**: `asset_catalog/` ([ADR-0005](../adr/decisions/0005-asset-catalog-roots.md))
 - **Asset root**: `game_assets/` ([ADR-0005](../adr/decisions/0005-asset-catalog-roots.md))
 
-Asset IDs, format, and integrity: [`catalog.md`](catalog.md). Fields: [`catalog/fields.md`](catalog/fields.md).
+Asset IDs and format: [`catalog.md`](catalog.md). Integrity: [`catalog/integrity.md`](catalog/integrity.md). Fields: [`catalog/fields.md`](catalog/fields.md).
 
 ## Lifecycle
 
