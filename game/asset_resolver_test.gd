@@ -77,7 +77,19 @@ func _after_boot() -> void:
 		return
 	if not _check_unresolved() or not _check_preload_gap() or not _check_vorbis_copy(music_id):
 		return
+	if not _check_cjk_font_faces():
+		return
 	quit(0)
+
+
+func _check_cjk_font_faces() -> bool:
+	## Multi-file fonts/noto-sans-cjk must wire TC then JP as fallbacks (#62).
+	var cjk := _resolver.resolve(UiChrome.FONT_CJK) as Font
+	if cjk == null:
+		return _fail("CJK font missing")
+	if cjk.fallbacks.is_empty():
+		return _fail("CJK font missing JP fallback face")
+	return true
 
 
 func _check_unresolved() -> bool:
