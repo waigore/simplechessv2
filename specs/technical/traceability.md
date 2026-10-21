@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Layered client architecture | ADR-0006 | [`layers.md`](layers.md); [`modules.md`](modules.md) |
 | Optional Stockfish Advice stream | F-move-advice; ADR-0002 | [`CMP-advice-client`](components/advice-client.md); [`CTR-advice-stream`](contracts/advice-stream.md); [`SEQ-advice-stream`](sequences/advice-stream.md) |
 | Elo / Last mode / recent solved | fields-persist; ADR-0003 | [`persistence.md`](persistence.md); [`CMP-persist-store`](components/persist-store.md) |
-| Dual playtest ENV/DBG/TEL | playtest tools; ADR-0004 | [`verification.md`](verification.md); [`CMP-playtest-seams`](components/playtest-seams.md); [`CTR-playtest-drive`](contracts/playtest-drive.md); [`SEQ-playtest-headless-smoke`](sequences/playtest-headless-smoke.md) |
+| Dual playtest ENV/DBG/TEL and `SIT.1`–`SIT.3` | playtest tools; ADR-0004 | [`verification.md`](verification.md); [`CMP-playtest-seams`](components/playtest-seams.md); [`CTR-playtest-drive`](contracts/playtest-drive.md); [`SEQ-playtest-headless-smoke`](sequences/playtest-headless-smoke.md) |
 | Asset catalog + manifest | assets access; ADR-0005 | [`asset-access.md`](asset-access.md); [`CMP-asset-resolver`](components/asset-resolver.md); [`CTR-asset-resolve`](contracts/asset-resolve.md) |
 | Shared + Puzzle modes | design configuration / loops | Session components; [`SEQ-cold-open`](sequences/cold-open.md); [`SEQ-shared-end-new-session`](sequences/shared-end-new-session.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
 | Design `CFG.*` | design configuration | [`configuration.md`](configuration.md) |

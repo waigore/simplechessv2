@@ -16,6 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R2 | Start Shared or Puzzle session from mode pick |
 | R3 | Commit Last mode via persist when a mode is entered |
 | R4 | Return to mode pick after Shared result or when leaving Puzzle |
+| R5 | Hold `GS.locale` (`en`, `zh-Hant`, `ja`) as a configuration field; do not write it to the persist document |
 
 ## Communication
 
@@ -24,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | C1 | [`CMP-persist-store`](persist-store.md) | calls | [`CTR-persist-document`](../contracts/persist-document.md) | Load Elo/Last mode; write Last mode |
 | C2 | [`CMP-shared-game-session`](shared-game-session.md) | calls | internal | Start / tear down Shared |
 | C3 | [`CMP-puzzle-session`](puzzle-session.md) | calls | internal | Start / tear down Puzzle |
-| C4 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens: O1 down; E2 up. Asset needs: E3 up, O5 down |
+| C4 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens: O1 down; E2 up. Asset needs: E3 up, O5 down. Locale switch applies immediately |
 | C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Ensure Boot group before ready; resolve L1 asset needs |
 | C6 | [`CMP-playtest-seams`](playtest-seams.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | E2 jump re-enters modes (playtest builds) |
 
@@ -34,6 +35,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 |-----------------|--------|
 | Navigation / active mode | write |
 | `GS.lastMode` (via persist) | write on enter |
+| `GS.locale` | write; not persisted |
 
 ## Diagram
 
