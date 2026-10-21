@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | S1 | boot | asset-resolver | CTR-asset-resolve.O2 | Preload Boot asset IDs |
 | S2 | boot | persist-store | CTR-persist-document.O1 | Load document or defaults |
 | S3 | persist-store | session-router | CTR-persist-document.O1 return | Provide Elo / Last mode |
-| S4 | session-router | presentation | CTR-presentation.O1 | Show mode pick when Boot ready (E1) |
+| S4 | session-router | presentation | CTR-presentation.E1 | Show mode pick when Boot ready |
 
 ## Branches
 

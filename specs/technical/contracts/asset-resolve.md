@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | ID | Name | Payload | When emitted | Who may subscribe |
 |----|------|---------|--------------|-------------------|
 | E1 | boot_ready | — | O2 complete | Session router |
-| E2 | play_ready | — | O3 complete | Session router (relays to L1 via [`CTR-presentation`](presentation.md) O5) |
+| E2 | play_ready | — | O3 complete | Session router (relays to L1 via [`CTR-presentation`](presentation.md) E5) |
 | E3 | ambient_ready | — | O4 complete | Session router |
 
 ## Guarantees

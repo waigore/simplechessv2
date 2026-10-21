@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | S2 | puzzle-session | puzzle-session | internal | If W1, append puzzle_id to recentSolved; trim to 20 |
 | S3 | puzzle-session | persist-store | CTR-persist-document.O2 | commit full document |
 | S4 | persist-store | puzzle-session | CTR-persist-document.O2 return | Success or fail signal |
-| S5 | puzzle-session | presentation | CTR-presentation.O2 O3 | Feedback; deal next or show fail then next per design |
+| S5 | puzzle-session | presentation | CTR-presentation.E2 E3 | Feedback; deal next or show fail then next per design |
 
 ## Branches
 

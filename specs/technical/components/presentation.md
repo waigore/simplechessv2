@@ -23,9 +23,9 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-session-router`](session-router.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens, cues/ambient, assets: O1/O3/O5 down; E2/E3 up. Reads the locale string table ([`configuration.md`](../configuration.md) B4) |
-| C2 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Shared play: O2–O4 down; E1 up |
-| C3 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Puzzle play: O2–O3 down; E1 up |
+| C1 | [`CMP-session-router`](session-router.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens, cues/ambient, assets: E1/E3/E5 down; O2/O3 up. Reads the locale string table ([`configuration.md`](../configuration.md) B4) |
+| C2 | [`CMP-shared-game-session`](shared-game-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Shared play: O1 up; E2–E4 down |
+| C3 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Puzzle play: O1 up; E2–E3 down |
 
 ## Owns / mutates
 
@@ -42,12 +42,12 @@ flowchart LR
   S[CMP-shared-game-session]
   Q[CMP-puzzle-session]
   V[CMP-presentation]
-  R -->|CTR-presentation O1/O3/O5| V
-  S -->|CTR-presentation O2-O4| V
-  Q -->|CTR-presentation O2-O3| V
-  V -.->|E2/E3| R
-  V -.->|E1| S
-  V -.->|E1| Q
+  R -.->|CTR-presentation E1/E3/E5| V
+  S -.->|CTR-presentation E2-E4| V
+  Q -.->|CTR-presentation E2-E3| V
+  V -->|O2/O3| R
+  V -->|O1| S
+  V -->|O1| Q
 ```
 
 ## Failure / concurrency / persistence
