@@ -6,43 +6,52 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../.agents/specs/ru
 - **Spec key**: `PHY`
 - **Glossary terms**: [World unit](../glossary.md)
 
+Drag M5: [`physics-drag.md`](physics-drag.md). Collision and settle: [`physics-contact.md`](physics-contact.md).
+
 ## Coverage
 
 | Element | Scenarios | Element | Scenarios |
 |---------|-----------|---------|-----------|
-| M1 | VS1.1 VS1.2 | M2 | VS1.3 |
-| M3 | VS1.4 | M4 | VS1.5 |
-| M5 | VS1.8 VS1.9 VS1.10 VS1.11 | K1 | VS1.6 |
-| I1 | VS1.7 | I2 | VS1.3 |
-| I3 | VS1.4 | | |
-
-VS1.8–VS1.11: [`physics-drag.md`](physics-drag.md).
+| M1 | VS1.1 VS1.2 VS1.3 | M2 | VS1.4 VS1.5 |
+| M3 | VS1.6 VS1.7 | M4 | VS1.8 VS1.9 |
+| I2 | VS1.4 | I3 | VS1.6 VS1.7 |
 
 ## VS1: Snappy place and capture
 
 As a casual player, I see moves finish quickly on the device so that Instant play stays obvious.
 
-### VS1.1: Legal place
+### VS1.1: Legal place starts
 
 - **Proves**: M1
 
 ```gherkin
-Given CAM-board Web 9:16, Shared game, a legal place e2→e4 (E-pieces.I10)
+Given CAM-board Web 9:16, Shared game, legal place e2→e4 (E-pieces.I10)
 When the move is played
-Then travel starts at acceptance, runs straight origin→destination in ≤ 0.15 s ease-out And the design move completion (L-two-player-game.K2) is not delayed to travel end, with no network wait
+Then travel starts at acceptance, straight origin→destination, ease-out And design move completion (L-two-player-game.K2) is not delayed to travel end, with no network wait
 ```
 
-### VS1.2: Travel ends
+### VS1.2: Mid travel
 
 - **Proves**: M1
 
 ```gherkin
-Given CAM-board Web 9:16, elapsed 0.15 s after move start
+Given CAM-board Web 9:16, legal place e2→e4 started, elapsed 0.07 s
 When sampled
-Then the mover is on the destination square center
+Then the mover body center is between e2 and e4 centers And not on the e4 center
 ```
 
-### VS1.3: Capture
+### VS1.3: Travel bound
+
+- **Proves**: M1
+
+```gherkin
+Given CAM-board Web 9:16, legal place e2→e4 started
+When sampled at elapsed 0.15 s
+Then the mover is on the e4 square center
+And at elapsed 0.16 s the mover remains on the e4 square center
+```
+
+### VS1.4: Capture
 
 - **Proves**: M2, I2
 
@@ -52,42 +61,55 @@ When played
 Then the captured piece breaks apart and clears during the same ≤ 0.15 s travel And is gone when the mover lands (E-pieces.I3) And fragments fade within M1
 ```
 
-### VS1.4: Promotion
+### VS1.5: Capture times
+
+- **Proves**: M2
+
+```gherkin
+Given CAM-board Web 9:16, a legal capture started
+When sampled at elapsed 0.07 s
+Then capture fragments are still visible
+And at elapsed 0.15 s the captured piece is gone And at 0.16 s it remains gone
+```
+
+### VS1.6: Promotion mid morph
 
 - **Proves**: M3, I3
 
 ```gherkin
-Given CAM-board Web 9:16, a legal promotion
-When the pawn arrives
-Then it morphs into the chosen type within ≤ 0.15 s with no pop-cut And the new type is visible when the move settles (E-pieces.I33)
+Given CAM-board Web 9:16, legal promotion to queen, morph started, elapsed 0.07 s
+When sampled
+Then the body is a partial morph: neither full pawn nor full queen silhouette
 ```
 
-### VS1.5: Castling
+### VS1.7: Promotion bound
+
+- **Proves**: M3, I3
+
+```gherkin
+Given CAM-board Web 9:16, legal promotion to queen, morph started
+When sampled at elapsed 0.15 s
+Then the queen type is visible (E-pieces.I33) via continuous morph (no pop-cut)
+And at elapsed 0.16 s the queen type remains
+```
+
+### VS1.8: Castling mid
 
 - **Proves**: M4
 
 ```gherkin
-Given CAM-board Web 9:16, legal castling
-When played
-Then king and rook each use M1 concurrently And both rest on their castling squares together when travel ends (E-pieces.I13)
+Given CAM-board Web 9:16, legal castling started, elapsed 0.07 s
+When sampled
+Then king and rook body centers are each between their start and castling square centers
 ```
 
-### VS1.6: No blocking shapes
+### VS1.9: Castling bound
 
-- **Proves**: K1
-
-```gherkin
-Given CAM-board Web 9:16, two adjacent pieces
-When neither move is in flight
-Then K1 holds: no simulated blocking shapes And placement follows SPC.P1
-```
-
-### VS1.7: Settle
-
-- **Proves**: I1
+- **Proves**: M4
 
 ```gherkin
-Given CAM-board Web 9:16, M1 lands
-When settle measured
-Then settle lasts ≤ 0.03 s And camera shake is none And the landing has no design effect
+Given CAM-board Web 9:16, legal castling started
+When sampled at elapsed 0.15 s
+Then king and rook rest on their castling squares together (E-pieces.I13)
+And at elapsed 0.16 s both remain there
 ```
