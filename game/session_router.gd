@@ -13,6 +13,8 @@ var stage := STAGE_LOADING
 
 var _resolver: AssetResolver
 var _seams: PlaytestSeams
+var _board_playable := false
+var _music_started := false
 
 
 func _ready() -> void:
@@ -24,12 +26,34 @@ func _ready() -> void:
 	_seams.seed_changed.connect(_on_seed_changed)
 	_seams.input_replayed.connect(_on_input_replayed)
 	_resolver.boot_ready.connect(_on_boot_ready)
+	_resolver.must_overlay.connect(_on_unresolved_overlay)
 
 
 func start() -> void:
 	stage = STAGE_LOADING
 	screen_requested.emit(STAGE_LOADING, {})
 	_resolver.preload_boot()
+
+
+func enter_shared_play() -> void:
+	if _resolver.group_loaded("play"):
+		return
+	_resolver.preload_play()
+
+
+func note_board_playable() -> void:
+	_board_playable = true
+
+
+func start_music() -> void:
+	if not _board_playable or _music_started:
+		return
+	_music_started = true
+	_resolver.preload_ambient()
+
+
+func _on_unresolved_overlay(asset_id: String) -> void:
+	_seams.set_overlay(true, PackedStringArray([asset_id]))
 
 
 func play_snapshot() -> Dictionary:
