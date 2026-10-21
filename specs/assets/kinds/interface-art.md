@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Interface art
 - **Source types**: AI generation; human-made
-- **Style**: P3; [UI.F1 F2](../../aesthetics/ui-style.md); [PAL.S3](../../aesthetics/palette.md) C9 C10 C6
+- **Style**: [AES.P3](../../aesthetics/aesthetics.md); [UIS.F1](../../aesthetics/ui-style.md) [UIS.F2](../../aesthetics/ui-style.md); [PAL.S3](../../aesthetics/palette.md) C9 C10 C6
 - **Tool roles**: TL.1
 - **Approval**: As hub
 - **Serves**: Cafe calm; Localization layouts; mode-pick / setup / result / play chrome
@@ -13,14 +13,14 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 | ID | Subject | Required variants | Count |
 |----|---------|-------------------|-------|
-| V1 | Panel / button surface | Default cream panel (F1) | 1 |
-| V2 | Tooltip / chip surface | Lighter F2 treatment | 1 |
+| V1 | Panel / button surface | Default cream panel (UIS.F1) | 1 |
+| V2 | Tooltip / chip surface | Lighter UIS.F2 treatment | 1 |
 
 ## Specification
 
 | ID | Property | Value |
 |----|----------|-------|
-| S1 | Look | Flat cream (C10); thin warm border (C5 family); soft radius (UI.F1) |
+| S1 | Look | Flat cream (C10); thin warm border (C5 family); soft radius (UIS.F1) |
 | S2 | Medium | SVG or 9-slice PNG with alpha |
 | S3 | Text | No baked-in copy (Localization) |
 
@@ -32,36 +32,27 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ## Style series
 
+Full fields: [`interface-art/style-series.md`](interface-art/style-series.md).
+
 ### SS1 — primary
 
-- **State**: active
-- **Modality**: visual
-- **Enforce**: hard
-- **Style anchors**: `01a151ef-6a32-77ec-ace1-9190aa56b7dc` (`interface-art/style-anchor-sheet`)
-- **Style binding**: Recraft `recraft_style_id` `16e2245a-a7d1-41a3-bf06-2792ca253c1c`; model per [`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md); name `simplechessv2-interface-art-SS1`
-- **Aesthetics**: P3; UI.F1 F2; PAL.S3
-- **Built from**: `01a151ef-6a32-77ec-ace1-9190aa56b7dc` on 2026-10-19 (cream gradient panel+chip; no grain)
-- **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
+- **State**: active — see style-series.md for binding, anchors, aesthetics
 
 #### Prompt policy
 
-- **Compose**: subject-first when `active`; append master + negative.
-- **Master**: quiet cafe UI panel; soft cream daylight gradient (PAL.C10 family); soft radius; warm thin border; no chrome (UI.F1; P3)
-- **Negative**: glassmorphism; neon; heavy shadow stacks; esports HUD; baked text; paper grain noise (vs UI.F1 F2; PAL.S3)
+N/A — see [`interface-art/style-series.md`](interface-art/style-series.md).
 
 ## Recipes
 
+Full recipes: [`interface-art/recipes.md`](interface-art/recipes.md).
+
 ### R1 — Recraft UI surface
 
-- **Source type**: AI generation
-- **Tool role**: TL.1
-- **Inputs**: style anchors when set
-- **Prompt template (bootstrap)**: cream panel button surface; compose with prompt_policy
-- **Prompt template (series)**: {panel\|chip} surface; compose with prompt_policy
-- **Settings**: Recraft style when active; alpha edges
-- **Seed policy**: record or `n/a`
-- **Post-processing**: 9-slice guides if PNG; strip text
-- **Outputs**: V1 and V2 files
+- **Post-processing**: 9-slice guides if PNG; strip text; see recipes.md
+
+### R2 — Human-made UI surface
+
+- **Source type**: human-made — see recipes.md for N/A tool/prompts/settings/seed
 
 ## Checks
 
@@ -70,9 +61,10 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K1 | No baked text | Inspect | Empty of glyphs |
 | K2 | Contrast ready | C9 on C10 region | PAL.K4 feasible |
 | K3 | Budget | File size | ≤ 100 KB |
-| K4 | Quiet UI | Look vs P3 | Apart from board; calm |
+| K4 | Quiet UI | Look vs AES.P3 | Apart from board; calm |
 | K5 | Spec S2 | File inspect | SVG or 9-slice PNG with alpha |
-| K6 | Spec S1 | Inspect | Flat cream fill; thin warm border; soft radius (UI.F1) |
+| K6 | Spec S1 | Inspect | Flat cream fill; thin warm border; soft radius (UIS.F1) |
+| K7 | Readable at min panel | Look at smallest phone-width panel screens use | Soft radius and warm border still clear; surface not mush |
 
 ## Naming
 
