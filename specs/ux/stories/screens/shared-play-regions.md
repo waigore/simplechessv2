@@ -21,7 +21,7 @@ As Bottom or Top player, I see the shared position and status so that both seats
 ```gherkin
 Given an actor is on shared-play S1
 When the screen is shown
-Then R1 shows file letters a–h and rank numbers 1–8 only along the outer edges
+Then R1 shows file letters a–h and rank numbers 1–8 only along the outer edges And C1–C5 are available
 ```
 
 ### US2.2: Position shown

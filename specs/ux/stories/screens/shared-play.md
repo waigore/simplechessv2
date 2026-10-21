@@ -10,27 +10,27 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| R1 | Board, coordinates, selection, legal marks | US2.1 US2.2 US2.3 US2.10 |
+| R1 | Board | US2.1 US2.2 US2.3 US2.10 |
 | R2 | Status | US2.4 US2.5 US2.6 US2.7 |
-| R3 | Advice marks | US2.8 US2.9 |
+| R3 | Advice | US2.8 US2.9 |
 | R4 | Resign | US1.1 |
 | C1 | Select | US1.2 US1.6 US4.1 US4.9 |
-| C2 | Place | US1.3 US1.7 US4.2 US4.10 |
-| C3 | Advice shared | US1.4 US4.3 |
+| C2 | Place | US1.3 US1.7 US3.11 US3.13 US3.14 US3.16 US4.2 US4.10 |
+| C3 | Advice | US1.4 US4.3 |
 | C4 | Resign | US1.1 US1.5 US4.4 US4.11 |
 | S1 | Default | US2.1 |
 | S2 | EX.confirm | US1.1 US1.8 US3.12 |
-| S3 | EX.error | US1.9 |
+| S3 | EX.error | US1.9 US3.17 |
 | C5 | Offer draw | US3.1 US3.2 US4.5 US4.12 |
-| C6 | Promotion piece | US3.3 US3.4 |
-| C7 | Accept draw | US3.5 US4.6 |
-| C8 | Decline draw | US3.7 US4.7 |
-| C9 | Withdraw offer | US3.9 US4.8 |
+| C6 | Promotion | US3.3 US3.4 |
+| C7 | Accept | US3.5 US4.6 |
+| C8 | Decline | US3.7 US4.7 |
+| C9 | Withdraw | US3.9 US4.8 |
 | S4 | EX.promote | US3.3 US3.13 |
 | S5 | EX.rejected | US3.11 |
-| S6 | EX.draw-offer | US3.5 US3.14 US3.15 |
+| S6 | EX.draw-offer | US3.5 US3.12 US3.14 US3.15 |
 
-US2: [`shared-play-regions.md`](shared-play-regions.md). US3: [`shared-play-choices.md`](shared-play-choices.md). US4: [`shared-play-unavailable.md`](shared-play-unavailable.md).
+US2: [`shared-play-regions.md`](shared-play-regions.md). US3: [`shared-play-choices.md`](shared-play-choices.md), [`shared-play-place.md`](shared-play-place.md). US4: [`shared-play-unavailable.md`](shared-play-unavailable.md).
 
 ## US1: Shared board play
 
@@ -43,7 +43,7 @@ As Bottom or Top player, I move on my turn so that the game advances.
 ```gherkin
 Given the side-to-move actor is on S1
 When that actor activates C4
-Then EX.confirm shows Resign this game?
+Then EX.confirm shows Resign this game? And Confirm and Cancel are available
 ```
 
 ### US1.2: Select on turn
@@ -62,8 +62,8 @@ Then GS.selectedPiece is that piece
 
 ```gherkin
 Given Bottom seat is side to move and GS.selectedPiece is set
-When Bottom activates C2 on a legal square
-Then the interface asks for that place
+When Bottom activates C2 on a legal square that is not last-rank promotion
+Then the interface asks for that place and GS.selectedPiece is cleared
 ```
 
 ### US1.4: Shared Advice
@@ -104,24 +104,4 @@ Then GS.selectedPiece is unchanged
 Given Bottom is not side to move on shared-play S1
 When Bottom activates C2 on a square
 Then position unchanged and no place asked
-```
-
-### US1.8: Cancel resign
-
-- **Proves**: S2
-
-```gherkin
-Given S2 resign confirm
-When the actor activates Cancel
-Then the screen is shared-play S1
-```
-
-### US1.9: Advice error
-
-- **Proves**: S3
-
-```gherkin
-Given shared-play S3 EX.error after Advice fetch failed
-When the actor dismisses
-Then shared-play S1 and C1–C5 stay usable
 ```
