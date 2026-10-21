@@ -59,8 +59,23 @@ func resolve(asset_id: String) -> Resource:
 	if loaded.is_empty():
 		_reject(asset_id)
 		return null
+	_wire_font_fallbacks(loaded)
 	_cache[asset_id] = loaded
 	return loaded[0]
+
+
+## Chain every Font face of a multi-file asset so TC + JP (and Latin weights) cover glyphs.
+func _wire_font_fallbacks(loaded: Array[Resource]) -> void:
+	var fonts: Array[Font] = []
+	for resource in loaded:
+		if resource is Font:
+			fonts.append(resource as Font)
+	if fonts.size() < 2:
+		return
+	var extras: Array[Font] = []
+	for index in range(1, fonts.size()):
+		extras.append(fonts[index])
+	fonts[0].fallbacks = extras
 
 
 ## Resolve every ID in a load group (for CTR-presentation.O5 via L2).
