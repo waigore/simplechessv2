@@ -1,0 +1,98 @@
+{
+  "id": "01a15dab-051c-73b7-bad0-e6df05f4d2b6",
+  "handle": "piece-sprites/r-black",
+  "kind_spec": "AK-piece-sprites",
+  "coverage": [
+    "AK-piece-sprites.V1"
+  ],
+  "serves": [
+    "E-pieces",
+    "PER.R1"
+  ],
+  "state": "approved",
+  "version": 1,
+  "files": [
+    "piece-sprites/r-black.png"
+  ],
+  "source_type": "ai-generation",
+  "tool_role": {
+    "role": "TL.1",
+    "adr": "adr-free"
+  },
+  "recipe": "AK-piece-sprites.R1",
+  "generation": {
+    "prompt": "Derive Staunton rook black from the approved SS1 piece sheet by local S5\u2013S9 only. Staunton vector; flat fills; ivory/charcoal; silhouette (FRM.L1); cafe calm (P3). No new Recraft call.",
+    "negative_prompt": "pixel art; 3D; blood; badges; AI avatar; busy texture; neon; tournament UI",
+    "tool": "Chrome",
+    "operation": "headless-screenshot",
+    "settings": {
+      "rasterizer": "chrome-headless",
+      "window_size": 2048,
+      "flood_fill_rgb_min": 250,
+      "crop_pad_px": 8,
+      "fit": "shared-lanczos-center",
+      "resample": "LANCZOS",
+      "fit_size_px": 512,
+      "body_long_side": 0.85,
+      "shared_scale": 0.7529
+    },
+    "seed": "n/a \u2014 tool has no seed",
+    "inputs": {
+      "style_anchors": [
+        "01a14f87-eeee-7f30-aa10-4516f0191610"
+      ],
+      "refs": [
+        "FRM.L1",
+        "FRM.P2",
+        "PAL.C3",
+        "PAL.C4",
+        "SPC.E1"
+      ],
+      "base_assets": [
+        "01a14f87-eeee-7f30-aa10-4516f0191610"
+      ]
+    },
+    "steps": [
+      {
+        "operation": "headless-screenshot",
+        "tool": "Chrome",
+        "date": "2026-10-21",
+        "notes": "S5 rasterize style-anchor-sheet.svg at 2048; hide scrollbars so the frame is the SVG"
+      },
+      {
+        "operation": "edge-flood-fill",
+        "tool": "Pillow",
+        "date": "2026-10-21",
+        "notes": "S6 near-white RGB >= 250 from the edges only"
+      },
+      {
+        "operation": "sheet-crop",
+        "tool": "Pillow",
+        "date": "2026-10-21",
+        "notes": "S7 ivory top / charcoal bottom, KQRBNP, ~8px pad; drop column-edge slivers"
+      },
+      {
+        "operation": "shared-scale-center",
+        "tool": "Pillow",
+        "date": "2026-10-21",
+        "notes": "S8 one LANCZOS scale for the set, centered, no stretch; tallest body about 85% (S1) so FRM.P2 order remains"
+      }
+    ],
+    "series": {
+      "id": "AK-piece-sprites.SS1",
+      "recraft_style_id": "58840487-cf72-41fa-b83f-5773ea7a1c11"
+    }
+  },
+  "license": {
+    "grant": "Derived locally from a Recraft sheet; project use under Recraft terms for the signing account. Chrome and Pillow steps add no third-party license.",
+    "tool": "Recraft",
+    "terms": "https://www.recraft.ai/docs"
+  },
+  "review": {
+    "verdict": "Pass",
+    "date": "2026-10-21",
+    "reviewer": "agent",
+    "report": "Pass. Local S5\u2013S9 from 01a14f87-eeee-7f30-aa10-4516f0191610; no Recraft call. 512 square PNG, 23023 bytes \u2264 80 KB (K3/B1). Opaque body 0.387\u00d70.670 of the canvas, center 0.499,0.504 (S1/S4). Opaque height 343px at shared scale 0.7529; set order K > Q > B \u2248 N > R > P (FRM.P2: king, queen, rook/bishop/knight band with rook at the low end of the sheet, pawn shortest). charcoal PAL.C4 fill; same-type silhouette as the other side; no PAL.K3 overlay hex. Solid-black silhouette at 64px (~1/12 of a short frame) names this type (K1/FRM.L1). Quiet vector, no tournament chrome (K4/P2/P3). K5 is 12 V1 entries. K6: sheet rebuild vs the approved golden differs by at most 3 levels per channel."
+  },
+  "guidance": "Ship sprite derived from piece-sprites/style-anchor-sheet. Re-run docs/asset-previews/derive_piece_sprites.py; do not call Recraft."
+}
