@@ -11,6 +11,14 @@ const COLOR_TABLE := Color("5C3A2A")
 const COLOR_SELECT := Color("B8940C")
 const COLOR_LEGAL := Color("6EA746")
 const COLOR_INK := Color("2C2A28")
+const COLOR_CREAM := Color("F7F1E8")
+## Empty legal diamond half-diagonal so area 2 r² ≥ 1/4 square (PER.R4).
+const LEGAL_EMPTY_R := 0.36
+## Capture ring radius / stroke so ink area ≈ 2π r w ≥ 1/4 square.
+const LEGAL_CAPTURE_R := 0.40
+const LEGAL_CAPTURE_W := 0.10
+## Selection frame stroke in world units (≪ 10% of piece body — PER.R1 / R3).
+const SELECT_STROKE := 0.06
 const BOARD_BG_ID := "01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855"
 const PIECE_IDS := {
 	"white|pawn": "01a15dab-051c-7db1-8f3e-9cb5e68058d8",
@@ -54,10 +62,11 @@ var _board_root: Node2D
 var _squares_root: Node2D
 var _pieces_root: Node2D
 var _overlay_root: Node2D
-var _select_poly: Polygon2D
+var _select_frame: Line2D
 var _legal_root: Node2D
 var _board_sprite: Sprite2D
 var _coords_root: Control
+var _coord_font: Font
 
 
 func _ready() -> void:
@@ -110,11 +119,13 @@ func _ready() -> void:
 	_overlay_root.name = "Overlays"
 	_overlay_root.z_index = 4
 	_content.add_child(_overlay_root)
-	_select_poly = Polygon2D.new()
-	_select_poly.name = "Selection"
-	_select_poly.color = Color(COLOR_SELECT, 0.45)
-	_select_poly.visible = false
-	_overlay_root.add_child(_select_poly)
+	_select_frame = Line2D.new()
+	_select_frame.name = "Selection"
+	_select_frame.width = SELECT_STROKE
+	_select_frame.default_color = COLOR_SELECT
+	_select_frame.closed = true
+	_select_frame.visible = false
+	_overlay_root.add_child(_select_frame)
 	_legal_root = Node2D.new()
 	_legal_root.name = "LegalMarks"
 	_overlay_root.add_child(_legal_root)
@@ -131,7 +142,12 @@ func _ready() -> void:
 
 
 func provide_assets(resources_by_id: Dictionary) -> void:
-	_assets = resources_by_id.duplicate()
+	for asset_id in resources_by_id.keys():
+		_assets[str(asset_id)] = resources_by_id[asset_id]
+	var latin: Variant = resources_by_id.get(UiChrome.FONT_LATIN, null)
+	if latin is Font:
+		_coord_font = latin as Font
+		_refresh_coordinate_fonts()
 	_bind_board_backdrop()
 	_refresh_piece_textures()
 
@@ -144,20 +160,37 @@ func render_position(
 ) -> void:
 	if options.has("white_seat"):
 		set_white_seat(str(options["white_seat"]))
-	_occupancy = (position.get("occupancy", {}) as Dictionary).duplicate(true)
+	var post_occ: Dictionary = (position.get("occupancy", {}) as Dictionary).duplicate(true)
 	_selection = selection
 	_legal_marks = legal.duplicate()
 	_capture_marks = PackedStringArray()
 	for square in _legal_marks:
-		var piece: Dictionary = _occupancy.get(square, {})
+		var piece: Dictionary = post_occ.get(square, {})
 		if not piece.is_empty():
 			_capture_marks.append(str(square))
 	if options.has("capture_marks"):
 		_capture_marks = PackedStringArray(options["capture_marks"])
-	_sync_pieces()
+	var move_opt: Variant = options.get("move", null)
+	var has_move := (
+		move_opt is Dictionary and not str((move_opt as Dictionary).get("from", "")).is_empty()
+	)
+	if has_move:
+		# O2 is post-apply; rebuild the pre-move board so play_move can animate.
+		var move: Dictionary = move_opt as Dictionary
+		var prior := _occupancy.duplicate(true)
+		if prior.is_empty() or not prior.has(str(move.get("from", ""))):
+			prior = _occupancy_before_move(post_occ, move)
+		_occupancy = prior
+		if not _motion_busy:
+			_sync_pieces()
+		_sync_overlays()
+		_occupancy = post_occ
+		_play_move_dict(move)
+		return
+	_occupancy = post_occ
+	if not _motion_busy:
+		_sync_pieces()
 	_sync_overlays()
-	if options.has("move"):
-		_play_move_dict(options["move"] as Dictionary)
 
 
 func set_white_seat(seat: String) -> void:
@@ -241,7 +274,7 @@ func play_move(
 	var dest := BoardGeometry.square_center(to_square)
 	last_travel_s = BoardGeometry.TRAVEL_S
 	var duration := last_travel_s
-	var color := _piece_color(from_square)
+	var color := _piece_color(from_square, mover)
 	var fragments: Array[Node2D] = []
 	if not capture_square.is_empty() and _piece_nodes.has(capture_square):
 		fragments = _spawn_capture_break(capture_square)
@@ -251,6 +284,10 @@ func play_move(
 	if not castle_rook_from.is_empty() and _piece_nodes.has(castle_rook_from):
 		rook = _piece_nodes[castle_rook_from] as Node2D
 		rook_dest = BoardGeometry.square_center(castle_rook_to)
+	# PHY.M3: promotion morph runs inside the same ≤0.15 s budget as M1.
+	if not promote_kind.is_empty():
+		_apply_kind_texture(mover, color, promote_kind)
+		mover.modulate.a = 0.35
 	var tw := create_tween()
 	tw.set_ease(Tween.EASE_OUT)
 	tw.set_trans(Tween.TRANS_QUAD)
@@ -261,18 +298,11 @@ func play_move(
 	for frag in fragments:
 		tw.tween_property(frag, "modulate:a", 0.0, duration)
 	if not promote_kind.is_empty():
-		tw.tween_property(mover, "modulate:a", 0.35, duration * 0.5)
+		tw.tween_property(mover, "modulate:a", 1.0, duration)
 	await tw.finished
 	for frag in fragments:
 		frag.queue_free()
 	if not promote_kind.is_empty():
-		_apply_kind_texture(mover, color, promote_kind)
-		var morph := create_tween()
-		morph.set_ease(Tween.EASE_OUT)
-		morph.set_trans(Tween.TRANS_QUAD)
-		mover.modulate.a = 0.35
-		morph.tween_property(mover, "modulate:a", 1.0, duration * 0.5)
-		await morph.finished
 		mover.modulate = Color.WHITE
 	_rekey_piece(from_square, to_square, mover)
 	if rook != null:
@@ -309,9 +339,13 @@ func visible_world_size() -> Vector2:
 	return BoardGeometry.visible_size(aspect_ratio())
 
 
-func _piece_color(square: String) -> String:
+func _piece_color(square: String, node: Node2D = null) -> String:
 	var piece: Dictionary = _occupancy.get(square, {})
-	return str(piece.get("color", "white"))
+	if not piece.is_empty():
+		return str(piece.get("color", "white"))
+	if node != null and node.has_meta("piece_color"):
+		return str(node.get_meta("piece_color"))
+	return "white"
 
 
 func _play_move_dict(move: Dictionary) -> void:
@@ -323,6 +357,38 @@ func _play_move_dict(move: Dictionary) -> void:
 		str(move.get("rook_from", "")),
 		str(move.get("rook_to", ""))
 	)
+
+
+## Invert a post-apply occupancy using the move payload so O2 can animate.
+func _occupancy_before_move(post: Dictionary, move: Dictionary) -> Dictionary:
+	var pre: Dictionary = post.duplicate(true)
+	var from_sq := str(move.get("from", ""))
+	var to_sq := str(move.get("to", ""))
+	var capture_sq := str(move.get("capture", ""))
+	var promote_kind := str(move.get("promote", ""))
+	var rook_from := str(move.get("rook_from", ""))
+	var rook_to := str(move.get("rook_to", ""))
+	if not to_sq.is_empty() and pre.has(to_sq):
+		var mover: Dictionary = (pre[to_sq] as Dictionary).duplicate(true)
+		if not promote_kind.is_empty():
+			mover["kind"] = "pawn"
+		mover["square"] = from_sq
+		pre[from_sq] = mover
+		pre.erase(to_sq)
+	if not capture_sq.is_empty() and move.has("captured"):
+		pre[capture_sq] = (move["captured"] as Dictionary).duplicate(true)
+	elif not capture_sq.is_empty():
+		pre[capture_sq] = {
+			"color": str(move.get("captured_color", "black")),
+			"kind": str(move.get("captured_kind", "pawn")),
+			"square": capture_sq,
+		}
+	if not rook_to.is_empty() and pre.has(rook_to):
+		var rook: Dictionary = (pre[rook_to] as Dictionary).duplicate(true)
+		rook["square"] = rook_from
+		pre[rook_from] = rook
+		pre.erase(rook_to)
+	return pre
 
 
 func _layout_camera() -> void:
@@ -394,29 +460,59 @@ func _build_coordinates() -> void:
 
 
 func _make_coord_label(text: String, key: String) -> Label:
+	## PER.R7: UIS.T2 size, C9 ink on C10 cream chip (≥ 4.5:1), catalog font when bound.
+	var chip := Panel.new()
+	chip.name = "%s_chip" % key
+	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = COLOR_CREAM
+	style.set_corner_radius_all(3)
+	style.content_margin_left = 2
+	style.content_margin_right = 2
+	style.content_margin_top = 1
+	style.content_margin_bottom = 1
+	chip.add_theme_stylebox_override("panel", style)
 	var label := Label.new()
 	label.name = key
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", 14)
+	label.add_theme_font_size_override("font_size", UiChrome.BODY_PX)
 	label.add_theme_color_override("font_color", COLOR_INK)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.custom_minimum_size = Vector2(18, 18)
-	_coords_root.add_child(label)
+	label.custom_minimum_size = Vector2(UiChrome.BODY_PX + 4, UiChrome.BODY_PX + 4)
+	if _coord_font != null:
+		UiChrome.apply_font(label, _coord_font)
+	chip.add_child(label)
+	_coords_root.add_child(chip)
 	return label
+
+
+func _refresh_coordinate_fonts() -> void:
+	if _coord_font == null:
+		return
+	for key in _coord_meta.keys():
+		var entry: Dictionary = _coord_meta[key]
+		var label := entry["label"] as Label
+		UiChrome.apply_font(label, _coord_font)
 
 
 func _refresh_coordinates() -> void:
 	if _content == null:
 		return
+	var half := float(UiChrome.BODY_PX + 4) * 0.5
 	for key in _coord_meta.keys():
 		var entry: Dictionary = _coord_meta[key]
 		var label := entry["label"] as Label
+		var chip := label.get_parent() as Control
 		var world: Vector2 = entry["world"]
 		# Content rotates with CAM-board.M2; labels stay upright in screen space.
 		var screen := world_to_screen(world)
-		label.position = screen - Vector2(9, 9)
+		if chip != null:
+			chip.position = screen - Vector2(half, half)
+			chip.size = Vector2(UiChrome.BODY_PX + 4, UiChrome.BODY_PX + 4)
+		else:
+			label.position = screen - Vector2(half, half)
 
 
 func _sync_pieces() -> void:
@@ -444,6 +540,8 @@ func _make_piece_node(square: String, piece: Dictionary) -> Node2D:
 	var root := Node2D.new()
 	root.name = "piece_%s" % square
 	root.position = BoardGeometry.square_center(square)
+	root.set_meta("piece_color", str(piece.get("color", "white")))
+	root.set_meta("piece_kind", str(piece.get("kind", "pawn")))
 	var sprite := Sprite2D.new()
 	sprite.name = "Sprite"
 	sprite.centered = true
@@ -457,6 +555,8 @@ func _apply_kind_texture(node: Node2D, color: String, kind: String) -> void:
 	var sprite := node.get_node_or_null("Sprite") as Sprite2D
 	if sprite == null:
 		return
+	node.set_meta("piece_color", color)
+	node.set_meta("piece_kind", kind)
 	var asset_id := str(PIECE_IDS.get("%s|%s" % [color, kind], ""))
 	if asset_id.is_empty():
 		return
@@ -476,23 +576,22 @@ func _sync_overlays() -> void:
 	for child in _legal_root.get_children():
 		child.queue_free()
 	if _selection.is_empty() or not BoardGeometry.is_square(_selection):
-		_select_poly.visible = false
+		_select_frame.visible = false
 	else:
 		var c := BoardGeometry.square_center(_selection)
-		_select_poly.polygon = PackedVector2Array(
-			[
-				c + Vector2(-0.5, -0.5),
-				c + Vector2(0.5, -0.5),
-				c + Vector2(0.5, 0.5),
-				c + Vector2(-0.5, 0.5),
-			]
-		)
-		_select_poly.visible = true
+		var half := 0.5 - SELECT_STROKE * 0.5
+		_select_frame.clear_points()
+		_select_frame.add_point(c + Vector2(-half, -half))
+		_select_frame.add_point(c + Vector2(half, -half))
+		_select_frame.add_point(c + Vector2(half, half))
+		_select_frame.add_point(c + Vector2(-half, half))
+		_select_frame.default_color = COLOR_SELECT
+		_select_frame.width = SELECT_STROKE
+		_select_frame.visible = true
 	for square in _legal_marks:
 		var sq := str(square)
 		if not BoardGeometry.is_square(sq):
 			continue
-		var mark := Polygon2D.new()
 		var c := BoardGeometry.square_center(sq)
 		var is_capture := false
 		for cap in _capture_marks:
@@ -500,19 +599,20 @@ func _sync_overlays() -> void:
 				is_capture = true
 				break
 		if is_capture:
-			# Hollow ring (≥1/4 square) so capture targets read without hiding the piece.
+			# Hollow ring at full PAL.C11; ink area 2π r w ≥ 1/4 square (PER.R4 / PAL.K6).
 			var ring := Line2D.new()
-			ring.width = 0.08
-			ring.default_color = Color(COLOR_LEGAL, 0.9)
+			ring.width = LEGAL_CAPTURE_W
+			ring.default_color = COLOR_LEGAL
 			ring.closed = true
-			var rad := 0.38
 			for i in range(16):
 				var ang := TAU * float(i) / 16.0
-				ring.add_point(c + Vector2(cos(ang), sin(ang)) * rad)
+				ring.add_point(c + Vector2(cos(ang), sin(ang)) * LEGAL_CAPTURE_R)
 			_legal_root.add_child(ring)
 		else:
-			mark.color = Color(COLOR_LEGAL, 0.75)
-			var r := 0.28
+			# Diamond at full PAL.C11; area 2 r² ≥ 1/4 square.
+			var mark := Polygon2D.new()
+			mark.color = COLOR_LEGAL
+			var r := LEGAL_EMPTY_R
 			mark.polygon = PackedVector2Array(
 				[
 					c + Vector2(-r, 0),

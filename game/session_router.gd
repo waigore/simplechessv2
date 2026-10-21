@@ -45,6 +45,9 @@ func _ready() -> void:
 	_seams.input_replayed.connect(_on_input_replayed)
 	_resolver.boot_ready.connect(_on_boot_ready)
 	_resolver.must_overlay.connect(_on_unresolved_overlay)
+	var host := get_parent()
+	if host != null and host.has_signal("asset_needed"):
+		host.asset_needed.connect(_on_asset_needed)
 	if _persist != null:
 		_persist.write_failed.connect(show_save_failure)
 
@@ -57,9 +60,9 @@ func start() -> void:
 
 
 func enter_shared_play() -> void:
-	if _resolver.group_loaded("play"):
-		return
-	_resolver.preload_play()
+	if not _resolver.group_loaded("play"):
+		_resolver.preload_play()
+	_provide_assets(_resolver.resolve_group("play"))
 
 
 func note_board_playable() -> void:
@@ -132,8 +135,22 @@ func _known_stages() -> PackedStringArray:
 
 
 func _on_boot_ready() -> void:
+	_provide_assets(_resolver.resolve_group("boot"))
 	_load_persist()
 	_go_mode_pick()
+
+
+func _on_asset_needed(asset_ids: PackedStringArray) -> void:
+	## CTR-presentation.E3 → CTR-asset-resolve → CTR-presentation.O5.
+	_provide_assets(_resolver.resolve_ids(asset_ids))
+
+
+func _provide_assets(resources_by_id: Dictionary) -> void:
+	if resources_by_id.is_empty():
+		return
+	var host := get_parent()
+	if host != null and host.has_method("provide_assets"):
+		host.call("provide_assets", resources_by_id)
 
 
 func _load_persist() -> void:
