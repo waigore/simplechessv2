@@ -4,7 +4,7 @@ Read this before editing `specs/playtest/tools.md` or a file split from it. Do n
 
 Also read [playtest.md](playtest.md).
 
-Capabilities the AI agent and the running build must provide so design and UX playtest protocols can run. Product terms only. Engines, frameworks, formats, and tool products belong in ADRs. Injection points and harness detail belong in `specs/technical/verification.md`. Screenshot and log *artifacts* are specified in `evidence.md` when that file exists; this file only requires that a running session can be observed and captured.
+Capabilities the AI agent and the running build must provide so design and UX playtest protocols can run. Product terms only. Engines, frameworks, formats, and tool products belong in ADRs. Injection points and harness detail belong in `specs/technical/verification.md`. Screenshot and log *artifacts* are specified in `evidence.md` when that file exists; this file only requires that a running session can be observed and captured. A headless session still yields inspect, telemetry, and logs. A graphical session can capture screenshots.
 
 ## Drive
 

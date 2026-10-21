@@ -9,6 +9,7 @@ description: |-
     - user: "Accept #12 with evidence in docs/playtest/evidence/..." → accept comment, status:accepted, leave open
     - user: "Acceptance failed; file defect" → create defect, link, → pending-implementation
     - user: "Need PO input to finish acceptance on #12" → pending-clarification
+    - user: "Headless accept on #12; screenshots still waiting" → stay pending-acceptance, no defect
 ---
 
 # Accept project issue (facade)

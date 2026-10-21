@@ -22,11 +22,13 @@ Require: build under test; Must tools from `tools.md` available; Situational too
 
 ## Per protocol
 
-Ordered steps the agent always follows: enter start position (including `DBG.3` when needed) → drive via player-facing controls and debug commands → observe via inspect, story-ID overlay, and telemetry → judge pass/fail against the cited design or UX story → write screenshots, notes, and logs into the evidence folder. Design-level protocols judge game outcomes; UX-level protocols judge interface operation.
+Ordered steps the agent always follows: enter start position (including `DBG.3` when needed) → drive via player-facing controls and debug commands → observe via inspect, story-ID overlay, and telemetry → judge pass/fail against the cited design or UX story → write notes and logs into the evidence folder, and screenshots when the run has a display. Design-level protocols judge game outcomes; UX-level protocols judge interface operation.
+
+A headless run (no display) may complete those steps except screenshots. Missing screenshots are not a fail and do not file a defect. Before acceptance, a graphical run re-runs the protocols on the same build and writes the screenshots into its own run folder. It does not only attach images to the headless log. A protocol that says no screenshot may be accepted from the headless run alone.
 
 ## Outcomes
 
-Default: any protocol fail blocks acceptance. Record fail evidence and stop that protocol; remaining protocols may still run if useful, but acceptance must not pass while a required protocol has failed. Non-blocking notes exist only when a protocol explicitly marks an observation as non-blocking.
+Default: any protocol fail for a game or interface reason blocks acceptance and may file a defect without screenshots. Record fail evidence and stop that protocol; remaining protocols may still run if useful, but acceptance must not pass while a required protocol has failed. When judgement is recorded and screenshots are still waiting on a graphical re-run, stay on `status:pending-acceptance`. Non-blocking notes exist only when a protocol explicitly marks an observation as non-blocking.
 
 ## Splitting
 

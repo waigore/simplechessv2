@@ -22,4 +22,4 @@ Thin automation entrypoint for `status:pending-acceptance`.
 
 1. **Resolve** one target issue per the dispatch contract (`#n`, or discover `status:pending-acceptance`).
 2. **Read and run** `accept-project-issue` for that issue (independence is enforced by that skill and the dispatch contract).
-3. **Report** the underlying skill's outcome (URL, accept/fail/clarify, new status).
+3. **Report** the underlying skill's outcome (URL, accept/fail/clarify/waiting on screenshots, new status). Waiting on screenshots stays `pending-acceptance` and is not a defect.

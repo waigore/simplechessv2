@@ -38,7 +38,7 @@ Sink and format are set by the technical design in [`specs/technical/verificatio
 
 ## Capture affordance
 
-A running playtest session must be observable so logs and the screenshots [`evidence.md`](evidence.md) requires can be written under `docs/playtest/evidence/`.
+A running playtest session must be observable. A headless session still yields inspect, telemetry, and logs. A graphical session can capture screenshots. Artifact rules, including when screenshots are required, live in [`evidence.md`](evidence.md).
 
 ## Situational
 
