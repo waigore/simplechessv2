@@ -2,7 +2,7 @@
 
 - **Issue**: 94
 - **Environment**: graphical
-- **Build / session id**: Godot 4.7.2.stable.official.ed1daf0bf (same worktree as headless-20261021T213840Z). Display: macOS / Metal (editor display playtest path). Capture `TEL.3`: `sess-1792618860774-71986-playtest`.
+- **Build / session id**: Godot 4.7.2.stable.official.ed1daf0bf (commit `2f04d9d`; same build as headless-20261021T213840Z). Display: macOS / Metal (editor display playtest path). Capture `TEL.3`: `sess-1792618860774-71986-playtest`.
 - **Coverage mode**: full (same in-scope set as headless twin)
 - **Screenshots**: present under `screenshots/`.
 
