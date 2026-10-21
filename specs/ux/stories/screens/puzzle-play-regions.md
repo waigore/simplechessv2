@@ -21,7 +21,7 @@ As Bottom player, I see the dealt puzzle and my Elo so that practice stays clear
 ```gherkin
 Given Bottom player is on puzzle-play S1
 When the screen is shown
-Then R1 shows a–h and 1–8 only on the outer edges
+Then R1 shows a–h and 1–8 only on the outer edges And C1–C5 are available
 ```
 
 ### US2.2: Position shown
