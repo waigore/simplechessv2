@@ -29,11 +29,15 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _locale_cycle()
 	if _error.is_empty():
+		_error = _exception_point_hover()
+	if _error.is_empty():
 		_error = _quit_confirm_cancel()
 	if _error.is_empty():
 		_error = _shared_path()
 	if _error.is_empty():
 		_error = _string_table()
+	if _error.is_empty():
+		_error = _uis_motion_present()
 	if _error.is_empty():
 		quit(0)
 		return
@@ -69,6 +73,39 @@ func _locale_cycle() -> String:
 	return ""
 
 
+func _exception_point_hover() -> String:
+	## B7: pointer moved over Confirm / Cancel / Dismiss emits IN.point.
+	_router.handle_control("mode-pick", "C3")
+	var mode_pick := _mode_pick()
+	var err := _assert_hover(mode_pick, "S3", "ConfirmQuit", "confirm")
+	if not err.is_empty():
+		return err
+	err = _assert_hover(mode_pick, "S3", "CancelQuit", "cancel")
+	if not err.is_empty():
+		return err
+	_router.handle_control("mode-pick", "cancel")
+	_router.show_save_failure()
+	err = _assert_hover(mode_pick, "S4", "DismissSave", "dismiss")
+	if not err.is_empty():
+		return err
+	_router.handle_control("mode-pick", "dismiss")
+	return ""
+
+
+func _assert_hover(
+	mode_pick: ModePickPanel, expect_state: String, node_name: String, control_id: String
+) -> String:
+	if mode_pick.ui_state != expect_state:
+		return "point hover setup: need %s" % expect_state
+	var button := mode_pick.find_child(node_name, true, false) as Button
+	if button == null:
+		return "%s missing" % node_name
+	button.mouse_entered.emit()
+	if _presentation.last_point_control != control_id:
+		return "B7 hover %s did not set last_point_control" % node_name
+	return ""
+
+
 func _quit_confirm_cancel() -> String:
 	_router.handle_control("mode-pick", "C3")
 	var mode_pick := _mode_pick()
@@ -81,6 +118,19 @@ func _quit_confirm_cancel() -> String:
 	_router.handle_control("mode-pick", "confirm")
 	if _router.stage != "session-ended" or not _router.session_ended:
 		return "confirm did not end sitting"
+	return ""
+
+
+func _uis_motion_present() -> String:
+	if UiChrome.M1_S < 0.15 or UiChrome.M1_S > 0.25:
+		return "UIS.M1 duration out of range"
+	if UiChrome.M2_S > 0.15:
+		return "UIS.M2 duration over 0.15"
+	if UiChrome.M3_S > 0.2:
+		return "UIS.M3 duration over 0.2"
+	var mode_pick := _mode_pick()
+	if not mode_pick.has_meta("_uis_m1_tween") and mode_pick.modulate.a < 1.0:
+		return "mode-pick missing M1 transition path"
 	return ""
 
 
@@ -105,6 +155,18 @@ func _shared_path() -> String:
 
 
 func _shared_path_continued(setup: SharedSetupPanel) -> String:
+	var err := _cycle_setup_options(setup)
+	if not err.is_empty():
+		return err
+	_router.handle_control("shared-setup", "C6")
+	if _router.stage != "mode-pick":
+		return "Back → mode-pick"
+	if setup == null:
+		return "setup missing"
+	return _shared_start_and_save()
+
+
+func _cycle_setup_options(setup: SharedSetupPanel) -> String:
 	_router.handle_control("shared-setup", "C3")
 	if _router.increment != 5:
 		return "increment cycle"
@@ -114,12 +176,16 @@ func _shared_path_continued(setup: SharedSetupPanel) -> String:
 	_router.handle_control("shared-setup", "C4")
 	if _router.advice_on:
 		return "advice toggle"
-	_router.handle_control("shared-setup", "C6")
-	if _router.stage != "mode-pick":
-		return "Back → mode-pick"
-	if setup == null:
-		return "setup missing"
-	return _shared_start_and_save()
+	## Unavailable C3 when Untimed must not activate.
+	_router.handle_control("shared-setup", "C2")
+	_router.handle_control("shared-setup", "C2")
+	if _router.clock != "untimed":
+		return "clock back to Untimed"
+	var before_inc := _router.increment
+	setup._on_activate("C3")
+	if _router.increment != before_inc:
+		return "unavailable C3 activated"
+	return ""
 
 
 func _shared_start_and_save() -> String:
