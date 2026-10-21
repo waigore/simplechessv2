@@ -73,3 +73,33 @@ Given EX.draw-offer is open
 When an actor activates Decline
 Then S6 closes and play continues with the same side to move and clocks unchanged
 ```
+
+### US1.17: Draw offer accepted
+
+- **Proves**: EX.draw-offer
+
+```gherkin
+Given EX.draw-offer is open
+When an actor activates Accept
+Then the screen is shared-result
+```
+
+### US1.18: Draw offer withdrawn
+
+- **Proves**: EX.draw-offer
+
+```gherkin
+Given EX.draw-offer is open
+When the offering seat activates Withdraw
+Then S6 closes and play continues with the same side to move and that clock still running
+```
+
+### US1.19: Draw offer lapses on move
+
+- **Proves**: EX.draw-offer
+
+```gherkin
+Given EX.draw-offer is open and a piece is selected
+When the side to move places on a legal destination
+Then EX.draw-offer closes and the screen is shared-play S1
+```
