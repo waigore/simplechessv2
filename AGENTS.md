@@ -12,7 +12,7 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 
 - **Setup**: Install Godot 4.7.2. Clone this repo; no installable package yet.
 - **Run**: Open the Godot project under `game/` and run (or export to web). Full scene scaffold TBD.
-- **Test**: TBD — coding conventions / technical specs.
+- **Test**: `python3 .github/scripts/gdscript_tests.py test` and `python3 .github/scripts/gdscript_tests.py coverage`
 - **Build / export**: Godot HTML5/web export for the browser (ADR-0001).
 
 ## Labels

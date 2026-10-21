@@ -1,10 +1,10 @@
 # Coding conventions
 
-Project-owned conventions for code in this repo: language idioms, naming, formatting, file layout, errors, logging, and tests. Once the Engine ADR is Accepted, replace every `<!-- fill in -->`. Template sync keeps this file's project content.
+Project-owned conventions: naming, formatting, file layout, errors, logging, and tests. Engine: [ADR-0001](../specs/adr/decisions/0001-godot-engine.md) (Godot 4.7.2, GDScript). Domain headless tests: [ADR-0006](../specs/adr/decisions/0006-layered-client-architecture.md). Client root `game/` is [M1](../specs/technical/modules.md).
 
-Optional. SOLID only: one Rules row `None — SOLID only (<reason>)` and Tooling `None — <reason>`. Placeholders mean still open.
+The template allows `None — <reason>`. This repo does not: Tooling, Unit tests, and Coverage are commands. Job behavior: [gdscript.md](coding-conventions/gdscript.md).
 
-Review a diff with [`review-code`](../.agents/skills/review-code/SKILL.md), which checks this file together with [`solid.md`](solid.md). A structure pass uses [`suggest-code-refactors`](../.agents/skills/suggest-code-refactors/SKILL.md).
+Review a diff with [`review-code`](../.agents/skills/review-code/SKILL.md) against this file and [`solid.md`](solid.md).
 
 ## Precedence
 
@@ -27,31 +27,39 @@ Each rule has a permanent ID `CC-<n>` (never reused) and a level:
 
 | ID | Level | Rule |
 |----|-------|------|
-| <!-- fill in: CC-1 --> | <!-- fill in: must or should --> | <!-- fill in: e.g. functions and variables use snake_case; types use PascalCase --> |
+| CC-1 | must | Naming. snake_case functions, signals, and locals; optional leading `_` on arguments and class variables; PascalCase classes and enums; UPPER_SNAKE_CASE constants and enum members. |
+| CC-2 | must | Formatting. GDScript matches gdtoolkit 4.5 `gdformat --check`. |
+| CC-3 | must | File layout. Shippable GDScript is under `game/` (M1). No upward or skip-layer references (ADR-0006). |
+| CC-4 | should | File layout. One `class_name` per file; the stem is that name in snake_case. |
+| CC-5 | must | Errors. Check Godot `Error` returns. Signal failure with `push_error` or a handled value, not `print` alone. |
+| CC-6 | should | Logging. `push_warning` for recoverable problems, `push_error` for failures, `print` only for non-failure traces. |
+| CC-7 | must | Tests. `game/**/*_test.gd` extends `SceneTree` and `quit`s non-zero on failure. Not under `demos/` or `.github/scripts`. |
+| CC-8 | must | Tests. Coverage fails when main-code statement-line coverage is under 80. |
 
-Group rows by topic as the table grows. Past 500 words, split into linked files under `docs/coding-conventions/`.
+Past 500 words, split under `docs/coding-conventions/` and link.
 
 ## Tooling
 
-Every lint or format command listed here runs as a step in [`code-lint.yml`](../.github/workflows/code-lint.yml), the `Code lint` check. Reviewers read that check's result instead of running the commands. A rule a tool enforces lists the tool here.
+Each command is one step in [`code-lint.yml`](../.github/workflows/code-lint.yml) (`Code lint`). Both read `.gd` files and do not need `project.godot`.
 
 | Tool | Command | Enforces |
 |------|---------|----------|
-| <!-- fill in: e.g. formatter --> | <!-- fill in: e.g. `fmt --check .` --> | <!-- fill in: CC IDs --> |
+| gdformat 4.5.0 | `gdformat --check game` | CC-2 |
+| gdlint 4.5.0 | `gdlint game` | CC-1 |
 
 ## Unit tests
 
-Each command runs as a step in the `Unit tests` job of [`unit-tests.yml`](../.github/workflows/unit-tests.yml). Main code only (not `demos/` or `.github/scripts`). Placeholders or `None — <reason>`: job passes with a notice. Wire via `setup-unit-test-ci`.
+One step in the `Unit tests` job of [`unit-tests.yml`](../.github/workflows/unit-tests.yml). Main code under `game/` (M1), not `demos/` or `.github/scripts`. Not `None`. While `game/` has no `*_test.gd`, the command exits 0 and does not invoke Godot.
 
 | Tool | Command | Scope |
 |------|---------|-------|
-| <!-- fill in: e.g. test runner --> | <!-- fill in: e.g. `dotnet test` --> | <!-- fill in: main-code paths --> |
+| Godot 4.7.2 headless | `python3 .github/scripts/gdscript_tests.py test` | `game/**/*_test.gd` |
 
 ## Coverage
 
-Runs after `Unit tests` succeeds (`needs`). Default Threshold **80** (% line coverage, main code); change to override. Sync with the `Coverage` job. Placeholders or `None — <reason>`: notice pass.
+Runs after `Unit tests` (`needs`). Threshold **80**. Not `None`. The same skip applies (exit 0, Godot not invoked). Once `*_test.gd` exists, the command fails under 80. Not the playtest `ENV.1` smoke. Details: [gdscript.md](coding-conventions/gdscript.md).
 
 | | |
 |--|--|
 | Threshold | 80 |
-| <!-- fill in: coverage tool --> | <!-- fill in: command that fails below Threshold --> |
+| Godot 4.7.2 statement lines | `python3 .github/scripts/gdscript_tests.py coverage` |

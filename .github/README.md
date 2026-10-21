@@ -13,12 +13,13 @@ GitHub configuration for this repository: labels, issue forms, and workflows.
 | [`workflows/automerge.yml`](workflows/automerge.yml) | Squash auto-merge for all same-repo PRs; opt out with `no-automerge` (user-requested only) |
 | [`workflows/pr-hygiene.yml`](workflows/pr-hygiene.yml) | Required check: PR title/body lint ([`docs/pull-requests.md`](../docs/pull-requests.md)) |
 | [`workflows/spec-lint.yml`](workflows/spec-lint.yml) | Required check: structural spec rules ([`docs/spec-lint.md`](../docs/spec-lint.md)) |
-| [`workflows/code-lint.yml`](workflows/code-lint.yml) | Required check: project-owned lint/format steps per [`docs/coding-conventions.md`](../docs/coding-conventions.md); passes with a notice when there are none |
-| [`workflows/unit-tests.yml`](workflows/unit-tests.yml) | Required checks: `Unit tests` then `Coverage` per [`docs/coding-conventions.md`](../docs/coding-conventions.md); each passes with a notice when not configured |
+| [`workflows/code-lint.yml`](workflows/code-lint.yml) | Required check: `gdformat` and `gdlint` per [`docs/coding-conventions.md`](../docs/coding-conventions.md) |
+| [`workflows/unit-tests.yml`](workflows/unit-tests.yml) | Required checks: `Unit tests` then `Coverage` per [`docs/coding-conventions.md`](../docs/coding-conventions.md). Both exit 0 without Godot until `game/**/*_test.gd` exists |
 | [`scripts/sync-labels.sh`](scripts/sync-labels.sh) | Local / CI label sync script |
 | [`scripts/asset_catalog.py`](scripts/asset_catalog.py) | CI integrity check of asset catalog entry files per `specs/assets/catalog.md`; skipped until the catalog root is set |
 | [`scripts/new_asset_id.py`](scripts/new_asset_id.py) | Generate asset IDs (UUID version 7) per `specs/assets/catalog.md`; `is_asset_id` validates one |
 | [`scripts/pr_hygiene.py`](scripts/pr_hygiene.py) | Local / CI PR hygiene lint (one function per rule); tests in [`scripts/tests/`](scripts/tests/) |
 | [`scripts/spec_lint.py`](scripts/spec_lint.py) | Local / CI spec lint; tests in [`scripts/tests/`](scripts/tests/) |
+| [`scripts/gdscript_tests.py`](scripts/gdscript_tests.py) | Headless GDScript unit tests and statement-line coverage for `game/`; skips Godot when no `*_test.gd` |
 
 Label catalog and sync docs: [`docs/labels.md`](../docs/labels.md). Issue contract: [`docs/issues/`](../docs/issues/). First-time remote workflow: [`docs/github-repo-setup.md`](../docs/github-repo-setup.md).
