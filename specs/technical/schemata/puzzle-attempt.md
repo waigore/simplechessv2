@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 
 | ID | Field | Type / shape | Required | Notes |
 |----|-------|--------------|----------|-------|
-| F1 | puzzle_id | string | yes | Catalog / table id |
+| F1 | puzzle_id | string | yes | Puzzle catalog record id (PuzzleId) |
 | F2 | required_sequence | move list | yes | Design-required line |
 | F3 | played_prefix | move list | yes | Moves so far this attempt |
 | F4 | wrong_move_seen | bool | yes | Blocks W1 |

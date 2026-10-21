@@ -11,9 +11,9 @@ Part of [`fields.md`](fields.md). Ending fields: [`fields-play-end.md`](fields-p
 | `GS.sideToMove` | Session / run | White or Black to move | White (Shared); as dealt (Puzzle) | Legal move; required reply; wrong move → dealt | Alternates on each legal move in play |
 | `GS.whiteClock` | Session / run | White seconds left, or none | Equal CFG start, or none | Tick; stop/add on move; stop on end | Timed: ≥ 0 |
 | `GS.blackClock` | Session / run | Black seconds left, or none | Equal CFG start, or none | Same as white | Timed: ≥ 0 |
-| `GS.puzzleId` | Session / run | Current puzzle, or none | [`catalog`](../features/puzzle-catalog.md) PuzzleId, or none | Deal; leave | Only in Puzzle stream |
-| `GS.puzzleElo` | Session / run | Open puzzle's [Puzzle Elo](../glossary.md) | [`catalog`](../features/puzzle-catalog.md), or none | Deal; leave | Fixed for that puzzle |
-| `GS.requiredSequence` | Session / run | Open puzzle's correct move list | [`catalog`](../features/puzzle-catalog.md), or none | Deal; leave | Length ≥ 1 when open |
+| `GS.puzzleId` | Session / run | Current puzzle, or none | [Puzzle catalog](../features/puzzle-catalog.md) PuzzleId, or none | Deal; leave | Only in Puzzle stream |
+| `GS.puzzleElo` | Session / run | Open puzzle's [Puzzle Elo](../glossary.md) | [Puzzle catalog](../features/puzzle-catalog.md), or none | Deal; leave | Fixed for that puzzle |
+| `GS.requiredSequence` | Session / run | Open puzzle's correct move list | [Puzzle catalog](../features/puzzle-catalog.md), or none | Deal; leave | Length ≥ 1 when open |
 | `GS.sequenceIndex` | Session / run | Next required step (0-based) | 0 | Matching move or reply; wrong move → 0 | 0 ≤ index ≤ length |
 | `GS.solvingSide` | Session / run | Side the player moves | None; side to move at deal | Deal; leave | None, or side to move at deal |
 | `GS.wrongMoveOnPuzzle` | Session / run | Any [Wrong move](../glossary.md) this puzzle | false | Wrong move | True until a new deal |
