@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/rules/ux/screens.md).
 
 - **Job**: Set Shared-game options and start
-- **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
+- **Actors**: [`bottom-player.md`](../actors/bottom-player.md), [`top-player.md`](../actors/top-player.md)
 - **Serves**: Instant play, Accessibility; [two-player-game K1](../../design/loops/two-player-game.md); [configuration.md](../../design/configuration.md)
 - **Mockup**: [`../mockups/screens/shared-setup.html`](../mockups/screens/shared-setup.html)
 - **Glossary terms**: [White seat](../../design/glossary.md), [Clock](../../design/glossary.md), [Advice](../../design/glossary.md)
