@@ -502,8 +502,11 @@ func _on_shared_play_control(control_id: String) -> void:
 	if result.has("event"):
 		_emit_tel_result(result)
 	if bool(result.get("ended", false)):
-		_play_cue(SharedAudioCues.CUE_END)
-		_seams.emit_tel("shared.end", str(result.get("end_reason", "")), "NAV.T6")
+		var end_reason := str(result.get("end_reason", ""))
+		## Spec: draws play no end cue (SND, D1–D5); losses keep X4.
+		if _is_loss_end(end_reason):
+			_play_cue(SharedAudioCues.CUE_END)
+		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
 		_go_shared_result()
 	else:
 		_emit_play_screen()
