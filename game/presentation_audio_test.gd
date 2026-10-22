@@ -1,6 +1,6 @@
 class_name PresentationAudioTest
 extends SceneTree
-## #60 — cue mapping, X5 never plays, ambient after board playable, sound-off path.
+## #60 / #426 — cue mapping, X5 never plays, ambient at mode-pick ready, sound-off path.
 
 
 func _initialize() -> void:
@@ -101,14 +101,19 @@ func _integration_spine() -> String:
 		persist.memory_backend = {}
 		persist.clear_storage()
 	root.add_child(presentation)
-	await process_frame
-	await process_frame
+	## Cold open (EX.loading) stays silent; Ambient starts only at mode-pick ready.
 	var problem := ""
+	var audio := presentation.get_node("PresentationAudio") as PresentationAudio
 	if resolver.group_loaded("ambient"):
 		problem = "ambient must not load on cold open"
-	var audio := presentation.get_node("PresentationAudio") as PresentationAudio
 	if problem.is_empty() and (audio == null or audio.music_started):
-		problem = "music must stay off on mode-pick"
+		problem = "music must stay off on cold open"
+	await process_frame
+	await process_frame
+	if problem.is_empty() and router.stage != "mode-pick":
+		problem = "mode pick not ready"
+	if problem.is_empty() and (not resolver.group_loaded("ambient") or not audio.music_started):
+		problem = "ambient and bed must start when mode pick is ready"
 	router.handle_control("mode-pick", "C1")
 	router.handle_control("shared-setup", "C5")
 	await process_frame
@@ -118,7 +123,7 @@ func _integration_spine() -> String:
 	if problem.is_empty() and not resolver.group_loaded("play"):
 		problem = "play group required for cues"
 	if problem.is_empty() and (not resolver.group_loaded("ambient") or not audio.music_started):
-		problem = "ambient after board playable"
+		problem = "ambient and bed must stay through shared play"
 	if problem.is_empty() and not audio.has_stream(SharedAudioCues.CUE_SELECT):
 		problem = "X1 stream not bound from Play O5"
 	if problem.is_empty() and not audio.has_stream(SharedAudioCues.BED_M1):

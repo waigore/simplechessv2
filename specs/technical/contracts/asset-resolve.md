@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | O1 | resolve | asset ID | Loaded engine resource or unresolved | Draw / play needs asset |
 | O2 | preload_boot | Boot ID set | Boot group ready | Cold open ([`AST.G1`](../asset-access.md)) |
 | O3 | preload_play | Play ID set | Play group ready | First Shared/Puzzle play ([`AST.G2`](../asset-access.md)) |
-| O4 | preload_ambient | Ambient ID set | Ambient group ready | Music first starts after the board is playable; not on cold open ([`AST.G3`](../asset-access.md)) |
+| O4 | preload_ambient | Ambient ID set | Ambient group ready | Mode pick becomes ready (`EX.loading` → ready, after boot ready); not on cold open ([`AST.G3`](../asset-access.md)) |
 
 ## Events
 
@@ -45,7 +45,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 ## Diagram
 
-Boot, then Play on first play entry, then Ambient when music starts after the board is playable.
+Boot, then Ambient when mode pick becomes ready, then Play on first play entry.
 
 ```mermaid
 sequenceDiagram
@@ -53,8 +53,8 @@ sequenceDiagram
   participant AR as CMP-asset-resolver
   SR->>AR: O2 preload_boot
   AR-->>SR: E1 boot_ready
-  SR->>AR: O3 preload_play
-  AR-->>SR: E2 play_ready
   SR->>AR: O4 preload_ambient
   AR-->>SR: E3 ambient_ready
+  SR->>AR: O3 preload_play
+  AR-->>SR: E2 play_ready
 ```

@@ -49,7 +49,6 @@ var play_ui_state: String:
 var _resolver: AssetResolver
 var _seams: PlaytestSeams
 var _persist: PersistStore
-var _board_playable := false
 var _ambient_started := false
 var _clock_accum_ms := 0.0
 var _last_clock_display := ""
@@ -116,14 +115,9 @@ func enter_shared_play() -> void:
 	_provide_assets(_resolver.resolve_group("play"))
 
 
-func note_board_playable() -> void:
-	_board_playable = true
-	start_music()
-
-
 func start_music() -> void:
-	## Ambient O4 only after the board is playable — never on cold open (#51 / #60).
-	if not _board_playable or _ambient_started:
+	## Ambient O4 when mode pick becomes ready — never on cold open (#426 / AST.G3).
+	if stage == STAGE_LOADING or _ambient_started:
 		return
 	if _resolver.group_loaded("ambient"):
 		_on_ambient_ready()
@@ -362,6 +356,8 @@ func _go_mode_pick(ui_state: String = "S1") -> void:
 	shared_session = null
 	_last_clock_display = ""
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state(ui_state))
+	## Mode pick is ready: preload Ambient and start BED_M1 (AST.G3 / SND.M1), #426.
+	start_music()
 
 
 func _mode_pick_state(ui_state: String) -> Dictionary:
