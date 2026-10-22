@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 |----|----------------|
 | R1 | Expose pause/resume, inspect, jump, and story-ID overlay (`DBG.1–4`) |
 | R2 | Emit telemetry events with `TEL.1–5` fields |
-| R3 | Compile or no-op out of public release Web export |
+| R3 | Absent from the public release Web export: the release preset exports `main_release.tscn`, which carries no seam or harness node, with the `release` feature |
 | R4 | Work in both Headless and Graphical playtest runners |
 | R5 | Set seed, record and replay input, and dump full state (`SIT.1`–`SIT.3`) on playtest builds only |
 

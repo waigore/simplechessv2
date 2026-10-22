@@ -1,6 +1,6 @@
 class_name PlaytestHarness
 extends Node
-## SEQ-playtest-headless-smoke harness for ENV.1.
+## SEQ-playtest-headless-smoke harness for ENV.1. Release builds no-op (G2).
 
 const SMOKE_STAGE := "mode-pick"
 const SMOKE_STORY := "EX.loading"
@@ -28,6 +28,8 @@ func run_smoke(seams: PlaytestSeams) -> int:
 
 
 func _ready() -> void:
+	if not PlaytestGate.is_playtest():
+		return
 	if DisplayServer.get_name() != "headless":
 		return
 	_smoke_and_quit()

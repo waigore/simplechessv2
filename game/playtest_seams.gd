@@ -1,6 +1,7 @@
 class_name PlaytestSeams
 extends Node
 ## CMP-playtest-seams — CTR-playtest-drive. No-op outside playtest builds.
+## G2: absent from `main_release.tscn`, so a release export never loads this script.
 
 signal jump_requested(stage_id: String)
 signal input_replayed(record: Dictionary)
@@ -172,15 +173,7 @@ func emit_tel(event_name: String, outcome: String, story_id: String = "") -> voi
 
 
 func _resolve_playtest() -> bool:
-	if OS.has_feature("playtest"):
-		return true
-	if OS.has_feature("release"):
-		return false
-	if playtest_override == 0:
-		return false
-	if playtest_override == 1:
-		return true
-	return true
+	return PlaytestGate.is_playtest(playtest_override)
 
 
 func _make_session_id() -> String:

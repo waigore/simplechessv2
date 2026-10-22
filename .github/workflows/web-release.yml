@@ -1,0 +1,117 @@
+name: Web release
+
+# Publishes the seam-free release Web export to GitHub Pages (ADR-0009,
+# ADR-0007). Exports the `Web Release` preset from a clean checkout into
+# build/web/, checks that the PCK starts at main_release.tscn and carries no
+# playtest seam, then publishes that directory. No playtest build and no advice
+# backend (ADR-0009); test scripts never ship (ADR-0004).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Release export
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.2
+        run: |
+          set -euo pipefail
+          python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())"
+
+      - name: Install Web export templates
+        run: |
+          set -euo pipefail
+          version="4.7.2"
+          dest="${HOME}/.local/share/godot/export_templates/${version}.stable"
+          cache="${HOME}/.cache/simplechess-godot/${version}"
+          archive="${cache}/Godot_v${version}-stable_export_templates.tpz"
+          sha="ca4d71c4d7b81dfc15d1a98baa07534aa95b03fdda78a0075b06672e1648d2e5f40980c9adc28d23e1b92e732ee7bf3461997aa804af74ec2fcd7a93ccb84079"
+          mkdir -p "${cache}" "${dest}"
+          if [[ ! -f "${archive}" ]]; then
+            curl -fsSL -o "${archive}" \
+              "https://github.com/godotengine/godot/releases/download/${version}-stable/Godot_v${version}-stable_export_templates.tpz"
+          fi
+          echo "${sha}  ${archive}" | sha512sum -c -
+          unzip -o -j "${archive}" \
+            "templates/version.txt" \
+            "templates/web_release.zip" \
+            "templates/web_debug.zip" \
+            "templates/web_nothreads_release.zip" \
+            "templates/web_nothreads_debug.zip" \
+            "templates/web_dlink_release.zip" \
+            "templates/web_dlink_debug.zip" \
+            "templates/web_dlink_nothreads_release.zip" \
+            "templates/web_dlink_nothreads_debug.zip" \
+            -d "${dest}"
+          grep -q "${version}.stable" "${dest}/version.txt"
+
+      - name: Import project
+        run: |
+          set -euo pipefail
+          export GODOT_BIN="$(python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())")"
+          "${GODOT_BIN}" --headless --path game --import --quit
+
+      - name: Export Web release
+        run: |
+          set -euo pipefail
+          export GODOT_BIN="$(python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())")"
+          python3 .github/scripts/web_export.py --preset "Web Release"
+          test -s build/web/index.html
+          test -s build/web/index.wasm
+          test -s build/web/index.pck
+
+      - name: Check the release target and that the checkout was restored
+        run: |
+          set -euo pipefail
+          python3 - <<'EOF'
+          import pathlib, sys
+
+          sys.path.insert(0, ".github/scripts")
+          from web_export import ExportError, preset_export_path
+
+          try:
+              output = preset_export_path(pathlib.Path(".").resolve(), "Web Release")
+          except ExportError as error:
+              sys.exit(str(error))
+          if output != pathlib.Path("build/web/index.html").resolve():
+              sys.exit(f"release preset writes {output}")
+          if 'run/main_scene="res://main.tscn"' not in pathlib.Path("game/project.godot").read_text():
+              sys.exit("project.godot was not restored after export")
+          # `Unit tests` owns the scene check: game/release_scene_test.gd fails
+          # if main_release.tscn ever carries a playtest seam (G2, ADR-0004).
+          for script in pathlib.Path("game").glob("*_test.gd"):
+              if f"res://{script.name}\x00".encode() in pathlib.Path("build/web/index.pck").read_bytes():
+                  sys.exit(f"release ships {script.name}")
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
