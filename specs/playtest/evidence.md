@@ -29,7 +29,7 @@ Worked example: a protocol cites four stories; one run records three `pass` and 
 | Screenshots | Per the screenshot rule below |
 | Notes | Judgement text for the run |
 | Logs | Session excerpt for the judged window |
-| `manifest.md` | Index of the above, including environment; fields: [`evidence-manifest.md`](evidence-manifest.md) |
+| `manifest.md` | Index of the above, including the environment (`ENV.<n>`); fields: [`evidence-manifest.md`](evidence-manifest.md) |
 
 ## Screenshots, logs, notes
 

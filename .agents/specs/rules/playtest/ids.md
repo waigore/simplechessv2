@@ -12,7 +12,8 @@ Design IDs stay in [../design/ids.md](../design/ids.md). UX IDs stay in [../ux/i
 
 - **Spec key**: the prefix from the table below plus the file name without extension when under a folder. `design/core-loop.md` → `PTD-core-loop`. Global specs use the fixed key in the table.
 - **Element ID**: a section letter or fixed name plus a number, unique within its spec. Use it bare inside the same spec. Elsewhere, qualify it, such as `PTD-core-loop.S2`.
-- **Tool IDs**: fixed names from [`tools.md`](tools.md): `DBG.<n>`, `TEL.<n>`, `SIT.<n>`.
+- **Tool IDs**: fixed names from [`tools.md`](tools.md): `ENV.<n>`, `DBG.<n>`, `TEL.<n>`, `SIT.<n>`.
+- **Environment IDs**: `ENV.<n>` names a required playtest session kind from [`tools.md`](tools.md), such as a session without a display or a rendered session. An environment is a tool row like any other Must tool, so protocols, procedures, the technical design, and evidence cite it the same way.
 - **Protocol IDs**: the protocol file's key is the protocol ID. Steps use `S<n>`. Pass and fail criteria use `P<n>` and `F<n>` when listed as separate rows.
 
 ## Stability
@@ -25,11 +26,11 @@ Design IDs stay in [../design/ids.md](../design/ids.md). UX IDs stay in [../ux/i
 
 | Spec | Key | Sections and their ID letters |
 |------|-----|-------------------------------|
-| `tools.md` | `PT-tools` | Debug `DBG`, Telemetry `TEL`, Situational `SIT` (names as in the tools table) |
+| `tools.md` | `PT-tools` | Environments `ENV`, Debug `DBG`, Telemetry `TEL`, Situational `SIT` (names as in the tools table) |
 | `procedures.md` | `PT-proc` | Steps are ordered; no separate ID letters required beyond document order |
 | `evidence.md` | `PT-ev` | Artifact kinds by name in the required-artifacts table |
 | `coverage.md` | `PT-cov` | Critical entries `C` |
-| `design/` | `PTD-<name>` | Steps `S`, Pass `P`, Fail `F`, Tools cited by `DBG`/`TEL`/`SIT` |
-| `ux/` | `PTU-<name>` | Steps `S`, Pass `P`, Fail `F`, Tools cited by `DBG`/`TEL`/`SIT` |
+| `design/` | `PTD-<name>` | Steps `S`, Pass `P`, Fail `F`, Tools cited by `ENV`/`DBG`/`TEL`/`SIT` |
+| `ux/` | `PTU-<name>` | Steps `S`, Pass `P`, Fail `F`, Tools cited by `ENV`/`DBG`/`TEL`/`SIT` |
 
 Every section in this table gives each element an ID in this form when the section uses numbered rows. A qualified ID cited anywhere must exist. Cited design and UX story IDs must exist in those domains.
