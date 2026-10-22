@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 |----|--------|----------|------|
 | R1 | Asset manifest | `ACC.A2` | Generated JSON from `asset_catalog/`; path `game/asset_manifest.json` (outside `asset_catalog/` and `game_assets/`); never hand-edited; regenerated when catalog entries change. |
 | R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by asset ID. Opus audio loads the Vorbis copy in O3. |
-| R3 | Unresolved asset ID | `ACC.A3` | Dev/playtest: log + Must overlay. Release: skip draw, keep session, log once. |
+| R3 | Unresolved asset ID | `ACC.A3` | Dev/playtest: log the unresolved ID and show the playtest debug overlay when that build has one. Release: skip draw, keep session, log once. |
 
 ## Engine resources
 
@@ -34,7 +34,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 |----|----------|-----------|-------|----------|
 | G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Cold open → Boot IDs → ready when every ID resolves |
 | G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | First play entry → Play IDs → ready when every ID resolves |
-| G3 | `ACC.G3` | Load Ambient group when music first starts | [`CMP-asset-resolver`](components/asset-resolver.md) | Board playable, then music start → Ambient IDs → ready when every ID resolves |
+| G3 | `ACC.G3` | Load Ambient group when mode pick becomes ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Mode pick ready → Ambient IDs ([`SND.M1`](../aesthetics/sound.md)) → ready when every ID resolves |
 
 ## Diagram
 

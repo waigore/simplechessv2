@@ -133,3 +133,13 @@ Given shared-play S6
 When the side-to-move actor activates C5
 Then no confirm is shown and S6 stays
 ```
+
+### US4.13: Clear unavailable in confirm
+
+- **Proves**: C10
+
+```gherkin
+Given shared-play S2 resign confirm and GS.selectedPiece is set
+When the side-to-move actor activates C10
+Then GS.selectedPiece is unchanged and S2 stays
+```
