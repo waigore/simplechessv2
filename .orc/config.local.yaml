@@ -19,9 +19,6 @@ agents:
         - -c
         - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-refinement --limit 1 --json number)" != "[]"
 
-  issue-workflow-clarify-agent:
-    enabled: false
-
   issue-workflow-implement-agent:
     gate:
       command:
