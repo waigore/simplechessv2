@@ -7,7 +7,8 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | Upstream item | Source | Decisions |
 |---------------|--------|-----------|
 | Instant play | vision | [ADR-0001](decisions/0001-godot-engine.md), [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0005](decisions/0005-asset-catalog-roots.md), [ADR-0006](decisions/0006-layered-client-architecture.md), [ADR-0011](decisions/0011-local-stockfish-invocation.md) |
-| Clear board / Cafe calm | vision | [ADR-0001](decisions/0001-godot-engine.md), [ADR-0004](decisions/0004-dual-playtest-environments.md) |
+| Clear board | vision | [ADR-0001](decisions/0001-godot-engine.md), [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0004](decisions/0004-dual-playtest-environments.md) |
+| Cafe calm | vision | [ADR-0001](decisions/0001-godot-engine.md), [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0004](decisions/0004-dual-playtest-environments.md) |
 | Engine Godot; Web / touch | definition | [ADR-0001](decisions/0001-godot-engine.md), [ADR-0007](decisions/0007-web-export-output.md), [ADR-0009](decisions/0009-github-pages-client-host.md) |
 | Local move never waits on network; async time-capped Stockfish | definition | [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0010](decisions/0010-advice-backend-stack.md), [ADR-0011](decisions/0011-local-stockfish-invocation.md) |
 | No-install Web commute | definition | [ADR-0001](decisions/0001-godot-engine.md), [ADR-0003](decisions/0003-localstorage-persistence.md), [ADR-0007](decisions/0007-web-export-output.md), [ADR-0009](decisions/0009-github-pages-client-host.md) |
