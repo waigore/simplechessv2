@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 - **Module**: M1 `client`
 - **Serves**: Optional Stockfish Advice; Instant play
 - **Informed by**: [F-move-advice](../../design/features/move-advice.md); `CFG.ADVICE_TIME_MS`
-- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
+- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0010](../../adr/decisions/0010-no-advice-backend-host-deploy.md)
 
 ## Responsibilities
 
@@ -17,6 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Apply streamed best-move/eval onto play-state advice fields |
 | R4 | Cancel and clear on move, end, Off, offline, or leave Shared |
 | R5 | Never block local move apply |
+| R6 | Open the advice stream only at the configured API endpoint ([ADR-0010](../../adr/decisions/0010-no-advice-backend-host-deploy.md)). Specs name no production host |
 
 ## Communication
 
