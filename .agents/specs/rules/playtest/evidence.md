@@ -14,16 +14,16 @@ What a required AI-agent playtest run must leave in the repo so `accept-project-
 
 ## Required artifacts
 
-Each required run includes: story IDs covered; pass/fail per story or protocol; notes; logs. Screenshots are required before acceptance unless the protocol says none. Name the files or subfolders the agent must write (relative to the run folder).
+Each required run records story IDs covered, outcomes, notes, and logs. The spec owns the vocabulary, once: stories are judged individually, the protocol is the acceptance unit, a protocol is `pass` only when every cited story is `pass`, a contained `fail` makes it `fail`, and `not-judged` never counts as `pass`. Do not offer the two as a choice; the rule belongs in the spec. Screenshots are required before acceptance unless the protocol says none. Name the files or subfolders the agent must write (relative to the run folder).
 
 ## Manifest
 
-Require `manifest.md` in the run folder. It lists: issue number, build or session id, coverage mode, a table of story (or protocol) ID → pass/fail, and relative paths to screenshots, notes, and logs. A headless run marks each screenshot path as waiting on a graphical run. Do not require JSON unless the project later adds it via ADR.
+Require `manifest.md` in the run folder. It lists: issue number, build or session id, coverage mode, a table of each cited story ID → outcome, a row per protocol verdict, and relative paths to screenshots, notes, and logs. A headless run marks each screenshot path as waiting on a graphical run. Do not require JSON unless the project later adds it via ADR.
 
 ## Screenshots, logs, notes
 
 - **Screenshots**: at least one image per failed protocol; for a pass, at least one image showing the judged state unless the protocol says none. Images come from a graphical run that re-runs the protocols on the same build the judgement used, stored under `screenshots/` in that run's folder.
-- **Headless run**: may judge and record pass/fail, notes, and logs with no display. It may omit screenshots. That omission is not a protocol fail, does not file a defect, and leaves the issue on `status:pending-acceptance` until the graphical screenshots exist. A game or interface fail may still file a defect without screenshots.
+- **Headless run**: may judge and record outcomes, notes, and logs with no display. It may omit screenshots. That omission is not a protocol fail, does not file a defect, and leaves the issue on `status:pending-acceptance` until the graphical screenshots exist. A game or interface fail may still file a defect without screenshots.
 - **Logs**: excerpt covering the judged window so `TEL.*` fields can be correlated; path listed in the manifest.
 - **Notes**: what was judged; blockers; non-blocking marks only when the protocol allows.
 
@@ -33,4 +33,4 @@ Evidence for a required run stays in-repo at least until the accept outcome for 
 
 ## Splitting
 
-If the file passes 500 words, move the manifest field list to `evidence-manifest.md`. Leave a summary and a link, and update `playtest.md`.
+If the file passes 500 words, move the manifest field list and the worked example to `evidence-manifest.md`. Leave a summary and a link, and update `playtest.md`.
