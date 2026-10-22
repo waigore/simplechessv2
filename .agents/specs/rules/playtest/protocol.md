@@ -2,7 +2,7 @@
 
 Read this before editing a file under `specs/playtest/design/` or `specs/playtest/ux/` (except `_template.md`). Do not copy these rules into the spec.
 
-Also read [playtest.md](playtest.md), [ids.md](ids.md), [tools.md](tools.md), [procedures.md](procedures.md), and [evidence.md](evidence.md).
+Also read [playtest.md](playtest.md), [ids.md](ids.md), [tools.md](tools.md), [procedures.md](procedures.md), and [evidence.md](evidence.md). A protocol judges each cited story and records a verdict; the rule for combining them lives once in `evidence.md`. Do not restate it per protocol.
 
 One protocol per file. Copy that folder's `_template.md` to `<kebab-name>.md`, fill the copy, leave the template unchanged, and link it from the hub index.
 
@@ -24,4 +24,4 @@ Numbered `S1`, `S2`, …. Concrete enough that two agents would run the same act
 
 ## Evidence
 
-State any protocol-specific screenshot or note requirements beyond [`evidence.md`](evidence.md). Otherwise write "Default evidence rules".
+State any protocol-specific screenshot or note requirements beyond [`evidence.md`](evidence.md). Otherwise write "Default evidence rules". The template's line that a protocol passes only when every cited story passes is the default and stays.

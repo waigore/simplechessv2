@@ -29,4 +29,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-<!-- fill in: Default evidence rules — or protocol-specific extras -->
+The protocol is `pass` only when every cited story is `pass`; a contained `fail` makes it `fail`. Record story outcomes and the verdict in `manifest.md` per [`evidence.md`](../evidence.md). <!-- fill in: protocol-specific extras, or delete this note -->
