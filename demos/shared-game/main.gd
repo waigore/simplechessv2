@@ -41,6 +41,11 @@ const PIECE_IDS := {
 # PRJ.P1: 10-unit short axis (8 board + 1-unit margins), board on frame center.
 const UNIT := 72.0
 const BOARD_ORIGIN := Vector2(72.0, 352.0)
+const FRAME_SIZE := Vector2(720.0, 1280.0)  # demos/shared-game/project.godot
+
+# End panel (END.L1 calm result): an in-board overlay above every board layer.
+const END_PANEL_LAYER := 10  # above board_view pieces (3, 6 in motion) and overlays (5)
+const END_PANEL_MARGIN := 4.0  # keep the panel inside the frame even when clamped
 
 const AUTODRIVE := "DEMO_AUTODRIVE"
 
@@ -209,23 +214,39 @@ func _setup_end_panel(font: Font) -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = COLOR_CREAM
 	style.set_corner_radius_all(14)
-	style.content_margin_left = 40.0
-	style.content_margin_right = 40.0
-	style.content_margin_top = 30.0
-	style.content_margin_bottom = 30.0
+	style.content_margin_left = 28.0
+	style.content_margin_right = 28.0
+	style.content_margin_top = 24.0
+	style.content_margin_bottom = 24.0
 	_end_panel.add_theme_stylebox_override("panel", style)
+	_end_panel.clip_contents = true  # the text never draws past the panel
 	var label := Label.new()
 	label.name = "EndLabel"
-	label.add_theme_font_size_override("font_size", 56)
+	label.add_theme_font_size_override("font_size", 48)
 	label.add_theme_color_override("font_color", COLOR_INK)
 	if font != null:
 		label.add_theme_font_override("font", font)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.custom_minimum_size = Vector2(480, 70)
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# Pin the wrap width: until laid out the label is 1 px wide, and a text
+	# change then wraps it one character per line (a 1400 px tall panel).
+	label.custom_minimum_size = Vector2(8.0 * UNIT - 56.0, 0.0)
 	_end_panel.add_child(label)
 	_end_panel.name = "EndPanel"
+	_end_panel.z_index = END_PANEL_LAYER
+	# Taps fall through to the board so a tap starts the next game (K3-like);
+	# the label must not swallow them either.
+	_end_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_end_panel)
-	_end_panel.set_anchors_preset(Control.PRESET_CENTER)
+	# Top-left anchor: _place_end_panel() sets the rect directly, so a CENTER
+	# preset can never resize the panel through stale anchor offsets. The
+	# width must be real at build time: an autowrapped label in a zero-width
+	# panel locks to a 1 px wrap (one character per line).
+	_end_panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	_end_panel.position = Vector2.ZERO
+	_end_panel.size = Vector2(8.0 * UNIT, 0.0)
 	_end_panel.visible = false
 
 
@@ -234,7 +255,38 @@ func _show_end() -> void:
 	var label: Label = _end_panel.get_node("EndLabel")
 	label.text = _end_text()
 	_end_panel.visible = true
-	_end_panel.position = (Vector2(720, 1280) - _end_panel.get_combined_minimum_size()) / 2.0
+	_place_end_panel()
+
+
+func _place_end_panel() -> void:
+	# A calm band across the board (END.L1) that never exceeds the 8-unit board
+	# width and stays clamped inside the frame. An autowrapped label reports its
+	# minimum size at a 1 px wrap (one character per line), so the panel is
+	# measured from the text at its real width, never from that minimum.
+	var style := _end_panel.get_theme_stylebox("panel") as StyleBoxFlat
+	var inline := style.content_margin_left + style.content_margin_right
+	var block := style.content_margin_top + style.content_margin_bottom
+	var label: Label = _end_panel.get_node("EndLabel")
+	var max_width := FRAME_SIZE.x - 2.0 * END_PANEL_MARGIN  # full frame when needed
+	var panel_width := max_width
+	var text_height := 64.0
+	var font := label.get_theme_font("font")
+	if font != null:
+		var font_size := label.get_theme_font_size("font_size")
+		var text_width := font.get_string_size(
+			label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		# Short results stay on one line; long ones wrap inside the frame.
+		panel_width = clampf(text_width + inline, 0.0, max_width)
+		text_height = maxf(64.0, font.get_multiline_string_size(
+			label.text, HORIZONTAL_ALIGNMENT_LEFT, panel_width - inline, font_size).y)
+	# Match the label's pinned wrap width to this panel (see _setup_end_panel).
+	label.custom_minimum_size = Vector2(panel_width - inline, 0.0)
+	var panel_size := Vector2(panel_width, text_height + block)
+	var centered := (FRAME_SIZE - panel_size) / 2.0
+	var lo := Vector2.ONE * END_PANEL_MARGIN
+	var hi := (FRAME_SIZE - panel_size - lo).max(lo)
+	_end_panel.position = centered.clamp(lo, hi)
+	_end_panel.size = panel_size
 
 
 func _is_autodrive() -> bool:
@@ -448,6 +500,7 @@ func _run_autodrive() -> void:
 	if rule_end != "checkmate:w":
 		problems.append(String("expected checkmate:w, got %s" % rule_end))
 	print("[demo] travelled budget: every command completed as scripted")
+	_check_end_panel(problems)
 	await _capture("mate")
 	_bed_player.stop()
 	if problems.is_empty():
@@ -457,6 +510,37 @@ func _run_autodrive() -> void:
 		for problem in problems:
 			print("[demo] FAIL: %s" % problem)
 		get_tree().quit(1)
+
+
+func _check_end_panel(problems: PackedStringArray) -> void:
+	# The end panel is an in-board overlay: inside the frame, clear of the
+	# player-side margins, and above every board layer (defect #456).
+	var rect := Rect2(_end_panel.position, _end_panel.size)
+	if not Rect2(Vector2.ZERO, FRAME_SIZE).encloses(rect):
+		problems.append("end panel %s escapes the %s frame" % [rect, FRAME_SIZE])
+	var board_bottom := BOARD_ORIGIN.y + 8.0 * UNIT
+	var margin_top := rect.position.y - BOARD_ORIGIN.y
+	var margin_bottom := board_bottom - rect.end.y
+	if minf(margin_top, margin_bottom) < UNIT:
+		problems.append("end panel %s enters a player-side margin (top %.0f, bottom %.0f)" % [
+			rect, margin_top, margin_bottom,
+		])
+	if rect.size.x > FRAME_SIZE.x - 2.0 * END_PANEL_MARGIN:
+		problems.append("end panel width %.0f exceeds the frame inset" % rect.size.x)
+	var top_board_layer := 6  # a piece mid-travel (board_view.gd move_piece)
+	for node in view.get_children():
+		if node is Node2D:
+			top_board_layer = maxi(top_board_layer, (node as Node2D).z_index)
+	if _end_panel.z_index <= top_board_layer:
+		problems.append("end panel z %d draws under the board (layer %d)" % [
+			_end_panel.z_index, top_board_layer,
+		])
+	var label: Label = _end_panel.get_node("EndLabel")
+	if label.size.x > rect.size.x + 0.5 or label.size.y > rect.size.y + 0.5:
+		problems.append("end label %s overflows its panel %s" % [label.size, rect.size])
+	print("[demo] end panel %s inside the frame; margins %.0f/%.0f; z %d" % [
+		rect, margin_top, margin_bottom, _end_panel.z_index,
+	])
 
 
 func _capture(tag: String) -> void:
