@@ -191,6 +191,9 @@ func _boot_router(shared: Dictionary) -> Dictionary:
 	parent.add_child(router)
 	router.start()
 	await resolver.boot_ready
+	# boot_ready.emit() resumes this await on the emitter's stack.
+	# Yield once so parent.free() does not destroy AssetResolver mid-signal.
+	await process_frame
 	var err := ""
 	if router.stage != "mode-pick" and router.stage != "mode-pick-ready":
 		err = "boot did not reach mode-pick"
