@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 - **Module**: M2 `advice-backend`
 - **Serves**: Optional Stockfish Advice; Instant play (client never waits)
 - **Informed by**: [F-move-advice](../../design/features/move-advice.md); `CFG.ADVICE_TIME_MS`
-- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)
+- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md), [ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)
 
 ## Responsibilities
 
@@ -18,13 +18,14 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R4 | Never expose Stockfish or UCI endpoints to the browser |
 | R5 | Are a separate Python server from the frontend ([ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)) |
 | R6 | Accept a request only when its API key matches the configured key |
+| R7 | Invoke Stockfish locally on this same Python server. That UCI link is not a network connection ([ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)) |
 
 ## Communication
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | [`CMP-advice-client`](advice-client.md) | both | [`CTR-advice-stream`](../contracts/advice-stream.md) | Network; provider of stream |
-| C2 | Stockfish | both | UCI (internal to M2) | Not a client contract |
+| C2 | Stockfish | both | Local UCI, same server ([ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)) | Not a network connection. Not a client contract |
 
 ## Owns / mutates
 
@@ -41,7 +42,7 @@ flowchart LR
   B[CMP-advice-backend]
   SF[Stockfish]
   A -->|CTR-advice-stream| B
-  B -->|UCI| SF
+  B -->|local UCI| SF
 ```
 
 ## Failure / concurrency / persistence
