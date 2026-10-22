@@ -48,10 +48,21 @@
     .eyebrow {
       font-family: var(--font-mono);
       font-size: 16px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
       color: var(--accent);
       margin: 0 0 var(--gap-sm);
+    }
+    .opt-value .cycle {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+      font-weight: 400;
+      color: var(--muted);
+    }
+    .opt-value .cycle [aria-current="true"] {
+      font-weight: 600;
+      color: var(--fg);
     }
     .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
     .lead { margin: 0; color: var(--muted); max-width: 36ch; }
@@ -158,19 +169,19 @@
             <div class="option-list">
               <button type="button" class="btn btn-secondary btn-block" data-control="C1">
                 <span class="opt-label">White seat</span>
-                <span class="opt-value">Bottom</span>
+                <span class="opt-value"><span class="cycle"><span>Top</span><span aria-current="true">Bottom</span></span></span>
               </button>
               <button type="button" class="btn btn-secondary btn-block" data-control="C2">
                 <span class="opt-label">Clock</span>
-                <span class="opt-value">Rapid</span>
+                <span class="opt-value"><span class="cycle"><span>Untimed</span><span>Blitz</span><span aria-current="true">Rapid</span></span></span>
               </button>
               <button type="button" class="btn btn-secondary btn-block" data-control="C3">
                 <span class="opt-label">Increment</span>
-                <span class="opt-value">5 s</span>
+                <span class="opt-value"><span class="cycle"><span>3 s</span><span aria-current="true">5 s</span></span></span>
               </button>
               <button type="button" class="btn btn-secondary btn-block" data-control="C4">
                 <span class="opt-label">Advice</span>
-                <span class="opt-value">On</span>
+                <span class="opt-value"><span class="cycle"><span aria-current="true">On</span><span>Off</span></span></span>
               </button>
             </div>
           </section>
