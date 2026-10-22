@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 - **Contracts used**: [`CTR-advice-stream`](../contracts/advice-stream.md), [`CTR-presentation`](../contracts/presentation.md)
 - **Serves**: F-move-advice; streamed eval to `CFG.ADVICE_TIME_MS`
 - **Informed by**: requirement note — server Stockfish, time-capped stream, moves never wait
-- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
+- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)
 
 ## Steps
 
@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 |----|------|----|-----|------------------|
 | S1 | shared-game | advice-client | CTR-advice-stream.O1 | start(position) |
 | S2 | advice-client | advice-backend | network | Send position |
-| S3 | advice-backend | Stockfish | UCI | Search (M2 only) |
+| S3 | advice-backend | Stockfish | Local UCI, same server | Search (M2 only). Not a network hop ([ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)) |
 | S4 | advice-backend | advice-client | CTR-advice-stream.E1 | Stream updates |
 | S5 | advice-client | shared-game | CTR-advice-stream.E1 | Write best-move/eval |
 | S6 | shared-game | presentation | CTR-presentation.E4 | Show marks |
