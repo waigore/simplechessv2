@@ -219,6 +219,7 @@ func _setup_end_panel(font: Font) -> void:
 	style.content_margin_top = 24.0
 	style.content_margin_bottom = 24.0
 	_end_panel.add_theme_stylebox_override("panel", style)
+	_end_panel.clip_contents = true  # the text never draws past the panel
 	var label := Label.new()
 	label.name = "EndLabel"
 	label.add_theme_font_size_override("font_size", 48)
@@ -228,6 +229,9 @@ func _setup_end_panel(font: Font) -> void:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# Pin the wrap width: until laid out the label is 1 px wide, and a text
+	# change then wraps it one character per line (a 1400 px tall panel).
+	label.custom_minimum_size = Vector2(8.0 * UNIT - 56.0, 0.0)
 	_end_panel.add_child(label)
 	_end_panel.name = "EndPanel"
 	_end_panel.z_index = END_PANEL_LAYER
@@ -237,10 +241,12 @@ func _setup_end_panel(font: Font) -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_end_panel)
 	# Top-left anchor: _place_end_panel() sets the rect directly, so a CENTER
-	# preset can never resize the panel through stale anchor offsets.
+	# preset can never resize the panel through stale anchor offsets. The
+	# width must be real at build time: an autowrapped label in a zero-width
+	# panel locks to a 1 px wrap (one character per line).
 	_end_panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	_end_panel.position = Vector2.ZERO
-	_end_panel.size = Vector2.ZERO
+	_end_panel.size = Vector2(8.0 * UNIT, 0.0)
 	_end_panel.visible = false
 
 
@@ -261,7 +267,7 @@ func _place_end_panel() -> void:
 	var inline := style.content_margin_left + style.content_margin_right
 	var block := style.content_margin_top + style.content_margin_bottom
 	var label: Label = _end_panel.get_node("EndLabel")
-	var max_width := 8.0 * UNIT
+	var max_width := FRAME_SIZE.x - 2.0 * END_PANEL_MARGIN  # full frame when needed
 	var panel_width := max_width
 	var text_height := 64.0
 	var font := label.get_theme_font("font")
@@ -269,10 +275,12 @@ func _place_end_panel() -> void:
 		var font_size := label.get_theme_font_size("font_size")
 		var text_width := font.get_string_size(
 			label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-		# Short results stay compact; long ones wrap inside the board width.
+		# Short results stay on one line; long ones wrap inside the frame.
 		panel_width = clampf(text_width + inline, 0.0, max_width)
 		text_height = maxf(64.0, font.get_multiline_string_size(
 			label.text, HORIZONTAL_ALIGNMENT_LEFT, panel_width - inline, font_size).y)
+	# Match the label's pinned wrap width to this panel (see _setup_end_panel).
+	label.custom_minimum_size = Vector2(panel_width - inline, 0.0)
 	var panel_size := Vector2(panel_width, text_height + block)
 	var centered := (FRAME_SIZE - panel_size) / 2.0
 	var lo := Vector2.ONE * END_PANEL_MARGIN
@@ -511,12 +519,14 @@ func _check_end_panel(problems: PackedStringArray) -> void:
 	if not Rect2(Vector2.ZERO, FRAME_SIZE).encloses(rect):
 		problems.append("end panel %s escapes the %s frame" % [rect, FRAME_SIZE])
 	var board_bottom := BOARD_ORIGIN.y + 8.0 * UNIT
-	var margin_top := BOARD_ORIGIN.y - rect.end.y
-	var margin_bottom := rect.position.y - board_bottom
+	var margin_top := rect.position.y - BOARD_ORIGIN.y
+	var margin_bottom := board_bottom - rect.end.y
 	if minf(margin_top, margin_bottom) < UNIT:
 		problems.append("end panel %s enters a player-side margin (top %.0f, bottom %.0f)" % [
 			rect, margin_top, margin_bottom,
 		])
+	if rect.size.x > FRAME_SIZE.x - 2.0 * END_PANEL_MARGIN:
+		problems.append("end panel width %.0f exceeds the frame inset" % rect.size.x)
 	var top_board_layer := 6  # a piece mid-travel (board_view.gd move_piece)
 	for node in view.get_children():
 		if node is Node2D:
