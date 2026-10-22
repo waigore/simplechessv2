@@ -43,6 +43,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 ## Copy
 
+All keys below vary by locale (`en`, `zh-Hant`, `ja`).
+
 | Key | String | Used in |
 |-----|--------|---------|
 | title | Shared game setup | header |
