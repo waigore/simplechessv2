@@ -1,0 +1,26 @@
+{
+	"_comment": "Asset IDs the demo uses, copied from asset_catalog/ approved entries. Asset root is game_assets/ (ADR-0005); Ogg Opus masters are shown as served through audio_runtime/ Vorbis copies (AST.O3).",
+	"asset_root": "game_assets",
+	"assets": {
+		"01a15dab-051c-75dc-8624-91f1c45f98f7": {"handle": "piece-sprites/k-white", "state": "approved", "files": ["piece-sprites/k-white.png"]},
+		"01a15dab-051c-7392-9318-e8b69bf7abf2": {"handle": "piece-sprites/k-black", "state": "approved", "files": ["piece-sprites/k-black.png"]},
+		"01a15dab-051c-7023-973b-0b37ef3aa1b3": {"handle": "piece-sprites/q-white", "state": "approved", "files": ["piece-sprites/q-white.png"]},
+		"01a15dab-051c-784b-859a-1d347edf39f0": {"handle": "piece-sprites/q-black", "state": "approved", "files": ["piece-sprites/q-black.png"]},
+		"01a15dab-051c-7c3f-94fc-ce51926b3549": {"handle": "piece-sprites/r-white", "state": "approved", "files": ["piece-sprites/r-white.png"]},
+		"01a15dab-051c-73b7-bad0-e6df05f4d2b6": {"handle": "piece-sprites/r-black", "state": "approved", "files": ["piece-sprites/r-black.png"]},
+		"01a15dab-051c-73ff-96fa-a75c6719313a": {"handle": "piece-sprites/b-white", "state": "approved", "files": ["piece-sprites/b-white.png"]},
+		"01a15dab-051c-7061-9aaf-f2ba5a069413": {"handle": "piece-sprites/b-black", "state": "approved", "files": ["piece-sprites/b-black.png"]},
+		"01a15dab-051c-7155-b8ec-6de860bae114": {"handle": "piece-sprites/n-white", "state": "approved", "files": ["piece-sprites/n-white.png"]},
+		"01a15dab-051c-72b6-8859-f3edab33c514": {"handle": "piece-sprites/n-black", "state": "approved", "files": ["piece-sprites/n-black.png"]},
+		"01a15dab-051c-7db1-8f3e-9cb5e68058d8": {"handle": "piece-sprites/p-white", "state": "approved", "files": ["piece-sprites/p-white.png"]},
+		"01a15dab-051c-73c8-9edc-c4e82957f267": {"handle": "piece-sprites/p-black", "state": "approved", "files": ["piece-sprites/p-black.png"]},
+		"01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855": {"handle": "board-backgrounds/play-table", "state": "approved", "files": ["board-backgrounds/play-table.svg"]},
+		"01a151f8-b7d8-7ae6-84af-767ba53d09f6": {"handle": "sound-effects/touch-select", "state": "approved", "files": ["sound-effects/touch-select.ogg"]},
+		"01a151f8-b7d8-710a-b767-92c9137bfd63": {"handle": "sound-effects/move-settle", "state": "approved", "files": ["sound-effects/move-settle.ogg"]},
+		"01a151f8-b7d8-7e05-9921-e892e9a2e064": {"handle": "sound-effects/check", "state": "approved", "files": ["sound-effects/check.ogg"]},
+		"01a151f8-b7d8-7fe3-b94f-e3a562395d96": {"handle": "sound-effects/end-resolve", "state": "approved", "files": ["sound-effects/end-resolve.ogg"]},
+		"01a15200-69b2-7d13-a30d-696fa4ff390b": {"handle": "music/cafe-ambient-a", "state": "approved", "files": ["music/cafe-ambient-a.ogg"]},
+		"01a15200-69b2-7964-a602-ad5b19583125": {"handle": "music/cafe-ambient-b", "state": "approved", "files": ["music/cafe-ambient-b.ogg"]},
+		"01a15215-15bd-7e3f-a3f8-ffcb1333a0ab": {"handle": "fonts/noto-sans", "state": "approved", "files": ["fonts/noto-sans-latin-400.woff2", "fonts/noto-sans-latin-500.woff2"]}
+	}
+}
