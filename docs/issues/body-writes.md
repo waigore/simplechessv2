@@ -23,7 +23,7 @@ gh issue view 12 --json body --jq .body > after.md    # the read-back the wrappe
 
 ## Guard before writing
 
-`python3 .github/scripts/issue_body_guard.py <file>` (or `-` for stdin) sets aside HTML comments and headings, then exits 1 when nothing is left, all that is left is `@-` lines, or a `<!-- Template: … -->` or `<!-- fill in -->` placeholder remains. A `@-` inside a sentence is prose and passes. The wrapper runs it for you.
+`python3 .github/scripts/issue_body_guard.py <file>` (or `-` for stdin) sets aside HTML comments, headings, fences, and rules, then exits 1 when nothing is left, all that is left is `@-` lines, or a `<!-- Template: … -->` or `<!-- fill in -->` placeholder remains. A `@-` inside a sentence is prose and passes. The wrapper runs it for you.
 
 ## Read back after writing
 
