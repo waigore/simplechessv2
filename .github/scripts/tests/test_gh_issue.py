@@ -120,13 +120,15 @@ class GhIssueTest(unittest.TestCase):
         created = [n for n in repo.bodies if n != "12"]
         self.assertEqual(repo.bodies[created[0]], BODY)
 
-    def test_readback_without_heading_fails(self) -> None:
-        repo = StoredRepo({"12": "## Description\n\nOriginal body.\n"})
-        # The write succeeds, but the read-back returns a body with no heading.
-        with mock.patch.object(gh_issue, "read_back", return_value="Truncated body with no heading."):
-            code, out = self.run_wrapper(repo, self.write_body(BODY), "edit", "12")
-        self.assertEqual(code, 1)
-        self.assertIn("heading", out)
+    def test_lost_body_shapes_fail_the_read_back(self) -> None:
+        # The write succeeds but the stored text is the damaged shape the guard must catch.
+        for stored, reason in (("# T\n\n@-\n", "@-"), ("# T\n\n@-\n\n@-\n", "@-"), ("# T\n\n", "no content")):
+            with self.subTest(stored=stored):
+                repo = StoredRepo({"12": "## Description\n\nOriginal body.\n"})
+                with mock.patch.object(gh_issue, "read_back", return_value=stored):
+                    code, out = self.run_wrapper(repo, self.write_body(BODY), "edit", "12")
+                self.assertEqual(code, 1)
+                self.assertIn(reason, out)
 
     def test_missing_number_and_copyable_gnu_form_are_usage_errors(self) -> None:
         for argv in (["edit", "--file", self.write_body(BODY)], ["edit", "12", "--body-file", "b.md"]):
