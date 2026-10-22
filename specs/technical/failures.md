@@ -4,13 +4,13 @@ Authoring rules: [`.agents/specs/rules/technical/failures.md`](../../.agents/spe
 
 - **Serves**: Reliability; Instant play; Observability; Save durability
 - **Informed by**: [F-move-advice](../design/features/move-advice.md); [`AST.R3`](asset-access.md); [`exceptions.md`](../ux/exceptions.md); quality categories
-- **ADRs**: [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0003](../adr/decisions/0003-localstorage-persistence.md)
+- **ADRs**: [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0003](../adr/decisions/0003-localstorage-persistence.md), [ADR-0010](../adr/decisions/0010-advice-backend-stack.md)
 
 ## Taxonomy
 
 | ID | Class | When | Visible effect |
 |----|-------|------|----------------|
-| T1 | Advice unavailable | Offline, backend error, or stream timeout | Clear advice; Shared game continues (`EX.error`) |
+| T1 | Advice unavailable | Offline, backend error, stream timeout, or missing / wrong API key ([ADR-0010](../adr/decisions/0010-advice-backend-stack.md)) | Clear advice; Shared game continues (`EX.error`) |
 | T2 | Persist write fail | `localStorage` setItem throws or quota | Keep prior document; log; play continues (`EX.save-failure`) |
 | T3 | Persist read fail / corrupt | Missing or invalid JSON on open | Defaults: Elo start, Last mode none, empty recent; log |
 | T4 | Unresolved asset ID | Manifest miss or load fail | Per [`AST.R3`](asset-access.md) / [`ACC.A3`](../assets/access.md) |

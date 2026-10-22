@@ -7,7 +7,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 - **Consumers**: [`CMP-shared-game-session`](../components/shared-game-session.md) (marks reach L1 via [`CTR-presentation`](presentation.md) E4)
 - **Serves**: F-move-advice; Load time advice ≤2000 ms; Instant play
 - **Informed by**: [F-move-advice](../../design/features/move-advice.md); `CFG.ADVICE_TIME_MS`
-- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
+- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)
 
 ## Operations
 
@@ -28,9 +28,11 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 | Message | Fields |
 |---------|--------|
-| Request (O1) | `fen` (string), `time_ms` (int, search cap) |
+| Request (O1) | `api_key` (string, configured key; [`ADR-0010`](../../adr/decisions/0010-advice-backend-stack.md)), `fen` (string), `time_ms` (int, search cap) |
 | Update (E1) | `best_move_uci` (string), `eval_cp` (int, White view), optional `mate_in`, `depth`, `time_ms` |
 | End (E2) | `reason`: `cap` \| `cancel` \| `error` |
+
+Every client request carries the configured API key.
 
 Client maps `best_move_uci` to board squares for [`SCH-advice-update`](../schemata/advice-update.md).
 
@@ -41,12 +43,14 @@ Client maps `best_move_uci` to board squares for [`SCH-advice-update`](../schema
 | G1 | Local move path never awaits O1/E1 |
 | G2 | Backend search stops by `CFG.ADVICE_TIME_MS` (2000) |
 | G3 | Client never opens UCI to Stockfish |
+| G4 | Backend accepts a request only when `api_key` matches its configured key |
 
 ## Errors
 
 | Condition | Result |
 |-----------|--------|
 | Offline / backend error | O3; [`FAIL.T1`](../failures.md) |
+| Missing or wrong API key | O3; [`FAIL.T1`](../failures.md); play continues |
 | Stale update after cancel | Drop |
 
 ## Diagram

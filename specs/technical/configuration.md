@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 
 - **Serves**: Design tunables bound into client code
 - **Informed by**: [`specs/design/configuration.md`](../design/configuration.md)
-- **ADRs**: [ADR-0001](../adr/decisions/0001-godot-engine.md)
+- **ADRs**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0010](../adr/decisions/0010-advice-backend-stack.md)
 - **Design config**: [`specs/design/configuration.md`](../design/configuration.md)
 
 ## Sources
@@ -28,6 +28,8 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 | T6 | advice_time_ms | `CFG.ADVICE_TIME_MS` | int ms | 2000 |
 | T7 | elo_recent_window | `CFG.ELO_RECENT_WINDOW` | int puzzles | 20 |
 | T8 | elo_band_widen | `CFG.ELO_BAND_WIDEN` | int Elo | 50 |
+| T9 | advice_endpoint | — (integration value, not a design param; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default |
+| T10 | advice_api_key | — (integration value, not a design param; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string secret | Set per deployment; never committed |
 
 ## Binding
 
@@ -35,7 +37,7 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 |----|----------|-------|-----------------|
 | B1 | [`CMP-shared-game-session`](components/shared-game-session.md) | T1 T2 T6; S3 clock options | Use design defaults; log |
 | B2 | [`CMP-puzzle-session`](components/puzzle-session.md) | T3 T4 T5 T7 T8; S2 Elo | Use T5 on T3 persist fail |
-| B3 | [`CMP-advice-client`](components/advice-client.md) | T6 | Cap at 2000 if missing |
+| B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: cap at 2000. T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
 | B4 | [`CMP-presentation`](components/presentation.md) | S4 table for the current `GS.locale` | Unshipped or missing locale reads `en`; a switch applies immediately ([`experience.md`](../design/experience.md)) |
 
 ## Diagram
