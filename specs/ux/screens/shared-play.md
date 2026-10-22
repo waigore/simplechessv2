@@ -31,7 +31,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 ## Controls
 
-C1–C9 are in [`shared-play-controls.md`](shared-play-controls.md). Focus order is that table.
+C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md). Focus order is that table.
 
 ## States
 
