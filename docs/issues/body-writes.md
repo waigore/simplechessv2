@@ -1,6 +1,6 @@
 # Writing issue bodies and comments
 
-Safe invocation for every `gh issue create|edit|comment` write, the read-back that proves it landed, and the guard that rejects a body no reader can use. Contract: [workflow.md](workflow.md). Every body-writing skill points here instead of restating the rules.
+Safe invocation for every `gh issue create|edit|comment` write, the read-back that proves it landed, and the guard that rejects a body no reader can use. Contract: [workflow.md](workflow.md). Body-writing skills point here instead of restating the rules.
 
 ## Why
 
@@ -18,8 +18,8 @@ gh issue view 12 --json body --jq .body > after.md    # the read-back the wrappe
 ```
 
 - The body comes from a file (`--file body.md`) or stdin (`--file -`). There is no literal-body option, so a sentinel captured into a file fails instead of being written.
-- Arguments after `--` go to `gh` unchanged (`--title`, `--label`, `--add-label`); the wrapper supplies `--body-file` itself.
-- Exit 1 means nothing was written (body rejected) or the write lost its contract (read-back rejected). Run it **before** posting evidence for a step; a failed write is not evidence.
+- Arguments after `--` go to `gh` unchanged (`--title`, `--label`, `--add-label`); the wrapper supplies `--body-file`.
+- Exit 1 means nothing was written (body rejected) or the write lost its contract (read-back rejected). Post evidence only after a write exits 0; a failed write is not evidence.
 
 ## Guard before writing
 
@@ -33,11 +33,11 @@ Every body or comment write is read back, and an empty result or one that is exa
 gh issue view 12 --json body --jq .body | python3 .github/scripts/issue_body_guard.py --readback -
 ```
 
-`--readback` also rejects a stored body with no `#` heading, the usual shape of a lost body. If it fails, rewrite from a known-good copy; do not continue the workflow.
+`--readback` also rejects a stored body with no `#` heading, the usual shape of a lost body. If it fails, rewrite from a known-good copy; do not continue.
 
 ## Recover a lost body
 
-A body stored as `@-`, empty, or truncated is not recoverable from itself. Stop the step, re-author the body from the issue's title, labels, and comment trail, write it through the wrapper, and note the repair in a comment. Re-authoring is editorial work; file it as its own task, not as part of the defect that broke the write.
+A body stored as `@-`, empty, or truncated is not recoverable from itself. Stop, re-author the body from the issue's title, labels, and comment trail, write it through the wrapper, and note the repair in a comment. Re-authoring is editorial work; file it as its own task, not under the defect that broke the write.
 
 ## External writers
 
