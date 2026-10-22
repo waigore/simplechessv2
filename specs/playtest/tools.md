@@ -8,6 +8,8 @@ The agent drives play through **both** player-facing controls (per UX) and debug
 
 ## Environments (Must)
 
+Session kinds a protocol can run in. IDs `ENV.1`, `ENV.2`, … per the [playtest ID rules](../../.agents/specs/rules/playtest/ids.md).
+
 | ID | Capability | Agent can |
 |----|------------|-----------|
 | `ENV.1` | Headless session | Run Design and UX protocols with no graphics display; observe via `DBG.*` and `TEL.*` |
