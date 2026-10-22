@@ -35,7 +35,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | ID | Guarantee |
 |----|-----------|
 | G1 | O1–O9 and E1 available in playtest builds on Headless (`ENV.1`) and Graphical (`ENV.2`) |
-| G2 | Release Web export strips or no-ops O1–O9 and the story-ID overlay |
+| G2 | Release Web export starts at `main_release.tscn`, which carries no seam node, so O1–O9, E1, and the story-ID overlay are absent |
 | G3 | Drive path must not redefine the 60 fps player move path |
 
 ## Errors

@@ -56,12 +56,8 @@ jobs:
       - name: Export Web playtest
         run: |
           set -euo pipefail
-          godot="$(python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())")"
-          mkdir -p build/web
-          "${godot}" --headless --path game --export-release "Web Playtest" ../build/web/index.html
-          test -s build/web/index.html
-          test -s build/web/index.wasm
-          test -s build/web/index.pck
+          export GODOT_BIN="$(python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())")"
+          python3 .github/scripts/web_export.py --preset "Web Playtest"
 
       - name: Headless playtest smoke
         run: |

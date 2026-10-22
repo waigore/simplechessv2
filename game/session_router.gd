@@ -47,7 +47,8 @@ var play_ui_state: String:
 			shared_session.play_ui_state = value
 
 var _resolver: AssetResolver
-var _seams: PlaytestSeams
+## Playtest seams node, or null in a release export (G2).
+var _seams: Variant
 var _persist: PersistStore
 var _ambient_started := false
 var _clock_accum_ms := 0.0
@@ -56,14 +57,9 @@ var _last_clock_display := ""
 
 func _ready() -> void:
 	_resolver = get_node("../AssetResolver") as AssetResolver
-	_seams = get_node("../PlaytestSeams") as PlaytestSeams
+	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
 	locale = StringTable.locale_from_os(OS.get_locale())
-	_seams.register_stages(_known_stages())
-	_seams.bind_state(play_snapshot)
-	_seams.jump_requested.connect(_on_jump_requested)
-	_seams.seed_changed.connect(_on_seed_changed)
-	_seams.input_replayed.connect(_on_input_replayed)
 	_resolver.boot_ready.connect(_on_boot_ready)
 	_resolver.ambient_ready.connect(_on_ambient_ready)
 	_resolver.must_overlay.connect(_on_unresolved_overlay)
@@ -74,11 +70,34 @@ func _ready() -> void:
 		_persist.write_failed.connect(show_save_failure)
 
 
+## G2 — `main_release.tscn` carries no seam node, and this avoids naming the
+## seam class so a release export never loads it.
+func _bind_seams() -> Variant:
+	var node := get_node_or_null("../PlaytestSeams")
+	if node == null:
+		return null
+	node.register_stages(_known_stages())
+	node.bind_state(play_snapshot)
+	node.jump_requested.connect(_on_jump_requested)
+	node.seed_changed.connect(_on_seed_changed)
+	node.input_replayed.connect(_on_input_replayed)
+	return node
+
+
+func _seams_paused() -> bool:
+	return _seams != null and _seams.is_paused()
+
+
+func _emit_tel(event_name: String, outcome: String, story_id := "") -> void:
+	if _seams != null:
+		_seams.emit_tel(event_name, outcome, story_id)
+
+
 func _process(delta: float) -> void:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return
 	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
-	if _seams.is_paused():
+	if _seams_paused():
 		return
 	if shared_session.white_clock_ms == null:
 		return
@@ -98,7 +117,7 @@ func _process(delta: float) -> void:
 		var end_reason := str(ended_field.get("reason", ""))
 		if _is_loss_end(end_reason):
 			_play_cue(SharedAudioCues.CUE_END)
-		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
+		_emit_tel("shared.end", end_reason, "NAV.T6")
 		_go_shared_result()
 
 
@@ -128,7 +147,7 @@ func start_music() -> void:
 func handle_control(screen_id: String, control_id: String) -> void:
 	if session_ended:
 		return
-	if screen_id == STAGE_SHARED_PLAY and _seams.is_paused():
+	if screen_id == STAGE_SHARED_PLAY and _seams_paused():
 		return
 	match screen_id:
 		STAGE_MODE_PICK:
@@ -145,7 +164,7 @@ func handle_control(screen_id: String, control_id: String) -> void:
 func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
-	if _seams.is_paused():
+	if _seams_paused():
 		return false
 	if not shared_session.gestures_available():
 		return false
@@ -158,7 +177,7 @@ func handle_input_commit(from_square: String, to_square: String, promotion: Stri
 func handle_deselect() -> bool:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
-	if _seams.is_paused():
+	if _seams_paused():
 		return false
 	var result := shared_session.clear_selection()
 	if not bool(result.get("ok", false)):
@@ -172,7 +191,7 @@ func handle_deselect() -> bool:
 func handle_promotion_commit(kind: String) -> bool:
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
-	if _seams.is_paused():
+	if _seams_paused():
 		return false
 	var result := shared_session.commit_promotion(kind)
 	_emit_tel_result(result)
@@ -186,11 +205,11 @@ func handle_promotion_commit(kind: String) -> bool:
 		_play_cue(SharedAudioCues.CUE_END)
 	elif bool(result.get("check", false)):
 		_play_cue(SharedAudioCues.CUE_CHECK)
-		_seams.emit_tel("shared.check", "shown", "UI-shared-play.US2")
+		_emit_tel("shared.check", "shown", "UI-shared-play.US2")
 	var move: Dictionary = result.get("move", {}) as Dictionary
 	_emit_play_screen(move)
 	if ended:
-		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
+		_emit_tel("shared.end", end_reason, "NAV.T6")
 		_go_shared_result()
 	return true
 
@@ -221,7 +240,7 @@ func play_snapshot() -> Dictionary:
 		"game_ended": {"ended": session_ended, "reason": ""},
 		"mode": last_mode if stage == STAGE_SHARED_PLAY or stage == STAGE_SHARED_RESULT else "",
 		"stage": stage,
-		"seed": _seams.seed_value,
+		"seed": _seams.seed_value if _seams != null else 0,
 		"locale": locale,
 		"last_mode": last_mode,
 		"white_seat": white_seat,
@@ -248,11 +267,12 @@ func play_snapshot() -> Dictionary:
 
 
 func note_pointer(record: Dictionary) -> void:
-	_seams.note_pointer(record)
+	if _seams != null:
+		_seams.note_pointer(record)
 
 
 func session_is_paused() -> bool:
-	return _seams.is_paused()
+	return _seams_paused()
 
 
 func legal_targets_for(square: String) -> PackedStringArray:
@@ -480,7 +500,7 @@ func _start_shared_game() -> void:
 	shared_session.start_shared(clock, increment, advice_on)
 	stage = STAGE_SHARED_PLAY
 	enter_shared_play()
-	_seams.emit_tel("shared.start", "ok", "UI-shared-play.US1")
+	_emit_tel("shared.start", "ok", "UI-shared-play.US1")
 	_emit_play_screen()
 
 
@@ -506,7 +526,7 @@ func _on_shared_play_control(control_id: String) -> void:
 		## Spec: draws play no end cue (SND, D1–D5); losses keep X4.
 		if _is_loss_end(end_reason):
 			_play_cue(SharedAudioCues.CUE_END)
-		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
+		_emit_tel("shared.end", end_reason, "NAV.T6")
 		_go_shared_result()
 	else:
 		_emit_play_screen()
@@ -517,13 +537,13 @@ func _on_shared_result_control(control_id: String) -> void:
 		"C1":
 			# NAV.T7 / J-shared-session.B1 / L-two-player-game.K3 / PRG.F1 —
 			# unlock setup; nothing from the finished game carries into the next.
-			_seams.emit_tel("shared.again", "ok", "NAV.T7")
+			_emit_tel("shared.again", "ok", "NAV.T7")
 			_reset_after_shared_end()
 			stage = STAGE_SHARED_SETUP
 			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
 		"C2":
 			# NAV.T8 / J-shared-session.S4 / FL-mode-pick.T3
-			_seams.emit_tel("shared.stop", "ok", "NAV.T8")
+			_emit_tel("shared.stop", "ok", "NAV.T8")
 			_go_mode_pick("S1")
 
 
@@ -567,11 +587,11 @@ func _apply_place(from_square: String, to_square: String, promotion: String = ""
 		_play_cue(SharedAudioCues.CUE_END)
 	elif bool(result.get("check", false)):
 		_play_cue(SharedAudioCues.CUE_CHECK)
-		_seams.emit_tel("shared.check", "shown", "UI-shared-play.US2")
+		_emit_tel("shared.check", "shown", "UI-shared-play.US2")
 	var move: Dictionary = result.get("move", {}) as Dictionary
 	_emit_play_screen(move)
 	if ended:
-		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
+		_emit_tel("shared.end", end_reason, "NAV.T6")
 		_go_shared_result()
 	return true
 
@@ -580,7 +600,7 @@ func _emit_tel_result(result: Dictionary) -> void:
 	var event := str(result.get("event", ""))
 	if event.is_empty():
 		return
-	_seams.emit_tel(event, str(result.get("outcome", "ok")), str(result.get("story", "")))
+	_emit_tel(event, str(result.get("outcome", "ok")), str(result.get("story", "")))
 
 
 func _go_shared_result() -> void:
@@ -626,7 +646,8 @@ func _end_session() -> void:
 
 
 func _on_unresolved_overlay(asset_id: String) -> void:
-	_seams.set_overlay(true, PackedStringArray([asset_id]))
+	if _seams != null:
+		_seams.set_overlay(true, PackedStringArray([asset_id]))
 
 
 func _on_jump_requested(stage_id: String) -> void:
