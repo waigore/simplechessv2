@@ -16,6 +16,8 @@ Record product-owner clarification for a typed issue in `status:pending-clarific
 
 **Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
 
+**Body and comment writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — `--body-file`, guard, read-back.
+
 **Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md)
 
 ## Steps

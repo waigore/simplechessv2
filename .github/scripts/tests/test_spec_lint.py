@@ -146,5 +146,23 @@ class SpecLintTest(unittest.TestCase):
         self.write("specs/long.md", "word " * spec_lint.WORD_LIMIT)
         self.assertEqual(self.errors("word-limit"), [])
 
+    def test_unsafe_body_invocation_in_docs(self) -> None:
+        # Copyable or not, a doc that shows the sentinel as a flag value fails.
+        self.write("docs/issues/unsafe.md", "Run `gh issue edit 12 --body @-`.\n\ngh issue comment 12 --body @-\n")
+        findings = self.errors("unsafe-body")
+        self.assertEqual([(f.path, f.line) for f in findings], [("docs/issues/unsafe.md", 1), ("docs/issues/unsafe.md", 3)])
+        self.assertIn("--body-file -", findings[0].message)
+
+    def test_unsafe_body_file_in_skill(self) -> None:
+        path = ".agents/skills/create-project-task/SKILL.md"
+        self.edit(path, "## Steps\n", "## Steps\n\n`gh issue comment 12 --body-file @-`\n")
+        [finding] = self.errors("unsafe-body")
+        self.assertEqual(finding.path, path)
+        self.assertIn("--body-file -", finding.message)
+
+    def test_safe_body_file_invocation_passes(self) -> None:
+        self.write("docs/issues/safe.md", "Run `gh issue edit 12 --body-file -` or `gh issue create --body-file body.md`.\n")
+        self.assertEqual(self.errors("unsafe-body"), [])
+
 if __name__ == "__main__":
     unittest.main()

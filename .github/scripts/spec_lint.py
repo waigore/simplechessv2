@@ -12,6 +12,7 @@ Checks (see docs/spec-lint.md):
   orphans        every spec file is linked from another spec file
   glossary       glossary terms are unique and alphabetical
   word-limit     Markdown in docs/ and specs/ stays within WORD_LIMIT words
+  unsafe-body    agent-facing docs and skills never pass `@-` to `--body`
 
 Usage: spec_lint.py [--root DIR] [--strict]
 Exit 1 on any error; warnings exit 1 only with --strict.
@@ -32,6 +33,8 @@ LINK_ROOTS = ("specs", "docs", ".agents")
 OPTIONAL_TEMPLATES = "specs/technical/_templates/"
 WORD_LIMIT_ROOTS = ("docs", "specs")
 WORD_LIMIT = 500
+# Agent-facing surfaces whose `gh issue` examples agents copy verbatim.
+BODY_WRITE_ROOTS = ("docs", ".agents/skills")
 
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
@@ -442,6 +445,30 @@ def check_word_limit(repo: Repo) -> list[Finding]:
     return findings
 
 
+UNSAFE_FLAG_RE = re.compile(r"(?<![\w-])(--body(?:-file)?)(?:=|\s+)['\"`]?@-")
+
+
+def _unsafe_flags(line: str) -> list[str]:
+    """Offending flag names on one line. Compliant docs never show the sentinel as a flag value."""
+    return [m.group(1) for m in UNSAFE_FLAG_RE.finditer(line)]
+
+
+def check_unsafe_body(repo: Repo) -> list[Finding]:
+    """`--body @-` writes the sentinel; `--body-file @-` is a file named `@-` (docs/issues/body-writes.md).
+
+    Every Markdown file under docs/ and .agents/skills/, fenced blocks included: a copyable
+    command must never carry the sentinel. See docs/spec-lint.md.
+    """
+    findings = []
+    for top in BODY_WRITE_ROOTS:
+        for rel in repo.files(top, (".md",)):
+            for i, line in enumerate(repo.doc(rel).lines, 1):
+                for flag in _unsafe_flags(line):
+                    fix = "a file named '@-'; stdin is `--body-file -`" if flag == "--body-file" else "the literal '@-'; pipe the body to `--body-file -`"
+                    findings.append(Finding(rel, i, "unsafe-body", f"`{flag} @-` stores {fix}"))
+    return findings
+
+
 CHECKS: dict[str, Callable[[Repo], list[Finding]]] = {
     "rules-line": check_rules_line,
     "template-copy": check_template_copy,
@@ -452,6 +479,7 @@ CHECKS: dict[str, Callable[[Repo], list[Finding]]] = {
     "orphans": check_orphans,
     "glossary": check_glossary,
     "word-limit": check_word_limit,
+    "unsafe-body": check_unsafe_body,
 }
 
 

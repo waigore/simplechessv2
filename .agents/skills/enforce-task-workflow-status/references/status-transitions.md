@@ -34,6 +34,8 @@ Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 
 Never close the issue when applying `status:accepted`.
 
+Label swaps change labels only; body and comment writes follow [`docs/issues/body-writes.md`](../../../../docs/issues/body-writes.md).
+
 ## Gate mode inputs
 
 Action skills pass: issue number, expected `from` status (short name without `status:` prefix or full label), desired `to` status. Abort if current status ≠ `from` (after normalizing). Apply swap only when the transition is in the table above.

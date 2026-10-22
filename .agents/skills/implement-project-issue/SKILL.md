@@ -16,6 +16,8 @@ Record implementation evidence for a typed issue in `status:pending-implementati
 
 **Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
 
+**Evidence writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — `--body-file`, guard, read-back.
+
 **Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md)
 
 ## Steps
