@@ -365,7 +365,6 @@ func _show_shared_play(state: Dictionary) -> void:
 	else:
 		_shared_play.visible = true
 		_shared_play.modulate.a = 1.0
-	_router.note_board_playable()
 	if not _play_assets_bound:
 		# Ask L2 for play IDs if O5 has not arrived yet (CTR-presentation.E3).
 		var needed: PackedStringArray = PackedStringArray()
