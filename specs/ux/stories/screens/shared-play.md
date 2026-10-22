@@ -26,6 +26,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 | C7 | Accept | US3.5 US4.6 |
 | C8 | Decline | US3.7 US4.7 |
 | C9 | Withdraw | US3.9 US4.8 |
+| C10 | Clear selection | US1.10 US4.13 |
 | S4 | EX.promote | US3.3 US3.13 |
 | S5 | EX.rejected | US3.11 |
 | S6 | EX.draw-offer | US3.5 US3.12 US3.14 US3.15 |
@@ -34,7 +35,7 @@ US2: [`shared-play-regions.md`](shared-play-regions.md). US3: [`shared-play-choi
 
 ## US1: Shared board play
 
-As Bottom or Top player, I move on my turn so that the game advances.
+As Bottom or Top player, I move on my turn so the game advances.
 
 ### US1.1: Resign confirm
 
@@ -104,4 +105,14 @@ Then GS.selectedPiece is unchanged
 Given Bottom is not side to move on shared-play S1
 When Bottom activates C2 on a square
 Then position unchanged and no place asked
+```
+
+### US1.10: Clear selection
+
+- **Proves**: C10
+
+```gherkin
+Given Bottom seat is side to move and GS.selectedPiece is set
+When Bottom activates C10
+Then GS.selectedPiece is cleared and no place is asked
 ```
