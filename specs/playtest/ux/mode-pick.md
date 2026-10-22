@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-mode-pick`
 - **Environment**: Headless and Graphical
-- **Cites**: `UI-mode-pick`
+- **Cites**: `UI-mode-pick.US1`
 - **Situational tools**: None
 
 ## Steps
@@ -21,7 +21,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 | ID | Outcome |
 |----|---------|
-| P1 | Both mode entries work; Last mode indication matches UX story. |
+| P1 | Both mode entries work; Last mode indication matches `UI-mode-pick.US1.1`. |
 | P2 | Headless and Graphical both pass. |
 | P3 | Switch locale updates mode-pick copy without leaving the screen. |
 

@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-shared-result`
 - **Environment**: Headless and Graphical
-- **Cites**: `UI-shared-result`
+- **Cites**: `UI-shared-result.US1`
 - **Situational tools**: None
 
 ## Steps
@@ -20,7 +20,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 | ID | Outcome |
 |----|---------|
-| P1 | Result actions match `UI-shared-result`. |
+| P1 | Result actions match `UI-shared-result.US1`. |
 | P2 | Headless and Graphical both pass. |
 
 ## Fail

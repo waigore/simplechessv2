@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-shared-play`
 - **Environment**: Headless and Graphical
-- **Cites**: `UI-shared-play`, `ACT-bottom-player`, `ACT-top-player`
+- **Cites**: `UI-shared-play.US1`, `UI-shared-play.US2`, `ACT-bottom-player.US1`, `ACT-top-player.US1`
 - **Situational tools**: None
 
 ## Steps
