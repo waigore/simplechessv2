@@ -13,6 +13,7 @@ Checks (see docs/spec-lint.md):
   glossary       glossary terms are unique and alphabetical
   word-limit     Markdown in docs/ and specs/ stays within WORD_LIMIT words
   unsafe-body    agent-facing docs, skills, and issue forms never pass `@-` to `--body`
+                 or call a heading-only body (or a read-back without its heading) safe
 
 Usage: spec_lint.py [--root DIR] [--strict]
 Exit 1 on any error; warnings exit 1 only with --strict.
@@ -450,6 +451,15 @@ def check_word_limit(repo: Repo) -> list[Finding]:
 UNSAFE_FLAG_RE = re.compile(r"(?<![\w-])(--body(?:-file)?)(?:=|\s+)['\"`]?@-(?![\w-])")
 
 
+# The narrow rule the guard outgrew (issues #474/#477): a heading alone, or a read-back that lost its heading.
+NARROW_RULE_RE = re.compile(
+    r"also rejects a stored body with no `?#"
+    r"|rejects? (?:a body|the body|bodies|one) (?:with )?(?:exactly|only) "
+    r"|(?:that|or one that) is exactly `?@-`? (?:aborts|fails)",
+    re.I,
+)
+
+
 def _unsafe_flags(line: str) -> list[str]:
     """Offending flag names on one line. Compliant docs never show the sentinel as a flag value."""
     return [m.group(1) for m in UNSAFE_FLAG_RE.finditer(line)]
@@ -460,17 +470,25 @@ def check_unsafe_body(repo: Repo) -> list[Finding]:
 
     Every Markdown file under docs/ and .agents/skills/ and the issue forms under
     .github/ISSUE_TEMPLATE/, fenced blocks included: a copyable command or an instruction an
-    agent follows must never carry the sentinel. `.github/scripts/gh_issue.py` is the guarded
-    writer that validates before `gh` runs. See docs/spec-lint.md.
+    agent follows must never carry the sentinel, and must not describe a narrower rule than
+    the guard enforces (a heading with no content and a `@-` line in any position are rejected).
+    `.github/scripts/gh_issue.py` is the guarded writer that validates before `gh` runs.
+    See docs/spec-lint.md.
     """
     findings = []
     for top in (*BODY_WRITE_ROOTS, ISSUE_FORM_ROOT):
         for rel in repo.files(top, (".md", ".yml")):
             for i, line in enumerate(repo.doc(rel).lines, 1):
-                for flag in _unsafe_flags(line):
-                    fix = "a file named '@-'; stdin is `--body-file -`" if flag == "--body-file" else "the literal '@-'; pipe the body to `--body-file -`"
-                    findings.append(Finding(rel, i, "unsafe-body", f"`{flag} @-` stores {fix}"))
+                findings += [Finding(rel, i, "unsafe-body", f"`{flag} @-` stores {_sentinel_fix(flag)}")
+                             for flag in _unsafe_flags(line)]
+                if NARROW_RULE_RE.search(line):
+                    findings.append(Finding(rel, i, "unsafe-body", "states the old narrow rule; the guard also rejects a heading with no content and a `@-` line in any position"))
     return findings
+
+
+def _sentinel_fix(flag: str) -> str:
+    """What `flag @-` actually does, so the message names the safe form."""
+    return "a file named '@-'; stdin is `--body-file -`" if flag == "--body-file" else "the literal '@-'; pipe the body to `--body-file -`"
 
 
 CHECKS: dict[str, Callable[[Repo], list[Finding]]] = {

@@ -178,6 +178,19 @@ class SpecLintTest(unittest.TestCase):
         [finding] = self.errors("unsafe-body")
         self.assertEqual(finding.path, path)
 
+    def test_narrow_body_rule_in_docs_fails(self) -> None:
+        # The rule the guard outgrew: a heading-only body, or a staged read-back, shown as safe.
+        self.write("docs/issues/narrow.md", "An empty result or one that is exactly `@-` aborts the step.\n\n"
+                   "`--readback` also rejects a stored body with no `#` heading.\n")
+        findings = self.errors("unsafe-body")
+        self.assertEqual([(f.path, f.line) for f in findings], [("docs/issues/narrow.md", 1), ("docs/issues/narrow.md", 3)])
+        self.assertIn("heading", findings[0].message)
+
+    def test_widened_body_rule_passes(self) -> None:
+        self.write("docs/issues/wide.md", "The guard rejects a body whose only content is `@-`, a heading with no content, "
+                   "or an HTML comment. A `@-` inside a sentence is prose.\n")
+        self.assertEqual(self.errors("unsafe-body"), [])
+
     def test_sentinel_inside_a_longer_token_is_prose(self) -> None:
         self.write("docs/issues/prose.md", "Releases live at https://github.com/o/r/releases/tag/v1.2.3@-rc1 .\n")
         self.assertEqual(self.errors("unsafe-body"), [])
