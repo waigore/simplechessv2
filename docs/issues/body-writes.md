@@ -41,4 +41,4 @@ A body stored as `@-`, empty, or truncated is not recoverable from itself. Stop 
 
 ## External writers
 
-A runner outside this repo must call the wrapper, or switch to `--body-file -` and run the guard and read-back itself, with its operator confirming the call site. `Spec lint` (`unsafe-body`) fails any agent-facing doc, skill, or issue form that shows the unsafe forms.
+A runner outside this repo must call the wrapper, or switch to `--body-file -` and run the guard and read-back itself, with its operator confirming the call site. It must also scrub its own skill and prompt copies, which `Spec lint` cannot read; `Spec lint` (`unsafe-body`) catches the unsafe forms inside this repo's docs, skills, and issue forms.
