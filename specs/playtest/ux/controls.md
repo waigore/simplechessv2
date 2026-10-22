@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-controls`
 - **Environment**: Headless and Graphical
-- **Cites**: `IN`
+- **Cites**: `IN.US1`, `IN.US2`
 - **Situational tools**: `SIT.2` when validating recorded touch sequences
 
 ## Steps
@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 | ID | Outcome |
 |----|---------|
-| P1 | Input stories in `IN` hold for select, tap move, drag move, and deselect (tap and bad drop). |
+| P1 | `IN.US1` holds for select, tap move, and deselect by tap; `IN.US2` holds for drag move and deselect on a bad drop. |
 | P2 | Headless and Graphical both pass. |
 
 ## Fail
