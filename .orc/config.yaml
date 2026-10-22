@@ -93,19 +93,6 @@ agents:
       Run the issue-workflow-refine-agent skill unattended.
       Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
 
-  issue-workflow-clarify-agent:
-    skill: issue-workflow-clarify-agent
-    provider: cursor
-    enabled: true
-    gate:
-      command:
-        - sh
-        - -c
-        - test "$(gh issue list --state open --label status:pending-clarification --limit 1 --json number)" != "[]"
-    prompt: |
-      Run the issue-workflow-clarify-agent skill unattended.
-      Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
-
   issue-workflow-implement-agent:
     skill: issue-workflow-implement-agent
     provider: cursor
