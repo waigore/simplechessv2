@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Play move/check/mate/resign SFX and cafe ambient when specified |
 | R4 | Show Advice highlights/arrow/eval when session supplies them |
 | R5 | Never await network before completing piece motion |
-| R6 | Select player-facing copy from the string table for the current `GS.locale` |
+| R6 | Resolve player-facing copy through [`CTR-localization`](../contracts/localization.md) O1 for the current `GS.locale`, per [`SCH-string-table`](../schemata/string-table.md) |
 
 ## Communication
 
@@ -52,4 +52,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-[`concurrency.md`](../concurrency.md) U1; [`failures.md`](../failures.md) T4; [`asset-access.md`](../asset-access.md).
+[`concurrency.md`](../concurrency.md) U1; [`failures.md`](../failures.md) T4, T13; [`asset-access.md`](../asset-access.md).

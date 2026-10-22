@@ -22,12 +22,13 @@ Authoring rules: [`.agents/specs/rules/technical/failures.md`](../../.agents/spe
 | T10 | Draw offer | Side to move confirmed a draw offer | `EX.draw-offer`: accept, decline, withdraw, or move |
 | T11 | Sitting interrupt | Close, refresh, or reopen during play | `EX.interrupt`: next open is mode pick; no mid-game resume |
 | T12 | Unsupported input | Non-touch primary input on Web | `EX.unsupported-input`: use touch; control unchanged |
+| T13 | Missing locale key | A key is absent in a shipped locale | Read `en` per [`CTR-localization`](contracts/localization.md); play continues |
 
 ## Recovery
 
 | ID | Failure | Strategy | Retry / limit |
 |----|---------|----------|---------------|
-| R1 | T1 | Stop eval; clear marks; allow later retry when On+online | No automatic busy-loop; next position or toggle may retry |
+| R1 | T1 | Stop eval; clear marks; allow later retry when On+online | No busy-loop; next position or toggle may retry |
 | R2 | T2 | Leave prior commit intact | No overwrite; operator clears storage |
 | R3 | T3 | Seed defaults; continue to mode pick | Single load attempt per cold open |
 | R4 | T4 | Skip draw / overlay per AST.R3 / ACC.A3 | Log once per ID |

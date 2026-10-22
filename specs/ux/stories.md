@@ -18,3 +18,4 @@ Authoring rules: [`.agents/specs/rules/ux/stories.md`](../../.agents/specs/rules
 | [`navigation.md`](navigation.md) | yes | Full | [`stories/navigation.md`](stories/navigation.md) |
 | [`controls.md`](controls.md) | yes | Full | [`stories/controls.md`](stories/controls.md) |
 | [`exceptions.md`](exceptions.md) | yes | Full | [`stories/exceptions.md`](stories/exceptions.md) |
+| [`localization.md`](localization.md) | no | Baseline | [`stories/localization.md`](stories/localization.md) |

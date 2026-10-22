@@ -32,6 +32,7 @@ Design IDs stay in [../design/ids.md](../design/ids.md) and view IDs in [../view
 | `navigation.md` | `NAV` | Transitions `T`, Entry and resume `N` |
 | `exceptions.md` | `EX` | Exceptions by name, such as `EX.loading` |
 | `controls.md` | `IN` | UI actions by name, such as `IN.confirm`; Bindings `B`; Focus `F` |
+| `localization.md` | `LOC` | Localization rules `L` |
 
 Sections not listed (job, goals, experience intent, copy, and similar) carry no IDs. User stories do not prove them. Copy is checked against the mockup during review.
 
