@@ -34,9 +34,11 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 ```mermaid
 flowchart LR
-  S[sessions]
+  G[CMP-shared-game-session]
+  P[CMP-puzzle-session]
   C[CMP-chess-rules]
-  S -->|CTR-local-move| C
+  G -->|CTR-local-move| C
+  P -->|CTR-local-move| C
 ```
 
 ## Failure / concurrency / persistence
