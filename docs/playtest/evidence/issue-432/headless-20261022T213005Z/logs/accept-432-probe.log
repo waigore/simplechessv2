@@ -1,0 +1,47 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ACCEPT build=
+ACCEPT stage=mode-pick
+ACCEPT classify END.D1 is_loss=false
+ACCEPT classify END.D2 is_loss=false
+ACCEPT classify END.D3 is_loss=false
+ACCEPT classify END.D4 is_loss=false
+ACCEPT classify END.D5 is_loss=false
+ACCEPT classify END.L1 is_loss=true
+ACCEPT classify END.L2 is_loss=true
+ACCEPT classify END.L3 is_loss=true
+{"TEL.1":"shared.start","TEL.2":1792706600630,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ACCEPT stage=shared-play reason_before=
+ACCEPT audio_ready=true waited_frames=0
+{"TEL.1":"shared.draw","TEL.2":1792706600634,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"confirm"}
+{"TEL.1":"shared.draw","TEL.2":1792706600635,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"offered"}
+{"TEL.1":"shared.draw","TEL.2":1792706600637,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"END.D2"}
+{"TEL.1":"shared.end","TEL.2":1792706600637,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T6","TEL.5":"END.D2"}
+ACCEPT D2 accept-draw stage=shared-result end_reason=END.D2 cue_count=0->0 last_cue=
+{"TEL.1":"shared.again","TEL.2":1792706600638,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792706600639,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ACCEPT sanity stage=shared-play ui_state=S1 gestures=true
+{"TEL.1":"shared.select","TEL.2":1792706600641,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+ACCEPT sanity select cue_count=0->1 last=01a151f8-b7d8-7ae6-84af-767ba53d09f6
+{"TEL.1":"shared.move","TEL.2":1792706600644,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+ACCEPT sanity move cue_count=1->2 last=01a151f8-b7d8-710a-b767-92c9137bfd63
+{"TEL.1":"shared.again","TEL.2":1792706600646,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792706600647,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792706600649,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792706600651,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792706600651,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+ACCEPT L2 resign stage=shared-result end_reason=END.L2 cue_count=2->3 last_cue=01a151f8-b7d8-7fe3-b94f-e3a562395d96
+{"TEL.1":"shared.again","TEL.2":1792706600651,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+ACCEPT D5 clock selected=blitz
+{"TEL.1":"shared.start","TEL.2":1792706600653,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ACCEPT D5 mate_possible_for_black=false
+{"TEL.1":"shared.end","TEL.2":1792706600767,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T6","TEL.5":"END.D5"}
+ACCEPT D5 expiry stage=shared-result end_reason=END.D5 cue_count=3->3 last=01a151f8-b7d8-7fe3-b94f-e3a562395d96 ticks=60
+{"TEL.1":"shared.again","TEL.2":1792706600767,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792706600768,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792706600773,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792706600775,"TEL.3":"sess-1792706600555-10297-playtest","TEL.4":"NAV.T6","TEL.5":"END.D1"}
+ACCEPT D1 stalemate stage=shared-result end_reason=END.D1 total_cues_delta=1 last=01a151f8-b7d8-710a-b767-92c9137bfd63 end_cue_played=false
+ACCEPT PROBE PASS
+WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
