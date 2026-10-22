@@ -12,7 +12,7 @@ Acceptance playtest for #432 (record a no-cue rule for draw endings; silence the
 
 ## Scope
 
-The deliverable changes playable behavior (end cue on the accept-draw path), so playtesting applies. Mapping per [`procedures.md`](../../../../specs/playtest/procedures.md).
+The deliverable changes playable behavior (end cue on the accept-draw path), so playtesting applies. Mapping per [`procedures.md`](../../../../specs/playtest/procedures.md):
 
 - `END.D2` (agreed draw) and `END.L2`/`L3` (resign, clock loss) are `END` design stories → `PTD-end-conditions` (Design, headless only).
 - Every ending reaches the result screen → `PTU-shared-result` (UX, headless **and** graphical) for the S1 "reach shared-result after a game end" step.
