@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-puzzle-play`
 - **Environment**: Headless and Graphical
-- **Cites**: `UI-puzzle-play`
+- **Cites**: `UI-puzzle-play.US1`, `UI-puzzle-play.US5`
 - **Situational tools**: None
 
 ## Steps
@@ -20,7 +20,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 | ID | Outcome |
 |----|---------|
-| P1 | Puzzle controls and leave/reveal match `UI-puzzle-play`. |
+| P1 | Puzzle controls match `UI-puzzle-play.US1`; leave and reveal confirms match `UI-puzzle-play.US5`. |
 | P2 | Headless and Graphical both pass. |
 
 ## Fail
