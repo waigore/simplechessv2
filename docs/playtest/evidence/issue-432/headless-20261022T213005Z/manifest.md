@@ -24,6 +24,7 @@
 ## Paths
 
 - `notes.md`
+- `verdicts.md`
 - `logs/import.log`
 - `logs/gdscript-tests.log`
 - `logs/headless-smoke.log`
