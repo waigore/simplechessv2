@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/ux/glossary.md`](../../.agents/specs/rule
 
 | Term | Definition | Detailed in |
 |------|------------|-------------|
-| Actor | A person who operates the interface. | [`actors/`](actors/) |
+| Actor | A person at the device who may touch the screen. The interface does not identify which person touched, and it does not allow or refuse a control by game seat. | [`actors/`](actors/) |
 | Binding | A mapping from one platform input to one UI action. | [`controls.md`](controls.md) |
 | Board coordinates | File letters a–h and rank numbers 1–8 shown only along the outer board edges. | [`screens/shared-play.md`](screens/shared-play.md), [`screens/puzzle-play.md`](screens/puzzle-play.md) |
 | Control | A named thing an actor operates on a screen. | [`screens/`](screens/) |

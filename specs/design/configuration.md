@@ -13,14 +13,14 @@ Authoring rules: [`.agents/specs/rules/design/configuration.md`](../../.agents/s
 
 ## Game options
 
-Seats on the shared device are the **Top player** and the **Bottom player**.
+Seats on the shared device are the **Top player** and the **Bottom player**. A seat is which edge a side sits on, not a person the session identifies.
 
 | Option | Choices | Default | Effect on rules | Chosen by / when | Locked when |
 |--------|---------|---------|-----------------|------------------|-------------|
 | White seat | Top player, Bottom player | Bottom player | That seat plays White and moves first | Players; before Shared game starts | Shared game starts |
-| Clock | Untimed, Blitz, Rapid | Untimed | Untimed: no clocks. Blitz: each side starts at `CFG.BLITZ_START`. Rapid: each side starts at `CFG.RAPID_START`. Timed: only the side to move runs a clock | Players; before Shared game starts | Shared game starts |
-| Increment | 3 s, 5 s | 3 s | After each completed move, that side's clock gains the chosen seconds, not if the clock has already reached zero | Players; before Shared game starts, when Clock is Blitz or Rapid | Shared game starts |
-| Advice | On, Off | On | When On and online, automatic best move and eval for the side to move; no principal line. When Off, none. Shared game only | Players; before Shared game starts and during it | Not locked; may toggle during the Shared game |
+| Clock | Untimed, Blitz, Rapid | Untimed | Untimed: no clocks. Blitz starts at `CFG.BLITZ_START`. Rapid starts at `CFG.RAPID_START`. Only the side to move's clock runs | Players; before Shared game starts | Shared game starts |
+| Increment | 3 s, 5 s | 3 s | After a completed move, that side gains the chosen seconds, unless that clock is already zero | Players; before Shared game starts, when Clock is Blitz or Rapid | Shared game starts |
+| Advice | On, Off | On | On and online: best move and eval for the side to move. Off: none. Shared game only | Players; before Shared game starts and during it | Not locked; may toggle during the Shared game |
 
 ## Designer tunables
 

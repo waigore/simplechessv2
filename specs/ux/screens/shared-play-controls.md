@@ -29,7 +29,7 @@ N/A — [`shared-play.md`](shared-play.md).
 | C8 | Decline draw | `IN.activate` | S6 | → S1; same side to move; that clock still runs |
 | C9 | Withdraw offer | `IN.activate` | S6 | → S1; same side to move; that clock still runs |
 
-`EX.draw-offer` is one shared panel. Accept and Decline are the other seat's social role; Withdraw is the offering seat's. The interface does not identify people.
+`EX.draw-offer` is one shared panel. Whoever touches Accept, Decline, or Withdraw operates it. The game records Accept or Decline as the other seat's answer, and Withdraw as the offering seat's. The interface does not identify people.
 
 ## States
 

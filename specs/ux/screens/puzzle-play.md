@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/rules/ux/screens.md).
 
 - **Job**: Play the continuous Puzzle stream
-- **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
+- **Actors**: [`bottom-player.md`](../actors/bottom-player.md), [`top-player.md`](../actors/top-player.md)
 - **Serves**: Instant play, Cafe calm, Accessibility; [puzzle-stream](../../design/loops/puzzle-stream.md)
 - **Mockup**: [`../mockups/screens/puzzle-play.html`](../mockups/screens/puzzle-play.html)
 - **Glossary terms**: [Board coordinates](../glossary.md); [Player Elo](../../design/glossary.md)
