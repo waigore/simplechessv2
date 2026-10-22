@@ -16,13 +16,15 @@ Apply refinements to a typed issue in `status:pending-refinement`.
 
 **Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
 
+**Body and comment writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — `--body-file`, guard, read-back.
+
 **Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md)
 
 ## Steps
 
 1. **Load** issue `n` and the latest fail/review feedback.
 2. **Assert** `status:pending-refinement`.
-3. **Edit the issue body** (not only a comment) so required sections stay valid per `docs/issues/`.
+3. **Edit the issue body** (not only a comment) so required sections stay valid per `docs/issues/`; write it per [`body-writes.md`](../../../docs/issues/body-writes.md) and read it back.
 4. **Comment** summarizing what changed.
 5. **Gate** via `enforce-task-workflow-status`: `pending-refinement` → `pending-review`.
 6. **Report** URL and new status.

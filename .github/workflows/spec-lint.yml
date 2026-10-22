@@ -27,6 +27,14 @@ jobs:
       - name: Lint specs
         run: python3 .github/scripts/spec_lint.py
 
+      - name: Guard a sample issue body
+        run: |
+          printf '## Description\n\nGuard smoke test.\n' | python3 .github/scripts/issue_body_guard.py -
+          if printf '@-\n' | python3 .github/scripts/issue_body_guard.py -; then
+            echo "issue_body_guard accepted a literal '@-'"
+            exit 1
+          fi
+
       - name: Check asset catalog
         run: python3 .github/scripts/asset_catalog.py
 
