@@ -60,6 +60,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 Varying by locale: title, last, shared, puzzle, quit, quit_confirm, confirm, cancel, loading, save_failed, dismiss. locale is the own-name (English, 繁體中文, 日本語), same in every locale.
 
+Copy owner `mode-pick`; keys and `en` source per [localization.md](../localization.md) L1.
+
 ## Experience intent
 
 Calm and immediate: two clear modes, Last mode remembered, quit is confirmed. Meets Accessibility: modes and locale read as text, not color alone; controls are 44px-class touch targets.

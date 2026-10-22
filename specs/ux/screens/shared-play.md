@@ -67,6 +67,8 @@ All keys below vary by locale (`en`, `zh-Hant`, `ja`).
 | bishop | Bishop | C6 |
 | knight | Knight | C6 |
 
+Copy owner `shared-play`; keys and `en` source per [localization.md](../localization.md) L1.
+
 ## Experience intent
 
 Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone; 44px-class targets.
