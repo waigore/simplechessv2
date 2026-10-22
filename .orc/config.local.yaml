@@ -1,7 +1,7 @@
 # Local override. Bare `gh` prefers the remote named upstream
 # (waigore/game-dev-template). Pin gates to this repo's origin.
 # Planner waits one hour after each run (same as the template default).
-# Every agent uses OpenCode's cheaperinference DeepSeek V4.1 Flash 1017.
+# Every agent uses OpenCode's cheaper-inference DeepSeek V4.1 Flash 1017.
 # This lives only in config.local.yaml. To follow the template agent→provider
 # mapping again, delete this provider and each agent's provider key.
 providers:
@@ -12,7 +12,7 @@ providers:
       - --standalone
       - --auto
       - --model
-      - cheaperinference/deepseek-v4.1-flash-1017
+      - cheaper-inference/deepseek-v4.1-flash-1017
       - "{prompt}"
 
 agents:
