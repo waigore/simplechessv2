@@ -12,7 +12,7 @@ Checks (see docs/spec-lint.md):
   orphans        every spec file is linked from another spec file
   glossary       glossary terms are unique and alphabetical
   word-limit     Markdown in docs/ and specs/ stays within WORD_LIMIT words
-  unsafe-body    agent-facing docs and skills never pass `@-` to `--body`
+  unsafe-body    agent-facing docs, skills, and issue forms never pass `@-` to `--body`
 
 Usage: spec_lint.py [--root DIR] [--strict]
 Exit 1 on any error; warnings exit 1 only with --strict.
@@ -35,6 +35,7 @@ WORD_LIMIT_ROOTS = ("docs", "specs")
 WORD_LIMIT = 500
 # Agent-facing surfaces whose `gh issue` examples agents copy verbatim.
 BODY_WRITE_ROOTS = ("docs", ".agents/skills")
+ISSUE_FORM_ROOT = ".github/ISSUE_TEMPLATE"
 
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
@@ -93,7 +94,7 @@ class Repo:
             return []
         out = []
         for dirpath, dirnames, filenames in os.walk(base):
-            dirnames[:] = sorted(d for d in dirnames if not d.startswith("."))
+            dirnames[:] = sorted(d for d in dirnames if not d.startswith(".") or Path(dirpath, d) == base / d)
             for name in sorted(filenames):
                 if name.endswith(suffixes) and not name.startswith("."):
                     out.append(Path(dirpath, name).relative_to(self.root).as_posix())
@@ -445,7 +446,8 @@ def check_word_limit(repo: Repo) -> list[Finding]:
     return findings
 
 
-UNSAFE_FLAG_RE = re.compile(r"(?<![\w-])(--body(?:-file)?)(?:=|\s+)['\"`]?@-")
+# `@-` as a value, bare or quoted, after a body flag; a `@-` inside a longer word (a URL, a version) is prose.
+UNSAFE_FLAG_RE = re.compile(r"(?<![\w-])(--body(?:-file)?)(?:=|\s+)['\"`]?@-(?![\w-])")
 
 
 def _unsafe_flags(line: str) -> list[str]:
@@ -456,12 +458,14 @@ def _unsafe_flags(line: str) -> list[str]:
 def check_unsafe_body(repo: Repo) -> list[Finding]:
     """`--body @-` writes the sentinel; `--body-file @-` is a file named `@-` (docs/issues/body-writes.md).
 
-    Every Markdown file under docs/ and .agents/skills/, fenced blocks included: a copyable
-    command must never carry the sentinel. See docs/spec-lint.md.
+    Every Markdown file under docs/ and .agents/skills/ and the issue forms under
+    .github/ISSUE_TEMPLATE/, fenced blocks included: a copyable command or an instruction an
+    agent follows must never carry the sentinel. `.github/scripts/gh_issue.py` is the guarded
+    writer that validates before `gh` runs. See docs/spec-lint.md.
     """
     findings = []
-    for top in BODY_WRITE_ROOTS:
-        for rel in repo.files(top, (".md",)):
+    for top in (*BODY_WRITE_ROOTS, ISSUE_FORM_ROOT):
+        for rel in repo.files(top, (".md", ".yml")):
             for i, line in enumerate(repo.doc(rel).lines, 1):
                 for flag in _unsafe_flags(line):
                     fix = "a file named '@-'; stdin is `--body-file -`" if flag == "--body-file" else "the literal '@-'; pipe the body to `--body-file -`"

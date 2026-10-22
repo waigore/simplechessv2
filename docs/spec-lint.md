@@ -24,7 +24,7 @@ Errors fail the check. Warnings are printed but pass; add `--strict` to fail on 
 | `orphans` | A spec or mockup is linked from no other spec. A link to a folder counts for its `README.md`. |
 | `glossary` | A glossary term repeats in the same file or breaks alphabetical order. A term defined in two glossaries is a warning. |
 | `word-limit` | A Markdown file in `docs/` or `specs/` exceeds 500 words, counted like `wc -w` on the raw file. Split it and link. |
-| `unsafe-body` | A doc under `docs/` or a skill under `.agents/skills/` shows the sentinel `@-` as a `--body` or `--body-file` value, fenced blocks included. Compliant text never needs the pattern; see [body-writes.md](issues/body-writes.md). |
+| `unsafe-body` | A doc under `docs/`, a skill under `.agents/skills/`, or an issue form under `.github/ISSUE_TEMPLATE/` shows `@-` as a `--body` or `--body-file` value, fenced blocks included. Compliant text never needs the pattern; writes go through [`gh_issue.py`](../.github/scripts/gh_issue.py). See [body-writes.md](issues/body-writes.md). |
 
 ## Asset catalog
 
