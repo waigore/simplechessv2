@@ -64,6 +64,8 @@ All keys below vary by locale (`en`, `zh-Hant`, `ja`).
 | start | Start | C5 |
 | back | Back | C6 |
 
+Copy owner `shared-setup`; keys and `en` source per [localization.md](../localization.md) L1.
+
 ## Experience intent
 
 Quick options, then Start — no tournament chrome. Meets Accessibility: option values read as text, not color alone; controls are 44px-class touch targets.

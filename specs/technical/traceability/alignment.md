@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../../.age
 | Load time; Asset access `ACC` G1–G3 | quality; assets access; ADR-0005 | [`asset-access.md`](../asset-access.md); [`CMP-asset-resolver`](../components/asset-resolver.md); [`CTR-asset-resolve`](../contracts/asset-resolve.md) |
 | Observability; playtest tools | quality; playtest tools; ADR-0004 | [`verification.md`](../verification.md); [`CMP-playtest-seams`](../components/playtest-seams.md); [`CTR-playtest-drive`](../contracts/playtest-drive.md); [`SEQ-playtest-headless-smoke`](../sequences/playtest-headless-smoke.md) |
 | Optional Stockfish Advice stream | F-move-advice; ADR-0002; ADR-0010; ADR-0011 | [`CMP-advice-client`](../components/advice-client.md); [`CMP-advice-backend`](../components/advice-backend.md); [`modules.md`](../modules.md); [`CTR-advice-stream`](../contracts/advice-stream.md); [`SEQ-advice-stream`](../sequences/advice-stream.md) |
-| Localization | quality; ADR-0001 | [`configuration.md`](../configuration.md) `S4`, `B4`; [`CMP-session-router`](../components/session-router.md) `R5`; [`CMP-presentation`](../components/presentation.md) `R6`; copy tables in [`specs/ux/screens/`](../../ux/screens/); [`specs/ux/traceability.md`](../../ux/traceability.md) Localization row; [`mode-pick`](../../ux/screens/mode-pick.md) `C4` Switch locale |
+| Localization | quality; ADR-0001 | [`configuration.md`](../configuration.md) `S4`, `B4`; [`CTR-localization`](../contracts/localization.md); [`SCH-string-table`](../schemata/string-table.md); [`CMP-session-router`](../components/session-router.md) `R5`; [`CMP-presentation`](../components/presentation.md) `R6`; [`failures.md`](../failures.md) `T13`; copy tables in [`specs/ux/screens/`](../../ux/screens/); [`specs/ux/localization.md`](../../ux/localization.md); [`mode-pick`](../../ux/screens/mode-pick.md) `C4` Switch locale |
 | Design `CFG.*` | design configuration | [`configuration.md`](../configuration.md) |
 | Piece rules entity `E-pieces` | design | [`CMP-chess-rules`](../components/chess-rules.md); [`CTR-local-move`](../contracts/local-move.md) |
 | Mode pick flow `FL-mode-pick` | design | [`CMP-session-router`](../components/session-router.md); [`SEQ-cold-open`](../sequences/cold-open.md) |
@@ -27,7 +27,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../../.age
 
 ## Element accounting
 
-All 27 technical elements appear by ID above, except one consumer-only contract:
+All 29 technical elements appear by ID above, except one consumer-only contract:
 
 | Element | Provider | Consumer | Upstream obligation carried by |
 |---------|----------|----------|--------------------------------|
