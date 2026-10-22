@@ -23,7 +23,8 @@ Playlist order and when beds change: [experience.md](../design/experience.md).
 | X4 | Ability / end | Slightly longer resolved cue | 0.20–0.40 s — checkmate, resign, or clock loss ([experience/feedback.md](../design/experience/feedback.md)) |
 | X5 | Interface / puzzle fail | Soft negative tap | 0.08–0.20 s — wrong puzzle move ([experience/feedback.md](../design/experience/feedback.md)) |
 
-Sound alone never required for a rules outcome ([experience.md](../design/experience.md)).
+- **Draw endings play no end cue** (`D1`–`D5`: [end-conditions/conditions.md](../design/end-conditions/conditions.md)). They satisfy the medium "Draw end" feedback through the `result_draw` copy on the result screen ([shared-result.md](../ux/screens/shared-result.md)). `X4`'s resolved end cue stays for checkmate, resign, and clock loss. Fewest resolved cues, per P3 Cafe calm.
+- Sound alone never required for a rules outcome ([experience.md](../design/experience.md)).
 
 ## Voice
 

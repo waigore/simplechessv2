@@ -138,8 +138,8 @@ func _integration_spine() -> String:
 		router.handle_input_commit("e2", "e4")
 		if audio.last_cue_id != SharedAudioCues.CUE_MOVE or audio.cue_play_count != before + 1:
 			problem = "move must play X2"
-	## Draw path: no end cue (stalemate / agreed draw not forced here — resign is loss).
-	## Confirm draw ending via unit: END.D* must not raise cue_play_count when routed.
+	## Spec (sound.md): every draw ending plays no end cue; the result copy carries it.
+	## Confirm via unit: END.D* must not raise cue_play_count when routed.
 	if problem.is_empty():
 		before = audio.cue_play_count
 		## Direct O3 with no loss: router only cues END on loss; draw leaves count.
@@ -149,6 +149,22 @@ func _integration_spine() -> String:
 			problem = "draw endings must not count as loss cues"
 		if problem.is_empty() and audio.cue_play_count != before:
 			problem = "draw check must not play a cue"
+	## C7 accept-draw (END.D2) control path: ended, yet draws play no end cue.
+	if problem.is_empty() and router.shared_session != null:
+		router.handle_control("shared-play", "C5")
+		router.handle_control("shared-play", "confirm")
+		before = audio.cue_play_count
+		router.handle_control("shared-play", "C7")
+		if router.stage != "shared-result":
+			problem = "accept-draw must reach shared-result"
+		elif audio.cue_play_count != before:
+			problem = "accept-draw must play no end cue"
+		if problem.is_empty():
+			## NAV.T7 — back to setup so the resign case below starts a live game.
+			router.handle_control("shared-result", "C1")
+			router.handle_control("shared-setup", "C5")
+			if router.stage != "shared-play":
+				problem = "new shared game not started"
 	if problem.is_empty():
 		router.handle_control("shared-play", "C4")
 		before = audio.cue_play_count
