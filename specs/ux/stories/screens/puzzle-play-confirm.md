@@ -4,6 +4,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 - **UX spec**: [`screens/puzzle-play.md`](../../screens/puzzle-play.md)
 - **Spec key**: `UI-puzzle-play`
+- **Glossary terms**: [Control](../../glossary.md), [Exception](../../glossary.md)
 
 ## Coverage
 
