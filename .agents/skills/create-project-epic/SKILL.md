@@ -18,7 +18,7 @@ Create a repository **Epic** (`type:epic`).
 
 **Issue contract:** [`docs/issues/`](../../../docs/issues/) (`requirements.md`, `body-shapes.md`, `hierarchy.md`). Do not redefine sections or invent a parallel template in this skill.
 
-**Body writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — `--body-file`, the guard, and the read-back.
+**Body writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py` and read-back.
 
 **Linking (sub-issues / blocked-by commands):** [`../create-project-task/references/github-issue-linking.md`](../create-project-task/references/github-issue-linking.md).
 
@@ -28,7 +28,7 @@ Create a repository **Epic** (`type:epic`).
 2. **Collect** `title` and content for every required Epic section; optional notes, `blocked_by`, `blocking`. Ask if required content is missing.
 3. **Build** the body exactly as specified in `body-shapes.md`.
 4. If `--no-create` / "draft only": print title + body and stop.
-5. **Create**: `gh issue create --title "…" --label "type:epic" --label "status:pending-review"`, with the composed body passed as a file per [`body-writes.md`](../../../docs/issues/body-writes.md) (`--body-file`, guard, read-back).
+5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:epic" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in).
 6. **Blocked-by**: for each blocker, follow the linking reference.
 7. **Report** URL, labels (`type:epic`, `status:pending-review`), and dependency wiring.
 

@@ -18,7 +18,7 @@ Create a repository **Task** (`type:task`).
 
 **Issue contract:** [`docs/issues/`](../../../docs/issues/) (`requirements.md`, `body-shapes.md`, `hierarchy.md`). Do not redefine sections or invent a parallel template in this skill.
 
-**Body writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — `--body-file`, the guard, and the read-back.
+**Body writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py` and read-back.
 
 **Linking (sub-issues / depth check / blocked-by commands):** [`references/github-issue-linking.md`](references/github-issue-linking.md).
 
@@ -29,7 +29,7 @@ Create a repository **Task** (`type:task`).
 3. If `parent` is set: **validate depth** per `hierarchy.md` and the linking reference; abort if the new task would exceed 3 levels from epic to leaf.
 4. **Build** the body exactly as specified in `body-shapes.md`.
 5. If `--no-create` / "draft only": print title + body and stop.
-6. **Create**: `gh issue create --title "…" --label "type:task" --label "status:pending-review"`, with the composed body passed as a file per [`body-writes.md`](../../../docs/issues/body-writes.md) (`--body-file`, guard, read-back), with parent at create time when supported; otherwise attach sub-issue after create (linking reference).
+6. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:task" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in), with parent at create time when supported; otherwise attach sub-issue after create (linking reference).
 7. **Blocked-by**: for each blocker, follow the linking reference.
 8. **Report** URL, labels (`type:task`, `status:pending-review`), parent, and dependency wiring.
 

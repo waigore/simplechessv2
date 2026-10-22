@@ -18,7 +18,7 @@ Review a typed issue currently in `status:pending-review`.
 
 **Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
 
-**Evidence writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — `--body-file`, guard, read-back.
+**Evidence writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py`, read-back.
 
 **Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md) and [`status-transitions.md`](../enforce-task-workflow-status/references/status-transitions.md)
 

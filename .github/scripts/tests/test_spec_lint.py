@@ -164,5 +164,23 @@ class SpecLintTest(unittest.TestCase):
         self.write("docs/issues/safe.md", "Run `gh issue edit 12 --body-file -` or `gh issue create --body-file body.md`.\n")
         self.assertEqual(self.errors("unsafe-body"), [])
 
+    def test_unsafe_body_in_fenced_skill_snippet_and_quoted(self) -> None:
+        path = ".agents/skills/implement-project-issue/SKILL.md"
+        self.edit(path, "## Rules\n", "## Rules\n\n```bash\ngh issue comment 12 --body-file \"@-\"\n```\n")
+        [finding] = self.errors("unsafe-body")
+        self.assertEqual(finding.path, path)
+        self.assertIn("--body-file -", finding.message)
+
+    def test_unsafe_body_in_issue_form(self) -> None:
+        path = ".github/ISSUE_TEMPLATE/task.yml"
+        original = self.read(path)
+        self.write(path, original + "\n# gh issue comment 12 --body @-\n")
+        [finding] = self.errors("unsafe-body")
+        self.assertEqual(finding.path, path)
+
+    def test_sentinel_inside_a_longer_token_is_prose(self) -> None:
+        self.write("docs/issues/prose.md", "Releases live at https://github.com/o/r/releases/tag/v1.2.3@-rc1 .\n")
+        self.assertEqual(self.errors("unsafe-body"), [])
+
 if __name__ == "__main__":
     unittest.main()

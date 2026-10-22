@@ -34,6 +34,11 @@ jobs:
             echo "issue_body_guard accepted a literal '@-'"
             exit 1
           fi
+          printf '@-\n' > "$RUNNER_TEMP/body.md"
+          if python3 .github/scripts/gh_issue.py create --file "$RUNNER_TEMP/body.md" -- --title "guard smoke"; then
+            echo "gh_issue.py accepted a literal '@-' before writing"
+            exit 1
+          fi
 
       - name: Check asset catalog
         run: python3 .github/scripts/asset_catalog.py
