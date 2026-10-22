@@ -8,7 +8,7 @@
 
 ## Why this is not a full playtest protocol run
 
-`specs/playtest/playtest.md` gates playtesting on deliverables that change playable behavior (the game in `game/`). #456 changes only `demos/shared-game/`, and [`docs/demos.md`](../../../../docs/demos.md#what-is-relaxed) makes playtesting optional for demos. The demo's own autodrive assertion suite (`_check_end_panel`) plus a graphical run is the equivalent evidence, so no `PTD-*` / `PTU-*` protocol is claimed here.
+`specs/playtest/playtest.md` gates playtesting on deliverables that change playable behavior (the game in `game/`). #456 changes only `demos/shared-game/`, and [`docs/demos.md`](../../../../../docs/demos.md#what-is-relaxed) makes playtesting optional for demos. The demo's own autodrive assertion suite (`_check_end_panel`) plus a graphical run is the equivalent evidence, so no `PTD-*` / `PTU-*` protocol is claimed here.
 
 ## Results
 
