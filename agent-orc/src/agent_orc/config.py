@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -14,6 +16,9 @@ class ConfigError(Exception):
     """Invalid or incomplete orchestrator configuration."""
 
 
+_ENV_PATTERN = re.compile(r"\$\{([^}]+)\}")
+
+
 def deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
     """Recursively merge override into base; override wins on leaf conflicts."""
     result = dict(base)
@@ -23,6 +28,32 @@ def deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]
         else:
             result[key] = value
     return result
+
+
+def _expand_env_string(value: str) -> str:
+    """Expand ${VAR} and ${VAR:-default} in a string; fail fast if VAR is unset."""
+
+    def repl(match: re.Match[str]) -> str:
+        expr = match.group(1)
+        if ":-" in expr:
+            name, default = expr.split(":-", 1)
+            return os.environ.get(name, default)
+        if expr not in os.environ:
+            raise ConfigError(f"Unset environment variable: {expr}")
+        return os.environ[expr]
+
+    return _ENV_PATTERN.sub(repl, value)
+
+
+def expand_env_in_tree(node: Any) -> Any:
+    """Recursively expand env placeholders in all string leaves."""
+    if isinstance(node, dict):
+        return {k: expand_env_in_tree(v) for k, v in node.items()}
+    if isinstance(node, list):
+        return [expand_env_in_tree(v) for v in node]
+    if isinstance(node, str):
+        return _expand_env_string(node)
+    return node
 
 
 @dataclass
@@ -215,6 +246,8 @@ def load_config(config_dir: Path | None = None) -> AppConfig:
         merged = deep_merge(base, local)
     else:
         merged = base
+
+    merged = expand_env_in_tree(merged)
 
     orch_raw = merged.get("orchestrator") or {}
     if not isinstance(orch_raw, dict):

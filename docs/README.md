@@ -17,7 +17,7 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 | [demo-style-assets.md](demo-style-assets.md) | Demos as style and asset-pipeline proofs of concept: gate, assets, findings, verification |
 | [dev-env-setup.md](dev-env-setup.md) | Local game-stack and asset-tool install/verify; then `setup-unit-test-ci` |
 | [open-design-skill-setup.md](open-design-skill-setup.md) | User-local Open Design skill + content under `~/.open-design-skill/`; optional agent wiring |
-| [github-repo-setup.md](github-repo-setup.md) | First-time GitHub settings to apply and verify (Actions, `main` ruleset, squash, auto-merge, labels) |
+| [github-repo-setup.md](github-repo-setup.md) | First-time GitHub settings to apply and verify (remotes, Actions, `main` ruleset, squash, auto-merge, labels) |
 | [github-repo-setup-examples.md](github-repo-setup-examples.md) | Non-binding example commands for the setup |
 | [issues/](issues/) | Epic / Task / Defect contract and status workflow |
 | [labels.md](labels.md) | Label catalog and sync |
