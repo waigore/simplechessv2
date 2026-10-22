@@ -103,7 +103,7 @@ Design decisions encoded in the code, each traced to the spec.
 | D5 | Bad drop: the piece returns to origin in 0.15 s and the destination flashes the rose refusal once. | `PHY.M5`, `PER.R8`, `PAL.C8` | `board_view.gd` `return_piece` + main `_refuse` path |
 | D6 | Legal marks: green diamonds on empty legal squares (ink ≥ ¼ square area) and green ink rings on capturable pieces; capture rings only over a capturable piece. | `PER.R4`, `PAL.C11`, `PER.R6` | `board_view.gd` `_paint_legal` |
 | D7 | Check presentation: rose rim on the checked king's square plus the turn chip tinted rose until the check resolves; a one-shot check cue plays. | `PER.R6`, `PER.R7`, `PAL.C8`, `SND.X3` | `board_view.gd` `_paint_check` + `main.gd` `_on_state` |
-| D8 | Turn chip and end panel are minimal in-board overlays, not screens; end resolves mate/stalemate with the end-resolve cue. | `L-two-player-game.K2`/`E1`, `END.L1` | `main.gd` `_build_chrome` + `_end_text` |
+| D8 | Turn chip and end panel are minimal in-board overlays, not screens; end resolves mate/stalemate with the end-resolve cue. The end panel stays inside the frame, above every board layer. | `L-two-player-game.K2`/`E1`, `END.L1` | `main.gd` `_setup_chip` + `_place_end_panel` + `_end_text` |
 | D9 | Cafe bed playlist alternates bed A → bed B → A with a hard handoff (no crossfade), one shared player ducked under cues. | `SND.M1`/`M2`, `SND.L1`–`L2` | `main.gd` `_next_bed` |
 | D10 | Input is pointer-only (tap select / tap move, and press-drag-release with `PHY.M5` follow); an illegal drop deselects and refuses rather than reselecting. | `IN.select`/`move`/`deselect`, `PER.R8` | `main.gd` `_unhandled_input` |
 
