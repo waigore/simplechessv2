@@ -46,6 +46,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | play_again | Play again | C1 |
 | stop | Stop | C2 |
 
+Varying by locale: title, shared_game, result_white, result_black, result_draw, play_again, stop.
+
 ## Experience intent
 
 Clear outcome, then either a new session or back to modes — no friction. Meets Accessibility: the result is stated in text, not color alone; controls are 44px-class touch targets.
