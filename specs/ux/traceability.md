@@ -13,7 +13,7 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Untimed play; timed Blitz and Rapid with time added after each move | definition | [`screens/shared-setup.md`](screens/shared-setup.md) Clock/Increment; [`screens/shared-play.md`](screens/shared-play.md) clocks |
 | Optional Stockfish move advice when online and Advice On | definition | [`screens/shared-play.md`](screens/shared-play.md) Advice; [`screens/shared-setup.md`](screens/shared-setup.md); [`exceptions.md`](exceptions.md) `EX.error` |
 | Web touch | definition | [`controls.md`](controls.md) bindings |
-| Accessibility; Localization | quality | presentation craft; screen copy tables; mode-pick Switch locale (C4) |
+| Accessibility; Localization | quality | presentation craft; screen copy tables; [`localization.md`](localization.md) key and locale rules; mode-pick Switch locale (C4) |
 | Mode pick; loops; configuration; Advice | design | navigation, screens, journeys |
 | End conditions: win, draw, loss, clock expiry ([conditions.md](../design/end-conditions/conditions.md)) | design | [`screens/shared-result.md`](screens/shared-result.md); [`screens/shared-play.md`](screens/shared-play.md) clocks; [`exceptions.md`](exceptions.md) `EX.draw-offer` |
 | Progression: Last mode, Player Elo, save failure ([progression.md](../design/progression.md)) | design | [`screens/mode-pick.md`](screens/mode-pick.md); [`screens/puzzle-play.md`](screens/puzzle-play.md); [`exceptions.md`](exceptions.md) `EX.save-failure` |
@@ -32,5 +32,5 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Controls and bindings | [`controls.md`](controls.md) | Applies |
 | Mockups | [`mockups/`](mockups/), [`presentation.md`](presentation.md) | Applies — depth full |
 | Accessibility presentation | screens, presentation | Applies |
-| Localization copy | screen copy tables; mode-pick C4 | Applies |
+| Localization copy | screen copy tables; [`localization.md`](localization.md) (keys, owners, locale rules); mode-pick C4 | Applies |
 | Save-failure feedback | `EX.save-failure` | Applies |

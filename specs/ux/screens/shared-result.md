@@ -48,6 +48,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 Varying by locale: title, shared_game, result_white, result_black, result_draw, play_again, stop.
 
+Copy owner `shared-result`; keys and `en` source per [localization.md](../localization.md) L1.
+
 ## Experience intent
 
 Clear outcome, then either a new session or back to modes — no friction. Meets Accessibility: the result is stated in text, not color alone; controls are 44px-class touch targets.
