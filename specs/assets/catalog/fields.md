@@ -35,12 +35,12 @@ Part of [`catalog.md`](../catalog.md). Keys are the JSON keys of an entry file p
 ```json
 {
   "id": "0192f3a4-7c1e-7b2a-9d4e-5f6a7b8c9d0e",
-  "handle": "character-sprites/player-idle",
-  "kind_spec": "AK-character-sprites",
-  "serves": ["CH-player"],
+  "handle": "piece-sprites/white-knight",
+  "kind_spec": "AK-piece-sprites",
+  "serves": ["E-pieces"],
   "state": "approved",
   "version": 1,
-  "files": ["character-sprites/player-idle.png"],
+  "files": ["piece-sprites/white-knight.png"],
   "source_type": "human-made",
   "license": {"grant": "All rights assigned to the project"},
   "supplier": "A. Artist",
