@@ -2,11 +2,12 @@
 """Write an issue body or comment through the guard, so a lost contract fails before the remote call.
 
 Wraps `gh issue create|edit|comment` from issue #474: the body is read from a file (or
-stdin) and validated by issue_body_guard.py before `gh` runs, so a literal `@-`, an
-empty body, or a comment-only body never reaches GitHub. The write is read back with
-`gh issue view` and validated again; a read-back that lost its heading exits 1.
-Safe invocation, the guard, and the read-back are documented in
-docs/issues/body-writes.md.
+stdin) and validated by issue_body_guard.py before `gh` runs, so a body with nothing
+but a `@-` sentinel, an empty or comment-only body, or a heading with no content never
+reaches GitHub. The write is read back with `gh issue view` and validated by the same
+rule, so a body that came back holding only a sentinel also exits 1 (the write itself
+cannot be undone by the wrapper; recover per docs/issues/body-writes.md). Safe
+invocation, the guard, and the read-back are documented in docs/issues/body-writes.md.
 
 Usage:
   gh_issue.py comment 12 --file body.md [-- gh args]   # post a guarded comment
