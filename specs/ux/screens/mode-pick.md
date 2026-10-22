@@ -58,7 +58,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | dismiss | Dismiss | S4 |
 | locale | English | C4 |
 
-The C4 string is the current locale's own name (English, 繁體中文, 日本語) — the same in every locale.
+Varying by locale: title, last, shared, puzzle, quit, quit_confirm, confirm, cancel, loading, save_failed, dismiss. locale is the own-name (English, 繁體中文, 日本語), same in every locale.
 
 ## Experience intent
 
