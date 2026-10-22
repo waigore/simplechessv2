@@ -21,7 +21,7 @@ Authoring rules: [`.agents/specs/rules/technical/persistence.md`](../../.agents/
 | M1 | [`SCH-persist-doc`](schemata/persist-doc.md) whole document | `localStorage` key `simplechessv2.persist.v1` | After successful Elo/Last mode/recentSolved commit; a failed write leaves the prior commit intact ([`SCH-persist-doc.I3`](schemata/persist-doc.md)) | Cold open before mode pick ready |
 | M2 | `GS.playerElo` ([`SCH-persist-doc.F2`](schemata/persist-doc.md)) | Number in document | Puzzle result commit (W1 / fail path per design). Wave 2 slot inside version `1` ([`PRG.P1`](../design/progression.md) / [`PRG.A1`](../design/progression.md), [`PRG.M1`](../design/progression.md)) | M1 load |
 | M3 | `GS.lastMode` | Enum string in document | Mode pick enters Shared or Puzzle | M1 load |
-| M4 | `GS.recentSolved` ([`SCH-persist-doc.F4`](schemata/persist-doc.md)) | Array ≤20 PuzzleIds | Append on solve; trim to 20. Wave 2 slot inside version `1` ([`PRG.P3`](../design/progression.md), [`PRG.M1`](../design/progression.md)) | M1 load |
+| M4 | `GS.recentSolved` ([`SCH-persist-doc.F4`](schemata/persist-doc.md)) | Array ≤ `CFG.ELO_RECENT_WINDOW` ([`CFG.T7`](configuration.md)) PuzzleIds | Append on solve; trim to `CFG.ELO_RECENT_WINDOW`. Wave 2 slot inside version `1` ([`PRG.P3`](../design/progression.md), [`PRG.M1`](../design/progression.md)) | M1 load |
 
 ## Migration
 
