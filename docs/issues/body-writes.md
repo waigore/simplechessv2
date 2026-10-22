@@ -1,6 +1,6 @@
 # Writing issue bodies and comments
 
-Safe invocation for every `gh issue create|edit|comment` write, the read-back that proves it landed, and the guard that rejects a body no reader can use. Contract: [workflow.md](workflow.md). Body-writing skills link here instead of restating the rules.
+Safe invocation for every `gh issue create|edit|comment` write, the read-back that proves it landed, and the guard that rejects a body no reader can use. Contract: [workflow.md](workflow.md). Body-writing skills point here rather than restating the rules.
 
 ## Why
 
@@ -8,7 +8,7 @@ On 2026-10-22 a writer passed the sentinel `@-` to `--body` on 32 open issues ([
 
 ## Write through the guarded writer
 
-[`.github/scripts/gh_issue.py`](../../.github/scripts/gh_issue.py) wraps `gh`. It reads the composed body, rejects it before `gh` runs, passes the accepted text as `--body-file`, then reads the write back and rejects a lost one. Prefer it over calling `gh` directly.
+[`.github/scripts/gh_issue.py`](../../.github/scripts/gh_issue.py) wraps `gh`: it rejects the composed body before `gh` runs, passes the accepted text as `--body-file`, then reads the write back and rejects a lost one. Prefer it over calling `gh` directly.
 
 ```bash
 python3 .github/scripts/gh_issue.py edit 12 --file body.md
@@ -17,13 +17,13 @@ python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --lab
 gh issue view 12 --json body --jq .body > after.md    # the read-back the wrapper already ran
 ```
 
-- The body comes from a file (`--file body.md`) or stdin (`--file -`). There is no literal-body option, so a sentinel captured into a file fails instead of being written.
-- Arguments after `--` go to `gh` unchanged (`--title`, `--label`, `--add-label`); the wrapper supplies `--body-file`.
-- Exit 1 means nothing was written (body rejected) or the read-back rejected the stored text. Post evidence only after exit 0; a failed write is not evidence.
+- The body comes from a file (`--file body.md`) or stdin (`--file -`). There is no literal-body option, so a sentinel captured into a file fails rather than being written.
+- Arguments after `--` go to `gh` unchanged (`--title`, `--label`); the wrapper supplies `--body-file`.
+- Exit 1 means nothing was written (rejected) or the read-back rejected the stored text. Post evidence only after exit 0.
 
 ## Guard before writing
 
-`python3 .github/scripts/issue_body_guard.py <file>` (or `-` for stdin) sets aside HTML comments and headings, then exits 1 when nothing is left, only `@-` lines remain, or a `<!-- Template: … -->` or `<!-- fill in -->` placeholder remains. A `@-` inside a sentence is prose and passes. The wrapper runs it for you.
+`python3 .github/scripts/issue_body_guard.py <file>` (or `-` for stdin) sets aside HTML comments and headings, then exits 1 when nothing is left, all that is left is `@-` lines, or a `<!-- Template: … -->` or `<!-- fill in -->` placeholder remains. A `@-` inside a sentence is prose and passes. The wrapper runs it for you.
 
 ## Read back after writing
 
@@ -37,8 +37,8 @@ A heading is not content: `# T` alone is rejected in both modes, and `--readback
 
 ## Recover a lost body
 
-A body stored as `@-`, empty, or truncated is not recoverable from itself. Stop, re-author it from the title, labels, and comment trail, write it through the wrapper, and note the repair in a comment. Re-authoring is editorial work; file it as its own task, not under the defect that broke the write.
+A body stored as `@-`, empty, or truncated is not recoverable from itself. Stop, re-author it from the title, labels, and comment trail, write it through the wrapper, and note the repair in a comment. Re-authoring is editorial work: its own task, not the write defect.
 
 ## External writers
 
-A runner outside this repo must call the wrapper, or use `--body-file -` and run the guard and read-back itself, with its operator confirming the call site. It must also scrub its own skill and prompt copies, which `Spec lint` cannot read; the `unsafe-body` check covers this repo's docs, skills, and issue forms.
+A runner outside this repo must call the wrapper, or use `--body-file -` and run the guard and read-back itself, with its operator confirming the call site. It must also scrub its own skill and prompt copies, which `Spec lint` cannot read; its `unsafe-body` check covers this repo's docs, skills, and issue forms.

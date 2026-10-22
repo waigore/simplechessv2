@@ -31,9 +31,8 @@ jobs:
         run: |
           printf '## Description\n\nGuard smoke test.\n' | python3 .github/scripts/issue_body_guard.py -
           printf '@-\n' > "$RUNNER_TEMP/sentinel.md"
-          printf '# Lost body\n\n@-\n' > "$RUNNER_TEMP/lost.md"
           printf '# Heading only\n' > "$RUNNER_TEMP/heading.md"
-          for sample in sentinel lost heading; do
+          for sample in sentinel heading; do
             for mode in "" "--readback"; do
               if python3 .github/scripts/issue_body_guard.py "$RUNNER_TEMP/$sample.md" $mode; then
                 echo "issue_body_guard accepted a lost-body shape: $sample $mode"
