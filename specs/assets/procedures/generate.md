@@ -13,6 +13,6 @@ Part of [`procedures.md`](../procedures.md).
 2. Add a draft entry with a new asset ID per [`catalog.md`](../catalog.md).
 3. Fill the recipe template from coverage slots; compose with Style series `prompt_policy` (master + negative). Pass the modality binding when `active` and hard (`input_style_id` / `finetune_id` / `voice_id`). For music, attach Audio Reference when the series policy is `required` or the recipe requests `optional`. Run through the tool role (Recraft visual / ElevenLabs CLI audio when series-active).
 4. Post-process; save files per the kind's naming. Run kind checks; retry within the limit in [`procedures.md`](../procedures.md).
-5. Record structured `generation` (prompt, negatives, tool, operation, settings, inputs, series copy, steps). Run `APR.review`.
+5. Record structured `generation` (prompt, negatives, tool, operation, settings, inputs, seed — or `n/a — tool has no seed`, series copy, steps). Run `APR.review`.
 
 **Outputs**: draft catalog entry with recorded `generation`; asset files saved per the kind's naming; kind checks run; `APR.review` verdict.
