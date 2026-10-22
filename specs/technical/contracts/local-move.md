@@ -22,8 +22,8 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 | ID | Name | Payload | When emitted | Who may subscribe |
 |----|------|---------|--------------|-------------------|
-| E1 | move_applied | move + new side to move | After O1 success | Sessions; presentation |
-| E2 | move_rejected | reason | After O1 reject | Sessions; presentation |
+| E1 | move_applied | move + new side to move | After O1 success | L2 sessions: [`CMP-shared-game-session`](../components/shared-game-session.md); [`CMP-puzzle-session`](../components/puzzle-session.md) |
+| E2 | move_rejected | reason | After O1 reject | L2 sessions: [`CMP-shared-game-session`](../components/shared-game-session.md); [`CMP-puzzle-session`](../components/puzzle-session.md) |
 
 ## Guarantees
 
