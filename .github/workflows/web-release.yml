@@ -2,9 +2,9 @@ name: Web release
 
 # Publishes the seam-free release Web export to GitHub Pages (ADR-0009,
 # ADR-0007). Exports the `Web Release` preset from a clean checkout into
-# build/web/, checks that the PCK starts at main_release.tscn and carries no
-# playtest seam, then publishes that directory. No playtest build and no advice
-# backend (ADR-0009); test scripts never ship (ADR-0004).
+# build/web/, checks the publish target and that no test script ships, then
+# publishes that directory. No playtest build and no advice backend (ADR-0009).
+# `Unit tests` owns the seam check (game/release_scene_test.gd, ADR-0004).
 
 on:
   push:
