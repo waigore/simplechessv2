@@ -50,7 +50,9 @@ And no visible string is absent from those tables
 Given the three shipped locales en, zh-Hant, and ja
 When mode-pick is shown and C4 Switch locale is activated twice from en
 Then title, shared, and puzzle differ in value between en, zh-Hant, and ja
-And the `locale` row reads English, then 繁體中文, then 日本語, and no other row is marked same in every locale
+And the `locale` row reads English, then 繁體中文, then 日本語
+And `shared-play` `queen` reads Queen in all three locales
+And no other row is marked same in every locale
 ```
 
 ## US2: Locale completeness and change control

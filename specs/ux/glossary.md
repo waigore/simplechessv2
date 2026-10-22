@@ -12,6 +12,8 @@ Authoring rules: [`.agents/specs/rules/ux/glossary.md`](../../.agents/specs/rule
 | Binding | A mapping from one platform input to one UI action. | [`controls.md`](controls.md) |
 | Board coordinates | File letters a–h and rank numbers 1–8 shown only along the outer board edges. | [`screens/shared-play.md`](screens/shared-play.md), [`screens/puzzle-play.md`](screens/puzzle-play.md) |
 | Control | A named thing an actor operates on a screen. | [`screens/`](screens/) |
+| Copy key | A named player-facing string: its owner plus a snake_case key, as in `puzzle-play.cue_solved`. | [`localization.md`](localization.md) |
+| Copy owner | The screen whose Copy table holds a string, or `exceptions` for a shared exception string. | [`localization.md`](localization.md); [`exceptions.md`](exceptions.md) |
 | Design-system binding | The Open Design system the mockups are bound to; not an input Binding. | [`presentation.md`](presentation.md) |
 | Exception | A shared interface state, such as loading, empty, or error. | [`exceptions.md`](exceptions.md) |
 | Focus | The control that keyboard or gamepad input currently targets. | [`controls.md`](controls.md) |

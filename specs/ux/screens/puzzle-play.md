@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
 | R1 | Board | Puzzle position | 8×8; edge coords; selection and legal marks; `IN.deselect` clears |
-| R2 | Elo and status | Rating and feedback | Player Elo; Solved / Wrong move / Failed / Abandoned cues |
+| R2 | Elo and status | Rating and feedback | Player Elo; result cues |
 | R3 | Stream actions | Reveal, abandon, leave | Reveal, Abandon, Leave stream |
 
 ## Controls
@@ -42,8 +42,7 @@ C1–C6 are in [`puzzle-play-controls.md`](puzzle-play-controls.md). Focus order
 
 ## Copy
 
-All keys below vary by locale (`en`, `zh-Hant`, `ja`).
-
+All keys vary by locale except piece names, same in every locale ([L3](../localization.md)).
 | Key | String | Used in |
 |-----|--------|---------|
 | elo | Elo | R2 |
