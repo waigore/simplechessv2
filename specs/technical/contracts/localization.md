@@ -25,7 +25,7 @@ None — copy is pulled at render, not pushed.
 
 | ID | Guarantee |
 |----|-----------|
-| G1 | Owner ids and keys are the Copy-table Key columns of [`specs/ux/screens/`](../../ux/screens/), following [Localization copy](../../ux/localization.md) L1 L2. A developer invents no key. |
+| G1 | Owner ids and keys are the Copy-table Key columns of [`specs/ux/screens/`](../../ux/screens/), plus the Key column of [`exceptions.md`](../../ux/exceptions.md) for the `exceptions` owner, following [Localization copy](../../ux/localization.md) L1 L2. A developer invents no key. |
 | G2 | `en` is the source: it is complete first, and `zh-Hant` and `ja` are complete against it ([`SCH-string-table`](../schemata/string-table.md) I1 I2). |
 | G3 | O1 is synchronous and on-device; it never awaits network (Instant play, [`CTR-presentation`](presentation.md) G1). |
 | G4 | A resolved value never contains a raw key. A miss degrades to `en` and is logged once per owner and key ([`FAIL.T13`](../failures.md), Observability). |
@@ -44,6 +44,7 @@ None — copy is pulled at render, not pushed.
 ```mermaid
 flowchart LR
   U[Copy tables in UX screens] -->|owner + key| T[SCH-string-table]
+  X[exceptions.md Key column] -->|exceptions keys| T
   R[CMP-session-router GS.locale] -->|locale| P[CMP-presentation]
   T --> P
   P -->|O1 resolve| V[Rendered copy]
