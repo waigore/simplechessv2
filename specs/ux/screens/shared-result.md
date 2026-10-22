@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/rules/ux/screens.md).
 
 - **Job**: Show the Shared-game result and choose play again or stop
-- **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
+- **Actors**: [`bottom-player.md`](../actors/bottom-player.md), [`top-player.md`](../actors/top-player.md)
 - **Serves**: Cafe calm, Accessibility; [two-player-game K3](../../design/loops/two-player-game.md)
 - **Mockup**: [`../mockups/screens/shared-result.html`](../mockups/screens/shared-result.html)
 - **Glossary terms**: [Shared game](../../design/glossary.md)

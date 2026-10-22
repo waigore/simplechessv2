@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/ux/actors.md`](../../../.agents/specs/rul
 
 ## Who they are
 
-The person at the near edge of the shared device. By convention they host mode pick, setup, results, and Puzzle stream; the interface does not identify people, so hosting is a social role. In Shared play they move, promote, resign, and offer a draw when their seat is the side to move, and they answer the other seat's offer.
+The person at the near edge of the shared device. In a Shared game they fill the [Bottom player](../../design/glossary.md) seat. That seat is only a game concept: which side sits at the near edge, and whether that side plays White. The interface does not identify people and does not allow or refuse any control because of this seat. Whoever touches the screen operates it, on every screen. This actor and the Top player do not differ in what the interface allows.
 
 ## Goals
 
@@ -18,14 +18,14 @@ The person at the near edge of the shared device. By convention they host mode p
 
 ## Can operate
 
-- **C1**: All controls on the host screens `mode-pick`, `shared-setup`, `shared-result`, and `puzzle-play` (socially hosted; the interface does not identify people)
+- **C1**: All controls on `mode-pick`, `shared-setup`, `shared-result`, and `puzzle-play`. Whoever touches them operates them. The Top player spec lists the same controls.
 - **C2**: On `shared-play`, when Bottom’s seat is [Side to move](../../design/glossary.md): select, move, clear selection, promotion choice, resign, offer draw, and withdraw Bottom’s offer. Advice toggle anytime
 - **C3**: Confirm and Cancel on exceptions those screens use
-- **C4**: On `shared-play` `EX.draw-offer`: Accept or Decline (the other seat's social role)
+- **C4**: On `shared-play` `EX.draw-offer`: Accept or Decline. Whoever touches the panel operates it. The game records the answer as the other seat's.
 
 ## Cannot operate
 
-- **K1**: On `shared-play`, when Top’s seat is side to move — the interface ignores `IN.select`, `IN.move`, `IN.deselect`, promote, resign, and offer (same off-turn seat gate for each)
+- **K1**: On `shared-play`, when the Top seat is side to move, a touch does not select, move, clear, promote, resign, or offer for the Bottom seat. The interface ignores that touch. It does not check which person touched.
 
 ## Relationship to play
 

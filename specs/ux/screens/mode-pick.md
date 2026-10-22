@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/rules/ux/screens.md).
 
 - **Job**: Choose Shared game, Puzzle stream, or quit the session
-- **Actors**: [`bottom-player.md`](../actors/bottom-player.md)
+- **Actors**: [`bottom-player.md`](../actors/bottom-player.md), [`top-player.md`](../actors/top-player.md)
 - **Serves**: Instant play, Cafe calm, Accessibility; [mode-pick.md](../../design/flows/mode-pick.md)
 - **Mockup**: [`../mockups/screens/mode-pick.html`](../mockups/screens/mode-pick.html)
 - **Glossary terms**: [Screen](../glossary.md); [Last mode](../../design/glossary.md)
