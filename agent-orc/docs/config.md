@@ -8,7 +8,18 @@
 | `.orc/config.local.yaml` | Child-owned deep-merge override (gitignored) |
 | [`.orc/config.local.example.yaml`](../../.orc/config.local.example.yaml) | Example local overrides |
 
-Load order: `config.yaml`, then deep-merge `config.local.yaml` if present. Nested maps merge; leaves in local win.
+Load order: `config.yaml`, then deep-merge `config.local.yaml` if present. Nested maps merge; leaves in local win. After merge, every string leaf is expanded for environment placeholders (see below).
+
+## Environment substitution
+
+Any string leaf in the merged config may use `${VAR}` or `${VAR:-default}` (no bare `$VAR`). Expansion runs once after deep-merge, before parsing.
+
+- Unset `${VAR}` with no `:-` default → config load fails with `ConfigError` naming the variable.
+- `${VAR:-default}` uses `default` when the variable is unset.
+- Literals need no environment variables.
+- Provider tokens `{prompt}`, `{workdir}`, `{skill}` are separate and still substituted at run time.
+
+Primary use case: provider `--model` strings (and other argv/path/prompt values) from the environment via `.orc/config.local.yaml`. Keep secrets and machine-specific values in the environment or local config, not in template `config.yaml`. See [`.orc/config.local.example.yaml`](../../.orc/config.local.example.yaml).
 
 ## Orchestrator keys
 
