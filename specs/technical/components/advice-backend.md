@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 - **Module**: M2 `advice-backend`
 - **Serves**: Optional Stockfish Advice; Instant play (client never waits)
 - **Informed by**: [F-move-advice](../../design/features/move-advice.md); `CFG.ADVICE_TIME_MS`
-- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
+- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)
 
 ## Responsibilities
 
@@ -16,6 +16,8 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R2 | Accept a position from the client and stream eval/best-move |
 | R3 | Stop search by `CFG.ADVICE_TIME_MS` (2000) or on client cancel |
 | R4 | Never expose Stockfish or UCI endpoints to the browser |
+| R5 | Are a separate Python server from the frontend ([ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)) |
+| R6 | Accept a request only when its API key matches the configured key |
 
 ## Communication
 

@@ -7,14 +7,14 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 - **Contracts used**: [`CTR-advice-stream`](../contracts/advice-stream.md), [`CTR-presentation`](../contracts/presentation.md)
 - **Serves**: F-move-advice; streamed eval to `CFG.ADVICE_TIME_MS`
 - **Informed by**: requirement note — server Stockfish, time-capped stream, moves never wait
-- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
+- **ADRs**: [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)
 
 ## Steps
 
 | ID | From | To | Via | Action / message |
 |----|------|----|-----|------------------|
 | S1 | shared-game | advice-client | CTR-advice-stream.O1 | start(position) |
-| S2 | advice-client | advice-backend | network | Send position |
+| S2 | advice-client | advice-backend | network | Send position and API key to the configured endpoint ([`CFG.T9`](../configuration.md) T9, T10) |
 | S3 | advice-backend | Stockfish | UCI | Search (M2 only) |
 | S4 | advice-backend | advice-client | CTR-advice-stream.E1 | Stream updates |
 | S5 | advice-client | shared-game | CTR-advice-stream.E1 | Write best-move/eval |
@@ -42,7 +42,7 @@ sequenceDiagram
   participant A as CMP-advice-client
   participant B as CMP-advice-backend
   S->>A: S1 start
-  A->>B: S2 position
+  A->>B: S2 position + key
   B-->>A: S4 updates
   A->>S: S5 fields
   B-->>A: S7 ended
