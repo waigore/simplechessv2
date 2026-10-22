@@ -1,11 +1,27 @@
 # Local override. Bare `gh` prefers the remote named upstream
 # (waigore/game-dev-template). Pin gates to this repo's origin.
 # Planner waits one hour after each run (same as the template default).
+# Temporary override: every agent uses OpenCode's free GLM 5.3 Flash.
+# This lives only in config.local.yaml. To follow the template agent→provider
+# mapping again, delete this provider and each agent's provider key.
+providers:
+  opencode-glm-5.3-flash-free:
+    command:
+      - opencode
+      - run
+      - --standalone
+      - --auto
+      - --model
+      - opencode/glm-5.3-flash-free
+      - "{prompt}"
+
 agents:
   project-planner-agent:
+    provider: opencode-glm-5.3-flash-free
     cooldown_seconds: 3600
 
   issue-workflow-review-agent:
+    provider: opencode-glm-5.3-flash-free
     gate:
       command:
         - sh
@@ -13,6 +29,7 @@ agents:
         - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-review --limit 1 --json number)" != "[]"
 
   issue-workflow-refine-agent:
+    provider: opencode-glm-5.3-flash-free
     gate:
       command:
         - sh
@@ -23,6 +40,7 @@ agents:
     enabled: false
 
   issue-workflow-implement-agent:
+    provider: opencode-glm-5.3-flash-free
     gate:
       command:
         - sh
@@ -30,6 +48,7 @@ agents:
         - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-implementation --limit 1 --json number)" != "[]"
 
   issue-workflow-verify-agent:
+    provider: opencode-glm-5.3-flash-free
     gate:
       command:
         - sh
@@ -37,8 +56,12 @@ agents:
         - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-verification --limit 1 --json number)" != "[]"
 
   issue-workflow-accept-agent:
+    provider: opencode-glm-5.3-flash-free
     gate:
       command:
         - sh
         - -c
         - test "$(gh issue list --repo waigore/simplechessv2 --state open --label status:pending-acceptance --limit 1 --json number)" != "[]"
+
+  babysit-pr-agent:
+    provider: opencode-glm-5.3-flash-free
