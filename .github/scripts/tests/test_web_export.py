@@ -1,11 +1,15 @@
-"""Unit tests for web_export.py (the Web export step both workflows share)."""
+"""Unit tests for web_export.py (the Web export step both workflows share).
+
+Runs under both `python3 -m unittest discover` (Spec lint) and pytest, so it
+imports only the standard library.
+"""
 
 from __future__ import annotations
 
 import sys
+import tempfile
+import unittest
 from pathlib import Path
-
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -45,67 +49,6 @@ variant/thread_support=false
 '''
 
 
-def _repo(tmp_path: Path, presets: str = PRESETS) -> Path:
-    game = tmp_path / "game"
-    game.mkdir()
-    (game / "project.godot").write_text(PROJECT, encoding="utf-8")
-    (game / "export_presets.cfg").write_text(presets, encoding="utf-8")
-    return tmp_path
-
-
-def test_preset_export_path_is_read_per_preset(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    assert web_export.preset_export_path(repo, web_export.RELEASE_PRESET) == (repo / "build/web/index.html").resolve()
-
-
-def test_release_preset_must_carry_the_release_feature(tmp_path: Path) -> None:
-    repo = _repo(tmp_path, PRESETS.replace('custom_features="release"', 'custom_features=""'))
-    godot = _fake_godot(tmp_path, artifacts=True)
-    with pytest.raises(web_export.ExportError):
-        web_export.export(repo, web_export.RELEASE_PRESET, godot, repo / "build/web/index.html")
-
-
-@pytest.mark.parametrize("key", ["binary_format/embed_pck", "html/export_main_pack"])
-def test_release_preset_must_not_embed_the_pack(tmp_path: Path, key: str) -> None:
-    repo = _repo(tmp_path, PRESETS.replace("[preset.1.options]\n", f"[preset.1.options]\n{key}=true\n"))
-    godot = _fake_godot(tmp_path, artifacts=True)
-    with pytest.raises(web_export.ExportError):
-        web_export.export(repo, web_export.RELEASE_PRESET, godot, repo / "build/web/index.html")
-
-
-def test_playtest_preset_skips_the_release_settings(tmp_path: Path) -> None:
-    repo = _repo(tmp_path, PRESETS.replace('custom_features="release"', 'custom_features=""'))
-    godot = _fake_godot(tmp_path, artifacts=True)
-    web_export.export(repo, web_export.PLAYTEST_PRESET, godot, repo / "build/web/index.html")
-
-
-def test_set_main_scene_replaces_only_the_scene_line() -> None:
-    text = web_export.set_main_scene(PROJECT, web_export.RELEASE_MAIN_SCENE)
-    assert 'run/main_scene="res://main_release.tscn"' in text
-    assert text.replace('"res://main_release.tscn"', '"res://main.tscn"') == PROJECT
-
-
-def test_set_main_scene_requires_the_key() -> None:
-    with pytest.raises(web_export.ExportError):
-        web_export.set_main_scene("[application]\n", web_export.RELEASE_MAIN_SCENE)
-
-
-@pytest.mark.parametrize(
-    ("preset", "scene"),
-    [
-        (web_export.RELEASE_PRESET, web_export.RELEASE_MAIN_SCENE),
-        (web_export.PLAYTEST_PRESET, web_export.PLAYTEST_MAIN_SCENE),
-    ],
-)
-def test_main_scene_for_preset(preset: str, scene: str) -> None:
-    assert web_export.main_scene_for(preset) == scene
-
-
-def test_unknown_preset_is_rejected() -> None:
-    with pytest.raises(web_export.ExportError):
-        web_export.main_scene_for("Web Debug")
-
-
 def _fake_godot(tmp_path: Path, *, artifacts: bool, fail: bool = False) -> Path:
     """A stand-in `godot` that writes export artifacts from its last argument."""
     script = tmp_path / "fake_godot.py"
@@ -124,36 +67,95 @@ def _fake_godot(tmp_path: Path, *, artifacts: bool, fail: bool = False) -> Path:
     return runner
 
 
-def test_export_switches_the_release_scene_and_restores_it(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    godot = _fake_godot(tmp_path, artifacts=True)
-    seen: dict[str, str] = {}
+class WebExportTest(unittest.TestCase):
+    """Each test gets a throwaway repo with project.godot and export_presets.cfg."""
 
-    original_run = web_export.subprocess.run
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.tmp_path = Path(self._tmp.name)
+        self._write_repo()
 
-    def spy(run, check=False):
-        seen["scene"] = (repo / "game" / "project.godot").read_text(encoding="utf-8")
-        return original_run(run, check=check)
+    def _write_repo(self, presets: str = PRESETS) -> Path:
+        game = self.tmp_path / "game"
+        game.mkdir(exist_ok=True)
+        (game / "project.godot").write_text(PROJECT, encoding="utf-8")
+        (game / "export_presets.cfg").write_text(presets, encoding="utf-8")
+        self.repo = self.tmp_path
+        return self.repo
 
-    web_export.subprocess.run = spy
-    try:
-        web_export.export(repo, web_export.RELEASE_PRESET, godot, repo / "build" / "web" / "index.html")
-    finally:
-        web_export.subprocess.run = original_run
-    assert web_export.RELEASE_MAIN_SCENE in seen["scene"]
-    assert (repo / "game" / "project.godot").read_text(encoding="utf-8") == PROJECT
+    def _export_fails(self, repo: Path, godot: Path, preset: str) -> None:
+        with self.assertRaises(web_export.ExportError):
+            web_export.export(repo, preset, godot, repo / "build/web/index.html")
 
+    def test_preset_export_path_is_read_per_preset(self) -> None:
+        assert web_export.preset_export_path(self.repo, web_export.RELEASE_PRESET) == (self.repo / "build/web/index.html").resolve()
 
-def test_export_restores_the_scene_when_the_export_fails(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    godot = _fake_godot(tmp_path, artifacts=False, fail=True)
-    with pytest.raises(web_export.ExportError):
-        web_export.export(repo, web_export.RELEASE_PRESET, godot, repo / "build" / "web" / "index.html")
-    assert (repo / "game" / "project.godot").read_text(encoding="utf-8") == PROJECT
+    def test_release_preset_must_carry_the_release_feature(self) -> None:
+        repo = self._write_repo(PRESETS.replace('custom_features="release"', 'custom_features=""'))
+        godot = _fake_godot(self.tmp_path, artifacts=True)
+        self._export_fails(repo, godot, web_export.RELEASE_PRESET)
 
+    def test_release_preset_must_not_embed_the_pack(self) -> None:
+        for key in ("binary_format/embed_pck", "html/export_main_pack"):
+            with self.subTest(key=key):
+                repo = self._write_repo(PRESETS.replace("[preset.1.options]\n", f"[preset.1.options]\n{key}=true\n"))
+                godot = _fake_godot(self.tmp_path, artifacts=True)
+                self._export_fails(repo, godot, web_export.RELEASE_PRESET)
 
-def test_export_requires_the_pack_outputs(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    godot = _fake_godot(tmp_path, artifacts=False)
-    with pytest.raises(web_export.ExportError):
-        web_export.export(repo, web_export.PLAYTEST_PRESET, godot, repo / "build" / "web" / "index.html")
+    def test_playtest_preset_skips_the_release_settings(self) -> None:
+        repo = self._write_repo(PRESETS.replace('custom_features="release"', 'custom_features=""'))
+        godot = _fake_godot(self.tmp_path, artifacts=True)
+        web_export.export(repo, web_export.PLAYTEST_PRESET, godot, repo / "build/web/index.html")
+
+    def test_set_main_scene_replaces_only_the_scene_line(self) -> None:
+        text = web_export.set_main_scene(PROJECT, web_export.RELEASE_MAIN_SCENE)
+        assert 'run/main_scene="res://main_release.tscn"' in text
+        assert text.replace('"res://main_release.tscn"', '"res://main.tscn"') == PROJECT
+
+    def test_set_main_scene_requires_the_key(self) -> None:
+        with self.assertRaises(web_export.ExportError):
+            web_export.set_main_scene("[application]\n", web_export.RELEASE_MAIN_SCENE)
+
+    def test_main_scene_for_preset(self) -> None:
+        cases = [
+            (web_export.RELEASE_PRESET, web_export.RELEASE_MAIN_SCENE),
+            (web_export.PLAYTEST_PRESET, web_export.PLAYTEST_MAIN_SCENE),
+        ]
+        for preset, scene in cases:
+            with self.subTest(preset=preset):
+                assert web_export.main_scene_for(preset) == scene
+
+    def test_unknown_preset_is_rejected(self) -> None:
+        with self.assertRaises(web_export.ExportError):
+            web_export.main_scene_for("Web Debug")
+
+    def test_export_switches_the_release_scene_and_restores_it(self) -> None:
+        repo = self._write_repo()
+        godot = _fake_godot(self.tmp_path, artifacts=True)
+        seen: dict[str, str] = {}
+
+        original_run = web_export.subprocess.run
+
+        def spy(run, check=False):
+            seen["scene"] = (repo / "game" / "project.godot").read_text(encoding="utf-8")
+            return original_run(run, check=check)
+
+        web_export.subprocess.run = spy
+        try:
+            web_export.export(repo, web_export.RELEASE_PRESET, godot, repo / "build" / "web" / "index.html")
+        finally:
+            web_export.subprocess.run = original_run
+        assert web_export.RELEASE_MAIN_SCENE in seen["scene"]
+        assert (repo / "game" / "project.godot").read_text(encoding="utf-8") == PROJECT
+
+    def test_export_restores_the_scene_when_the_export_fails(self) -> None:
+        repo = self._write_repo()
+        godot = _fake_godot(self.tmp_path, artifacts=False, fail=True)
+        self._export_fails(repo, godot, web_export.RELEASE_PRESET)
+        assert (repo / "game" / "project.godot").read_text(encoding="utf-8") == PROJECT
+
+    def test_export_requires_the_pack_outputs(self) -> None:
+        repo = self._write_repo()
+        godot = _fake_godot(self.tmp_path, artifacts=False)
+        self._export_fails(repo, godot, web_export.PLAYTEST_PRESET)
