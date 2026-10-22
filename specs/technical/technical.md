@@ -8,11 +8,11 @@ A Godot 4.7.2 Web client ([ADR-0001](../adr/decisions/0001-godot-engine.md)) run
 
 ## Traceability
 
-[`traceability.md`](traceability.md).
+[`traceability.md`](traceability.md). Alignment table and element accounting: [`traceability/alignment.md`](traceability/alignment.md).
 
 ## Index
 
-Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md), [`ids.md`](ids.md), [`layers.md`](layers.md), [`modules.md`](modules.md), [`asset-access.md`](asset-access.md). Diagrams: [`diagrams/`](diagrams/). Optional copy sources: [`_templates/`](_templates/).
+Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md), [`traceability/alignment.md`](traceability/alignment.md), [`ids.md`](ids.md), [`layers.md`](layers.md), [`modules.md`](modules.md), [`asset-access.md`](asset-access.md). Diagrams: [`diagrams/`](diagrams/). Optional copy sources: [`_templates/`](_templates/).
 
 - **Failures**: [`failures.md`](failures.md)
 - **Concurrency**: [`concurrency.md`](concurrency.md)

@@ -4,21 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 
 ## Alignment
 
-| Upstream item | Source | Served by |
-|---------------|--------|-----------|
-| Instant play; on-device moves | vision; definition; ADR-0001 | [`layers.md`](layers.md); [`CTR-local-move`](contracts/local-move.md); [`SEQ-apply-local-move`](sequences/apply-local-move.md) |
-| Layered client architecture | ADR-0006 | [`layers.md`](layers.md); [`modules.md`](modules.md) |
-| Optional Stockfish Advice stream | F-move-advice; ADR-0002; ADR-0010; ADR-0011 | [`CMP-advice-client`](components/advice-client.md); [`CMP-advice-backend`](components/advice-backend.md); [`modules.md`](modules.md); [`CTR-advice-stream`](contracts/advice-stream.md); [`SEQ-advice-stream`](sequences/advice-stream.md) |
-| Elo / Last mode / recent solved | fields-persist; ADR-0003 | [`persistence.md`](persistence.md); [`CMP-persist-store`](components/persist-store.md) |
-| Dual playtest ENV/DBG/TEL and `SIT.1`–`SIT.3` | playtest tools; ADR-0004 | [`verification.md`](verification.md); [`CMP-playtest-seams`](components/playtest-seams.md); [`CTR-playtest-drive`](contracts/playtest-drive.md); [`SEQ-playtest-headless-smoke`](sequences/playtest-headless-smoke.md) |
-| Asset catalog + manifest | assets access; ADR-0005 | [`asset-access.md`](asset-access.md); [`CMP-asset-resolver`](components/asset-resolver.md); [`CTR-asset-resolve`](contracts/asset-resolve.md) |
-| Shared + Puzzle modes | design configuration / loops | Session components; [`SEQ-cold-open`](sequences/cold-open.md); [`SEQ-shared-end-new-session`](sequences/shared-end-new-session.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
-| Design `CFG.*` | design configuration | [`configuration.md`](configuration.md) |
-| Piece rules entity `E-pieces` | design | [`CMP-chess-rules`](components/chess-rules.md); [`CTR-local-move`](contracts/local-move.md) |
-| Mode pick flow `FL-mode-pick` | design | [`CMP-session-router`](components/session-router.md); [`SEQ-cold-open`](sequences/cold-open.md) |
-| Advice stream DTO | F-move-advice | [`SCH-advice-update`](schemata/advice-update.md); [`CMP-advice-backend`](components/advice-backend.md) |
-| Puzzle attempt / Elo commit | puzzle stream; DIF; PRG | [`SCH-puzzle-attempt`](schemata/puzzle-attempt.md); [`SEQ-puzzle-result-commit`](sequences/puzzle-result-commit.md) |
-| Puzzle catalog snapshot | [F-puzzle-catalog](../design/features/puzzle-catalog.md); ADR-0008 | [`SCH-puzzle-catalog`](schemata/puzzle-catalog.md) |
+The full Alignment table, with one row per upstream item and its serving technical specs, lives in [`traceability/alignment.md`](traceability/alignment.md). It covers every Accepted ADR that shapes code or data, every design feature, entity, and flow, and every quality category that Applies, including **Localization**. All 27 technical elements (10 components, 6 contracts, 5 schemata, 6 sequences) appear there by ID, with `CTR-presentation` recorded as the single consumer-only contract.
 
 ## Topic coverage
 
@@ -34,6 +20,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 | Concurrency and update loop | [`concurrency.md`](concurrency.md) | Applies |
 | Persistence and save mapping | [`persistence.md`](persistence.md) | Applies |
 | Config and data-driven tables | [`configuration.md`](configuration.md) | Applies |
+| Localization | [alignment](traceability/alignment.md) Localization row; [`configuration.md`](configuration.md) `S4`, `B4`; string tables keyed by `GS.locale` | Applies — `en`, `zh-Hant`, `ja` |
 | Verification hooks | [`verification.md`](verification.md) | Applies |
 | Asset access and loading | [`asset-access.md`](asset-access.md) | Applies — pairs [`specs/assets/access.md`](../assets/access.md); ADR-0005 |
 | Diagrams | Mermaid in unit specs | Applies — inline; `diagrams/` unused this pass |
