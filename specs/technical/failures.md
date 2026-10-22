@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/technical/failures.md`](../../.agents/spe
 
 | ID | Class | When | Visible effect |
 |----|-------|------|----------------|
-| T1 | Advice unavailable | Offline, backend error, or stream timeout | Clear advice; Shared game continues. `EX.error` is Wave 3 (advice fetch while play continues), not a wave-1 state |
+| T1 | Advice unavailable | Offline, backend error, or stream timeout | Clear advice; Shared game continues (`EX.error`) |
 | T2 | Persist write fail | `localStorage` setItem throws or quota | Keep prior document; log; play continues (`EX.save-failure`) |
 | T3 | Persist read fail / corrupt | Missing or invalid JSON on open | Defaults: Elo start, Last mode none, empty recent; log |
 | T4 | Unresolved asset ID | Manifest miss or load fail | Per [`AST.R3`](asset-access.md) / [`ACC.A3`](../assets/access.md) |
