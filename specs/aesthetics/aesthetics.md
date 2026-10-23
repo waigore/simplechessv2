@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/aesthetics.md`](../../.agents/
 ## Medium
 
 - **Medium**: Vector 2D. Matches the flat board plane ([view.md](../view/view.md)); pieces and board are crisp shapes, not pixel art or 3D.
-- **Resolution and scale**: Art is resolution-independent. Proportions use world units ([SPC.U1](../view/spatial-model.md)): 1 unit = 1 square. The King's opaque body is 0.85 of a square inside [SPC.E1](../view/spatial-model.md); other types follow [FRM.P2](form.md).
+- **Resolution and scale**: Art is resolution-independent with no intrinsic art resolution, so each element is drawn to scale at any screen size ([PRJ.X1](../view/projection.md)). Proportions use world units ([SPC.U1](../view/spatial-model.md)): 1 unit = 1 square, and the reference frame's short axis is 10 world units ([PRJ.P1](../view/projection.md)), with the long axis extending at that constant scale ([PRJ.V1](../view/projection.md)). The King's opaque body is 0.85 of a square inside [SPC.E1](../view/spatial-model.md); other types follow [FRM.P2](form.md).
 - **Platform implications**: Web touch → the board dominates the play area; each piece silhouette remains readable at the size in [FRM.L1](form.md) (about 1/21 of frame height at 9:16 and about 1/12 at 16:9).
 
 ## Style pillars
@@ -20,7 +20,6 @@ When pillars conflict: P1 > P2 > P3 (vision tradeoffs).
 
 ## Content limits
 
-- No competitive chess-site chrome (loud leaderboards, rank badges, esports framing).
 - No computer-opponent or AI avatar imagery (vision non-goal).
 
 ## Variation

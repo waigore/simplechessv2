@@ -76,6 +76,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/aesthetics/ids.md` | [aesthetics/ids.md](aesthetics/ids.md) |
 | `specs/aesthetics/traceability.md` | [aesthetics/traceability.md](aesthetics/traceability.md) |
 | `specs/aesthetics/palette.md` | [aesthetics/palette.md](aesthetics/palette.md) |
+| `specs/aesthetics/palette/` | [aesthetics/palette.md](aesthetics/palette.md) |
 | `specs/aesthetics/form.md` | [aesthetics/form.md](aesthetics/form.md) |
 | `specs/aesthetics/surface.md` | [aesthetics/surface.md](aesthetics/surface.md) |
 | `specs/aesthetics/motion.md` | [aesthetics/motion.md](aesthetics/motion.md) |
