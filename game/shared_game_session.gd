@@ -15,6 +15,7 @@ const CLOCK_BLITZ := "blitz"
 const CLOCK_RAPID := "rapid"
 const UI_S1 := "S1"
 const UI_S2 := "S2"
+const UI_S3 := "S3"
 const UI_S4 := "S4"
 const UI_S5 := "S5"
 const UI_S6 := "S6"
@@ -48,6 +49,8 @@ var online := true
 var in_shared_game := false
 ## L4 advice client; set by the router once T6 / T9 / T10 are configured.
 var advice_client: AdviceClient
+## EX.error / S3 — an advice fetch failed while On; the board stays playable.
+var advice_error := false
 
 var last_reject := ""
 ## Square that refused a place (PER.R8); cleared when S5 ends.
@@ -527,6 +530,8 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 	var in_s4 := play_ui_state == UI_S4
 	var in_s6 := play_ui_state == UI_S6
 	var playable_board := not ended and not in_s2 and not in_s4
+	# S3 — EX.error does not block play: C1–C5 as S1, with the panel showing.
+	var ui_state := UI_S3 if advice_error else play_ui_state
 	return {
 		"locale": locale,
 		"white_seat": white_seat,
@@ -538,7 +543,8 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"advice_best_move": _advice_best_move,
 		"advice_eval": _advice_eval,
 		"options_locked": options_locked,
-		"ui_state": play_ui_state,
+		"ui_state": ui_state,
+		"advice_error": advice_error,
 		"position": field,
 		"selection": selected_piece,
 		"legal": legal,
@@ -560,6 +566,7 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"draw_offer": draw_offer,
 		"c1_available": playable_board,
 		"c2_available": playable_board,
+		# C3 toggles in S3 too (shared-play-controls.md C3 / states.md S3).
 		"c3_available": not ended and not in_s2,
 		"c4_available": not ended and not in_s2 and not in_s6,
 		"c5_available": not ended and not in_s2 and not in_s6,
@@ -797,9 +804,13 @@ func advice_control(control_id: String) -> Dictionary:
 		"leave":
 			in_shared_game = false
 			online = true
+			advice_error = false
 			_stop_advice()
 		"offline":
 			_mark_offline()
+		"dismiss":
+			# S3 Dismiss → S1; FAIL.T1 keeps the service offline, so no re-request.
+			advice_error = false
 	var events := _advice_events
 	_advice_events = []
 	return {"events": events}
@@ -814,9 +825,15 @@ func _poll_advice() -> void:
 	_advice_best_move = state["advice_best_move"]
 	_advice_eval = state["advice_eval"]
 	if failed:
-		# FAIL.T1 supersedes this tick's `advice ready`: advice is gone.
+		# FAIL.T1 supersedes this tick's `advice ready`: advice is gone, and the
+		# client stays offline (no silent retry) until the browser reconnects.
 		_mark_offline()
+		advice_error = true
+		advice_client.fail_until_reconnect()
 		_advice_events.append(_unavailable_event())
+		_advice_events.append(
+			{"event": "shared.advice.error", "outcome": "shown", "story": "EX.error"}
+		)
 	elif not ready.is_empty():
 		_advice_events.append(ready)
 
@@ -867,3 +884,4 @@ func _clear_advice() -> void:
 	_advice_best_move = null
 	_advice_eval = null
 	_advice_events.clear()
+	advice_error = false

@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 |----|----------------|
 | R1 | Hold Shared setup (seats, clock, increment, Advice) until start, then lock seat/clock/increment |
 | R2 | Orchestrate legal moves via chess-rules and presentation |
-| R3 | Run side-to-move clocks when timed; apply increment after moves |
+| R3 | Run side-to-move clocks when timed; apply the increment after a completed move only when that clock has not reached zero (a flagged clock receives none) |
 | R4 | Start/stop Advice client per On/online/move/end |
 | R5 | Detect end conditions and hand off to result / new session |
 

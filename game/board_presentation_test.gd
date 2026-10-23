@@ -146,7 +146,7 @@ func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
 	var err := _first_fail(checks)
 	if not err.is_empty():
 		return err
-	board.begin_drag("e2", Vector2(5.2, 2.0))
+	board.update_drag("begin", {"square": "e2", "world": Vector2(5.2, 2.0)})
 	checks = [
 		[board.piece_world_center("e2") == Vector2(5.2, 2.0), "PHY.M5 follow"],
 		[
@@ -167,7 +167,7 @@ func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
 	err = _first_fail(checks)
 	if not err.is_empty():
 		return err
-	board.begin_drag("e2", Vector2(4.5, 1.5))
+	board.update_drag("begin", {"square": "e2", "world": Vector2(4.5, 1.5)})
 	t0 = Time.get_ticks_msec()
 	await board.end_drag_legal("e4")
 	var travel_elapsed := (Time.get_ticks_msec() - t0) / 1000.0

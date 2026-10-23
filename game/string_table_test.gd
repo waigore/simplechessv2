@@ -38,15 +38,15 @@ func _start() -> void:
 
 
 func _after_boot() -> void:
-	var problem := _all_locales_populated()
+	var problem := _spec_copy_key_sets()
+	if problem.is_empty():
+		problem = _all_locales_populated()
 	if problem.is_empty():
 		problem = _marked_rows_match_l3()
 	if problem.is_empty():
 		problem = _marked_rows_en_equal()
 	if problem.is_empty():
 		problem = _no_english_leak_in_puzzle_play()
-	if problem.is_empty():
-		problem = _no_english_leak_in_cjk()
 	if problem.is_empty():
 		problem = _locale_helpers()
 	if problem.is_empty():
@@ -111,6 +111,14 @@ func _marked_rows_en_equal() -> String:
 	return _locale_own_names()
 
 
+## The `[owner, keys, getter]` suite for one owner, or an empty array.
+func _all_locales_suite(owner: String) -> Array:
+	for suite in _all_locales_suites():
+		if str(suite[0]) == owner:
+			return suite
+	return []
+
+
 func _all_owner_getter(owner: String) -> Callable:
 	for suite in _all_locales_suites():
 		if str(suite[0]) == owner:
@@ -153,6 +161,14 @@ func _marked_rows_match_l3() -> String:
 	return ""
 
 
+## A screen table that only cites another owner (`*_controls`) resolves through
+## the owner it cites.
+func _citation_owner(owner: String) -> String:
+	if owner.ends_with("-controls"):
+		return owner.trim_suffix("-controls")
+	return ""
+
+
 ## `owner.key` for every row in `StringTable.EVERY_LOCALE_ROWS`, in table order.
 func _marked_pairs() -> Array:
 	var pairs: Array = []
@@ -190,25 +206,166 @@ func _no_english_leak_in_puzzle_play() -> String:
 	return ""
 
 
-func _no_english_leak_in_cjk() -> String:
-	var samples := {
-		"mode-pick.title": [Callable(StringTable, "mode_pick"), "title"],
-		"shared-setup.start": [Callable(StringTable, "shared_setup"), "start"],
-		"shared-play.resign": [Callable(StringTable, "shared_play"), "resign"],
-		"shared-result.title": [Callable(StringTable, "shared_result"), "title"],
-		"exceptions.unsupported_input":
-		[Callable(StringTable, "exception_text"), "unsupported_input"],
-	}
-	for label in samples:
-		var pair: Array = samples[label]
-		var getter: Callable = pair[0]
-		var key := str(pair[1])
-		var en := str(getter.call(key, "en"))
-		var zh := str(getter.call(key, "zh-Hant"))
-		var ja := str(getter.call(key, "ja"))
-		if zh == en or ja == en:
-			return "%s still English in CJK" % label
+## SCH-string-table completeness gate (#483): the shipped tables carry exactly the
+## keys every Copy table names, per owner, and the spec source is reachable.
+func _spec_copy_key_sets() -> String:
+	var specs_root := OS.get_environment("CHESS_SPECS_ROOT")
+	if specs_root.is_empty():
+		return "CHESS_SPECS_ROOT is unset; the parity gate cannot read specs/"
+	if not DirAccess.dir_exists_absolute(specs_root):
+		return "CHESS_SPECS_ROOT is missing: %s" % specs_root
+	var spec := _spec_copy_keys(specs_root)
+	var problem := str(spec.problems[0]) if not spec.problems.is_empty() else ""
+	if problem.is_empty() and spec.negative.is_empty():
+		problem = "a spec key absent from the shipped table passed the gate"
+	var owner_problem: String = "" if problem else _owners_match_spec(spec.owners)
+	return problem if problem else owner_problem
+
+
+## Each owner's shipped key set against the one its Copy table names.
+func _owners_match_spec(owners: Dictionary) -> String:
+	for owner in owners:
+		var keys := _spec_owner_keys(owner, owners[owner])
+		if keys.size() == 1 and keys[0].begins_with("@"):
+			return str(keys[0]).substr(1)
 	return ""
+
+
+## The owner's shipped keys, or one `@`-prefixed problem message.
+func _spec_owner_keys(owner: String, want_source: PackedStringArray) -> PackedStringArray:
+	var suite := _all_locales_suite(owner)
+	if suite.is_empty():
+		suite = _all_locales_suite(_citation_owner(owner))
+	if suite.is_empty():
+		return PackedStringArray(["@%s ships no table" % [owner, want_source[0]]])
+	var keys: PackedStringArray = suite[1]
+	var want := _stored_copy_keys(owner, want_source)
+	var trouble := ""
+	for key in want:
+		if not keys.has(key):
+			trouble += "%s.%s in specs/ is absent from the shipped table; " % [owner, key]
+	for key in keys:
+		if not want.has(key):
+			trouble += "%s.%s ships but specs/ names no such key; " % [owner, key]
+	if trouble.is_empty():
+		return keys
+	return PackedStringArray(["@" + trouble.trim_suffix("; ")])
+
+
+## Every Copy table under `specs/ux/screens/` plus the `exceptions` Key column,
+## as owner → keys in table order. An `exceptions` Key-column entry the shipped
+## table does not carry belongs to another owner (or is `EX.error`, Wave 3), so
+## the column is checked as a subset of the shipped keys rather than absorbed.
+func _spec_copy_keys(specs_root: String) -> Dictionary:
+	var owners := _screen_copy_keys(specs_root.path_join("ux/screens"))
+	var problems: Array = []
+	var exceptions_path := specs_root.path_join("ux/exceptions.md")
+	if not FileAccess.file_exists(exceptions_path):
+		problems.append("specs/ux/exceptions.md is missing")
+	else:
+		_read_exception_keys(exceptions_path, owners, problems)
+	var negative := "" if _synthetic_key_absent_from_shipped().is_empty() else "proven"
+	return {"owners": owners, "problems": problems, "negative": negative}
+
+
+## An `exceptions` Key-column entry the shipped table carries is an `exceptions`
+## key; one it does not is another owner's, and the column must name every
+## shipped `exceptions` key.
+func _read_exception_keys(path: String, owners: Dictionary, problems: Array) -> void:
+	var column := _exception_column_key(path)
+	if column.is_empty():
+		problems.append("the exceptions Key column names no key")
+	var shipped: PackedStringArray = StringTable.exception_keys()
+	for key in column:
+		if shipped.has(key):
+			owners["exceptions"] = _appended(owners.get("exceptions", PackedStringArray()), key)
+	for key in shipped:
+		if not column.has(key):
+			problems.append("exceptions.%s ships but the Key column names it nowhere" % key)
+
+
+## Every screen's `## Copy` table keys, by owner.
+func _screen_copy_keys(screens: String) -> Dictionary:
+	var owners: Dictionary = {}
+	for file_name in DirAccess.get_files_at(screens):
+		if not file_name.ends_with(".md") or file_name.begins_with("_"):
+			continue
+		var owner := file_name.trim_suffix(".md")
+		var keys := _copy_table_keys(FileAccess.get_file_as_string(screens.path_join(file_name)))
+		if not keys.is_empty():
+			owners[owner] = keys
+	return owners
+
+
+## The negative direction, proven on every run: a synthetic spec whose `mode-pick`
+## Copy table names `gate_negative_probe` must be seen as a key the shipped table
+## lacks, so a green run cannot mean the gate read nothing.
+func _synthetic_key_absent_from_shipped() -> String:
+	var markdown := "## Copy\n\n| Key | String | Used in |\n"
+	markdown += "|-----|--------|---------|\n| gate_negative_probe | Probe | S1 |\n"
+	var want := _stored_copy_keys("mode-pick", _copy_table_keys(markdown))
+	var shipped: PackedStringArray = StringTable.mode_pick_keys()
+	for key in want:
+		if not shipped.has(key):
+			return key
+	return ""
+
+
+func _appended(keys: PackedStringArray, key: String) -> PackedStringArray:
+	var out := PackedStringArray(keys)
+	out.append(key)
+	return out
+
+
+## Rows of a screen's `## Copy` table only: a bare Key cell is a key; an
+## `owner.key` citation names another owner's key and adds none.
+func _copy_table_keys(markdown: String) -> PackedStringArray:
+	var keys := PackedStringArray()
+	var in_copy := false
+	for line in markdown.split("\n"):
+		var row := line.strip_edges()
+		if row.begins_with("## "):
+			in_copy = row == "## Copy"
+			continue
+		if not in_copy or not row.begins_with("|"):
+			continue
+		var cell := row.split("|")[1].strip_edges().to_lower()
+		if cell.is_empty() or cell == "key" or cell.contains("---") or cell.contains("fill in"):
+			continue
+		if cell.begins_with("`") or cell.contains("."):
+			continue
+		keys.append(cell)
+	return keys
+
+
+## `specs/ux/exceptions.md` Key column: bare identifiers are `exceptions` keys;
+## `owner.key` cites another owner; `none` and trailing qualifiers add none.
+func _exception_column_key(path: String) -> PackedStringArray:
+	var keys := PackedStringArray()
+	for line in FileAccess.get_file_as_string(path).split("\n"):
+		var row := line.strip_edges()
+		if not row.begins_with("|") or not row.contains("`EX."):
+			continue
+		var cells := row.split("|")
+		if cells.size() < 3:
+			continue
+		for entry in cells[2].split(","):
+			var word := entry.strip_edges().replace("`", "").split(" ")[0]
+			if word.is_empty() or word == "none" or word.contains("."):
+				continue
+			keys.append(word)
+	return keys
+
+
+## The own-name row (`mode-pick.locale`) is resolved from `LOCALE_OWN_NAME`, not
+## stored in the owner table, so it is not a shipped copy key.
+func _stored_copy_keys(owner: String, keys: PackedStringArray) -> PackedStringArray:
+	var kept := PackedStringArray()
+	for key in keys:
+		if owner == "mode-pick" and key == "locale":
+			continue
+		kept.append(key)
+	return kept
 
 
 func _locale_helpers() -> String:

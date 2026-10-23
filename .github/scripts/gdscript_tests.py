@@ -113,6 +113,17 @@ def repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
+def with_specs_root(env: dict[str, str]) -> dict[str, str]:
+    """Tests read their spec sources through CHESS_SPECS_ROOT (SCH-string-table parity).
+
+    ``coverage`` copies only ``game/``, so ``res://`` cannot reach ``specs/``; both
+    commands name the repository ``specs/`` by absolute path instead.
+    """
+    env = env.copy()
+    env["CHESS_SPECS_ROOT"] = str((repo_root() / "specs").resolve())
+    return env
+
+
 def default_game() -> Path:
     return repo_root() / "game"
 
@@ -390,7 +401,7 @@ def run_command(
     if check_version and not _version_ok(run, binary):
         return 1
     if command == "test":
-        return _run_suite(run, binary, game, tests, os.environ.copy())
+        return _run_suite(run, binary, game, tests, with_specs_root(os.environ))
     return _run_coverage(run, binary, game, tests)
 
 
@@ -483,7 +494,7 @@ def _run_coverage(
     project = _prepare_coverage_project(game, main_scripts, lines_by_rel)
     try:
         hits_path = project.parent / "hits.txt"
-        env = os.environ.copy()
+        env = with_specs_root(os.environ)
         env["CI_COV_OUT"] = str(hits_path)
         # Tests were discovered under game/; run the copies in the temp project.
         copied = [project / rel_game(game, path) for path in tests]

@@ -369,7 +369,7 @@ func _matches_expected(move: Dictionary) -> bool:
 	return wanted.is_empty() or _promotion_kind(wanted) == str(move["promotion"])
 
 
-## L-puzzle-stream K2 / SCH-puzzle-attempt F4 — reset to the start; no deal; no Elo.
+## L-puzzle-stream K2 / SCH-puzzle-attempt F4 — reset to the start; no deal.
 ## The start is the presented position, i.e. after the opponent move the deal applied, so
 ## the board comes back as it was dealt rather than at the record's pre-puzzle FEN.
 func _wrong_move() -> void:
