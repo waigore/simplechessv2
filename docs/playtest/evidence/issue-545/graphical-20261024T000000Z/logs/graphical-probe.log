@@ -1,0 +1,31 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+A545G display=macOS window=(720, 1280)
+A545G JUDGE pass — graphical display present (ENV.2)
+A545G shot 01-shared-setup-en.png 720x1280 err=0
+A545G JUDGE pass — rendered frame for 01-shared-setup-en.png
+{"TEL.1":"shared.start","TEL.2":1792774831726,"TEL.3":"sess-1792774831598-57794-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A545G shot 02-shared-play-s1.png 720x1280 err=0
+A545G JUDGE pass — rendered frame for 02-shared-play-s1.png
+{"TEL.1":"shared.advice","TEL.2":1792774831756,"TEL.3":"sess-1792774831598-57794-playtest","TEL.4":"UI-shared-play.US1.4","TEL.5":"toggled"}
+A545G shot 03-shared-play-advice.png 720x1280 err=0
+A545G JUDGE pass — rendered frame for 03-shared-play-advice.png
+{"TEL.1":"shared.resign","TEL.2":1792774831782,"TEL.3":"sess-1792774831598-57794-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+A545G shot 04-shared-play-resign-confirm.png 720x1280 err=0
+A545G JUDGE pass — rendered frame for 04-shared-play-resign-confirm.png
+{"TEL.1":"shared.resign","TEL.2":1792774831808,"TEL.3":"sess-1792774831598-57794-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792774831808,"TEL.3":"sess-1792774831598-57794-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+A545G shot 05-shared-result.png 720x1280 err=0
+A545G JUDGE pass — rendered frame for 05-shared-result.png
+A545G log-window session_id=sess-1792774831598-57794-playtest event_count=5
+A545G JUDGE pass — buffer holds this run's events
+A545G verdict=pass matched=3
+A545G JUDGE pass — S6/P4 every judged story has a correlating event
+A545G JUDGE pass — matched holds one event per judged story
+A545G f3-verdict=fail
+A545G JUDGE pass — F3 an unjudged story is a fail, not a warning
+A545G JUDGE pass — F3 missing names the story
+A545G_PROBE pass
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
