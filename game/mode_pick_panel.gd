@@ -160,6 +160,15 @@ func _build() -> void:
 	_refresh_last_mode()
 
 
+## SIT.6 / S13 — the frame reflowed: take the new ratio and restyle in place.
+func set_text_scale(text_scale_value: float) -> void:
+	if is_equal_approx(text_scale_value, _text_scale):
+		return
+	_text_scale = text_scale_value
+	if is_inside_tree():
+		_style_all()
+
+
 func _style_all() -> void:
 	UiChrome.style_button(_shared, false, _is_last_shared(), _text_scale)
 	UiChrome.style_button(_puzzle, false, _is_last_puzzle(), _text_scale)

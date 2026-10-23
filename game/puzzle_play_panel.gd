@@ -49,6 +49,15 @@ static func chrome_reserved_px(text_scale_value: float) -> float:
 	return CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
 
 
+## SIT.6 / S13 — the frame reflowed: take the new ratio and restyle in place.
+func set_text_scale(text_scale_value: float) -> void:
+	if is_equal_approx(text_scale_value, _text_scale):
+		return
+	_text_scale = text_scale_value
+	if is_inside_tree():
+		_style_all()
+
+
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build()

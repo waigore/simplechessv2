@@ -73,14 +73,15 @@ func bind_state(provider: Callable) -> void:
 	_state_provider = provider
 
 
-## SIT.6 — `CMP-presentation` supplies body text screen px; the seam only reports it.
+## SIT.6 — `CMP-presentation` supplies body text screen px for a frame height.
 func bind_text_report(provider: Callable) -> void:
 	_text_report = provider
 
 
-## O12 set_viewport — apply a window size and text scale, then report the result.
-## Viewport work needs `ENV.2`; a runner that refuses the resize reports no
-## applied viewport, and no frame height it cannot see (I6 boundary).
+## O12 set_viewport — apply a window size, then report what that frame renders.
+## Viewport work needs `ENV.2`; where no display resizes the window the frame
+## stays as it is and the report says so (I6 boundary). The reported sizes are
+## the ones the layout renders, never the arguments (S13 / D2).
 func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	## G2 / I3 — a release build has no O12.
 	if not playtest_build:
@@ -92,14 +93,18 @@ func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	var graphical := PlaytestGate.has_display() and window != null
 	if graphical and window.size != Vector2i(width, height):
 		window.size = Vector2i(width, height)
-	var frame := _frame_height(height, graphical)
+	## The running window is the frame; before the seam has one it claims no
+	## height rather than the requested one, so `S13` never reads a size that is
+	## not on screen (I6). A runner that refuses the resize keeps its own frame.
+	var frame_height := PlaytestGate.frame_height(self)
 	var report := {
 		"width": width,
 		"height": height,
 		"text_scale": text_scale,
 		"applied": graphical,
-		"frame_height_px": frame,
-		"body_text_px": _body_text_px(frame),
+		"frame_height_px": frame_height,
+		"rendered_text_scale": Presentation.text_scale_for_frame_height(frame_height),
+		"body_text_px": _body_text_px(frame_height),
 	}
 	_viewport_report = report.duplicate()
 	viewport_changed.emit(report)
@@ -111,30 +116,15 @@ func last_viewport_report() -> Dictionary:
 	return _viewport_report.duplicate()
 
 
-func _frame_height(requested_px: int, graphical: bool) -> int:
-	## `CMP-presentation` names the frame it rendered. Without it, the seam's own
-	## tree does once it runs; before that it claims no frame rather than the
-	## requested one, so `S13` never reads a size that is not on screen.
-	if _text_report.is_valid():
-		return int(round(Presentation.frame_height_for_body_px(float(_text_report.call()))))
-	if PlaytestGate.in_frame(self):
-		return PlaytestGate.frame_height(self)
-	return requested_px if graphical else 0
-
-
-func _body_text_px(frame_height_px: int) -> float:
-	## `CMP-presentation` supplies body text screen px for the rendered frame; the
-	## seam only reports it (D2). Without a bound presentation (unit-test binary)
-	## the shipped hook answers, never a size of the seam's own.
-	if frame_height_px <= 0:
+## What the bound `CMP-presentation` renders for this frame height. The seam
+## computes, clamps, and sets no size; with nothing bound the shipped hook
+## answers, never a size of the seam's own (D2 / S13).
+func _body_text_px(frame_height_px: float) -> float:
+	if frame_height_px <= 0.0:
 		return 0.0
 	if _text_report.is_valid():
-		return float(_text_report.call())
-	return float(Presentation.scaled_body_px(_frame_ratio(frame_height_px)))
-
-
-func _frame_ratio(frame_height_px: int) -> float:
-	return Presentation.text_scale_for_frame_height(float(frame_height_px))
+		return float(_text_report.call(frame_height_px))
+	return Presentation.body_text_screen_px_for_frame_height(frame_height_px)
 
 
 func pause() -> void:
@@ -370,11 +360,8 @@ func _on_debug_jump() -> void:
 
 func _on_set_viewport_pressed() -> void:
 	## SIT.6 — phone width at the reference ratio, driven from the panel for ENV.2.
-	set_viewport(
-		VIEWPORT_PHONE_WIDTH,
-		VIEWPORT_PHONE_HEIGHT,
-		float(VIEWPORT_PHONE_HEIGHT) / Presentation.REFERENCE_FRAME_HEIGHT_PX
-	)
+	## The reported sizes come back from the frame that renders, not from this call.
+	set_viewport(VIEWPORT_PHONE_WIDTH, VIEWPORT_PHONE_HEIGHT, 1.0)
 
 
 func _on_overlay_pressed() -> void:

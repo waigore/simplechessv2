@@ -114,11 +114,13 @@ func _check_playtest() -> bool:
 
 
 func _check_viewport(seams: PlaytestSeams) -> bool:
-	## S13 / SIT.6 — O12 applies a viewport on ENV.2 only; the report never lies.
+	## S13 / SIT.6 — O12 applies a viewport on ENV.2 only, and the reported sizes
+	## are the ones that frame renders, never the caller's arguments (D1/D2).
 	var reports: Array = []
 	seams.viewport_changed.connect(_remember_viewport.bind(reports))
+	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)
 	var wanted := Vector2i(PlaytestSeams.VIEWPORT_PHONE_WIDTH, PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
-	var phone := seams.set_viewport(wanted.x, wanted.y, _frame_ratio(wanted.y))
+	var phone := seams.set_viewport(wanted.x, wanted.y, 1.0)
 	var shown := seams.last_viewport_report()
 	# The unit-test binary runs this seam outside the tree, so it holds no frame
 	# yet: the report keeps its shape but no limb may claim the requested one.
@@ -140,7 +142,7 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 		problem = "S13 requested size"
 	elif not _application_matches(phone, framed, wanted.y):
 		problem = "S13 report must match the viewport the runner really applied"
-	elif not is_equal_approx(float(phone["text_scale"]), _frame_ratio(wanted.y)):
+	elif not is_equal_approx(float(phone["text_scale"]), 1.0):
 		problem = "S13 applied text scale"
 	elif frame <= 0 and int(phone["body_text_px"]) != 0:
 		problem = "S13 no frame, no body-text claim"
@@ -156,10 +158,22 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 		problem = "S13 clamped text size (body text must scale with frame height)"
 	elif not _bound_report_matches(seams, framed):
 		problem = "S13 seam must report the bound presentation size, not its own"
+	elif not _ignores_argument_scale(seams):
+		problem = "S13 seam must not report the argument it was handed"
+	elif not _hook_tracks_the_frame():
+		problem = "S13 hook must follow the rendered frame, not a constant"
+	elif not _phone_ratio():
+		problem = "S13 phone frame must reflow the shipped layout"
+	elif not _ignores_argument_scale(seams):
+		problem = "S13 seam must not report the argument it was handed"
 	elif not empty.is_empty():
 		problem = "S13 invalid input must not return a report"
 	elif panel_button == null:
 		problem = "S13 debug panel control"
+	elif not _hook_tracks_the_frame():
+		problem = "S13 hook must follow the rendered frame, not a constant"
+	elif not _phone_ratio():
+		problem = "S13 phone frame must reflow the shipped layout"
 	if not problem.is_empty():
 		return _fail(problem)
 	return true
@@ -169,23 +183,88 @@ func _application_matches(report: Dictionary, framed: bool, wanted_px: int) -> b
 	## `applied` names ENV.2, and only a seam inside a frame may name its height.
 	if bool(report.get("applied", false)) != PlaytestGate.has_display():
 		return false
-	if not framed:
+	if not framed or not PlaytestGate.has_display():
+		## No frame to read: the report keeps its shape but names no height.
 		return int(report.get("frame_height_px", 0)) == 0
-	return int(report.get("frame_height_px", 0)) == wanted_px
+	return int(round(float(report.get("frame_height_px", 0)))) == wanted_px
 
 
 func _bound_report_matches(seams: PlaytestSeams, framed: bool) -> bool:
-	## The seam must echo the presentation hook, never compute a size of its own.
+	## The seam must echo the bound presentation hook, never compute a size of its own.
 	var sentinel := 1234.0
-	seams.bind_text_report(func() -> float: return sentinel)
+	seams.bind_text_report(func(_frame_height_px: float) -> float: return sentinel)
 	var bound := seams.set_viewport(390, 844, 1.0)
-	seams.bind_text_report(Callable())
+	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)
+	## The seam only reports the hook's answer for the frame it renders (D2); with
+	## no frame on screen the report names none and carries no body-text claim.
+	if int(bound.get("frame_height_px", 0)) <= 0:
+		return int(bound.get("body_text_px", 0)) == 0
 	if not is_equal_approx(float(bound.get("body_text_px", 0.0)), sentinel):
 		return false
 	if not framed:
 		return true
 	var named := int(bound.get("frame_height_px", 0))
 	return named == int(round(Presentation.frame_height_for_body_px(sentinel)))
+
+
+func _ignores_argument_scale(seams: PlaytestSeams) -> bool:
+	## F2 — the caller's scale argument cannot move what the seam reports.
+	var coarse := seams.set_viewport(390, 844, 0.25)
+	var fine := seams.set_viewport(390, 844, 4.0)
+	return (
+		is_equal_approx(float(coarse["body_text_px"]), float(fine["body_text_px"]))
+		and is_equal_approx(
+			float(coarse["rendered_text_scale"]), float(fine["rendered_text_scale"])
+		)
+	)
+
+
+func _hook_tracks_the_frame() -> bool:
+	## F1 — the shipped hook reads a frame height and yields UIS.T2 for it: the
+	## reference height gives BODY_PX, 844 gives BODY_PX * 844 / 640. A clamped or
+	## hardcoded size fails the second check, and the leftover comparison proves
+	## that check can fail in this run rather than pass by construction.
+	var reference := Presentation.body_text_screen_px_for_frame_height(
+		UiChrome.REFERENCE_FRAME_HEIGHT_PX
+	)
+	var phone := Presentation.body_text_screen_px_for_frame_height(
+		PlaytestSeams.VIEWPORT_PHONE_HEIGHT
+	)
+	var expected := (
+		float(UiChrome.BODY_PX)
+		* float(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+		/ UiChrome.REFERENCE_FRAME_HEIGHT_PX
+	)
+	var clamped_would_differ := not is_equal_approx(phone, reference)
+	return (
+		int(reference) == UiChrome.BODY_PX
+		and int(round(phone)) == int(round(expected))
+		and clamped_would_differ
+	)
+
+
+func _phone_ratio() -> bool:
+	## F1 — the panels reflow through the shipped hook from the frame they render
+	## in. Desktop only: a phone-sized desktop window truncates below the panels'
+	## minimum size, which no shipped desktop build shows; the phone-width
+	## judgement itself is `PTU-mode-pick` S6 on the Web build.
+	if DisplayServer.get_name() == "headless":
+		return true
+	var presented := Presentation.new()
+	root.add_child(presented)
+	presented.size = Vector2(390.0, 844.0)
+	presented.show_screen(Presentation.MODE_PICK, {"ui_state": "S1"})
+	var mode_pick := presented.get_node("ScreenHost/ModePick") as ModePickPanel
+	var puzzle := mode_pick.find_child("PuzzleStream", true, false) as Control
+	var frame := UiChrome.frame_height_of(mode_pick)
+	var expected := UiChrome.text_scale_for_frame_height(frame)
+	var applied := mode_pick._text_scale
+	var ok := applied > 1.0 and is_equal_approx(applied, expected) and puzzle != null
+	if ok:
+		var puzzle_px := puzzle.get_theme_font_size("font_size")
+		ok = puzzle_px >= UiChrome.scaled_px(UiChrome.BODY_PX, applied)
+	presented.queue_free()
+	return ok
 
 
 func _frame_ratio(height_px: int) -> float:
