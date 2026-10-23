@@ -13,6 +13,7 @@ const MODE_PICK := "mode-pick"
 const SHARED_SETUP := "shared-setup"
 const SHARED_PLAY := "shared-play"
 const SHARED_RESULT := "shared-result"
+const PUZZLE_PLAY := "puzzle-play"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
 ## UIS.T2 reference frame height: UiChrome sizes are project-space px at this height.
@@ -29,6 +30,7 @@ var _mode_pick: ModePickPanel
 var _shared_setup: SharedSetupPanel
 var _shared_play: SharedPlayPanel
 var _shared_result: SharedResultPanel
+var _puzzle_play: PuzzlePlayPanel
 var _board: BoardPresentation
 var _ended_label: Label
 var _unsupported: Label
@@ -93,6 +95,8 @@ func show_screen(screen_id: String, state: Dictionary) -> void:
 			_show_shared_play(state)
 		SHARED_RESULT:
 			_show_shared_result(state)
+		PUZZLE_PLAY:
+			_show_puzzle_play(state)
 		SESSION_ENDED:
 			_show_ended()
 		_:
@@ -173,7 +177,8 @@ func _build_shell() -> void:
 	_mode_pick = ModePickPanel.new()
 	_mode_pick.name = "ModePick"
 	_mode_pick.visible = false
-	_mode_pick.set_anchors_preset(Control.PRESET_CENTER)
+	# R1–R3 read top-down and sit inside the frame at the 720 reference height.
+	_mode_pick.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_mode_pick.custom_minimum_size = Vector2(320, 280)
 	_mode_pick.position = Vector2(40, 80)
 	_mode_pick.control_activated.connect(_on_mode_pick_control)
@@ -216,6 +221,14 @@ func _build_shell() -> void:
 	_shared_result.control_activated.connect(_on_shared_result_control)
 	_shared_result.pointed.connect(_on_pointed)
 	_host.add_child(_shared_result)
+
+	_puzzle_play = PuzzlePlayPanel.new()
+	_puzzle_play.name = "PuzzlePlay"
+	_puzzle_play.visible = false
+	_puzzle_play.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_puzzle_play.control_activated.connect(_on_puzzle_play_control)
+	_puzzle_play.pointed.connect(_on_pointed)
+	_host.add_child(_puzzle_play)
 
 	_ended_label = Label.new()
 	_ended_label.name = "SessionEnded"
@@ -303,6 +316,7 @@ func _show_mode_pick(state: Dictionary) -> void:
 	_board.visible = false
 	_shared_play.visible = false
 	_shared_result.visible = false
+	_puzzle_play.visible = false
 	_ended_label.visible = false
 	_reset_gesture()
 	var ui_state := str(state.get("ui_state", "S1"))
@@ -323,6 +337,7 @@ func _show_shared_setup(state: Dictionary) -> void:
 	_board.visible = false
 	_shared_play.visible = false
 	_shared_result.visible = false
+	_puzzle_play.visible = false
 	_ended_label.visible = false
 	_reset_gesture()
 	_shared_setup.configure(
@@ -344,6 +359,7 @@ func _show_shared_play(state: Dictionary) -> void:
 	_loading.visible = false
 	_mode_pick.visible = false
 	_shared_setup.visible = false
+	_puzzle_play.visible = false
 	_shared_result.visible = false
 	_ended_label.visible = false
 	_layout_shared_play_regions()
@@ -432,6 +448,7 @@ func _show_shared_result(state: Dictionary) -> void:
 	_shared_setup.visible = false
 	_board.visible = false
 	_shared_play.visible = false
+	_puzzle_play.visible = false
 	_ended_label.visible = false
 	_reset_gesture()
 	_shared_result.configure(
@@ -442,6 +459,74 @@ func _show_shared_result(state: Dictionary) -> void:
 	)
 	UiChrome.transition_in(_shared_result)
 	_shared_result.focus_first()
+
+
+## UI-puzzle-play R1–R3 / S1–S5 — the same board gestures as shared play (#94),
+## oriented to the Solving side (CAM-board.M2: Black → 180°, White → 0°).
+func _show_puzzle_play(state: Dictionary) -> void:
+	current_screen = PUZZLE_PLAY
+	_loading.visible = false
+	_mode_pick.visible = false
+	_shared_setup.visible = false
+	_shared_play.visible = false
+	_shared_result.visible = false
+	_ended_label.visible = false
+	_clear_advice_chrome()
+	_layout_shared_play_regions()
+	_board.set_white_seat(_puzzle_seat(str(state.get("solving_side", ""))))
+	_puzzle_play.configure(state, _ui_font, text_scale())
+	_puzzle_play.puzzle_open = bool(state.get("puzzle_open", false))
+	_puzzle_play.refresh()
+	var position: Dictionary = state.get("position", {}) as Dictionary
+	var selection := str(state.get("selection", ""))
+	var legal: PackedStringArray = PackedStringArray()
+	var legal_var: Variant = state.get("legal", PackedStringArray())
+	if legal_var is PackedStringArray:
+		legal = legal_var
+	elif legal_var is Array:
+		for item in legal_var:
+			legal.append(str(item))
+	var opts := {
+		"ui_state": str(state.get("ui_state", "S1")),
+		"reject_square": str(state.get("reject_square", "")),
+		"pending_promote_to": str(state.get("pending_promote_to", "")),
+		"side_to_move": str(state.get("side_to_move", "white")),
+		"promote_kinds": state.get("promote_kinds", PuzzleSession.PROMOTE_ORDER),
+		"white_seat": _puzzle_seat(str(state.get("solving_side", ""))),
+	}
+	var move_var: Variant = state.get("move", null)
+	if move_var is Dictionary:
+		opts["move"] = move_var
+	_board.render_position(position, selection, legal, opts)
+	_board.visible = true
+	_board.modulate.a = 1.0
+	var first_show := not _puzzle_play.visible
+	if first_show:
+		UiChrome.transition_in(_puzzle_play)
+	else:
+		_puzzle_play.visible = true
+		_puzzle_play.modulate.a = 1.0
+	if _puzzle_play.wants_focus_on_show():
+		_puzzle_play.focus_first()
+	if not _play_assets_bound:
+		var needed: PackedStringArray = PackedStringArray()
+		for asset_id in BoardPresentation.PIECE_IDS.values():
+			needed.append(str(asset_id))
+		needed.append(BoardPresentation.BOARD_BG_ID)
+		needed.append(UiChrome.FONT_LATIN)
+		asset_needed.emit(needed)
+
+
+## CAM-board.M2 puzzle reading: the Solving side's near edge faces the player, so
+## Solving side Black → 180° (White seat top) and White → 0° (White seat bottom).
+static func _puzzle_seat(solving_side: String) -> String:
+	if solving_side == ChessRules.SIDE_BLACK:
+		return BoardGeometry.SEAT_TOP
+	return BoardGeometry.SEAT_BOTTOM
+
+
+func _on_puzzle_play_control(control_id: String) -> void:
+	control_activate.emit(PUZZLE_PLAY, control_id)
 
 
 func _show_ended() -> void:
@@ -462,6 +547,8 @@ func _hide_panels() -> void:
 	_shared_play.modulate.a = 1.0
 	_shared_result.visible = false
 	_shared_result.modulate.a = 1.0
+	_puzzle_play.visible = false
+	_puzzle_play.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
 	_clear_advice_chrome()
@@ -509,7 +596,7 @@ func _flash_unsupported() -> void:
 func _accept_pointer(record: Dictionary) -> void:
 	pointer_count += 1
 	last_pointer = record
-	if current_screen != SHARED_PLAY:
+	if current_screen != SHARED_PLAY and current_screen != PUZZLE_PLAY:
 		return
 	var pressed := bool(record.get("pressed", false))
 	var at := Vector2(float(record.get("x", 0.0)), float(record.get("y", 0.0)))
