@@ -14,7 +14,7 @@ Draw-offer scenarios: [`fields-play-draw.md`](fields-play-draw.md). Other play f
 |---------|---------|-----------|
 | GS.gameEnded | Initial, reset, refuse moves | PS1.1 PS1.2 PS1.3 |
 | GS.drawOffer | Initial none on Shared start | PS1.1 |
-| GS.repetitionHistory | Start record; game-long; session clear | PS1.1 PS1.4 PS1.5 PS1.6 |
+| GS.repetitionHistory | Start record; game-long; run clear | PS1.1 PS1.4 PS1.5 PS1.6 |
 | GS.fiftyMoveCount | Zero; increment; clears; bound | PS1.1 PS1.7 PS1.8 PS1.9 PS1.10 |
 
 ## PS1: Ending counters stay honest
@@ -26,12 +26,12 @@ As a casual player, I rely on ending fields so that draws and closed games match
 - **Proves**: GS.gameEnded, GS.drawOffer, GS.repetitionHistory, GS.fiftyMoveCount
 
 ```gherkin
-Given no session is open
+Given no run is open
 When an Untimed Shared game starts
 Then GS.gameEnded is false And GS.drawOffer is none And GS.repetitionHistory holds the start occurrence And GS.fiftyMoveCount is 0
 ```
 
-### PS1.2: New session resets gameEnded
+### PS1.2: New run resets gameEnded
 
 - **Proves**: GS.gameEnded
 
@@ -61,7 +61,7 @@ When White captures on e5
 Then GS.repetitionHistory still holds prior occurrences And adds the post-capture occurrence
 ```
 
-### PS1.5: New session clears repetition history
+### PS1.5: New run clears repetition history
 
 - **Proves**: GS.repetitionHistory
 
