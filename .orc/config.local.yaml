@@ -38,6 +38,22 @@ agents:
 
   issue-workflow-implement-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
+    parallel_run: 3
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --repo
+        - waigore/simplechessv2
+        - --state
+        - open
+        - --label
+        - status:pending-implementation
+        - --limit
+        - "100"
+        - --json
+        - number
     gate:
       command:
         - sh
