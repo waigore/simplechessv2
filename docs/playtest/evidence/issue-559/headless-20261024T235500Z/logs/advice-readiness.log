@@ -1,0 +1,22 @@
+$ godot --headless --path game -s res://advice_readiness_test.gd
+
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+advice: ready after 1 ms
+advice readiness: repeat 1 ready after 1 ms (T6 1500 ms)
+advice: ready after 3 ms
+advice readiness: repeat 2 ready after 3 ms (T6 1500 ms)
+advice: ready after 1 ms
+advice readiness: repeat 3 ready after 1 ms (T6 1500 ms)
+advice: ready after 12 ms
+advice readiness: repeat 4 ready after 12 ms (T6 1500 ms)
+advice: ready after 8 ms
+advice readiness: repeat 5 ready after 8 ms (T6 1500 ms)
+advice readiness: worst of 5 = 12 ms against T6 1500 ms (ceiling 250 ms)
+advice never-delay: repeat 1 move applied in 0 ms with a silent peer
+advice never-delay: repeat 2 move applied in 0 ms with a silent peer
+advice never-delay: repeat 3 move applied in 0 ms with a silent peer
+advice never-delay: repeat 4 move applied in 0 ms with a silent peer
+advice never-delay: repeat 5 move applied in 0 ms with a silent peer
+advice never-delay: worst of 5 moves = 0 ms (ceiling 40 ms), 250 ms silent
+advice readiness: 5 repeats, T6 1500 ms, all within the cap
