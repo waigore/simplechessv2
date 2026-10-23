@@ -1,0 +1,32 @@
+# Preset attempts: can `game/export_presets.cfg` alone pack `game_assets/`?
+
+Build: `main` `98d3473` + local edits to `game/export_presets.cfg` only.
+Engine: Godot 4.7.2 stable (homebrew), Web export templates 4.7.2.
+Command each time: `python3 .github/scripts/web_export.py --preset "Web Release"`, then
+`python3 -c "..."` counting distinct `game_assets/...` paths inside `build/web/index.pck`.
+
+Baseline (preset on `main`, no edit)          → index.pck 221228 bytes, 0 asset paths
+`include_filter="game_assets/*"`              → index.pck 221228 bytes, 0 asset paths
+`include_filter="game_assets/*/*"`            → index.pck 221228 bytes, 0 asset paths
+`include_filter="game_assets/*/*.*"`          → index.pck 221228 bytes, 0 asset paths
+`include_filter="game_assets/**"`             → index.pck 221228 bytes, 0 asset paths
+`include_filter="../game_assets/*/*"`         → index.pck 221228 bytes, 0 asset paths
+`export_filter="resources"` + include filters → export aborts: "Must select at least one file to export."
+`export_filter="resources"` + `export_files=PackedStringArray("res://…")` of all 38 manifest files
+                                              → index.pck 221228 bytes, 0 asset paths
+same + `export_files=PackedStringArray("res://main_release.tscn")`
+                                              → index.pck 46828 bytes, only the scene + scripts it
+                                                references; still 0 asset paths
+symlink `game/asset_files -> ../game_assets` + `include_filter="asset_files/*/*"`
+                                              → index.pck 221228 bytes, 0 asset paths
+
+Conclusion: Godot 4.7.2's exporter silently drops include/export paths that are outside the
+project root (`game/`), and `export_files` takes precedence over the asset scan (adding it
+without an include filter ships no scripts). The asset root cannot be packed into the PCK from
+`export_presets.cfg` while ADR-0005 keeps it at the repo root.
+
+Runtime side, same build: with `game_assets/` copied beside `index.html` and the resolver pointed
+at the served directory, the browser made **zero** requests for any asset file
+(`logs/local-release-asset-requests.log`: only `index.html`, `index.js`, `index.pck`, `index.wasm`,
+`index.png`, `index.icon.png`, the two audio worklets). Godot's Web `FileAccess` does not fetch
+side-loaded files, so "serve the assets loose" is not a drop-in either.
