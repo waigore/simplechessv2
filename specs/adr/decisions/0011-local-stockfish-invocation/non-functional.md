@@ -42,7 +42,7 @@ N/A — stated in [ADR-0011](../0011-local-stockfish-invocation.md).
 
 | Quality | Assessment |
 |---------|------------|
-| Licensing and cost | Stockfish stays GPL under ADR-0002. This decision sets no fee and no GPL procedure |
+| Licensing and cost | Stockfish stays GPL under ADR-0002. This decision sets no fee; the GPL procedure is [ADR-0012](../0012-advice-backend-gpl-compliance.md) |
 | Maintainability | One Python server owns the engine process. Replacing Stockfish stays inside that server |
 | Testability | Tests can run the Python server with local Stockfish. No remote engine is required |
 | Portability | Web client unchanged. The server is Python plus a local Stockfish it invokes |

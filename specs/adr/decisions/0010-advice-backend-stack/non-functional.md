@@ -42,7 +42,7 @@ N/A — stated in [ADR-0010](../0010-advice-backend-stack.md).
 
 | Quality | Assessment |
 |---------|------------|
-| Licensing and cost | Not relevant — GPL compliance for shipped binaries is out of scope; accepted cost is one extra runtime |
+| Licensing and cost | GPL approach: [ADR-0012](../0012-advice-backend-gpl-compliance.md) — this stack ships no Stockfish binary, so the conveying operator carries the GPL duty; accepted cost is one extra runtime |
 | Maintainability | Python runtime fixed at implementation; [ADR-0002](../0002-stockfish-advice-backend.md) engine isolation unchanged |
 | Testability | Contract tests exercise right, wrong, and missing keys against a local server |
 | Portability | Endpoint is configuration; any host reachable from the browser works; deploy stays open |
