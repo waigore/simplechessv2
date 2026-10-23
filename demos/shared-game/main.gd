@@ -480,6 +480,9 @@ func _run_autodrive() -> void:
 	var problems: PackedStringArray = PackedStringArray()
 	# FRM.P1/P2: every body drawn inside the SPC.E1 extent, King tallest.
 	problems.append_array(_body_problems())
+	# PER.R7: every coordinate label inside its band, so none of its ink lands
+	# on the 1.28:1 table margin (defect #592).
+	problems.append_array(view.measure_coord_labels())
 	await _run_scenarios(EXERCISE, problems, "exercise")
 	print("[demo] exercise complete")
 	await _capture("exercise")
