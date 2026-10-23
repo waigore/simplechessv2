@@ -1,0 +1,9 @@
+Constant StringTable.EVERY_LOCALE_ROWS -> 9 pairs: ['mode-pick.locale', 'shared-play.queen', 'shared-play.rook', 'shared-play.bishop', 'shared-play.knight', 'puzzle-play.queen', 'puzzle-play.rook', 'puzzle-play.bishop', 'puzzle-play.knight']
+
+specs/ux/localization.md L3:
+  | L3 | Every key varies by locale except a row its Copy table marks same in every locale. Only two such rows exist: the `mode-pick` `locale` own name (C4), and the four piece-type names `queen`, `rook`, `bishop`, and `knight` on `shared-play` and `puzzle-play` (C6). Piece names stay as the `en` value in every locale because they double as the accessibility names for a piece's shape, so a piece is called the same at every locale and by every reader. |
+
+specs/technical/schemata/string-table-invariants.md I5:
+  | I5 | A `zh-Hant` or `ja` value is not a verbatim copy of its `en` value, except a row marked same in every locale (`UI-mode-pick.C4` own name; `shared-play` / `puzzle-play` `queen` `rook` `bishop` `knight`, per [Localization copy](../../ux/localization.md) L3) |
+
+CROSS-CHECK pass
