@@ -45,6 +45,24 @@ func feed(chunk: PackedByteArray, updates: Array) -> bool:
 	return not ended.is_empty()
 
 
+## Whether an HTTPClient status means the exchange ended before E2. Only a real
+## disconnect or connection/transfer error counts: `STATUS_DISCONNECTED`,
+## `STATUS_CANT_CONNECT`, `STATUS_CANT_RESOLVE`, `STATUS_CONNECTION_ERROR`, and
+## `STATUS_TLS_HANDSHAKE_ERROR`. `STATUS_CONNECTED` / `STATUS_REQUESTING` /
+## `STATUS_BODY` are exchanges still in flight, never a close (FAIL.T1).
+static func is_terminal_status(status: int) -> bool:
+	return (
+		status
+		in [
+			HTTPClient.STATUS_DISCONNECTED,
+			HTTPClient.STATUS_CANT_CONNECT,
+			HTTPClient.STATUS_CANT_RESOLVE,
+			HTTPClient.STATUS_CONNECTION_ERROR,
+			HTTPClient.STATUS_TLS_HANDSHAKE_ERROR,
+		]
+	)
+
+
 ## The connection closed: buffered lines still count, and an unterminated stream
 ## is a failure (FAIL.T1 - "stream timeout" / "backend error").
 func closed(updates: Array) -> void:

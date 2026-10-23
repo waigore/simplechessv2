@@ -29,7 +29,7 @@ These follow upstream:
 - Interface style is N/A only when the game has no interface beyond the world itself.
 - Accessible color and type Applies when accessibility Applies in `specs/definition/quality.md`, and is N/A with that file's reason otherwise.
 - Script coverage Applies when localization Applies, and is N/A with that file's reason otherwise.
-- Sheets Applies unless spec depth requires no sheet, per [depth.md](../depth.md).
+- Reference sheets Applies unless spec depth requires no reference sheet, per [depth.md](../depth.md).
 
 ## Splitting
 

@@ -52,7 +52,7 @@ The table sets the minimum. Any spec may take a higher level. Choose per spec.
 | Palette sheet | Required | Required | None |
 | Lineup sheet | Every character and entity with a body | Characters and entities in core specs | None |
 
-The table sets the minimum. An artifact beyond it is allowed, and then follows its rules in full. When an artifact is not required and not made, its header field (**Mockup**, **Diagram**, or **Reference sheet**) reads "None — spec depth \<level\>". When no mockup exists at all, the Mockups topic in `specs/ux/traceability.md` is "N/A — spec depth \<level\>". The same applies to the Diagrams topic in `specs/view/traceability.md` and the Sheets topic in `specs/aesthetics/traceability.md`.
+The table sets the minimum. An artifact beyond it is allowed, and then follows its rules in full. When an artifact is not required and not made, its header field (**Mockup**, **Diagram**, or **Reference sheet**) reads "None — spec depth \<level\>". When no mockup exists at all, the Mockups topic in `specs/ux/traceability.md` is "N/A — spec depth \<level\>". The same applies to the Diagrams topic in `specs/view/traceability.md` and the Reference sheets topic in `specs/aesthetics/traceability.md`.
 
 ## Other effects
 
