@@ -24,6 +24,7 @@ Authoring rules: [`.agents/specs/rules/technical/concurrency.md`](../../.agents/
 | O3 | Advice best-move / eval | [`CMP-advice-client`](components/advice-client.md) | Presentation | Cleared on move/end/Off/offline |
 | O4 | Persist document | [`CMP-persist-store`](components/persist-store.md) | Session router; puzzle session | Whole-document replace |
 | O5 | In-flight deal read and its one record | Catalog deal I/O (U4) | [`CMP-puzzle-session`](components/puzzle-session.md) | At most one record at a time; a failed read writes nothing |
+| O6 | `GS.playerElo` and `GS.recentSolved` | [`CMP-puzzle-progression`](components/puzzle-progression.md) via [`CTR-puzzle-progress`](contracts/puzzle-progress.md) O1 | [`CMP-puzzle-session`](components/puzzle-session.md) (commits the returned values); Presentation | Single writer in L3; the session commits, never computes; a Shared game and leaving the stream never write them |
 
 ## Synchronization
 

@@ -44,6 +44,9 @@ func _run_all() -> String:
 		_check_recent_trim,
 		_check_leave_keeps_elo_unscored,
 		_check_commit_failure_keeps_prior,
+		_check_committed_document_shape,
+		_check_played_prefix,
+		_check_outcome_consumed_once,
 		_check_restore,
 		_check_no_advice,
 		_check_mate_in_one_mark,
@@ -418,6 +421,86 @@ func _check_commit_failure_keeps_prior() -> String:
 	return ""
 
 
+## SCH-puzzle-attempt F3 — the attempt keeps its played prefix: the record's opening move
+## at the deal, the accepted step, and the required reply the game played at once.
+func _check_played_prefix() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5", "g1f3", "b8c6"])])
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5", "g1f3", "b8c6"])])
+	if session.played_prefix.size() != 1 or str(session.played_prefix[0]["from"]) != "e2":
+		return "F3: the deal must seed the prefix with the record's opening move"
+	var dealt := session.rules.position_field().duplicate(true)
+	var step := session.place("e7", "e5")
+	if session.played_prefix.size() != 3 or str(step.get("reply", {}).get("from", "")) != "g1":
+		return "F3: the accepted step and its required reply join the prefix (got %s)" % step
+	var snapshot: Dictionary = session.play_state()
+	if (snapshot.get("played_prefix", []) as Array).size() != 3:
+		return "F3: play_state must expose the attempt's played prefix"
+	return _check_wrong_move_clears_prefix(session, dealt)
+
+
+## K2 — a Wrong move returns the puzzle to its start, so the prefix is the opening move
+## again and the board is the position the deal presented.
+func _check_wrong_move_clears_prefix(session: PuzzleSession, dealt: Dictionary) -> String:
+	var wrong := session.place("b8", "a6")
+	if str(wrong.get("outcome", "")) != "wrong":
+		return "K2: a non-matching Solving-side move must be a Wrong move"
+	if session.played_prefix.size() != 1 or session.sequence_index != 0:
+		return "K2: a Wrong move must reset the prefix to the deal's opening move"
+	if session.rules.position_field() != dealt:
+		return "K2: a Wrong move must return to the position the deal presented"
+	return ""
+
+
+## SCH-puzzle-attempt L3 — the settled cue is readable in play_state before the next deal,
+## and reads a W1 cue with no wrong move and a raised Player Elo.
+func _check_outcome_consumed_once() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.place("e7", "e5")
+	var settled: Dictionary = session.play_state().get("last_result", {})
+	if str(settled.get("end_reason", "")) != PuzzleSession.END_W1:
+		return "L3: the settled cue must read as END.W1 (got %s)" % settled
+	if str(settled.get("cue", "")) != "cue_solved" or float(settled.get("score", -1.0)) != 1.0:
+		return "L3: the W1 cue must report cue_solved and S = 1"
+	if not bool(settled.get("solved", false)) or not bool(settled.get("committed", false)):
+		return "L3: the W1 cue must report a solved, committed attempt"
+	return ""
+
+
+## PRG.M1 / persistence.md G1 M2 M4 — the committed document keeps version 1 with the
+## wave-2 slots F2 and F4, and only snapshot-2026-10-05 PuzzleIds are ever saved.
+func _check_committed_document_shape() -> String:
+	var store := _stored_session()
+	var session := PuzzleSession.new(ChessRules.new(), store)
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.place("e7", "e5")
+	var doc: Dictionary = store.read_committed()
+	if int(doc.get("version", 0)) != PersistStore.VERSION:
+		return "G1: the document must stay version 1 (got %s)" % doc.get("version", 0)
+	if not doc.has("player_elo") or not doc.has("recent_solved"):
+		return "G1: the committed document must carry slots F2 and F4"
+	if not (doc.get("recent_solved", []) as Array).has("abc"):
+		return "M4: the solved PuzzleId must be the one saved"
+	var loaded := PuzzleSession.new(ChessRules.new(), store)
+	loaded.restore(store.load_document())
+	if not is_equal_approx(loaded.player_elo, session.player_elo):
+		return "M1: restore must read the committed Player Elo"
+	if not loaded.recent_solved.has("abc"):
+		return "M1: restore must read the committed recentSolved"
+	return _check_snapshot_only_ids(session)
+
+
+## persistence.md M4 — a record from another snapshot never opens and is never saved.
+func _check_snapshot_only_ids(session: PuzzleSession) -> String:
+	var foreign := _record("other", 1000, ["e2e4", "e7e5"])
+	foreign["snapshot_id"] = "2024-01-01"
+	session.leave()
+	var dealt := session.deal([foreign])
+	if bool(dealt.get("ok", true)) or session.has_open_puzzle():
+		return "M4: a record from another snapshot must not deal"
+	return ""
+
+
 func _check_restore() -> String:
 	var session := _session([])
 	(
@@ -548,6 +631,14 @@ func _check_no_advice() -> String:
 	var state := session.play_state()
 	if str(state.get("advice", "")) != "none":
 		return "GS.V3: advice must stay none in Puzzle stream"
+	if state.get("advice_best_move") != null or state.get("advice_eval") != null:
+		return "GS.V3: adviceBestMove / adviceEval must stay none in Puzzle stream"
+	session.place("e7", "e5")
+	var settled := session.play_state()
+	if str(settled.get("advice", "x")) != "none":
+		return "GS.V3 / R4: advice must never enable on the puzzle move path"
+	if settled.get("advice_best_move") != null or settled.get("advice_eval") != null:
+		return "GS.V3 / R4: an outcome must not populate the advice fields"
 	return ""
 
 
@@ -762,20 +853,30 @@ func _check_promotion_commit(session: PuzzleSession) -> String:
 	return ""
 
 
-## K3 — after W1 the dealt puzzle stays open behind the cue and the next deal is refused
-## until the caller supplies the next record; L5 asks for one after the Elo update.
+## K3 / SCH-puzzle-attempt I3 — after W1 the attempt stays open behind its cue and the
+## next deal is refused until the cue is read; the cue then asks for exactly one next
+## puzzle. L5 asks for one after the Elo update.
 func _check_deal_after_ending() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.place("e7", "e5")
-	if bool(session.advance().get("ok", true)) or not session.has_open_puzzle():
-		return "K3 must not deal over the ended puzzle before the cue"
-	var closed := session.leave()
-	if not bool(session.deal([_record("next", 1000, ["e2e4", "e7e5"])]).get("ok", false)):
-		return "K3 must deal the next puzzle once the caller supplies its record"
-	if not session.has_open_puzzle():
-		return "K3 must present the next puzzle after a deal"
-	if closed.is_empty():
+	if (
+		str(session.deal([_record("next", 1000, ["e2e4", "e7e5"])]).get("reason", ""))
+		!= "puzzle_open"
+	):
+		return "K3 must not deal over the ended attempt before the cue is read"
+	# The cue was read: advance drops the settled attempt and asks for the next record.
+	if str(session.advance().get("reason", "")) != "no_record" or session.has_open_puzzle():
+		return "K3 must drop the settled attempt and ask for the next deal once the cue is read"
+	if (
+		not bool(session.deal([_record("next", 1000, ["e2e4", "e7e5"])]).get("ok", false))
+		or not session.has_open_puzzle()
+		or session.puzzle_id != "next"
+	):
+		return "K3 must deal and present the next puzzle once the caller supplies its record"
+	if str(session.advance().get("reason", "")) != "puzzle_open":
+		return "advance must not deal a second puzzle over an open one"
+	if not bool(session.leave().get("ok", false)):
 		return "leaving after a solved puzzle must succeed"
 	var revealed := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
 	revealed.deal([_record("abc", 1000, ["e2e4", "e7e5"])])

@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | Network; provider of the deal (tracked by #528) |
+| C1 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | Network; provider of the deal. The session offers each record to [`CMP-puzzle-progression`](puzzle-progression.md) O2, which selects per `DIF.Y1` `Y1` or refuses |
 | C2 | Advice route on the same server | listens | internal | Same endpoint, key config, and rate accounting scope |
 
 ## Owns / mutates

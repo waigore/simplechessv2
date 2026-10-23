@@ -1,0 +1,18 @@
+frame (0.0, 0.0, 720.0, 1280.0), 8x8 (72.0, 352.0, 648.0, 928.0), 16 labels (8 files, 8 ranks)
+  a  BevelLipBottomInk  box x 106.5 y 936.5 -> x 109.5 y 945.5  in band
+  b  BevelLipBottomInk  box x 178.0 y 936.5 -> x 182.0 y 945.5  in band
+  c  BevelLipBottomInk  box x 250.5 y 936.5 -> x 253.5 y 945.5  in band
+  d  BevelLipBottomInk  box x 322.0 y 936.5 -> x 326.0 y 945.5  in band
+  e  BevelLipBottomInk  box x 394.5 y 936.5 -> x 397.5 y 945.5  in band
+  f  BevelLipBottomInk  box x 467.0 y 936.5 -> x 469.0 y 945.5  in band
+  g  BevelLipBottomInk  box x 538.0 y 936.5 -> x 542.0 y 945.5  in band
+  h  BevelLipBottomInk  box x 610.0 y 936.5 -> x 614.0 y 945.5  in band
+  1  BevelLipLeftInk    box x 57.5 y 887.5 -> x 60.5 y 896.5  in band
+  2  BevelLipLeftInk    box x 57.5 y 815.5 -> x 60.5 y 824.5  in band
+  3  BevelLipLeftInk    box x 57.5 y 743.5 -> x 60.5 y 752.5  in band
+  4  BevelLipLeftInk    box x 57.5 y 671.5 -> x 60.5 y 680.5  in band
+  5  BevelLipLeftInk    box x 57.5 y 599.5 -> x 60.5 y 608.5  in band
+  6  BevelLipLeftInk    box x 57.5 y 527.5 -> x 60.5 y 536.5  in band
+  7  BevelLipLeftInk    box x 57.5 y 455.5 -> x 60.5 y 464.5  in band
+  8  BevelLipLeftInk    box x 57.5 y 383.5 -> x 60.5 y 392.5  in band
+PASS: every label inside its band, no band inside the 8x8
