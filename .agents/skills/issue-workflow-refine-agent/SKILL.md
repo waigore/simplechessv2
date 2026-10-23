@@ -20,6 +20,6 @@ Thin automation entrypoint for `status:pending-refinement`.
 
 ## Steps
 
-1. **Resolve** one target issue per the dispatch contract (`#n`, or discover `status:pending-refinement`).
+1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-refinement`.
 2. **Read and run** `refine-project-issue` for that issue.
 3. **Report** the underlying skill's outcome (URL, summary, new status).

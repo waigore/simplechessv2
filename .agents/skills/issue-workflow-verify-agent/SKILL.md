@@ -20,6 +20,6 @@ Thin automation entrypoint for `status:pending-verification`.
 
 ## Steps
 
-1. **Resolve** one target issue per the dispatch contract (`#n`, or discover `status:pending-verification`).
+1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-verification`.
 2. **Read and run** `verify-project-issue` for that issue (independence is enforced by that skill and the dispatch contract).
 3. **Report** the underlying skill's outcome (URL, pass/fail, new status).

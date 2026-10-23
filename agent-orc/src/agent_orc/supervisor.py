@@ -1,11 +1,19 @@
-"""Parallel per-skill loops with gates, worktrees, and cooldowns."""
+"""Parallel per-slot loops with gates, issue claims, worktrees, and cooldowns."""
 
 from __future__ import annotations
 
 import asyncio
 import logging
+from dataclasses import replace
 from pathlib import Path
 
+from agent_orc.assignment import (
+    UNASSIGNED_ISSUE,
+    IssueListError,
+    IssueOwnership,
+    list_issue_numbers,
+    render_agent_prompt,
+)
 from agent_orc.config import (
     AgentConfig,
     AppConfig,
@@ -35,10 +43,10 @@ async def run_supervisor(
     repo_root: Path | None = None,
 ) -> int:
     """
-    Run selected agents in parallel.
+    Run one loop per parallel slot. Slots of every agent share one issue map.
 
-    count=None means daemon (forever). count=N means each agent runs N times
-    (gate misses do not count).
+    count=None means daemon (forever). count=N means each slot runs N times
+    (gate misses and claim misses do not count).
     """
     ctl = shutdown or ShutdownController()
     root = (repo_root or Path(config.orchestrator.repo_root)).resolve()
@@ -46,44 +54,60 @@ async def run_supervisor(
     logs_dir = (root / config.orchestrator.logs_dir).resolve()
     logs_dir.mkdir(parents=True, exist_ok=True)
     worktrees_dir.mkdir(parents=True, exist_ok=True)
+    ownership = IssueOwnership()
+    slots = _expand_slots(agents)
 
     tasks = [
         asyncio.create_task(
             _skill_loop(
                 config,
                 agent,
+                parallel_id=parallel_id,
                 index=index,
                 count=count,
                 shutdown=ctl,
                 repo_root=root,
                 worktrees_dir=worktrees_dir,
                 logs_dir=logs_dir,
+                ownership=ownership,
             ),
-            name=f"skill:{agent.name}",
+            name=f"skill:{agent.name}#{parallel_id}",
         )
-        for index, agent in enumerate(agents)
+        for index, (agent, parallel_id) in enumerate(slots)
     ]
     results = await asyncio.gather(*tasks, return_exceptions=True)
     exit_code = 0
-    for agent, result in zip(agents, results, strict=True):
+    for (agent, parallel_id), result in zip(slots, results, strict=True):
         if isinstance(result, Exception):
-            logger.error("skill loop %s failed: %s", agent.name, result)
+            logger.error(
+                "skill loop %s slot %s failed: %s", agent.name, parallel_id, result
+            )
             exit_code = 1
         elif isinstance(result, int) and result != 0:
             exit_code = result
     return exit_code
 
 
+def _expand_slots(agents: list[AgentConfig]) -> list[tuple[AgentConfig, int]]:
+    slots: list[tuple[AgentConfig, int]] = []
+    for agent in agents:
+        for parallel_id in range(1, agent.parallel_run + 1):
+            slots.append((agent, parallel_id))
+    return slots
+
+
 async def _skill_loop(
     config: AppConfig,
     agent: AgentConfig,
     *,
+    parallel_id: int,
     index: int,
     count: int | None,
     shutdown: ShutdownController,
     repo_root: Path,
     worktrees_dir: Path,
     logs_dir: Path,
+    ownership: IssueOwnership,
 ) -> int:
     orch = config.orchestrator
     if index > 0 and orch.stagger_seconds > 0:
@@ -91,32 +115,68 @@ async def _skill_loop(
 
     runs_done = 0
     consecutive_misses = 0
-    logger.info("skill loop started: %s (count=%s)", agent.name, count)
+    owner = f"{agent.name}#{parallel_id}"
+    logger.info(
+        "skill loop started: %s slot %s (count=%s)", agent.name, parallel_id, count
+    )
+
+    async def miss(reason: str) -> None:
+        nonlocal consecutive_misses
+        consecutive_misses += 1
+        delay = next_gate_backoff(
+            0.0,
+            initial=resolved_gate_backoff_initial_seconds(agent, orch),
+            maximum=resolved_gate_backoff_max_seconds(agent, orch),
+            consecutive_misses=consecutive_misses,
+        )
+        logger.info(
+            "%s slot %s %s #%s; sleeping %.1fs",
+            agent.name,
+            parallel_id,
+            reason,
+            consecutive_misses,
+            delay,
+        )
+        await _sleep_interruptible(delay, shutdown)
 
     while True:
         if shutdown.shutting_down:
             return 0
         if count is not None and runs_done >= count:
-            logger.info("skill loop finished: %s (%s runs)", agent.name, runs_done)
+            logger.info(
+                "skill loop finished: %s slot %s (%s runs)",
+                agent.name,
+                parallel_id,
+                runs_done,
+            )
             return 0
 
         passed = await asyncio.to_thread(gate_passes, agent, cwd=repo_root)
         if not passed:
-            consecutive_misses += 1
-            delay = next_gate_backoff(
-                0.0,
-                initial=resolved_gate_backoff_initial_seconds(agent, orch),
-                maximum=resolved_gate_backoff_max_seconds(agent, orch),
-                consecutive_misses=consecutive_misses,
-            )
-            logger.info(
-                "%s gate miss #%s; sleeping %.1fs",
-                agent.name,
-                consecutive_misses,
-                delay,
-            )
-            await _sleep_interruptible(delay, shutdown)
+            await miss("gate miss")
             continue
+
+        issue_label = UNASSIGNED_ISSUE
+        claimed: int | None = None
+        if agent.parallel_run > 1 and agent.issues is not None:
+            try:
+                numbers = await asyncio.to_thread(
+                    list_issue_numbers, agent.issues.command, cwd=repo_root
+                )
+            except IssueListError as exc:
+                logger.info(
+                    "%s slot %s issue list failed: %s",
+                    agent.name,
+                    parallel_id,
+                    exc,
+                )
+                await miss("claim miss")
+                continue
+            claimed = await ownership.claim(owner, numbers)
+            if claimed is None:
+                await miss("claim miss")
+                continue
+            issue_label = str(claimed)
 
         consecutive_misses = 0
         session: WorktreeSession | None = None
@@ -129,7 +189,7 @@ async def _skill_loop(
                 create_worktree,
                 repo_root,
                 worktrees_dir,
-                agent.name,
+                f"{agent.name}-{parallel_id}",
                 base_branch=orch.default_branch,
             )
             shutdown.register_worktree(session)
@@ -140,29 +200,46 @@ async def _skill_loop(
             def on_pid_done(pid: int) -> None:
                 shutdown.unregister_pid(pid)
 
+            running = replace(
+                agent,
+                prompt=render_agent_prompt(
+                    agent.prompt, parallel_id=parallel_id, issue=issue_label
+                ),
+            )
             code = await asyncio.to_thread(
                 run_skill_once,
-                agent,
+                running,
                 config,
                 workdir=session.path,
                 logs_dir=logs_dir,
                 on_pid=on_pid,
                 on_pid_done=on_pid_done,
+                parallel_id=parallel_id,
+                issue=issue_label,
             )
             if code != 0:
-                logger.error("%s run exited %s", agent.name, code)
+                logger.error("%s slot %s run exited %s", agent.name, parallel_id, code)
             else:
-                logger.info("%s run completed ok", agent.name)
+                logger.info("%s slot %s run completed ok", agent.name, parallel_id)
         except Exception:
-            logger.exception("%s run failed", agent.name)
+            logger.exception("%s slot %s run failed", agent.name, parallel_id)
         finally:
-            if session is not None:
-                await asyncio.to_thread(delete_worktree, session)
-                shutdown.unregister_worktree(session)
+            try:
+                if claimed is not None:
+                    await ownership.release(owner)
+            finally:
+                if session is not None:
+                    await asyncio.to_thread(delete_worktree, session)
+                    shutdown.unregister_worktree(session)
 
         runs_done += 1
         if count is not None and runs_done >= count:
-            logger.info("skill loop finished: %s (%s runs)", agent.name, runs_done)
+            logger.info(
+                "skill loop finished: %s slot %s (%s runs)",
+                agent.name,
+                parallel_id,
+                runs_done,
+            )
             return 0
 
         cooldown = resolved_cooldown_seconds(agent, orch)

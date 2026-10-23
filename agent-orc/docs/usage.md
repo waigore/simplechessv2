@@ -16,7 +16,7 @@ From the **repository root** (so `.orc/` resolves):
 ```bash
 cd agent-orc && uv run agent-orc                 # daemon
 uv run agent-orc --yes                           # all enabled; no multi-select
-uv run agent-orc -n 3 --yes                      # each skill × 3, then exit
+uv run agent-orc -n 3 --yes                      # each slot × 3, then exit
 uv run agent-orc --agents issue-workflow-review-agent -n 1
 ```
 
@@ -24,7 +24,7 @@ Startup multi-select (TTY, no `--yes`/`--agents`) defaults to every enabled agen
 
 ## Lifecycle
 
-Per skill (in parallel, staggered by 5s): gate → pull → worktree → agent CLI → delete worktree → cooldown → repeat. Cooldown and gate backoff are per agent (defaults 10s, then 10→20→40→60s). The planner waits 3600s after each run. Gate misses do not count toward `-n`. An initial of 0 does not increase.
+Per slot (in parallel, staggered by 5s): gate → optional issue claim → pull → worktree → agent CLI → release claim → delete worktree → cooldown → repeat. `parallel_run` defaults to 1. Cooldown and gate backoff are per slot (defaults 10s, then 10→20→40→60s). The planner waits 3600s after each run. Gate misses and claim misses do not count toward `-n`. An initial of 0 does not increase.
 
 ## Shutdown
 
@@ -34,7 +34,7 @@ Startup/config errors: exit **2**. Otherwise **0**, or **1** if a skill loop rai
 
 ## Logs
 
-Under `.orc/logs/`: `orchestrator.log` and `.orc/logs/<agent>/run-<timestamp>.log`.
+Under `.orc/logs/`: `orchestrator.log` and `.orc/logs/<agent>/run-<parallel-id>-<timestamp>.log`.
 
 ## Tests
 
