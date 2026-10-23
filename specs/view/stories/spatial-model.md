@@ -100,7 +100,7 @@ Then exactly one body center is at (4.5, 3.5) (±0.01)
 ```gherkin
 Given CAM-board Web 9:16, a piece on e4 at (4.5, 3.5)
 When extent measured
-Then body is 0.85 (±0.01)×0.85 (±0.01) units about center, facing None
+Then the extent box is 0.85 (±0.01)×0.85 (±0.01) units about the square center, facing None, and the opaque body lies inside that box
 ```
 
 ### VS1.9: Square extent

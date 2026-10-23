@@ -16,14 +16,14 @@ Authoring rules: [`.agents/specs/rules/aesthetics/form.md`](../../.agents/specs/
 
 | ID | Subject | Rule |
 |----|---------|------|
-| P1 | Piece body | Every type's body is centered on the square and drawn within [SPC.E1](../view/spatial-model.md) (0.85 × 0.85): it may be narrower or shorter than the extent but never wider, taller, or spilling into neighbors. The King reaches the full 0.85 height; each shorter type keeps its narrower base inside the same 0.85 width, centered on the same ground line |
-| P2 | Piece height order | King tallest, then Queen, then Rook / Bishop / Knight band, Pawn shortest — crown and height cues reinforce type. All heights stay within the [SPC.E1](../view/spatial-model.md) extent per P1, so [PER.R1](../view/perception.md) readability is measured at the tallest (King) height of 0.85 |
+| P1 | Piece body | The opaque body, not the transparent canvas, is drawn inside the [SPC.E1](../view/spatial-model.md) box (0.85 × 0.85) centered on the square. One uniform scale for every type, set so the King's opaque height is 0.85 of the square. No stretch and no per-type rescale. Every body stands on the bottom edge of that box. A body may be narrower than 0.85 and must not be wider, taller, or spilling into a neighbor |
+| P2 | Piece height order | Opaque height as a fraction of one square ([SPC.U1](../view/spatial-model.md)), ±0.01: King 0.85, Queen 0.79, Bishop 0.76, Knight 0.75, Rook 0.68, Pawn 0.62. That order is tallest to shortest. [PER.R1](../view/perception.md) is measured at the King's 0.85 |
 
 ## Silhouette
 
 | ID | Must be told apart | Smallest on-screen size | Test |
 |----|--------------------|------------------------|------|
-| L1 | King, Queen, Rook, Bishop, Knight, Pawn | Drawn height of [SPC.E1](../view/spatial-model.md) (0.85 units) under [PRJ.V1](../view/projection.md): ≥ about 1/21 of frame height at 9:16 and ≥ about 1/12 at 16:9 (Web touch; [view.md](../view/view.md) platform; [PRJ.P1](../view/projection.md)) | Each type named from a solid-black silhouette at that size ([PER.R1](../view/perception.md)) |
+| L1 | King, Queen, Bishop, Knight, Rook, Pawn | King at [SPC.E1](../view/spatial-model.md) (0.85 units) under [PRJ.V1](../view/projection.md): ≥ about 1/21 of frame height at 9:16 and ≥ about 1/12 at 16:9 (Web touch; [view.md](../view/view.md) platform; [PRJ.P1](../view/projection.md)). Other types at their P2 heights in that same lineup | Each type named from a solid-black silhouette ([PER.R1](../view/perception.md)) |
 
 ## Detail
 

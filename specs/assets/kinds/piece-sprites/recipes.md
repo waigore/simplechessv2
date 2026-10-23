@@ -37,7 +37,7 @@ N/A — see [`style-series.md`](style-series.md).
 - **Prompt template (series)**: {type} {side} only; compose with prompt_policy
 - **Settings**: transparent; square; Recraft `input_style_id` when active
 - **Seed policy**: record when returned; else `n/a`
-- **Post-processing**: parent S5–S9 (rasterize per S5 → edge flood-fill → S7 crop sheet to twelve cells → fit_contain → on-board 0.88)
+- **Post-processing**: parent S5–S9 (rasterize per S5 → edge flood-fill → S7 crop sheet to twelve cells → fit_contain → preview box 0.88)
 - **Outputs**: twelve V1 files (`piece-sprites/<type>-<white|black>`); never catalog the sheet
 
 ### R2 — Human-made piece
