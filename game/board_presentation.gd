@@ -669,7 +669,11 @@ func _apply_kind_texture(node: Node2D, color: String, kind: String) -> void:
 	var px := float(maxi(texture.get_width(), texture.get_height()))
 	if px <= 0.0:
 		px = 1.0
-	sprite.scale = Vector2.ONE * (BoardGeometry.PIECE_EXTENT / px)
+	# `_world` mirrors Y (board `+y` → screen up), a coordinate mapping, not an
+	# art transform: each sprite cancels it so raster art shows as authored
+	# (SPC.E1 upright on the plane, rotated only by CAM-board.M2's seat).
+	var s := BoardGeometry.PIECE_EXTENT / px
+	sprite.scale = Vector2(s, -s)
 
 
 func _sync_overlays() -> void:
@@ -834,7 +838,9 @@ func _scale_promote_sprite(sprite: Sprite2D) -> void:
 	var px := float(maxi(sprite.texture.get_width(), sprite.texture.get_height()))
 	if px <= 0.0:
 		px = 1.0
-	sprite.scale = Vector2.ONE * (BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px)
+	# Same Y sign as `_apply_kind_texture` (chooser art upright on the plane).
+	var s := BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px
+	sprite.scale = Vector2(s, -s)
 
 
 func clear_promotion_choice() -> void:
@@ -878,7 +884,9 @@ func _fit_board_sprite() -> void:
 	var tex := _board_sprite.texture
 	var w := float(maxi(tex.get_width(), 1))
 	var h := float(maxi(tex.get_height(), 1))
-	_board_sprite.scale = Vector2(10.0 / w, 10.0 / h)
+	# Backdrop shares the world's Y flip; negate its Y so grain/lighting reads
+	# as authored (squares cover the grid; only the frame margin shows).
+	_board_sprite.scale = Vector2(10.0 / w, -10.0 / h)
 
 
 func _refresh_piece_textures() -> void:
