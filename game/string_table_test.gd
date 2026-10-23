@@ -35,6 +35,8 @@ func _start() -> void:
 func _after_boot() -> void:
 	var problem := _all_locales_populated()
 	if problem.is_empty():
+		problem = _no_english_leak_in_puzzle_play()
+	if problem.is_empty():
 		problem = _no_english_leak_in_cjk()
 	if problem.is_empty():
 		problem = _locale_helpers()
@@ -56,6 +58,7 @@ func _all_locales_populated() -> String:
 		["shared-play", StringTable.shared_play_keys(), Callable(StringTable, "shared_play")],
 		["shared-result", StringTable.shared_result_keys(), Callable(StringTable, "shared_result")],
 		["exceptions", StringTable.exception_keys(), Callable(StringTable, "exception_text")],
+		["puzzle-play", StringTable.puzzle_play_keys(), Callable(StringTable, "puzzle_play")],
 	]
 	for suite in suites:
 		var label := str(suite[0])
@@ -68,6 +71,21 @@ func _all_locales_populated() -> String:
 				var text := str(getter.call(key, locale))
 				if text.is_empty() or text == key:
 					return "%s.%s missing in %s" % [label, key, locale]
+	return ""
+
+
+## SCH-string-table I5 for puzzle-play: every key varies by locale except the four
+## piece names L3 marks as same in every locale.
+func _no_english_leak_in_puzzle_play() -> String:
+	for locale in StringTable.LOCALES:
+		if locale == "en":
+			continue
+		for key in StringTable.puzzle_play_keys():
+			var text := StringTable.puzzle_play(key, locale)
+			if StringTable.MARKED_PIECE_NAMES.has(key):
+				continue
+			if text == StringTable.puzzle_play(key, "en"):
+				return "puzzle-play.%s still English in %s" % [key, locale]
 	return ""
 
 
