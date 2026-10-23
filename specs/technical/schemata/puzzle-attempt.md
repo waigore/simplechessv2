@@ -4,8 +4,8 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 
 - **Kind**: entity — current puzzle deal and attempt
 - **Owner**: [`CMP-puzzle-session`](../components/puzzle-session.md)
-- **Serves**: Puzzle stream; W1 / L4 / L5; Elo update
-- **Informed by**: [`L-puzzle-stream`](../../design/loops/puzzle-stream.md); end-conditions W1 L4 L5; [DIF](../../design/difficulty.md)
+- **Serves**: Puzzle stream; W1 / L4 / L5 / L6; Elo update
+- **Informed by**: [`L-puzzle-stream`](../../design/loops/puzzle-stream.md); end-conditions W1 L4 L5 L6; [DIF](../../design/difficulty.md); [`PRG`](../../design/progression.md) A1 M1
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md)
 
 ## Fields
@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | F2 | required_sequence | move list | yes | Design-required line |
 | F3 | played_prefix | move list | yes | Moves so far this attempt |
 | F4 | wrong_move_seen | bool | yes | Blocks W1 |
-| F5 | outcome | none / solved / failed_wrong / failed_reveal | yes | Until commit |
+| F5 | outcome | none / solved / failed_wrong / failed_reveal / abandoned | yes | Until commit; `abandoned` on L6 |
 
 ## Invariants
 
@@ -47,4 +47,4 @@ None — linear attempt.
 
 ## Persistence
 
-Outcome drives [`persistence.md`](../persistence.md) M2 M4 via [`SEQ-puzzle-result-commit`](../sequences/puzzle-result-commit.md); attempt itself is ephemeral.
+Outcome drives [`persistence.md`](../persistence.md) M2 M4 via [`SEQ-puzzle-result-commit`](../sequences/puzzle-result-commit.md). L4, L5, and L6 (`abandoned`) commit the Elo loss ([`PRG.A1`](../../design/progression.md) / [`PRG.M1`](../../design/progression.md)); only W1 appends `GS.recentSolved` ([`SCH-persist-doc.F4`](persist-doc.md)), and abandon does not. The attempt is ephemeral.
