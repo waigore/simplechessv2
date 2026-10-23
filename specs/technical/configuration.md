@@ -37,7 +37,7 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 | ID | Consumer | Reads | Fail if missing |
 |----|----------|-------|-----------------|
 | B1 | [`CMP-shared-game-session`](components/shared-game-session.md) | T1 T2; S3 clock options | Use design defaults; log |
-| B2 | [`CMP-puzzle-session`](components/puzzle-session.md) | T3 T4 T5 T7 T8; S2 Elo | [`FAIL.T3`](failures.md) persist read fail: use T5 |
+| B2 | [`CMP-puzzle-progression`](components/puzzle-progression.md) | T3 T4 T5 T7 T8; S2 Elo | [`FAIL.T3`](failures.md) persist read fail: use T5 |
 | B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: send 2000 as the O1 `time_ms` (the design default; the search stop stays [`CMP-advice-backend`](components/advice-backend.md) R3). T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
 | B4 | [`CMP-presentation`](components/presentation.md) | S4 table for the current `GS.locale`, through [`CTR-localization`](contracts/localization.md) O1 | Unshipped locale reads `en`; a key missing in a locale reads `en` and logs ([`FAIL.T13`](failures.md)); a switch applies immediately ([`experience.md`](../design/experience.md)) |
 | B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | T9 or T10 missing: every deal fails ([`FAIL.T14`](failures.md)); Elo kept; log |

@@ -21,6 +21,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | F7 | mode | shared / puzzle | yes | Session |
 | F8 | repetition_history | occurrence keys (position, side, castling, en passant) | yes | `END.D3`; Domain; clear only on new run |
 | F9 | fifty_move_count | int half-moves since capture or pawn | yes | `END.D4`; Domain; clear on capture, pawn move, or new run |
+| F10 | player_elo | number or none | no | Puzzle only; Domain-owned progression state ([`CMP-puzzle-progression`](../components/puzzle-progression.md) R3) |
 
 ## Invariants
 
@@ -29,7 +30,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | I1 | Only Domain mutates F1 F2 F8 F9 via [`CTR-local-move`](../contracts/local-move.md) |
 | I2 | F4/F5 never gate F1 updates |
 | I3 | Only side-to-move clock runs when timed |
-| I4 | Only the active L2 session mutates F3, F6, F7; F4/F5 are written only by [`CMP-advice-client`](../components/advice-client.md) (never gating position, per I2) |
+| I4 | Only the active L2 session mutates F3, F6, F7; F4/F5 are written only by [`CMP-advice-client`](../components/advice-client.md) (never gating position, per I2); F10 is written only by [`CMP-puzzle-progression`](../components/puzzle-progression.md) |
 | I5 | F8 lasts the game; F9 is 0–100 and resets on capture, pawn move, or new run |
 
 ## Lifecycle

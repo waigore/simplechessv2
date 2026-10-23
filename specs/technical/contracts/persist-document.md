@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | ID | Name | Input | Output / effect | When |
 |----|------|-------|-----------------|------|
 | O1 | load | — | [`SCH-persist-doc`](../schemata/persist-doc.md) or defaults | Cold open |
-| O2 | commit | full document | Replaces stored document | After Elo / Last mode / recentSolved change |
+| O2 | commit | full document | Replaces stored document | After Elo / Last mode / recentSolved change; the session commits the values [`CTR-puzzle-progress`](puzzle-progress.md) O1 returns |
 | O3 | read_committed | — | Last successful document | Inspect without I/O |
 
 ## Events
