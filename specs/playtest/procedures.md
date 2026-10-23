@@ -17,7 +17,7 @@ At `status:pending-acceptance` (`accept-project-issue`) when the issue's deliver
 ## Prep
 
 - Build under test is the one under acceptance.
-- Must tools from [`tools.md`](tools.md) are available (`ENV.*`, `DBG.*`, `TEL.*`, both drive paths); `ENV.*` is the environment class from [`ids.md`](ids.md), not a second tool set.
+- Must tools from [`tools.md`](tools.md) are available (`ENV.*`, `DBG.*`, `TEL.*`, both drive paths); `ENV.*` is the environment class from [`ids.md`](ids.md), not a second tool set. The Must environments are `ENV.1` (Headless) and `ENV.2` (Graphical).
 - Any Situational tool a selected protocol cites is available.
 - Evidence folders exist under [`docs/playtest/evidence/`](../../docs/playtest/evidence/) for each required environment run.
 
