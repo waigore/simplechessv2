@@ -1,0 +1,58 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[demo] autodrive begin
+[demo] wK body 0.40 x 0.85 units (SPC.E1 0.85, FRM.P2 0.85)
+[demo] wQ body 0.40 x 0.79 units (SPC.E1 0.85, FRM.P2 0.79)
+[demo] wB body 0.39 x 0.76 units (SPC.E1 0.85, FRM.P2 0.76)
+[demo] wN body 0.48 x 0.75 units (SPC.E1 0.85, FRM.P2 0.75)
+[demo] wR body 0.40 x 0.68 units (SPC.E1 0.85, FRM.P2 0.68)
+[demo] wP body 0.38 x 0.62 units (SPC.E1 0.85, FRM.P2 0.62)
+[demo] coordinates: UIS.T2 face 16.0 px (18.0 screen px at the 640 px reference frame), line box 23.0 px in a 32.0 px band; OK
+[demo] board bevel 630 px wide at (25..702) in the 720 x 1280 frame; lip 47 px, band 36 px (PRJ.P1)
+[demo] coordinates 16.0 px glyph ink 23.0 px in a 32.0 px band (PER.R7)
+[demo]   a box x 27.5..36.5 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   b box x 91.0..101.0 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   c box x 156.0..164.0 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   d box x 219.0..229.0 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   e box x 283.5..292.5 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   f box x 349.0..355.0 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   g box x 411.0..421.0 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   h box x 475.0..485.0 y 526.1..549.1 px; band BevelLipBottomInk x -41.6..553.6 y 521.6..553.6
+[demo]   1 box x -30.1..-21.1 y 468.5..491.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   2 box x -30.1..-21.1 y 404.5..427.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   3 box x -30.1..-21.1 y 340.5..363.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   4 box x -30.1..-21.1 y 276.5..299.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   5 box x -30.1..-21.1 y 212.5..235.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   6 box x -30.1..-21.1 y 148.5..171.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   7 box x -30.1..-21.1 y 84.5..107.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo]   8 box x -30.1..-21.1 y 20.5..43.5 px; band BevelLipLeftInk x -41.6..-9.6 y -41.6..553.6
+[demo] refused bad drop f1 -> c3 (PHY.M5 return + PER.R8 flash)
+[demo] move e2e4 done in 0 ms (budget 150 ms)
+[demo] move e7e5 done in 0 ms (budget 150 ms)
+[demo] move f1c4 done in 1 ms (budget 150 ms)
+[demo] move b8c6 done in 0 ms (budget 150 ms)
+[demo] move g1f3 done in 0 ms (budget 150 ms)
+[demo] move g7g6 done in 0 ms (budget 150 ms)
+[demo] move h2h4 done in 1 ms (budget 150 ms)
+[demo] move f8g7 done in 1 ms (budget 150 ms)
+[demo] move h4h5 done in 0 ms (budget 150 ms)
+[demo] move d7d6 done in 1 ms (budget 150 ms)
+[demo] move h5g6 done in 0 ms (budget 150 ms)
+[demo] move g8h6 done in 0 ms (budget 150 ms)
+[demo] move g6h7 done in 0 ms (budget 150 ms)
+[demo] move h6g8 done in 0 ms (budget 150 ms)
+[demo] move h7g8 done in 3 ms (budget 150 ms)
+[demo] move h8g8 done in 1 ms (budget 150 ms)
+[demo] exercise complete
+[demo] rendered coordinate probe skipped: headless; set DEMO_COORD_PROBE=1 to render it
+[demo] move e2e4 done in 1 ms (budget 150 ms)
+[demo] move e7e5 done in 0 ms (budget 150 ms)
+[demo] move f1c4 done in 1 ms (budget 150 ms)
+[demo] move b8c6 done in 0 ms (budget 150 ms)
+[demo] move d1h5 done in 0 ms (budget 150 ms)
+[demo] move g8f6 done in 0 ms (budget 150 ms)
+[demo] move h5f7 done in 1 ms (budget 150 ms)
+[demo] game ended: Checkmate — White wins
+[demo] travelled budget: every command completed as scripted
+[demo] end panel [P: (41.0, 582.5), S: (638.0, 185.0)] inside the frame; margins 230/160; z 10
+[demo] PASS

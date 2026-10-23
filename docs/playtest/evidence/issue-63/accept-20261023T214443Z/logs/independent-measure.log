@@ -1,0 +1,22 @@
+frame 720x1280; square field x 61..694, y 306..927
+label ink in the left margin: 854 px; in the bottom margin: 901 px
+of those, 1755 px sit on the light inlay wood in the labels-off frame (100.0%)
+left margin: 8 rank glyph rows
+ok   rank 8       :  132 px x 37..47 y 381..394; painted on band wood 132/132 px; darkest ink 0.025 → contrast 9.68:1
+ok   rank 7       :   86 px x 37..47 y 453..466; painted on band wood 86/86 px; darkest ink 0.025 → contrast 9.78:1
+ok   rank 6       :  123 px x 37..47 y 525..538; painted on band wood 123/123 px; darkest ink 0.030 → contrast 9.16:1
+ok   rank 5       :  117 px x 37..47 y 597..610; painted on band wood 117/117 px; darkest ink 0.028 → contrast 9.38:1
+ok   rank 4       :  114 px x 37..47 y 669..682; painted on band wood 114/114 px; darkest ink 0.025 → contrast 9.69:1
+ok   rank 3       :  119 px x 37..47 y 741..754; painted on band wood 119/119 px; darkest ink 0.027 → contrast 9.55:1
+ok   rank 2       :  109 px x 37..47 y 813..826; painted on band wood 109/109 px; darkest ink 0.027 → contrast 9.52:1
+ok   rank 1       :   54 px x 38..43 y 885..898; painted on band wood 54/54 px; darkest ink 0.032 → contrast 8.87:1
+bottom margin: 8 file glyph columns
+ok   file a       :  108 px x 102..111 y 953..964; painted on band wood 108/108 px; darkest ink 0.038 → contrast 8.33:1
+ok   file b       :  123 px x 175..185 y 950..964; painted on band wood 123/123 px; darkest ink 0.034 → contrast 8.74:1
+ok   file c       :   86 px x 247..256 y 953..964; painted on band wood 86/86 px; darkest ink 0.035 → contrast 8.62:1
+ok   file d       :  123 px x 318..328 y 950..964; painted on band wood 123/123 px; darkest ink 0.029 → contrast 9.26:1
+ok   file e       :  113 px x 390..400 y 953..964; painted on band wood 113/113 px; darkest ink 0.031 → contrast 9.00:1
+ok   file f       :   95 px x 464..472 y 950..964; painted on band wood 95/95 px; darkest ink 0.023 → contrast 9.95:1
+ok   file g       :  146 px x 534..544 y 953..968; painted on band wood 146/146 px; darkest ink 0.034 → contrast 8.74:1
+ok   file h       :  107 px x 607..616 y 950..964; painted on band wood 107/107 px; darkest ink 0.034 → contrast 8.74:1
+PASS
