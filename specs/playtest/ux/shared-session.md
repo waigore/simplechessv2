@@ -33,4 +33,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. Graphical: screenshot each judged screen. Headless: no screenshots.
+Default evidence rules. Graphical: screenshot each judged screen.

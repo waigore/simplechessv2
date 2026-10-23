@@ -34,4 +34,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules (Headless: no screenshots).
+Default evidence rules.
