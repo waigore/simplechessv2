@@ -127,7 +127,6 @@ func _send(client: HTTPClient, endpoint: String, message: Dictionary) -> Error:
 ## flight, so only a real disconnect ends an unterminated stream (FAIL.T1).
 func _read_stream(client: HTTPClient, cap_ms: int) -> void:
 	var reader := AdviceWireReader.new()
-	var updates: Array = []
 	var deadline := Time.get_ticks_msec() + cap_ms
 	while reader.is_open() and not _cancel_requested:
 		var timed_out := Time.get_ticks_msec() >= deadline
@@ -139,13 +138,22 @@ func _read_stream(client: HTTPClient, cap_ms: int) -> void:
 		if status == HTTPClient.STATUS_BODY:
 			var chunk := client.read_response_body_chunk()
 			if not chunk.is_empty():
-				reader.feed(chunk, updates)
+				# E1 is a stream tick (CTR-advice-stream E1): hand each update to
+				# the main thread as it arrives, so marks appear while the search
+				# is still running instead of all at once when it ends (S1).
+				_drain_updates(reader, chunk)
 		elif AdviceWireReader.is_terminal_status(status):
-			reader.closed(updates)
+			reader.closed([])
 			break
 		OS.delay_msec(5)
 	if reader.is_open() and _cancel_requested:
 		reader.cancelled()
-	for update in updates:
-		_enqueue("update", update)
 	_enqueue_end(reader.ended)
+
+
+## Feed one chunk and push every update it completed to the queue immediately.
+func _drain_updates(reader: AdviceWireReader, chunk: PackedByteArray) -> void:
+	var arrived: Array = []
+	reader.feed(chunk, arrived)
+	for update in arrived:
+		_enqueue("update", update)

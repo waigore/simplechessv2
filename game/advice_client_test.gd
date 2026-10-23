@@ -44,6 +44,7 @@ func _run_all() -> String:
 		_check_wire_timeout_and_errors,
 		_check_terminal_status_is_a_real_close,
 		_check_transport_reachable_stream,
+		_check_transport_streams_updates_progressively,
 		_check_transport_cancel_is_prompt,
 	]
 	for check in checks:
@@ -494,6 +495,43 @@ func _check_transport_reachable_stream() -> String:
 		return "a reachable stream must deliver its E1 update (#534)"
 	if str((updates[0] as Dictionary).get("best_move_uci", "")) != "e2e4":
 		return "the E1 update must survive the wire"
+	return ""
+
+
+## E1 is a stream tick (CTR-advice-stream E1; concurrency.md U3 → U2): updates
+## must reach the caller while the peer is still streaming, not all at once when
+## the stream ends. The peer (``ADVICE_STREAM_PEER``) keeps sending deepening
+## updates until its cap; the first update must arrive well before the end.
+func _check_transport_streams_updates_progressively() -> String:
+	var peer := OS.get_environment("ADVICE_STREAM_PEER").strip_edges()
+	if peer.is_empty():
+		print("skip progressive-stream peer: ADVICE_STREAM_PEER unset")
+		return ""
+	var transport := AdviceStreamTransport.new()
+	var started := Time.get_ticks_msec()
+	transport.start("http://%s/advice" % peer, _message(), 2000)
+	var first_update_at := -1
+	var ended := ""
+	var deadline := started + 4000
+	while Time.get_ticks_msec() < deadline:
+		await create_timer(0.01).timeout
+		for message in transport.poll():
+			var kind := str((message as Dictionary).get("kind", ""))
+			if kind == "update" and first_update_at < 0:
+				first_update_at = Time.get_ticks_msec() - started
+			elif kind == "end":
+				ended = str((message as Dictionary)["value"].get("reason", ""))
+		if not ended.is_empty():
+			break
+	var ended_at := Time.get_ticks_msec() - started
+	transport.close()
+	if first_update_at < 0:
+		return "a stream must deliver its first E1 before it ends"
+	if ended_at - first_update_at < 200:
+		return (
+			"E1 must arrive while the stream is live, not in one batch at the end "
+			+ "(first=%d ended=%d)" % [first_update_at, ended_at]
+		)
 	return ""
 
 
