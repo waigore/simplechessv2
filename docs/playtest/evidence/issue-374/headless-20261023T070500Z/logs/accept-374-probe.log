@@ -1,0 +1,90 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ACCEPT --- S1 production path (no playtest seams, real transport)
+WARNING: advice: error after 138 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:151)
+         [1] poll (res://advice_client.gd:127)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _drive_advice (res://session_router.gd:443)
+         [5] _poll_advice (res://session_router.gd:434)
+         [6] _process (res://session_router.gd:114)
+ACCEPT prod waited_ms=3002 stage=shared-play best=<null> eval=<null> online=false advice=true
+ACCEPT PASS production O1 reached the configured endpoint (R6)
+ACCEPT prod o1={"api_key":"accept-key","fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","time_ms":2000.0}
+ACCEPT PASS production O1 carried the configured API key
+ACCEPT PASS production O1 carried the current position
+ACCEPT PASS T6 missing: production O1 carried 2000
+ACCEPT FAIL S1: the streamed best move reached GS.adviceBestMove (R3/R4)
+ACCEPT FAIL S1: the streamed eval reached GS.adviceEval (R4)
+ACCEPT FAIL S1: GS.online stayed true against a reachable peer (X3)
+ACCEPT --- S2–S5 playtest build simulated peer (FakeAdviceTransport)
+ACCEPT session=sess-1792739149930-1771677-playtest
+{"TEL.1":"shared.start","TEL.2":1792739150576,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ACCEPT PASS the playtest build opened a simulated stream
+ACCEPT play o1={"api_key":"accept-key","fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","time_ms":1200}
+ACCEPT PASS playtest O1 used the configured key
+ACCEPT PASS T6 in range is sent as O1 time_ms (R7)
+ACCEPT PASS the simulated stream aimed at the configured endpoint
+advice: ready after 141 ms
+{"TEL.1":"advice.ready","TEL.2":1792739150604,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"F-move-advice.R4","TEL.5":"ok"}
+ACCEPT play shown best={ "from": "e2", "to": "e4" } eval=35
+ACCEPT PASS a simulated E1 lands in GS.adviceBestMove / GS.adviceEval (R4)
+ACCEPT PASS advice ready telemetry emitted (TEL.4/TEL.5)
+{"TEL.1":"shared.move","TEL.2":1792739150630,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+ACCEPT play move=true move_ms=26.671 side=black best_after=<null>
+ACCEPT PASS local move applied while a stream was in flight (R6)
+ACCEPT PASS move did not await advice (G1/I1)
+ACCEPT PASS move cleared advice immediately (R8)
+ACCEPT PASS a new stream started for the new position
+ACCEPT PASS the new O1 asks for the Black-to-move position (R5)
+advice: ready after 26 ms
+{"TEL.1":"advice.ready","TEL.2":1792739150656,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"F-move-advice.R4","TEL.5":"ok"}
+ACCEPT play re-eval best={ "from": "e7", "to": "e5" } eval=-20
+ACCEPT PASS evaluation of the new position restarted (R8)
+ACCEPT play stale after cancel best={ "from": "e7", "to": "e5" } eval=-20
+ACCEPT PASS a stale update from the cancelled stream is dropped (I3)
+{"TEL.1":"shared.advice","TEL.2":1792739150690,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"UI-shared-play.US1.4","TEL.5":"toggled"}
+ACCEPT play advice_off advice=false best=<null>
+ACCEPT PASS C3 turned Advice Off
+ACCEPT PASS Advice Off cleared advice (R9/X2)
+ACCEPT PASS Advice Off stopped evaluation (R9)
+{"TEL.1":"shared.advice","TEL.2":1792739150914,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"UI-shared-play.US1.4","TEL.5":"toggled"}
+ACCEPT play advice_on restarted=true
+ACCEPT PASS Advice On again restarted evaluation (R3/R9)
+advice: ready after 26 ms
+{"TEL.1":"advice.ready","TEL.2":1792739150940,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"F-move-advice.R4","TEL.5":"ok"}
+ACCEPT play end_best={ "from": "e2", "to": "e4" }
+ACCEPT PASS advice shown again before game end
+{"TEL.1":"shared.resign","TEL.2":1792739150962,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792739150980,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792739150982,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+ACCEPT play end stage=shared-result best=<null>
+ACCEPT PASS resign reached shared-result
+ACCEPT PASS game end cleared advice (R8/X4)
+{"TEL.1":"shared.stop","TEL.2":1792739150985,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"NAV.T8","TEL.5":"ok"}
+ACCEPT play leave stage=mode-pick requests=3->3
+ACCEPT PASS leaving the Shared game reached mode-pick
+ACCEPT PASS leaving the Shared game stopped evaluation (R9)
+ACCEPT --- R1 gate
+ACCEPT r1 puzzle_advice=none
+ACCEPT PASS Puzzle stream play state carries no advice (R1)
+ACCEPT PASS no O1 outside a Shared game (R1)
+ACCEPT PASS no O1 with Advice Off (R2)
+ACCEPT PASS no O1 while offline (R2)
+ACCEPT --- telemetry
+ACCEPT tel advice_events=3 missing_fields=0
+ACCEPT tel_sample={"TEL.1":"advice.ready","TEL.2":1792739150604,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"F-move-advice.R4","TEL.5":"ok"}
+ACCEPT tel_sample={"TEL.1":"advice.ready","TEL.2":1792739150656,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"F-move-advice.R4","TEL.5":"ok"}
+ACCEPT tel_sample={"TEL.1":"advice.ready","TEL.2":1792739150940,"TEL.3":"sess-1792739149930-1771677-playtest","TEL.4":"F-move-advice.R4","TEL.5":"ok"}
+ACCEPT PASS advice telemetry was emitted
+ACCEPT PASS emitted advice events carry TEL.4 and TEL.5
+ACCEPT PROBE FAIL: S1: the streamed best move reached GS.adviceBestMove (R3/R4)
+ACCEPT PROBE FAIL: S1: the streamed eval reached GS.adviceEval (R4)
+ACCEPT PROBE FAIL: S1: GS.online stayed true against a reachable peer (X3)
+ACCEPT PROBE FAIL: S1 FAIL: a reachable peer produced no advice on the production path
+ACCEPT PROBE FAILED count=4
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

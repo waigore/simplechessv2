@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+TRACE enum STATUS_DISCONNECTED=0 STATUS_CONNECTED=5 STATUS_REQUESTING=6 STATUS_BODY=7 STATUS_CONNECTION_ERROR=8
+TRACE advice_stream_transport.gd: `status >= HTTPClient.STATUS_DISCONNECTED` is always true, because STATUS_DISCONNECTED is the lowest value
+TRACE === AdviceStreamTransport -> http://127.0.0.1:18491/advice
+TRACE finished=true ms=7 updates=0 ended=error
+TRACE first_message=
+TRACE FAIL: a reachable endpoint yielded no update; ended 'error'
+TRACE === AdviceStreamTransport -> http://127.0.0.1:18492/advice
+TRACE finished=true ms=8 updates=0 ended=error
+TRACE first_message=
+TRACE FAIL: a reachable endpoint yielded no update; ended 'error'
+TRACE === HTTP statuses seen by the mirrored exchange -> http://127.0.0.1:18492/advice
+TRACE request err=0 status_after_request=6
+TRACE t=0 poll=0 status=6 transport-judgement=closed-by-transport
+TRACE t=40 poll=0 status=7 transport-judgement=BODY
+TRACE t=81 poll=0 status=7 transport-judgement=BODY
+TRACE t=123 poll=0 status=7 transport-judgement=BODY
+TRACE body_bytes_observed=1323
+TRACE FAIL endpoints=["http://127.0.0.1:18491/advice", "http://127.0.0.1:18492/advice"]

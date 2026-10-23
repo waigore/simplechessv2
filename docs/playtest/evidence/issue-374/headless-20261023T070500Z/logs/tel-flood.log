@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: advice: error after 10 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:151)
+         [1] poll (res://advice_client.gd:127)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _run (res://accept_374_flood.gd:18)
+FLOOD frames=60 advice_error_events=112 online=false
+FLOOD FAIL: one failure is reported on every poll while offline
