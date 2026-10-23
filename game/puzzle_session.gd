@@ -6,6 +6,9 @@ extends RefCounted
 
 ## Raised for UI-puzzle-play S3 when the result commit fails (EX.save-failure).
 signal save_failed
+## R1 — a deal is due but this session was handed no record. The caller reads one
+## through CTR-puzzle-catalog-read (CatalogDealClient) and calls `deal([record])`.
+signal deal_due
 
 const START_FEN := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
@@ -89,9 +92,6 @@ var attempt_any_checkmate_wins := false
 ## The ending this attempt reached, cleared by the next deal (F5).
 var outcome := ""
 
-## What the host catalog serves this sitting. Empty means a failed read (X2).
-var catalog: Array = []
-
 ## Persistence: CTR-persist-document consumer (C3).
 var store: PersistStore = null
 
@@ -146,14 +146,14 @@ func gestures_available() -> bool:
 
 
 ## R1 / DIF.Y1 / F-puzzle-catalog R3 — deal the next puzzle at the player's level.
-## Returns {ok, puzzle_id, rating, reason}. X1 and X2 deal nothing.
+## The record is the one CTR-puzzle-catalog-read returned; the service ran DIF.Y1.
+## Returns {ok, puzzle_id, rating, reason}. X1 and X2 deal nothing, and a deal with
+## no record raises `deal_due` so the caller can fetch one.
 func deal(catalog_records: Array = []) -> Dictionary:
-	var records: Array = catalog_records
-	if records.is_empty():
-		records = catalog
-	var pick: Dictionary = _select(records)
+	var pick: Dictionary = _select(catalog_records)
 	_close_puzzle()
 	if pick.is_empty():
+		deal_due.emit()
 		return {"ok": false, "reason": "no_record"}
 	var moves: Array = _moves_of(pick)
 	if moves.size() < 2:
@@ -190,6 +190,8 @@ func any_checkmate_wins(record: Dictionary) -> bool:
 
 
 ## DIF.Y1 selection: window match, recentSolved preference, then widen / allow-recent relax.
+## Unit tests and the in-memory path use it on a small array; the production deal reads
+## the one record the service chose (CTR-puzzle-catalog-read G2) and widens nothing.
 func _select(records: Array) -> Dictionary:
 	if records.is_empty():
 		return {}
