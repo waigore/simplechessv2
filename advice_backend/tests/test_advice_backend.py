@@ -61,6 +61,20 @@ while True:
         break
 """
 
+# Stands in for an engine that dies in the middle of a search: it ticks, then
+# exits without a `bestmove` (the case a backend failure has to report).
+_EXITING_ENGINE = """\
+import sys, time
+for line in sys.stdin:
+    if line.startswith("go depth"):
+        print("bestmove 0000", flush=True)
+    elif line.startswith("go movetime"):
+        for depth in range(1, 4):
+            print(f"info depth {depth} score cp {5 * depth} pv e2e4", flush=True)
+            time.sleep(0.01)
+        sys.exit(3)
+"""
+
 # Stands in for an engine that never answers `stop` and never finishes early.
 _ENDLESS_ENGINE = """\
 import sys, time, itertools
@@ -82,6 +96,12 @@ def _engine_command(directory: Path) -> list[str]:
 def _endless_command(directory: Path) -> list[str]:
     path = directory / "endless_stockfish.py"
     path.write_text(_ENDLESS_ENGINE)
+    return [sys.executable, str(path)]
+
+
+def _exiting_command(directory: Path) -> list[str]:
+    path = directory / "exiting_stockfish.py"
+    path.write_text(_EXITING_ENGINE)
     return [sys.executable, str(path)]
 
 
@@ -270,6 +290,26 @@ class StreamTests(_ServerCase):
         lines = [line for line in text.splitlines() if line]
         self.assertEqual(lines, ['{"reason":"error"}'])
 
+    def test_an_engine_that_dies_mid_search_ends_with_error_promptly(self) -> None:
+        """#373 fail finding 1: engine death is `error`, not a `cap` after a CPU spin."""
+        port = self.serve(lambda request, cap_ms: StockfishSearch(_exiting_command(Path(self._temp.name)), request.fen, cap_ms), cap_ms=3000)
+        started = time.monotonic()
+        status, content_type, text = self.post(port, {"fen": START_FEN, "time_ms": 3000, "api_key": KEY})
+        elapsed_ms = (time.monotonic() - started) * 1000
+        self.assertEqual(status, 200)
+        self.assertEqual(content_type, NDJSON)
+        lines = [json.loads(line) for line in text.splitlines() if line]
+        self.assertEqual(lines[-1], {"reason": "error"}, lines)
+        self.assertTrue(any("best_move_uci" in line for line in lines), "updates before the death still reach the client")
+        self.assertLess(elapsed_ms, 1000, "a dead engine must not hold the stream to the cap")
+
+    def test_a_search_the_engine_ends_by_itself_is_not_reported_as_cancel(self) -> None:
+        """E2 `cancel` is O2 only (CTR-advice-stream Errors); any other early stop is the cap."""
+        port = self.serve(lambda request, cap_ms: StockfishSearch(_engine_command(Path(self._temp.name)), request.fen, cap_ms), cap_ms=5000)
+        status, _, text = self.post(port, {"fen": START_FEN, "time_ms": 5000, "api_key": KEY})
+        self.assertEqual(status, 200)
+        self.assertNotEqual(json.loads(text.splitlines()[-1]), {"reason": "cancel"})
+
 
 class ObservabilityTests(_ServerCase):
     """quality.md Observability: advice timing and errors are in the logs (ADR-0002 validation)."""
@@ -285,6 +325,19 @@ class ObservabilityTests(_ServerCase):
         with self.assertLogs("advice_backend", level="INFO") as logs:
             self.post(port, {"fen": START_FEN, "time_ms": 2000, "api_key": "wrong"})
         self.assertIn("advice_error reason=unauthorized", "\n".join(logs.output))
+
+    def test_an_engine_death_is_logged_and_its_end_record_says_error(self) -> None:
+        port = self.serve(lambda request, cap_ms: StockfishSearch(_exiting_command(Path(self._temp.name)), request.fen, cap_ms), cap_ms=3000)
+        with self.assertLogs("advice_backend", level="INFO") as logs:
+            self.post(port, {"fen": START_FEN, "time_ms": 3000, "api_key": KEY})
+            # The handler logs its end record after the response is written,
+            # so the last log line can trail the client's read by a moment.
+            deadline = time.monotonic() + 2
+            while not any("advice_end" in line for line in logs.output) and time.monotonic() < deadline:
+                time.sleep(0.01)
+        output = "\n".join(logs.output)
+        self.assertIn("advice_error reason=engine", output)
+        self.assertIn("advice_end reason=error", output)
 
 
 class CancelTests(_ServerCase):

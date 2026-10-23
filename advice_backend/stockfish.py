@@ -29,6 +29,9 @@ _SHUTDOWN_S = 0.001
 
 UpdateSink = Callable[[AdviceUpdate], None]
 
+# What the stream reports when the child stops answering without a `bestmove`.
+_ENGINE_EXITED = "engine exited before bestmove"
+
 
 @dataclass(frozen=True)
 class EngineScore:
@@ -145,9 +148,29 @@ class StockfishSearch:
             self._stdout = None
         if process is None:
             return
-        # The search is over, so `quit` is answered without another search.
-        # E2 has already been written: never wait on the child longer than a
-        # courtesy pause, then kill it so no stray process lingers.
+        self._stop_and_quit(process)
+        with self._lock:
+            self._process = None
+        self._close_pipes(process)
+
+    @staticmethod
+    def _close_pipes(process: subprocess.Popen[str]) -> None:
+        """Release both pipes; a child that died first leaves only EPIPE behind."""
+        for pipe in (process.stdin, process.stdout):
+            if pipe is None:
+                continue
+            try:
+                pipe.close()
+            except (BrokenPipeError, OSError):
+                pass
+
+    def _stop_and_quit(self, process: subprocess.Popen[str]) -> None:
+        """Stop the search and ask the child to exit, then reap it.
+
+        The search is over, so `quit` is answered without another search. E2
+        has already been written: never wait on the child longer than a
+        courtesy pause, then kill it so no stray process lingers.
+        """
         if not self._stop_requested.is_set():
             self._send(process, "stop")
         self._send(process, "quit")
@@ -156,12 +179,6 @@ class StockfishSearch:
         except subprocess.TimeoutExpired:
             process.kill()
             process.wait()
-        with self._lock:
-            self._process = None
-        if process.stdin is not None:
-            process.stdin.close()
-        if process.stdout is not None:
-            process.stdout.close()
 
     def request_stop(self) -> None:
         """End the search now (client cancel); sends one UCI ``stop``."""
@@ -211,6 +228,10 @@ class StockfishSearch:
             # There is nothing left to hear once the cap has passed.
             if self._stop_requested.is_set():
                 return
+            if self._engine_exited():
+                # Its `bestmove` can never arrive: stop reading and let the
+                # caller report the failure instead of spinning to the cap.
+                raise OSError(_ENGINE_EXITED)
             line = self._read_line(stdout, deadline)
             if line is None:
                 if time.monotonic() >= deadline:
@@ -230,6 +251,24 @@ class StockfishSearch:
                 )
             if parse_bestmove(line) is not None:
                 return
+
+    def _engine_exited(self) -> bool:
+        """True once the child is gone and nothing it wrote is left unread."""
+        with self._lock:
+            process = self._process
+            stdout = self._stdout
+        if process is None or process.poll() is None:
+            return False
+        if stdout is None or stdout.closed:
+            return True
+        # An unread EOF keeps `select` saying "readable" forever, so drain a
+        # tick first: one buffered `info` line is still the engine talking.
+        try:
+            if not select.select([stdout], [], [], 0)[0]:
+                return True
+            return not stdout.readline()
+        except (OSError, ValueError):
+            return True
 
     @staticmethod
     def _read_line(stdout: TextIO, deadline: float) -> str | None:
