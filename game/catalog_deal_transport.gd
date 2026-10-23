@@ -8,12 +8,16 @@ extends RefCounted
 ##
 ## Only byte movement and the client-side deadline live here; what a status or
 ## body means is CatalogWireReader's job, so those rules are testable without a
-## socket.
+## socket. Leaving the stream retires the worker without waiting on it (S4).
 
 ## CTR-puzzle-catalog-read O1: the one deal route on the advice server's host.
 const PATH := "/catalog/deal"
 ## Client-side wait bound; a route slower than this is a failed read.
 const DEFAULT_CAP_MS := 3000
+
+## Reads retired by `close()` and not yet joined. Each one is held here until a later
+## call can join it, so leaving the stream never waits on the host (G3, S4).
+static var _retiring: Array = []
 
 ## Messages pushed by the worker: {"ok": bool, "record"|"reason": ...}.
 var _queue: Array = []
@@ -24,6 +28,7 @@ var _finished := false
 
 ## Start an O1 request. `cap_ms` bounds the client-side wait.
 func start(endpoint: String, message: Dictionary, cap_ms: int = DEFAULT_CAP_MS) -> void:
+	reap()
 	_thread = Thread.new()
 	var err := _thread.start(_run.bind(endpoint, message.duplicate(true), cap_ms))
 	if err != OK:
@@ -31,8 +36,11 @@ func start(endpoint: String, message: Dictionary, cap_ms: int = DEFAULT_CAP_MS) 
 		_queue.append({"ok": false, "reason": CatalogWireReader.REASON_ERROR})
 
 
-## Take every outcome that arrived since the last poll.
+## Take every outcome that arrived since the last poll. A retired read reports nothing,
+## even if its worker finished the exchange after the stream was left (S4).
 func poll() -> Array:
+	if _cancel_requested:
+		return []
 	if _thread != null and _thread.is_started():
 		if _thread.is_alive():
 			return _drain()
@@ -47,13 +55,40 @@ func is_finished() -> bool:
 	return _finished
 
 
-## Join the worker so a retired deal leaves no thread behind.
+## Drop the read (concurrency S4). The worker sees `_cancel_requested` within one poll
+## and the outcome it was building is discarded; the join waits for a later call rather
+## than this one, so leaving the stream cannot stall on an unresponsive host (G3).
 func close() -> void:
 	_cancel_requested = true
+	_finished = true
 	if _thread != null and _thread.is_started():
+		# `_thread` stays here: the worker is still running, and dropping the last
+		# reference to it would destroy it mid-read. `reap()` releases both later.
+		_retiring.append(self)
+	reap()
+
+
+## Join every retired worker that has stopped; returns how many were joined. A worker
+## still blocked on an unreachable host stays retired for the next call. Held transports
+## carry the only reference to their worker, so this is what lets a retired read go.
+static func reap() -> int:
+	var joined := 0
+	var pending: Array = []
+	for item: Variant in _retiring:
+		var transport: CatalogDealTransport = item
+		if transport._thread == null or not transport._thread.is_alive():
+			transport._join()
+			joined += 1
+			continue
+		pending.append(transport)
+	_retiring = pending
+	return joined
+
+
+func _join() -> void:
+	if _thread != null:
 		_thread.wait_to_finish()
 	_thread = null
-	_finished = true
 
 
 func _drain() -> Array:
@@ -64,6 +99,8 @@ func _drain() -> Array:
 
 ## Worker thread. Never touches scene state: only appends to `_queue`.
 func _run(endpoint: String, message: Dictionary, cap_ms: int) -> void:
+	if _cancel_requested:
+		return
 	var client := HTTPClient.new()
 	if _connect(client, endpoint) != OK:
 		_queue.append({"ok": false, "reason": CatalogWireReader.REASON_ERROR})
