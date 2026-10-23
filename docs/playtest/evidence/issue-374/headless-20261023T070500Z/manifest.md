@@ -26,7 +26,7 @@
 
 ## Paths
 
-- `notes.md`, `verdicts.md`
+- `notes.md`, `setup.md`, `results.md`, `verdicts.md`
 - `logs/accept-374-probe.log`, `logs/accept-374-probe.gd`
 - `logs/transport-trace.log`, `logs/accept-374-transport-trace.gd`
 - `logs/tel-flood.log`, `logs/accept-374-tel-flood.gd`

@@ -1,6 +1,6 @@
 # Verdicts
 
-Outcome vocabulary: [`specs/playtest/evidence.md`](../../../../specs/playtest/evidence.md). Build `e022f83`, environment `ENV.1`.
+Outcome vocabulary: [`specs/playtest/evidence.md`](../../../../../specs/playtest/evidence.md). Build `e022f83`, environment `ENV.1`.
 
 ## `PTD-move-advice` (Design, headless)
 
