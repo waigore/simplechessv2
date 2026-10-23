@@ -24,4 +24,4 @@ Thin automation entrypoint for `status:pending-implementation`.
 1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-implementation`.
 2. **Perform** the implementation work required by that issue (branch, code/specs/assets as scoped, PR as appropriate). `implement-project-issue` records evidence only — it does not replace this step.
 3. **Read and run** `implement-project-issue` for that issue.
-4. **Report** the underlying skill's outcome (URL, evidence, new status). Do not run verify or accept in this session.
+4. **Report** the underlying skill's outcome (URL, evidence, new status). Stop after `implement-project-issue`. Verification is a later `issue-workflow-verify-agent` run.

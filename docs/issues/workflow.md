@@ -44,10 +44,6 @@ Reviews are holistic against the whole issue and its parent/sibling relationship
 
 Move only the reviewed issue plus issues the fail comment **explicitly names** as impacted. Do not auto-cascade the whole tree.
 
-## Independence
-
-Verification and acceptance must not be done in the same session that posted the implementation summary. Prefer a different comment author than that summary when detectable.
-
 ## Skills
 
 | Skill | Role |
