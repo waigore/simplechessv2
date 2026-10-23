@@ -105,7 +105,6 @@ func _ready() -> void:
 		push_warning("demo asset: %s" % problem)
 	_setup_audio(loader)
 	_setup_chip(font)
-	_setup_coords(font)
 	_setup_end_panel(font)
 	_new_game()
 	if _is_autodrive():
@@ -181,32 +180,6 @@ func _setup_chip(font: Font) -> void:
 	panel.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	panel.position = Vector2(0, 96)
 	panel.size = Vector2(720, 120)
-
-
-func _setup_coords(font: Font) -> void:
-	# PER.R7: files and ranks on the outer margin only, never inside squares.
-	if font == null:
-		return
-	for file in range(8):
-		_coord_label(char(97 + file), Vector2(
-			BOARD_ORIGIN.x + (float(file) + 0.5) * UNIT - 12.0,
-			BOARD_ORIGIN.y + 8.0 * UNIT + 10.0), font)
-	for rank_index in range(1, 9):
-		_coord_label(str(rank_index), Vector2(
-			BOARD_ORIGIN.x - 32.0,
-			BOARD_ORIGIN.y + (float(8 - rank_index) + 0.5) * UNIT - 24.0), font)
-
-
-func _coord_label(text: String, at: Vector2, font: Font) -> void:
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_size_override("font_size", 34)
-	label.add_theme_color_override("font_color", COLOR_CREAM)
-	if font != null:
-		label.add_theme_font_override("font", font)
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.position = at
-	add_child(label)
 
 
 func _setup_end_panel(font: Font) -> void:
