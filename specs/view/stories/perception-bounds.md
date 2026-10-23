@@ -23,7 +23,7 @@ As a casual player, I still read the board when overlays and contrast sit at the
 - **Proves**: R1
 
 ```gherkin
-Given CAM-board Web 9:16, each piece type at SPC.E1 under PRJ.V1, overlays at 10% of body
+Given CAM-board Web 9:16, each piece type at its FRM.P2 height (King at SPC.E1) under PRJ.V1, overlays at 10% of body
 When viewed in PRJ.A2
 Then each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
 ```
@@ -33,7 +33,7 @@ Then each type is named from a solid-black silhouette And overlays cover ≤ 10%
 - **Proves**: R1
 
 ```gherkin
-Given CAM-board Web 9:16, each piece type at SPC.E1 under PRJ.V1, overlays at 5% of body
+Given CAM-board Web 9:16, each piece type at its FRM.P2 height (King at SPC.E1) under PRJ.V1, overlays at 5% of body
 When viewed in PRJ.A2
 Then each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
 ```
@@ -43,7 +43,7 @@ Then each type is named from a solid-black silhouette And overlays cover ≤ 10%
 - **Proves**: R1
 
 ```gherkin
-Given CAM-board Web 9:16, each piece type at SPC.E1 under PRJ.V1, overlays at 11% of body
+Given CAM-board Web 9:16, each piece type at its FRM.P2 height (King at SPC.E1) under PRJ.V1, overlays at 11% of body
 When viewed in PRJ.A2
 Then overlay coverage is 11% of the body And that exceeds R1's ≤ 10% limit
 ```
@@ -83,7 +83,7 @@ Then alternation is not distinct under PAL.K1
 - **Proves**: R1
 
 ```gherkin
-Given mode pick Web 9:16, CAM-board as the target camera, each piece type at SPC.E1 under PRJ.V1
+Given mode pick Web 9:16, CAM-board as the target camera, each piece type at its FRM.P2 height (King at SPC.E1) under PRJ.V1
 When FL-mode-pick.T1 fires
 Then CAM-board is in use within cut 0 s And each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
 ```

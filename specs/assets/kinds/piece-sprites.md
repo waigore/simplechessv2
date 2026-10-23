@@ -19,15 +19,15 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 | ID | Property | Value |
 |----|----------|-------|
-| S1 | Canvas | Square; body ~85% ([SPC.E1](../../view/spatial-model.md)); transparent outside |
+| S1 | Canvas | Square; body/canvas height = [FRM.P2](../../aesthetics/form.md) ±0.01; transparent outside |
 | S2 | Medium | SVG preferred ([ADR-0005](../../adr/decisions/0005-asset-catalog-roots.md)); PNG alpha OK |
 | S3 | Detail | ≤ 3 fills; Staunton; height [FRM.P2](../../aesthetics/form.md) |
-| S4 | Anchor | Center of square |
+| S4 | Anchor | Opaque bottoms on the bottom edge of [SPC.E1](../../view/spatial-model.md) |
 | S5 | Rasterize | SVG → PNG via one pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); never mix rasterizers |
 | S6 | Transparency | Edge flood-fill near-white (RGB ≥ 250); never global white punch |
 | S7 | Sheet crop | Pipeline input only: crop AI/human sheet (ivory top / charcoal bottom; KQRBNP; 6-col; ~8px pad) into twelve cell files; catalog result is V1 (twelve files), never the sheet |
 | S8 | Fit | `fit_contain` square (LANCZOS); center; no stretch |
-| S9 | On-board | Box = 0.88 × square; centers from board layout JSON |
+| S9 | On-board | Preview box 0.88 × square (layout JSON). Play size is [FRM.P2](../../aesthetics/form.md) |
 
 S5–S9 definitive for SS1. Reproduce: [`docs/asset-previews/README.md`](../../../docs/asset-previews/README.md).
 

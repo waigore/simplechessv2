@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S4 | Overlays | No piece art; no chrome badges |
 | S5 | Orientation | Light square bottom-right (h1) |
 | S6 | Rasterize | SVG → PNG via the pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); no mixing |
-| S7 | Square layout | Centers + pitch in `starting-position.layout.json`; pieces 0.88 fill ([piece S9](piece-sprites.md)) |
+| S7 | Square layout | Centers + pitch in `starting-position.layout.json`; preview fill 0.88 ([piece S9](piece-sprites.md)) |
 
 S5–S7 definitive for SS1 look.
 
