@@ -36,3 +36,7 @@ python3 -m advice_backend.catalog check <snapshot.json>
 (`any_checkmate_wins` iff `mateIn1`, then `moves` length 2). Against a
 deliberately short snapshot it exits 1 with `I1: expected 6157341 records,
 found N`, which is the failure this session verified.
+
+## Verification round 2
+
+Fixes for the failed verification (DIF.Y1 recent-id order and the slice-exercisable deploy path) are in [`verification-round-2.md`](verification-round-2.md).

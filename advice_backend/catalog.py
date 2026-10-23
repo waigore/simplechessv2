@@ -157,34 +157,37 @@ def select_puzzle(
     recent = set(recent_solved[-recent_window:]) if recent_window > 0 else set()
     fresh = [record for record in records if record.puzzle_id not in recent]
     solved = [record for record in records if record.puzzle_id in recent]
-    # Relax DIF.Y1 rule by rule: the tighter band first, and an unseen puzzle
-    # before a recently solved one at that band, until one puzzle fits.
+    # Relax DIF.Y1 rule by rule: an unseen puzzle wins at any band before a
+    # recently solved one at the same or a tighter band; the recent-id rule is
+    # relaxed last, only once widening has spanned the whole snapshot.
+    for group in (fresh, solved):
+        picked = _nearest_in_band(group, player_elo, match_range, band_widen)
+        if picked is not None:
+            return picked
+    return None
+
+
+def _nearest_in_band(
+    group: list[CatalogRecord], player_elo: float, match_range: int, band_widen: int
+) -> CatalogRecord | None:
+    """Widen ``match_range`` by ``band_widen`` until one record fits, nearest first."""
+    if not group:
+        return None
     for band in itertools.count(0):
         window = match_range + band * band_widen
-        for group in (fresh, solved):
-            for record in group:
-                if abs(record.rating - player_elo) <= window:
-                    return record
-        # Once the band spans the snapshot, the nearest puzzle is the answer;
+        inside = [record for record in group if abs(record.rating - player_elo) <= window]
+        if inside:
+            return min(inside, key=lambda record: abs(record.rating - player_elo))
+        # Once the band spans the group, the nearest puzzle is the answer;
         # widening past that changes no outcome.
-        if window >= _widest_gap(records, player_elo):
-            return _nearest(fresh, solved, player_elo)
+        if window >= _widest_gap(group, player_elo):
+            return min(group, key=lambda record: abs(record.rating - player_elo))
     return None
 
 
 def _widest_gap(records: list[CatalogRecord], player_elo: float) -> float:
     """How far the band must widen before it reaches the farthest-rated record."""
     return max(abs(record.rating - player_elo) for record in records)
-
-
-def _nearest(
-    fresh: list[CatalogRecord], solved: list[CatalogRecord], player_elo: float
-) -> CatalogRecord | None:
-    """The closest-rated puzzle, preferring one the player has not just solved."""
-    for group in (fresh, solved):
-        if group:
-            return min(group, key=lambda record: abs(record.rating - player_elo))
-    return None
 
 
 class CatalogStore:
@@ -352,29 +355,35 @@ def build_snapshot(csv_path: str | Path, out_path: str | Path) -> int:
     return len(rows)
 
 
-def check_snapshot(snapshot_path: str | Path) -> list[str]:
+# SCH-puzzle-catalog I1: the served snapshot's record count.
+EXPECTED_RECORD_COUNT = 6_157_341
+
+
+def check_snapshot(
+    snapshot_path: str | Path, expected_count: int = EXPECTED_RECORD_COUNT
+) -> list[str]:
     """The host-side integrity checks over a prepared snapshot.
 
     Returns the failures, empty when the snapshot holds (``SCH-puzzle-catalog``
     I1–I3): the record count of the served snapshot, every record's moves
     length, and the mate-in-one mark. ``parse_record`` already refuses I2/I3
     violations on ingest, so I2 and I3 are re-read from the served bytes here.
+
+    ``expected_count`` defaults to the served snapshot's count. A rehearsal or
+    a smoke run passes its own count so the deploy path can be exercised on a
+    prepared slice without the full export (ADR-0008 keeps it host-side).
     """
     with open(snapshot_path, encoding="utf-8") as handle:
         rows = json.load(handle)
     failures = []
-    if len(rows) != EXPECTED_RECORD_COUNT:
-        failures.append(f"I1: expected {EXPECTED_RECORD_COUNT} records, found {len(rows)}")
+    if len(rows) != expected_count:
+        failures.append(f"I1: expected {expected_count} records, found {len(rows)}")
     for index, row in enumerate(rows):
         try:
             parse_record(row)
         except ValueError as failure:
             failures.append(f"row {index}: {failure}")
     return failures
-
-
-# SCH-puzzle-catalog I1: the served snapshot's record count.
-EXPECTED_RECORD_COUNT = 6_157_341
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -388,6 +397,15 @@ def main(argv: list[str] | None = None) -> int:
     build.add_argument("out", type=Path, help="where to write the served snapshot JSON")
     check = subcommands.add_parser("check", help="run the I1–I3 integrity checks over a built snapshot")
     check.add_argument("snapshot", type=Path, help="a snapshot written by build")
+    check.add_argument(
+        "--expected-count",
+        type=int,
+        default=EXPECTED_RECORD_COUNT,
+        help=(
+            "I1 record count to require (default: the served snapshot's "
+            f"{EXPECTED_RECORD_COUNT}); pass a slice's own count to rehearse the deploy path"
+        ),
+    )
     arguments = parser.parse_args(argv)
 
     if arguments.command == "build":
@@ -395,7 +413,7 @@ def main(argv: list[str] | None = None) -> int:
         LOGGER.info("catalog_snapshot snapshot_id=%s records=%d", SNAPSHOT_ID, count)
         print(f"snapshot {arguments.out}: {count} records")
         return 0
-    failures = check_snapshot(arguments.snapshot)
+    failures = check_snapshot(arguments.snapshot, arguments.expected_count)
     for failure in failures[:20]:
         print(failure)
     if len(failures) > 20:
