@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 |----|----------|-------|
 | S1 | Durations | X1 0.05–0.15 s; X2 0.08–0.15 s; X3 0.10–0.25 s; X4 0.20–0.40 s; X5 0.08–0.20 s |
 | S2 | Character | Wood / tactile; soft cafe; never gates a move ([AES.P1](../../aesthetics/aesthetics.md)) |
-| S3 | Loudness | Peaks toward −14 LUFS ([SND.L2](../../aesthetics/sound.md)) |
+| S3 | Loudness | −14 dBTP true peak (ITU-R BS.1770-4, 4× oversampling) ([SND.L2](../../aesthetics/sound.md)) |
 | S4 | Format | OGG |
 
 ## Budgets
@@ -52,7 +52,7 @@ Full recipes: [`sound-effects/recipes.md`](sound-effects/recipes.md).
 
 ### R1 — ElevenLabs SFX
 
-- **Post-processing**: trim silence; loudness toward L2; OGG; see recipes.md
+- **Post-processing**: trim silence; true peak to −14 dBTP (L2); OGG; see recipes.md
 
 ### R2 — Human-made SFX
 
@@ -63,7 +63,7 @@ Full recipes: [`sound-effects/recipes.md`](sound-effects/recipes.md).
 | ID | Check | Method | Pass criterion |
 |----|-------|--------|----------------|
 | K1 | Duration | Measure | Within S1 for category; [`CAT.I11`](../catalog/audio-duration.md) |
-| K2 | Loudness | Meter | ~L2 peaks |
+| K2 | Loudness | True-peak meter | −14 dBTP (L2) |
 | K3 | Character / voice | Listen vs X*; fail voice | Wood/cafe; not chrome; no voice ([SND.V1](../../aesthetics/sound.md)) |
 | K4 | Budget | File size | ≤ 100 KB |
 | K5 | Spec S4 | File extension | OGG |
