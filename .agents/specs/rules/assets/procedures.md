@@ -18,7 +18,7 @@ One subsection per procedure: `APR.generate`, `APR.import`, `APR.register`, `APR
 - **Import** / **Register** / **Review** / **Deprecate**: as today’s skeleton (license, supplier, exemption, review-asset, successor).
 - **Update**: keep asset ID; raise version; append `history` snapshot before overwriting generation; prefer prior prompt as guide; keep series style when `active`; checks and review; re-check dependents.
 - **Touch-up**: `procedures/touch-up.md`. Respect series negatives; do not clear series binding.
-- **Establish-style**: `procedures/establish-style.md`. Bootstrap anchors → create modality binding (Recraft style / ElevenLabs CLI finetune or voice / soft SFX) → write kind Style series registry → `active`. Refresh when `stale`.
+- **Establish-style**: `procedures/establish-style.md`. Bootstrap anchors → create modality binding (Recraft style / ElevenLabs CLI finetune or voice / soft SFX, or a soft third-party/human-made visual kind) → write kind Style series registry → `active`. Refresh when `stale`.
 
 ## Consistency
 

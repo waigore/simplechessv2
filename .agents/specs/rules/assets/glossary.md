@@ -10,7 +10,7 @@ Style terms stay in `specs/aesthetics/glossary.md`. Game, view, and UI terms sta
 
 The skeleton already defines Asset, Asset ID, Asset kind, Asset manifest, Build output, Catalog, Coverage rule, Engine resource, Entry file, Handle, Load group, Recipe, Review exemption, Style anchor, Style series, Tool role, and Touch-up. Keep those rows. Add a row for a term this project needs. Keep added rows alphabetical. One term per concept: no synonyms.
 
-**Style anchor**: an approved catalog asset that seeds or maintains a kind’s style series (visual Recraft style, music finetune, voice clone, or soft SFX exemplars from its files). **Style series**: the kind-level registry of modality, enforce mode, anchors, style binding, prompt policy, and state that constrains generation for that kind.
+**Style anchor**: an approved catalog asset that seeds or maintains a kind’s style series (visual Recraft style, music finetune, voice clone, or soft exemplars — SFX, or a third-party/human-made visual kind with no product style id — from its files). **Style series**: the kind-level registry of modality, enforce mode, anchors, style binding, prompt policy, and state that constrains generation for that kind. A soft kind may carry an N/A `prompt_policy` when it has no AI recipe (fonts).
 
 Columns: term, a one-sentence definition, and where it is detailed (a link, or "here").
 
