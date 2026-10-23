@@ -15,8 +15,8 @@ const SHARED_PLAY := "shared-play"
 const SHARED_RESULT := "shared-result"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
-## Reserve R2–R4 chrome so R1 is not covered at 16:9 (PRJ.A1).
-const PLAY_CHROME_TOP_PX := SharedPlayPanel.CHROME_RESERVED_PX
+## UIS.T2 reference frame height: UiChrome sizes are project-space px at this height.
+const REFERENCE_FRAME_HEIGHT_PX := 640.0
 
 var pointer_count := 0
 var last_pointer: Dictionary = {}
@@ -45,9 +45,31 @@ var _dragging := false
 var _drag_from := ""
 
 
+## UIS.T2 ratio to the reference frame height (SIT.6 / S13 read this, never set it).
+static func text_scale_for_frame_height(frame_height_px: float) -> float:
+	if frame_height_px <= 0.0:
+		return 1.0
+	return frame_height_px / REFERENCE_FRAME_HEIGHT_PX
+
+
+func text_scale() -> float:
+	return text_scale_for_frame_height(_frame_height())
+
+
+## Body text as it reaches the screen for the current frame height (UIS.T2).
+func body_text_screen_px() -> float:
+	return float(UiChrome.scaled_px(UiChrome.BODY_PX, text_scale()))
+
+
+## Reserve R2–R4 chrome so R1 is not covered (PRJ.A1). Scales with UIS.T2.
+func play_chrome_top_px() -> float:
+	return SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, text_scale())
+
+
 func _ready() -> void:
 	_router = $SessionRouter as SessionRouter
 	_build_shell()
+	_bind_playtest_seams()
 	_router.screen_requested.connect(_on_screen_requested)
 	_router.replay_pointer.connect(apply_recorded_pointer)
 	control_activate.connect(_router.handle_control)
@@ -139,7 +161,7 @@ func _build_shell() -> void:
 	_loading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_loading.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_loading.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	UiChrome.style_label(_loading, true)
+	UiChrome.style_label(_loading, true, text_scale())
 	add_child(_loading)
 
 	_host = Control.new()
@@ -202,7 +224,7 @@ func _build_shell() -> void:
 	_ended_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_ended_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_ended_label.text = SESSION_ENDED
-	UiChrome.style_label(_ended_label)
+	UiChrome.style_label(_ended_label, false, text_scale())
 	_host.add_child(_ended_label)
 
 	_unsupported = Label.new()
@@ -211,7 +233,7 @@ func _build_shell() -> void:
 	_unsupported.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_unsupported.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_unsupported.offset_top = -72
-	UiChrome.style_label(_unsupported)
+	UiChrome.style_label(_unsupported, false, text_scale())
 	_unsupported.add_theme_color_override("font_color", UiChrome.COLOR_DANGER)
 	add_child(_unsupported)
 
@@ -287,7 +309,8 @@ func _show_mode_pick(state: Dictionary) -> void:
 	_mode_pick.configure(
 		str(state.get("locale", _router.locale)),
 		str(state.get("last_mode", _router.last_mode)),
-		_ui_font
+		_ui_font,
+		text_scale()
 	)
 	_mode_pick.set_ui_state(ui_state)
 	UiChrome.transition_in(_mode_pick)
@@ -309,7 +332,8 @@ func _show_shared_setup(state: Dictionary) -> void:
 		int(state.get("increment", _router.increment)),
 		bool(state.get("advice", _router.advice_on)),
 		bool(state.get("options_locked", _router.options_locked)),
-		_ui_font
+		_ui_font,
+		text_scale()
 	)
 	UiChrome.transition_in(_shared_setup)
 	_shared_setup.focus_first()
@@ -359,7 +383,7 @@ func _show_shared_play(state: Dictionary) -> void:
 		_board.visible = true
 		_board.modulate.a = board_alpha
 	var first_show := not _shared_play.visible
-	_shared_play.configure(state, _ui_font)
+	_shared_play.configure(state, _ui_font, text_scale())
 	if first_show:
 		UiChrome.transition_in(_shared_play)
 		_shared_play.focus_first()
@@ -393,7 +417,7 @@ func _layout_shared_play_regions() -> void:
 	if _board == null or _shared_play == null:
 		return
 	_board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_board.offset_top = PLAY_CHROME_TOP_PX
+	_board.offset_top = play_chrome_top_px()
 	_board.offset_bottom = 0.0
 	_board.offset_left = 0.0
 	_board.offset_right = 0.0
@@ -413,7 +437,8 @@ func _show_shared_result(state: Dictionary) -> void:
 	_shared_result.configure(
 		str(state.get("locale", _router.locale)),
 		str(state.get("result_key", "result_draw")),
-		_ui_font
+		_ui_font,
+		text_scale()
 	)
 	UiChrome.transition_in(_shared_result)
 	_shared_result.focus_first()
@@ -636,3 +661,20 @@ func _pointer_dict(kind: String, pressed: bool, index: int, at: Vector2) -> Dict
 		"x": at.x,
 		"y": at.y,
 	}
+
+
+func _frame_height() -> float:
+	## The on-screen frame height. A full-rect root tracks the window; the zoomed
+	## viewport rect does not (it stays at the project size in a fixed-size runner).
+	var height := size.y
+	if height <= 0.0 and is_inside_tree():
+		height = get_viewport().get_visible_rect().size.y
+	return height
+
+
+## SIT.6 / O12 — the seam reports body text from this hook; it never sets a size.
+func _bind_playtest_seams() -> void:
+	var seams := get_node_or_null("PlaytestSeams") as PlaytestSeams
+	if seams == null:
+		return
+	seams.bind_text_report(body_text_screen_px)

@@ -38,7 +38,7 @@ agents:
 
   issue-workflow-implement-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
-    parallel_run: 3
+    parallel_run: 5
     issues:
       command:
         - gh

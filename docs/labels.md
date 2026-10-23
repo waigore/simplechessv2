@@ -41,6 +41,7 @@ bash .github/scripts/sync-labels.sh
 | `status:pending-verification` | `0E8A16` | Implemented; awaiting verification |
 | `status:pending-acceptance` | `006B75` | Verified; awaiting acceptance testing |
 | `status:accepted` | `5319E7` | Accepted; leave open |
+| `status:superseded` | `8250DF` | Closed without delivering; name the successor |
 | `no-automerge` | `B60205` | PR: opt out of automatic squash-merge (user-requested only) |
 
 Status transitions: [`docs/issues/workflow.md`](issues/workflow.md). Auto-merge and `no-automerge` behavior: [`.github/workflows/automerge.yml`](../.github/workflows/automerge.yml) and [`pull-requests.md`](pull-requests.md).

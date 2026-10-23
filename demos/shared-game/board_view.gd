@@ -12,6 +12,9 @@ const COLOR_SELECT := Color("B8940C")  # PAL.C6, PER.R3
 const COLOR_LEGAL := Color("6EA746")   # PAL.C11, PER.R4
 const COLOR_INK := Color("2C2A28")     # PAL.C9
 const COLOR_CREAM := Color("F7F1E8")   # PAL.C10
+## PER.R7 coordinate ink: cream PAL.C10 on the wooden coordinate band, 7.38:1
+## (defect #427 item 3).
+const COORD_COLOR := Color("F7F1E8")   # PAL.C10
 const COLOR_ROSE := Color("C28A86")    # PAL.C8: check rim, refusal flash
 ## Empty-legal diamond half-diagonal r; ink area 2 r^2 >= 1/4 square (PER.R4).
 const LEGAL_EMPTY_R := 0.36
@@ -47,19 +50,25 @@ const BEVEL_LINE := Color("2E1B13")    # darker than the bevel fill (SRF.O1)
 const BEVEL_LIP_INK_COLOR := Color("6E4430")
 const BEVEL_LIP_INK_BAND := 0.16       # depth of each coordinate band, units
 ## PER.R7: file letters and rank numbers sit on the wooden lip, never inside a
-## square, at the UIS.T2 label size. Ink is cream PAL.C10 on the coordinate
-## band: ink PAL.C9 reaches only 1.72:1 there and PAL.C10 7.38:1, over R7's
-## 4.5:1 floor (defect #427 item 3).
-const COORD_FONT_SIZE := 40            # screen px, ~0.55 unit at the demo scale
+## square, at >= 4.5:1 for every glyph pixel. Ink is cream PAL.C10 on the
+## coordinate band: ink PAL.C9 reaches only 1.72:1 there and PAL.C10 7.38:1,
+## over R7's 4.5:1 floor (defect #427 item 3).
+##
+## The label must fit the field it is painted on: the glyph's whole ink box has
+## to stay inside the BEVEL_LIP_INK_BAND-wide band, or the part that hangs over
+## the light PAL.C1 table margin reads at 1.28:1 (defect #592). The font is
+## therefore clamped to the largest em that inks COORD_BAND_SHARE of the band,
+## and the labels are centred in the band, not in the lip. UIS.T2's 16 px floor
+## is a 640 px-frame figure and cannot also fit a 0.16-unit band; R7's contrast
+## floor wins here (defect #592).
+const COORD_BAND_SHARE := 0.8          # share of the band the glyph may ink
 const COORD_UNIT_PX := 72.0            # PRJ.P1: screen px per board unit here
-const COORD_COLOR := Color("F7F1E8")   # PAL.C10
-const COORD_INSET := 0.045             # label center inside the wooden lip
 const COORD_CANVAS_UNITS := 10.0       # canvas spans the 10-unit frame
+const COORD_CANVAS_POSITION := Vector2.ZERO
 ## The canvas is pinned to the 0..8 board bounds, so its origin is the board's
 ## own (0, 0) in board units (defect #427 item 3: the labels used to shift by
 ## this inset on top of an inset that was already part of their positions, which
 ## put the files one rank below and the ranks one file left).
-const COORD_CANVAS_POSITION := Vector2.ZERO
 const TRAVEL_S := 0.15                 # PHY.M1 / MOT.T1 budget
 const RETURN_S := 0.15                 # PHY.M5 bad-drop return
 const SETTLE_S := 0.03                 # PHY.I1 settle window
@@ -232,6 +241,7 @@ func _build_coords() -> void:
 	var coords := CoordLabels.new()
 	coords.name = "Coordinates"
 	coords.font = font_resource
+	coords.font_px = coord_font_px()
 	coords.size = Vector2.ONE * (COORD_CANVAS_UNITS * COORD_UNIT_PX)
 	coords.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	coords.scale = Vector2.ONE / COORD_UNIT_PX
@@ -240,30 +250,104 @@ func _build_coords() -> void:
 	add_child(coords)
 
 
+## PER.R7: the label size, clamped so the glyph's ink box (ascent + descent)
+## fits inside the coordinate band (defect #592: the fixed 40 px glyph is taller
+## than the whole band, so its top and bottom landed on the light margin at
+## 1.28:1).
+func coord_font_px() -> float:
+	if font_resource == null:
+		return 0.0
+	var target := BEVEL_LIP_INK_BAND * COORD_UNIT_PX * COORD_BAND_SHARE
+	var px := 48.0  # start above any size that fits, then shrink to the clamp
+	while px > 1.0 and coord_text_height(px) > target:
+		px -= 0.5
+	return px
+
+
+## The ink height of the shipped face at `px`: ascent + descent.
+func coord_text_height(px: float) -> float:
+	if font_resource == null:
+		return 0.0
+	return float(font_resource.get_ascent(px) + font_resource.get_descent(px))
+
+
+## PER.R7 geometric check for the autodrive: every label's ink box (the whole
+## glyph, x and y) inside the wooden coordinate band it sits on, so none of its
+## ink can land on the 1.28:1 table margin or inside the 8x8. Canvas pixels;
+## the coordinates node scales them to board units unchanged.
+func measure_coord_labels() -> Array:
+	var problems: Array = []
+	if font_resource == null:
+		return ["no font for the coordinate labels"]
+	var px := coord_font_px()
+	print("[demo] coordinates %.1f px glyph ink %.1f px in a %.1f px band (PER.R7)" % [
+		px, coord_text_height(px), BEVEL_LIP_INK_BAND * COORD_UNIT_PX,
+	])
+	for spot in CoordLabels.spots():
+		var text: String = spot["text"]
+		var rect := CoordLabels.text_rect(font_resource, text, spot["at"] as Vector2, px)
+		var band := spot["band"] as Rect2
+		print("[demo]   %s box x %.1f..%.1f y %.1f..%.1f px; band x %.1f..%.1f y %.1f..%.1f" % [
+			text, rect.position.x, rect.end.x, rect.position.y, rect.end.y,
+			band.position.x, band.end.x, band.position.y, band.end.y,
+		])
+		if not band.encloses(rect):
+			problems.append("%s label %s leaves its coordinate band %s" % [text, rect, band])
+	return problems
+
+
 ## PER.R7: files a-h and ranks 1-8 in cream PAL.C10 on the coordinate bands of
 ## the wooden bevel (7.4:1 against the band). Painted in canvas pixels; the
 ## node's scale maps them to board units. Canvas x runs files (0 at file a) and
 ## canvas y runs ranks (0 at rank 8), matching the board's own axes.
 class CoordLabels extends Control:
 	var font: Font
+	var font_px := 0.0    # the PER.R7 clamped size, set when the labels are built
+
+	## The file and rank label spots: centred along their column/row and centred
+	## in the band they sit on, with the band they must stay inside.
+	static func spots() -> Array:
+		var left := Rect2(0.0, 0.0,
+			BEVEL_LIP_INK_BAND * COORD_UNIT_PX,
+			(8.0 + RIM_OUTER) * COORD_UNIT_PX)  # the left band runs the lip's height
+		var bottom := Rect2(0.0, (8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND) * COORD_UNIT_PX,
+			(8.0 + RIM_OUTER) * COORD_UNIT_PX, BEVEL_LIP_INK_BAND * COORD_UNIT_PX)
+		var out: Array = []
+		for file in range(8):
+			out.append({
+				"text": String.chr(97 + file),
+				"at": Vector2((float(file) + 0.5) * COORD_UNIT_PX, bottom.get_center().y),
+				"band": bottom,
+			})
+		for rank_index in range(1, 9):
+			out.append({
+				"text": str(rank_index),
+				"at": Vector2(left.get_center().x,
+					(float(8 - rank_index) + 0.5) * COORD_UNIT_PX),
+				"band": left,
+			})
+		return out
+
+	## The ink box of one label centred on `at`. draw_string takes the glyph's
+	## baseline, not its top, so the top is one ascent above it and the ink
+	## height is ascent + descent (defect #592: the old stamp took the baseline
+	## for the top and drew every label ~0.43 unit too high).
+	static func text_rect(f: Font, text: String, at: Vector2, px: float) -> Rect2:
+		var width := f.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, px).x
+		var ascent := float(f.get_ascent(px))
+		var descent := float(f.get_descent(px))
+		return Rect2(at - Vector2(width / 2.0, (ascent + descent) / 2.0),
+			Vector2(width, ascent + descent))
 
 	func _draw() -> void:
-		# Files sit on the bottom band, under the file column they name.
-		for file in range(8):
-			var at := Vector2((float(file) + 0.5) * COORD_UNIT_PX,
-				(8.0 + COORD_INSET) * COORD_UNIT_PX)
-			_stamp(String.chr(97 + file), at)
-		# Ranks sit on the left band, beside the row they name (rank 8 at top).
-		for rank_index in range(1, 9):
-			var at := Vector2(-COORD_INSET * COORD_UNIT_PX,
-				(float(8 - rank_index) + 0.5) * COORD_UNIT_PX)
-			_stamp(str(rank_index), at)
+		for spot in spots():
+			_stamp(str(spot["text"]), spot["at"] as Vector2)
 
 	func _stamp(text: String, at: Vector2) -> void:
-		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, COORD_FONT_SIZE).x
-		var rise := float(font.get_ascent(COORD_FONT_SIZE) - font.get_descent(COORD_FONT_SIZE))
-		draw_string(font, at - Vector2(width, rise) / 2.0, text,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, COORD_FONT_SIZE, COORD_COLOR)
+		var box := text_rect(font, text, at, font_px)
+		var baseline := box.end.y - float(font.get_descent(font_px))
+		draw_string(font, Vector2(box.position.x, baseline), text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, font_px, COORD_COLOR)
 
 
 func _build_squares() -> void:

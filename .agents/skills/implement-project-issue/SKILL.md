@@ -27,10 +27,9 @@ Record implementation evidence for a typed issue in `status:pending-implementati
 3. **Confirm** deliverables exist (PRs, commits, paths). Ask if missing.
 4. **Comment** summarizing what was created or modified against the issue requirements; include PR/commit links.
 5. **Gate** via `enforce-task-workflow-status`: `pending-implementation` → `pending-verification`.
-6. **Report** URL, evidence comment, new status. Remind that verification must be a **separate** session (`verify-project-issue`).
+6. **Report** URL, evidence comment, and new status.
 
 ## Rules
 
 - This skill records evidence and status; it does not replace doing the implementation work.
-- Do not run `verify-project-issue` or `accept-project-issue` in the same session after posting the implementation summary.
 - Call `enforce-task-workflow-status` for the label change.

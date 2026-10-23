@@ -18,6 +18,7 @@ func _check_release() -> bool:
 	seams.pause()
 	seams.resume()
 	var jump_error := seams.jump("loading")
+	var viewport_report := seams.set_viewport(390, 844, 1.0)
 	seams.set_overlay(true, PackedStringArray(["EX.loading"]))
 	seams.set_seed(3)
 	seams.record_input(true)
@@ -47,6 +48,10 @@ func _check_release() -> bool:
 		or int(release_verdict["event_count"]) != 0
 	):
 		problem = "release S12 assert_telemetry"
+	elif not viewport_report.is_empty():
+		problem = "S13 release viewport"
+	elif not seams.last_viewport_report().is_empty():
+		problem = "S13 release viewport report"
 	if not problem.is_empty():
 		return _fail(problem)
 	return true
@@ -103,7 +108,70 @@ func _check_playtest() -> bool:
 		return _fail(problem)
 	if not _check_telemetry(seams):
 		return false
-	return _check_debug(seams, stage)
+	if not _check_debug(seams, stage):
+		return false
+	return _check_viewport(seams)
+
+
+func _check_viewport(seams: PlaytestSeams) -> bool:
+	## S13 / SIT.6 — O12 applies a viewport on ENV.2 only; the report never lies.
+	var reports: Array = []
+	seams.viewport_changed.connect(_remember_viewport.bind(reports))
+	var phone := seams.set_viewport(
+		PlaytestSeams.VIEWPORT_PHONE_WIDTH,
+		PlaytestSeams.VIEWPORT_PHONE_HEIGHT,
+		_frame_ratio(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+	)
+	var shown := seams.last_viewport_report()
+	var graphical := DisplayServer.get_name() != "headless"
+	var empty := seams.set_viewport(0, 844, 1.0)
+	var reference := UiChrome.scaled_px(UiChrome.BODY_PX, _frame_ratio(640))
+	var phone_expected := UiChrome.scaled_px(
+		UiChrome.BODY_PX, _frame_ratio(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+	)
+	# UIS.T2 is a ratio to the reference height, so a taller phone frame sits above
+	# BODY_PX; a hardcoded or clamped size at BODY_PX fails `scales_with_frame`.
+	var scales_with_frame := phone_expected > UiChrome.BODY_PX and phone_expected > reference
+	var panel_button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
+	var problem := ""
+	if reports.size() != 1 or phone.is_empty() or shown != phone:
+		problem = "S13 viewport report"
+	elif bool(phone.get("applied", false)) != graphical:
+		problem = "S13 ENV.2 boundary"
+	elif graphical and (int(phone["width"]) != 390 or int(phone["height"]) != 844):
+		problem = "S13 applied size"
+	elif not is_equal_approx(float(phone["text_scale"]), _frame_ratio(844)):
+		problem = "S13 applied text scale"
+	elif int(phone["body_text_px"]) != phone_expected:
+		problem = "S13 body text must come from the presentation ratio"
+	elif not scales_with_frame:
+		problem = "S13 clamped text size (body text must scale with frame height)"
+	elif not _bound_report_matches(seams):
+		problem = "S13 seam must report the bound presentation size, not its own"
+	elif not empty.is_empty():
+		problem = "S13 invalid input must not return a report"
+	elif panel_button == null:
+		problem = "S13 debug panel control"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
+func _bound_report_matches(seams: PlaytestSeams) -> bool:
+	## The seam must echo the presentation hook, never compute a size of its own.
+	var sentinel := 1234.0
+	seams.bind_text_report(func() -> float: return sentinel)
+	var bound := seams.set_viewport(390, 844, 1.0)
+	seams.bind_text_report(Callable())
+	return is_equal_approx(float(bound.get("body_text_px", 0.0)), sentinel)
+
+
+func _frame_ratio(height_px: int) -> float:
+	return Presentation.text_scale_for_frame_height(float(height_px))
+
+
+func _remember_viewport(report: Dictionary, reports: Array) -> void:
+	reports.append(report)
 
 
 func _check_drive(seams: PlaytestSeams, stage: Dictionary, tel_events: Array) -> bool:

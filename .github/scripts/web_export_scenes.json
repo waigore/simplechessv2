@@ -1,0 +1,4 @@
+{
+  "Web Playtest": "res://main.tscn",
+  "Web Release": "res://main_release.tscn"
+}

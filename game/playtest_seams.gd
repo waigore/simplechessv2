@@ -8,6 +8,11 @@ signal input_replayed(record: Dictionary)
 signal tel_event(payload: Dictionary)
 signal seed_changed(value: int)
 signal overlay_changed(enabled: bool, story_ids: PackedStringArray)
+signal viewport_changed(report: Dictionary)
+
+## SIT.6 `O12` phone-width targets.
+const VIEWPORT_PHONE_WIDTH := 390
+const VIEWPORT_PHONE_HEIGHT := 844
 
 ## Headless and editor runs only. Export templates ignore this.
 var playtest_override := -1
@@ -40,6 +45,8 @@ var _replaying := false
 var _configured := false
 var _jump_field: LineEdit
 var _overlay_label: Label
+var _text_report: Callable = Callable()
+var _viewport_report: Dictionary = {}
 
 
 func _ready() -> void:
@@ -64,6 +71,50 @@ func register_stages(stages: PackedStringArray) -> void:
 
 func bind_state(provider: Callable) -> void:
 	_state_provider = provider
+
+
+## SIT.6 — `CMP-presentation` supplies body text screen px; the seam only reports it.
+func bind_text_report(provider: Callable) -> void:
+	_text_report = provider
+
+
+## O12 set_viewport — apply a window size and text scale, then report the result.
+## Viewport work needs `ENV.2`; under a headless runner nothing is applied, but the
+## report still describes what that frame height gives (I6 boundary).
+func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
+	## G2 / I3 — a release build has no O12.
+	if not playtest_build:
+		return {}
+	if width <= 0 or height <= 0 or text_scale <= 0.0:
+		emit_tel("set_viewport", "fail")
+		return {}
+	var graphical := DisplayServer.get_name() != "headless"
+	if graphical:
+		var window := get_window()
+		if window != null:
+			window.size = Vector2i(width, height)
+	var report := {
+		"width": width,
+		"height": height,
+		"text_scale": text_scale,
+		"applied": graphical,
+		"body_text_px": _body_text_px(text_scale),
+	}
+	_viewport_report = report.duplicate()
+	viewport_changed.emit(report)
+	emit_tel("set_viewport", "pass" if graphical else "skip", "SIT.6")
+	return report
+
+
+func last_viewport_report() -> Dictionary:
+	return _viewport_report.duplicate()
+
+
+func _body_text_px(text_scale_value: float) -> float:
+	if _text_report.is_valid():
+		return float(_text_report.call())
+	## No presentation bound (unit-test binary): same ratio, from the shipped hook.
+	return float(UiChrome.scaled_px(UiChrome.BODY_PX, text_scale_value))
 
 
 func pause() -> void:
@@ -268,6 +319,7 @@ func _build_debug_ui() -> void:
 	_add_button(panel, "Jump", _on_debug_jump)
 	_add_button(panel, "Overlay", _on_overlay_pressed)
 	_add_button(panel, "AssertTelemetry", _on_assert_telemetry_pressed)
+	_add_button(panel, "SetViewport", _on_set_viewport_pressed)
 	_overlay_label = Label.new()
 	_overlay_label.name = "StoryOverlay"
 	_overlay_label.visible = false
@@ -294,6 +346,15 @@ func _on_inspect_pressed() -> void:
 
 func _on_debug_jump() -> void:
 	jump(_jump_field.text.strip_edges())
+
+
+func _on_set_viewport_pressed() -> void:
+	## SIT.6 — phone width at the reference ratio, driven from the panel for ENV.2.
+	set_viewport(
+		VIEWPORT_PHONE_WIDTH,
+		VIEWPORT_PHONE_HEIGHT,
+		float(VIEWPORT_PHONE_HEIGHT) / Presentation.REFERENCE_FRAME_HEIGHT_PX
+	)
 
 
 func _on_overlay_pressed() -> void:
