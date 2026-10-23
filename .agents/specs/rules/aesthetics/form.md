@@ -8,7 +8,7 @@ The shapes, proportions, silhouettes, and detail level of characters, entities, 
 
 ## Header
 
-- **Sheet**: `sheets/lineup.html`, per [sheets.md](sheets.md). When spec depth requires no sheet, write "None — spec depth \<level\>".
+- **Reference sheet**: `sheets/lineup.html`, per [sheets.md](sheets.md). When spec depth requires no sheet, write "None — spec depth \<level\>".
 - **Serves**: vision qualities, style pillars, and design or view specs.
 
 ## Sections
