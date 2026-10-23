@@ -50,8 +50,12 @@ const COORD_FONT_SIZE := 40            # screen px, ~0.55 unit at the demo scale
 const COORD_UNIT_PX := 72.0            # PRJ.P1: screen px per board unit here
 const COORD_COLOR := Color("F7F1E8")   # PAL.C10
 const COORD_INSET := 0.045             # label center inside the wooden lip
-const COORD_CANVAS_UNITS := 10.0       # coordinate canvas covers the 10-unit frame
-const COORD_CANVAS_INSET := 1.0        # canvas edge to the 0..8 board bounds
+const COORD_CANVAS_UNITS := 10.0       # canvas spans the 10-unit frame
+## The canvas is pinned to the 0..8 board bounds, so its origin is the board's
+## own (0, 0) in board units (defect #427 item 3: the labels used to shift by
+## this inset on top of an inset that was already part of their positions, which
+## put the files one rank below and the ranks one file left).
+const COORD_CANVAS_POSITION := Vector2.ZERO
 const TRAVEL_S := 0.15                 # PHY.M1 / MOT.T1 budget
 const RETURN_S := 0.15                 # PHY.M5 bad-drop return
 const SETTLE_S := 0.03                 # PHY.I1 settle window
@@ -221,25 +225,28 @@ func _build_coords() -> void:
 	coords.size = Vector2.ONE * (COORD_CANVAS_UNITS * COORD_UNIT_PX)
 	coords.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	coords.scale = Vector2.ONE / COORD_UNIT_PX
-	coords.position = Vector2(-COORD_CANVAS_INSET, -COORD_CANVAS_INSET)
+	coords.position = COORD_CANVAS_POSITION
 	coords.z_index = 1  # above the bevel and the squares, below the pieces
 	add_child(coords)
 
 
 ## PER.R7: files a-h and ranks 1-8 in cream PAL.C10 on the coordinate bands of
 ## the wooden bevel (7.4:1 against the band). Painted in canvas pixels; the
-## node's scale maps them to board units.
+## node's scale maps them to board units. Canvas x runs files (0 at file a) and
+## canvas y runs ranks (0 at rank 8), matching the board's own axes.
 class CoordLabels extends Control:
 	var font: Font
 
 	func _draw() -> void:
+		# Files sit on the bottom band, under the file column they name.
 		for file in range(8):
 			var at := Vector2((float(file) + 0.5) * COORD_UNIT_PX,
-				(COORD_CANVAS_INSET + 8.0 + COORD_INSET) * COORD_UNIT_PX)
+				(8.0 + COORD_INSET) * COORD_UNIT_PX)
 			_stamp(String.chr(97 + file), at)
+		# Ranks sit on the left band, beside the row they name (rank 8 at top).
 		for rank_index in range(1, 9):
-			var at := Vector2((COORD_CANVAS_INSET - COORD_INSET) * COORD_UNIT_PX,
-				(COORD_CANVAS_INSET + float(8 - rank_index) + 0.5) * COORD_UNIT_PX)
+			var at := Vector2(-COORD_INSET * COORD_UNIT_PX,
+				(float(8 - rank_index) + 0.5) * COORD_UNIT_PX)
 			_stamp(str(rank_index), at)
 
 	func _stamp(text: String, at: Vector2) -> void:
