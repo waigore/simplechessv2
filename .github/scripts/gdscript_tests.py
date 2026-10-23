@@ -114,13 +114,15 @@ def repo_root() -> Path:
 
 
 def with_specs_root(env: dict[str, str]) -> dict[str, str]:
-    """Tests read their spec sources through CHESS_SPECS_ROOT (SCH-string-table parity).
+    """Tests read repo-level sources by absolute path, since ``coverage`` copies only ``game/``.
 
-    ``coverage`` copies only ``game/``, so ``res://`` cannot reach ``specs/``; both
-    commands name the repository ``specs/`` by absolute path instead.
+    ``CHESS_SPECS_ROOT`` names ``specs/`` (SCH string-table parity);
+    ``CHESS_EXPORT_SCENES`` names the preset-to-scene table that
+    ``game/release_scene_test.gd`` checks against ``web_export.py`` (G2).
     """
     env = env.copy()
     env["CHESS_SPECS_ROOT"] = str((repo_root() / "specs").resolve())
+    env["CHESS_EXPORT_SCENES"] = str((repo_root() / ".github/scripts/web_export_scenes.json").resolve())
     return env
 
 

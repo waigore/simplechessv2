@@ -130,6 +130,27 @@ class WebExportTest(unittest.TestCase):
         with self.assertRaises(web_export.ExportError):
             web_export.main_scene_for("Web Debug")
 
+    def test_pages_present_only_from_the_two_answers(self) -> None:
+        assert web_export.pages_present_from_status("200") is True
+        assert web_export.pages_present_from_status("404") is False
+        assert web_export.pages_present_from_status(" 200\n") is True
+
+    def test_probe_failure_is_never_read_as_absent(self) -> None:
+        for status in ("403", "401", "500", "000", "", "  "):
+            with self.subTest(status=status):
+                with self.assertRaises(web_export.ExportError):
+                    web_export.pages_present_from_status(status)
+
+    def test_release_gate_derives_from_the_probe(self) -> None:
+        assert web_export.release_gate(web_export.pages_present_from_status("200")) is True
+        assert web_export.release_gate(web_export.pages_present_from_status("404")) is False
+        assert web_export.release_gate(False) is False
+
+    def test_pages_status_cli_prints_the_gate(self) -> None:
+        assert web_export.main(["--pages-status", "200"]) == 0
+        assert web_export.main(["--pages-status", "404"]) == 0
+        assert web_export.main(["--pages-status", "500"]) == 1
+
     def test_export_switches_the_release_scene_and_restores_it(self) -> None:
         repo = self._write_repo()
         godot = _fake_godot(self.tmp_path, artifacts=True)
