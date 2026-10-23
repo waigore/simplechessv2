@@ -49,6 +49,8 @@ var wrong_move_on_puzzle := false
 
 ## SCH-puzzle-attempt F1–F5.
 var attempt_start_position := ""
+## The opponent move the deal applies, kept so a Wrong move can restore the presented board.
+var attempt_first_move: Dictionary = {}
 var attempt_any_checkmate_wins := false
 
 ## What the host catalog serves this sitting. Empty means a failed read (X2).
@@ -120,6 +122,7 @@ func deal(catalog_records: Array = []) -> Dictionary:
 	puzzle_id = str(pick.get("PuzzleId", ""))
 	puzzle_elo = int(pick.get("Rating", 0))
 	attempt_start_position = fen
+	attempt_first_move = first
 	attempt_any_checkmate_wins = any_checkmate_wins(pick)
 	required_sequence = []
 	for index in range(1, moves.size()):
@@ -272,9 +275,14 @@ func _matches_expected(move: Dictionary) -> bool:
 
 
 ## L-puzzle-stream K2 / SCH-puzzle-attempt F4 — reset to the start; no deal.
+## The start is the presented position, i.e. after the opponent move the deal applied, so
+## the board comes back as it was dealt rather than at the record's pre-puzzle FEN.
 func _wrong_move() -> void:
 	wrong_move_on_puzzle = true
 	rules._load_fen(attempt_start_position)
+	if not solving_side.is_empty() and not required_sequence.is_empty():
+		var first := attempt_first_move
+		rules.try_move(str(first["from"]), str(first["to"]), str(first["promotion"]))
 	sequence_index = 0
 	selected_piece = ""
 
