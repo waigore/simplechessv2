@@ -70,7 +70,7 @@ func _run_all() -> String:
 ## is a Callable buffer, so the multi-move K2 path runs here in one pass.
 func _check_sequences() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5", "g1f3", "b8c6", "f1b5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5", "g1f3", "b8c6", "f1b5"])])
 	var first := session.place("e7", "e5")
 	if str(first.get("outcome", "")) != "progress" or int(first.get("advance", -1)) != 2:
 		return "K2 must advance past the matched step and the required reply"
@@ -82,13 +82,13 @@ func _check_sequences() -> String:
 ## Sequence steps share one session; this half runs after the first K2 step passes.
 func _check_sequence_outcomes() -> String:
 	var no_wrong := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	no_wrong.deal()
+	no_wrong.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var final := no_wrong.place("e7", "e5")
 	if str(final.get("end_reason", "")) != PuzzleSession.END_W1:
 		return "completing the sequence with no wrong move must be END.W1"
 
 	var wrong_session := _session([_record("abc", 1000, ["e2e4", "e7e5", "g1f3", "b8c6", "f1b5"])])
-	wrong_session.deal()
+	wrong_session.deal([_record("abc", 1000, ["e2e4", "e7e5", "g1f3", "b8c6", "f1b5"])])
 	var wrong := wrong_session.place("e7", "e6")
 	var wrong_ok := str(wrong.get("outcome", "")) == "wrong"
 	var reset_home := not wrong_session.rules.piece_on("e7").is_empty()
@@ -107,7 +107,7 @@ func _check_l4_after_wrong_move() -> String:
 	# END.L4 — a completed sequence after a Wrong move scores S = 0 as a failure. The player
 	# tries again from the reset start, and completing it now ends L4, never W1.
 	var failed := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	failed.deal()
+	failed.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	failed.place("e7", "e6")
 	var before := failed.player_elo
 	var l4: Dictionary = failed.place("e7", "e5")
@@ -119,10 +119,11 @@ func _check_l4_after_wrong_move() -> String:
 	return ""
 
 
-func _session(records: Array = [], elo: float = 1000.0) -> PuzzleSession:
+## A session at `elo`; the test hands the dealt record to `deal()` itself, as the
+## production caller hands over the one record CatalogDealClient fetched.
+func _session(_records: Array = [], elo: float = 1000.0) -> PuzzleSession:
 	var session := PuzzleSession.new()
 	session.player_elo = elo
-	session.catalog = records
 	return session
 
 
@@ -141,7 +142,7 @@ func _record(
 
 func _check_deal_within_window() -> String:
 	var session := _session([_record("near", 1040), _record("far", 1400)])
-	var dealt := session.deal()
+	var dealt := session.deal([_record("near", 1040), _record("far", 1400)])
 	if not bool(dealt.get("ok", false)) or session.puzzle_id != "near":
 		return "DIF.Y1 must deal within ±CFG.ELO_MATCH_RANGE (got %s)" % session.puzzle_id
 	if absi(int(session.puzzle_elo) - int(session.player_elo)) > PuzzleSession.ELO_MATCH_RANGE:
@@ -152,7 +153,7 @@ func _check_deal_within_window() -> String:
 func _check_deal_skips_recent() -> String:
 	var session := _session([_record("old1", 1000), _record("new1", 1000)])
 	session.recent_solved = ["old1"]
-	session.deal()
+	session.deal([_record("old1", 1000), _record("new1", 1000)])
 	if session.puzzle_id != "new1":
 		return "DIF.Y1 I1 must prefer a puzzle not in recentSolved (got %s)" % session.puzzle_id
 	return ""
@@ -160,7 +161,7 @@ func _check_deal_skips_recent() -> String:
 
 func _check_deal_widens() -> String:
 	var session := _session([_record("wide", 1150)])
-	session.deal()
+	session.deal([_record("wide", 1150)])
 	if session.puzzle_id != "wide":
 		return "DIF.Y1 D1 must widen by CFG.ELO_BAND_WIDEN until a puzzle fits"
 	return ""
@@ -169,7 +170,7 @@ func _check_deal_widens() -> String:
 func _check_deal_allows_recent() -> String:
 	var session := _session([_record("seen", 1000)])
 	session.recent_solved = ["seen"]
-	session.deal()
+	session.deal([_record("seen", 1000)])
 	if session.puzzle_id != "seen":
 		return "DIF.Y1 must allow a recently solved puzzle when nothing else fits"
 	return ""
@@ -177,7 +178,7 @@ func _check_deal_allows_recent() -> String:
 
 func _check_deal_still_deals_when_only_far() -> String:
 	var session := _session([_record("faraway", 2000)])
-	session.deal()
+	session.deal([_record("faraway", 2000)])
 	if session.puzzle_id != "faraway":
 		return "DIF.Y1 relax must keep widening until a puzzle is found"
 	return ""
@@ -185,7 +186,7 @@ func _check_deal_still_deals_when_only_far() -> String:
 
 func _check_first_move_is_applied() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	if str(session.rules.position_field()["side_to_move"]) != ChessRules.SIDE_BLACK:
 		return "F-puzzle-catalog R3 must apply the first move before presenting"
 	if session.solving_side != ChessRules.SIDE_BLACK:
@@ -199,7 +200,7 @@ func _check_first_move_is_applied() -> String:
 
 func _check_x1_empty_solution() -> String:
 	var session := _session([_record("empty", 1000, ["e2e4"])])
-	var dealt := session.deal()
+	var dealt := session.deal([_record("empty", 1000, ["e2e4"])])
 	if bool(dealt.get("ok", true)) or session.puzzle_id != "" or session.puzzle_elo != null:
 		return "F-puzzle-catalog X1: a record with one move must not be dealt"
 	return ""
@@ -208,9 +209,13 @@ func _check_x1_empty_solution() -> String:
 func _check_x2_failed_read() -> String:
 	var session := _session([])
 	var before := session.player_elo
-	var dealt := session.deal()
+	var due := [0]
+	session.deal_due.connect(func() -> void: due[0] += 1)
+	var dealt := session.deal([])
 	if bool(dealt.get("ok", true)) or session.puzzle_id != "":
 		return "F-puzzle-catalog X2: a failed catalog read must deal nothing"
+	if int(due[0]) != 1:
+		return "R1: a deal with no record must raise deal_due so the caller fetches one"
 	if session.player_elo != before:
 		return "F-puzzle-catalog X2 must leave GS.playerElo unchanged"
 	return ""
@@ -221,7 +226,7 @@ func _check_x2_failed_read() -> String:
 
 func _check_w1_elo_and_recent() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var before := session.player_elo
 	var solved := session.place("e7", "e5")
 	if str(solved.get("end_reason", "")) != PuzzleSession.END_W1:
@@ -237,7 +242,7 @@ func _check_w1_elo_and_recent() -> String:
 ## END.W1 at equal ratings — the numeric case the spec states: 1000 + CFG.ELO_K × (1 − 0.5).
 func _check_w1_equal_ratings() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])], 1000.0)
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.place("e7", "e5")
 	if absf(session.player_elo - 1010.0) > 0.0001:
 		return (
@@ -251,7 +256,7 @@ func _check_w1_equal_ratings() -> String:
 
 func _check_l5_reveal() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var before := session.player_elo
 	var revealed := session.reveal()
 	if str(revealed.get("end_reason", "")) != PuzzleSession.END_L5:
@@ -263,7 +268,7 @@ func _check_l5_reveal() -> String:
 
 func _check_l6_abandon() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var before := session.player_elo
 	var abandoned := session.abandon()
 	if str(abandoned.get("end_reason", "")) != PuzzleSession.END_L6:
@@ -275,15 +280,18 @@ func _check_l6_abandon() -> String:
 	return _check_abandon_deals_next(session, abandoned)
 
 
-## K3 — L6 deals the next puzzle itself, after the Elo update.
+## K3 — an ending asks for the next puzzle after the Elo update; with no record it deals
+## nothing (X2) and the caller's next record is the one that deals.
 func _check_abandon_deals_next(session: PuzzleSession, abandoned: Dictionary) -> String:
 	var dealt: Dictionary = abandoned.get("next", {})
-	if not bool(dealt.get("ok", false)) or dealt.get("puzzle_id") != "abc":
-		return "K3 must deal the next puzzle after the Elo update"
-	if not session.has_open_puzzle() or session.puzzle_id != "abc":
+	if str(dealt.get("reason", "")) != "no_record":
+		return "K3 must ask for the next deal after the Elo update (got %s)" % dealt
+	if session.has_open_puzzle():
+		return "K3 must not leave a puzzle open when the deal has no record"
+	if not bool(session.deal([_record("next2", 1000, ["e2e4", "e7e5"])]).get("ok", false)):
+		return "K3 must deal the next puzzle once the caller supplies its record"
+	if not session.has_open_puzzle() or session.puzzle_id != "next2":
 		return "K3 must leave the next puzzle open"
-	if session.wrong_move_on_puzzle:
-		return "the next deal must start clean"
 	if bool(session.advance().get("ok", true)):
 		return "advance must not deal a second puzzle over an open one"
 	return ""
@@ -293,7 +301,7 @@ func _check_elo_formula_and_start() -> String:
 	var session := _session([_record("abc", 1200, ["e2e4", "e7e5"])])
 	if session.player_elo != PuzzleSession.ELO_START:
 		return "DIF.Y1 first-time Player Elo must be CFG.ELO_START"
-	session.deal()
+	session.deal([_record("abc", 1200, ["e2e4", "e7e5"])])
 	var expected := 1.0 / (1.0 + pow(10.0, (1200.0 - 1000.0) / 400.0))
 	var solved := session.place("e7", "e5")
 	var want := 1000.0 + session.elo_k * (1.0 - expected)
@@ -313,7 +321,7 @@ func _check_elo_k_default() -> String:
 	if not is_equal_approx(PuzzleSession.ELO_K, 20.0):
 		return "CFG.ELO_K mirror must be 20 (got %s)" % PuzzleSession.ELO_K
 	var high := _session([_record("abc", 3000, ["e2e4", "e7e5"])], 3000.0)
-	high.deal()
+	high.deal([_record("abc", 3000, ["e2e4", "e7e5"])])
 	high.place("e7", "e5")
 	if absf(high.player_elo - 3010.0) > 0.0001:
 		return "fields-persist: 3000 at equal ratings must reach 3010 (got %s)" % high.player_elo
@@ -325,7 +333,7 @@ func _check_recent_trim() -> String:
 	session.recent_solved = []
 	for index in range(PuzzleSession.ELO_RECENT_WINDOW + 5):
 		session.recent_solved.append("old%d" % index)
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.place("e7", "e5")
 	if session.recent_solved.size() != PuzzleSession.ELO_RECENT_WINDOW:
 		return "PRG.M1 must trim recentSolved to CFG.ELO_RECENT_WINDOW"
@@ -337,8 +345,7 @@ func _check_recent_trim() -> String:
 func _check_leave_keeps_elo_unscored() -> String:
 	var store := _stored_session()
 	var session := PuzzleSession.new(ChessRules.new(), store)
-	session.catalog = [_record("abc", 1000, ["e2e4", "e7e5"])]
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var before := session.player_elo
 	var committed_before: float = float(store.read_committed()["player_elo"])
 	var left := session.leave()
@@ -353,8 +360,7 @@ func _check_leave_keeps_elo_unscored() -> String:
 		return "leave must close the open puzzle"
 	var reentered := PuzzleSession.new(ChessRules.new(), store)
 	reentered.restore(store.load_document())
-	reentered.catalog = session.catalog
-	reentered.deal()
+	reentered.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	if reentered.player_elo != before:
 		return "re-entry must deal at the committed Elo"
 	return ""
@@ -363,8 +369,7 @@ func _check_leave_keeps_elo_unscored() -> String:
 func _check_commit_failure_keeps_prior() -> String:
 	var store := _stored_session()
 	var session := PuzzleSession.new(ChessRules.new(), store)
-	session.catalog = [_record("abc", 1000, ["e2e4", "e7e5"])]
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var failures: Array = []
 	session.save_failed.connect(func() -> void: failures.append(true))
 	store.force_write_failure = true
@@ -406,7 +411,7 @@ func _check_mate_in_one_mark() -> String:
 	if PuzzleSession.new().any_checkmate_wins(other):
 		return "a record without mateIn1 must not be armed"
 	var session := _session([mate])
-	session.deal()
+	session.deal([mate])
 	if not session.attempt_any_checkmate_wins or session.required_sequence.size() != 1:
 		return "R4–R5 must keep the recorded single-step sequence"
 	return ""
@@ -417,7 +422,7 @@ func _check_mate_in_one_mark() -> String:
 ## move is an EX.rejected S5 rejection rather than a Wrong move.
 func _check_mate_in_one_accepts_recorded_mate() -> String:
 	var session := _session([_mate_record(["mateIn1"])])
-	if not bool(session.deal().get("ok", false)):
+	if not bool(session.deal([_mate_record(["mateIn1"])]).get("ok", false)):
 		return "a mateIn1 record on MATE_FEN must deal"
 	if not session.attempt_any_checkmate_wins or session.required_sequence.size() != 1:
 		return "R4–R5 must keep the recorded single-step sequence"
@@ -439,7 +444,7 @@ func _check_mate_in_one_accepts_recorded_mate() -> String:
 
 func _check_mate_in_one_rejects_non_mating() -> String:
 	var session := _session([_mate_record(["mateIn1"])])
-	session.deal()
+	session.deal([_mate_record(["mateIn1"])])
 	var dealt_start := session.rules.position_field()
 	var non_mating := session.place(
 		MATE_NON_MATING_MOVE.substr(0, 2), MATE_NON_MATING_MOVE.substr(2, 2)
@@ -469,7 +474,7 @@ func _wrong_move_reset_problem(
 ## EX.rejected / UI-puzzle-play S5 — an illegal move is a rejection, never a Wrong move.
 func _check_illegal_move_is_not_a_wrong_move() -> String:
 	var session := _session([_mate_record(["mateIn1"])])
-	session.deal()
+	session.deal([_mate_record(["mateIn1"])])
 	var illegal := session.place(MATE_ILLEGAL_MOVE.substr(0, 2), MATE_ILLEGAL_MOVE.substr(2, 2))
 	if not bool(illegal.get("illegal", false)) or str(illegal.get("outcome", "")) == "wrong":
 		return (
@@ -486,7 +491,7 @@ func _check_illegal_move_is_not_a_wrong_move() -> String:
 ## record is not armed for "any checkmating move" — that reading lives only on mateIn1.
 func _check_unmarked_record_is_not_armed() -> String:
 	var session := _session([_mate_record(["fork"])])
-	if not bool(session.deal().get("ok", false)):
+	if not bool(session.deal([_mate_record(["fork"])]).get("ok", false)):
 		return "an unmarked record on MATE_FEN must deal"
 	if session.attempt_any_checkmate_wins:
 		return "I3: an unmarked record must not be armed for any checkmating move"
@@ -504,7 +509,7 @@ func _mate_record(themes: Array) -> Dictionary:
 
 func _check_no_advice() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var state := session.play_state()
 	if str(state.get("advice", "")) != "none":
 		return "GS.V3: advice must stay none in Puzzle stream"
@@ -518,7 +523,7 @@ func _check_outcomes_exclusive() -> String:
 	if not endings.has(PuzzleSession.END_W1) or endings.size() != 4:
 		return "END.P1: one cue per ending and no more"
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.place("e7", "e6")
 	var wrong := session.place("e7", "e5")
 	if str(wrong.get("end_reason", "")) != PuzzleSession.END_L4:
@@ -526,7 +531,7 @@ func _check_outcomes_exclusive() -> String:
 	if str(wrong.get("cue", "")) != "cue_failed":
 		return "L4 must show cue_failed, never cue_solved"
 	session.leave()
-	session.advance()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	if session.sequence_index != 0 or session.wrong_move_on_puzzle:
 		return "a fresh deal must clear GS.wrongMoveOnPuzzle so W1 can fire"
 	return _check_clean_w1(session)
@@ -546,7 +551,7 @@ func _check_clean_w1(session: PuzzleSession) -> String:
 ## Confirm (never the C3 tap itself) runs END.L5.
 func _check_confirm_reveal() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var before := session.player_elo
 	var raised := session.request_confirm("C3")
 	if not bool(raised.get("ok", false)) or session.play_ui_state != PuzzleSession.UI_S2:
@@ -571,15 +576,24 @@ func _check_reveal_commit(session: PuzzleSession, before: float) -> String:
 	var scored: Dictionary = confirmed.get("elo", {})
 	if float(scored.get("score", -1.0)) != 0.0:
 		return "END.L5 must score S = 0"
-	if not session.has_open_puzzle():
-		return "END.L5 must deal the next puzzle after the Elo update"
+	if session.has_open_puzzle():
+		return "END.L5 must ask for the next deal, not present one with no record"
+	return _check_l5_deals_next(session)
+
+
+## The next puzzle deals once its record arrives, from its start.
+func _check_l5_deals_next(session: PuzzleSession) -> String:
+	if not bool(session.deal([_record("abc", 1000, ["e2e4", "e7e5"])]).get("ok", false)):
+		return "END.L5 must deal the next puzzle once its record arrives"
+	if not session.has_open_puzzle() or session.sequence_index != 0:
+		return "END.L5 must present the next puzzle from its start"
 	return _check_l5_equal_ratings()
 
 
 ## END.L5 at equal ratings — 1000 + CFG.ELO_K × (0 − 0.5) = 990.
 func _check_l5_equal_ratings() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])], 1000.0)
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.reveal()
 	if absf(session.player_elo - 990.0) > 0.0001:
 		return (
@@ -592,8 +606,7 @@ func _check_l5_equal_ratings() -> String:
 func _check_confirm_leave_unscored() -> String:
 	var store := _stored_session()
 	var session := PuzzleSession.new(ChessRules.new(), store)
-	session.catalog = [_record("abc", 1000, ["e2e4", "e7e5"])]
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	var committed_before: float = float(store.read_committed()["player_elo"])
 	session.request_confirm("C5")
 	if session.confirm_kind != PuzzleSession.CONFIRM_LEAVE:
@@ -611,7 +624,7 @@ func _check_confirm_leave_unscored() -> String:
 ## US5.4 / US1.10 — S2 blocks select and place; the open puzzle is untouched.
 func _check_confirm_blocks_board() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.request_confirm("C4")
 	if bool(session.select_own("e7").get("ok", true)):
 		return "C1 must be unavailable in S2"
@@ -626,8 +639,7 @@ func _check_confirm_blocks_board() -> String:
 func _check_save_failure_state() -> String:
 	var store := _stored_session()
 	var session := PuzzleSession.new(ChessRules.new(), store)
-	session.catalog = [_record("abc", 1000, ["e2e4", "e7e5"])]
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	store.force_write_failure = true
 	var solved := session.place("e7", "e5")
 	var elo: Dictionary = solved.get("elo", {})
@@ -651,7 +663,7 @@ func _check_save_failure_state() -> String:
 ## flashes S5 with the selection kept and is not a Wrong move.
 func _check_selection_and_flash() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	if bool(session.select_own("e2").get("ok", true)):
 		return "C1 must only select the Solving side"
 	if not bool(session.select_own("e7").get("ok", false)) or session.selected_piece != "e7":
@@ -680,7 +692,7 @@ func _check_flash_clears(session: PuzzleSession) -> String:
 func _check_promotion_judged_after_commit() -> String:
 	var session := _session([_promotion_record()])
 	session.player_elo = 1400.0
-	if not bool(session.deal().get("ok", false)):
+	if not bool(session.deal([_promotion_record()]).get("ok", false)):
 		return "the promotion fixture must deal"
 	var opened := session.place("g7", "g8")
 	if not bool(opened.get("promote", false)) or session.play_ui_state != PuzzleSession.UI_S4:
@@ -716,30 +728,41 @@ func _check_promotion_commit(session: PuzzleSession) -> String:
 
 
 ## K3 — after W1 the dealt puzzle stays open behind the cue and the next deal is refused
-## until the stream advances once; after L5/L6 the ending itself deals the next.
+## until the caller supplies the next record; L5 asks for one after the Elo update.
 func _check_deal_after_ending() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.place("e7", "e5")
 	if bool(session.advance().get("ok", true)) or not session.has_open_puzzle():
 		return "K3 must not deal over the ended puzzle before the cue"
 	var closed := session.leave()
-	if not bool(session.advance().get("ok", false)) or not session.has_open_puzzle():
-		return "K3 must deal the next puzzle once the stream moves on"
+	if not bool(session.deal([_record("next", 1000, ["e2e4", "e7e5"])]).get("ok", false)):
+		return "K3 must deal the next puzzle once the caller supplies its record"
+	if not session.has_open_puzzle():
+		return "K3 must present the next puzzle after a deal"
 	if closed.is_empty():
 		return "leaving after a solved puzzle must succeed"
 	var revealed := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	revealed.deal()
-	var l5 := revealed.reveal()
-	if not bool(l5.get("next", {}).get("ok", false)) or not revealed.has_open_puzzle():
-		return "END.L5 must deal the next puzzle after the Elo update"
+	revealed.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
+	return _check_l5_deal_after_ending(revealed.reveal(), revealed)
+
+
+## END.L5 asks for the next deal; with no record nothing is open, and the caller's
+## next record is the one that deals.
+func _check_l5_deal_after_ending(l5: Dictionary, revealed: PuzzleSession) -> String:
+	if str(l5.get("next", {}).get("reason", "")) != "no_record":
+		return "K3: END.L5 must ask for the next deal once the Elo update is applied"
+	if revealed.has_open_puzzle():
+		return "K3: a deal with no record must leave no puzzle open"
+	if not bool(revealed.deal([_record("next", 1000, ["e2e4", "e7e5"])]).get("ok", false)):
+		return "END.L5 must deal the next puzzle once its record arrives"
 	return ""
 
 
 ## GS.V1 / GS.H1 / CFG.K3 — no clock runs and no shared-game ending can fire in this mode.
 func _check_no_clocks() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
-	session.deal()
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
 	if session.play_state().has("clocks"):
 		return "CFG.K3: no clock runs in Puzzle stream"
 	var ended := false

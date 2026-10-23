@@ -1,0 +1,5 @@
+$ gdlint game
+Success: no problems found
+
+$ gdformat --check game
+44 files would be left unchanged
