@@ -27,6 +27,7 @@ func _run_all() -> String:
 		_check_one_record_outcome,
 		_check_failed_read_outcome,
 		_check_cancel_drops_the_answer,
+		_check_in_flight_read_never_blocks_the_caller,
 	]
 	for check in checks:
 		var problem: String = check.call()
@@ -174,4 +175,30 @@ func _check_cancel_drops_the_answer() -> String:
 	peer.push_record(_record())
 	if not client.poll().is_empty():
 		return "an answer after cancel must never deal"
+	return ""
+
+
+## CTR-puzzle-catalog-read G3 / concurrency S3 — a read in flight never blocks the
+## caller; the caller runs on between `request()` and the answer arriving.
+func _check_in_flight_read_never_blocks_the_caller() -> String:
+	var parts := _client(FakeCatalogTransport.new())
+	var client: CatalogDealClient = parts["client"]
+	var peer: FakeCatalogTransport = parts["peer"]
+	peer.blocking = true
+	if not client.request(1000.0, []):
+		return "an available client must start the read"
+	if not client.in_flight():
+		return "the read must be in flight while the peer has not answered"
+	if not client.poll().is_empty():
+		return "G3: an unanswered read must report nothing yet, never wait"
+	# The caller keeps working while the answer is outstanding.
+	var session := PuzzleSession.new()
+	session.player_elo = 1000.0
+	if str(session.play_ui_state).is_empty():
+		return "G3: the session must stay usable while a deal is in flight"
+	peer.blocking = false
+	peer.push_record(_record())
+	var outcome := client.poll()
+	if not bool(outcome.get("ok", false)):
+		return "G3: the answer must arrive on a later poll (got %s)" % outcome
 	return ""

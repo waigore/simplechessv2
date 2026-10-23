@@ -15,6 +15,14 @@ const START_FEN := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 ## SCH-puzzle-catalog F1 / persistence M4 — the one served snapshot.
 const SNAPSHOT_ID := "2026-10-05"
 
+## SCH-puzzle-catalog F1–F13 — the record shape CTR-puzzle-catalog-read delivers.
+const FIELD_SNAPSHOT_ID := "snapshot_id"
+const FIELD_PUZZLE_ID := "puzzle_id"
+const FIELD_FEN := "fen"
+const FIELD_MOVES := "moves"
+const FIELD_RATING := "rating"
+const FIELD_THEMES := "themes"
+
 const END_W1 := "END.W1"
 const END_L4 := "END.L4"
 const END_L5 := "END.L5"
@@ -158,17 +166,17 @@ func deal(catalog_records: Array = []) -> Dictionary:
 	var moves: Array = _moves_of(pick)
 	if moves.size() < 2:
 		return {"ok": false, "reason": "empty_solution"}
-	var fen := str(pick.get("FEN", START_FEN))
+	var fen := str(pick.get(FIELD_FEN, START_FEN))
 	if not rules._load_fen(fen):
 		return {"ok": false, "reason": "bad_fen"}
 	var first := _uci_parts(str(moves[0]))
 	if not rules.try_move(first["from"], first["to"], _promotion_kind(str(first["promotion"]))):
 		return {"ok": false, "reason": "bad_first_move"}
 	# PRG.M1 M4 — only snapshot 2026-10-05 PuzzleIds are ever open or saved.
-	if str(pick.get("snapshot_id", SNAPSHOT_ID)) != SNAPSHOT_ID:
+	if str(pick.get(FIELD_SNAPSHOT_ID, SNAPSHOT_ID)) != SNAPSHOT_ID:
 		return {"ok": false, "reason": "snapshot"}
-	puzzle_id = str(pick.get("PuzzleId", ""))
-	puzzle_elo = int(pick.get("Rating", 0))
+	puzzle_id = str(pick.get(FIELD_PUZZLE_ID, ""))
+	puzzle_elo = int(pick.get(FIELD_RATING, 0))
 	attempt_start_position = fen
 	attempt_first_move = first
 	attempt_any_checkmate_wins = any_checkmate_wins(pick)
@@ -201,7 +209,7 @@ func _select(records: Array) -> Dictionary:
 		var recent: Array = []
 		for record in records:
 			if record is Dictionary and _within(record, reach):
-				if recent_solved.has(str(record.get("PuzzleId", ""))):
+				if recent_solved.has(str(record.get(FIELD_PUZZLE_ID, ""))):
 					recent.append(record)
 				else:
 					fresh.append(record)
@@ -215,7 +223,7 @@ func _select(records: Array) -> Dictionary:
 
 
 func _within(record: Dictionary, reach: int) -> bool:
-	return absi(int(record.get("Rating", 0)) - int(round(player_elo))) <= reach
+	return absi(int(record.get(FIELD_RATING, 0)) - int(round(player_elo))) <= reach
 
 
 func _pick_lowest(records: Array) -> Dictionary:
@@ -223,7 +231,7 @@ func _pick_lowest(records: Array) -> Dictionary:
 	for record in records:
 		if not (record is Dictionary):
 			continue
-		if best.is_empty() or int(record["Rating"]) < int(best["Rating"]):
+		if best.is_empty() or int(record[FIELD_RATING]) < int(best[FIELD_RATING]):
 			best = record
 	return best
 
@@ -582,7 +590,7 @@ func _trim_recent(ids: Array) -> Array:
 
 
 func _moves_of(record: Dictionary) -> Array:
-	var raw: Variant = record.get("Moves", [])
+	var raw: Variant = record.get(FIELD_MOVES, [])
 	if raw is Array:
 		return (raw as Array).duplicate()
 	if raw is String:
@@ -591,7 +599,7 @@ func _moves_of(record: Dictionary) -> Array:
 
 
 func _themes_of(record: Dictionary) -> Array:
-	var raw: Variant = record.get("Themes", [])
+	var raw: Variant = record.get(FIELD_THEMES, [])
 	if raw is Array:
 		return raw
 	if raw is String:

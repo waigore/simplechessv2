@@ -3,31 +3,11 @@
 Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/specs/rules/aesthetics/palette.md).
 
 - **Reference sheet**: [`sheets/palette.html`](sheets/palette.html)
-- **Serves**: P2, P3; Clear board; Accessibility; [PER.R1](../view/perception.md)–[PER.R8](../view/perception.md); [experience.md](../design/experience.md) clarity
+- **Serves**: P2, P3; Clear board; Accessibility; [PER.R1](../view/perception.md)–[PER.R8](../view/perception.md); [experience.md](../design/experience.md) clarity and Channels
 
-## Swatches
+## Swatches and sets
 
-| ID | Name | Hex | Role | Used for |
-|----|------|-----|------|----------|
-| C1 | Light square | `#E8D5B5` | ground | Light squares ([E-pieces.I35](../design/entities/pieces/common.md)) |
-| C2 | Dark square | `#8B5A3C` | ground | Dark squares (mahogany) |
-| C3 | Ivory piece | `#F5F0E6` | player accent | White pieces |
-| C4 | Charcoal piece | `#2C2A28` | player accent | Black pieces |
-| C5 | Table wood | `#5C3A2A` | ground | Cafe backdrop ([SPC.L1](../view/spatial-model.md)) |
-| C6 | Select gold | `#B8940C` | accent | Selection highlight ([PER.R3](../view/perception.md)) |
-| C7 | Advice teal | `#53A2BE` | accent | Advice marks ([PER.R5](../view/perception.md)); reserved — not piece fill |
-| C8 | Check rose | `#C28A86` | hazard | Check and refused-place cues ([PER.R6](../view/perception.md), [PER.R8](../view/perception.md)) |
-| C9 | Ink | `#2C2A28` | outline / text | UI text and labels |
-| C10 | Cream panel | `#F7F1E8` | sky / surface | UI panels and soft fills |
-| C11 | Legal sage | `#6EA746` | accent | Legal-destination marks ([PER.R4](../view/perception.md)) |
-
-## Palette sets
-
-| ID | Context | Swatches | Color limit |
-|----|---------|----------|-------------|
-| S1 | Board and table | C1, C2, C3, C4, C5 | 5 |
-| S2 | Overlays | C6, C7, C8, C11 | 4 |
-| S3 | Interface | C9, C10, C6 | 3 |
+Swatches `C1`–`C11` and palette sets `S1`–`S3` are in [`palette/swatches.md`](palette/swatches.md).
 
 ## Color rules
 
@@ -40,3 +20,5 @@ Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/spe
 | K5 | Overlay marks read on both squares | C6, C7, C8 on C1 and C2 | Contrast ≥ 2:1 on each (measured 2.0:1) | [PER.R3](../view/perception.md), [PER.R5](../view/perception.md), [PER.R6](../view/perception.md), [PER.R8](../view/perception.md) |
 | K6 | Legal-destination marks read on both squares | C11 on C1 and C2 | Contrast ≥ 2:1 on each (measured 2.0:1) | [PER.R4](../view/perception.md) |
 | K7 | Disabled ink reads inactive yet distinct | C9 at 40% opacity on C10 | Contrast ≥ 2:1 (measured 2.3:1) | [`UIS.C5`](ui-style.md); Accessibility |
+| K8 | Board coordinates read on the cafe margin | Coordinate ink on C5 | Contrast ratio ≥ 4.5:1 ([PER.R7](../view/perception.md)); the pair as stated measures about 1.4:1, and which swatch changes is TBD — which swatch changes? | Accessibility; [PER.R7](../view/perception.md) |
+| K9 | Overlay accents are told apart without hue | C6, C7, C8, C11 on C1 and C2 | No mark is the only carrier of its meaning: selection and refused place also change piece or square state, and check has its own indicator and end cue ([feedback.md](../design/experience/feedback.md)); they share luminance, so how they stay distinct with hue removed is TBD — what mark form and placement tell them apart? | Accessibility; [experience.md](../design/experience.md) Channels |
