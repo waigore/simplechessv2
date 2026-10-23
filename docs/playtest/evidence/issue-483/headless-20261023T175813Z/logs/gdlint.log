@@ -1,0 +1,3 @@
+game/accept483_probe.gd:48: Error: Max allowed line length (100) exceeded (max-line-length)
+game/accept483_probe.gd:71: Error: Max allowed line length (100) exceeded (max-line-length)
+Failure: 2 problems found
