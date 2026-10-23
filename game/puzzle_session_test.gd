@@ -34,6 +34,7 @@ func _run_all() -> String:
 		_check_commit_failure_keeps_prior,
 		_check_restore,
 		_check_no_advice,
+		_check_mate_in_one_mark,
 	]
 	for check in checks:
 		var problem: String = check.call()
@@ -322,6 +323,22 @@ func _check_restore() -> String:
 	)
 	if session.player_elo != 1234.0 or session.recent_solved.size() != 2:
 		return "PRG.M1 must restore Player Elo and recentSolved on entry"
+	return ""
+
+
+## F-puzzle-catalog R4–R5 / SCH-puzzle-catalog F13, I3 — only the mateIn1-marked record
+## is armed for any checkmating move, and its recorded list stays the required sequence.
+func _check_mate_in_one_mark() -> String:
+	var mate := _record("m1", 1000, ["e2e4", "e7e5"], ["mateIn1", "short"])
+	var other := _record("x2", 1000, ["e2e4", "e7e5"], ["fork"])
+	if not PuzzleSession.new().any_checkmate_wins(mate):
+		return "F13 must read mateIn1 from the record themes"
+	if PuzzleSession.new().any_checkmate_wins(other):
+		return "a record without mateIn1 must not be armed"
+	var session := _session([mate])
+	session.deal()
+	if not session.attempt_any_checkmate_wins or session.required_sequence.size() != 1:
+		return "R4–R5 must keep the recorded single-step sequence"
 	return ""
 
 
