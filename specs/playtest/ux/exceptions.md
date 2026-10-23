@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-exceptions`
 - **Environment**: Headless and Graphical
-- **Cites**: `EX`
+- **Cites**: `EX.US1`
 - **Situational tools**: None
 
 ## Steps
@@ -20,7 +20,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 | ID | Outcome |
 |----|---------|
-| P1 | Exception stories in `EX` hold without trapping the actor. |
+| P1 | Exception stories in `EX.US1` hold without trapping the actor. |
 | P2 | Headless and Graphical both pass. |
 
 ## Fail

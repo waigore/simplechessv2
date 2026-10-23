@@ -1,0 +1,38 @@
+933ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+933ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+934ms [error] ERROR: Error opening file 'res://game_assets/icons/style-anchor-sheet.svg'.
+934ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+934ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+934ms [error] ERROR: Error opening file 'res://game_assets/interface-art/style-anchor-sheet.svg'.
+934ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+935ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+935ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+935ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+935ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+936ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+936ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+936ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+936ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+936ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+936ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+937ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+937ms [error] ERROR: Error opening file 'res://game_assets/icons/quit.svg'.
+937ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+937ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+937ms [error] ERROR: Error opening file 'res://game_assets/icons/mode-puzzle.svg'.
+937ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+937ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+938ms [error] ERROR: Error opening file 'res://game_assets/icons/mode-shared.svg'.
+938ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+938ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+938ms [error] ERROR: Error opening file 'res://game_assets/interface-art/panel-surface.svg'.
+938ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+938ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+939ms [error] ERROR: Error opening file 'res://game_assets/icons/advice.svg'.
+939ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+939ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+939ms [error] ERROR: Error opening file 'res://game_assets/interface-art/chip-surface.svg'.
+939ms [log] DIAG res= exe=index dir= cwd=/ base= web=true
+939ms [log] DIAG2 page=http://127.0.0.1:8812/ served=http://127.0.0.1:8812
+939ms [error] ERROR: Error opening file 'res://game_assets/icons/back.svg'.
+940ms [error] ERROR: Preload boot left 9 approved IDs unresolved
