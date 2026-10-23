@@ -827,13 +827,18 @@ func _poll_advice() -> void:
 	if failed:
 		# FAIL.T1 supersedes this tick's `advice ready`: advice is gone, and the
 		# client stays offline (no silent retry) until the browser reconnects.
+		# One failed stream reports one failure: the parked client keeps
+		# `failed()` true, so only the transition into offline is reported
+		# (R1: no busy-loop, no log flood).
+		var was_offline := not online
 		_mark_offline()
-		advice_error = true
 		advice_client.fail_until_reconnect()
-		_advice_events.append(_unavailable_event())
-		_advice_events.append(
-			{"event": "shared.advice.error", "outcome": "shown", "story": "EX.error"}
-		)
+		if not was_offline:
+			advice_error = true
+			_advice_events.append(_unavailable_event())
+			_advice_events.append(
+				{"event": "shared.advice.error", "outcome": "shown", "story": "EX.error"}
+			)
 	elif not ready.is_empty():
 		_advice_events.append(ready)
 

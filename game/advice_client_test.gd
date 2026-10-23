@@ -35,12 +35,15 @@ func _run_all() -> String:
 		_check_game_end_clears,
 		_check_leave_clears_and_puzzle_never_runs,
 		_check_error_clears_and_play_continues,
+		_check_one_failure_reports_once,
 		_check_stale_updates_after_cancel_dropped,
 		_check_local_move_never_waits,
 		_check_wire_reads_updates_and_cap,
 		_check_wire_handles_partial_and_junk,
 		_check_wire_close_without_end_is_error,
 		_check_wire_timeout_and_errors,
+		_check_terminal_status_is_a_real_close,
+		_check_transport_reachable_stream,
 		_check_transport_cancel_is_prompt,
 	]
 	for check in checks:
@@ -309,6 +312,24 @@ func _check_error_clears_and_play_continues() -> String:
 	return ""
 
 
+## #534 — one failed stream reports one failure: the parked client keeps
+## `failed()` true, so stays in `shared-play` must not re-append `advice.error`.
+func _check_one_failure_reports_once() -> String:
+	var shared := _shared()
+	var session: SharedGameSession = shared["session"]
+	_stream(session).push_end(AdviceWireReader.REASON_ERROR)
+	var first: Array = session.advice_control("poll").get("events", [])
+	if first.is_empty():
+		return "a failed stream must be reported (FAIL.T1)"
+	for tick in range(5):
+		var again: Array = session.advice_control("poll").get("events", [])
+		if not again.is_empty():
+			return "a parked failure was reported again on tick %d: %s" % [tick, again]
+	if not session.advice_error:
+		return "the first failure must raise EX.error"
+	return ""
+
+
 func _check_stale_updates_after_cancel_dropped() -> String:
 	var shared := _shared()
 	var session: SharedGameSession = shared["session"]
@@ -419,6 +440,63 @@ func _check_wire_timeout_and_errors() -> String:
 	return ""
 
 
+## The request is in flight on the first poll, so only a real close ends it
+## (#534): `STATUS_REQUESTING` must never be read as `STATUS_DISCONNECTED`.
+func _check_terminal_status_is_a_real_close() -> String:
+	for status in [
+		HTTPClient.STATUS_REQUESTING,
+		HTTPClient.STATUS_CONNECTED,
+		HTTPClient.STATUS_RESOLVING,
+		HTTPClient.STATUS_BODY,
+	]:
+		if AdviceWireReader.is_terminal_status(status):
+			return "status %d is in flight, not a close" % status
+	for status in [
+		HTTPClient.STATUS_DISCONNECTED,
+		HTTPClient.STATUS_CANT_CONNECT,
+		HTTPClient.STATUS_CANT_RESOLVE,
+		HTTPClient.STATUS_CONNECTION_ERROR,
+		HTTPClient.STATUS_TLS_HANDSHAKE_ERROR,
+	]:
+		if not AdviceWireReader.is_terminal_status(status):
+			return "status %d ends the exchange and must be terminal" % status
+	return ""
+
+
+## A reachable peer streams E1 then E2 cap: the transport must deliver at least
+## one update and end on the cap, never close because the request is in flight.
+## The peer is an outside process (``ADVICE_STREAM_PEER``, e.g. loopback:port):
+## an in-process TCPServer cannot see an HTTPClient connection in the same tree.
+func _check_transport_reachable_stream() -> String:
+	var peer := OS.get_environment("ADVICE_STREAM_PEER").strip_edges()
+	if peer.is_empty():
+		print("skip reachable-stream peer: ADVICE_STREAM_PEER unset")
+		return ""
+	var transport := AdviceStreamTransport.new()
+	transport.start("http://%s/advice" % peer, _message(), 4000)
+	var updates: Array = []
+	var ended := ""
+	var deadline := Time.get_ticks_msec() + 4000
+	while Time.get_ticks_msec() < deadline:
+		await create_timer(0.02).timeout
+		for message in transport.poll():
+			var kind := str((message as Dictionary).get("kind", ""))
+			if kind == "update":
+				updates.append((message as Dictionary)["value"])
+			elif kind == "end":
+				ended = str((message as Dictionary)["value"].get("reason", ""))
+		if not ended.is_empty():
+			break
+	transport.close()
+	if ended != AdviceWireReader.REASON_CAP:
+		return "a reachable stream must end on the cap, saw '%s' (#534)" % ended
+	if updates.is_empty():
+		return "a reachable stream must deliver its E1 update (#534)"
+	if str((updates[0] as Dictionary).get("best_move_uci", "")) != "e2e4":
+		return "the E1 update must survive the wire"
+	return ""
+
+
 ## An unreachable endpoint fails the stream as an advice error, not a hang.
 func _check_transport_unreachable_is_error() -> String:
 	var transport := AdviceStreamTransport.new()
@@ -427,6 +505,7 @@ func _check_transport_unreachable_is_error() -> String:
 	var deadline := Time.get_ticks_msec() + 3000
 	while Time.get_ticks_msec() < deadline:
 		await create_timer(0.02).timeout
+		await process_frame
 		var messages := _of_kind(transport.poll(), "end")
 		if not messages.is_empty():
 			ended = str((messages[0] as Dictionary)["value"].get("reason", ""))
