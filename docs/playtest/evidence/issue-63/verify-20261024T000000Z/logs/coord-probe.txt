@@ -1,0 +1,20 @@
+frame 720.0 1280.0
+square 72.0 352.0 648.0 928.0
+ink a BevelLipBottomInk 103.000 943.800 113.000 969.800
+ink b BevelLipBottomInk 174.500 943.800 185.500 969.800
+ink c BevelLipBottomInk 247.500 943.800 256.500 969.800
+ink d BevelLipBottomInk 318.500 943.800 329.500 969.800
+ink e BevelLipBottomInk 391.000 943.800 401.000 969.800
+ink f BevelLipBottomInk 465.000 943.800 471.000 969.800
+ink g BevelLipBottomInk 534.500 943.800 545.500 969.800
+ink h BevelLipBottomInk 606.500 943.800 617.500 969.800
+ink 1 BevelLipLeftInk 38.200 879.000 48.200 905.000
+ink 2 BevelLipLeftInk 38.200 807.000 48.200 833.000
+ink 3 BevelLipLeftInk 38.200 735.000 48.200 761.000
+ink 4 BevelLipLeftInk 38.200 663.000 48.200 689.000
+ink 5 BevelLipLeftInk 38.200 591.000 48.200 617.000
+ink 6 BevelLipLeftInk 38.200 519.000 48.200 545.000
+ink 7 BevelLipLeftInk 38.200 447.000 48.200 473.000
+ink 8 BevelLipLeftInk 38.200 375.000 48.200 401.000
+band BevelLipLeftInk 25.200 305.200 61.200 974.800
+band BevelLipBottomInk 25.200 938.800 694.800 974.800
