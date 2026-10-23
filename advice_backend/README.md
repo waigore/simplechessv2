@@ -36,7 +36,9 @@ The search stops at the earlier of the client's `time_ms` and
 the client may shorten a search but never extend it. The end message is
 delivered by the cap, not after it: a small reserve is held back from the
 search, and a child that will not exit is killed after E2 is written. A client
-that drops the response is a cancel; no update follows it.
+that drops the response is a cancel; no update follows it. An engine that
+exits or closes its output before sending `bestmove` is a backend failure, so
+the stream ends `error` at once instead of waiting out the cap.
 
 Timing and errors are logged on `advice_backend` (`advice_start` with
 `cap_ms`, `advice_end` with `reason` / `elapsed_ms` / `disconnected`,
