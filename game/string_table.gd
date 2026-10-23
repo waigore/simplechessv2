@@ -56,6 +56,85 @@ const _MODE_PICK := {
 	},
 }
 
+## UI-puzzle-play Copy table (specs/ux/screens/puzzle-play.md). Puzzle play is its own
+## owner: rows sharing a bare name with another owner are carried here, never resolved across.
+const MARKED_PIECE_NAMES: PackedStringArray = ["queen", "rook", "bishop", "knight"]
+
+const _PUZZLE_PLAY := {
+	"en":
+	{
+		"elo": "Elo",
+		"reveal": "Reveal",
+		"abandon": "Abandon",
+		"leave": "Leave stream",
+		"reveal_confirm": "Reveal the solution?",
+		"abandon_confirm": "Abandon this puzzle?",
+		"leave_confirm": "Leave the puzzle stream?",
+		"confirm": "Confirm",
+		"cancel": "Cancel",
+		"save_failed": "Save failed. Prior Elo kept.",
+		"dismiss": "Dismiss",
+		"cue_solved": "Solved",
+		"cue_wrong": "Wrong move",
+		"cue_failed": "Failed",
+		"cue_abandon": "Abandoned",
+		"choose_promotion": "Choose promotion",
+		"refused_place": "Refused place",
+		"queen": "Queen",
+		"rook": "Rook",
+		"bishop": "Bishop",
+		"knight": "Knight",
+	},
+	"zh-Hant":
+	{
+		"elo": "Elo 值",
+		"reveal": "顯示解答",
+		"abandon": "放棄",
+		"leave": "離開題組",
+		"reveal_confirm": "要顯示解答嗎？",
+		"abandon_confirm": "要放棄這道題嗎？",
+		"leave_confirm": "要離開題組嗎？",
+		"confirm": "確認",
+		"cancel": "取消",
+		"save_failed": "儲存失敗。已保留先前 Elo 值。",
+		"dismiss": "關閉",
+		"cue_solved": "已解出",
+		"cue_wrong": "走錯了",
+		"cue_failed": "未解出",
+		"cue_abandon": "已放棄",
+		"choose_promotion": "選擇升變棋子",
+		"refused_place": "無法放置",
+		"queen": "Queen",
+		"rook": "Rook",
+		"bishop": "Bishop",
+		"knight": "Knight",
+	},
+	"ja":
+	{
+		"elo": "Elo レート",
+		"reveal": "解答を見る",
+		"abandon": "この問題をやめる",
+		"leave": "パズルを離れる",
+		"reveal_confirm": "解答を表示しますか？",
+		"abandon_confirm": "この問題をやめますか？",
+		"leave_confirm": "パズルストリームを離れますか？",
+		"confirm": "確認",
+		"cancel": "キャンセル",
+		"save_failed": "保存に失敗しました。以前の Elo を保持します。",
+		"dismiss": "閉じる",
+		"cue_solved": "解決",
+		"cue_wrong": "手が違います",
+		"cue_failed": "失敗",
+		"cue_abandon": "中断",
+		"choose_promotion": "昇格する駒を選ぶ",
+		"refused_place": "置けません",
+		"queen": "Queen",
+		"rook": "Rook",
+		"bishop": "Bishop",
+		"knight": "Knight",
+	},
+}
+
 const _SHARED_SETUP := {
 	"en":
 	{
@@ -293,6 +372,10 @@ static func exception_text(key: String, locale: String) -> String:
 	return _lookup(_EXCEPTIONS, key, locale)
 
 
+static func puzzle_play(key: String, locale: String) -> String:
+	return _lookup(_PUZZLE_PLAY, key, locale)
+
+
 static func mode_pick_keys() -> PackedStringArray:
 	return _keys_of(_MODE_PICK)
 
@@ -311,6 +394,10 @@ static func shared_result_keys() -> PackedStringArray:
 
 static func exception_keys() -> PackedStringArray:
 	return _keys_of(_EXCEPTIONS)
+
+
+static func puzzle_play_keys() -> PackedStringArray:
+	return _keys_of(_PUZZLE_PLAY)
 
 
 static func _keys_of(tables: Dictionary) -> PackedStringArray:

@@ -1,6 +1,6 @@
 class_name PresentationAudioTest
 extends SceneTree
-## #60 — cue mapping, X5 never plays, ambient after board playable, sound-off path.
+## #60 / #426 — cue mapping, X5 never plays, ambient at mode-pick ready, sound-off path.
 
 
 func _initialize() -> void:
@@ -101,14 +101,19 @@ func _integration_spine() -> String:
 		persist.memory_backend = {}
 		persist.clear_storage()
 	root.add_child(presentation)
-	await process_frame
-	await process_frame
+	## Cold open (EX.loading) stays silent; Ambient starts only at mode-pick ready.
 	var problem := ""
+	var audio := presentation.get_node("PresentationAudio") as PresentationAudio
 	if resolver.group_loaded("ambient"):
 		problem = "ambient must not load on cold open"
-	var audio := presentation.get_node("PresentationAudio") as PresentationAudio
 	if problem.is_empty() and (audio == null or audio.music_started):
-		problem = "music must stay off on mode-pick"
+		problem = "music must stay off on cold open"
+	await process_frame
+	await process_frame
+	if problem.is_empty() and router.stage != "mode-pick":
+		problem = "mode pick not ready"
+	if problem.is_empty() and (not resolver.group_loaded("ambient") or not audio.music_started):
+		problem = "ambient and bed must start when mode pick is ready"
 	router.handle_control("mode-pick", "C1")
 	router.handle_control("shared-setup", "C5")
 	await process_frame
@@ -118,7 +123,7 @@ func _integration_spine() -> String:
 	if problem.is_empty() and not resolver.group_loaded("play"):
 		problem = "play group required for cues"
 	if problem.is_empty() and (not resolver.group_loaded("ambient") or not audio.music_started):
-		problem = "ambient after board playable"
+		problem = "ambient and bed must stay through shared play"
 	if problem.is_empty() and not audio.has_stream(SharedAudioCues.CUE_SELECT):
 		problem = "X1 stream not bound from Play O5"
 	if problem.is_empty() and not audio.has_stream(SharedAudioCues.BED_M1):
@@ -133,8 +138,8 @@ func _integration_spine() -> String:
 		router.handle_input_commit("e2", "e4")
 		if audio.last_cue_id != SharedAudioCues.CUE_MOVE or audio.cue_play_count != before + 1:
 			problem = "move must play X2"
-	## Draw path: no end cue (stalemate / agreed draw not forced here — resign is loss).
-	## Confirm draw ending via unit: END.D* must not raise cue_play_count when routed.
+	## Spec (sound.md): every draw ending plays no end cue; the result copy carries it.
+	## Confirm via unit: END.D* must not raise cue_play_count when routed.
 	if problem.is_empty():
 		before = audio.cue_play_count
 		## Direct O3 with no loss: router only cues END on loss; draw leaves count.
@@ -144,6 +149,22 @@ func _integration_spine() -> String:
 			problem = "draw endings must not count as loss cues"
 		if problem.is_empty() and audio.cue_play_count != before:
 			problem = "draw check must not play a cue"
+	## C7 accept-draw (END.D2) control path: ended, yet draws play no end cue.
+	if problem.is_empty() and router.shared_session != null:
+		router.handle_control("shared-play", "C5")
+		router.handle_control("shared-play", "confirm")
+		before = audio.cue_play_count
+		router.handle_control("shared-play", "C7")
+		if router.stage != "shared-result":
+			problem = "accept-draw must reach shared-result"
+		elif audio.cue_play_count != before:
+			problem = "accept-draw must play no end cue"
+		if problem.is_empty():
+			## NAV.T7 — back to setup so the resign case below starts a live game.
+			router.handle_control("shared-result", "C1")
+			router.handle_control("shared-setup", "C5")
+			if router.stage != "shared-play":
+				problem = "new shared game not started"
 	if problem.is_empty():
 		router.handle_control("shared-play", "C4")
 		before = audio.cue_play_count

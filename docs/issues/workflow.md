@@ -22,6 +22,8 @@ Catalog: [`docs/labels.md`](../labels.md).
 
 Evidence is freeform prose; intent must be clear. Post evidence as an issue comment (except refinement, which also edits the body). Then call `enforce-task-workflow-status` to apply the next label.
 
+Every body or comment write follows [body-writes.md](body-writes.md): compose to a file, write through `.github/scripts/gh_issue.py` (guard and read-back built in), and treat a failed read-back as a lost body, not evidence.
+
 | From | Action / evidence | To |
 |------|-------------------|-----|
 | pending-review | Pass review (latest comment); body consistent; deliverables/AC align with parent or project vision; note new requirements | pending-implementation |

@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-shared-setup`
 - **Environment**: Headless and Graphical
-- **Cites**: `UI-shared-setup`
+- **Cites**: `UI-shared-setup.US1`
 - **Situational tools**: None
 
 ## Steps
@@ -20,7 +20,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 | ID | Outcome |
 |----|---------|
-| P1 | Setup controls and Start/Back match `UI-shared-setup`. |
+| P1 | Setup controls and Start/Back match `UI-shared-setup.US1`. |
 | P2 | Headless and Graphical both pass. |
 
 ## Fail

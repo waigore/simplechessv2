@@ -12,6 +12,7 @@
 #     enabled: false
 #   issue-workflow-implement-agent:
 #     provider: opencode
+#     parallel_run: 2
 #     cooldown_seconds: 30
 #     gate_backoff_initial_seconds: 15
 #     gate_backoff_max_seconds: 120
@@ -23,3 +24,21 @@
 #     command: ["grok", "-p", "{prompt}", "--cwd", "{workdir}", "--always-approve"]
 #   opencode:
 #     command: ["opencode", "run", "--auto", "{prompt}"]
+#
+# Env substitution (any string leaf after merge): ${VAR} or ${VAR:-default}.
+# Unset ${VAR} without a default fails config load. Literals need no env.
+#
+# Example: override OpenCode model and logs dir from the environment.
+#
+# orchestrator:
+#   logs_dir: "${ORC_LOGS_DIR:-.orc/logs}"
+#
+# providers:
+#   opencode-qwen38-max:
+#     command:
+#       - opencode
+#       - run
+#       - --auto
+#       - --model
+#       - "${ORC_OPENCODE_MODEL:-opencode-go/qwen3.8-max}"
+#       - "{prompt}"

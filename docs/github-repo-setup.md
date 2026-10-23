@@ -2,58 +2,74 @@
 
 Apply once after creating a repository from this template (or moving it to a new remote), then verify. Requires **repo admin** access.
 
-Agents: run `ensure-project-setup` (check, apply gaps, re-verify), or `setup-github-repo` directly (guide + verify unless asked to apply).
+Agents: `ensure-project-setup` (check, apply gaps, re-verify), or `setup-github-repo` (guide + verify unless asked to apply).
 
-This doc is the contract: the **outcomes** below. Tools are the agent's judgement (`gh`, REST or GraphQL API, Settings UI); [examples](github-repo-setup-examples.md) are not binding.
+Contract **outcomes** below. Tools are judgement (`gh`, API, Settings UI); [examples](github-repo-setup-examples.md) are not binding.
 
-Apply in this order. Protect `main` before turning on auto-merge, or a PR can merge unchecked.
+Apply in order. Remotes first so `gh` targets this project. Protect `main` before auto-merge.
 
-## 1. Actions
+## 1. Remotes
 
-GitHub Actions is enabled, and the allowed-actions policy permits the actions the workflows use (e.g. `actions/checkout`). Required checks and auto-merge run on Actions; without it, every PR waits forever.
+**Skip** if `gh repo view --json isTemplate -q .isTemplate` is `true`.
 
-## 2. Protect `main`
+Child project:
 
-A **ruleset** (**Settings → Rules → Rulesets**) targeting `main`, enforcement **Active**, with:
+| Check | Outcome |
+|-------|---------|
+| `origin` | Exists; URL is **this** project's GitHub repo |
+| `gh` default | `gh repo set-default --view` is that same repo (`origin`) |
+| `upstream` | Exists; URL is the template that created this repo |
+
+Missing/wrong `origin`, or wrong/unset `gh` default: **report and ask** — do not rename remotes or change the default without confirmation.
+
+Missing `upstream`: resolve template (`template_repository`, else ask), `git remote add upstream <url>`, then `gh repo set-default origin`.
+
+## 2. Actions
+
+Actions enabled; allowed-actions policy permits workflows' actions (e.g. `actions/checkout`). Required checks and auto-merge need Actions.
+
+## 3. Protect `main`
+
+**Ruleset** (Settings → Rules → Rulesets) on `main`, **Active**:
 
 | Rule | Value |
 |------|-------|
-| Bypass list | Empty: no one bypasses, including admins |
+| Bypass list | Empty (no bypass, including admins) |
 | Restrict deletions | On |
 | Block force pushes | On |
-| Require a pull request before merging | On; 0 required approvals (baseline; tighten later if needed) |
-| Require status checks to pass | On; **require branches to be up to date**; checks: `Spec lint`, `PR hygiene`, `Code lint`, `Unit tests`, `Coverage` (workflows under [`.github/workflows/`](../.github/workflows/)) |
+| Require a pull request before merging | On; 0 required approvals (baseline) |
+| Require status checks to pass | On; **branches up to date**; checks: `Spec lint`, `PR hygiene`, `Code lint`, `Unit tests`, `Coverage` ([`.github/workflows/`](../.github/workflows/)) |
 
-Existing classic branch protection on `main` may stay; GitHub enforces the stricter of both. Do not weaken it without the user's confirmation. The API accepts check names before the UI lists them.
+Classic protection on `main` may stay; GitHub keeps the stricter of both. Do not remove or weaken without confirmation. UI check pickers need a prior run; the API accepts names before then.
 
-Outcome: changes reach `main` only via PR; no one bypasses; PRs merge (or auto-merge) only when the five checks pass on a branch up to date with `main`.
+Outcome: `main` only via PR; no bypass; merge/auto-merge only when those five checks pass on a branch up to date with `main`.
 
-## 3. Merge settings
+## 4. Merge settings
 
-**Settings → General → Pull Requests**:
+Settings → General → Pull Requests:
 
-- **Allow squash merging** only; **merge commits** and **rebase merging** off.
-- Squash commit message default: **Pull request title and description**.
-- **Always suggest updating pull request branches** on, since up-to-date checks hold back stale PRs.
-- **Allow auto-merge** on. Same-repo, non-draft PRs then squash-merge once mergeable unless labeled `no-automerge` ([`automerge.yml`](../.github/workflows/automerge.yml)).
-- **Automatically delete head branches** on. After merge, GitHub deletes the head branch.
+- Squash only; merge commits and rebase off.
+- Squash message default: **Pull request title and description**.
+- **Always suggest updating pull request branches** on.
+- **Allow auto-merge** on. Same-repo non-draft PRs squash-merge when mergeable unless `no-automerge` ([`automerge.yml`](../.github/workflows/automerge.yml)).
+- **Automatically delete head branches** on. After a PR merges, GitHub deletes the head branch.
 
-## 4. Labels
+## 5. Labels
 
-Every label in [`.github/project-labels.yml`](../.github/project-labels.yml) exists on GitHub. If any is missing, sync: Actions → **Sync labels** → **Run workflow**, or `bash .github/scripts/sync-labels.sh` (needs `gh` and `yq`). Details: [`labels.md`](labels.md).
+Every label in [`.github/project-labels.yml`](../.github/project-labels.yml) exists on GitHub. Missing → Actions → **Sync labels** → **Run workflow**, or `bash .github/scripts/sync-labels.sh` (`gh`, `yq`). See [`labels.md`](labels.md).
 
-## 5. Verify
+## 6. Verify
 
-Read every setting back from GitHub and compare it with this doc; a write is not proof. Confirm Actions can run (e.g. a `Spec lint` run on `main` succeeds). Setup passes only when every outcome holds.
+Read every setting back from GitHub; a write is not proof. Confirm Actions can run (e.g. `Spec lint` on `main`). Pass only when every outcome holds.
 
 ## Blockers
 
-On a tooling error, try another tool first. When an outcome cannot be reached with the access available (e.g. rulesets unavailable for a private repo on GitHub Free, an organization policy overrides it, or the token lacks admin), setup **fails**:
+On tooling error, try another tool. When an outcome cannot be reached (plan limit, org policy, missing admin), setup **fails**:
 
-- Report the missing outcome, why, and the options (make the repo public, upgrade the plan, ask an org owner).
-- Stop: no PRs until it is resolved.
+- Report the missing outcome, why, and options (public repo, upgrade plan, org owner).
+- Stop: no PRs until resolved.
 - Never substitute a weaker setting.
 
 ## Related
 
-- Agent rules: [`../AGENTS.md`](../AGENTS.md) (protected `main`, small PRs)
+- [`../AGENTS.md`](../AGENTS.md) (protected `main`, small PRs)

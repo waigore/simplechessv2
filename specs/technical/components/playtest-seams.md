@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 |----|----------------|
 | R1 | Expose pause/resume, inspect, jump, and story-ID overlay (`DBG.1–4`) |
 | R2 | Emit telemetry events with `TEL.1–5` fields |
-| R3 | Compile or no-op out of public release Web export |
+| R3 | Absent from the public release Web export: the release preset exports `main_release.tscn`, which carries no seam or harness node, with the `release` feature |
 | R4 | Work in both Headless and Graphical playtest runners |
 | R5 | Set seed, record and replay input, and dump full state (`SIT.1`–`SIT.3`) on playtest builds only |
 
@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | Playtest agent / harness | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | Drive + observe |
-| C2 | [`CMP-shared-game-session`](shared-game-session.md), [`CMP-puzzle-session`](puzzle-session.md), [`CMP-presentation`](presentation.md) | listens | [`CTR-local-move`](../contracts/local-move.md), [`CTR-presentation`](../contracts/presentation.md) | Observe play state and story IDs (D6) |
+| C2 | [`CMP-shared-game-session`](shared-game-session.md), [`CMP-puzzle-session`](puzzle-session.md), [`CMP-presentation`](presentation.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) `O3` inspect | Observe play state and story IDs ([`LAY.D6`](../layers.md)); no subscription to their contracts |
 
 ## Owns / mutates
 
@@ -39,8 +39,12 @@ flowchart LR
   H[harness]
   P[CMP-playtest-seams]
   R[CMP-session-router]
+  S[CMP-shared-game-session / CMP-puzzle-session]
+  V[CMP-presentation]
   H -->|CTR-playtest-drive| P
   P -.->|E2 jump_requested| R
+  P -.->|O3 inspect| S
+  P -.->|O3 inspect| V
 ```
 
 ## Failure / concurrency / persistence

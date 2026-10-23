@@ -30,6 +30,11 @@ func _start() -> void:
 	parent.add_child(_router)
 	root.add_child(parent)
 	_router.start()
+	## Cold open: boot preload is deferred, and Ambient must not start before mode pick.
+	_router.start_music()
+	if _resolver.group_loaded("ambient"):
+		_fail("ambient loaded on cold open")
+		return
 	call_deferred("_after_boot")
 
 
@@ -41,8 +46,10 @@ func _after_boot() -> void:
 	var problem := ""
 	if not _resolver.group_loaded("boot") or _resolver.group_loaded("play"):
 		problem = "boot group"
-	elif _resolver.group_loaded("ambient"):
-		problem = "ambient loaded on cold open"
+	elif _router.stage != SessionRouter.STAGE_MODE_PICK:
+		problem = "mode pick did not become ready"
+	elif not _resolver.group_loaded("ambient"):
+		problem = "ambient must load when mode pick is ready"
 	elif _resolver.resolve(boot_id) == null:
 		problem = "boot id did not resolve"
 	elif _any_cached("play"):
@@ -52,20 +59,18 @@ func _after_boot() -> void:
 		return
 	_router.enter_shared_play()
 	_router.start_music()
-	if not _resolver.group_loaded("play") or _resolver.group_loaded("ambient"):
+	if not _resolver.group_loaded("play") or not _resolver.group_loaded("ambient"):
 		problem = "play entry"
 	elif _resolver.resolve(play_id) == null or not _resolver.is_cached(sfx_id):
 		problem = "play id did not resolve"
 	if not problem.is_empty():
 		_fail(problem)
 		return
-	_router.note_board_playable()
-	_router.start_music()
 	var before := _resolver.is_cached(play_id)
 	_router.enter_shared_play()
 	_router.start_music()
 	if not _resolver.group_loaded("ambient") or not _resolver.session_playable:
-		problem = "ambient after the board is playable"
+		problem = "ambient after mode pick ready"
 	elif not _resolver.is_cached(sfx_id) or not _resolver.is_cached(music_id):
 		problem = "approved audio did not resolve"
 	elif _resolver.unresolved_count("play") != 0 or _resolver.unresolved_count("ambient") != 0:

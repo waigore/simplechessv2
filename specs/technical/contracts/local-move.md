@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 - **Provider**: [`CMP-chess-rules`](../components/chess-rules.md)
 - **Consumers**: [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-puzzle-session`](../components/puzzle-session.md)
 - **Serves**: Instant play; Shared game; Puzzle stream
-- **Informed by**: pieces entities; end-conditions; F-move-advice.R6
+- **Informed by**: pieces entities; end-conditions; Instant play under [`CMP-advice-client`](../components/advice-client.md) R5
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md)
 
 ## Operations

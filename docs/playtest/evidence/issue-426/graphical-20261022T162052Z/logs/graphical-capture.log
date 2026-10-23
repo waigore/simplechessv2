@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+DISPLAY=macOS
+SAVE_PNG err=0 size=1280x720 path=user://issue426_graphical/01-cold-open-loading-silent.png
+CHECK cold-open stage=loading
+CHECK cold-open silent: ambient_loaded=false
+SAVE_PNG err=0 size=1280x720 path=user://issue426_graphical/02-mode-pick-ready-ambient-started.png
+CHECK mode-pick ready: ambient_loaded=true music_started=true bed_index=0
+SAVE_PNG err=0 size=1280x720 path=user://issue426_graphical/03-shared-setup-bed-continues.png
+CHECK shared-setup: music_started=true
+{"TEL.1":"shared.start","TEL.2":1792686764729,"TEL.3":"sess-1792686764589-25871-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue426_graphical/04-shared-play-bed-continues.png
+CHECK shared-play: play_loaded=true music_started=true
+{"TEL.1":"shared.resign","TEL.2":1792686764782,"TEL.3":"sess-1792686764589-25871-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792686764784,"TEL.3":"sess-1792686764589-25871-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792686764784,"TEL.3":"sess-1792686764589-25871-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.stop","TEL.2":1792686764787,"TEL.3":"sess-1792686764589-25871-playtest","TEL.4":"NAV.T8","TEL.5":"ok"}
+SAVE_PNG err=0 size=1280x720 path=user://issue426_graphical/05-mode-pick-return-bed-continues.png
+CHECK mode-pick return: stage=mode-pick ambient_loaded=true music_started=true
+ISSUE426_GRAPHICAL pass
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

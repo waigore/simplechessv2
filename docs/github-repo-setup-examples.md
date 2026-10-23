@@ -7,6 +7,19 @@ REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 gh api "repos/$REPO" --jq .permissions.admin   # expect true
 ```
 
+## Remotes
+
+Skip when this repo is the template (`gh repo view --json isTemplate -q .isTemplate` is `true`).
+
+```bash
+git remote get-url origin
+gh repo set-default --view          # expect same repo as origin
+gh api "repos/$REPO" --jq '.template_repository.full_name // empty'
+# If upstream missing (child only):
+# git remote add upstream https://github.com/<template_full_name>.git
+# gh repo set-default origin        # restore default after adding upstream
+```
+
 ## Actions
 
 ```bash
@@ -58,8 +71,7 @@ gh api "repos/$REPO/rulesets/<id>" --jq '{enforcement, bypass_actors}'
 ```bash
 gh api -X PATCH "repos/$REPO" \
   -F allow_squash_merge=true -F allow_merge_commit=false -F allow_rebase_merge=false \
-  -F allow_update_branch=true -F allow_auto_merge=true \
-  -F delete_branch_on_merge=true \
+  -F allow_update_branch=true -F allow_auto_merge=true -F delete_branch_on_merge=true \
   -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY
 
 gh api "repos/$REPO" --jq '{allow_squash_merge, allow_merge_commit, allow_rebase_merge,

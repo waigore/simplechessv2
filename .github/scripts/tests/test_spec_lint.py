@@ -146,5 +146,54 @@ class SpecLintTest(unittest.TestCase):
         self.write("specs/long.md", "word " * spec_lint.WORD_LIMIT)
         self.assertEqual(self.errors("word-limit"), [])
 
+    def test_unsafe_body_invocation_in_docs(self) -> None:
+        # Copyable or not, a doc that shows the sentinel as a flag value fails.
+        self.write("docs/issues/unsafe.md", "Run `gh issue edit 12 --body @-`.\n\ngh issue comment 12 --body @-\n")
+        findings = self.errors("unsafe-body")
+        self.assertEqual([(f.path, f.line) for f in findings], [("docs/issues/unsafe.md", 1), ("docs/issues/unsafe.md", 3)])
+        self.assertIn("--body-file -", findings[0].message)
+
+    def test_unsafe_body_file_in_skill(self) -> None:
+        path = ".agents/skills/create-project-task/SKILL.md"
+        self.edit(path, "## Steps\n", "## Steps\n\n`gh issue comment 12 --body-file @-`\n")
+        [finding] = self.errors("unsafe-body")
+        self.assertEqual(finding.path, path)
+        self.assertIn("--body-file -", finding.message)
+
+    def test_safe_body_file_invocation_passes(self) -> None:
+        self.write("docs/issues/safe.md", "Run `gh issue edit 12 --body-file -` or `gh issue create --body-file body.md`.\n")
+        self.assertEqual(self.errors("unsafe-body"), [])
+
+    def test_unsafe_body_in_fenced_skill_snippet_and_quoted(self) -> None:
+        path = ".agents/skills/implement-project-issue/SKILL.md"
+        self.edit(path, "## Rules\n", "## Rules\n\n```bash\ngh issue comment 12 --body-file \"@-\"\n```\n")
+        [finding] = self.errors("unsafe-body")
+        self.assertEqual(finding.path, path)
+        self.assertIn("--body-file -", finding.message)
+
+    def test_unsafe_body_in_issue_form(self) -> None:
+        path = ".github/ISSUE_TEMPLATE/task.yml"
+        original = self.read(path)
+        self.write(path, original + "\n# gh issue comment 12 --body @-\n")
+        [finding] = self.errors("unsafe-body")
+        self.assertEqual(finding.path, path)
+
+    def test_narrow_body_rule_in_docs_fails(self) -> None:
+        # The rule the guard outgrew: a heading-only body, or a staged read-back, shown as safe.
+        self.write("docs/issues/narrow.md", "An empty result or one that is exactly `@-` aborts the step.\n\n"
+                   "`--readback` also rejects a stored body with no `#` heading.\n")
+        findings = self.errors("unsafe-body")
+        self.assertEqual([(f.path, f.line) for f in findings], [("docs/issues/narrow.md", 1), ("docs/issues/narrow.md", 3)])
+        self.assertIn("heading", findings[0].message)
+
+    def test_widened_body_rule_passes(self) -> None:
+        self.write("docs/issues/wide.md", "The guard rejects a body whose only content is `@-`, a heading with no content, "
+                   "or an HTML comment. A `@-` inside a sentence is prose.\n")
+        self.assertEqual(self.errors("unsafe-body"), [])
+
+    def test_sentinel_inside_a_longer_token_is_prose(self) -> None:
+        self.write("docs/issues/prose.md", "Releases live at https://github.com/o/r/releases/tag/v1.2.3@-rc1 .\n")
+        self.assertEqual(self.errors("unsafe-body"), [])
+
 if __name__ == "__main__":
     unittest.main()

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -12,6 +14,9 @@ import yaml
 
 class ConfigError(Exception):
     """Invalid or incomplete orchestrator configuration."""
+
+
+_ENV_PATTERN = re.compile(r"\$\{([^}]+)\}")
 
 
 def deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
@@ -25,8 +30,39 @@ def deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]
     return result
 
 
+def _expand_env_string(value: str) -> str:
+    """Expand ${VAR} and ${VAR:-default} in a string; fail fast if VAR is unset."""
+
+    def repl(match: re.Match[str]) -> str:
+        expr = match.group(1)
+        if ":-" in expr:
+            name, default = expr.split(":-", 1)
+            return os.environ.get(name, default)
+        if expr not in os.environ:
+            raise ConfigError(f"Unset environment variable: {expr}")
+        return os.environ[expr]
+
+    return _ENV_PATTERN.sub(repl, value)
+
+
+def expand_env_in_tree(node: Any) -> Any:
+    """Recursively expand env placeholders in all string leaves."""
+    if isinstance(node, dict):
+        return {k: expand_env_in_tree(v) for k, v in node.items()}
+    if isinstance(node, list):
+        return [expand_env_in_tree(v) for v in node]
+    if isinstance(node, str):
+        return _expand_env_string(node)
+    return node
+
+
 @dataclass
 class GateConfig:
+    command: list[str]
+
+
+@dataclass
+class IssuesConfig:
     command: list[str]
 
 
@@ -38,6 +74,8 @@ class AgentConfig:
     enabled: bool
     prompt: str
     gate: GateConfig | None = None
+    issues: IssuesConfig | None = None
+    parallel_run: int = 1
     cooldown_seconds: float | None = None
     gate_backoff_initial_seconds: float | None = None
     gate_backoff_max_seconds: float | None = None
@@ -79,6 +117,16 @@ def _non_negative_seconds(value: Any, label: str) -> float:
     if not math.isfinite(number) or number < 0:
         raise ConfigError(f"{label} must be a number >= 0")
     return number
+
+
+def _parallel_run(body: dict[str, Any], name: str) -> int:
+    label = f"agents.{name}.parallel_run"
+    if "parallel_run" not in body or body["parallel_run"] is None:
+        return 1
+    value = body["parallel_run"]
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ConfigError(f"{label} must be an integer >= 1")
+    return value
 
 
 def _optional_seconds(body: dict[str, Any], key: str, label: str) -> float | None:
@@ -168,6 +216,16 @@ def _parse_agents(
             gate = GateConfig(
                 command=_as_command(gate_raw["command"], f"agents.{name}.gate.command")
             )
+        issues = None
+        issues_raw = body.get("issues")
+        if issues_raw is not None:
+            if not isinstance(issues_raw, dict) or "command" not in issues_raw:
+                raise ConfigError(f"agents.{name}.issues must have a command")
+            issues = IssuesConfig(
+                command=_as_command(
+                    issues_raw["command"], f"agents.{name}.issues.command"
+                )
+            )
         agents[name] = AgentConfig(
             name=name,
             skill=str(body.get("skill", name)),
@@ -175,6 +233,8 @@ def _parse_agents(
             enabled=bool(body.get("enabled", True)),
             prompt=str(body.get("prompt", "")).strip(),
             gate=gate,
+            issues=issues,
+            parallel_run=_parallel_run(body, name),
             cooldown_seconds=_optional_seconds(
                 body, "cooldown_seconds", f"agents.{name}.cooldown_seconds"
             ),
@@ -215,6 +275,8 @@ def load_config(config_dir: Path | None = None) -> AppConfig:
         merged = deep_merge(base, local)
     else:
         merged = base
+
+    merged = expand_env_in_tree(merged)
 
     orch_raw = merged.get("orchestrator") or {}
     if not isinstance(orch_raw, dict):

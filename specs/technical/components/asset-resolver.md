@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R2 | Preload Boot group before mode pick ready ([`AST.G1`](../asset-access.md)) |
 | R3 | Preload Play group on first play screen ([`AST.G2`](../asset-access.md)) |
 | R4 | Handle unresolved IDs per [`AST.R3`](../asset-access.md) |
-| R5 | Preload Ambient when music first starts after the board is playable, not on cold open ([`AST.G3`](../asset-access.md)) |
+| R5 | Preload Ambient when mode pick becomes ready (`EX.loading` → ready, after boot ready), not on cold open ([`AST.G3`](../asset-access.md)) |
 
 ## Communication
 

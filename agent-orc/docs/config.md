@@ -8,14 +8,25 @@
 | `.orc/config.local.yaml` | Child-owned deep-merge override (gitignored) |
 | [`.orc/config.local.example.yaml`](../../.orc/config.local.example.yaml) | Example local overrides |
 
-Load order: `config.yaml`, then deep-merge `config.local.yaml` if present. Nested maps merge; leaves in local win.
+Load order: `config.yaml`, then deep-merge `config.local.yaml` if present. Nested maps merge; leaves in local win. After merge, every string leaf is expanded for environment placeholders (see below).
+
+## Environment substitution
+
+Any string leaf in the merged config may use `${VAR}` or `${VAR:-default}` (no bare `$VAR`). Expansion runs once after deep-merge, before parsing.
+
+- Unset `${VAR}` with no `:-` default → config load fails with `ConfigError` naming the variable.
+- `${VAR:-default}` uses `default` when the variable is unset.
+- Literals need no environment variables.
+- Provider tokens `{prompt}`, `{workdir}`, `{skill}` and agent prompt tokens `{parallel_id}`, `{issue}` are filled when a run starts. Env expansion leaves them unchanged.
+
+Primary use case: provider `--model` strings (and other argv/path/prompt values) from the environment via `.orc/config.local.yaml`. Keep secrets and machine-specific values in the environment or local config, not in template `config.yaml`. See [`.orc/config.local.example.yaml`](../../.orc/config.local.example.yaml).
 
 ## Orchestrator keys
 
 - `cooldown_seconds` (default **10**): pause after a real agent run. `0` skips the pause.
 - `gate_backoff_initial_seconds` (optional): first gate-miss delay. Later misses double it. When the merged config omits it, it equals the merged `cooldown_seconds`. `0` stays `0` on every miss, so the cap does not apply and the gate runs again immediately.
 - `gate_backoff_max_seconds` (default **60**): cap for that doubling.
-- `stagger_seconds` (default **5**): delay between skill loop starts.
+- `stagger_seconds` (default **5**): delay between slot starts.
 - `worktrees_dir` / `logs_dir`: relative to repo root.
 - `pull_before_run` / `default_branch`: `git pull` before each worktree.
 
@@ -37,7 +48,7 @@ Default agent→provider: planner → `opencode-qwen38-max`; refine → `grok`; 
 
 ## Agents
 
-Each entry: `skill`, `provider`, `enabled`, `prompt`, optional `gate.command`, and optional timing. Each timing key falls back to the orchestrator value on its own:
+Each entry: `skill`, `provider`, `enabled`, `prompt`, optional `gate.command`, optional `parallel_run`, optional `issues.command`, and optional timing. Each timing key falls back to the orchestrator value on its own:
 
 | Key | Fallback |
 |-----|----------|
@@ -50,6 +61,10 @@ Values are numbers `>= 0`. Setting one key does not change the others. The templ
 Shipped `project-planner-agent` sets `cooldown_seconds: 3600` (one hour after each run, success or failure). It has no gate, so gate backoff does not run. Other agents leave cooldown unset and use 10 seconds.
 
 **Gate:** exit code **0** = pass (run agent); non-zero = miss. Omit `gate` → always pass. Stdout ignored.
+
+**parallel_run:** integer **>= 1**. Omitted means **1** (one loop, no issue claim). Above 1, that many slots run. Each slot keeps its own cooldown and gate backoff. `-n` counts per slot.
+
+**issues.command:** optional. Prints a JSON array of objects with `number`, the same shape as `gh issue list --json number`. Used only when `parallel_run` > 1. After the gate passes, the slot claims the lowest number that no slot in this process owns. No free number is a claim miss: same backoff as a gate miss, no worktree, and it does not count toward `-n`. The map lives in memory for this process only. The prompt placeholders `{parallel_id}` and `{issue}` are always filled (`issue` is `none` when nothing was claimed). Shipped workflow agents (review, refine, implement, verify, accept) include an `issues.command` and those placeholders; set `parallel_run` in `config.local.yaml` to turn claims on. Planner and babysit ship no issue list, so extra slots get ids only.
 
 Shipped workflow gates (open issues that include the status label):
 

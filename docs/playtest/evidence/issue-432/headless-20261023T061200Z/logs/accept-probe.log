@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"TEL.1":"shared.start","TEL.2":1792707116319,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.draw","TEL.2":1792707116322,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"confirm"}
+{"TEL.1":"shared.draw","TEL.2":1792707116324,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"offered"}
+{"TEL.1":"shared.draw","TEL.2":1792707116326,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1.7","TEL.5":"END.D2"}
+{"TEL.1":"shared.end","TEL.2":1792707116326,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"NAV.T6","TEL.5":"END.D2"}
+D2 accept-draw cue delta=0 stage=shared-result
+DBG.2 result state=n/a
+{"TEL.1":"shared.again","TEL.2":1792707116326,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792707116327,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792707116329,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792707116331,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792707116332,"TEL.3":"sess-1792707116243-15172-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+L2 resign cue delta=1 last=01a151f8-b7d8-7fe3-b94f-e3a562395d96
+unit END.L3 is_loss_end=true
+unit END.D5 is_loss_end=false
+ISSUE432_ACCEPT pass
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

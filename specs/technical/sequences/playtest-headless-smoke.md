@@ -19,7 +19,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | S4 | harness | playtest-seams | CTR-playtest-drive.O3 | inspect key play-state fields |
 | S5 | playtest-seams | harness | CTR-playtest-drive.E1 | Emit at least one `tel_event` with story ID when applicable |
 | S6 | harness | playtest-seams | CTR-playtest-drive.O1 then O2 | pause then resume |
-| S7 | harness | process | exit | Session ends without forced crash |
+| S7 | harness | Godot | exit | Session ends without forced crash |
 
 ## Branches
 

@@ -41,7 +41,7 @@ Orchestrators name the delegate skill and **when** to call it. They do not copy 
 
 - Contract detail lives in `docs/`, `specs/`, or the leaf skill. Callers link; they do not paraphrase.
 - Pattern: [`ensure-project-setup`](../.agents/skills/ensure-project-setup/SKILL.md) — “Do not restate their steps here.”
-- Dispatch agents (`issue-workflow-*-agent`) resolve one issue per [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md), then run the mapped `*-project-issue` skill. Discovery, queue, and independence rules stay in that doc and the delegates — not restated in each agent.
+- Dispatch agents (`issue-workflow-*-agent`) resolve one issue per [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md), then run the mapped `*-project-issue` skill. An agent-orc line `Assigned issue: N` is that `#n`; `none` means discover. Discovery, queue, and independence rules stay in that doc and the delegates.
 
 ### Cross-cutting hooks
 

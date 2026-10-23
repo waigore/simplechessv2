@@ -17,6 +17,8 @@ Independent verification (smoke test) for a typed issue in `status:pending-verif
 
 **Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
 
+**Evidence writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py`, read-back.
+
 **Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md)
 
 **Delegates when applicable:** [`review-code`](../review-code/SKILL.md) · [`review-asset`](../review-asset/SKILL.md) · [Verification in `docs/demos.md`](../../../docs/demos.md#verification) · [`docs/demo-style-assets.md`](../../../docs/demo-style-assets.md#verification)

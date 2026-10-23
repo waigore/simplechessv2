@@ -27,7 +27,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--count",
         type=int,
         default=None,
-        help="Each selected skill runs N times, then exit (daemon if omitted)",
+        help="Each parallel slot runs N times, then exit (daemon if omitted)",
     )
     parser.add_argument(
         "--yes",

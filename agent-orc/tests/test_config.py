@@ -9,6 +9,7 @@ from agent_orc.config import (
     ConfigError,
     deep_merge,
     enabled_agents,
+    expand_env_in_tree,
     load_config,
     resolved_cooldown_seconds,
     resolved_gate_backoff_initial_seconds,
@@ -130,7 +131,16 @@ def test_shipped_config_loads() -> None:
     assert babysit.provider == "cursor"
     assert babysit.gate is not None
     assert babysit.gate.command[-1].endswith("babysit-pr-agent/scripts/gate.sh")
-    assert len(enabled_agents(cfg)) == 8
+    assert len(enabled_agents(cfg)) == 7
+    assert planner.parallel_run == 1
+    assert planner.issues is None
+    assert "{parallel_id}" in planner.prompt and "{issue}" in planner.prompt
+    review = cfg.agents["issue-workflow-review-agent"]
+    assert review.parallel_run == 1
+    assert review.issues is not None
+    assert "status:pending-review" in review.issues.command
+    assert "{parallel_id}" in review.prompt and "{issue}" in review.prompt
+    assert babysit.issues is None
 
 
 def _write_agent_config(cfg_dir: Path, body: dict) -> None:
@@ -284,9 +294,145 @@ def test_per_agent_timing_override_from_local(tmp_path: Path) -> None:
     assert resolved_gate_backoff_max_seconds(agent, cfg.orchestrator) == 120
 
 
+def test_parallel_run_defaults_and_issues_command(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    body = _agent_body(
+        parallel_run=3,
+        issues={"command": ["gh", "issue", "list", "--json", "number"]},
+    )
+    _write_agent_config(cfg_dir, body)
+    agent = load_config(cfg_dir).agents["a"]
+    assert agent.parallel_run == 3
+    assert agent.issues is not None
+    assert agent.issues.command[0] == "gh"
+
+
+def test_parallel_run_omitted_is_one(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    _write_agent_config(cfg_dir, _agent_body())
+    agent = load_config(cfg_dir).agents["a"]
+    assert agent.parallel_run == 1
+    assert agent.issues is None
+
+
+@pytest.mark.parametrize("value", [0, -1, True, 1.5, "2"])
+def test_parallel_run_rejected(tmp_path: Path, value: object) -> None:
+    cfg_dir = tmp_path / ".orc"
+    _write_agent_config(cfg_dir, _agent_body(parallel_run=value))
+    with pytest.raises(ConfigError, match="parallel_run"):
+        load_config(cfg_dir)
+
+
+def test_issues_require_command(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    _write_agent_config(cfg_dir, _agent_body(issues={"limit": 10}))
+    with pytest.raises(ConfigError, match="issues"):
+        load_config(cfg_dir)
+
+
 def test_negative_timing_rejected(tmp_path: Path) -> None:
     cfg_dir = tmp_path / ".orc"
     body = _agent_body(gate_backoff_initial_seconds=-1)
     _write_agent_config(cfg_dir, body)
     with pytest.raises(ConfigError, match="gate_backoff_initial_seconds"):
         load_config(cfg_dir)
+
+
+def test_expand_env_in_tree_nested(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ORC_MODEL", "opencode-go/custom")
+    monkeypatch.delenv("ORC_MISSING", raising=False)
+    tree = {
+        "providers": {
+            "p": {
+                "command": [
+                    "opencode",
+                    "--model",
+                    "${ORC_MODEL}",
+                    "{prompt}",
+                ]
+            }
+        },
+        "agents": {"a": {"prompt": "run ${ORC_MODEL}"}},
+        "count": 3,
+        "flag": True,
+    }
+    out = expand_env_in_tree(tree)
+    assert out["providers"]["p"]["command"] == [
+        "opencode",
+        "--model",
+        "opencode-go/custom",
+        "{prompt}",
+    ]
+    assert out["agents"]["a"]["prompt"] == "run opencode-go/custom"
+    assert out["count"] == 3
+    assert out["flag"] is True
+
+
+def test_expand_env_default_when_unset(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("ORC_MODEL", raising=False)
+    assert (
+        expand_env_in_tree("${ORC_MODEL:-opencode-go/qwen3.8-max}")
+        == "opencode-go/qwen3.8-max"
+    )
+
+
+def test_expand_env_missing_required_fails(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("ORC_REQUIRED", raising=False)
+    with pytest.raises(ConfigError, match="Unset environment variable: ORC_REQUIRED"):
+        expand_env_in_tree("${ORC_REQUIRED}")
+
+
+def test_load_config_expands_env(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("ORC_TEST_MODEL", "opencode-go/from-env")
+    monkeypatch.setenv("ORC_TEST_LOGS", "/tmp/orc-logs")
+    cfg_dir = tmp_path / ".orc"
+    cfg_dir.mkdir()
+    (cfg_dir / "config.yaml").write_text(
+        yaml.dump(
+            {
+                "orchestrator": {"logs_dir": "${ORC_TEST_LOGS}"},
+                "providers": {
+                    "p": {
+                        "command": [
+                            "opencode",
+                            "run",
+                            "--model",
+                            "${ORC_TEST_MODEL}",
+                            "{prompt}",
+                        ]
+                    }
+                },
+                "agents": {
+                    "a": {
+                        "skill": "a",
+                        "provider": "p",
+                        "enabled": True,
+                        "prompt": "use ${ORC_TEST_MODEL}",
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    cfg = load_config(cfg_dir)
+    assert cfg.orchestrator.logs_dir == "/tmp/orc-logs"
+    assert cfg.providers["p"] == [
+        "opencode",
+        "run",
+        "--model",
+        "opencode-go/from-env",
+        "{prompt}",
+    ]
+    assert cfg.agents["a"].prompt == "use opencode-go/from-env"
+
+
+def test_load_config_literal_only_unchanged(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    body = _agent_body()
+    body["providers"]["p"]["command"] = ["opencode", "run", "--model", "literal", "{prompt}"]
+    _write_agent_config(cfg_dir, body)
+    cfg = load_config(cfg_dir)
+    assert cfg.providers["p"] == ["opencode", "run", "--model", "literal", "{prompt}"]
+    assert cfg.agents["a"].prompt == "go"

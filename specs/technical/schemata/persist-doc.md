@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | F1 | version | int | yes | Single version `1` |
 | F2 | player_elo | number | yes | `GS.playerElo`; [`PRG.P1`](../../design/progression.md) / [`PRG.A1`](../../design/progression.md); Wave 2 slot inside version `1`; commit [`PRG.M1`](../../design/progression.md) |
 | F3 | last_mode | `shared` / `puzzle` / `none` | yes | `GS.lastMode` |
-| F4 | recent_solved | string[] | yes | `GS.recentSolved`; [`PRG.P3`](../../design/progression.md); max 20; newest last; Wave 2 slot inside version `1`; commit [`PRG.M1`](../../design/progression.md) |
+| F4 | recent_solved | string[] | yes | `GS.recentSolved`; [`PRG.P3`](../../design/progression.md); max [`CFG.ELO_RECENT_WINDOW`](../../design/configuration.md); newest last; Wave 2 slot inside version `1`; commit [`PRG.M1`](../../design/progression.md) |
 
 `localStorage` key: `simplechessv2.persist.v1`.
 
@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 
 | ID | Invariant |
 |----|-----------|
-| I1 | `len(F4) ≤ 20` |
+| I1 | `len(F4) ≤ CFG.ELO_RECENT_WINDOW` ([`CFG.T7`](../configuration.md)) |
 | I2 | Commit replaces the whole document |
 | I3 | Failed write does not mutate stored bytes |
 

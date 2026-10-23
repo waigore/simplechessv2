@@ -35,10 +35,12 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 ```mermaid
 flowchart LR
-  S[sessions]
+  R[CMP-session-router]
+  U[CMP-puzzle-session]
   P[CMP-persist-store]
   LS[localStorage]
-  S -->|CTR-persist-document| P
+  R -->|CTR-persist-document| P
+  U -->|CTR-persist-document| P
   P --> LS
 ```
 

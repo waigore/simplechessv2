@@ -4,6 +4,8 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 Part of [`puzzle-play.md`](puzzle-play.md). Control rows for `UI-puzzle-play`.
 
+- **Serves**: Instant play, Cafe calm, Accessibility; [puzzle-stream](../../design/loops/puzzle-stream.md); [PER.R*](../../view/perception.md)
+
 ## Shows
 
 N/A — [`puzzle-play.md`](puzzle-play.md).

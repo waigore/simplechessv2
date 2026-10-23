@@ -27,6 +27,25 @@ jobs:
       - name: Lint specs
         run: python3 .github/scripts/spec_lint.py
 
+      - name: Guard a sample issue body
+        run: |
+          printf '## Description\n\nGuard smoke test.\n' | python3 .github/scripts/issue_body_guard.py -
+          printf '@-\n' > "$RUNNER_TEMP/sentinel.md"
+          printf '# Lost body\n\n@-\n' > "$RUNNER_TEMP/lost.md"
+          printf '# Heading only\n' > "$RUNNER_TEMP/heading.md"
+          for sample in sentinel lost heading; do
+            for mode in "" "--readback"; do
+              if python3 .github/scripts/issue_body_guard.py "$RUNNER_TEMP/$sample.md" $mode; then
+                echo "issue_body_guard accepted a lost-body shape: $sample $mode"
+                exit 1
+              fi
+            done
+          done
+          if python3 .github/scripts/gh_issue.py create --file "$RUNNER_TEMP/sentinel.md" -- --title "guard smoke"; then
+            echo "gh_issue.py accepted a literal '@-' before writing"
+            exit 1
+          fi
+
       - name: Check asset catalog
         run: python3 .github/scripts/asset_catalog.py
 

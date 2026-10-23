@@ -39,7 +39,7 @@ S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
-All keys below vary by locale (`en`, `zh-Hant`, `ja`).
+All keys below vary by locale (`en`, `zh-Hant`, `ja`), except `queen`, `rook`, `bishop`, and `knight`, which stay the `en` value in every locale ([L3](../localization.md)).
 
 | Key | String | Used in |
 |-----|--------|---------|
@@ -66,6 +66,8 @@ All keys below vary by locale (`en`, `zh-Hant`, `ja`).
 | rook | Rook | C6 |
 | bishop | Bishop | C6 |
 | knight | Knight | C6 |
+
+Copy owner `shared-play`; keys and `en` source per [localization.md](../localization.md) L1.
 
 ## Experience intent
 

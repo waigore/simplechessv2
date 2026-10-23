@@ -11,7 +11,7 @@ Agent entrypoint for this repo. Keep this file short; put detail in `docs/`, `sp
 ## Quick start commands
 
 - **Setup**: Install Godot 4.7.2. Clone this repo; no installable package yet.
-- **Run**: On a fresh checkout, import once: `godot --headless --path game --import --quit`. Then `godot --path game` (graphical) and `godot --headless --path game` (headless smoke). Web export to `build/web/`: `godot --headless --path game --export-release "Web Playtest" ../build/web/index.html`, or the same command with `"Web Release"` for the build without playtest seams.
+- **Run**: On a fresh checkout, import once: `godot --headless --path game --import --quit`. Then `godot --path game` (graphical) and `godot --headless --path game` (headless smoke). Web export to `build/web/`: `python3 .github/scripts/web_export.py --preset "Web Playtest"`, or `--preset "Web Release"` for the build without playtest seams (it exports `main_release.tscn` and restores `project.godot`). `Web release` publishes the release build to GitHub Pages.
 - **Test**: `python3 .github/scripts/gdscript_tests.py test` and `python3 .github/scripts/gdscript_tests.py coverage`. Playtest smoke: `godot --headless --path game --import --quit`, then `godot --headless --path game`.
 - **Build / export**: Godot HTML5/web export for the browser (ADR-0001).
 

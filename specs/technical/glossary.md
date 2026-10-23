@@ -20,4 +20,5 @@ Authoring rules: [`.agents/specs/rules/technical/glossary.md`](../../.agents/spe
 | Resolver | The one component that reads the asset manifest and turns an asset ID into a loaded engine resource. | [`asset-access.md`](asset-access.md); [`components/asset-resolver.md`](components/asset-resolver.md) |
 | Schema | The shape and lifecycle of a data object or entity in code. | [`schemata/`](schemata/) |
 | Sequence | An ordered interaction across components and contracts. | [`sequences/`](sequences/) |
+| String table | The compile-time copy of one owner in every shipped locale, keyed by copy key. | [`schemata/string-table.md`](schemata/string-table.md) |
 | Telemetry sink | Playtest build stdout: one JSON object per line (NDJSON) for `TEL.*` events. | [`verification.md`](verification.md) H3 |

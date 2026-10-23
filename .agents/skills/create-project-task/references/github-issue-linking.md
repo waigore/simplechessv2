@@ -11,18 +11,14 @@ gh repo view --json nameWithOwner --jq .nameWithOwner
 
 ## Create issue
 
+Safe invocation, the guard, and the read-back: [`docs/issues/body-writes.md`](../../../../docs/issues/body-writes.md). Compose the body to a file and write it with `python3 .github/scripts/gh_issue.py create --file /tmp/issue-body.md -- --title "…"`; never pass `@-` to `--body` or `--body-file`.
+
 ```bash
-gh issue create \
-  --title "TITLE" \
-  --label "type:task" \
-  --body "$(cat <<'EOF'
-## Description
-...
-EOF
-)"
+python3 .github/scripts/gh_issue.py create --file /tmp/issue-body.md \
+  -- --title "TITLE"
 ```
 
-Prefer `--body-file` for large bodies. Capture the issue URL/number from the command output.
+Capture the issue URL/number from the command output, then read the body back per the reference above. The wrapper already ran the guard and the read-back; it exits 1 when either fails.
 
 GitHub MCP alternative: `issue_write` with `method: create`, `labels`, `body`, and optional `parent_issue_number` (attaches as sub-issue at create time).
 

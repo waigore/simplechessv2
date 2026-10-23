@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 |----|------|---------|--------------|-------------------|
 | E1 | show_screen | screen id + state | Navigation | [`CMP-presentation`](../components/presentation.md) |
 | E2 | render_position | position, selection, marks | After apply or deal | [`CMP-presentation`](../components/presentation.md) |
-| E3 | play_cue | cue id | Design feedback; first music start after board playable (BED_M1/M2 → M1→M2→M1) | [`CMP-presentation`](../components/presentation.md) |
+| E3 | play_cue | cue id | Design feedback; first music start when mode pick becomes ready (BED_M1/M2 → M1→M2→M1) | [`CMP-presentation`](../components/presentation.md) |
 | E4 | show_advice | best move + eval, or none | Advice fields change | [`CMP-presentation`](../components/presentation.md) |
 | E5 | provide_assets | resolved resources by asset ID | After L2 resolves via [`CTR-asset-resolve`](asset-resolve.md) | [`CMP-presentation`](../components/presentation.md) |
 

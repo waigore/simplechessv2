@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 - **Trigger**: Player commits a move on the shared or puzzle board
 - **Participants**: [`CMP-presentation`](../components/presentation.md), [`CMP-shared-game-session`](../components/shared-game-session.md) or [`CMP-puzzle-session`](../components/puzzle-session.md), [`CMP-chess-rules`](../components/chess-rules.md), [`CMP-advice-client`](../components/advice-client.md) (Shared only)
 - **Contracts used**: [`CTR-presentation`](../contracts/presentation.md), [`CTR-local-move`](../contracts/local-move.md), [`CTR-advice-stream`](../contracts/advice-stream.md)
-- **Serves**: Instant play; F-move-advice.R6 R8
+- **Serves**: Instant play ([`CMP-advice-client`](../components/advice-client.md) R5, [`CTR-advice-stream`](../contracts/advice-stream.md) G1); F-move-advice.R8
 - **Informed by**: Shared / Puzzle loops; end-conditions
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md), [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
 

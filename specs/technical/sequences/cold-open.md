@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents/specs/rules/technical/sequences.md).
 
-- **Trigger**: Player opens the Web game
+- **Trigger**: Player opens the Web game; [`CMP-session-router`](../components/session-router.md) `R1` fires when Boot assets and persist load complete
 - **Participants**: [`CMP-asset-resolver`](../components/asset-resolver.md), [`CMP-persist-store`](../components/persist-store.md), [`CMP-session-router`](../components/session-router.md), [`CMP-presentation`](../components/presentation.md)
 - **Contracts used**: [`CTR-asset-resolve`](../contracts/asset-resolve.md), [`CTR-persist-document`](../contracts/persist-document.md), [`CTR-presentation`](../contracts/presentation.md)
 - **Serves**: Load time ≤3 s to playable; mode pick
@@ -13,8 +13,8 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 | ID | From | To | Via | Action / message |
 |----|------|----|-----|------------------|
-| S1 | boot | asset-resolver | CTR-asset-resolve.O2 | Preload Boot asset IDs |
-| S2 | boot | persist-store | CTR-persist-document.O1 | Load document or defaults |
+| S1 | session-router | asset-resolver | CTR-asset-resolve.O2 | Preload Boot asset IDs |
+| S2 | session-router | persist-store | CTR-persist-document.O1 | Load document or defaults |
 | S3 | persist-store | session-router | CTR-persist-document.O1 return | Provide Elo / Last mode |
 | S4 | session-router | presentation | CTR-presentation.E1 | Show mode pick when Boot ready |
 
@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | ID | Condition | Next steps | Outcome |
 |----|-----------|------------|---------|
 | B1 | Persist corrupt/missing | S2 defaults → S3 → S4 | Mode pick with Elo start |
-| B2 | Boot asset fail | AST.R3 handling → S4 if possible | Degraded visuals; session continues |
+| B2 | Boot asset fail | S1 `AST.R3` handling → S4 if possible | Degraded visuals; session continues |
 
 ## Postconditions
 
@@ -34,13 +34,12 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 ```mermaid
 sequenceDiagram
-  participant Boot
   participant AR as CMP-asset-resolver
   participant PS as CMP-persist-store
   participant SR as CMP-session-router
   participant V as CMP-presentation
-  Boot->>AR: S1 Boot preload
-  Boot->>PS: S2 load
+  SR->>AR: S1 Boot preload
+  SR->>PS: S2 load
   PS->>SR: S3 committed fields
   SR->>V: S4 mode pick
 ```

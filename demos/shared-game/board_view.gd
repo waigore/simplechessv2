@@ -21,11 +21,36 @@ const LEGAL_CAPTURE_W := 0.10
 const SELECT_STROKE := 0.06            # far under 10% of the body (PER.R1/R3)
 const REJECT_STROKE := 0.10
 const CHECK_STROKE := 0.10
-const PIECE_EXTENT := 0.85             # SPC.E1
+## SPC.E1 piece body extent. The catalog sprites carry a transparent side margin
+## and do not all reach the top of their canvas (the King does, the Pawn's crown
+## sits lower), so scaling the 512 px canvas drew bodies of 0.52-0.72 units —
+## the measured miss in defect #427 item 1. Every piece is fitted to the extent
+## and drawn on one ground line, which widens and lifts them into the square
+## while keeping the FRM.P2 height order the artwork already encodes.
+const PIECE_EXTENT := 0.85
+const SIDE_MARGIN := 0.16              # transparent side margin in every canvas
+## Solid wooden bevel (defect #427 item 4, SRF.M1 wood, AES.P3 physical set):
+## a frame around the 8x8 so the board reads as one carved wooden object on the
+## cafe table. It uses the board's own outer band, so it never covers a piece
+## square (SPC.E1) and never adds chrome inside the play area.
+const RIM_OUTER := 0.10                # wooden lip around the 0..8 square bounds
+const BEVEL_FRAME := 0.10              # raised frame outside the lip
+const BEVEL_LIP_COLOR := Color("8B5A3C")     # PAL.C2 grain, lit from top-left
+const BEVEL_SHADOW_COLOR := Color("43281D")  # C5 deepened, shadowed lip
+const BEVEL_FRAME_COLOR := Color("5C3A2A")   # PAL.C5 table wood, the frame
+const BEVEL_LINE := Color("2E1B13")    # darker than the bevel fill (SRF.O1)
+## PER.R7: file letters and rank numbers sit on the wooden lip, never inside a
+## square, in PAL.C9 ink at the UIS.T2 label size.
+const COORD_FONT_SIZE := 40            # screen px, ~0.55 unit at the demo scale
+const COORD_UNIT_PX := 72.0            # PRJ.P1: screen px per board unit here
+const COORD_COLOR := Color("2C2A28")   # PAL.C9
+const COORD_INSET := 0.045             # label center inside the wooden lip
+const COORD_CANVAS_UNITS := 10.0       # coordinate canvas covers the 10-unit frame
+const COORD_CANVAS_INSET := 1.0        # canvas edge to the 0..8 board bounds
 const TRAVEL_S := 0.15                 # PHY.M1 / MOT.T1 budget
 const RETURN_S := 0.15                 # PHY.M5 bad-drop return
 const SETTLE_S := 0.03                 # PHY.I1 settle window
-const PROMOTE_SPRITE_SCALE := 0.42
+const PROMOTE_SPRITE_SCALE := 0.75     # chooser cell share of the fitted body scale
 
 const PROMOTE_ORDER := ["q", "r", "b", "n"]  # I33/I34 demo chooser order
 
@@ -42,6 +67,7 @@ var _reject_flash: Line2D
 var _check_rim: Line2D
 var _promo_root: Node2D
 
+var _loaded_assets: Dictionary = {}
 var _pieces: Dictionary = {}   # square index -> Node2D
 var _drag_square := -1
 var _motion_busy := false
@@ -51,10 +77,12 @@ func setup(piece_ids: Dictionary, font: Font, board_bg: Texture2D) -> void:
 	_piece_ids = piece_ids
 	font_resource = font
 	_build_backdrop(board_bg)
+	_build_bevel()
 	_squares_root = Node2D.new()
 	_squares_root.name = "Squares"
 	add_child(_squares_root)
 	_build_squares()
+	_build_coords()
 	_pieces_root = Node2D.new()
 	_pieces_root.name = "Pieces"
 	_pieces_root.z_index = 3
@@ -92,7 +120,8 @@ func _make_rim(rim_name: String, color: Color, stroke: float) -> Line2D:
 
 
 func _build_backdrop(board_bg: Texture2D) -> void:
-	# PRJ.P1: the cafe backdrop art spans the 10-unit frame; squares draw above.
+	# PRJ.P1: the cafe backdrop art spans the 10-unit frame; the board draws above
+	# its middle, so only the cafe-table margin around the board shows.
 	if board_bg == null:
 		return
 	var backdrop := Sprite2D.new()
@@ -103,6 +132,102 @@ func _build_backdrop(board_bg: Texture2D) -> void:
 	var px := float(maxi(board_bg.get_width(), 1))
 	backdrop.scale = Vector2(10.0 / px, 10.0 / px)
 	add_child(backdrop)
+
+
+## Defect #427 item 4: a solid wooden bevel frames the 8x8 so the board reads as
+## one carved wooden object on the cafe table (AES.P3, SRF.M1). A lit/shadowed
+## lip sits against the squares and a raised frame outside it, all inside the
+## board's outer margin (SPC.P1): no square or piece is ever covered.
+func _build_bevel() -> void:
+	# Raised frame outside the lip, visible on the shadowed bottom and right
+	# edges and turned into the carved corner at the bottom-right.
+	var outer := 8.0 + RIM_OUTER + BEVEL_FRAME
+	_add_band("BevelFrameBottom", BEVEL_FRAME_COLOR,
+		Vector2(-RIM_OUTER, 8.0 + RIM_OUTER), Vector2(8.0 + RIM_OUTER, outer))
+	_add_band("BevelFrameRight", BEVEL_FRAME_COLOR,
+		Vector2(8.0 + RIM_OUTER, -RIM_OUTER), Vector2(outer, 8.0 + RIM_OUTER))
+	# Light falls from the top-left (SRF.S1): top and left lips in PAL.C2 grain,
+	# bottom and right lips in the deepened C5, so every square edge meets wood.
+	_add_band("BevelLipTop", BEVEL_LIP_COLOR,
+		Vector2(-RIM_OUTER, -RIM_OUTER), Vector2(8.0 + RIM_OUTER, RIM_OUTER))
+	_add_band("BevelLipLeft", BEVEL_LIP_COLOR,
+		Vector2(-RIM_OUTER, RIM_OUTER), Vector2(RIM_OUTER, 8.0 + RIM_OUTER))
+	_add_band("BevelLipBottom", BEVEL_SHADOW_COLOR,
+		Vector2(-RIM_OUTER, 8.0 - RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 + RIM_OUTER))
+	_add_band("BevelLipRight", BEVEL_SHADOW_COLOR,
+		Vector2(8.0 - RIM_OUTER, RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 - RIM_OUTER))
+	var outline := Line2D.new()
+	outline.name = "BevelOutline"
+	outline.width = 0.012
+	outline.default_color = BEVEL_LINE
+	outline.closed = true
+	for corner in [
+		Vector2(-RIM_OUTER, -RIM_OUTER), Vector2(outer, -RIM_OUTER),
+		Vector2(outer, outer), Vector2(-RIM_OUTER, outer),
+	]:
+		outline.add_point(corner)
+	add_child(outline)
+
+
+func _signed_area(points: PackedVector2Array) -> float:
+	var area := 0.0
+	for i in range(points.size()):
+		var a := points[i]
+		var b := points[(i + 1) % points.size()]
+		area += a.x * b.y - b.x * a.y
+	return area / 2.0
+
+
+## One rectangular wooden band (a bevel lip or frame edge), wound for Polygon2D.
+func _add_band(band_name: String, color: Color, lo: Vector2, hi: Vector2) -> void:
+	var corners := PackedVector2Array([lo, Vector2(lo.x, hi.y), hi, Vector2(hi.x, lo.y)])
+	if _signed_area(corners) < 0.0:
+		corners.reverse()
+	var band := Polygon2D.new()
+	band.name = band_name
+	band.color = color
+	band.polygon = corners
+	add_child(band)
+
+
+func _build_coords() -> void:
+	if font_resource == null:
+		return
+	# A Control's transform starts at its own top-left, so the labels are placed
+	# in canvas pixels and the node is scaled to the board's px-per-unit: a
+	# Label under the board's Node2D would keep its screen font size, and a
+	# one-unit Node2D glyph is below the font rasterizer's minimum size.
+	var coords := CoordLabels.new()
+	coords.name = "Coordinates"
+	coords.font = font_resource
+	coords.size = Vector2.ONE * (COORD_CANVAS_UNITS * COORD_UNIT_PX)
+	coords.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	coords.scale = Vector2.ONE / COORD_UNIT_PX
+	coords.position = Vector2(-COORD_CANVAS_INSET, -COORD_CANVAS_INSET)
+	coords.z_index = 1  # above the bevel and the squares, below the pieces
+	add_child(coords)
+
+
+## PER.R7: files a-h and ranks 1-8 in PAL.C9 ink on the wooden lip of the
+## bevel. Painted in canvas pixels; the node's scale maps them to board units.
+class CoordLabels extends Control:
+	var font: Font
+
+	func _draw() -> void:
+		for file in range(8):
+			var at := Vector2((float(file) + 0.5) * COORD_UNIT_PX,
+				(COORD_CANVAS_INSET + 8.0 + COORD_INSET) * COORD_UNIT_PX)
+			_stamp(String.chr(97 + file), at)
+		for rank_index in range(1, 9):
+			var at := Vector2((COORD_CANVAS_INSET - COORD_INSET) * COORD_UNIT_PX,
+				(COORD_CANVAS_INSET + float(8 - rank_index) + 0.5) * COORD_UNIT_PX)
+			_stamp(str(rank_index), at)
+
+	func _stamp(text: String, at: Vector2) -> void:
+		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, COORD_FONT_SIZE).x
+		var rise := float(font.get_ascent(COORD_FONT_SIZE) - font.get_descent(COORD_FONT_SIZE))
+		draw_string(font, at - Vector2(width, rise) / 2.0, text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, COORD_FONT_SIZE, COORD_COLOR)
 
 
 func _build_squares() -> void:
@@ -154,22 +279,33 @@ func _make_piece(index: int, code: String) -> void:
 	var sprite := Sprite2D.new()
 	sprite.name = "Sprite2D"  # demos move code finds it by name
 	sprite.centered = true
-	var texture := _texture_for(code)
-	if texture != null:
-		sprite.texture = texture
-		sprite.scale = Vector2.ONE * (PIECE_EXTENT / maxi(texture.get_width(), 1))
+	_apply_piece_texture(sprite, code)
 	node.set_meta("code", code)
 	node.add_child(sprite)
 	_pieces_root.add_child(node)
 	_pieces[index] = node
 
 
+## Fits a piece sprite to the SPC.E1 extent (defect #427 item 1). The twelve
+## catalog canvases share one layout: a transparent side margin around a body
+## whose crown reaches the top of the canvas in every type (the King included),
+## so one scale maps every body to the 0.85 extent and keeps the FRM.P2 height
+## order the artwork already encodes. Used for placement, promotion, and the
+## promotion chooser so every drawn piece shares one ground scale.
+func _apply_piece_texture(sprite: Sprite2D, code: String) -> void:
+	var texture := _texture_for(code)
+	if texture == null:
+		return
+	sprite.texture = texture
+	var canvas := float(maxi(texture.get_width(), 1))
+	# FRM.P1: a piece never grows past the extent.
+	var fitted := PIECE_EXTENT / (canvas * (1.0 - 2.0 * SIDE_MARGIN))
+	sprite.scale = Vector2.ONE * minf(1.0, fitted)
+
+
 func _texture_for(code: String) -> Texture2D:
 	var loader_resource: Resource = _loaded_assets.get(str(_piece_ids.get(code, "")), null)
 	return loader_resource as Texture2D
-
-
-var _loaded_assets: Dictionary = {}
 
 
 func provide_assets(resources_by_id: Dictionary) -> void:
@@ -318,11 +454,10 @@ func move_piece(mover: int, dest: int, capture_index: int, promo_kind: String, d
 	if sprite != null and sprite.texture != null:
 		base_scale = sprite.scale
 	if promo_kind != "":
-		var texture := _texture_for("%s%s" % [str(node.get_meta("code")).substr(0, 1), promo_kind.to_upper()])
-		if sprite != null and texture != null:
-			node.set_meta("code", str(node.get_meta("code")).substr(0, 1) + promo_kind)
-			sprite.texture = texture
-			sprite.scale = Vector2.ONE * (PIECE_EXTENT / maxi(texture.get_width(), 1))
+		var promoted_code := "%s%s" % [str(node.get_meta("code")).substr(0, 1), promo_kind.to_upper()]
+		if sprite != null and _texture_for(promoted_code) != null:
+			node.set_meta("code", promoted_code)
+			_apply_piece_texture(sprite, promoted_code)
 			base_scale = sprite.scale
 			sprite.modulate.a = 0.35
 	var tween := create_tween()
@@ -391,12 +526,12 @@ func show_promo_choice(dest_index: int, color: String) -> void:
 			Vector2(-0.24, -0.24), Vector2(0.24, -0.24), Vector2(0.24, 0.24), Vector2(-0.24, 0.24),
 		])
 		holder.add_child(backing)
-		var texture := _texture_for("%s%s" % [color, kind])
-		if texture != null:
+		if _texture_for("%s%s" % [color, kind]) != null:
 			var sprite := Sprite2D.new()
 			sprite.centered = true
-			sprite.texture = texture
-			sprite.scale = Vector2.ONE * (PIECE_EXTENT * PROMOTE_SPRITE_SCALE / maxi(texture.get_width(), 1))
+			# Same body-fitted scale as the board, then shrunk for the chooser cell.
+			_apply_piece_texture(sprite, "%s%s" % [color, kind])
+			sprite.scale *= PROMOTE_SPRITE_SCALE
 			holder.add_child(sprite)
 		_promo_root.add_child(holder)
 	_promo_root.visible = true
