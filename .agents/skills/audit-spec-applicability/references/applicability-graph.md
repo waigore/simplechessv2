@@ -23,7 +23,7 @@ Performance, load time, reliability, and observability need no design/UX file be
 | Hub | Follow-on |
 |-----|-----------|
 | View | Motion comfort ← accessibility Applies **and** camera moves alone. Haptics N/A if no haptic platform. Diagrams Applies if camera or projection Applies. Spatial/audio/physics N/A without world space / positional sound / simulated motion |
-| Aesthetics | Sound style N/A only if experience gives sound no role and no platform plays sound. Motion style N/A only if nothing animates. Accessible color and type, script coverage follow quality. Sheets Applies unless spec depth requires none |
+| Aesthetics | Sound style N/A only if experience gives sound no role and no platform plays sound. Motion style N/A only if nothing animates. Accessible color and type, script coverage follow quality. Reference sheets Applies unless spec depth requires none |
 | UX | Accessibility presentation, localization copy, save-failure follow quality |
 | Assets | Each kind row ← view dimensionality and rendered space, aesthetics medium, design and UX. Source types ← definition constraints. Sound assets ← aesthetics sound style. Localized assets and accessible variants follow quality. Asset access and load groups ← any Applies kind |
 | Technical | Optional globals Applies iff hub indexes the file. Diagrams Applies if any technical topic Applies. Persistence should agree with save durability when that Applies. Asset access and loading follows the assets topic of the same name |

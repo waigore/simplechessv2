@@ -42,7 +42,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 - [ ] Every section listed in [`ids.md`](rules/aesthetics/ids.md) gives each element an ID in the prescribed form, unique within its spec. Cited IDs exist.
 - [ ] Interface color roles use swatches that exist in `palette.md`.
 
-### Sheets and references
+### Reference sheets and reference images
 
 - [ ] Each sheet is self-contained, labels each drawn element with its ID, and shows what [sheets.md](rules/aesthetics/sheets.md) requires. Its values match the spec; it adds nothing.
 - [ ] Each reference image states what it shows, what not to take, provenance, and rights. No stored file lacks the rights to be stored.

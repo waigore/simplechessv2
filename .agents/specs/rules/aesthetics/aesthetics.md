@@ -18,7 +18,7 @@ The aesthetics state the game's style: how it looks and sounds. They cover the m
 - **Identified**: every style element has a stable ID per [ids.md](ids.md), so asset specs, reviews, and catalog records can cite it.
 - **Shown**: reference sheets under `sheets/` per [sheets.md](sheets.md), as spec depth requires.
 - **Topics that do not apply**: when a section does not apply (no sound, nothing animates), write "N/A — reason" grounded in the definition, design, or view. Do not delete the section.
-- **Concise**: each Markdown file stays under 500 words. Sheets and reference images are exempt. Split by logical unit and link. The type's own rules file says where to move the extra part.
+- **Concise**: each Markdown file stays under 500 words. Reference sheets and reference images are exempt. Split by logical unit and link. The type's own rules file says where to move the extra part.
 
 ## Medium
 
