@@ -43,10 +43,12 @@ const BEVEL_LINE := Color("2E1B13")    # darker than the bevel fill (SRF.O1)
 const BEVEL_LIP_INK_COLOR := Color("6E4430")
 const BEVEL_LIP_INK_BAND := 0.16       # depth of each coordinate band, units
 ## PER.R7: file letters and rank numbers sit on the wooden lip, never inside a
-## square, in PAL.C9 ink at the UIS.T2 label size.
+## square, at the UIS.T2 label size. Ink is cream PAL.C10 on the coordinate
+## band: ink PAL.C9 reaches only 1.72:1 there and PAL.C10 7.38:1, over R7's
+## 4.5:1 floor (defect #427 item 3).
 const COORD_FONT_SIZE := 40            # screen px, ~0.55 unit at the demo scale
 const COORD_UNIT_PX := 72.0            # PRJ.P1: screen px per board unit here
-const COORD_COLOR := Color("2C2A28")   # PAL.C9
+const COORD_COLOR := Color("F7F1E8")   # PAL.C10
 const COORD_INSET := 0.045             # label center inside the wooden lip
 const COORD_CANVAS_UNITS := 10.0       # coordinate canvas covers the 10-unit frame
 const COORD_CANVAS_INSET := 1.0        # canvas edge to the 0..8 board bounds
@@ -160,14 +162,12 @@ func _build_bevel() -> void:
 		Vector2(-RIM_OUTER, 8.0 - RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 + RIM_OUTER))
 	_add_band("BevelLipRight", BEVEL_SHADOW_COLOR,
 		Vector2(8.0 - RIM_OUTER, RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 - RIM_OUTER))
-	# Coordinate bands (defect #427 item 3, PER.R7): the letters and numbers sit
-	# in PAL.C9 ink, which needs a 4.5:1 field. On the lit PAL.C2 lip ink reaches
-	# only 2.5:1, so the left and bottom lips — where the ranks and files are —
-	# lie in PAL.C2 grain darkened to #6E4430. Plain PAL.C9 ink on that band is
-	# still only 1.7:1, so the labels' ink is to be replaced by cream (#F7F1E8,
-	# 6.6:1 with this band) in the next change; handoff: PER.R7, PAL.C2, PAL.C9,
-	# PAL.C10. The bands lie on the lip, outside the 8x8, so no piece square is
-	# covered.
+	# Coordinate bands (defect #427 item 3, PER.R7): the letters and numbers need
+	# a 4.5:1 field. On the lit PAL.C2 lip ink reaches only 2.5:1, so the left and
+	# bottom lips — where the ranks and files are — lie in PAL.C2 grain darkened
+	# to #6E4430, and the labels are drawn in cream PAL.C10: 7.4:1 on the band
+	# (ink PAL.C9 would be 1.7:1). The bands lie on the lip, outside the 8x8, so
+	# no piece square is covered.
 	_add_band("BevelLipLeftInk", BEVEL_LIP_INK_COLOR,
 		Vector2(-RIM_OUTER, -RIM_OUTER),
 		Vector2(-RIM_OUTER + BEVEL_LIP_INK_BAND, 8.0 + RIM_OUTER))
@@ -226,8 +226,9 @@ func _build_coords() -> void:
 	add_child(coords)
 
 
-## PER.R7: files a-h and ranks 1-8 in PAL.C9 ink on the wooden lip of the
-## bevel. Painted in canvas pixels; the node's scale maps them to board units.
+## PER.R7: files a-h and ranks 1-8 in cream PAL.C10 on the coordinate bands of
+## the wooden bevel (7.4:1 against the band). Painted in canvas pixels; the
+## node's scale maps them to board units.
 class CoordLabels extends Control:
 	var font: Font
 

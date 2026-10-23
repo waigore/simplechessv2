@@ -53,6 +53,7 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 ### Market
 
 - A commuter opens the game in the browser with no install — sessions are short and on the web.
+- The commuter market is served in English (`en`), Traditional Chinese (`zh-Hant`), and Japanese (`ja`), the three shipped locales — reach comes from browser players in those three languages, which is why [`quality.md`](quality.md) Localization is Applies.
 
 ## Spec depth
 
