@@ -44,11 +44,7 @@ A running playtest session must be observable. A headless session still yields i
 
 ## Situational
 
-| ID | Capability | When it applies |
-|----|------------|-----------------|
-| `SIT.1` | Deterministic seed | Protocol needs a repeatable start state |
-| `SIT.2` | Input replay | Protocol needs recorded input playback |
-| `SIT.3` | State dump | Protocol needs a full state snapshot beyond `DBG.2` |
+Capabilities used only when a protocol requires them — seed, replay, state dump, frame-time and load-time capture, a telemetry read assertion, and a phone-width viewport. Table, when each applies, and the seam that realizes it: [`tools-situational.md`](tools-situational.md).
 
 ## Constraints on ADR and technical
 

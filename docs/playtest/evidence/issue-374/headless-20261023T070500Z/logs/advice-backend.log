@@ -1,0 +1,5 @@
+2026-10-23 07:02:59,452 INFO advice_backend listening on 127.0.0.1:18492
+2026-10-23 07:05:59,849 INFO advice_backend advice_start fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 cap_ms=2000
+2026-10-23 07:05:59,859 INFO advice_backend advice_start fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 cap_ms=2000
+2026-10-23 07:05:59,913 INFO advice_backend advice_end reason=cancel elapsed_ms=64 disconnected=True
+2026-10-23 07:06:00,798 INFO advice_backend advice_end reason=cancel elapsed_ms=939 disconnected=True

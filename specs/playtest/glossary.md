@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/playtest/glossary.md`](../../.agents/spec
 | `not-judged` | A story outcome for a run that could not judge the story; never `pass`, and it makes its protocol `not-judged` there. | [`evidence.md`](evidence.md) |
 | Playtest protocol | A named agent procedure with cited story IDs, required tools, steps, and pass/fail. | [`procedures.md`](procedures.md) |
 | Protocol verdict | A protocol's outcome for one environment: `pass` only when every cited story is `pass`. | [`evidence.md`](evidence.md) |
-| Situational tool | A capability required only when a protocol cites it (seed, replay, state dump). | [`tools.md`](tools.md) |
+| Situational tool | A capability required only when a protocol cites it (seed, replay, state dump, timing, telemetry read, legibility viewport). | [`tools-situational.md`](tools-situational.md) |
 | Story outcome | The per-story judgement a run records: `pass`, `fail`, or `not-judged`. | [`evidence.md`](evidence.md) |
 | Telemetry event | A playtest-relevant runtime signal with the Must fields in [`tools.md`](tools.md). | [`tools.md`](tools.md) |
 | UX playtest | A level proving the build against one UX story or journey per protocol, Headless and Graphical. | [`ux/`](ux/) |
