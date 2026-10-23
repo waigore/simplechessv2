@@ -24,6 +24,7 @@ var _confirm_cancel: Button
 var _save_msg: Label
 var _dismiss: Button
 var _ui_font: Font
+var _text_scale := 1.0
 
 
 func _ready() -> void:
@@ -32,10 +33,13 @@ func _ready() -> void:
 	_show_state("S1")
 
 
-func configure(next_locale: String, next_last_mode: String, font: Font = null) -> void:
+func configure(
+	next_locale: String, next_last_mode: String, font: Font = null, text_scale: float = 1.0
+) -> void:
 	locale = next_locale
 	last_mode = next_last_mode
 	_ui_font = font
+	_text_scale = text_scale
 	if is_inside_tree():
 		_apply_font()
 		_apply_copy()
@@ -147,12 +151,15 @@ func _build() -> void:
 
 
 func _style_all() -> void:
-	UiChrome.style_button(_shared, false, _is_last_shared())
-	UiChrome.style_button(_quit)
-	UiChrome.style_button(_locale_btn)
-	UiChrome.style_button(_confirm_ok, true)
-	UiChrome.style_button(_confirm_cancel)
-	UiChrome.style_button(_dismiss, true)
+	UiChrome.style_button(_shared, false, _is_last_shared(), _text_scale)
+	UiChrome.style_button(_quit, false, false, _text_scale)
+	UiChrome.style_button(_locale_btn, false, false, _text_scale)
+	UiChrome.style_button(_confirm_ok, true, false, _text_scale)
+	UiChrome.style_button(_confirm_cancel, false, false, _text_scale)
+	UiChrome.style_button(_dismiss, true, false, _text_scale)
+	UiChrome.style_label(_title, true, _text_scale)
+	UiChrome.style_label(_confirm_msg, false, _text_scale)
+	UiChrome.style_label(_save_msg, false, _text_scale)
 
 
 func _apply_font() -> void:
@@ -194,7 +201,7 @@ func _shared_label() -> void:
 
 func _refresh_last_mode() -> void:
 	_shared_label()
-	UiChrome.style_button(_shared, false, _is_last_shared())
+	UiChrome.style_button(_shared, false, _is_last_shared(), _text_scale)
 
 
 func _is_last_shared() -> bool:

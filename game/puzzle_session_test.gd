@@ -34,6 +34,7 @@ func _run_all() -> String:
 		_check_first_move_is_applied,
 		_check_x1_empty_solution,
 		_check_x2_failed_read,
+		_check_deal_read_record_deals,
 		_check_w1_elo_and_recent,
 		_check_l5_reveal,
 		_check_l6_abandon,
@@ -134,7 +135,22 @@ func _record(
 	themes: Array = ["fork"],
 	fen: String = PuzzleSession.START_FEN
 ) -> Dictionary:
-	return {"PuzzleId": id, "FEN": fen, "Moves": moves, "Rating": rating, "Themes": themes}
+	## SCH-puzzle-catalog F1–F13 — the one shape CTR-puzzle-catalog-read delivers.
+	return {
+		"snapshot_id": PuzzleSession.SNAPSHOT_ID,
+		"puzzle_id": id,
+		"fen": fen,
+		"moves": moves,
+		"rating": rating,
+		"rating_deviation": 80,
+		"popularity": 90,
+		"nb_plays": 1200,
+		"themes": themes,
+		"game_url": "https://example.test/game",
+		"opening_tags": "",
+		"daily_date": "",
+		"any_checkmate_wins": themes.has("mateIn1"),
+	}
 
 
 # --- R1 dealing -------------------------------------------------------------------
@@ -218,6 +234,25 @@ func _check_x2_failed_read() -> String:
 		return "R1: a deal with no record must raise deal_due so the caller fetches one"
 	if session.player_elo != before:
 		return "F-puzzle-catalog X2 must leave GS.playerElo unchanged"
+	return ""
+
+
+## R1 / CTR-puzzle-catalog-read O1 → G1 — the one record the client read feeds the
+## deal as F1–F13 and opens the puzzle. A read that succeeded must never read as
+## `empty_solution`, which is what a field-name mismatch between the wire record
+## and the session would produce.
+func _check_deal_read_record_deals() -> String:
+	var session := _session()
+	var read := CatalogWireReader.validate(_record("abc12", 1000))
+	if not bool(read.get("ok", false)):
+		return "the fixture must be a valid SCH-puzzle-catalog record (got %s)" % read
+	var dealt: Dictionary = session.deal([read["record"]])
+	if not bool(dealt.get("ok", false)):
+		return "R1: a record read through CTR-puzzle-catalog-read must deal (got %s)" % dealt
+	if session.puzzle_id != "abc12" or session.puzzle_elo != 1000:
+		return "F2/F5: the dealt puzzle must take the record's puzzle_id and rating"
+	if session.required_sequence.size() != 1:
+		return "I2: the derived required sequence must follow the record's moves"
 	return ""
 
 
@@ -783,7 +818,7 @@ func _promotion_record() -> Dictionary:
 	# R3 — the first move is the opponent's and is applied before presenting; the last-rank
 	# push is the required Solving-side step.
 	var record := _record("promo", 1400, ["h8h7", "g7g8q"])
-	record["FEN"] = PROMOTION_FEN
+	record["fen"] = PROMOTION_FEN
 	return record
 
 

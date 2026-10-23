@@ -48,6 +48,8 @@ func _after_boot() -> void:
 	if problem.is_empty():
 		problem = _no_english_leak_in_puzzle_play()
 	if problem.is_empty():
+		problem = _copy_gate_negative_cases()
+	if problem.is_empty():
 		problem = _locale_helpers()
 	if problem.is_empty():
 		problem = _font_chain_and_glyphs()
@@ -83,25 +85,78 @@ func _all_locales_suites() -> Array:
 
 func _all_locales_populated() -> String:
 	for suite in _all_locales_suites():
-		var label := str(suite[0])
-		var keys: PackedStringArray = suite[1]
-		var getter: Callable = suite[2]
-		if keys.is_empty():
-			return "%s has no keys" % label
-		for locale in StringTable.LOCALES:
-			for key in keys:
-				var text := str(getter.call(key, locale))
-				if text.is_empty() or text == key:
-					return "%s.%s missing in %s" % [label, key, locale]
-				var marked := StringTable.every_locale_row(label, key)
-				if locale == "en":
-					continue
-				var en := str(getter.call(key, "en"))
-				if marked and text != en:
-					return "%s.%s not en-equal in %s" % [label, key, locale]
-				if not marked and text == en:
-					return "%s.%s still English in %s" % [label, key, locale]
+		var trouble := _owner_missing(suite)
+		if not trouble.is_empty():
+			return trouble
 	return ""
+
+
+## SCH-string-table I1/I2/I4/I5 for one `[owner, keys, getter]` suite (#483 gate):
+## a key missing from any shipped locale names `owner.key`; a marked row must stay
+## `en`-equal and a varying row must not read its `en` value. Shared by the shipped
+## check above and `_copy_gate_negative_cases`, so there is one mechanism, not two.
+func _owner_missing(suite: Array) -> String:
+	var label := str(suite[0])
+	var keys: PackedStringArray = suite[1]
+	var getter: Callable = suite[2]
+	if keys.is_empty():
+		return "%s has no keys" % label
+	for locale in StringTable.LOCALES:
+		for key in keys:
+			var text := str(getter.call(key, locale))
+			if text.is_empty() or text == key:
+				return "%s.%s missing in %s" % [label, key, locale]
+			var marked := StringTable.every_locale_row(label, key)
+			if locale == "en":
+				continue
+			var en := str(getter.call(key, "en"))
+			if marked and text != en:
+				return "%s.%s not en-equal in %s" % [label, key, locale]
+			if not marked and text == en:
+				return "%s.%s still English in %s" % [label, key, locale]
+	return ""
+
+
+## The shipped `puzzle-play` suite, or an empty-key suite when the owner is not shipped.
+func _puzzle_play_suite() -> Array:
+	var suite := _all_locales_suite("puzzle-play")
+	if not suite.is_empty():
+		return suite
+	return ["puzzle-play", PackedStringArray(), Callable(StringTable, "puzzle_play")]
+
+
+## #334 non-vacuity proof: the shipped `puzzle-play` suite passes the gate above,
+## and each mutation the leaf names is reported with its `owner.key` message. A
+## dropped `zh-Hant` key and an `en`-copied varying key must fail; the same copy on
+## a marked `L3` piece row must pass. A green run therefore cannot mean the owner
+## stopped being checked — the checks are exercised, not just satisfied.
+func _copy_gate_negative_cases() -> String:
+	var suite := _puzzle_play_suite()
+	var owner := str(suite[0])
+	var clean := _owner_missing(suite)
+	if not clean.is_empty():
+		return "shipped %s fails its own gate: %s" % [owner, clean]
+	var dropped: Array = [owner, suite[1], _with_row(suite[2], "cue_failed", "zh-Hant", "")]
+	var want_missing := "%s.cue_failed missing in zh-Hant" % owner
+	if _owner_missing(dropped) != want_missing:
+		return "a dropped zh-Hant key passed the gate"
+	var copied: Array = [owner, suite[1], _with_row(suite[2], "reveal", "ja", "Reveal")]
+	var want_english := "%s.reveal still English in ja" % owner
+	if _owner_missing(copied) != want_english:
+		return "an en-copied varying key passed the gate"
+	var marked := _with_row(suite[2], "queen", "ja", "Queen")
+	var marked_trouble := _owner_missing([owner, suite[1], marked])
+	if not marked_trouble.is_empty():
+		return "an en-copied marked piece row failed the gate: %s" % marked_trouble
+	return ""
+
+
+## `base` with `key` in `locale` replaced by `value`, all other reads unchanged.
+func _with_row(base: Callable, key: String, locale: String, value: String) -> Callable:
+	return func(read_key: String, read_locale: String) -> String:
+		if read_key == key and read_locale == locale:
+			return value
+		return str(base.call(read_key, read_locale))
 
 
 ## SCH-string-table I5 / L3: the `mode-pick` own name is not a stored key
@@ -516,7 +571,7 @@ func _check_shared_play_layouts() -> String:
 		err = await _drive_play_locale(locale)
 		if not err.is_empty():
 			break
-		if board.offset_top < Presentation.PLAY_CHROME_TOP_PX - 0.5:
+		if board.offset_top < _presentation.play_chrome_top_px() - 0.5:
 			err = "shared-play %s cropped board under chrome" % locale
 			break
 	_router.locale = "en"

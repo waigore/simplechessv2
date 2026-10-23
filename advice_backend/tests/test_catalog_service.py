@@ -137,6 +137,43 @@ class SelectionTests(unittest.TestCase):
         assert picked is not None
         self.assertEqual(picked.puzzle_id, "old", "only the newest id is inside a window of one")
 
+    def test_an_unseen_puzzle_outranks_a_just_solved_one_inside_the_band(self) -> None:
+        # #329 verification: a puzzle solved on the previous deal sat at the
+        # player's Elo, while an unseen one was only 200 away. Widening must
+        # reach the unseen puzzle rather than re-deal the recent one.
+        picked = select_puzzle(
+            [_record("recent", 1480), _record("unseen", 1680)], 1480.0, ("recent",)
+        )
+        assert picked is not None
+        self.assertEqual(picked.puzzle_id, "unseen")
+
+    def test_an_unseen_puzzle_one_widen_step_away_beats_a_tighter_recent_one(self) -> None:
+        # #329 verification: recent 1570 is outside ±100 and unseen 1591 is
+        # outside it too; one widen step reaches both, and the unseen one wins.
+        picked = select_puzzle(
+            [_record("recent", 1570), _record("unseen", 1591)], 1480.0, ("recent",)
+        )
+        assert picked is not None
+        self.assertEqual(picked.puzzle_id, "unseen")
+
+    def test_an_unseen_puzzle_far_outside_the_band_beats_the_previous_deal(self) -> None:
+        # #329 verification: a 1000-Elo-away unseen puzzle still outranks the
+        # puzzle solved one deal ago; a recent id is the last rule relaxed.
+        picked = select_puzzle(
+            [_record("recent", 1480), _record("far", 2480)], 1480.0, ("recent",)
+        )
+        assert picked is not None
+        self.assertEqual(picked.puzzle_id, "far")
+
+    def test_the_nearest_unseen_puzzle_wins_once_the_band_spans_them_all(self) -> None:
+        picked = select_puzzle(
+            [_record("recent", 1000), _record("nearer", 1900), _record("farther", 2600)],
+            1000.0,
+            ("recent",),
+        )
+        assert picked is not None
+        self.assertEqual(picked.puzzle_id, "nearer")
+
     def test_an_empty_snapshot_deals_nothing(self) -> None:
         self.assertIsNone(select_puzzle([], 1000.0, ()))
 
@@ -268,6 +305,33 @@ class IntegrityTests(unittest.TestCase):
 
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(main(["check", str(self._snapshot([self._row()]))]), 1)
+
+    def test_a_slice_passes_i1_at_its_own_count(self) -> None:
+        # #329 verification AC5: the deploy path must be demonstrable on a
+        # prepared slice without the host-side export.
+        from advice_backend.catalog import check_snapshot
+
+        slice_path = self._snapshot([self._row("a"), self._row("b")])
+        self.assertEqual(check_snapshot(slice_path, expected_count=2), [])
+
+    def test_a_slice_still_fails_i1_at_a_count_it_does_not_hold(self) -> None:
+        from advice_backend.catalog import check_snapshot
+
+        failures = check_snapshot(self._snapshot([self._row()]), expected_count=2)
+        self.assertEqual(failures, ["I1: expected 2 records, found 1"])
+
+    def test_the_expected_count_defaults_to_the_served_snapshot(self) -> None:
+        from advice_backend.catalog import EXPECTED_RECORD_COUNT
+
+        self.assertEqual(EXPECTED_RECORD_COUNT, 6_157_341)
+
+    def test_the_check_command_accepts_a_slice_count(self) -> None:
+        from advice_backend.catalog import main
+
+        slice_path = self._snapshot([self._row(), self._row("b")])
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(main(["check", str(slice_path), "--expected-count", "2"]), 0)
+            self.assertEqual(main(["check", str(slice_path), "--expected-count", "3"]), 1)
 
     def test_the_build_command_writes_a_checkable_snapshot(self) -> None:
         from advice_backend.catalog import main

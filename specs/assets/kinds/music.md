@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 |----|----------|-------|
 | S1 | Genre | Soft cafe ambient — acoustic guitar / light jazz; no lyrics (SND.M1 M2) |
 | S2 | Tempo | 70–90 BPM |
-| S3 | Loudness | ~−18 LUFS integrated (SND.L1); under SFX |
+| S3 | Loudness | −18 LUFS integrated, ITU-R BS.1770 (SND.L1); under SFX |
 | S4 | Duration | 150–210 s (3 min ±30 s); end-to-end, not a loop |
 | S5 | Format | OGG |
 
@@ -62,7 +62,7 @@ Full recipe: [`music/recipes.md`](music/recipes.md).
 | ID | Check | Method | Pass criterion |
 |----|-------|--------|----------------|
 | K1 | Genre / lyrics | Listen | SND.M1 M2; no lyrics; V1 and V2 same style |
-| K2 | Loudness | Meter | ~L1; under SFX |
+| K2 | Loudness | Meter | −18 LUFS integrated (L1); under SFX |
 | K3 | Duration | Measure | 150–210 s (3 min ±30 s); [`CAT.I11`](../catalog/audio-duration.md) |
 | K4 | Budget | File size | ≤ 3 MB |
 | K5 | Playlist join | Listen A→B and B→A | Clean start; no harsh cut |

@@ -16,6 +16,7 @@ var _shared_game: Label
 var _play_again: Button
 var _stop: Button
 var _ui_font: Font
+var _text_scale := 1.0
 
 
 func _ready() -> void:
@@ -23,13 +24,17 @@ func _ready() -> void:
 	_apply_copy()
 
 
-func configure(next_locale: String, next_result_key: String, font: Font = null) -> void:
+func configure(
+	next_locale: String, next_result_key: String, font: Font = null, text_scale: float = 1.0
+) -> void:
 	locale = next_locale
 	result_key = next_result_key if not next_result_key.is_empty() else "result_draw"
 	_ui_font = font
+	_text_scale = text_scale
 	if is_inside_tree():
 		_apply_font()
 		_apply_copy()
+		_style_all()
 
 
 func focusable_controls() -> Array[Control]:
@@ -90,8 +95,15 @@ func _build() -> void:
 	_stop.mouse_entered.connect(_on_point.bind("C2"))
 	r2.add_child(_stop)
 
-	UiChrome.style_button(_play_again, true)
-	UiChrome.style_button(_stop)
+	_style_all()
+
+
+func _style_all() -> void:
+	UiChrome.style_label(_title, true, _text_scale)
+	UiChrome.style_label(_result, true, _text_scale)
+	UiChrome.style_label(_shared_game, false, _text_scale)
+	UiChrome.style_button(_play_again, true, false, _text_scale)
+	UiChrome.style_button(_stop, false, false, _text_scale)
 
 
 func _apply_font() -> void:

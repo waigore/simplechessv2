@@ -1,0 +1,15 @@
+# with labels docs/playtest/evidence/issue-63/graphical-20261023T130112Z/screenshots/demo-shared-game-exercise.png (720x1280)
+# labels off  /home/waigore/simplechessv2/scratch-acc63/nolabels/demo-shared-game-exercise.png
+# board 8x8 x 72..648, y 352..928; 72 px per unit
+# label ink pixels: 3386
+# ink row bands (y): 343-371, 415-443, 487-515, 559-587, 631-659, 703-731, 775-803, 847-875, 884-924
+# ink column bands (x): 57-79, 97-100, 115-115, 170-174, 188-189, 244-260, 313-332, 386-404, 461-476, 529-548, 602-605, 619-620
+# ink inside the 8x8: 1811 of 3386 pixels (53%)
+#   squares painted: g1 405px, f1 217px, d1 149px, a8 142px, a4 134px, a3 127px, a5 118px, a6 106px, h1 92px, e1 92px, c1 62px, a2 59px, a7 40px, b1 37px, a1 31px
+# background under label ink (solid pixels) and its contrast with PAL.C10:
+#   (232, 213, 181)  1201px  1.28:1 UNDER 4.5:1
+#   (110, 68, 48)   639px  7.38:1 ok
+#   (139, 90, 60)   546px  5.16:1 ok
+#   (46, 27, 19)    78px 14.58:1 ok
+# ink under the PER.R7 contrast floor: 1201 of 2499 solid pixels (48%)
+FAIL (PER.R7): 1811 label pixels are painted inside the 8x8; 1201 label pixels sit under 4.5:1
