@@ -24,6 +24,8 @@ jobs:
   build:
     name: Release export
     runs-on: ubuntu-latest
+    outputs:
+      pages_present: ${{ steps.pages_probe.outputs.present }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -104,9 +106,47 @@ jobs:
         with:
           path: build/web
 
+      # Measurement only: this probe decides whether `deploy` can run, and never
+      # any other part of this job's verdict. `web_export.py --pages-status`
+      # owns the status mapping so the shell cannot invent one.
+      - name: Probe for a Pages site
+        id: pages_probe
+        run: |
+          set -uo pipefail
+          token="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
+          if [[ -z "${token}" ]]; then
+            echo "::error::no GITHUB_TOKEN or GH_TOKEN for the Pages probe"
+            exit 1
+          fi
+          status="$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer ${token}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" || true)"
+          echo "Pages probe status: ${status:-<none>}"
+          present="$(python3 .github/scripts/web_export.py --pages-status "${status}")"
+          echo "present=${present}" >> "${GITHUB_OUTPUT}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Pages not enabled — deploy skipped
+        if: ${{ !cancelled() && steps.pages_probe.outputs.present == 'false' }}
+        run: |
+          {
+            echo "### Web release created no deployment"
+            echo
+            echo "Godot Pages has no site for \`${GITHUB_REPOSITORY}\`, so \`Deploy to Pages\` is skipped."
+            echo "The export and its checks above still ran; the run is green because nothing failed."
+            echo
+            echo "A repository admin enables it: Settings → Pages → Build and deployment → Source: **GitHub Actions**."
+            echo "Tracking defect: #510. After enabling, re-run this workflow to publish."
+          } | tee -a "${GITHUB_STEP_SUMMARY}"
+
   deploy:
     name: Deploy to Pages
     needs: build
+    # Only this run's probe decides: a site that appears later needs a new run.
+    if: ${{ needs.build.outputs.pages_present == 'true' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages

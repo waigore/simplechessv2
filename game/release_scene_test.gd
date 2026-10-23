@@ -36,10 +36,14 @@ func _release_problem() -> String:
 
 
 func _seam_problem(host: Node) -> String:
-	if host.get_node_or_null("PlaytestSeams") != null:
-		return "release scene keeps PlaytestSeams"
-	if host.get_node_or_null("PlaytestHarness") != null:
-		return "release scene keeps PlaytestHarness"
+	var scene := _export_main_scene("Web Release")
+	if scene != "res://main_release.tscn":
+		return "the Web Release export starts at %s, not main_release.tscn" % scene
+	if (
+		host.get_node_or_null("PlaytestSeams") != null
+		or host.get_node_or_null("PlaytestHarness") != null
+	):
+		return "release scene keeps a playtest seam node"
 	if host.get_node_or_null("SessionRouter") == null:
 		return "release scene loses SessionRouter"
 	var router := host.get_node("SessionRouter")
@@ -48,3 +52,15 @@ func _seam_problem(host: Node) -> String:
 	if int(router.play_snapshot().get("seed", -1)) != 0:
 		return "release snapshot seed is not 0"
 	return ""
+
+
+## The scene a preset exports at, read from the table `web_export.py` exports
+## with (CTR-playtest-drive.G2). Empty when unset, unreadable, or missing the preset.
+func _export_main_scene(preset: String) -> String:
+	var table_path := OS.get_environment("CHESS_EXPORT_SCENES").strip_edges()
+	if table_path.is_empty():
+		return ""
+	var table: Variant = JSON.parse_string(FileAccess.get_file_as_string(table_path))
+	if typeof(table) != TYPE_DICTIONARY:
+		return ""
+	return str((table as Dictionary).get(preset, ""))

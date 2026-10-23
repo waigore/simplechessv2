@@ -11,6 +11,7 @@ still opens the playtest scene.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -21,6 +22,10 @@ RELEASE_PRESET = "Web Release"
 RELEASE_MAIN_SCENE = "res://main_release.tscn"
 PLAYTEST_PRESET = "Web Playtest"
 PLAYTEST_MAIN_SCENE = "res://main.tscn"
+
+# The one table of which scene each preset starts at. `game/release_scene_test.gd`
+# reads the same file, so the release entry point has a single owner.
+SCENE_TABLE = Path(__file__).resolve().parent / "web_export_scenes.json"
 
 
 class ExportError(RuntimeError):
@@ -39,11 +44,31 @@ def set_main_scene(text: str, scene: str) -> str:
 
 def main_scene_for(preset: str) -> str:
     """The `run/main_scene` a preset exports with."""
-    if preset == RELEASE_PRESET:
-        return RELEASE_MAIN_SCENE
-    if preset == PLAYTEST_PRESET:
-        return PLAYTEST_MAIN_SCENE
-    raise ExportError(f"unsupported preset: {preset}")
+    table = json.loads(SCENE_TABLE.read_text(encoding="utf-8"))
+    try:
+        return table[preset]
+    except KeyError:
+        raise ExportError(f"unsupported preset: {preset}") from None
+
+
+def pages_present_from_status(status: str) -> bool:
+    """Whether the Pages probe's HTTP status means a site exists.
+
+    Only `200` (present) and `404` (absent) are answers. Any other status — a
+    `403`/`401` from a bad token, a `500`, or curl's `000` for no response — is
+    a failed measurement, never a missing site, so the probe step fails.
+    """
+    code = status.strip()
+    if code == "200":
+        return True
+    if code == "404":
+        return False
+    raise ExportError(f"Pages probe returned {code or '<empty>'}")
+
+
+def release_gate(pages_present: bool) -> bool:
+    """Whether the `deploy` job runs, derived from this run's probe only."""
+    return pages_present is True
 
 
 def ensure_release_settings(text: str) -> None:
@@ -109,10 +134,24 @@ def preset_export_path(repo_root: Path, preset: str) -> Path:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--preset", required=True, choices=[PLAYTEST_PRESET, RELEASE_PRESET])
+    target = parser.add_mutually_exclusive_group(required=True)
+    target.add_argument("--preset", choices=[PLAYTEST_PRESET, RELEASE_PRESET])
+    target.add_argument(
+        "--pages-status",
+        metavar="HTTP_STATUS",
+        help="map a Pages probe status to present/absent (the release deploy gate)",
+    )
     parser.add_argument("--repo", default=".")
     parser.add_argument("--godot", default=os.environ.get("GODOT_BIN", "godot"))
     args = parser.parse_args(argv)
+    if args.pages_status is not None:
+        try:
+            present = release_gate(pages_present_from_status(args.pages_status))
+        except ExportError as error:
+            print(error)
+            return 1
+        print("true" if present else "false")
+        return 0
     repo_root = Path(args.repo).resolve()
     try:
         output = preset_export_path(repo_root, args.preset)
