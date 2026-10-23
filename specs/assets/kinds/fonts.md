@@ -32,36 +32,23 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 ## Style series
 
+Full fields: [`fonts/style-series.md`](fonts/style-series.md).
+
 ### SS1 — primary
 
-- **State**: active
-- **Modality**: visual
-- **Enforce**: soft
-- **Style anchors**: `01a15215-15bd-7e3f-a3f8-ffcb1333a0ab` (`fonts/noto-sans`), `01a15215-15bd-77a5-b804-9ea4d95880a4` (`fonts/noto-sans-cjk`)
-- **Style binding**: TBD — may a third-party visual kind stay soft exemplars with no Recraft style id?
-- **Aesthetics**: [AES.P3](../../aesthetics/aesthetics.md); [UIS.T1](../../aesthetics/ui-style.md)–[UIS.T3](../../aesthetics/ui-style.md)
-- **Built from**: the two anchors above on 2026-10-19 (Noto Sans OFL; PO-confirmed)
-- **Refresh when**: UI type roles or locale set change
+- **State**: active — see style-series.md for binding, anchors, aesthetics
 
 #### Prompt policy
 
-- **Compose**: N/A — no AI generate recipe
-- **Master**: N/A — third-party fonts; no prompt
-- **Negative**: N/A — third-party fonts; no prompt
+N/A — see [`fonts/style-series.md`](fonts/style-series.md).
 
 ## Recipes
 
+Full recipe: [`fonts/recipes.md`](fonts/recipes.md).
+
 ### R1 — Third-party import
 
-- **Source type**: Third-party
-- **Tool role**: N/A — human-made / import
-- **Inputs**: License proof; font files
-- **Prompt template (bootstrap)**: N/A — human-made
-- **Prompt template (series)**: N/A — human-made
-- **Settings**: N/A — human-made
-- **Seed policy**: N/A — human-made
-- **Post-processing**: Subset if needed; keep license file reference in catalog
-- **Outputs**: V1 font file(s) under naming path
+- **Post-processing**: subset if needed; see recipes.md for inputs/outputs
 
 ## Checks
 
@@ -73,6 +60,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | K4 | Budget | Sum compressed byte sizes of all shipped font files for this kind | ≤ 2 MB |
 | K5 | Spec S1 | Font file inspect | Humanist sans; UIS.T1–T3 weights present |
 | K6 | Spec S4 | File extension | TTF / OTF / WOFF2 |
+| K7 | Style vs pillars | Compare a new font by eye to the two `SS1` anchors | Shares their humanist-sans family character and weight/letterform feel; `K1`–`K6` still pass ([AES.P3](../../aesthetics/aesthetics.md); [UIS.T1](../../aesthetics/ui-style.md)–[UIS.T3](../../aesthetics/ui-style.md)) |
 
 ## Naming
 
