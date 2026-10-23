@@ -45,7 +45,7 @@ A key missing in a locale reads `en` and logs once per owner and key; play conti
 
 ## Completeness gate
 
-The gate is the parity test in `game/string_table_test.gd`. It reads every Copy table under [`specs/ux/screens/`](../../ux/screens/) and the Key column of [`exceptions.md`](../../ux/exceptions.md), and compares each key set exactly against the shipped tables in all three locales. It is the only copy-completeness gate; the localization playtest protocol observes the same keys as a player.
+The gate is the parity test in `game/string_table_test.gd`. It reads every Copy table under [`specs/ux/screens/`](../../ux/screens/) and the Key column of [`exceptions.md`](../../ux/exceptions.md), compares each key set exactly against the shipped tables in all three locales, and compares the owner set those tables name against the shipped owners. It is the only copy-completeness gate; the localization playtest protocol observes the same keys as a player.
 
 ## Same in every locale
 
