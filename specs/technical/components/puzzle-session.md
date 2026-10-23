@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Responsibility |
 |----|----------------|
-| R1 | Deal the next puzzle per DIF.Y1 from the host catalog, reading one record through [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md); a failed read deals nothing (C5) |
+| R1 | Deal the next puzzle per DIF.Y1 from the host catalog, reading one record through [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md); the read runs off the move path and a failed read deals nothing (C5) |
 | R2 | Accept puzzle moves via chess-rules; detect solve vs wrong move |
 | R3 | On result, update Elo and recentSolved; commit via persist |
 | R4 | Never enable Advice |
@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | C2 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Board and feedback: O1 up; E2–E3 down |
 | C3 | [`CMP-persist-store`](persist-store.md) | calls | [`CTR-persist-document`](../contracts/persist-document.md) | Elo / recentSolved commit |
 | C4 | [`CMP-session-router`](session-router.md) | listens | internal | Enter / leave stream |
-| C5 | [`CMP-catalog-service`](catalog-service.md) | calls | [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | Deal read: Elo, recent ids, key; one record or a failed read (R1) |
+| C5 | [`CMP-catalog-service`](catalog-service.md) | calls | [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | Deal read: Elo, recent ids, key; one record or a failed read (R1). Off the move path (`concurrency.md` U4) |
 
 ## Owns / mutates
 
