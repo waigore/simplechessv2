@@ -11,11 +11,13 @@ const STAGE_MODE_PICK := "mode-pick"
 const STAGE_SHARED_SETUP := "shared-setup"
 const STAGE_SHARED_PLAY := "shared-play"
 const STAGE_SHARED_RESULT := "shared-result"
+const STAGE_PUZZLE_PLAY := "puzzle-play"
 const STAGE_ENDED := "session-ended"
 ## Smoke alias kept for SEQ-playtest-headless-smoke / ENV.1 harness.
 const STAGE_READY_ALIAS := "mode-pick-ready"
 
 const MODE_SHARED := "shared"
+const MODE_PUZZLE := "puzzle"
 const MODE_NONE := "none"
 const CLOCKS := ["untimed", "blitz", "rapid"]
 
@@ -37,6 +39,11 @@ var session_ended := false
 
 var shared_session: SharedGameSession
 
+## The puzzle-play journey: CMP-puzzle-session and its CMP-puzzle-stream deal source,
+## with the UI-puzzle-play screen flow. Built on entering `puzzle-play`
+## (UI-mode-pick.C2 / NAV.T2) and dropped on leave (NAV.T9).
+var puzzle_flow: PuzzlePlayFlow
+
 ## Proxies onto CMP-shared-game-session (tests and presentation).
 var selected_piece: String:
 	get:
@@ -47,13 +54,17 @@ var selected_piece: String:
 
 var play_ui_state: String:
 	get:
+		if puzzle_flow != null and stage == STAGE_PUZZLE_PLAY:
+			return puzzle_flow.ui_state()
 		if shared_session == null:
 			return SharedGameSession.UI_S1
 		return (
 			SharedGameSession.UI_S3 if shared_session.advice_error else shared_session.play_ui_state
 		)
 	set(value):
-		if shared_session != null:
+		if puzzle_flow != null and stage == STAGE_PUZZLE_PLAY:
+			puzzle_flow.session.play_ui_state = value
+		elif shared_session != null:
 			shared_session.play_ui_state = value
 
 var _resolver: AssetResolver
@@ -104,6 +115,10 @@ func _emit_tel(event_name: String, outcome: String, story_id := "") -> void:
 
 
 func _process(delta: float) -> void:
+	if stage == STAGE_PUZZLE_PLAY:
+		if puzzle_flow != null and not _seams_paused():
+			puzzle_flow.tick()
+		return
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return
 	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
@@ -180,10 +195,14 @@ func handle_control(screen_id: String, control_id: String) -> void:
 			_on_shared_play_control(control_id)
 		STAGE_SHARED_RESULT:
 			_on_shared_result_control(control_id)
+		STAGE_PUZZLE_PLAY:
+			_on_puzzle_play_control(control_id)
 
 
 ## CTR-presentation.E1 — select (to empty) or place (from/to + optional promotion).
 func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
+	if stage == STAGE_PUZZLE_PLAY:
+		return puzzle_flow != null and puzzle_flow.gesture(from_square, to_square, promotion)
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
 	if _seams_paused():
@@ -197,6 +216,8 @@ func handle_input_commit(from_square: String, to_square: String, promotion: Stri
 
 ## IN.deselect — B8 / B9 / B11 / S4 cancel.
 func handle_deselect() -> bool:
+	if stage == STAGE_PUZZLE_PLAY:
+		return puzzle_flow != null and puzzle_flow.deselect()
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
 	if _seams_paused():
@@ -211,6 +232,8 @@ func handle_deselect() -> bool:
 
 ## C6 — commit promotion type.
 func handle_promotion_commit(kind: String) -> bool:
+	if stage == STAGE_PUZZLE_PLAY:
+		return puzzle_flow != null and puzzle_flow.promotion(kind)
 	if stage != STAGE_SHARED_PLAY or shared_session == null:
 		return false
 	if _seams_paused():
@@ -237,6 +260,10 @@ func handle_promotion_commit(kind: String) -> bool:
 
 
 func finish_reject_flash() -> void:
+	if stage == STAGE_PUZZLE_PLAY:
+		if puzzle_flow != null:
+			puzzle_flow.finish_reject_flash()
+		return
 	if shared_session == null:
 		return
 	if shared_session.play_ui_state != SharedGameSession.UI_S5:
@@ -275,6 +302,10 @@ func play_snapshot() -> Dictionary:
 		"selected_piece": "",
 		"play_ui_state": SharedGameSession.UI_S1,
 	}
+	if stage == STAGE_PUZZLE_PLAY and puzzle_flow != null:
+		base["mode"] = MODE_PUZZLE
+		puzzle_flow.snapshot(base)
+		return base
 	if shared_session == null:
 		return base
 	var live := shared_session.play_state()
@@ -304,24 +335,39 @@ func session_is_paused() -> bool:
 
 
 func legal_targets_for(square: String) -> PackedStringArray:
+	if stage == STAGE_PUZZLE_PLAY:
+		if puzzle_flow == null:
+			return PackedStringArray()
+		return puzzle_flow.legal_targets_for(square)
 	if shared_session == null:
 		return PackedStringArray()
 	return shared_session.legal_targets_for(square)
 
 
 func occupancy_at(square: String) -> Dictionary:
+	if stage == STAGE_PUZZLE_PLAY:
+		if puzzle_flow == null:
+			return {}
+		return puzzle_flow.occupancy_at(square)
 	if shared_session == null:
 		return {}
 	return shared_session.occupancy_at(square)
 
 
 func side_to_move() -> String:
+	if stage == STAGE_PUZZLE_PLAY:
+		if puzzle_flow == null:
+			return ChessRules.SIDE_WHITE
+		return puzzle_flow.side_to_move()
 	if shared_session == null:
 		return ChessRules.SIDE_WHITE
 	return shared_session.side_to_move()
 
 
+## R1 — C1/C2/C6 gestures are live in S1, S3 and S5 (`PuzzleSession.gestures_available`).
 func play_gestures_available() -> bool:
+	if stage == STAGE_PUZZLE_PLAY:
+		return puzzle_flow != null and puzzle_flow.gestures_available()
 	return (
 		stage == STAGE_SHARED_PLAY
 		and shared_session != null
@@ -330,6 +376,8 @@ func play_gestures_available() -> bool:
 
 
 func can_place(from_square: String, to_square: String, promotion: String = "") -> bool:
+	if stage == STAGE_PUZZLE_PLAY:
+		return puzzle_flow != null and puzzle_flow.can_place(from_square, to_square, promotion)
 	if shared_session == null:
 		return false
 	return shared_session.can_place(from_square, to_square, promotion)
@@ -344,6 +392,7 @@ func _known_stages() -> PackedStringArray:
 			STAGE_SHARED_SETUP,
 			STAGE_SHARED_PLAY,
 			STAGE_SHARED_RESULT,
+			STAGE_PUZZLE_PLAY,
 			STAGE_ENDED,
 		]
 	)
@@ -539,6 +588,12 @@ func _on_mode_pick_control(control_id: String) -> void:
 			last_mode = MODE_SHARED
 			stage = STAGE_SHARED_SETUP
 			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
+		"C2":
+			# UI-mode-pick.C2 / NAV.T2 / J-puzzle-session.S1 — enter the puzzle stream.
+			if not _commit_last_mode(MODE_PUZZLE):
+				return
+			last_mode = MODE_PUZZLE
+			_enter_puzzle_play()
 		"C3":
 			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S3"))
 		"C4":
@@ -644,6 +699,65 @@ func _on_shared_result_control(control_id: String) -> void:
 			# NAV.T8 / J-shared-session.S4 / FL-mode-pick.T3
 			_emit_tel("shared.stop", "ok", "NAV.T8")
 			_go_mode_pick("S1")
+
+
+## ---------------------------------------------------------------------------
+## UI-puzzle-play / J-puzzle-session — C2 entry (NAV.T2), the screen flow, and
+## leave (NAV.T9). PuzzlePlayFlow owns the session, stream, cues and states.
+## ---------------------------------------------------------------------------
+
+
+## NAV.T2 — open `puzzle-play` on a fresh journey and ask the stream for its first deal.
+func _enter_puzzle_play() -> void:
+	stage = STAGE_PUZZLE_PLAY
+	shared_session = null
+	_leave_advice()
+	options_locked = false
+	_last_clock_display = ""
+	start_music()
+	# SND.X5 is the wrong-puzzle-move tap (sound.md X5); it loads with the Play group's
+	# SFX, so the stream binds it before the first judged place.
+	if not _resolver.group_loaded("play"):
+		_resolver.preload_play()
+	_provide_assets(_resolver.resolve_group("play"))
+	puzzle_flow = PuzzlePlayFlow.new()
+	puzzle_flow.locale = locale
+	puzzle_flow.screen.connect(_on_puzzle_screen)
+	puzzle_flow.cue.connect(_play_cue)
+	puzzle_flow.telemetry.connect(_on_puzzle_telemetry)
+	puzzle_flow.left.connect(_on_puzzle_left)
+	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+
+
+## The simulated catalog peer for tests and playtests (ADR-0013 Testability).
+func _puzzle_sim_factory() -> Variant:
+	if _seams == null:
+		return null
+	return Callable(FakeCatalogTransport, "new")
+
+
+## CTR-presentation.E1 — the journey's screen state goes up to the presentation.
+func _on_puzzle_screen(state: Dictionary) -> void:
+	screen_requested.emit(STAGE_PUZZLE_PLAY, state)
+	play_rendered.emit(state)
+
+
+## TEL.1–TEL.5 — forward the journey's telemetry through the seams.
+func _on_puzzle_telemetry(event_name: String, outcome: String, story_id: String) -> void:
+	_emit_tel(event_name, outcome, story_id)
+
+
+## NAV.T9 / J-puzzle-session.S2 + N2 — the journey left; mode pick returns.
+func _on_puzzle_left() -> void:
+	puzzle_flow = null
+	_go_mode_pick("S1")
+
+
+## UI-puzzle-play C3–C5 / S2 + S3 — one stream control tap.
+func _on_puzzle_play_control(control_id: String) -> void:
+	if puzzle_flow == null or _seams_paused():
+		return
+	puzzle_flow.control(control_id)
 
 
 func _reset_after_shared_end() -> void:
