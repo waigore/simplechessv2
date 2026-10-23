@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/specs/rules/aesthetics/palette.md).
 
-- **Sheet**: [`sheets/palette.html`](sheets/palette.html)
+- **Reference sheet**: [`sheets/palette.html`](sheets/palette.html)
 - **Serves**: P2, P3; Clear board; Accessibility; [PER.R1](../view/perception.md)–[PER.R8](../view/perception.md); [experience.md](../design/experience.md) clarity
 
 ## Swatches

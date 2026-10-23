@@ -40,6 +40,6 @@ How the style varies across stages, factions, progression, or time: one row per 
 
 ## Index
 
-Keep the global-spec list. List each sheet under **Sheets**. When spec depth requires no sheet, write "None — spec depth \<level\>", per [depth.md](../depth.md).
+Keep the global-spec list. List each sheet under **Reference sheets**. When spec depth requires no sheet, write "None — spec depth \<level\>", per [depth.md](../depth.md).
 
 If the index pushes `aesthetics.md` past 500 words, move it to `specs/aesthetics/index.md` and leave a link.

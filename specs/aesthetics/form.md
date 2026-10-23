@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/aesthetics/form.md`](../../.agents/specs/rules/aesthetics/form.md).
 
-- **Sheet**: [`sheets/lineup.html`](sheets/lineup.html)
+- **Reference sheet**: [`sheets/lineup.html`](sheets/lineup.html)
 - **Serves**: P2; Clear board; [PER.R1](../view/perception.md); [E-pieces](../design/entities/pieces.md); [SPC.E1](../view/spatial-model.md)
 
 ## Shape language
