@@ -28,7 +28,6 @@ const CHECK_STROKE := 0.10
 ## and drawn on one ground line, which widens and lifts them into the square
 ## while keeping the FRM.P2 height order the artwork already encodes.
 const PIECE_EXTENT := 0.85
-const SIDE_MARGIN := 0.16              # transparent side margin in every canvas
 ## Solid wooden bevel (defect #427 item 4, SRF.M1 wood, AES.P3 physical set):
 ## a frame around the 8x8 so the board reads as one carved wooden object on the
 ## cafe table. It uses the board's own outer band, so it never covers a piece
@@ -39,6 +38,10 @@ const BEVEL_LIP_COLOR := Color("8B5A3C")     # PAL.C2 grain, lit from top-left
 const BEVEL_SHADOW_COLOR := Color("43281D")  # C5 deepened, shadowed lip
 const BEVEL_FRAME_COLOR := Color("5C3A2A")   # PAL.C5 table wood, the frame
 const BEVEL_LINE := Color("2E1B13")    # darker than the bevel fill (SRF.O1)
+## The coordinate bands (left for ranks, bottom for files) are PAL.C2 grain
+## darkened to give the coordinate ink its field (PER.R7; see _build_bevel).
+const BEVEL_LIP_INK_COLOR := Color("6E4430")
+const BEVEL_LIP_INK_BAND := 0.16       # depth of each coordinate band, units
 ## PER.R7: file letters and rank numbers sit on the wooden lip, never inside a
 ## square, in PAL.C9 ink at the UIS.T2 label size.
 const COORD_FONT_SIZE := 40            # screen px, ~0.55 unit at the demo scale
@@ -68,6 +71,7 @@ var _check_rim: Line2D
 var _promo_root: Node2D
 
 var _loaded_assets: Dictionary = {}
+var _body_px: Dictionary = {}  # texture instance id -> opaque body width, px
 var _pieces: Dictionary = {}   # square index -> Node2D
 var _drag_square := -1
 var _motion_busy := false
@@ -156,6 +160,20 @@ func _build_bevel() -> void:
 		Vector2(-RIM_OUTER, 8.0 - RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 + RIM_OUTER))
 	_add_band("BevelLipRight", BEVEL_SHADOW_COLOR,
 		Vector2(8.0 - RIM_OUTER, RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 - RIM_OUTER))
+	# Coordinate bands (defect #427 item 3, PER.R7): the letters and numbers sit
+	# in PAL.C9 ink, which needs a 4.5:1 field. On the lit PAL.C2 lip ink reaches
+	# only 2.5:1, so the left and bottom lips — where the ranks and files are —
+	# lie in PAL.C2 grain darkened to #6E4430. Plain PAL.C9 ink on that band is
+	# still only 1.7:1, so the labels' ink is to be replaced by cream (#F7F1E8,
+	# 6.6:1 with this band) in the next change; handoff: PER.R7, PAL.C2, PAL.C9,
+	# PAL.C10. The bands lie on the lip, outside the 8x8, so no piece square is
+	# covered.
+	_add_band("BevelLipLeftInk", BEVEL_LIP_INK_COLOR,
+		Vector2(-RIM_OUTER, -RIM_OUTER),
+		Vector2(-RIM_OUTER + BEVEL_LIP_INK_BAND, 8.0 + RIM_OUTER))
+	_add_band("BevelLipBottomInk", BEVEL_LIP_INK_COLOR,
+		Vector2(-RIM_OUTER, 8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND),
+		Vector2(8.0 + RIM_OUTER, 8.0 + RIM_OUTER))
 	var outline := Line2D.new()
 	outline.name = "BevelOutline"
 	outline.width = 0.012
@@ -287,20 +305,44 @@ func _make_piece(index: int, code: String) -> void:
 
 
 ## Fits a piece sprite to the SPC.E1 extent (defect #427 item 1). The twelve
-## catalog canvases share one layout: a transparent side margin around a body
-## whose crown reaches the top of the canvas in every type (the King included),
-## so one scale maps every body to the 0.85 extent and keeps the FRM.P2 height
-## order the artwork already encodes. Used for placement, promotion, and the
-## promotion chooser so every drawn piece shares one ground scale.
+## catalog canvases share one layout — a transparent margin on every side around
+## the body. Scaling the whole 512 px canvas (with a fixed side-margin guess) drew
+## bodies of 0.61-0.75 units, under the extent, sitting high in their squares.
+## The scale is now the body's opaque alpha width mapped to PIECE_EXTENT and the
+## body is centered in the square, so silhouettes fill their squares (PER.R1,
+## AES.P2) on one ground line. FRM.P1 holds: the body is exactly the extent, never
+## more. The same fit serves placement, promotion, and the promotion chooser.
 func _apply_piece_texture(sprite: Sprite2D, code: String) -> void:
 	var texture := _texture_for(code)
 	if texture == null:
 		return
 	sprite.texture = texture
-	var canvas := float(maxi(texture.get_width(), 1))
-	# FRM.P1: a piece never grows past the extent.
-	var fitted := PIECE_EXTENT / (canvas * (1.0 - 2.0 * SIDE_MARGIN))
-	sprite.scale = Vector2.ONE * minf(1.0, fitted)
+	var scale := PIECE_EXTENT / _body_width_px(texture)
+	sprite.scale = Vector2.ONE * scale
+	# Center the opaque body's vertical span on the square center: the canvas's
+	# lower transparent margin no longer lifts a piece off the ground square.
+	sprite.offset = Vector2(0.0,
+		float(texture.get_height()) / 2.0 - _body_center_y(texture))
+
+
+## The opaque body's width in canvas pixels: the long axis of the shared layout.
+func _body_width_px(texture: Texture2D) -> float:
+	var key := texture.get_instance_id()
+	if not _body_px.has(key):
+		_body_px[key] = float(maxi(_body_rect(texture).size.x, 1))
+	return float(_body_px[key])
+
+
+func _body_center_y(texture: Texture2D) -> float:
+	var rect := _body_rect(texture)
+	return float(rect.position.y) + float(rect.size.y) / 2.0
+
+
+func _body_rect(texture: Texture2D) -> Rect2i:
+	var used := texture.get_image().get_used_rect()
+	if used.size.x <= 0:
+		return Rect2i(0, 0, texture.get_width(), texture.get_height())
+	return used
 
 
 func _texture_for(code: String) -> Texture2D:
