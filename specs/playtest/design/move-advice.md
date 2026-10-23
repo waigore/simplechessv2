@@ -35,4 +35,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules (Headless: no screenshots). Log timing for P1.
+Default evidence rules. Log timing for P1.

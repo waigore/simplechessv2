@@ -34,4 +34,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. The protocol is `pass` only when every cited story is `pass`; a contained `fail` makes it `fail`. Record story outcomes and the verdict in `manifest.md` per [`evidence.md`](../evidence.md). A Headless run records outcomes, notes, and logs without screenshots and marks the screenshot paths waiting on a graphical run; screenshots are waved only for that waiting state or where the evidence rules say none, never by the protocol.
+Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot. Run it Headless per the environment line; a graphical run on the same build supplies the screenshots [acceptance requires](../evidence.md#cite-from-acceptance).
