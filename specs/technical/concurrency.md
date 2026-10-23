@@ -13,7 +13,7 @@ Authoring rules: [`.agents/specs/rules/technical/concurrency.md`](../../.agents/
 | U1 | Frame | Display frame | Presentation render; input sample; piece motion | L1 presentation state |
 | U2 | Session tick | Frame or fixed idle | Clock countdown when timed; session orchestration | Shared clocks; session flags |
 | U3 | Advice I/O | Async network callbacks | Apply streamed eval/best-move; cancel | Advice overlay fields only |
-| U4 | Catalog deal I/O | Async network callbacks | Request one deal record; apply it to the attempt when it arrives; drop it on leave | Puzzle attempt create only; never a move, a frame, or `GS.playerElo` |
+| U4 | Catalog deal I/O | Async network callbacks | Request one deal record through [`CTR-puzzle-catalog-read`](contracts/puzzle-catalog-read.md) O1 ([`CatalogDealClient`](../../game/catalog_deal_client.gd), worker thread); hand the one record to [`CMP-puzzle-session`](components/puzzle-session.md); drop it on leave | Puzzle attempt create only; never a move, a frame, or `GS.playerElo` |
 
 ## Ownership
 
@@ -32,6 +32,7 @@ Authoring rules: [`.agents/specs/rules/technical/concurrency.md`](../../.agents/
 | S1 | Queue advice updates onto U1/U2 | U3 → session | Apply marks without hitching the move path |
 | S2 | Cancel in-flight advice on local move | apply-local-move → U3 | Instant play; start new eval if still allowed |
 | S3 | Queue the deal outcome onto U2 | U4 → U2 | Board stays playable while a deal is in flight (G3); a failure deals nothing |
+| S4 | Retire an in-flight deal read on leave | puzzle leave → U4 | A record fetched for a stream the player left never deals |
 
 ## Diagram
 
