@@ -72,7 +72,7 @@ const _MODE_PICK := {
 
 ## The `en` value L3 names for each same-in-every-locale piece row.
 const PIECE_NAMES := {
-	"queen": "后",
+	"queen": "Queen",
 	"rook": "Rook",
 	"bishop": "Bishop",
 	"knight": "Knight",
