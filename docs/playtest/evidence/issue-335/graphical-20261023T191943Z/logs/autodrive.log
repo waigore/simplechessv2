@@ -1,0 +1,46 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+[demo] autodrive begin
+[demo] capture start mode-pick
+[demo] screenshot mode-pick -> /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/impl-335/docs/playtest/evidence/issue-335/graphical-20261023T191943Z/screenshots/demo-puzzle-stream-mode-pick.png
+[demo] capture start puzzle-play
+[demo] screenshot puzzle-play -> /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/impl-335/docs/playtest/evidence/issue-335/graphical-20261023T191943Z/screenshots/demo-puzzle-stream-puzzle-play.png
+[demo] deal: puzzle 0003 at 1000 for Elo 1000 (band 100)
+[demo] wrong move reset: 6 -> 7, board back to the deal, no new puzzle
+[demo] END.L4: Elo 1000 -> 989, recentSolved 0
+[demo] END.L5: Elo 988 -> 979
+[demo] END.L6: Elo 978 -> 972
+[demo] END.W1: mate-in-one solved by an unrecorded mate; Elo 972 -> 980; recentSolved 1
+[demo] EX.rejected: illegal place refused, puzzle untouched
+[demo] leave: back at mode pick, Elo kept at 980
+[demo] EX.promote: type asked, then the place was judged
+[demo] fixture slice: 6 records legal and marked correctly (stand-in for the host snapshot)
+[demo] wK body 0.40 x 0.85 units (SPC.E1 0.85, FRM.P2 0.85)
+[demo] wQ body 0.40 x 0.79 units (SPC.E1 0.85, FRM.P2 0.79)
+[demo] wB body 0.39 x 0.76 units (SPC.E1 0.85, FRM.P2 0.76)
+[demo] wN body 0.48 x 0.75 units (SPC.E1 0.85, FRM.P2 0.75)
+[demo] wR body 0.40 x 0.68 units (SPC.E1 0.85, FRM.P2 0.68)
+[demo] wP body 0.38 x 0.62 units (SPC.E1 0.85, FRM.P2 0.62)
+[demo] coordinates 6.5 px glyph ink 9.0 px in a 11.5 px band (PER.R7)
+[demo]   a box x 34.5..37.5 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   b box x 106.0..110.0 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   c box x 178.5..181.5 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   d box x 250.0..254.0 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   e box x 322.5..325.5 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   f box x 395.0..397.0 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   g box x 466.0..470.0 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   h box x 538.0..542.0 y 584.5..593.5 px; band BevelLipBottomInk x -18.7..594.7 y 583.2..594.7
+[demo]   1 box x -14.5..-11.5 y 535.5..544.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   2 box x -14.5..-11.5 y 463.5..472.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   3 box x -14.5..-11.5 y 391.5..400.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   4 box x -14.5..-11.5 y 319.5..328.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   5 box x -14.5..-11.5 y 247.5..256.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   6 box x -14.5..-11.5 y 175.5..184.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   7 box x -14.5..-11.5 y 103.5..112.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo]   8 box x -14.5..-11.5 y 31.5..40.5 px; band BevelLipLeftInk x -18.7..-7.2 y -18.7..594.7
+[demo] board style: bodies and labels inside the specs; panels clear the board
+[demo] EX.save-failure: prior Elo kept at 1043
+[demo] PASS
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

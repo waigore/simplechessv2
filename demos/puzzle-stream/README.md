@@ -59,9 +59,9 @@ Aesthetics elements the demo expresses (`specs/aesthetics/`).
 | `AES.P3` calm cafe mood | Mahogany `board-backgrounds/play-table` on the `PAL.C5` table ground, warm wood palette, cream panels, rose only for check/refusal/failure; no clocks, no advice, no tournament chrome; the cafe bed never stops for a result. |
 | `PAL.C1`, `C2`, `C5`, `C8`, `C9`, `C10`, `C11` | Squares, table, select, rose check/refusal/negative cue, ink text, cream panels, green legal marks. |
 | `MOT.T1`–`T3` | Quad ease-out travel, settle, and return inside the one budget. |
-| `SND.X1`–`X3`, `SND.X5` | Soft wood family; the wrong-move tap is the only negative sound and it plays once per Wrong move. |
+| `SND.X1`–`X3`, `SND.X5` | Soft wood family; the wrong-move tap is the only negative sound and it plays once per Wrong move; the check sting (`X3`) plays with the rose check rim. `SND.X4` is not used: a puzzle result is R2 status, not a game ending. |
 | `SND.M1`–`M2`, `SND.L1`–`L2` | Cafe beds alternate A → B → A on a hard handoff, under all cues; the select tap sits 5.4 dB under the settle knock. |
-| `PER.R7` contrast | Coordinate labels measured at 6.5 px ink inside the 11.5 px wooden band at 7.38:1; the autodrive prints the boxes and fails if one leaves its band. |
+| `PER.R7` contrast | Coordinate labels measured at 6.5 px ink inside the 11.5 px wooden band at 7.38:1; the autodrive prints the boxes and fails if one leaves its band. The 0.26-unit wooden lip keeps the 0.16-unit band entirely outside the 8x8 (defect #592 rework). |
 
 ## Assets
 
