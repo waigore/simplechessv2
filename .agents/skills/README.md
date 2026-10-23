@@ -49,7 +49,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`audit-spec-tbd`](audit-spec-tbd/SKILL.md) | Find TBDs (undecided aspects), propose grounded answers, confirm with the user, then author-spec |
 | [`create-gameplay-demo`](create-gameplay-demo/SKILL.md) | Scope a demo aggressively, clarify blockers into specs, build it under `demos/` as a spec-traced reference artifact that expresses the aesthetics and uses only cataloged pipeline assets |
 | [`manage-asset`](manage-asset/SKILL.md) | Generate, import, update, or deprecate assets per `specs/assets/` procedures; catalog, review, PR |
-| [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs CLI / soft SFX → registry); PR |
+| [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs CLI / soft SFX or soft third-party-visual → registry); PR |
 | [`register-asset`](register-asset/SKILL.md) | Catalog a person-supplied (human-made or third-party) asset; person-granted review exemption or review-asset; PR |
 | [`review-asset`](review-asset/SKILL.md) | Review produced assets vs kind spec and `specs/aesthetics/`; Pass/Fail by element ID, read-only |
 | [`promote-gameplay-demo`](promote-gameplay-demo/SKILL.md) | Reimplement demo behavior in main code: drift check, assumptions into specs, technical design, asset approval, code review |

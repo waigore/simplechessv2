@@ -1,0 +1,40 @@
+# #483 completeness-gate negative cases
+# build c4fcb88 (PR #631 head fa23a7d + main)
+
+## clean baseline (gate reads specs/, no mutation)
+22 headless unit test(s) passed
+-- exit=0
+## neg1: shipped->derived loop removed; a dropped owner must fail, naming it
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+ERROR: a dropped puzzle-play owner passed the owner-set cross-check
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _after_boot (res://string_table_test.gd:61)
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+Fail: res://string_table_test.gd
+-- exit=1 (expected 1)
+## neg2: extra owner Copy table (ghost-play) that ships no suite
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+ERROR: String formatting error: not all arguments converted during string formatting.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] _spec_owner_keys (res://string_table_test.gd:348)
+       [1] _owners_match_spec (res://string_table_test.gd:289)
+       [2] _spec_copy_key_sets (res://string_table_test.gd:278)
+       [3] _after_boot (res://string_table_test.gd:41)
+ERROR: %s ships no table
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _after_boot (res://string_table_test.gd:61)
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+-- exit=1 (expected 1)
