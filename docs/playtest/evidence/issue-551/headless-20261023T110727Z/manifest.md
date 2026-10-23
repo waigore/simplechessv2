@@ -27,6 +27,7 @@
 ## Paths
 
 - `notes.md`
+- `prep-and-criteria.md`
 - `probe/accept551_probe.gd` — the script that produced the judgements
 - `logs/import.log`
 - `logs/unit-tests.log`
