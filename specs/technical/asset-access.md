@@ -24,7 +24,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Output | Generator | Inputs | Location | Committed |
 |----|--------|-----------|--------|----------|-----------|
-| O1 | Godot `.import` caches | Godot import (ADR-0001) | Files under `game_assets/` | Beside assets or Godot cache | Rebuild; sidecars may commit with assets |
+| O1 | Godot import cache (`.godot/`) | Godot import (ADR-0001) | Files under `game_assets/` | `game/.godot/` — outside the asset root | Rebuilt on import; not committed (`.gitignore`). In-root `.import` / `.uid` sidecars are not this output: they are asset-root content under `ACC.P1`. |
 | O2 | Asset manifest | Catalog generator (ADR-0005) | Approved `asset_catalog/` entries | `game/asset_manifest.json` | Committed; regenerate in CI when catalog changes |
 | O3 | Playback audio | Catalog generator (ADR-0005, ADR-0001) | Approved music and sound-effects Ogg Opus | `audio_runtime/<asset-id>.ogg` | Committed Vorbis copy. Catalog files stay Opus. Godot 4.7.2 does not decode Opus. Regenerate with the manifest. |
 
@@ -32,9 +32,9 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Realizes | Mechanism | Owner | Sequence |
 |----|----------|-----------|-------|----------|
-| G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Cold open → Boot IDs → ready when every ID resolves |
-| G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | First play entry → Play IDs → ready when every ID resolves |
-| G3 | `ACC.G3` | Load Ambient group when mode pick becomes ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Mode pick ready → Ambient IDs ([`SND.M1`](../aesthetics/sound.md)) → ready when every ID resolves |
+| G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: cold open → Boot IDs → ready when every ID resolves. Unload: never in a sitting (`ACC.G1`). |
+| G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: first play entry → Play IDs → ready when every ID resolves. Unload: never in a sitting (`ACC.G2`). |
+| G3 | `ACC.G3` | Load Ambient group when mode pick becomes ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: mode pick ready → Ambient IDs ([`SND.M1`](../aesthetics/sound.md)) → ready when every ID resolves. Unload: never in a sitting (`ACC.G3`). |
 
 ## Diagram
 
