@@ -16,10 +16,10 @@ Produces vector piece and board art, quiet UI chrome, icons, locale-capable font
 | 3D models | N/A — Vector 2D medium | [aesthetics.md](../aesthetics/aesthetics.md) | — |
 | Textures and materials | N/A — no 3D materials | Vector 2D | — |
 | Animation clips | N/A — move motion is engine tween ([PHY.M1](../view/physics.md)) | View physics | — |
-| Visual effects | N/A — overlays are flat view/UI marks ([FRM.D2](../aesthetics/form.md)) | Perception marks | — |
+| Visual effects | N/A — overlays are flat view/UI marks ([FRM.D2](../aesthetics/form.md)); capture break and promotion morph ([SRF.E1](../aesthetics/surface.md)–[SRF.E2](../aesthetics/surface.md)) are engine-drawn from the piece sprite, not a separate asset | Perception marks; 2D engine rendering ([view.md](../view/view.md)) | — |
 | Interface art | Applies | Panels / buttons ([ui-style.md](../aesthetics/ui-style.md)) | [`interface-art`](kinds/interface-art.md) |
-| Icons | Applies | Mode and control icons ([UI.I1](../aesthetics/ui-style.md)) | [`icons`](kinds/icons.md) |
-| Fonts | Applies | T1–T3; `en` / `zh-Hant` / `ja` | [`fonts`](kinds/fonts.md) |
+| Icons | Applies | Mode and control icons ([UIS.I1](../aesthetics/ui-style.md)) | [`icons`](kinds/icons.md) |
+| Fonts | Applies | [UIS.T1](../aesthetics/ui-style.md)–[UIS.T3](../aesthetics/ui-style.md); `en` / `zh-Hant` / `ja` | [`fonts`](kinds/fonts.md) |
 | Sound effects | Applies | [SND.X1–X5](../aesthetics/sound.md) | [`sound-effects`](kinds/sound-effects.md) |
 | Music | Applies | [SND.M1](../aesthetics/sound.md) [SND.M2](../aesthetics/sound.md) | [`music`](kinds/music.md) |
 | Voice | N/A — [SND.V1](../aesthetics/sound.md) | No spoken characters | — |
@@ -29,7 +29,7 @@ Produces vector piece and board art, quiet UI chrome, icons, locale-capable font
 | Source type | Applicability | Grounds |
 |-------------|---------------|---------|
 | AI generation | Applies | Recraft visual; ElevenLabs SFX/music |
-| Procedural generation | N/A — no procedural asset recipes | Authored/generated art only |
+| Procedural generation | N/A — no procedural asset recipes; view effects such as [SRF.E1](../aesthetics/surface.md)–[SRF.E2](../aesthetics/surface.md) are engine rendering, not assets | 2D vector [Engine](../definition/definition.md); Continuous solo puzzle stream planned from results ([definition](../definition/definition.md) Progression), no generated art |
 | Third-party | Applies | Fonts (licensed for Web) |
 | Human-made | Applies | `APR.register` path |
 
@@ -50,7 +50,7 @@ Asset IDs and format: [`catalog.md`](catalog.md). Integrity: [`catalog/integrity
 
 - **Approval**: `review-asset` Pass alone.
 - **Review exemption**: Only a person may exempt an asset, of any source type, from review, recorded in `CAT.F17`. An exempt asset is approved when its entry merges.
-- **Use**: Main code uses only approved assets. A gameplay demo uses only cataloged assets with a `review-asset` Pass or a review exemption.
+- **Use**: Main code uses only approved assets. A gameplay demo uses only cataloged assets with a `review-asset` Pass or a review exemption, draft or approved, per [`docs/demo-style-assets.md`](../../docs/demo-style-assets.md).
 
 ## Traceability
 

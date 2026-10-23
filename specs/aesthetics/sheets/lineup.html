@@ -16,12 +16,13 @@
     svg text { font: 12px system-ui, sans-serif; fill: var(--fg); }
     .ground { stroke: var(--muted); stroke-width: 1.5; }
     .silhouette { fill: var(--fg); }
+    .silhouette-w { fill: #F5F0E6; stroke: #2C2A28; stroke-width: 0.68; stroke-linejoin: round; }
+    .silhouette-b { fill: #2C2A28; stroke: #F5F0E6; stroke-width: 0.68; stroke-linejoin: round; }
     .extent { fill: none; stroke: var(--muted); stroke-dasharray: 4 3; }
     .scale { stroke: var(--fg); stroke-width: 3; }
   </style>
 </head>
 <body>
-  <!-- Authoring rules: .agents/specs/rules/aesthetics/sheets.md. Scale: 40 px = 1 unit (SPC.U1). SPC.E1 = 0.85×0.85. -->
   <article data-spec="FRM">
     <header>
       <p>FRM</p>
@@ -63,44 +64,42 @@
           <path class="silhouette" transform="translate(0,220) scale(1,1.1273) translate(0,-220)" d="M454 198 h6 v5 h-6 z M450 203 h14 l2 3 h-18 z M451 206 h12 l2 4 v6 h-16 v-6 l2 -4 z M445 216 h24 v4 h-24 z" />
           <text x="438" y="248">E-pieces Pawn</text>
         </g>
-        <g data-element="scale">
-          <line class="scale" x1="520" y1="260" x2="560" y2="260" />
-          <text x="566" y="264">1 unit</text>
-        </g>
+        <line class="scale" x1="520" y1="260" x2="560" y2="260" />
+        <text x="566" y="264">1 unit</text>
       </svg>
-      <figcaption>Reference size, drawn to scale on one ground line. Dashed boxes are the SPC.E1 extent (0.85 × 0.85). Opaque heights per FRM.P2: King 0.85, Queen 0.79, Bishop 0.76, Knight 0.75, Rook 0.68, Pawn 0.62.</figcaption>
+      <figcaption>Reference size, drawn to scale on one ground line. Dashed boxes are the SPC.E1 extent (0.85 × 0.85). Opaque heights per FRM.P2: King 0.85, Queen 0.79, Bishop 0.76, Knight 0.75, Rook 0.68, Pawn 0.62. Each piece carries its SRF.O1 outline: 2% of its height, drawn at 0.68 px on the King at this scale, PAL.C4 on white pieces and PAL.C3 on black pieces.</figcaption>
     </figure>
 
     <figure>
       <svg viewBox="0 0 640 140" role="img" aria-label="Silhouettes at the smallest on-screen size FRM.L1">
         <line class="ground" x1="20" y1="96" x2="620" y2="96" />
         <g data-element="FRM.L1">
-          <path class="silhouette" transform="translate(-10,-124)" d="M55 186 h4 v4 h4 v4 h-4 v6 h-4 v-6 h-4 v-4 h4 v-4 z M50 200 h14 l3 6 v10 h-20 v-10 l3 -6 z M45 216 h24 v4 h-24 z" />
+          <path class="silhouette-w" transform="translate(-10,-124)" d="M55 186 h4 v4 h4 v4 h-4 v6 h-4 v-6 h-4 v-4 h4 v-4 z M50 200 h14 l3 6 v10 h-20 v-10 l3 -6 z M45 216 h24 v4 h-24 z" />
           <text x="30" y="110">FRM.L1 King</text>
         </g>
         <g data-element="FRM.L1">
-          <path class="silhouette" transform="translate(15,-124) translate(0,220) scale(1,1.0533) translate(0,-220)" d="M135 190 h4 v4 h-4 z M130 194 h14 l3 5 v3 h-20 v-3 l3 -5 z M132 202 h10 l2 4 v10 h-14 v-10 l2 -4 z M125 216 h24 v4 h-24 z" />
+          <path class="silhouette-b" transform="translate(15,-124) translate(0,220) scale(1,1.0533) translate(0,-220)" d="M135 190 h4 v4 h-4 z M130 194 h14 l3 5 v3 h-20 v-3 l3 -5 z M132 202 h10 l2 4 v10 h-14 v-10 l2 -4 z M125 216 h24 v4 h-24 z" />
           <text x="132" y="110">FRM.L1 Queen</text>
         </g>
         <g data-element="FRM.L1">
-          <path class="silhouette" transform="translate(-40,-124) translate(0,220) scale(1,1.1692) translate(0,-220)" d="M297 194 l6 8 h-3 l-3 -4 -3 4 h-3 z M290 202 h14 l2 4 v8 h-18 v-8 l2 -4 z M285 214 h24 v6 h-24 z" />
+          <path class="silhouette-w" transform="translate(-40,-124) translate(0,220) scale(1,1.1692) translate(0,-220)" d="M297 194 l6 8 h-3 l-3 -4 -3 4 h-3 z M290 202 h14 l2 4 v8 h-18 v-8 l2 -4 z M285 214 h24 v6 h-24 z" />
           <text x="240" y="110">FRM.L1 Bishop</text>
         </g>
         <g data-element="FRM.L1">
-          <path class="silhouette" transform="translate(-15,-124) translate(0,220) scale(1,1.1538) translate(0,-220)" d="M376 194 c6 -1 11 3 10 9 l-4 2 3 3 h-12 l2 -4 c-5 -2 -3 -9 1 -10 z M370 208 h14 l2 4 v4 h-18 v-4 l2 -4 z M365 216 h24 v4 h-24 z" />
+          <path class="silhouette-b" transform="translate(-15,-124) translate(0,220) scale(1,1.1538) translate(0,-220)" d="M376 194 c6 -1 11 3 10 9 l-4 2 3 3 h-12 l2 -4 c-5 -2 -3 -9 1 -10 z M370 208 h14 l2 4 v4 h-18 v-4 l2 -4 z M365 216 h24 v4 h-24 z" />
           <text x="345" y="110">FRM.L1 Knight</text>
         </g>
         <g data-element="FRM.L1">
-          <path class="silhouette" transform="translate(250,-124) translate(0,220) scale(1,1.0462) translate(0,-220)" d="M208 194 h4 v3 h3 v-3 h4 v3 h3 v-3 h4 v8 h-18 z M210 202 h14 v12 h-14 z M205 214 h24 v6 h-24 z" />
+          <path class="silhouette-w" transform="translate(250,-124) translate(0,220) scale(1,1.0462) translate(0,-220)" d="M208 194 h4 v3 h3 v-3 h4 v3 h3 v-3 h4 v8 h-18 z M210 202 h14 v12 h-14 z M205 214 h24 v6 h-24 z" />
           <text x="450" y="110">FRM.L1 Rook</text>
         </g>
         <g data-element="FRM.L1">
-          <path class="silhouette" transform="translate(115,-124) translate(0,220) scale(1,1.1273) translate(0,-220)" d="M454 198 h6 v5 h-6 z M450 203 h14 l2 3 h-18 z M451 206 h12 l2 4 v6 h-16 v-6 l2 -4 z M445 216 h24 v4 h-24 z" />
+          <path class="silhouette-b" transform="translate(115,-124) translate(0,220) scale(1,1.1273) translate(0,-220)" d="M454 198 h6 v5 h-6 z M450 203 h14 l2 3 h-18 z M451 206 h12 l2 4 v6 h-16 v-6 l2 -4 z M445 216 h24 v4 h-24 z" />
           <text x="552" y="110">FRM.L1 Pawn</text>
         </g>
-        <text x="30" y="128">FRM.L1 — six types readable as solid black at FRM.P2 heights; King at SPC.E1 under PRJ.V1 (~1/21 @ 9:16; ~1/12 @ 16:9)</text>
+        <text x="30" y="128">FRM.L1 — six types readable as solid black at FRM.P2 heights; King at SPC.E1 under PRJ.V1 (1/21 @ 9:16; 1/12 @ 16:9)</text>
       </svg>
-      <figcaption>Smallest on-screen size from FRM.L1. The King is the 0.85-unit piece (SPC.E1) under PRJ.P1 / PRJ.V1 — about 1/21 of frame height at 9:16 and about 1/12 at 16:9. Other types use their FRM.P2 heights in that same lineup and stay distinguishable.</figcaption>
+      <figcaption>Smallest on-screen size from FRM.L1. The King is the 0.85-unit piece (SPC.E1) under PRJ.P1 / PRJ.V1: 1/21 of frame height at 9:16 and 1/12 at 16:9. Other types use their FRM.P2 heights in that same lineup and stay distinguishable.</figcaption>
     </figure>
   </article>
 </body>
