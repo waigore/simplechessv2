@@ -39,6 +39,7 @@ func _run_all() -> String:
 		_check_l6_abandon,
 		_check_outcomes_exclusive,
 		_check_elo_formula_and_start,
+		_check_elo_k_default,
 		_check_recent_trim,
 		_check_leave_keeps_elo_unscored,
 		_check_commit_failure_keeps_prior,
@@ -226,10 +227,25 @@ func _check_w1_elo_and_recent() -> String:
 	if str(solved.get("end_reason", "")) != PuzzleSession.END_W1:
 		return "W1 must fire when the sequence completes"
 	var gained := session.player_elo - before
-	if gained <= 0.0 or gained > PuzzleSession.ELO_K:
+	if gained <= 0.0 or gained > session.elo_k:
 		return "DIF.Y1 must raise Elo gently on a win (Δ=%s)" % gained
 	if not session.recent_solved.has("abc"):
 		return "PRG.M1 must append the solved PuzzleId to recentSolved"
+	return _check_w1_equal_ratings()
+
+
+## END.W1 at equal ratings — the numeric case the spec states: 1000 + CFG.ELO_K × (1 − 0.5).
+func _check_w1_equal_ratings() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])], 1000.0)
+	session.deal()
+	session.place("e7", "e5")
+	if absf(session.player_elo - 1010.0) > 0.0001:
+		return (
+			"END.W1 at equal ratings must reach 1010 with CFG.ELO_K 20 (got %s)"
+			% session.player_elo
+		)
+	if not is_equal_approx(session.player_elo, 1000.0 + session.elo_k * 0.5):
+		return "DIF.Y1 must apply CFG.ELO_K, not a local constant"
 	return ""
 
 
@@ -280,12 +296,27 @@ func _check_elo_formula_and_start() -> String:
 	session.deal()
 	var expected := 1.0 / (1.0 + pow(10.0, (1200.0 - 1000.0) / 400.0))
 	var solved := session.place("e7", "e5")
-	var want := 1000.0 + PuzzleSession.ELO_K * (1.0 - expected)
+	var want := 1000.0 + session.elo_k * (1.0 - expected)
 	var got := float((solved.get("elo", {}) as Dictionary).get("player_elo", 0.0))
 	if absf(got - want) > 0.0001:
 		return "DIF.Y1 Elo formula mismatch (got %s want %s)" % [got, want]
 	if session.puzzle_elo != 1200:
 		return "Puzzle Elo must never change"
+	return ""
+
+
+## GS.playerElo 3000 solved at equal ratings — 3000 + CFG.ELO_K × (1 − 0.5) = 3010, no cap.
+func _check_elo_k_default() -> String:
+	var session := PuzzleSession.new()
+	if not is_equal_approx(session.elo_k, 20.0):
+		return "T3 elo_k must default to CFG.ELO_K 20 (got %s)" % session.elo_k
+	if not is_equal_approx(PuzzleSession.ELO_K, 20.0):
+		return "CFG.ELO_K mirror must be 20 (got %s)" % PuzzleSession.ELO_K
+	var high := _session([_record("abc", 3000, ["e2e4", "e7e5"])], 3000.0)
+	high.deal()
+	high.place("e7", "e5")
+	if absf(high.player_elo - 3010.0) > 0.0001:
+		return "fields-persist: 3000 at equal ratings must reach 3010 (got %s)" % high.player_elo
 	return ""
 
 
@@ -542,6 +573,18 @@ func _check_reveal_commit(session: PuzzleSession, before: float) -> String:
 		return "END.L5 must score S = 0"
 	if not session.has_open_puzzle():
 		return "END.L5 must deal the next puzzle after the Elo update"
+	return _check_l5_equal_ratings()
+
+
+## END.L5 at equal ratings — 1000 + CFG.ELO_K × (0 − 0.5) = 990.
+func _check_l5_equal_ratings() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])], 1000.0)
+	session.deal()
+	session.reveal()
+	if absf(session.player_elo - 990.0) > 0.0001:
+		return (
+			"END.L5 at equal ratings must reach 990 with CFG.ELO_K 20 (got %s)" % session.player_elo
+		)
 	return ""
 
 
