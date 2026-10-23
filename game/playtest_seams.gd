@@ -79,8 +79,8 @@ func bind_text_report(provider: Callable) -> void:
 
 
 ## O12 set_viewport — apply a window size and text scale, then report the result.
-## Viewport work needs `ENV.2`; under a headless runner nothing is applied, but the
-## report still describes what that frame height gives (I6 boundary).
+## Viewport work needs `ENV.2`; a runner that refuses the resize reports no
+## applied viewport, and no frame height it cannot see (I6 boundary).
 func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	## G2 / I3 — a release build has no O12.
 	if not playtest_build:
@@ -88,17 +88,18 @@ func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	if width <= 0 or height <= 0 or text_scale <= 0.0:
 		emit_tel("set_viewport", "fail")
 		return {}
-	var graphical := DisplayServer.get_name() != "headless"
-	if graphical:
-		var window := get_window()
-		if window != null:
-			window.size = Vector2i(width, height)
+	var window := get_window()
+	var graphical := PlaytestGate.has_display() and window != null
+	if graphical and window.size != Vector2i(width, height):
+		window.size = Vector2i(width, height)
+	var frame := _frame_height(height, graphical)
 	var report := {
 		"width": width,
 		"height": height,
 		"text_scale": text_scale,
 		"applied": graphical,
-		"body_text_px": _body_text_px(text_scale),
+		"frame_height_px": frame,
+		"body_text_px": _body_text_px(frame),
 	}
 	_viewport_report = report.duplicate()
 	viewport_changed.emit(report)
@@ -110,11 +111,30 @@ func last_viewport_report() -> Dictionary:
 	return _viewport_report.duplicate()
 
 
-func _body_text_px(text_scale_value: float) -> float:
+func _frame_height(requested_px: int, graphical: bool) -> int:
+	## `CMP-presentation` names the frame it rendered. Without it, the seam's own
+	## tree does once it runs; before that it claims no frame rather than the
+	## requested one, so `S13` never reads a size that is not on screen.
+	if _text_report.is_valid():
+		return int(round(Presentation.frame_height_for_body_px(float(_text_report.call()))))
+	if PlaytestGate.in_frame(self):
+		return PlaytestGate.frame_height(self)
+	return requested_px if graphical else 0
+
+
+func _body_text_px(frame_height_px: int) -> float:
+	## `CMP-presentation` supplies body text screen px for the rendered frame; the
+	## seam only reports it (D2). Without a bound presentation (unit-test binary)
+	## the shipped hook answers, never a size of the seam's own.
+	if frame_height_px <= 0:
+		return 0.0
 	if _text_report.is_valid():
 		return float(_text_report.call())
-	## No presentation bound (unit-test binary): same ratio, from the shipped hook.
-	return float(UiChrome.scaled_px(UiChrome.BODY_PX, text_scale_value))
+	return float(Presentation.scaled_body_px(_frame_ratio(frame_height_px)))
+
+
+func _frame_ratio(frame_height_px: int) -> float:
+	return Presentation.text_scale_for_frame_height(float(frame_height_px))
 
 
 func pause() -> void:
