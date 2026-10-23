@@ -12,7 +12,7 @@ You sit down at a quiet cafe table, in the browser, and either play a friend on 
 
 ## Target audience and player fantasy
 
-- **Audience**: Casual chess players on a commute, in sessions of about 15–40 minutes, playing in the browser by touch.
+- **Audience**: Casual chess players on a commute, in sessions of about 15–40 minutes, playing in the browser by touch, in English, Traditional Chinese, or Japanese.
 - **Player fantasy**: Sitting at a quiet cafe table with a beautiful board, taking the time you want.
 
 ## Essential qualities
