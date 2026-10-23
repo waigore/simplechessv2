@@ -7,9 +7,9 @@
 - **Platform**: macOS/arm64, browser-rendered graphical frame (not headless Godot)
 - **Environment**: scratch export copy of `demos/shared-game/` with the cataloged
   assets bundled; two web-only asset-loading shims, no change to board or
-  coordinate drawing. Detail: `notes.md`.
+  coordinate drawing. Detail: `setup.md`.
 - **Capture tooling**: the capture script ran from a temp directory outside the
-  repo and is not kept; `notes.md` records the commands and browser flags.
+  repo and is not kept; `setup.md` records the commands and browser flags.
 - **Commands**: import, `--export-release "Web Demo"`, `python3 -m http.server 8791`,
   Chrome + puppeteer-core capture (splash cleared + 8 s settle)
 - **Screenshots**
@@ -18,4 +18,4 @@
   - `screenshots/coordinate-band-2x.png` — bottom coordinate band at deviceScaleFactor 2
 - **Logs**
   - `logs/browser.log` — console (asset warnings, errors, failed requests): all 0
-- **Notes**: `notes.md` — graphical pass/fail per `PER.R7`
+- **Notes**: `notes.md` — graphical pass/fail per `PER.R7`; `setup.md` — build, export copy, commands
