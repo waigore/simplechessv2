@@ -8,7 +8,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 - **Informed by**: [`specs/ux/screens/`](../../ux/screens/) Copy tables; [`configuration.md`](../configuration.md) S4 B4
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md)
 
-Fields: [`string-table-fields.md`](string-table-fields.md). Copy rules — sharing across owners, missing keys, the completeness gate, and rows same in every locale: [`string-table-fields-rules.md`](string-table-fields-rules.md). Invariants and lifecycle: [`string-table-invariants.md`](string-table-invariants.md).
+Fields: [`string-table-fields.md`](string-table-fields.md). Copy rules — sharing across owners, missing keys, the completeness gate, and rows same in every locale: [`string-table-fields-rules.md`](string-table-fields-rules.md). Gate ownership, the `F2` owner input, and the marked set: [`string-table-gate.md`](string-table-gate.md). Invariants and lifecycle: [`string-table-invariants.md`](string-table-invariants.md).
 
 ## Fields
 

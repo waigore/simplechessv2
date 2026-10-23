@@ -25,4 +25,4 @@ A schema is the shape and lifecycle of a data object or entity in code. Cite des
 
 ## Splitting
 
-If the file passes 500 words, move Fields to `schemata/<name>-fields.md` and leave a link.
+If the file passes 500 words, move Fields to `schemata/<name>-fields.md` and leave a link. A second move may take one named rule section to `schemata/<name>-<topic>.md`, leaving a link in its place.
