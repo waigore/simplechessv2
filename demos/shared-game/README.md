@@ -19,11 +19,11 @@ The demo realizes the epic's demo-ready ID set subset below; every ID exists in 
 | `L-two-player-game.K1`, `K2`, `E1`, `E4` (loop subset) | `main.gd`: select → move → turn flips on one shared board until a position ending; mate ends the game (`Checkmate — White wins` in the autodrive run). |
 | `END.L1` (mate) plus a wired stalemate result | `result()` in `chess_rules.gd` runs every ply: the scripted run asserts `checkmate:w`; the stalemate branch (`D1` — no legal move, no check) is computed by the same endpoint, not driven in the visual autodrive scenarios. |
 | `GS.position`, `GS.sideToMove`, `GS.selectedPiece`, `GS.gameEnded`, `GS.V1`, `GS.V2` | `pos` dictionary with side-to-move, selection, ended flag; only one side moves per turn; V2 clocks are out of demo scope (no clock here). |
-| `SPC.A1`, `SPC.P1`, `SPC.E1`, `SPC.L1` | `board_view.gd`/`main.gd`: 10-unit short axis (8 board + 1-unit margins), `SPC.E1` piece extent, quiet cafe backdrop color `PAL.C5` behind the board. |
+| `SPC.A1`, `SPC.P1`, `SPC.E1`, `SPC.L1` | `board_view.gd`/`main.gd`: 10-unit short axis (8 board + 1-unit margins), every piece body fitted to the `SPC.E1` 0.85 extent (opaque body, not the padded canvas), quiet cafe backdrop color `PAL.C5` behind the board. |
 | `PRJ.P1` | `main.gd`: unit = 72 px, board on frame center, direct unnormalized projection. |
 | `CAM-board.F1`, `CAM-board.M2` | `board_view.gd`: world axes with local y down toward rank 1, White's near edge at the bottom, rotation 0 (White seat fixed). |
 | `PHY.M1`, `M2`, `M3`, `M4`, `M5`, `PHY.I1` | `board_view.gd`: 0.15 s ease-out travel; captured piece breaks into fragments during the travel; promotion morph inside the same budget; uncommitted drag follows the pointer; a bad drop returns to origin in 0.15 s; settle window before input reopens. |
-| `PER.R1`, `R3`, `R4`, `R6`, `R7`, `R8` | `board_view.gd`: thin select stroke (<10% body), gold select fill, ink-area ≥ ¼-square legal marks (diamonds for empty, rings for captures), rose check rim + turn chip tint on the checked king's side, refusal flash on an illegal drop / illegal target. |
+| `PER.R1`, `R3`, `R4`, `R6`, `R7`, `R8` | `board_view.gd`: each piece body drawn at the full `SPC.E1` extent (`R1`), thin select stroke (<10% body), gold select fill, ink-area ≥ ¼-square legal marks (diamonds for empty, rings for captures), rose check rim + turn chip tint on the checked king's side, refusal flash on an illegal drop / illegal target, a–h / 1–8 in `PAL.C9` ink on the board's wooden lip (`R7`). |
 | `AES.P1`, `P2`, `P3` | Every motion settles inside 0.15 s (`MOT.T1`); types read from silhouette alone (catalog sprites); quiet mahogany board, no tournament chrome. |
 | `MOT.A2`, `T1`, `E1`–`E2` | Travel uses quad ease-out inside the 0.15 s budget; capture break and promotion morph are inside the travel, not appended. |
 | `PAL.C1`, `C2`, `C5`, `C6`, `C8`, `C9`, `C10`, `C11` | Palette colors as Material constants in `board_view.gd`/`main.gd`: squares, cafe table, select, rose refusal/check, ink, cream, green legal marks. |
@@ -49,8 +49,8 @@ Aesthetics elements the demo expresses (`specs/aesthetics/`).
 | Style element | Where it is seen or heard |
 |---------------|---------------------------|
 | `AES.P1` snappy motion | All travel/return/morph inside the 0.15 s budget; measured 0–4 ms per scripted move headless. |
-| `AES.P2` silhouette-first pieces | Approved `piece-sprites/*` sprites, opaque body ~0.85 square extent, readable at 64 px. |
-| `AES.P3` calm cafe mood | `play-table.svg` mahogany board on `PAL.C5` table backdrop; warm wood palette `C1`/`C2`/`C5`; rose only for check/refusal. |
+| `AES.P2` silhouette-first pieces | Approved `piece-sprites/*` sprites fitted so each opaque body reaches the 0.85 square extent (`FRM.P1`/`P2` height order kept), readable at 64 px. |
+| `AES.P3` calm cafe mood | `play-table.svg` mahogany board on `PAL.C5` table backdrop with a solid wooden bevel around the 8×8 (`SRF.M1`, lit from the top-left per `SRF.S1`); warm wood palette `C1`/`C2`/`C5`; rose only for check/refusal. |
 | `PAL.C1`–`C2`, `C5`–`C6`, `C8`–`C10`, `C11` | Squares, table, select, refusal/check rose, ink text, cream panels, green legal marks. |
 | `MOT.A1`–`A3`, `T1`–`T3`, `E1`–`E2` | Travel/settle/return curves; capture break and promotion morph inside the travel; quad ease-out. |
 | `SND.X1`–`X4`, `M1`–`M2`, `L1`–`L2` | Feather-light select, settle land, check sting, resolve end; cafe beds alternate A→B→A without crossfade. |
@@ -106,6 +106,9 @@ Design decisions encoded in the code, each traced to the spec.
 | D8 | Turn chip and end panel are minimal in-board overlays, not screens; end resolves mate/stalemate with the end-resolve cue. The end panel stays inside the frame, above every board layer. | `L-two-player-game.K2`/`E1`, `END.L1` | `main.gd` `_setup_chip` + `_place_end_panel` + `_end_text` |
 | D9 | Cafe bed playlist alternates bed A → bed B → A with a hard handoff (no crossfade), one shared player ducked under cues. | `SND.M1`/`M2`, `SND.L1`–`L2` | `main.gd` `_next_bed` |
 | D10 | Input is pointer-only (tap select / tap move, and press-drag-release with `PHY.M5` follow); an illegal drop deselects and refuses rather than reselecting. | `IN.select`/`move`/`deselect`, `PER.R8` | `main.gd` `_unhandled_input` |
+| D11 | Piece sprites are fitted by their opaque body: the transparent side margin is divided out and each body is drawn at the `SPC.E1` extent on one ground line, which keeps the artwork's own King → Pawn height order instead of the padded canvas controlling size (defect #427 item 1). | `SPC.E1`, `FRM.P1`, `FRM.P2`, `PER.R1` | `board_view.gd` `_apply_piece_texture` |
+| D12 | A solid wooden bevel frames the 8×8 inside the board's outer margin: `PAL.C2` lips on the lit top/left, deepened `PAL.C5` on the shadowed bottom/right, a `PAL.C5` raised frame and a line darker than the bevel fill (`SRF.O1`), so no square or piece is covered (defect #427 item 4). | `AES.P3`, `SRF.M1`, `SRF.S1`, `SRF.O1`, `PAL.C2`, `PAL.C5` | `board_view.gd` `_build_bevel` |
+| D13 | Coordinates are `PAL.C9` labels on that wooden lip, drawn in canvas pixels and scaled into the board plane (a Label keeps its screen font size under a Node2D, and a sub-2 px Node2D glyph is below the font rasterizer's minimum), so `PER.R7` contrast and placement hold (defect #427 item 3). | `PER.R7`, `UIS.T2`, `PAL.C9` | `board_view.gd` `_build_coords` + `CoordLabels` |
 
 ## Assumptions
 
@@ -123,13 +126,18 @@ Non-blocking gaps filled for the demo only. Not decisions; not authority for mai
 - **Setup**: checkout the repo; the demo is a standalone Godot project at `demos/shared-game/` (its own `project.godot`). It loads cataloged assets by ID at runtime from `game_assets/` and `audio_runtime/` at the repo root (ADR-0005), so it must run with the repo checkout intact.
 - **Import once** (fresh checkout): `godot --headless --path demos/shared-game --import --quit`
 - **Run**: `godot --path demos/shared-game` — play by tap or drag on the board; overlays handle promotion, checks, and the end panel.
-- **Headless smoke (autodrive)**: `DEMO_AUTODRIVE=1 godot --headless --path demos/shared-game` — drives two scripted scenarios: a 22-move exercise (select-only refusals, castling, en passant, capture promotion morph, bad drop return + refusal flash, stalemate branch via the rules engine) and a mate game ending `Checkmate — White wins`; every scripted motion is timed against the 150 ms budget and prints `[demo] PASS` on success.
-- **Known-good evidence**: screenshots at `/tmp/opencode/shots/demo-shared-game-exercise.png` and `/tmp/opencode/shots/demo-shared-game-mate.png` (generated by the autodrive run's screenshot step).
+- **Headless smoke (autodrive)**: `DEMO_AUTODRIVE=1 godot --headless --path demos/shared-game` — drives two scripted scenarios and prints `[demo] PASS` on success:
+  - **Exercise** — 16 moves: select-only refusals, capture breaks, a check, and a capture-promotion morph with the chooser.
+  - **Mate** — 7 moves ending in `Checkmate — White wins`.
+
+  Every scripted motion is timed against the 150 ms budget. The exercise does **not** script castling, en passant, or the stalemate branch; `chess_rules.gd` implements all three and the autodrive's rules engine computes the stalemate result every ply (assumption A4).
+- **Screenshots (graphical run)**: set `DEMO_SHOT_DIR` to a writable directory, e.g. `DEMO_SHOT_DIR=/tmp/shots DEMO_AUTODRIVE=1 godot --path demos/shared-game` (under a virtual display: prefix `xvfb-run -a`). Each autodrive scenario saves `demo-shared-game-<scenario>.png` there; nothing outside the repo is used by default (without `DEMO_SHOT_DIR` the user-data directory is used).
 
 ## Known limitations
 
 - No clocks, resign, draw offer, persistence, locale, or screens; engine demo only.
 - Audio: under headless Linux the audio devices may be absent — cues and beds then no-op silently; loading them is still exercised.
-- The screenshot step assumes a writable `/tmp` path and runs only under autodrive.
+- The screenshot step needs a writable `DEMO_SHOT_DIR` (or the user-data directory) and runs only under autodrive.
+- The demo draws its own wooden bevel and coordinate lip on top of `board-backgrounds/play-table`: the catalog backdrop's own grid and frame sit under the board and stay visible only in the cafe margins (a demo layout choice, not a change to the catalog art).
 - The promotion chooser is keyboard-and-pointer; no Gamepad mapping (out of demo scope).
 - Blacks sit across the table only notionally — the demo never rotates the board (white seat fixed by D1).
