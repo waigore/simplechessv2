@@ -5,7 +5,7 @@
 - **Build / session id**: Godot 4.7.2.stable.official.ed1daf0bf, `origin/main` `16e197b` (deliverable merged as `5a7541b`, PR #595; no later commit touches `game/playtest_seams.gd` or `game/playtest_seams_test.gd`). Headless probe `TEL.3`: `sess-1792774312435-52704-playtest`.
 - **Coverage mode**: full, intersected with issue scope: `PTU-shared-play` (UX), steps S3/S4/S6 and P4. The deliverable is the `O11 assert_telemetry` read plus its `AssertTelemetry` debug control; it changes no start position, seat rule, or move gesture, so `S1`/`S2`/`S5` and `P1`/`P3` are outside this change's blast radius. `S6`/`P4`/`F3` are the judged rows.
 - **Defects**: none — no protocol failed.
-- **Screenshots**: waiting on the graphical sibling `../graphical-20261024T000000Z/screenshots/`. Per [`evidence.md`](../../../../specs/playtest/evidence.md) a headless run omits them without a fail and files no defect.
+- **Screenshots**: waiting on the graphical sibling `../graphical-20261024T000000Z/screenshots/`. Per [`evidence.md`](../../../../../specs/playtest/evidence.md) a headless run omits them without a fail and files no defect.
 - **Log window cited by `SIT.5`**: `sess-1792774312435-52704-playtest`, 5 events (see `logs/playtest-headless.log`).
 
 ## Results
