@@ -69,19 +69,35 @@ var _ui_font: Font
 var _text_scale := 1.0
 
 
-## UIS.T2 ratio scaling — the chrome reserve grows with the text it holds.
-func chrome_reserved_px(text_scale_value: float) -> float:
-	return CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
-
-
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build()
 	refresh()
 
 
+## SIT.6 / S13 — the frame reflowed: take the new ratio and restyle in place, so
+## later restyles (`_place`, `refresh`) keep the reflowed sizes (AC4).
+func set_text_scale(text_scale_value: float) -> void:
+	if is_equal_approx(text_scale_value, _text_scale):
+		return
+	_text_scale = text_scale_value
+	_apply_chrome_reserve()
+	if is_inside_tree():
+		_style_all()
+
+
+## The R1 strip is `CMP-presentation`'s reserve; the panel never keeps a second
+## copy of the formula (F4), and a restyle keeps the strip in step with the text.
+func _apply_chrome_reserve() -> void:
+	if _chrome == null:
+		return
+	_chrome.offset_bottom = SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, _text_scale)
+	_chrome.offset_bottom -= CHROME_TOP_PX
+
+
 func configure(state: Dictionary, font: Font = null, text_scale: float = 1.0) -> void:
 	_text_scale = text_scale
+	_apply_chrome_reserve()
 	locale = str(state.get("locale", locale))
 	ui_state = str(state.get("ui_state", "S1"))
 	side_to_move = str(state.get("side_to_move", "white"))
@@ -169,7 +185,7 @@ func _build() -> void:
 	_chrome.offset_left = 16
 	_chrome.offset_right = -16
 	_chrome.offset_top = CHROME_TOP_PX
-	_chrome.offset_bottom = chrome_reserved_px(_text_scale) - CHROME_TOP_PX
+	_apply_chrome_reserve()
 	_chrome.add_theme_constant_override("separation", 8)
 	add_child(_chrome)
 

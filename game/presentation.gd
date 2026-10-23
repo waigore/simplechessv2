@@ -17,7 +17,7 @@ const PUZZLE_PLAY := "puzzle-play"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
 ## UIS.T2 reference frame height: UiChrome sizes are project-space px at this height.
-const REFERENCE_FRAME_HEIGHT_PX := 640.0
+const REFERENCE_FRAME_HEIGHT_PX := UiChrome.REFERENCE_FRAME_HEIGHT_PX
 
 var pointer_count := 0
 var last_pointer: Dictionary = {}
@@ -71,12 +71,21 @@ static func frame_height_for_body_px(body_px: float) -> float:
 
 ## Body text as it reaches the screen for the current frame height (UIS.T2).
 func body_text_screen_px() -> float:
-	return float(scaled_body_px(text_scale()))
+	return body_text_screen_px_for_frame_height(_frame_height())
 
 
-## Reserve R2–R4 chrome so R1 is not covered (PRJ.A1). Scales with UIS.T2.
-func play_chrome_top_px() -> float:
-	return SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, text_scale())
+## SIT.6 / S13 — the seam reports this for the frame it rendered into; the size
+## is a function of the frame height alone, so there is one hook, not two.
+static func body_text_screen_px_for_frame_height(frame_height_px: float) -> float:
+	return float(scaled_body_px(text_scale_for_frame_height(frame_height_px)))
+
+
+## Reserve R2–R4 chrome so R1 is not covered (PRJ.A1). Scales with UIS.T2, and is
+## the one owner for the strip (the panel reads it through this call).
+func play_chrome_top_px(text_scale_value: float = -1.0) -> float:
+	if text_scale_value < 0.0:
+		text_scale_value = text_scale()
+	return SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
 
 
 func _ready() -> void:
@@ -262,6 +271,22 @@ func _build_shell() -> void:
 	add_child(_unsupported)
 
 	gui_input.connect(handle_gui_input)
+	resized.connect(_on_frame_resized)
+
+
+## SIT.6 / S13 — the frame height changed: hand every panel the new ratio, so a
+## restyle on any later action keeps the reflowed sizes (AC4). One path, no
+## phone-width theme; the board reflows on its next render.
+func _on_frame_resized() -> void:
+	if _router == null:
+		return
+	var scale := text_scale()
+	_shared_play.set_text_scale(scale)
+	_puzzle_play.set_text_scale(scale)
+	_mode_pick.set_text_scale(scale)
+	_shared_setup.set_text_scale(scale)
+	_shared_result.set_text_scale(scale)
+	_layout_shared_play_regions()
 
 
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
@@ -775,4 +800,4 @@ func _bind_playtest_seams() -> void:
 	var seams := get_node_or_null("PlaytestSeams") as PlaytestSeams
 	if seams == null:
 		return
-	seams.bind_text_report(body_text_screen_px)
+	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)

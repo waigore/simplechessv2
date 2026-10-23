@@ -30,7 +30,10 @@ static func in_frame(seam: Node) -> bool:
 	return seam.is_inside_tree() and seam.get_tree() != null
 
 
-static func frame_height(seam: Node) -> int:
-	if not in_frame(seam):
-		return 0
-	return seam.get_tree().root.size.y
+## The height the layout renders into: the running window, so `S13` reports the
+## frame the shipped layout actually reflowed to. A headless runner keeps the
+## engine placeholder size, so it names none rather than a frame nothing renders.
+static func frame_height(seam: Node) -> float:
+	if not in_frame(seam) or not has_display():
+		return 0.0
+	return float(seam.get_tree().root.size.y)
