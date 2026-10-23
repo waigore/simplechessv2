@@ -6,7 +6,7 @@ In-repo evidence from AI-agent playtesting. Schema and requirements: [`specs/pla
 
 `issue-<n>/headless-<run-id>/` and `issue-<n>/graphical-<run-id>/` with at least:
 
-- `manifest.md` — issue, environment, build/session id, coverage mode, results table, defect numbers, paths
+- `manifest.md` — issue, environment, build/session id, coverage mode, results table, defect numbers, paths, and a timing report (device, browser, repeat count) when a protocol cites `SIT.4`
 - `notes.md`
 - `screenshots/` — after a graphical run of the same build; a headless-only folder may omit it when `manifest.md` marks screenshots as waiting
 - `logs/`
