@@ -31,7 +31,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | Schema or state | Access |
 |-----------------|--------|
-| [`SCH-play-state`](../schemata/play-state.md) session fields / clocks | write |
+| [`SCH-play-state`](../schemata/play-state.md) run fields / clocks | write |
 | Advice option `GS.advice` | write |
 
 ## Diagram
