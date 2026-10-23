@@ -54,3 +54,5 @@ Orchestrators name the delegate skill and **when** to call it. They do not copy 
 2. Add optional `scripts/`, `references/`, or `assets/` next to that `SKILL.md`.
 3. Add Cursor, OpenCode, and Grok facades using the template above.
 4. List the skill in [`.agents/skills/README.md`](../.agents/skills/README.md) (catalog). Do not maintain a full skill list in `AGENTS.md`.
+
+The complete skill list is [`.agents/skills/README.md`](../.agents/skills/README.md); this file covers native wiring, the checklist, and invocation rules only.
