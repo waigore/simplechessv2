@@ -1,0 +1,29 @@
+; Engine configuration file (Godot 4.7). Demo #376 reference build.
+config_version=5
+
+[application]
+
+config/name="Advice cafe-table demo"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.7")
+
+[debug]
+
+gdscript/warnings/untyped_declaration=0
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.360784, 0.226667, 0.164706, 1)
