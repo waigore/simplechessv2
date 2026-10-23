@@ -16,7 +16,7 @@ ADR-0002 makes the advice backend the only UCI peer. The client never talks to S
 
 How does the Python advice server reach Stockfish?
 
-In scope: who invokes Stockfish, and whether that link is a network connection. Out of scope: host vendor, deploy path, the advice wire schema, and the API key (ADR-0010).
+In scope: who invokes Stockfish, and whether that link is a network connection. Out of scope: host vendor, deploy path, the advice wire schema, the API key (ADR-0010), and the GPL compliance approach ([ADR-0012](0012-advice-backend-gpl-compliance.md)).
 
 ## Decision
 
