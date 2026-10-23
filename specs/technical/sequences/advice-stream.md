@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 |----|------|----|-----|------------------|
 | S1 | shared-game | advice-client | CTR-advice-stream.O1 | start(position) |
 | S2 | advice-client | advice-backend | network | Send position and API key to the configured endpoint ([`CFG.T9`](../configuration.md) T9, T10) |
-| S3 | advice-backend | Stockfish | Local UCI, same server | Search (M2 only). Not a network hop ([ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)) |
+| S3 | advice-backend | advice-backend | internal ([`CMP-advice-backend.C2`](../components/advice-backend.md)) | Search (M2 only). Drives Stockfish over local UCI inside the backend ([ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)); not a network hop. Stockfish stays internal to the backend ([`CMP-advice-backend.R1`](../components/advice-backend.md), [`CMP-advice-backend.R7`](../components/advice-backend.md)) |
 | S4 | advice-backend | advice-client | CTR-advice-stream.E1 | Stream updates |
 | S5 | advice-client | shared-game | CTR-advice-stream.E1 | Write best-move/eval |
 | S6 | shared-game | presentation | CTR-presentation.E4 | Show marks |
@@ -31,7 +31,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 
 ## Postconditions
 
-- Eval/best-move reflect side to move only while R2 holds.
+- Eval/best-move reflect the side to move only while [F-move-advice.R2](../../design/features/move-advice.md) holds (Advice On and online); the eval and best move are for the side to move per [F-move-advice.R5](../../design/features/move-advice.md).
 - No step blocks [`SEQ-apply-local-move`](apply-local-move.md).
 
 ## Diagram
@@ -43,6 +43,7 @@ sequenceDiagram
   participant B as CMP-advice-backend
   S->>A: S1 start
   A->>B: S2 position + key
+  B->>B: S3 internal search
   B-->>A: S4 updates
   A->>S: S5 fields
   B-->>A: S7 ended
