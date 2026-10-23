@@ -41,7 +41,7 @@ beside `index.html` is also not enough: the browser issued no request for any as
 Packing the asset root into the Web build therefore needs a mechanism chosen in `specs/` — ADR-0005
 and ADR-0007 say nothing about how the repo-root asset root reaches the browser build — plus a
 build-time check that fails the export when the shipped tree carries no assets. That is filed as
-the blocking defect; nothing was fixed inside the gate.
+the blocking defect #630; nothing was fixed inside the gate.
 
 ## Why this is not a defect per row
 

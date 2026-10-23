@@ -26,7 +26,7 @@
 | Accessibility — text legible at smallest size | `SIT.6` phone-width read | not-judged — the only text on the shipped build is the `Loading…` label |
 | Localization — `en`/`zh-Hant`/`ja` complete | switch locale, spot-check four screens | not-judged — no screen past loading, no locale switch |
 
-**Blocking defect: #TBD** — the shipped release never leaves the loading screen because
+**Blocking defect: #630** — the shipped release never leaves the loading screen because
 `game_assets/` is not in the Web export. Every `not-judged` row above is unobservable for that
 one reason, not for ten independent reasons; #402's record cites this defect once and names the
 rows it blocks.
@@ -42,4 +42,4 @@ rows it blocks.
 
 ## Defects
 
-- #TBD — `game_assets/` missing from the Web export: the release build never leaves `EX.loading`
+- #630 — `game_assets/` missing from the Web export: the release build never leaves `EX.loading`
