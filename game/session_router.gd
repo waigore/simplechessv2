@@ -26,6 +26,11 @@ var white_seat := "bottom"
 var clock := "untimed"
 var increment := 3
 var advice_on := true
+## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
+## empty endpoint or key makes Advice unavailable (FAIL.T1).
+var advice_endpoint := ""
+var advice_api_key := ""
+var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
 var options_locked := false
 var session_ended := false
 
@@ -81,6 +86,12 @@ func _process(delta: float) -> void:
 	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
 	if _seams.is_paused():
 		return
+	# U3 → U2: advice updates apply on the session path (concurrency.md S1),
+	# including untimed games, which have no clocks to tick.
+	_poll_advice()
+	if shared_session.game_ended():
+		_go_shared_end()
+		return
 	if shared_session.white_clock_ms == null:
 		return
 	# Clocks keep running during resign confirm (S2); only board input is blocked.
@@ -90,17 +101,23 @@ func _process(delta: float) -> void:
 		return
 	_clock_accum_ms -= float(whole)
 	shared_session.tick(whole)
-	var display := shared_session.clock_display_key()
+	var display := shared_session._clock_display_key()
 	if display != _last_clock_display:
 		_last_clock_display = display
 		_emit_play_screen()
 	if shared_session.game_ended():
-		var ended_field: Dictionary = shared_session.play_state().get("game_ended", {})
-		var end_reason := str(ended_field.get("reason", ""))
-		if _is_loss_end(end_reason):
-			_play_cue(SharedAudioCues.CUE_END)
-		_seams.emit_tel("shared.end", end_reason, "NAV.T6")
-		_go_shared_result()
+		_go_shared_end()
+
+
+## Leaving the Shared game stops evaluation and clears advice (F-move-advice.R9).
+func _go_shared_end() -> void:
+	_leave_advice()
+	var ended_field: Dictionary = shared_session.play_state().get("game_ended", {})
+	var end_reason := str(ended_field.get("reason", ""))
+	if _is_loss_end(end_reason):
+		_play_cue(SharedAudioCues.CUE_END)
+	_seams.emit_tel("shared.end", end_reason, "NAV.T6")
+	_go_shared_result()
 
 
 func start() -> void:
@@ -234,6 +251,8 @@ func play_snapshot() -> Dictionary:
 		"clock": clock,
 		"increment": increment,
 		"advice": advice_on,
+		"online": true,
+		"advice_available": false,
 		"options_locked": options_locked,
 		"selected_piece": "",
 		"play_ui_state": SharedGameSession.UI_S1,
@@ -250,6 +269,10 @@ func play_snapshot() -> Dictionary:
 	base["selected_piece"] = live.get("selected_piece", "")
 	base["play_ui_state"] = live.get("play_ui_state", SharedGameSession.UI_S1)
 	base["advice"] = live.get("advice", advice_on)
+	base["online"] = live.get("online", true)
+	base["advice_best_move"] = live.get("advice_best_move", null)
+	base["advice_eval"] = live.get("advice_eval", null)
+	base["advice_available"] = _advice_available()
 	return base
 
 
@@ -359,9 +382,56 @@ func _load_persist() -> void:
 func _go_mode_pick(ui_state: String = "S1") -> void:
 	stage = STAGE_MODE_PICK
 	options_locked = false
+	_leave_advice()
 	shared_session = null
 	_last_clock_display = ""
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state(ui_state))
+
+
+## CMP-advice-client R1 / R6 / R7 — edge component configured from T6 / T9 / T10.
+func _make_advice_client() -> AdviceClient:
+	var client := AdviceClient.new()
+	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
+	return client
+
+
+## Drain streamed advice and report it (quality.md Observability; TEL.4 / TEL.5).
+func _poll_advice() -> void:
+	if shared_session == null:
+		return
+	var before := _advice_shown()
+	_drive_advice("poll")
+	if _advice_shown() != before:
+		_emit_play_screen()
+
+
+## Run one advice lifecycle step on the session and report its telemetry.
+func _drive_advice(control_id: String) -> void:
+	if shared_session == null:
+		return
+	var events: Array = shared_session.advice_control(control_id).get("events", [])
+	for event in events:
+		_seams.emit_tel(
+			str(event.get("event", "")), str(event.get("outcome", "")), str(event.get("story", ""))
+		)
+
+
+## What L1 can show for advice; only an E1 update changes it.
+func _advice_shown() -> String:
+	if shared_session == null:
+		return ""
+	var state := shared_session.play_state()
+	return "%s|%s" % [str(state.get("advice_best_move", null)), str(state.get("advice_eval", null))]
+
+
+## R9 — leaving the Shared game clears advice and stops evaluation.
+func _leave_advice() -> void:
+	_drive_advice("leave")
+
+
+## B3: both T9 and T10 must be set before Advice can fetch anything.
+func _advice_available() -> bool:
+	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
 
 
 func _mode_pick_state(ui_state: String) -> Dictionary:
@@ -391,6 +461,8 @@ func _shared_play_state() -> Dictionary:
 			"clock": clock,
 			"increment": increment,
 			"advice": advice_on,
+			"online": true,
+			"advice_available": false,
 			"options_locked": options_locked,
 			"ui_state": SharedGameSession.UI_S1,
 			"position": {},
@@ -481,6 +553,7 @@ func _start_shared_game() -> void:
 	_clock_accum_ms = 0.0
 	_last_clock_display = ""
 	shared_session = SharedGameSession.new()
+	shared_session.advice_client = _make_advice_client()
 	shared_session.start_shared(clock, increment, advice_on)
 	stage = STAGE_SHARED_PLAY
 	enter_shared_play()
@@ -530,6 +603,7 @@ func _on_shared_result_control(control_id: String) -> void:
 
 func _reset_after_shared_end() -> void:
 	## PRG.F1 / K3: drop live game so the next Start is orthodox opening + fresh clocks.
+	_leave_advice()
 	shared_session = null
 	_clock_accum_ms = 0.0
 	_last_clock_display = ""
@@ -622,6 +696,7 @@ func _next_in(values: Array, current: String) -> String:
 func _end_session() -> void:
 	session_ended = true
 	stage = STAGE_ENDED
+	_leave_advice()
 	shared_session = null
 	screen_requested.emit(STAGE_ENDED, {"locale": locale, "last_mode": last_mode})
 
@@ -645,6 +720,7 @@ func _on_jump_requested(stage_id: String) -> void:
 		STAGE_SHARED_PLAY:
 			if shared_session == null:
 				shared_session = SharedGameSession.new()
+				shared_session.advice_client = _make_advice_client()
 				shared_session.start_shared(clock, increment, advice_on)
 			_emit_play_screen()
 		STAGE_SHARED_RESULT:

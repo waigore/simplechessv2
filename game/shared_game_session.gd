@@ -38,8 +38,17 @@ var options_locked := false
 var selected_piece := ""
 ## Play UI state: S1 default; S2 confirm; S4 promote; S5 reject flash; S6 draw-offer.
 var play_ui_state := UI_S1
-## GS.advice — toggle only until advice client is wired (F-move-advice.R2).
+## GS.advice — whether Advice may run (F-move-advice.R2); toggled by C3.
 var advice_on := true
+## GS.online — the advice service is reachable (F-move-advice.R2, X3). Web starts
+## optimistic until a request or cancel reveals the browser is offline.
+var online := true
+## R1 — Advice never runs in Puzzle stream (CFG.K3); the router clears this when
+## the Shared game is left and a puzzle session takes over.
+var in_shared_game := false
+## L4 advice client; set by the router once T6 / T9 / T10 are configured.
+var advice_client: AdviceClient
+
 var last_reject := ""
 ## Square that refused a place (PER.R8); cleared when S5 ends.
 var reject_square := ""
@@ -51,6 +60,11 @@ var pending_promote_to := ""
 var _clocks_stopped := false
 ## Side whose clock is running; empty when none (untimed, stopped, or between moves).
 var _active_side := ""
+## GS.adviceBestMove / GS.adviceEval (SCH-advice-update F1–F3); null until set.
+var _advice_best_move: Variant = null
+var _advice_eval: Variant = null
+## FAIL.T1 events not yet reported to the session owner (EX.error is UI leaf's).
+var _advice_events: Array = []
 
 
 func _init(chess_rules: ChessRules = null) -> void:
@@ -68,12 +82,15 @@ func start_shared(
 	selected_piece = ""
 	play_ui_state = UI_S1
 	advice_on = p_advice
+	in_shared_game = true
 	last_reject = ""
 	reject_square = ""
 	confirm_kind = ""
 	pending_promote_from = ""
 	pending_promote_to = ""
+	_clear_advice()
 	_configure_clocks(p_clock, p_increment_s)
+	_sync_advice()
 
 
 ## Legacy/test helper: untimed, or both clocks at timed_ms with no increment.
@@ -87,17 +104,20 @@ func _start_opening(timed_ms: Variant = null) -> void:
 	options_locked = true
 	selected_piece = ""
 	play_ui_state = UI_S1
+	in_shared_game = true
 	last_reject = ""
 	reject_square = ""
 	confirm_kind = ""
 	pending_promote_from = ""
 	pending_promote_to = ""
+	_clear_advice()
 	clock_id = CLOCK_BLITZ
 	increment_ms = 0
 	var ms := int(timed_ms)
 	white_clock_ms = ms
 	black_clock_ms = ms
 	_active_side = ChessRules.SIDE_WHITE
+	_sync_advice()
 
 
 func play_state() -> Dictionary:
@@ -120,6 +140,9 @@ func play_state() -> Dictionary:
 		"selected_piece": selected_piece,
 		"play_ui_state": play_ui_state,
 		"advice": advice_on,
+		"online": online,
+		"advice_best_move": _advice_best_move,
+		"advice_eval": _advice_eval,
 		"last_reject": last_reject,
 		"reject_square": reject_square,
 		"confirm_kind": confirm_kind,
@@ -161,7 +184,7 @@ func gestures_available() -> bool:
 
 
 ## Display seconds for the running clock (null when untimed); used to throttle chrome.
-func clock_display_key() -> String:
+func _clock_display_key() -> String:
 	if white_clock_ms == null:
 		return ""
 	return "%d:%d:%s" % [int(white_clock_ms) / 1000, int(black_clock_ms) / 1000, play_ui_state]
@@ -279,6 +302,7 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 			"outcome": "illegal",
 			"story": "UI-shared-play.US1.3",
 		}
+	_on_advice_move_complete()
 	selected_piece = ""
 	pending_promote_from = ""
 	pending_promote_to = ""
@@ -487,6 +511,7 @@ func _toggle_advice() -> Dictionary:
 	if play_ui_state == UI_S2 or game_ended():
 		return {"ok": false}
 	advice_on = not advice_on
+	_sync_advice()
 	return {
 		"ok": true, "event": "shared.advice", "outcome": "toggled", "story": "UI-shared-play.US1.4"
 	}
@@ -508,6 +533,10 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"clock": clock_id,
 		"increment": increment_ms / 1000 if increment_ms > 0 else 3,
 		"advice": advice_on,
+		"online": online,
+		"advice_available": _advice_available(),
+		"advice_best_move": _advice_best_move,
+		"advice_eval": _advice_eval,
 		"options_locked": options_locked,
 		"ui_state": play_ui_state,
 		"position": field,
@@ -743,3 +772,98 @@ func _finish(reason: String) -> void:
 	draw_offer = ""
 	_clocks_stopped = true
 	_active_side = ""
+	_stop_advice()
+
+
+## R4 — Advice runs only in a Shared game, when On and online (F-move-advice
+## R1, R2, CFG.K3). A puzzle position is never handed to the advice client.
+func _advice_allowed() -> bool:
+	return advice_on and online and in_shared_game and not game_ended()
+
+
+## Whether the C3 toggle can fetch advice (B3): a client aimed at T9 with T10.
+func _advice_available() -> bool:
+	return advice_client != null and advice_client.is_available()
+
+
+## One public entry for the advice lifecycle the router drives. Returns the
+## telemetry events for the caller to report (TEL.4 / TEL.5).
+## `poll` drains U3 → U2 without blocking the move path (concurrency.md S1);
+## `leave` is R9 (leaving the Shared game); `offline` is X3.
+func advice_control(control_id: String) -> Dictionary:
+	match control_id:
+		"poll":
+			_poll_advice()
+		"leave":
+			in_shared_game = false
+			online = true
+			_stop_advice()
+		"offline":
+			_mark_offline()
+	var events := _advice_events
+	_advice_events = []
+	return {"events": events}
+
+
+func _poll_advice() -> void:
+	if advice_client == null:
+		return
+	var state := _advice_state()
+	var ready := advice_client.poll(state)
+	var failed := advice_client.failed()
+	_advice_best_move = state["advice_best_move"]
+	_advice_eval = state["advice_eval"]
+	if failed:
+		# FAIL.T1 supersedes this tick's `advice ready`: advice is gone.
+		_mark_offline()
+		_advice_events.append(_unavailable_event())
+	elif not ready.is_empty():
+		_advice_events.append(ready)
+
+
+func _unavailable_event() -> Dictionary:
+	return {"event": "advice.error", "outcome": "unavailable", "story": "F-move-advice.R2"}
+
+
+## X3 — the advice service answered with an error or timeout (FAIL.T1).
+func _mark_offline() -> void:
+	online = false
+	_stop_advice()
+
+
+## Start, restart, or stop the stream so it matches F-move-advice.R2 / R9.
+## B3: when T9 or T10 is missing there is nothing to request, so this is a
+## configuration state, not a request that failed (no FAIL.T1 without a request).
+func _sync_advice() -> void:
+	if advice_client == null:
+		return
+	if not _advice_allowed() or not advice_client.is_available():
+		_stop_advice()
+		return
+	advice_client.start(rules.position_field(), rules.castling_ep())
+
+
+## R8 / X1 — a completed move clears advice, then the new position if R2 holds.
+func _on_advice_move_complete() -> void:
+	if advice_client != null:
+		advice_client.cancel(_advice_state())
+		_advice_best_move = null
+		_advice_eval = null
+	_sync_advice()
+
+
+func _stop_advice() -> void:
+	if advice_client != null:
+		advice_client.cancel(_advice_state())
+	_advice_best_move = null
+	_advice_eval = null
+
+
+func _advice_state() -> Dictionary:
+	return {"advice_best_move": _advice_best_move, "advice_eval": _advice_eval}
+
+
+func _clear_advice() -> void:
+	_advice_best_move = null
+	_advice_eval = null
+	_advice_events.clear()
