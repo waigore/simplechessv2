@@ -11,6 +11,7 @@ const COLOR_DANGER := Color("C28A86")
 const COLOR_BORDER := Color(0.361, 0.227, 0.165, 0.28)
 
 const MIN_TOUCH := 44.0
+## UIS.T2 project-space sizes at REFERENCE_FRAME_HEIGHT_PX (Presentation scales them).
 const BODY_PX := 16
 const TITLE_PX := 28
 const RADIUS := 8
@@ -30,11 +31,13 @@ const FONT_LATIN := "01a15215-15bd-7e3f-a3f8-ffcb1333a0ab"
 const FONT_CJK := "01a15215-15bd-77a5-b804-9ea4d95880a4"
 
 
-static func style_button(button: Button, primary: bool = false, last_mode: bool = false) -> void:
+static func style_button(
+	button: Button, primary: bool = false, last_mode: bool = false, text_scale: float = 1.0
+) -> void:
 	button.custom_minimum_size = Vector2(MIN_TOUCH, MIN_TOUCH)
 	button.clip_text = false
 	button.focus_mode = Control.FOCUS_ALL
-	button.add_theme_font_size_override("font_size", BODY_PX)
+	add_body_size(button, text_scale)
 	button.add_theme_color_override("font_color", COLOR_INK)
 	button.add_theme_color_override("font_disabled_color", Color(COLOR_INK, 0.4))
 	var base_border := COLOR_ACCENT if (primary or last_mode) else COLOR_BORDER
@@ -136,10 +139,23 @@ static func _on_button_emphasis(button: Button, emphasized: bool) -> void:
 	button.set_meta("_uis_m2_tween", tw)
 
 
-static func style_label(label: Label, title: bool = false) -> void:
-	label.add_theme_font_size_override("font_size", TITLE_PX if title else BODY_PX)
+static func style_label(label: Label, title: bool = false, text_scale: float = 1.0) -> void:
+	add_font_size(label, TITLE_PX if title else BODY_PX, text_scale)
 	label.add_theme_color_override("font_color", COLOR_INK if title else COLOR_MUTED)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+
+static func add_body_size(control: Control, text_scale: float = 1.0) -> void:
+	add_font_size(control, BODY_PX, text_scale)
+
+
+## The one place UIS.T2 sizes are applied: project-space px times the frame-height factor.
+static func add_font_size(control: Control, base_px: int, text_scale: float = 1.0) -> void:
+	control.add_theme_font_size_override("font_size", scaled_px(base_px, text_scale))
+
+
+static func scaled_px(base_px: int, text_scale: float) -> int:
+	return int(round(float(base_px) * text_scale))
 
 
 static func apply_font(control: Control, font: Font) -> void:
