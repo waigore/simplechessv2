@@ -1,0 +1,33 @@
+# screenshot screenshots/demo-shared-game-exercise.png (720x1280)
+# board origin (72, 352), 72 px per board unit, SPC.E1 extent 0.85
+square piece  w px  h px  w unit  h unit  verdict
+a1     wR       27    49    0.38    0.68  inside extent
+a8     bR       28    49    0.39    0.68  inside extent
+b2     wP       26    44    0.36    0.61  inside extent
+c1     wB       27    54    0.38    0.75  inside extent
+c6     bN       34    54    0.47    0.75  inside extent
+d1     wQ       27    57    0.38    0.79  inside extent
+d8     bQ       28    57    0.39    0.79  inside extent
+e1     wK       26    61    0.36    0.85  inside extent
+e4     wP       26    44    0.36    0.61  inside extent
+e5     bP       26    45    0.36    0.62  inside extent
+e8     bK       28    62    0.39    0.86  inside extent
+f3     wN       34    54    0.47    0.75  inside extent
+g7     bB       26    53    0.36    0.74  inside extent
+g8     bR       28    49    0.39    0.68  inside extent
+h1     wR       27    49    0.38    0.68  inside extent
+# height per type (board units):
+#   K: 0.85, 0.86
+#   Q: 0.79, 0.79
+#   B: 0.75, 0.74
+#   N: 0.75, 0.75
+#   R: 0.68, 0.68, 0.68, 0.68
+#   P: 0.61, 0.61, 0.62
+# FRM.P2 check (measured vs spec, +-0.01 plus one raster pixel):
+#   K: 0.85 vs 0.85  ok
+#   Q: 0.79 vs 0.79  ok
+#   B: 0.74 vs 0.76  ok
+#   N: 0.75 vs 0.75  ok
+#   R: 0.68 vs 0.68  ok
+#   P: 0.62 vs 0.62  ok
+# PASS: every body inside SPC.E1, King at full height, each at its FRM.P2 height
