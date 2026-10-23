@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/technical/concurrency.md`](../../.agents/specs/rules/technical/concurrency.md).
 
-- **Serves**: Instant play; Performance 60 fps; Advice never blocks moves ([F-move-advice.R6](../design/features/move-advice.md))
+- **Serves**: Instant play ([`CMP-advice-client`](components/advice-client.md) R5, [`CTR-advice-stream`](contracts/advice-stream.md) G1); Performance 60 fps
 - **Informed by**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md); clocks in Shared game
 - **ADRs**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0002](../adr/decisions/0002-stockfish-advice-backend.md)
 
