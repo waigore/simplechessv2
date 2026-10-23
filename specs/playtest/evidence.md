@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/playtest/evidence.md`](../../.agents/spec
 
 ## Outcomes
 
-This file owns the vocabulary. Stories are judged individually; the **protocol** is the acceptance unit ([`playtest.md`](playtest.md)).
+This file owns the vocabulary for individual runs. Stories are judged individually; the **protocol** is the acceptance unit ([`playtest.md`](playtest.md)).
 
 - **Story outcome**: per cited story, `pass`, `fail`, or `not-judged`.
 - **Protocol verdict**: `pass` only when every cited story is `pass` in that environment. Any cited story `fail` makes the protocol `fail`; a protocol is never `pass` beside a failed story. A `not-judged` story makes the protocol `not-judged` there, never `pass`.
@@ -29,7 +29,7 @@ Worked example: a protocol cites four stories; one run records three `pass` and 
 | Screenshots | Per the screenshot rule below |
 | Notes | Judgement text for the run |
 | Logs | Session excerpt for the judged window |
-| `manifest.md` | Index of the above, including the environment (`ENV.<n>`); fields: [`evidence-manifest.md`](evidence-manifest.md) |
+| `manifest.md` | Index of the above, including the environment (`ENV.<n>`) and the defect numbers filed for failed protocols; fields: [`evidence-manifest.md`](evidence-manifest.md) |
 
 ## Screenshots, logs, notes
 
@@ -37,6 +37,7 @@ Worked example: a protocol cites four stories; one run records three `pass` and 
 - **Headless run**: May judge and record outcomes, notes, and logs with no display. Omit `screenshots/` and mark those paths waiting in `manifest.md`; that omission is no fail and files no defect.
 - **Logs**: under `logs/`, covering the judged window for `TEL.1`–`TEL.5`.
 - **Notes**: `notes.md` — what was judged, blockers, and non-blocking marks only where allowed.
+- **Defects**: A protocol that fails for a game or interface reason is filed as a `type:defect` against the wave that owns the behavior; its number goes in that protocol's results row and on a `Defects` line in `manifest.md`.
 
 ## Retention
 

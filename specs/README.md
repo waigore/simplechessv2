@@ -21,6 +21,7 @@ Add a row for each new spec file. Each hub indexes its own unit specs; its rules
 | [`vision.md`](vision.md) | Pitch, audience, qualities, non-goals | [`vision-review.md`](../.agents/specs/vision-review.md) |
 | [`definition/definition.md`](definition/definition.md) | Scope, objectives, platforms, constraints, spec depth | [`definition-review.md`](../.agents/specs/definition-review.md) |
 | [`definition/quality.md`](definition/quality.md) | Non-functional requirements | [`definition-review.md`](../.agents/specs/definition-review.md) |
+| [`definition/quality-regression-owners.md`](definition/quality-regression-owners.md) | Which wave epic owns a quality-row regression | [`definition-review.md`](../.agents/specs/definition-review.md) |
 | [`design/design.md`](design/design.md) | Game design hub | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/end-conditions.md`](design/end-conditions.md) | How shared games and puzzles end | [`design-review.md`](../.agents/specs/design-review.md) |
 | [`design/end-conditions/conditions.md`](design/end-conditions/conditions.md) | End-condition rows | [`design-review.md`](../.agents/specs/design-review.md) |
