@@ -21,12 +21,17 @@ var api_key := ""
 ## `T6` `advice_time_ms`; negative when missing, so the default is sent instead.
 var advice_time_ms := -1
 
+## A simulated peer for headless tests / playtests (ADR-0002 Testability). When
+## set it replaces the network transport; the shipped export never sets it, so
+## production stays on AdviceStreamTransport. Never a Stockfish endpoint.
+var sim_factory: Variant = null
 var _transport_factory: Callable
 ## AdviceStreamTransport, or a stand-in with the same four calls (tests).
 var _transport: Variant
 var _stream_id := 0
 var _started_ms := 0
 var _failed := false
+var _parked := false
 
 
 func _init(transport_factory: Callable = Callable()) -> void:
@@ -48,6 +53,19 @@ func is_available() -> bool:
 	return not endpoint.is_empty() and not api_key.is_empty()
 
 
+## X3 / FAIL.T1 — a failed stream parks the client: a dropped connection that
+## looks alive to the transport must not start a new request until the browser
+## reports it is back online (`resume`).
+func fail_until_reconnect() -> void:
+	cancel({})
+	_parked = true
+
+
+## X3 — the browser is online again; the next `start` may open a stream.
+func resume() -> void:
+	_parked = false
+
+
 ## O1 `time_ms`: `T6` when configured in range, otherwise the 2000 default (R7).
 func request_time_ms() -> int:
 	if advice_time_ms < ADVICE_TIME_MIN_MS or advice_time_ms > ADVICE_TIME_MAX_MS:
@@ -59,7 +77,7 @@ func request_time_ms() -> int:
 func start(position: Dictionary, castling_ep: Dictionary = {}) -> bool:
 	cancel({})
 	_failed = false
-	if not is_available():
+	if _parked or not is_available():
 		return false
 	var message := {
 		"api_key": api_key,
@@ -149,6 +167,8 @@ func elapsed_ms() -> int:
 
 
 func _make_transport() -> Variant:
+	if sim_factory != null:
+		return sim_factory.call()
 	return _transport_factory.call()
 
 

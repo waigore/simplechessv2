@@ -19,6 +19,11 @@ var clock_id := "untimed"
 var white_clock_ms: Variant = null
 var black_clock_ms: Variant = null
 var advice_on := true
+var online := true
+var advice_best_move: Variant = null
+var advice_eval: Variant = null
+## EX.error / S3 — an advice fetch failed; play continues until Dismiss.
+var advice_error := false
 var game_ended := false
 var resign_available := true
 var offer_available := true
@@ -38,11 +43,16 @@ var c10_available := true
 var _status: Label
 var _check: Label
 var _clocks: Label
+var _advice_eval: Label
+var _advice_row: HBoxContainer
 var _promote_btns: Dictionary = {}
 var _select_focus: Button
 var _clear_focus: Button
 var _place_focus: Button
 var _advice: Button
+var _advice_error_box: VBoxContainer
+var _advice_error_msg: Label
+var _advice_dismiss: Button
 var _resign: Button
 var _offer: Button
 var _confirm_box: VBoxContainer
@@ -73,6 +83,11 @@ func configure(state: Dictionary, font: Font = null) -> void:
 	white_clock_ms = state.get("white_clock_ms", null)
 	black_clock_ms = state.get("black_clock_ms", null)
 	advice_on = bool(state.get("advice", true))
+	online = bool(state.get("online", true))
+	advice_best_move = state.get("advice_best_move", null)
+	advice_eval = state.get("advice_eval", null)
+	# S3 `EX.error` — the session raises it; Dismiss clears it (states.md).
+	advice_error = bool(state.get("advice_error", false))
 	game_ended = bool(state.get("game_ended", false))
 	resign_available = bool(state.get("resign_available", true))
 	offer_available = bool(state.get("offer_available", true))
@@ -92,6 +107,12 @@ func configure(state: Dictionary, font: Font = null) -> void:
 	if is_inside_tree():
 		_apply_font()
 		refresh()
+
+
+## S3 Dismiss — back to S1 with C1–C5 as S1 (board playable throughout).
+func dismiss_advice_error() -> void:
+	if is_inside_tree():
+		control_activated.emit("advice_dismiss")
 
 
 func focusable_controls() -> Array[Control]:
@@ -217,6 +238,16 @@ func _build() -> void:
 	row.add_theme_constant_override("separation", 12)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_chrome.add_child(row)
+	_advice_row = row
+
+	_advice_eval = Label.new()
+	_advice_eval.name = "AdviceEval"
+	_advice_eval.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_advice_eval.visible = false
+	# UIS.T3 tabular figures; ≥ UIS.T2 body size (PER.R5), never color alone.
+	UiChrome.style_label(_advice_eval)
+	_advice_eval.add_theme_constant_override("outline_size", 0)
+	_chrome.add_child(_advice_eval)
 
 	_advice = Button.new()
 	_advice.name = "AdviceToggle"
@@ -322,8 +353,46 @@ func _build() -> void:
 	_withdraw.mouse_entered.connect(_on_point.bind("C9"))
 	draw_row.add_child(_withdraw)
 
+	_build_advice_error()
 	_style_all()
 	_wire_focus_order()
+
+
+## S3 `EX.error` — non-modal: what failed, play continues, Dismiss (exceptions.md).
+func _build_advice_error() -> void:
+	_advice_error_box = VBoxContainer.new()
+	_advice_error_box.name = "AdviceError"
+	_advice_error_box.visible = false
+	_advice_error_box.mouse_filter = Control.MOUSE_FILTER_STOP
+	_advice_error_box.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	_advice_error_box.offset_left = 16
+	_advice_error_box.offset_right = -16
+	_advice_error_box.offset_top = CHROME_BOTTOM_PX + 8
+	_advice_error_box.offset_bottom = CHROME_BOTTOM_PX + 120
+	_advice_error_box.add_theme_constant_override("separation", 8)
+	add_child(_advice_error_box)
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", UiChrome.panel_style())
+	_advice_error_box.add_child(panel)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 8)
+	panel.add_child(inner)
+	_advice_error_msg = Label.new()
+	_advice_error_msg.name = "AdviceErrorMsg"
+	_advice_error_msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_advice_error_msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	UiChrome.style_label(_advice_error_msg)
+	inner.add_child(_advice_error_msg)
+	var dismiss_row := HBoxContainer.new()
+	dismiss_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	dismiss_row.add_theme_constant_override("separation", 12)
+	inner.add_child(dismiss_row)
+	_advice_dismiss = Button.new()
+	_advice_dismiss.name = "AdviceErrorDismiss"
+	_advice_dismiss.pressed.connect(dismiss_advice_error)
+	_advice_dismiss.focus_entered.connect(_on_point.bind("advice_dismiss"))
+	_advice_dismiss.mouse_entered.connect(_on_point.bind("advice_dismiss"))
+	dismiss_row.add_child(_advice_dismiss)
 
 
 func _wire_focus_order() -> void:
@@ -355,6 +424,7 @@ func _style_all() -> void:
 	UiChrome.style_button(_accept, true)
 	UiChrome.style_button(_decline)
 	UiChrome.style_button(_withdraw)
+	UiChrome.style_button(_advice_dismiss)
 
 
 func _apply_font() -> void:
@@ -376,7 +446,10 @@ func _apply_font() -> void:
 		_draw_msg,
 		_accept,
 		_decline,
-		_withdraw
+		_withdraw,
+		_advice_eval,
+		_advice_error_msg,
+		_advice_dismiss
 	]
 	for kind in SharedGameSession.PROMOTE_ORDER:
 		nodes.append(_promote_btns[kind])
@@ -440,6 +513,21 @@ func _apply_availability() -> void:
 	_withdraw.disabled = not c9_available
 	_style_all()
 	_wire_focus_order()
+	_apply_advice_text()
+
+
+func _apply_advice_text() -> void:
+	## R3 — the eval shows only while Advice is On and online and values are set.
+	var shown := advice_on and online and advice_best_move is Dictionary and advice_eval is int
+	_advice_eval.visible = shown
+	_advice_eval.text = format_eval(int(advice_eval)) if shown else ""
+	_advice_error_msg.text = StringTable.shared_play("advice_error", locale)
+	_advice_dismiss.text = StringTable.shared_play("dismiss", locale)
+
+
+## Centipawns from White's view as text (F-move-advice.R4).
+static func format_eval(cp: int) -> String:
+	return "%+.2f" % (float(cp) / 100.0)
 
 
 func _show_state(state_id: String) -> void:
@@ -447,6 +535,8 @@ func _show_state(state_id: String) -> void:
 	var confirm := state_id == "S2"
 	_confirm_box.visible = confirm
 	_draw_box.visible = state_id == "S6"
+	# S3 — EX.error panel shows over a playable board (states.md).
+	_advice_error_box.visible = advice_error
 	# Keep R2/R4 readable; board dimming is owned by presentation via board_unavailable.
 	_chrome.modulate.a = 1.0
 	_wire_focus_order()

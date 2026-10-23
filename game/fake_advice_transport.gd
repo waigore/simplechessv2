@@ -68,5 +68,10 @@ func push_update(update: Dictionary) -> void:
 	_messages.append({"kind": "update", "value": update})
 
 
+## True while this peer still owns a stream: the client retires it on cancel.
+func is_live() -> bool:
+	return not endpoint.is_empty()
+
+
 func push_end(reason: String) -> void:
 	_messages.append({"kind": "end", "value": {"reason": reason}})

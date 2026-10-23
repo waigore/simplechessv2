@@ -349,6 +349,7 @@ func _show_shared_play(state: Dictionary) -> void:
 		opts["move"] = move_var
 	_board.set_white_seat(str(opts["white_seat"]))
 	_board.render_position(position, selection, legal, opts)
+	_show_advice_update(state)
 	var board_dim := bool(state.get("board_unavailable", false))
 	var board_alpha := 0.45 if board_dim else 1.0
 	if not _board.visible:
@@ -375,6 +376,18 @@ func _show_shared_play(state: Dictionary) -> void:
 		asset_needed.emit(needed)
 
 
+## UI-shared-play.R3 / CMP-presentation.R4 — E4 `show_advice`, shown only while
+## Advice is On and online and the values are set (GS.H2), else nothing.
+func _show_advice_update(state: Dictionary) -> void:
+	var shown := (
+		bool(state.get("advice", true))
+		and bool(state.get("online", true))
+		and state.get("advice_best_move", null) is Dictionary
+		and state.get("advice_eval", null) is int
+	)
+	_board.render_advice(state.get("advice_best_move", null) if shown else null)
+
+
 func _layout_shared_play_regions() -> void:
 	## R2–R4 stay in the top strip; R1 board fills the remaining viewport.
 	if _board == null or _shared_play == null:
@@ -389,6 +402,7 @@ func _layout_shared_play_regions() -> void:
 
 func _show_shared_result(state: Dictionary) -> void:
 	current_screen = SHARED_RESULT
+	_clear_advice_chrome()
 	_loading.visible = false
 	_mode_pick.visible = false
 	_shared_setup.visible = false
@@ -425,7 +439,16 @@ func _hide_panels() -> void:
 	_shared_result.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
+	_clear_advice_chrome()
 	_reset_gesture()
+
+
+## Advice leaves the screen with the game: no marks and no error panel linger.
+func _clear_advice_chrome() -> void:
+	if _board != null:
+		_board.render_advice(null)
+	if _shared_play != null:
+		_shared_play.advice_error = false
 
 
 func _on_mode_pick_control(control_id: String) -> void:
@@ -437,6 +460,10 @@ func _on_shared_setup_control(control_id: String) -> void:
 
 
 func _on_shared_play_control(control_id: String) -> void:
+	# S3 Dismiss is the panel's own EX.error control, not a play control (C1–C10).
+	if control_id == "advice_dismiss":
+		_router.dismiss_advice_error()
+		return
 	control_activate.emit(SHARED_PLAY, control_id)
 
 
@@ -494,7 +521,7 @@ func _on_pointer_down(at: Vector2, index: int) -> void:
 		# B10 may start with nothing selected; begin drag follow from this square.
 		_drag_from = _press_square
 		var world := _board.screen_to_world(at)
-		_board.begin_drag(_press_square, world)
+		_board.update_drag("begin", {"square": _press_square, "world": world})
 		return
 	# B3: press on a destination square while a piece is already selected.
 
@@ -505,7 +532,7 @@ func _on_pointer_move(at: Vector2) -> void:
 	if not _dragging and _press_screen.distance_to(at) >= DRAG_THRESHOLD_PX:
 		_dragging = true
 	if _dragging:
-		_board.update_drag(_board.screen_to_world(at))
+		_board.update_drag("move", _board.screen_to_world(at))
 
 
 func _on_pointer_up(at: Vector2, index: int) -> void:
