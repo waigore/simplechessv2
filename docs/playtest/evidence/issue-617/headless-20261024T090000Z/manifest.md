@@ -32,6 +32,7 @@ outcome waits on the graphical run (see `notes.md`).
 | Artifact | Path |
 |----------|------|
 | Notes | `notes.md` |
+| Limits and non-blocking marks | `limits-and-marks.md` |
 | Probe script | `probe_art_orientation.gd` |
 | Probe log (judged window) | `logs/art-orientation.log` |
 | Probe stdout (engine noise, warnings) | `logs/probe-stdout.log` |
