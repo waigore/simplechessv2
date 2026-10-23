@@ -1,0 +1,10 @@
+{
+  "run": "20261023T233200Z",
+  "chromeVersion": "Chrome/156.0.8078.47",
+  "modePickReachable": false,
+  "legResults": {
+    "leg1": "not-judged",
+    "leg2": "not-judged",
+    "leg3": "not-judged"
+  }
+}
