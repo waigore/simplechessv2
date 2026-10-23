@@ -52,7 +52,7 @@ Settings → General → Pull Requests:
 - Squash message default: **Pull request title and description**.
 - **Always suggest updating pull request branches** on.
 - **Allow auto-merge** on. Same-repo non-draft PRs squash-merge when mergeable unless `no-automerge` ([`automerge.yml`](../.github/workflows/automerge.yml)).
-- **Automatically delete head branches** on. After merge, GitHub deletes the head branch.
+- **Automatically delete head branches** on. After a PR merges, GitHub deletes the head branch.
 
 ## 5. Labels
 

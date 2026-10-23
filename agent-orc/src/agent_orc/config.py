@@ -62,6 +62,11 @@ class GateConfig:
 
 
 @dataclass
+class IssuesConfig:
+    command: list[str]
+
+
+@dataclass
 class AgentConfig:
     name: str
     skill: str
@@ -69,6 +74,8 @@ class AgentConfig:
     enabled: bool
     prompt: str
     gate: GateConfig | None = None
+    issues: IssuesConfig | None = None
+    parallel_run: int = 1
     cooldown_seconds: float | None = None
     gate_backoff_initial_seconds: float | None = None
     gate_backoff_max_seconds: float | None = None
@@ -110,6 +117,16 @@ def _non_negative_seconds(value: Any, label: str) -> float:
     if not math.isfinite(number) or number < 0:
         raise ConfigError(f"{label} must be a number >= 0")
     return number
+
+
+def _parallel_run(body: dict[str, Any], name: str) -> int:
+    label = f"agents.{name}.parallel_run"
+    if "parallel_run" not in body or body["parallel_run"] is None:
+        return 1
+    value = body["parallel_run"]
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ConfigError(f"{label} must be an integer >= 1")
+    return value
 
 
 def _optional_seconds(body: dict[str, Any], key: str, label: str) -> float | None:
@@ -199,6 +216,16 @@ def _parse_agents(
             gate = GateConfig(
                 command=_as_command(gate_raw["command"], f"agents.{name}.gate.command")
             )
+        issues = None
+        issues_raw = body.get("issues")
+        if issues_raw is not None:
+            if not isinstance(issues_raw, dict) or "command" not in issues_raw:
+                raise ConfigError(f"agents.{name}.issues must have a command")
+            issues = IssuesConfig(
+                command=_as_command(
+                    issues_raw["command"], f"agents.{name}.issues.command"
+                )
+            )
         agents[name] = AgentConfig(
             name=name,
             skill=str(body.get("skill", name)),
@@ -206,6 +233,8 @@ def _parse_agents(
             enabled=bool(body.get("enabled", True)),
             prompt=str(body.get("prompt", "")).strip(),
             gate=gate,
+            issues=issues,
+            parallel_run=_parallel_run(body, name),
             cooldown_seconds=_optional_seconds(
                 body, "cooldown_seconds", f"agents.{name}.cooldown_seconds"
             ),

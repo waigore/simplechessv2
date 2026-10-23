@@ -132,6 +132,15 @@ def test_shipped_config_loads() -> None:
     assert babysit.gate is not None
     assert babysit.gate.command[-1].endswith("babysit-pr-agent/scripts/gate.sh")
     assert len(enabled_agents(cfg)) == 7
+    assert planner.parallel_run == 1
+    assert planner.issues is None
+    assert "{parallel_id}" in planner.prompt and "{issue}" in planner.prompt
+    review = cfg.agents["issue-workflow-review-agent"]
+    assert review.parallel_run == 1
+    assert review.issues is not None
+    assert "status:pending-review" in review.issues.command
+    assert "{parallel_id}" in review.prompt and "{issue}" in review.prompt
+    assert babysit.issues is None
 
 
 def _write_agent_config(cfg_dir: Path, body: dict) -> None:
@@ -283,6 +292,42 @@ def test_per_agent_timing_override_from_local(tmp_path: Path) -> None:
     assert resolved_cooldown_seconds(agent, cfg.orchestrator) == 0
     assert resolved_gate_backoff_initial_seconds(agent, cfg.orchestrator) == 0
     assert resolved_gate_backoff_max_seconds(agent, cfg.orchestrator) == 120
+
+
+def test_parallel_run_defaults_and_issues_command(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    body = _agent_body(
+        parallel_run=3,
+        issues={"command": ["gh", "issue", "list", "--json", "number"]},
+    )
+    _write_agent_config(cfg_dir, body)
+    agent = load_config(cfg_dir).agents["a"]
+    assert agent.parallel_run == 3
+    assert agent.issues is not None
+    assert agent.issues.command[0] == "gh"
+
+
+def test_parallel_run_omitted_is_one(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    _write_agent_config(cfg_dir, _agent_body())
+    agent = load_config(cfg_dir).agents["a"]
+    assert agent.parallel_run == 1
+    assert agent.issues is None
+
+
+@pytest.mark.parametrize("value", [0, -1, True, 1.5, "2"])
+def test_parallel_run_rejected(tmp_path: Path, value: object) -> None:
+    cfg_dir = tmp_path / ".orc"
+    _write_agent_config(cfg_dir, _agent_body(parallel_run=value))
+    with pytest.raises(ConfigError, match="parallel_run"):
+        load_config(cfg_dir)
+
+
+def test_issues_require_command(tmp_path: Path) -> None:
+    cfg_dir = tmp_path / ".orc"
+    _write_agent_config(cfg_dir, _agent_body(issues={"limit": 10}))
+    with pytest.raises(ConfigError, match="issues"):
+        load_config(cfg_dir)
 
 
 def test_negative_timing_rejected(tmp_path: Path) -> None:
