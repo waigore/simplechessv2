@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/specs/rules/technical/schemata.md).
 
 - **Kind**: resource
-- **Owner**: Host publish of the snapshot ([ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)). [`CMP-puzzle-session`](../components/puzzle-session.md) reads a dealt record and does not mutate the snapshot.
+- **Owner**: Host publish of the snapshot ([ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)). [`CMP-puzzle-session`](../components/puzzle-session.md) reads a dealt record and [`CMP-puzzle-progression`](../components/puzzle-progression.md) `R4` selects from it; neither mutates the snapshot.
 - **Serves**: Puzzle stream; [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md)
 - **Informed by**: [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md) R1–R5, I3, X1; `GS.puzzleId`, `GS.puzzleElo`, `GS.requiredSequence`, `GS.recentSolved`
 - **ADRs**: [ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)

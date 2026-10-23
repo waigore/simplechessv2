@@ -25,6 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 |----|------|-----------|--------------|-------|
 | C1 | Playtest agent / harness | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | Drive + observe |
 | C2 | [`CMP-shared-game-session`](shared-game-session.md), [`CMP-puzzle-session`](puzzle-session.md), [`CMP-presentation`](presentation.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) `O3` inspect | Observe play state and story IDs ([`LAY.D6`](../layers.md)); no subscription to their contracts |
+| C3 | [`CMP-puzzle-progression`](puzzle-progression.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) `O3` inspect | Observe `GS.playerElo` / `GS.recentSolved` as Domain-owned play state ([`LAY.D6`](../layers.md)); playtest builds only |
 
 ## Owns / mutates
 
@@ -41,10 +42,12 @@ flowchart LR
   P[CMP-playtest-seams]
   R[CMP-session-router]
   S[CMP-shared-game-session / CMP-puzzle-session]
+  G[CMP-puzzle-progression]
   V[CMP-presentation]
   H -->|CTR-playtest-drive| P
   P -.->|E2 jump_requested| R
   P -.->|O3 inspect| S
+  P -.->|O3 inspect| G
   P -.->|O3 inspect| V
 ```
 

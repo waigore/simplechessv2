@@ -25,5 +25,5 @@ Authoring rules: [`.agents/specs/rules/aesthetics/motion.md`](../../.agents/spec
 
 | ID | Effect class | Lifetime (s) | Motion rule |
 |----|--------------|--------------|-------------|
-| E1 | Capture break ([SRF.E1](surface.md)) | ≤ 0.15 | Fragments ease-out and fade; clear when mover lands |
-| E2 | Promotion morph ([SRF.E2](surface.md)) | ≤ 0.15 | Continuous contour morph; no pop-cut |
+| E1 | Capture break ([SRF.E1](surface/effects.md)) | ≤ 0.15 | Fragments ease-out and fade; clear when mover lands |
+| E2 | Promotion morph ([SRF.E2](surface/effects.md)) | ≤ 0.15 | Continuous contour morph; no pop-cut |

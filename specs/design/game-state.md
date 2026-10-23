@@ -11,7 +11,7 @@ Logical only: no data formats or storage. Other specs reference fields by name. 
 | Scope | Lifetime | Examples in this game |
 |-------|----------|-----------------------|
 | Moment | One selection or in-flight advice update | Selected piece; advice stream deepening |
-| Session / run | One Shared game, or one open puzzle in the stream | Position, clocks, sequence progress |
+| [Run](glossary.md) | One Shared game, or one open puzzle in the stream | Position, clocks, sequence progress |
 | Persistent | Across sessions until this game's saved data is cleared | Player Elo, Last mode, recent solved IDs |
 | Configuration | Until changed, or locked per [configuration.md](configuration.md) | White seat, Clock, Increment, Advice, locale |
 

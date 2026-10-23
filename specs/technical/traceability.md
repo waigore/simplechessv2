@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../.agents
 
 ## Alignment
 
-The full Alignment table, with one row per upstream item and its serving technical specs, lives in [`traceability/alignment.md`](traceability/alignment.md). It covers every Accepted ADR that shapes code or data, every design feature, entity, and flow, and every quality category that Applies, including **Localization**. All 32 technical elements (11 components, 8 contracts, 6 schemata, 6 sequences) appear there by ID, with `CTR-presentation` recorded as the single consumer-only contract. The table also carries the shipped-release publication ([ADR-0009](../adr/decisions/0009-github-pages-client-host.md)), reached only through the Topic coverage row below because a workflow and an export preset carry no element ID.
+The full Alignment table, with one row per upstream item and its serving technical specs, lives in [`traceability/alignment.md`](traceability/alignment.md). It covers every Accepted ADR that shapes code or data, every design feature, entity, and flow, and every quality category that Applies, including **Localization**. All 34 technical elements (12 components, 9 contracts, 6 schemata, 6 sequences) appear there by ID, with `CTR-presentation` recorded as the single consumer-only contract. The table also carries the shipped-release publication ([ADR-0009](../adr/decisions/0009-github-pages-client-host.md)), reached only through the Topic coverage row below because a workflow and an export preset carry no element ID.
 
 ## Topic coverage
 
