@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS PS1.1 END.W1 equal ratings -> 1010 got 1010.0 want 1010.0
+{"TEL.1":"judge","TEL.2":1792753287898,"TEL.3":"acc551-probe","TEL.4":"PS1.1 END.W1 equal ratings -> 1010","TEL.5":"pass"}
+PASS CFG.ELO_K session elo_k=20.0 (CFG.ELO_K default 20, range 10-40)
+{"TEL.1":"judge","TEL.2":1792753287898,"TEL.3":"acc551-probe","TEL.4":"CFG.ELO_K","TEL.5":"pass"}
+PASS PS1.2 END.L6 abandon equal ratings -> 990 got 990.0 want 990.0
+{"TEL.1":"judge","TEL.2":1792753287902,"TEL.3":"acc551-probe","TEL.4":"PS1.2 END.L6 abandon equal ratings -> 990","TEL.5":"pass"}
+PASS PS1.3 END.L5 reveal equal ratings -> 990 got 990.0 want 990.0
+{"TEL.1":"judge","TEL.2":1792753287905,"TEL.3":"acc551-probe","TEL.4":"PS1.3 END.L5 reveal equal ratings -> 990","TEL.5":"pass"}
+PASS fields-persist 3000 -> 3010 uncapped got 3010.0 want 3010.0
+{"TEL.1":"judge","TEL.2":1792753287908,"TEL.3":"acc551-probe","TEL.4":"fields-persist 3000 -> 3010 uncapped","TEL.5":"pass"}
+PASS DIF.Y1-K32 no K=32 drift (win=1010.0 abandon=990.0)
+{"TEL.1":"judge","TEL.2":1792753287908,"TEL.3":"acc551-probe","TEL.4":"DIF.Y1-K32","TEL.5":"pass"}
+PASS PTD-game-state.P2 reopen keeps committed 3010 got 3010.0 want 3010.0
+{"TEL.1":"judge","TEL.2":1792753287913,"TEL.3":"acc551-probe","TEL.4":"PTD-game-state.P2 reopen keeps committed 3010","TEL.5":"pass"}
+PASS GS.lastMode reopen keeps lastMode=puzzle
+{"TEL.1":"judge","TEL.2":1792753287913,"TEL.3":"acc551-probe","TEL.4":"GS.lastMode","TEL.5":"pass"}
+PASS GS.recentSolved reopen keeps recentSolved=["p1"]
+{"TEL.1":"judge","TEL.2":1792753287913,"TEL.3":"acc551-probe","TEL.4":"GS.recentSolved","TEL.5":"pass"}
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:527)
+       [2] _apply_outcome (res://puzzle_session.gd:513)
+       [3] _end (res://puzzle_session.gd:428)
+       [4] _end_and_deal (res://puzzle_session.gd:422)
+       [5] reveal (res://puzzle_session.gd:410)
+       [6] _initialize (res://_accept551_probe.gd:94)
+PASS EX.save-failure failed write raises save-failure (1)
+{"TEL.1":"judge","TEL.2":1792753287917,"TEL.3":"acc551-probe","TEL.4":"EX.save-failure","TEL.5":"pass"}
+PASS failed write leaves prior commit at 3010 got 3010.0 want 3010.0
+{"TEL.1":"judge","TEL.2":1792753287918,"TEL.3":"acc551-probe","TEL.4":"failed write leaves prior commit at 3010","TEL.5":"pass"}
+PROBE_RESULT fails=0
+WARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
