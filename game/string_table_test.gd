@@ -262,7 +262,8 @@ func _no_english_leak_in_puzzle_play() -> String:
 
 
 ## SCH-string-table completeness gate (#483): the shipped tables carry exactly the
-## keys every Copy table names, per owner, and the spec source is reachable.
+## keys every Copy table names, per owner, the shipped owner set is the one the
+## Copy tables derive, and the spec source is reachable.
 func _spec_copy_key_sets() -> String:
 	var specs_root := OS.get_environment("CHESS_SPECS_ROOT")
 	if specs_root.is_empty():
@@ -273,8 +274,13 @@ func _spec_copy_key_sets() -> String:
 	var problem := str(spec.problems[0]) if not spec.problems.is_empty() else ""
 	if problem.is_empty() and spec.negative.is_empty():
 		problem = "a spec key absent from the shipped table passed the gate"
-	var owner_problem: String = "" if problem else _owners_match_spec(spec.owners)
-	return problem if problem else owner_problem
+	if problem.is_empty():
+		problem = _owners_match_spec(spec.owners)
+	if problem.is_empty():
+		problem = _owners_match_shipped(spec.owners)
+	if problem.is_empty():
+		problem = _owner_set_negative_case(spec.owners)
+	return problem
 
 
 ## Each owner's shipped key set against the one its Copy table names.
@@ -283,6 +289,53 @@ func _owners_match_spec(owners: Dictionary) -> String:
 		var keys := _spec_owner_keys(owner, owners[owner])
 		if keys.size() == 1 and keys[0].begins_with("@"):
 			return str(keys[0]).substr(1)
+	return ""
+
+
+## #483 owner-set cross-check: the owner set the Copy tables derive is the six
+## shipped owners, both ways. Per-owner key parity alone passes when a whole owner
+## stops being read, so the set is compared too. #495's schema owner input does not
+## exist yet (`F2` is still a field, not a list), so the shipped suites are the
+## input here; when it lands, read it instead of `_all_locales_suites()`.
+func _owners_match_shipped(owners: Dictionary) -> String:
+	for owner in owners:
+		if not _resolves_to_shipped(owner):
+			return "%s has a Copy table but ships no table" % owner
+	for suite in _all_locales_suites():
+		var owner := str(suite[0])
+		if not _named_by_copy_table(owner, owners):
+			return "%s ships but no Copy table names it" % owner
+	return ""
+
+
+## An owner ships directly, or through the owner its `*_controls` table cites.
+func _resolves_to_shipped(owner: String) -> bool:
+	var cited := _citation_owner(owner)
+	for suite in _all_locales_suites():
+		var shipped := str(suite[0])
+		if shipped == owner or (not cited.is_empty() and shipped == cited):
+			return true
+	return false
+
+
+func _named_by_copy_table(shipped_owner: String, owners: Dictionary) -> bool:
+	for owner in owners:
+		if owner == shipped_owner or _citation_owner(owner) == shipped_owner:
+			return true
+	return false
+
+
+## A dropped owner must fail by name, so a green run cannot mean the owner-set
+## cross-check compared nothing.
+func _owner_set_negative_case(owners: Dictionary) -> String:
+	var owner := "puzzle-play"
+	if not owners.has(owner):
+		return "specs/ names no %s Copy table; the owner cross-check cannot be proven" % owner
+	var dropped := owners.duplicate()
+	dropped.erase(owner)
+	var trouble := _owners_match_shipped(dropped)
+	if not trouble.begins_with(owner):
+		return "a dropped %s owner passed the owner-set cross-check" % owner
 	return ""
 
 
