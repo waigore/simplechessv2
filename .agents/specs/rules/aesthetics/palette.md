@@ -8,7 +8,7 @@ The colors the game uses, how they group by context, and the rules that keep the
 
 ## Header
 
-- **Sheet**: `sheets/palette.html`, per [sheets.md](sheets.md). When spec depth requires no sheet, write "None — spec depth \<level\>".
+- **Reference sheet**: `sheets/palette.html`, per [sheets.md](sheets.md). When spec depth requires no sheet, write "None — spec depth \<level\>".
 - **Serves**: vision qualities, style pillars, and design or view specs.
 
 ## Sections
