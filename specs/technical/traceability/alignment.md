@@ -25,6 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../../.age
 | Advice stream DTO | F-move-advice | [`SCH-advice-update`](../schemata/advice-update.md); [`CMP-advice-backend`](../components/advice-backend.md) |
 | Puzzle attempt / Elo commit | puzzle stream; DIF; PRG | [`SCH-puzzle-attempt`](../schemata/puzzle-attempt.md); [`SEQ-puzzle-result-commit`](../sequences/puzzle-result-commit.md) |
 | Puzzle catalog snapshot | [F-puzzle-catalog](../../design/features/puzzle-catalog.md); ADR-0008 | [`SCH-puzzle-catalog`](../schemata/puzzle-catalog.md) |
+| Shipped-release publication (Pages URL) | ADR-0009; ADR-0007; definition no-install commute | `.github/workflows/web-release.yml` (CI publish of `build/web/`; out of scope of ADR-0009, which names no workflow file); `Web Release` preset in [`game/export_presets.cfg`](../../../game/export_presets.cfg) (the preset; ADR-0007 decides only the `build/web/` output directory) |
 
 ## Element accounting
 
