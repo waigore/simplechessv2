@@ -6,7 +6,7 @@ Part of [`fields-play.md`](fields-play.md). Shared-game ending fields for [`end-
 
 | Field | Scope | Meaning | Initial value | Changed by | Invariants |
 |-------|-------|---------|---------------|------------|------------|
-| `GS.gameEnded` | Session / run | Shared game over | false | End conditions | True ⇒ no further Shared moves |
-| `GS.drawOffer` | Session / run | Side with pending draw offer, or none | none | Offer; decline; withdraw; move (lapse); end | None or one side; only while Shared open |
-| `GS.repetitionHistory` | Session / run | `END.D3` occurrences: position, side, castling, en passant | Empty; record start on new session | After each legal move | Game-long; clear only on new session |
-| `GS.fiftyMoveCount` | Session / run | `END.D4` half-moves since capture or pawn move | 0 | +1 per legal move; clear on capture, pawn move, or new session | 0–100; draw at 100 |
+| `GS.gameEnded` | Run | Shared game over | false | End conditions | True ⇒ no further Shared moves |
+| `GS.drawOffer` | Run | Side with pending draw offer, or none | none | Offer; decline; withdraw; move (lapse); end | None or one side; only while Shared open |
+| `GS.repetitionHistory` | Run | `END.D3` occurrences: position, side, castling, en passant | Empty; record start on new run | After each legal move | Game-long; clear only on new run |
+| `GS.fiftyMoveCount` | Run | `END.D4` half-moves since capture or pawn move | 0 | +1 per legal move; clear on capture, pawn move, or new run | 0–100; draw at 100 |

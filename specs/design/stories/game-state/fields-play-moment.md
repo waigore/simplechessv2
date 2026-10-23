@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `GS`
 - **Glossary terms**: [Side to move](../../glossary.md), [Advice](../../glossary.md)
 
-Split from [`fields-play.md`](fields-play.md) by scope; that file proves the session and run fields.
+Split from [`fields-play.md`](fields-play.md) by scope; that file proves the run fields.
 
 ## Coverage
 

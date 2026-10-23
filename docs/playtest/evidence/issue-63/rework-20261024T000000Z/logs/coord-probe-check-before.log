@@ -1,0 +1,26 @@
+frame (0.0, 0.0, 720.0, 1280.0), 8x8 (72.0, 352.0, 648.0, 928.0), 16 labels (8 files, 8 ranks)
+  a  BevelLipBottomInk  box x 106.5 y 936.5 -> x 109.5 y 945.5  in band
+  b  BevelLipBottomInk  box x 178.0 y 936.5 -> x 182.0 y 945.5  in band
+  c  BevelLipBottomInk  box x 250.5 y 936.5 -> x 253.5 y 945.5  in band
+  d  BevelLipBottomInk  box x 322.0 y 936.5 -> x 326.0 y 945.5  in band
+  e  BevelLipBottomInk  box x 394.5 y 936.5 -> x 397.5 y 945.5  in band
+  f  BevelLipBottomInk  box x 467.0 y 936.5 -> x 469.0 y 945.5  in band
+  g  BevelLipBottomInk  box x 538.0 y 936.5 -> x 542.0 y 945.5  in band
+  h  BevelLipBottomInk  box x 610.0 y 936.5 -> x 614.0 y 945.5  in band
+  1  BevelLipLeftInk    box x 66.9 y 887.5 -> x 69.9 y 896.5  LEAVES BAND
+  2  BevelLipLeftInk    box x 66.9 y 815.5 -> x 69.9 y 824.5  LEAVES BAND
+  3  BevelLipLeftInk    box x 66.9 y 743.5 -> x 69.9 y 752.5  LEAVES BAND
+  4  BevelLipLeftInk    box x 66.9 y 671.5 -> x 69.9 y 680.5  LEAVES BAND
+  5  BevelLipLeftInk    box x 66.9 y 599.5 -> x 69.9 y 608.5  LEAVES BAND
+  6  BevelLipLeftInk    box x 66.9 y 527.5 -> x 69.9 y 536.5  LEAVES BAND
+  7  BevelLipLeftInk    box x 66.9 y 455.5 -> x 69.9 y 464.5  LEAVES BAND
+  8  BevelLipLeftInk    box x 66.9 y 383.5 -> x 69.9 y 392.5  LEAVES BAND
+FAIL: 1 label box (66.9, 887.5, 69.9, 896.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 2 label box (66.9, 815.5, 69.9, 824.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 3 label box (66.9, 743.5, 69.9, 752.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 4 label box (66.9, 671.5, 69.9, 680.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 5 label box (66.9, 599.5, 69.9, 608.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 6 label box (66.9, 527.5, 69.9, 536.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 7 label box (66.9, 455.5, 69.9, 464.5) leaves band (53.28, 333.28, 64.8, 946.72)
+FAIL: 8 label box (66.9, 383.5, 69.9, 392.5) leaves band (53.28, 333.28, 64.8, 946.72)
+8 problem(s)
