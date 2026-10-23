@@ -106,6 +106,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/playtest/traceability.md` | [playtest/traceability.md](playtest/traceability.md) |
 | `specs/playtest/coverage.md` | [playtest/coverage.md](playtest/coverage.md) |
 | `specs/playtest/tools.md` | [playtest/tools.md](playtest/tools.md) |
+| `specs/playtest/tools-situational.md` | [playtest/tools.md](playtest/tools.md) |
 | `specs/playtest/procedures.md` | [playtest/procedures.md](playtest/procedures.md) |
 | `specs/playtest/evidence.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/playtest/evidence-manifest.md` | [playtest/evidence.md](playtest/evidence.md) |
