@@ -35,9 +35,9 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **State**: <!-- fill in: none | bootstrapping | active | stale -->
 - **Modality**: <!-- fill in: visual | music | sfx | voice -->
-- **Enforce**: <!-- fill in: hard | soft -->
+- **Enforce**: <!-- fill in: hard | soft (SFX, or a third-party/human-made visual kind with no style id) -->
 - **Style anchors**: <!-- fill in: approved asset IDs, or None yet -->
-- **Style binding**: <!-- fill in: visual Recraft id; music finetune + Audio Reference policy; voice id; sfx None — soft -->
+- **Style binding**: <!-- fill in: visual Recraft id, or None — soft for a third-party/human-made visual kind with no product style id; music finetune + Audio Reference policy; voice id; sfx None — soft -->
 - **Aesthetics**: <!-- fill in: pillar, PAL or SND, REF IDs -->
 - **Built from**: <!-- fill in: anchor IDs + YYYY-MM-DD, or None -->
 - **Refresh when**: aesthetics change, anchor set change, or review Fail pattern
