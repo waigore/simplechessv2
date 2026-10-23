@@ -12,11 +12,11 @@ Produces vector piece and board art, quiet UI chrome, icons, locale-capable font
 |------|---------------|---------|------------|
 | Sprites | Applies | Vector 2D pieces; [FRM](../aesthetics/form.md); [E-pieces](../design/entities/pieces.md) | [`piece-sprites`](kinds/piece-sprites.md) |
 | Tilesets | N/A — squares live in board art / engine grid | Vector board plane | — |
-| Backgrounds | Applies | Mahogany board / cafe table ([P3](../aesthetics/aesthetics.md), [SRF.M1](../aesthetics/surface.md)) | [`board-backgrounds`](kinds/board-backgrounds.md) |
+| Backgrounds | Applies | Mahogany board / cafe table ([AES.P3](../aesthetics/aesthetics.md), [SRF.M1](../aesthetics/surface.md)) | [`board-backgrounds`](kinds/board-backgrounds.md) |
 | 3D models | N/A — Vector 2D medium | [aesthetics.md](../aesthetics/aesthetics.md) | — |
 | Textures and materials | N/A — no 3D materials | Vector 2D | — |
 | Animation clips | N/A — move motion is engine tween ([PHY.M1](../view/physics.md)) | View physics | — |
-| Visual effects | N/A — overlays are flat view/UI marks ([FRM.D2](../aesthetics/form.md)); capture break and promotion morph ([SRF.E1](../aesthetics/surface.md)–[SRF.E2](../aesthetics/surface.md)) are engine-drawn from the piece sprite, not a separate asset | Perception marks; 2D engine rendering ([view.md](../view/view.md)) | — |
+| Visual effects | N/A — capture shards and promotion morph ([SRF.E1](../aesthetics/surface.md)–[SRF.E2](../aesthetics/surface.md)) are engine-drawn from the piece sprite, not a separate kind; overlays are flat view/UI marks ([FRM.D2](../aesthetics/form.md)) | Perception marks; 2D engine rendering ([view.md](../view/view.md)) | — |
 | Interface art | Applies | Panels / buttons ([ui-style.md](../aesthetics/ui-style.md)) | [`interface-art`](kinds/interface-art.md) |
 | Icons | Applies | Mode and control icons ([UIS.I1](../aesthetics/ui-style.md)) | [`icons`](kinds/icons.md) |
 | Fonts | Applies | [UIS.T1](../aesthetics/ui-style.md)–[UIS.T3](../aesthetics/ui-style.md); `en` / `zh-Hant` / `ja` | [`fonts`](kinds/fonts.md) |
@@ -29,7 +29,7 @@ Produces vector piece and board art, quiet UI chrome, icons, locale-capable font
 | Source type | Applicability | Grounds |
 |-------------|---------------|---------|
 | AI generation | Applies | Recraft visual; ElevenLabs SFX/music |
-| Procedural generation | N/A — no procedural asset recipes; view effects such as [SRF.E1](../aesthetics/surface.md)–[SRF.E2](../aesthetics/surface.md) are engine rendering, not assets | 2D vector [Engine](../definition/definition.md); Continuous solo puzzle stream planned from results ([definition](../definition/definition.md) Progression), no generated art |
+| Procedural generation | N/A — assets are drawn vectors or recorded cues; engine-drawn view effects ([SRF.E1](../aesthetics/surface.md)–[SRF.E2](../aesthetics/surface.md)) are not assets | Cafe calm ([vision](../vision.md)) in a fixed look ([aesthetics.md](../aesthetics/aesthetics.md) Variation); 2D browser game ([Engine](../definition/definition.md), [aesthetics.md](../aesthetics/aesthetics.md) Medium); puzzles deal from results ([definition](../definition/definition.md) Progression) |
 | Third-party | Applies | Fonts (licensed for Web) |
 | Human-made | Applies | `APR.register` path |
 
