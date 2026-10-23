@@ -1,0 +1,19 @@
+# #511 acceptance — negative cases against the shipped gate
+# Each case runs `python3 .github/scripts/gdscript_tests.py test` on a scratch copy of the
+# worktree tree (game/ + specs/ + .github/scripts, assets symlinked); the checkout is untouched.
+
+## neg1: shared-play "rook" set to 車 in zh-Hant (issue reproduction step 3)
+  ERROR: shared-play.rook not en-equal in zh-Hant
+  runner-exit=1
+
+## neg2: shared-play "bishop" removed from StringTable.EVERY_LOCALE_ROWS, values left en-equal
+  ERROR: shared-play.bishop still English in zh-Hant
+  runner-exit=1
+
+## neg4: shared-play "bishop" removed from StringTable.EVERY_LOCALE_ROWS and translated in zh-Hant/ja
+  ERROR: marked rows ["mode-pick.locale", "puzzle-play.bishop", "puzzle-play.knight", "puzzle-play.queen", "puzzle-play.rook", "shared-play.knight", "shared-play.queen", "shared-play.rook"] disagree with L3's ["mode-pick.locale", "puzzle-play.bishop", "puzzle-play.knight", "puzzle-play.queen", "puzzle-play.rook", "shared-play.bishop", "shared-play.knight", "shared-play.queen", "shared-play.rook"]
+  runner-exit=1
+
+## neg3: StringTable.mode_pick("locale", …) forced to the en own name for every locale
+  ERROR: mode-pick.locale own name wrong in zh-Hant
+  runner-exit=1
