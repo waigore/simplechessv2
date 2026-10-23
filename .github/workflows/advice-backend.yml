@@ -1,0 +1,29 @@
+name: Advice backend
+
+# Python unit tests for the advice backend (M2, specs/technical/components/advice-backend.md).
+# The suite uses a stand-in engine script, so no Stockfish binary is installed here.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  advice-backend:
+    name: Advice backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests
+        run: python3 -m unittest discover -s advice_backend/tests -t . -v
