@@ -3,6 +3,9 @@
 One endpoint speaks CTR-advice-stream: a POST starts a search (O1); the
 response is chunked ``application/x-ndjson``, one E1 update per chunk, closed
 by one E2 end message. A client that vanishes mid-stream is O2.
+
+The rules that decide a request (auth, cap, cancel) live in ``AdviceService``
+and ``SearchSession`` here; the HTTP chunk framing lives in ``AdviceHandler``.
 """
 
 from __future__ import annotations
@@ -34,6 +37,9 @@ LOGGER = logging.getLogger("advice_backend")
 
 ADVICE_PATH = "/advice"
 _NDJSON = "application/x-ndjson"
+# How often a stream proves the client is still listening: it is also the
+# grace period before a vanished client stops the search.
+_GONE_CHECK_S = 0.1
 
 SearchFactory = Callable[[AdviceRequest, int], StockfishSearch]
 
@@ -50,7 +56,17 @@ class SearchSession:
         self._search = search
         self._lock = threading.Lock()
         self._sink: UpdateSink | None = None
-        self.cancelled = False
+        self._cancelled = False
+
+    @property
+    def cancelled(self) -> bool:
+        """True once O2 was asked for, from this session or another thread."""
+        return self._cancelled or self._search.stop_requested
+
+    @property
+    def reached_deadline(self) -> bool:
+        """True when the search ran to its cap instead of ending early (E2 reason)."""
+        return self._search.reached_deadline()
 
     def run(self, on_update: UpdateSink) -> None:
         self._sink = on_update
@@ -59,10 +75,14 @@ class SearchSession:
     def cancel(self) -> None:
         """O2: stop the search; a second call is a no-op."""
         with self._lock:
-            if self.cancelled:
+            if self._cancelled:
                 return
-            self.cancelled = True
-        self._search.stop()
+            self._cancelled = True
+        self._search.request_stop()
+
+    def close(self) -> None:
+        """Reap the engine once the stream has ended."""
+        self._search.close()
 
     def _forward(self, update: AdviceUpdate) -> None:
         """Hand a tick on unless a cancel has already been accepted (I3)."""
@@ -72,7 +92,13 @@ class SearchSession:
 
 
 class AdviceService:
-    """Authorizes a request, then runs its search to the cap or a client cancel."""
+    """Authorizes a request, then runs its search to ``CFG.ADVICE_TIME_MS`` or a cancel.
+
+    The configured cap is the maximum engine think time (F-move-advice R7,
+    ``CMP-advice-backend`` R3, ``CTR-advice-stream`` G2). The request's
+    ``time_ms`` is the client's cap; it may shorten the search but never
+    lengthen it beyond the configured value.
+    """
 
     def __init__(
         self,
@@ -85,6 +111,7 @@ class AdviceService:
         self._cap_ms = cap_ms
         self._engine_path = engine_path
         self._search_factory = search_factory or self._stockfish_search
+
     @property
     def cap_ms(self) -> int:
         return self._cap_ms
@@ -93,10 +120,13 @@ class AdviceService:
         """CTR-advice-stream G4: only the configured key opens a search."""
         return hmac.compare_digest(request.api_key, self._api_key)
 
+    def search_cap_ms(self, request: AdviceRequest) -> int:
+        """The search stop: ``min(request.time_ms, CFG.ADVICE_TIME_MS)``, clamped at 0."""
+        return max(0, min(request.time_ms, self._cap_ms))
+
     def start(self, request: AdviceRequest) -> SearchSession:
-        """Open a search (O1) capped at the client's ``time_ms`` or ``CFG.ADVICE_TIME_MS``."""
-        cap_ms = min(request.time_ms, self._cap_ms)
-        return SearchSession(self._search_factory(request, cap_ms))
+        """Open a search (O1) that stops by ``search_cap_ms`` (G2)."""
+        return SearchSession(self._search_factory(request, self.search_cap_ms(request)))
 
     def _stockfish_search(self, request: AdviceRequest, cap_ms: int) -> StockfishSearch:
         return StockfishSearch(resolve_engine_command(self._engine_path), request.fen, cap_ms)
@@ -112,7 +142,7 @@ class _RequestState:
 
 
 class AdviceHandler(BaseHTTPRequestHandler):
-    """HTTP binding for one advice stream; decisions live in ``AdviceService``."""
+    """HTTP binding for one advice stream: read, frame, and write one stream."""
 
     service: AdviceService
 
@@ -160,31 +190,41 @@ class AdviceHandler(BaseHTTPRequestHandler):
 
     def _stream(self, request: AdviceRequest) -> None:
         state = _RequestState(request)
+        cap_ms = self.service.search_cap_ms(request)
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", _NDJSON)
         self.send_header("Transfer-Encoding", "chunked")
         self.send_header("Connection", "close")
         self.end_headers()
         session = self.service.start(request)
+        last_check = time.monotonic()
 
         def write(update: AdviceUpdate) -> None:
+            nonlocal last_check
             if state.disconnected:
                 return
-            if self.client_gone():
-                state.disconnected = True
-                session.cancel()
-                return
+            # Proving the client is still there costs a syscall; once per tick
+            # interval is enough, and it must not eat the cap (CTR-advice-stream G2).
+            if time.monotonic() - last_check >= _GONE_CHECK_S:
+                last_check = time.monotonic()
+                if self.client_gone():
+                    state.disconnected = True
+                    session.cancel()
+                    return
             try:
                 self._write_chunk(update.to_wire())
             except OSError:
                 state.disconnected = True
                 session.cancel()
 
-        LOGGER.info("advice_start fen=%s", request.fen)
+        LOGGER.info("advice_start fen=%s cap_ms=%d", request.fen, cap_ms)
         reason = END_ERROR
         try:
             session.run(write)
-            reason = END_CANCEL if session.cancelled else END_CAP
+            # A search that ran to its deadline ended on the cap; one that
+            # stopped first was cancelled (O2). A cancel on the cap's own tick
+            # is indistinguishable, and the cap is the honest label for it.
+            reason = END_CANCEL if session.cancelled and not session.reached_deadline else END_CAP
         except (OSError, ValueError) as failure:
             LOGGER.error(
                 "advice_error reason=engine fen=%s detail=%s elapsed_ms=%d",
@@ -193,6 +233,11 @@ class AdviceHandler(BaseHTTPRequestHandler):
                 _elapsed_ms(state.started),
             )
         self._close_stream(state, reason)
+        try:
+            session.close()
+        except OSError as failure:
+            # E2 is already on the wire; a child that will not die is noise here.
+            LOGGER.warning("advice_error reason=engine_shutdown detail=%s", failure)
 
     def _close_stream(self, state: _RequestState, reason: str) -> None:
         if not state.disconnected:
@@ -233,7 +278,16 @@ def _elapsed_ms(started: float) -> int:
     return int((time.monotonic() - started) * 1000)
 
 
+class _AdviceServer(ThreadingHTTPServer):
+    """Every stream answers `Connection: close`; handler threads never block shutdown."""
+
+    daemon_threads = True
+    # How long ``shutdown()`` waits to notice the serve loop ended. The
+    # default 0.5 s would delay every stop of the server for nothing.
+    poll_interval = 0.05
+
+
 def make_server(service: AdviceService, host: str, port: int) -> ThreadingHTTPServer:
     """Build the HTTP server bound to whatever listen address the process was given."""
     handler = type("BoundAdviceHandler", (AdviceHandler,), {"service": service})
-    return ThreadingHTTPServer((host, port), handler)
+    return _AdviceServer((host, port), handler)
