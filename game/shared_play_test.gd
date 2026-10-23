@@ -142,7 +142,7 @@ func _enter_play() -> String:
 		and _router.selected_piece == ""
 		and board != null
 		and board.visible
-		and board.offset_top >= Presentation.PLAY_CHROME_TOP_PX - 0.5
+		and board.offset_top >= _presentation.play_chrome_top_px() - 0.5
 	)
 	return "" if ok else "Start → shared-play shell"
 
@@ -666,7 +666,7 @@ func _layout_reserves_chrome() -> String:
 	await process_frame
 	var board := _board()
 	var err := ""
-	if board.offset_top < Presentation.PLAY_CHROME_TOP_PX - 0.5:
+	if board.offset_top < _presentation.play_chrome_top_px() - 0.5:
 		err = "16:9 board must sit below chrome"
 	if err.is_empty():
 		err = _assert_board_fully_visible(board)
@@ -746,7 +746,7 @@ func _assert_chrome_children_in_reserve(play: SharedPlayPanel, label: String) ->
 	var chrome := play.find_child("PlayChrome", true, false) as Control
 	if chrome == null:
 		return "%s PlayChrome missing" % label
-	var limit_y := play.get_global_rect().position.y + Presentation.PLAY_CHROME_TOP_PX
+	var limit_y := play.get_global_rect().position.y + _presentation.play_chrome_top_px()
 	for child in chrome.get_children():
 		var node := child as Control
 		if node == null or not node.visible:

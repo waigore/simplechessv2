@@ -66,6 +66,12 @@ var _decline: Button
 var _withdraw: Button
 var _chrome: VBoxContainer
 var _ui_font: Font
+var _text_scale := 1.0
+
+
+## UIS.T2 ratio scaling — the chrome reserve grows with the text it holds.
+func chrome_reserved_px(text_scale_value: float) -> float:
+	return CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
 
 
 func _ready() -> void:
@@ -74,7 +80,8 @@ func _ready() -> void:
 	refresh()
 
 
-func configure(state: Dictionary, font: Font = null) -> void:
+func configure(state: Dictionary, font: Font = null, text_scale: float = 1.0) -> void:
+	_text_scale = text_scale
 	locale = str(state.get("locale", locale))
 	ui_state = str(state.get("ui_state", "S1"))
 	side_to_move = str(state.get("side_to_move", "white"))
@@ -162,7 +169,7 @@ func _build() -> void:
 	_chrome.offset_left = 16
 	_chrome.offset_right = -16
 	_chrome.offset_top = CHROME_TOP_PX
-	_chrome.offset_bottom = CHROME_BOTTOM_PX
+	_chrome.offset_bottom = chrome_reserved_px(_text_scale) - CHROME_TOP_PX
 	_chrome.add_theme_constant_override("separation", 8)
 	add_child(_chrome)
 
@@ -411,20 +418,30 @@ func _link_focus_chain(controls: Array[Control]) -> void:
 
 
 func _style_all() -> void:
-	UiChrome.style_button(_select_focus)
-	UiChrome.style_button(_clear_focus)
-	UiChrome.style_button(_place_focus)
-	UiChrome.style_button(_advice)
-	UiChrome.style_button(_resign)
-	UiChrome.style_button(_offer)
+	UiChrome.style_label(_status, true, _text_scale)
+	UiChrome.style_label(_check, false, _text_scale)
+	UiChrome.style_label(_clocks, false, _text_scale)
+	UiChrome.style_label(_advice_eval, false, _text_scale)
+	UiChrome.style_label(_confirm_msg, false, _text_scale)
+	UiChrome.style_label(_draw_msg, false, _text_scale)
+	UiChrome.style_label(_advice_error_msg, false, _text_scale)
+	for button in [
+		_select_focus,
+		_clear_focus,
+		_place_focus,
+		_advice,
+		_resign,
+		_offer,
+		_confirm_cancel,
+		_decline,
+		_withdraw,
+		_advice_dismiss,
+	]:
+		UiChrome.style_button(button as Button, false, false, _text_scale)
 	for kind in SharedGameSession.PROMOTE_ORDER:
-		UiChrome.style_button(_promote_btns[kind] as Button)
-	UiChrome.style_button(_confirm_ok, true)
-	UiChrome.style_button(_confirm_cancel)
-	UiChrome.style_button(_accept, true)
-	UiChrome.style_button(_decline)
-	UiChrome.style_button(_withdraw)
-	UiChrome.style_button(_advice_dismiss)
+		UiChrome.style_button(_promote_btns[kind] as Button, false, false, _text_scale)
+	for primary in [_confirm_ok, _accept]:
+		UiChrome.style_button(primary as Button, true, false, _text_scale)
 
 
 func _apply_font() -> void:

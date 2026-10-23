@@ -22,6 +22,7 @@ var _advice: Button
 var _start: Button
 var _back: Button
 var _ui_font: Font
+var _text_scale := 1.0
 
 
 func _ready() -> void:
@@ -37,7 +38,8 @@ func configure(
 	increment_s: int,
 	advice: bool,
 	locked: bool,
-	font: Font = null
+	font: Font = null,
+	text_scale: float = 1.0
 ) -> void:
 	locale = next_locale
 	white_seat = seat
@@ -46,6 +48,7 @@ func configure(
 	advice_on = advice
 	options_locked = locked
 	_ui_font = font
+	_text_scale = text_scale
 	if is_inside_tree():
 		_apply_font()
 		refresh()
@@ -131,12 +134,13 @@ func _make_option(node_name: String, control_id: String, parent: Control) -> But
 
 
 func _style_all() -> void:
-	UiChrome.style_button(_seat)
-	UiChrome.style_button(_clock)
-	UiChrome.style_button(_increment)
-	UiChrome.style_button(_advice)
-	UiChrome.style_button(_start, true)
-	UiChrome.style_button(_back)
+	UiChrome.style_button(_seat, false, false, _text_scale)
+	UiChrome.style_button(_clock, false, false, _text_scale)
+	UiChrome.style_button(_increment, false, false, _text_scale)
+	UiChrome.style_button(_advice, false, false, _text_scale)
+	UiChrome.style_button(_start, true, false, _text_scale)
+	UiChrome.style_button(_back, false, false, _text_scale)
+	UiChrome.style_label(_title, true, _text_scale)
 
 
 func _apply_font() -> void:

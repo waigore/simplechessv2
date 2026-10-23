@@ -516,7 +516,7 @@ func _check_shared_play_layouts() -> String:
 		err = await _drive_play_locale(locale)
 		if not err.is_empty():
 			break
-		if board.offset_top < Presentation.PLAY_CHROME_TOP_PX - 0.5:
+		if board.offset_top < _presentation.play_chrome_top_px() - 0.5:
 			err = "shared-play %s cropped board under chrome" % locale
 			break
 	_router.locale = "en"
