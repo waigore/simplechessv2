@@ -17,10 +17,33 @@ const END_L4 := "END.L4"
 const END_L5 := "END.L5"
 const END_L6 := "END.L6"
 
+## SCH-puzzle-attempt F5 outcome for an ending (none until an ending fires).
+const OUTCOME_BY_ENDING := {
+	END_W1: "solved",
+	END_L4: "failed_wrong",
+	END_L5: "failed_reveal",
+	END_L6: "abandoned",
+}
+
+## UI-puzzle-play R2 result cue for an ending (before the next deal).
+const CUE_BY_ENDING := {
+	END_W1: "cue_solved",
+	END_L4: "cue_failed",
+	END_L5: "cue_failed",
+	END_L6: "cue_abandon",
+}
+
 const UI_S1 := "S1"
+const UI_S2 := "S2"
+const UI_S3 := "S3"
 const UI_S4 := "S4"
 const UI_S5 := "S5"
 const PROMOTE_ORDER := ["queen", "rook", "bishop", "knight"]
+
+## EX.confirm (UI-puzzle-play S2) — the stream verb waiting on Confirm / Cancel.
+const CONFIRM_REVEAL := "reveal_confirm"
+const CONFIRM_ABANDON := "abandon_confirm"
+const CONFIRM_LEAVE := "leave_confirm"
 
 const ELO_START := 1000.0
 const ELO_K := 32.0
@@ -28,16 +51,22 @@ const ELO_MATCH_RANGE := 100
 const ELO_RECENT_WINDOW := 20
 const ELO_BAND_WIDEN := 50
 
+## Board gestures are live in S1, S5 (refusal flash) and S3 (save failure); S2/S4 wait.
+const GESTURE_STATES := [UI_S1, UI_S3, UI_S5]
+
 var play_ui_state := UI_S1
 var selected_piece := ""
 var pending_promote_from := ""
 var pending_promote_to := ""
 var last_reject := ""
 var reject_square := ""
+var confirm_kind := ""
 
 var rules: ChessRules
 var player_elo := ELO_START
 var recent_solved: Array = []
+## GS.lastMode — committed by CMP-session-router (R3); kept here so a result commit is whole.
+var last_mode := PersistStore.MODE_NONE
 
 ## GS.puzzleId / puzzleElo / requiredSequence / sequenceIndex / solvingSide / wrongMoveOnPuzzle.
 var puzzle_id := ""
@@ -53,6 +82,9 @@ var attempt_start_position := ""
 var attempt_first_move: Dictionary = {}
 var attempt_any_checkmate_wins := false
 
+## The ending this attempt reached, cleared by the next deal (F5).
+var outcome := ""
+
 ## What the host catalog serves this sitting. Empty means a failed read (X2).
 var catalog: Array = []
 
@@ -66,10 +98,12 @@ func _init(chess_rules: ChessRules = null, persist_store: PersistStore = null) -
 	store = persist_store
 
 
-## PRG.M1 — restore committed Player Elo and recentSolved on entry.
+## PRG.M1 — restore committed Player Elo, recentSolved and Last mode on entry.
 func restore(document: Dictionary) -> void:
 	if document.has("player_elo"):
 		player_elo = float(document["player_elo"])
+	if document.has("last_mode"):
+		last_mode = str(document["last_mode"])
 	recent_solved = []
 	if document.get("recent_solved") is Array:
 		for item in document["recent_solved"]:
@@ -87,14 +121,24 @@ func play_state() -> Dictionary:
 		"wrong_move_on_puzzle": wrong_move_on_puzzle,
 		"player_elo": player_elo,
 		"recent_solved": recent_solved.duplicate(),
+		"last_mode": last_mode,
 		"position": rules.position_field(),
 		"ui_state": play_ui_state,
+		"confirm_kind": confirm_kind,
+		"outcome": outcome if not outcome.is_empty() else "none",
 		"advice": "none",
+		"advice_best_move": null,
+		"advice_eval": null,
 	}
 
 
 func has_open_puzzle() -> bool:
 	return not puzzle_id.is_empty()
+
+
+## UI-puzzle-play S1 / S2 / S4 gate the board; S3 and S5 keep it usable.
+func gestures_available() -> bool:
+	return has_open_puzzle() and GESTURE_STATES.has(play_ui_state)
 
 
 ## R1 / DIF.Y1 / F-puzzle-catalog R3 — deal the next puzzle at the player's level.
@@ -114,7 +158,7 @@ func deal(catalog_records: Array = []) -> Dictionary:
 	if not rules._load_fen(fen):
 		return {"ok": false, "reason": "bad_fen"}
 	var first := _uci_parts(str(moves[0]))
-	if not rules.try_move(first["from"], first["to"], first["promotion"]):
+	if not rules.try_move(first["from"], first["to"], _promotion_kind(str(first["promotion"]))):
 		return {"ok": false, "reason": "bad_first_move"}
 	# PRG.M1 M4 — only snapshot 2026-10-05 PuzzleIds are ever open or saved.
 	if str(pick.get("snapshot_id", SNAPSHOT_ID)) != SNAPSHOT_ID:
@@ -180,7 +224,7 @@ func _pick_lowest(records: Array) -> Dictionary:
 
 ## R2 / L-puzzle-stream K2 — accept a Solving-side move; returns the judging result.
 func place(from_square: String, to_square: String, promotion: String = "") -> Dictionary:
-	if not has_open_puzzle():
+	if not gestures_available():
 		return {"ok": false, "illegal": true, "event": "puzzle.none"}
 	last_reject = ""
 	reject_square = ""
@@ -190,9 +234,11 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 		and rules.piece_on(to_square).is_empty()
 		and not rules.legal_targets(selected_piece).has(to_square)
 	):
-		selected_piece = ""
-		return {"ok": true, "deselect": true, "event": "puzzle.deselect"}
+		return clear_selection()
+	var mover: Dictionary = rules.piece_on(from_square)
 	if promotion.is_empty() and rules._needs_promotion(from_square, to_square):
+		if mover.is_empty() or str(mover.get("color", "")) != solving_side:
+			return _reject(to_square)
 		selected_piece = from_square
 		pending_promote_from = from_square
 		pending_promote_to = to_square
@@ -204,16 +250,24 @@ func place(from_square: String, to_square: String, promotion: String = "") -> Di
 			"pending_from": from_square,
 			"pending_to": to_square,
 		}
-	if not rules.try_move(from_square, to_square, promotion):
-		selected_piece = from_square
-		last_reject = "illegal"
-		reject_square = to_square
-		play_ui_state = UI_S5
-		return {"ok": false, "illegal": true, "reject_square": to_square, "event": "puzzle.move"}
+	if (
+		mover.is_empty()
+		or str(mover.get("color", "")) != solving_side
+		or not rules.try_move(from_square, to_square, promotion)
+	):
+		return _reject(to_square)
 	pending_promote_from = ""
 	pending_promote_to = ""
 	play_ui_state = UI_S1
 	return _judge({"from": from_square, "to": to_square, "promotion": promotion})
+
+
+## EX.rejected — the piece rules refuse the place; S5 flashes and the selection stays.
+func _reject(to_square: String) -> Dictionary:
+	last_reject = "illegal"
+	reject_square = to_square
+	play_ui_state = UI_S5
+	return {"ok": false, "illegal": true, "reject_square": to_square, "event": "puzzle.move"}
 
 
 ## C6 — commit the chosen promotion kind and judge the place.
@@ -222,8 +276,38 @@ func commit_promotion(kind: String) -> Dictionary:
 		return {"ok": false}
 	var from_sq := pending_promote_from
 	var to_sq := pending_promote_to
+	pending_promote_from = ""
+	pending_promote_to = ""
 	play_ui_state = UI_S1
 	return place(from_sq, to_sq, kind)
+
+
+## IN.deselect — B8 / B9 / B11 / S4 cancel.
+func clear_selection() -> Dictionary:
+	if play_ui_state == UI_S4:
+		# Leave the pawn selected and drop the promotion choice (EX.promote cancel).
+		pending_promote_from = ""
+		pending_promote_to = ""
+		play_ui_state = UI_S1
+		return {"ok": true, "event": "puzzle.deselect"}
+	if not gestures_available():
+		return {"ok": false}
+	if selected_piece.is_empty() and play_ui_state != UI_S5:
+		return {"ok": false}
+	selected_piece = ""
+	last_reject = ""
+	reject_square = ""
+	play_ui_state = UI_S1
+	return {"ok": true, "event": "puzzle.deselect"}
+
+
+func finish_reject_flash() -> Dictionary:
+	if play_ui_state != UI_S5:
+		return {"ok": false}
+	last_reject = ""
+	reject_square = ""
+	play_ui_state = UI_S1
+	return {"ok": true}
 
 
 func _judge(move: Dictionary) -> Dictionary:
@@ -232,31 +316,42 @@ func _judge(move: Dictionary) -> Dictionary:
 		_wrong_move()
 		result["outcome"] = "wrong"
 		result["wrong_move_seen"] = true
+		result["cue"] = "cue_wrong"
+		result["story"] = "UI-puzzle-play.US2.5"
 		return result
 	sequence_index += 1
 	if _sequence_complete():
-		var ending := END_W1 if not wrong_move_on_puzzle else END_L4
-		result["outcome"] = "outcome"
-		result["end_reason"] = ending
-		result["elo"] = _apply_outcome(ending)
-		return result
+		return _settle(result)
 	# Even step: the required reply plays at once for the other side.
 	var reply: Dictionary = required_sequence[sequence_index]
-	if not rules.try_move(str(reply["from"]), str(reply["to"]), str(reply["promotion"])):
+	var reply_kind := _promotion_kind(str(reply["promotion"]))
+	if not rules.try_move(str(reply["from"]), str(reply["to"]), reply_kind):
 		result["outcome"] = "invalid_record"
 		return result
 	sequence_index += 1
 	if _sequence_complete():
-		var ending := END_W1 if not wrong_move_on_puzzle else END_L4
-		result["outcome"] = "outcome"
-		result["end_reason"] = ending
-		result["elo"] = _apply_outcome(ending)
-		result["advance"] = sequence_index
-		return result
+		var settled := _settle(result)
+		settled["advance"] = sequence_index
+		return settled
 	result["advance"] = sequence_index
 	result["reply_applied"] = true
 	result["reply"] = reply
 	return result
+
+
+## CTR-local-move C1 — a record's promotion letter (e.g. `q`) becomes the kind the rules take.
+func _promotion_kind(letter: String) -> String:
+	match letter.to_lower():
+		"q":
+			return ChessRules.KIND_QUEEN
+		"r":
+			return ChessRules.KIND_ROOK
+		"b":
+			return ChessRules.KIND_BISHOP
+		"n":
+			return ChessRules.KIND_KNIGHT
+		_:
+			return ""
 
 
 ## F-puzzle-catalog R4–R5 — the mate-in-one step accepts any legal checkmating move.
@@ -271,7 +366,7 @@ func _matches_expected(move: Dictionary) -> bool:
 		return false
 	# A promotion kind is only required when the record names one.
 	var wanted := str(expected["promotion"])
-	return wanted.is_empty() or wanted == str(move["promotion"])
+	return wanted.is_empty() or _promotion_kind(wanted) == str(move["promotion"])
 
 
 ## L-puzzle-stream K2 / SCH-puzzle-attempt F4 — reset to the start; no deal.
@@ -282,7 +377,9 @@ func _wrong_move() -> void:
 	rules._load_fen(attempt_start_position)
 	if not solving_side.is_empty() and not required_sequence.is_empty():
 		var first := attempt_first_move
-		rules.try_move(str(first["from"]), str(first["to"]), str(first["promotion"]))
+		rules.try_move(
+			str(first["from"]), str(first["to"]), _promotion_kind(str(first["promotion"]))
+		)
 	sequence_index = 0
 	selected_piece = ""
 
@@ -291,30 +388,51 @@ func _sequence_complete() -> bool:
 	return sequence_index >= required_sequence.size()
 
 
-## END.L4 — the required sequence completed after a Wrong move on that puzzle.
-func finish_after_wrong_move() -> Dictionary:
-	if not has_open_puzzle() or not wrong_move_on_puzzle:
-		return {"ok": false}
-	return {"ok": true, "end_reason": END_L4, "elo": _apply_outcome(END_L4)}
+## K2 completion → END.W1 (clean) or END.L4 (after a Wrong move), then the result commit.
+func _settle(result: Dictionary) -> Dictionary:
+	var ending := END_W1 if not wrong_move_on_puzzle else END_L4
+	result["outcome"] = "outcome"
+	result["end_reason"] = ending
+	result["elo"] = _apply_outcome(ending)
+	result["cue"] = str(CUE_BY_ENDING[ending])
+	result["story"] = "UI-puzzle-play.US2.7" if ending == END_W1 else "UI-puzzle-play.US2.5"
+	return result
 
 
-## L-puzzle-stream K2 — END.L5 reveal the solution (failed, S = 0), no next deal here.
+## K2 — END.L5 reveal the solution (failed, S = 0), then the next deal per K3.
 func reveal() -> Dictionary:
 	if not has_open_puzzle():
 		return {"ok": false}
-	return {"ok": true, "end_reason": END_L5, "elo": _apply_outcome(END_L5)}
+	return _end_and_deal(END_L5, "UI-puzzle-play.US1.3")
 
 
-## L-puzzle-stream K2 — END.L6 abandon this puzzle (failed, S = 0).
+## K2 — END.L6 abandon this puzzle (failed, S = 0), then the next deal after the update.
 func abandon() -> Dictionary:
 	if not has_open_puzzle():
 		return {"ok": false}
-	var ending: Dictionary = {"ok": true, "end_reason": END_L6, "elo": _apply_outcome(END_L6)}
-	_close_puzzle()
-	return ending
+	return _end_and_deal(END_L6, "UI-puzzle-play.US2.8")
 
 
-## L-puzzle-stream K3 — an STR outcome is followed by the next deal at the new Elo.
+## K3 — the ending scores, then the next puzzle deals once, at the updated Elo.
+func _end_and_deal(ending: String, story: String) -> Dictionary:
+	var result := _end(ending, story)
+	result["next"] = deal()
+	return result
+
+
+func _end(ending: String, story: String) -> Dictionary:
+	return {
+		"ok": true,
+		"event": "puzzle.end",
+		"end_reason": ending,
+		"elo": _apply_outcome(ending),
+		"cue": str(CUE_BY_ENDING[ending]),
+		"story": story,
+	}
+
+
+## K3 — a solved or wrong-move-failed attempt stays open behind its cue until the stream
+## moves on, then the next puzzle deals once at the updated Elo.
 func advance() -> Dictionary:
 	if has_open_puzzle():
 		return {"ok": false, "reason": "puzzle_open"}
@@ -323,8 +441,60 @@ func advance() -> Dictionary:
 
 ## L-puzzle-stream K4 / E1 — leave; Elo kept; an open puzzle is not scored (PRG.P1).
 func leave() -> Dictionary:
+	if play_ui_state == UI_S2 and confirm_kind != CONFIRM_LEAVE:
+		return {"ok": false, "reason": "confirm"}
+	_close_confirm()
 	_close_puzzle()
 	return {"ok": true, "event": "puzzle.leave", "player_elo": player_elo}
+
+
+## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
+func request_confirm(control_id: String) -> Dictionary:
+	var kind := ""
+	match control_id:
+		"C3":
+			kind = CONFIRM_REVEAL
+		"C4":
+			kind = CONFIRM_ABANDON
+		"C5":
+			kind = CONFIRM_LEAVE
+		_:
+			return {"ok": false}
+	if not has_open_puzzle() or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+		return {"ok": false}
+	play_ui_state = UI_S2
+	confirm_kind = kind
+	selected_piece = ""
+	return {"ok": true, "event": "puzzle.confirm", "outcome": kind}
+
+
+## Confirm runs the pending action; Cancel returns to S1 with the puzzle still open.
+func confirm() -> Dictionary:
+	var kind := confirm_kind
+	_close_confirm()
+	match kind:
+		CONFIRM_REVEAL:
+			return reveal()
+		CONFIRM_ABANDON:
+			return abandon()
+		CONFIRM_LEAVE:
+			return leave()
+	return {"ok": false}
+
+
+func cancel_confirm() -> Dictionary:
+	if play_ui_state != UI_S2:
+		return {"ok": false}
+	_close_confirm()
+	return {"ok": true, "event": "puzzle.cancel"}
+
+
+## EX.save-failure — S3 shows while the sitting continues; Dismiss returns to S1.
+func dismiss_save_failure() -> Dictionary:
+	if play_ui_state != UI_S3:
+		return {"ok": false}
+	play_ui_state = UI_S1
+	return {"ok": true, "event": "puzzle.dismiss"}
 
 
 ## DIF.Y1 / PRG.A1 / PRG.M1 — one Elo update per outcome, then commit.
@@ -335,7 +505,10 @@ func _apply_outcome(ending: String) -> Dictionary:
 	if ending == END_W1 and not puzzle_id.is_empty():
 		recent_solved.append(puzzle_id)
 		recent_solved = _trim_recent(recent_solved)
+	outcome = str(OUTCOME_BY_ENDING.get(ending, ""))
 	var committed := _commit()
+	if not committed:
+		play_ui_state = UI_S3
 	return {"player_elo": player_elo, "score": score, "committed": committed}
 
 
@@ -346,10 +519,37 @@ func _commit() -> bool:
 	var doc := store.read_committed()
 	doc["player_elo"] = player_elo
 	doc["recent_solved"] = recent_solved.duplicate()
+	doc["last_mode"] = last_mode
 	var ok := store.commit(doc)
 	if not ok:
 		save_failed.emit()
 	return ok
+
+
+## Returns {ok, event, outcome, story} for telemetry.
+func select_own(square: String) -> Dictionary:
+	if not gestures_available():
+		return {"ok": false}
+	last_reject = ""
+	reject_square = ""
+	var piece: Dictionary = rules.piece_on(square)
+	if piece.is_empty() or str(piece.get("color", "")) != solving_side:
+		return {"ok": false}
+	if selected_piece == square:
+		return {"ok": false}
+	play_ui_state = UI_S1
+	selected_piece = square
+	return {"ok": true, "event": "puzzle.select", "outcome": "ok", "story": "UI-puzzle-play.US1.1"}
+
+
+func legal_targets_for(square: String) -> PackedStringArray:
+	return rules.legal_targets(square)
+
+
+func _close_confirm() -> void:
+	if play_ui_state == UI_S2:
+		play_ui_state = UI_S1
+	confirm_kind = ""
 
 
 func _close_puzzle() -> void:
@@ -359,7 +559,13 @@ func _close_puzzle() -> void:
 	sequence_index = 0
 	solving_side = ""
 	wrong_move_on_puzzle = false
+	outcome = ""
+	confirm_kind = ""
+	pending_promote_from = ""
+	pending_promote_to = ""
 	selected_piece = ""
+	last_reject = ""
+	reject_square = ""
 	play_ui_state = UI_S1
 
 
