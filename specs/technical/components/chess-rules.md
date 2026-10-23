@@ -15,7 +15,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R1 | Own position legality and side to move |
 | R2 | Apply a legal move or reject illegal input |
 | R3 | Report check, mate, stalemate, and other design end signals |
-| R4 | Support puzzle required-sequence comparison without network |
+| R4 | Support puzzle required-sequence comparison without network: apply the record's opponent prefix and expose the position the player solves from; [`CMP-puzzle-progression`](puzzle-progression.md) R5 judges the played line |
 
 ## Communication
 

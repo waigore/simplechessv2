@@ -17,6 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/glossary.md`](../../.agents/spe
 | Playtest build | Client export that includes DBG/TEL/SIT seams; not the public release Web export. | [`verification.md`](verification.md); [ADR-0004](../adr/decisions/0004-dual-playtest-environments.md) |
 | Playtest seams | Playtest-build-only DBG/TEL/SIT drive and observe surface. | [`CMP-playtest-seams`](components/playtest-seams.md); [`CTR-playtest-drive`](contracts/playtest-drive.md) |
 | Puzzle attempt | Current puzzle deal, played prefix, and outcome before Elo commit. | [`SCH-puzzle-attempt`](schemata/puzzle-attempt.md) |
+| Puzzle progression | L3 policy over a puzzle attempt: Elo, recent solved, next-puzzle pick, and the required sequence. | [`CMP-puzzle-progression`](components/puzzle-progression.md); [`CTR-puzzle-progress`](contracts/puzzle-progress.md) |
 | Resolver | The one component that reads the asset manifest and turns an asset ID into a loaded engine resource. | [`asset-access.md`](asset-access.md); [`components/asset-resolver.md`](components/asset-resolver.md) |
 | Schema | The shape and lifecycle of a data object or entity in code. | [`schemata/`](schemata/) |
 | Sequence | An ordered interaction across components and contracts. | [`sequences/`](sequences/) |

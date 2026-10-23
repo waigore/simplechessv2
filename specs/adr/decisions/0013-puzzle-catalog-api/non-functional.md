@@ -55,6 +55,7 @@ N/A — stated in [ADR-0013](../0013-puzzle-catalog-api.md).
 | [`F-puzzle-catalog`](../../../design/features/puzzle-catalog.md) | I1 selection runs host-side, so the client gets one record, never a candidate set; X2 covers key, rate, and read failures |
 | [`SCH-puzzle-catalog`](../../../technical/schemata/puzzle-catalog.md) | One F1–F13 record per deal, never a list, page, or file; L2–L3 hold on the route |
 | [`CMP-puzzle-session`](../../../technical/components/puzzle-session.md) | C5 reads through [`CTR-puzzle-catalog-read`](../../../technical/contracts/puzzle-catalog-read.md) |
+| [`CMP-puzzle-progression`](../../../technical/components/puzzle-progression.md) | `R4` applies `DIF.Y1` selection to the one record dealt and refuses a non-selecting record |
 | [`configuration.md`](../../../technical/configuration.md) | Endpoint and key are T9 and T10; the rate limit is T11 |
 | [`CTR-puzzle-catalog-read`](../../../technical/contracts/puzzle-catalog-read.md) | One-record deal, key check, 30-per-minute refusal, no bulk read |
 
