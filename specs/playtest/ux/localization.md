@@ -5,40 +5,39 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: UX
 - **Spec key**: `PTU-localization`
 - **Environment**: Headless and Graphical
-- **Cites**: `UI-mode-pick.US1.9`, `LOC.US1.2`, `LOC.US1.3`
+- **Cites**: `UI-mode-pick.US1`, `LOC.US1`
 - **Situational tools**: None
 
 ## Steps
 
 | ID | Action |
 |----|--------|
-| S1 | Open mode-pick S1 with `GS.locale` `en`. Activate `C4` once, then twice more, recording R3 and every visible string after each activation; read the log for `FAIL.T13`. |
-| S2 | For each of `mode-pick`, `shared-setup`, `shared-play`, `shared-result`, and `puzzle-play`, in `en`, `zh-Hant`, and `ja`, list every visible string, including an exception-state `exceptions` string, except the `locale` row S1 owns. |
-| S3 | Graphical only: on `shared-play` in `ja`, read the piece-type rows `queen`, `rook`, `bishop`, and `knight`. |
+| S1 | Open mode-pick S1 at `GS.locale` `en`. Activate `C4` twice, recording `R3` and every visible string after each. Judge: the first activation keeps S1, reads `R3` `繁體中文`, and shows copy in `zh-Hant` (`UI-mode-pick.US1.9`); `title`, `shared`, and `puzzle` differ between `en`, `zh-Hant`, and `ja`, and `locale` reads `English`, `繁體中文`, `日本語` (`LOC.US1.3`); `locale` reads its own name, never `English`, while `zh-Hant` or `ja` is live (`LOC.US1.2`, that row only). Then read the run log for `FAIL.T13` misses (`CTR-localization` G4, `TEL.1`–`TEL.5`); no telemetry assertion, `SIT.5` not cited. |
+| S2 | On each of `mode-pick`, `shared-setup`, `shared-play`, `shared-result`, and `puzzle-play`, in all three locales, list every visible string including an exception-state `exceptions` one, except the `locale` row. Judge `LOC.US1.2` for each. |
+| S3 | Graphical only. Activate `C4` a third, unjudged time, closing at `en`; enter Shared play and read the `queen` row. Headless is `not-judged`. |
 
 ## Pass
 
 | ID | Outcome |
 |----|---------|
-| P1 | `UI-mode-pick.US1.9`: after the first activation R3 reads `繁體中文`, every mode-pick copy string shows its `zh-Hant` form, and the screen stays S1. |
-| P2 | `LOC.US1.3`: R3 reads `English`, then `繁體中文`, then `日本語`; `title`, `shared`, and `puzzle` differ across those readings; the third activation returns to `en`. |
-| P3 | `LOC.US1.3`, Graphical only: all four `shared-play` piece rows read `Queen`, `Rook`, `Bishop`, `Knight` in `ja`, else `not-judged`; no row beyond `L3`'s two same-in-every-locale groups is same in every locale. |
-| P4 | `LOC.US1.2`: R3 never reads `English` while `zh-Hant` or `ja` are live ([L3](../../ux/localization.md)); no visible string lacks a Copy-table row. |
-| P5 | `LOC.US1.2`: every listed string is its Copy-table row value, in all three locales, at native length — no raw key, empty, clipped, or truncated label. |
-| P6 | Headless and Graphical both pass, and the Graphical run of the same build adds the screenshots. |
+| P1 | `UI-mode-pick.US1.9`: after the first activation `R3` reads `繁體中文`, copy is `zh-Hant`, and S1 holds. |
+| P2 | `LOC.US1.3`: `title`, `shared`, and `puzzle` differ between the three locales; `locale` reads `English`, `繁體中文`, `日本語`. |
+| P3 | `LOC.US1.2`, `locale` row only (S1): reads its own name, never `English`, while `zh-Hant` or `ja` is live ([L3](../../ux/localization.md)). |
+| P4 | `LOC.US1.2`, other strings (S2): each is its screen's Copy-table value — no raw key, empty, or clipped label at native length. |
+| P5 | `LOC.US1.3`, Graphical only (S3): `queen` reads `Queen` in all three locales; Headless is `not-judged`. |
 
 ## Fail
 
 | ID | Outcome | Blocks acceptance |
 |----|---------|-------------------|
 | F1 | A `FAIL.T13` miss is logged after the switches (S1). | yes |
-| F2 | The `locale` own name lacks a Copy-table row or is not `L3`'s value for the live locale (S1). | yes |
-| F3 | `locale` sequences off, `title` / `shared` / `puzzle` do not differ, or the third activation misses `en` (S1). | yes |
-| F4 | A piece row varies by locale when all four are read, or another row claims same-in-every-locale beyond `L3`'s groups (S1, S3). | yes |
-| F5 | R3 reads `English` while the live locale is `zh-Hant` or `ja` (S1). | yes |
-| F6 | S2 finds a visible string with no Copy-table row, a raw key, an empty label, or a clipped label. | yes |
-| F7 | Either environment is missing for this UX protocol ([`playtest.md`](../playtest.md) §Gate). | yes |
+| F2 | P1's first-activation reading fails in any part (S1). | yes |
+| F3 | A locale-dependent row does not differ between locales, or `locale` sequences off (S1). | yes |
+| F4 | `locale` reads `English` while `zh-Hant` or `ja` is live, or lacks a Copy-table row (S1). | yes |
+| F5 | P4's reading fails for any listed string (S2). | yes |
+| F6 | The Graphical `queen` row is not `Queen` in all three locales (S3). | yes |
+| F7 | Either environment is missing ([`playtest.md`](../playtest.md) §Gate). | yes |
 
 ## Evidence
 
-Default evidence rules. Not judged: `UI-mode-pick.US1.13` (state edge, `PTU-mode-pick`), `LOC.US1.1` (Copy-table review), `LOC.US2.1` / `LOC.US2.2` (string-table test and review). Record the `FAIL.T13` read and three `C4` readings in `notes.md`; a logged miss is filed as a `type:defect`. Graphical: screenshot mode-pick after the first activation and the `ja` piece rows.
+Default evidence rules. Not judged: `UI-mode-pick.US1.13` (state edge, `PTU-mode-pick`); `LOC.US1.1` (key names are a spec review); `LOC.US2.1` / `LOC.US2.2` (growth test and change control; no `SIT.*` lengthens strings). `LOC.US1` is cited whole, so its outcome comes from the run judging all three scenarios — S1 and S2 here, plus the `US1.1` review. Record the `FAIL.T13` read and the `C4` readings in `notes.md`; a logged miss or S2 failure is a `type:defect`. Graphical: screenshot mode-pick after the first activation and the `queen` row.
