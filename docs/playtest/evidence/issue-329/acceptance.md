@@ -9,9 +9,10 @@ Inputs: a 3-record slice written for this run (`advice_backend/` never carries
 the export, ADR-0008), player Elo 1480, `CFG` defaults (match range 100, widen
 50, recent window 20).
 
-Served-slice probes — deploy path, wire contract, release bundle, client
-failure path, and clean-tree unit tests/lint — are in
-[acceptance-served-slice.md](acceptance-served-slice.md).
+Probes for the deploy path, wire contract, release bundle, client failure path,
+and clean-tree unit tests/lint are in
+[acceptance-served-slice.md](acceptance-served-slice.md) and
+[acceptance-checks.md](acceptance-checks.md).
 
 ## 1. `select_puzzle` / `DIF.Y1` (probe script, `PYTHONPATH=<clean tree>`)
 
