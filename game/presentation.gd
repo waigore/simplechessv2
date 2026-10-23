@@ -88,22 +88,6 @@ func play_chrome_top_px(text_scale_value: float = -1.0) -> float:
 	return SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
 
 
-## #616 — the one placement model for a chrome panel: horizontally centered in
-## its parent at a fixed vertical top. Offsets are written against the 0.5
-## anchors, never a fixed x, so the column stays centered when the `expand`
-## frame changes size.
-static func place_centered(panel: Control, top_px: float) -> void:
-	var half_width := panel.custom_minimum_size.x * 0.5
-	panel.anchor_left = 0.5
-	panel.anchor_right = 0.5
-	panel.anchor_top = 0.0
-	panel.anchor_bottom = 0.0
-	panel.offset_left = -half_width
-	panel.offset_right = half_width
-	panel.offset_top = top_px
-	panel.offset_bottom = top_px + panel.custom_minimum_size.y
-
-
 func _ready() -> void:
 	_router = $SessionRouter as SessionRouter
 	_build_shell()
@@ -213,9 +197,10 @@ func _build_shell() -> void:
 	_mode_pick = ModePickPanel.new()
 	_mode_pick.name = "ModePick"
 	_mode_pick.visible = false
-	# R1–R3 read top-down and sit inside the frame at the 720 reference height.
 	_mode_pick.custom_minimum_size = Vector2(320, 280)
-	place_centered(_mode_pick, 80.0)
+	# UI-mode-pick: the mockup centres the column under a header, so x follows the
+	# frame and y keeps the R1–R3 top-down reading (top 80).
+	_place_centred_column(_mode_pick, 80.0)
 	_mode_pick.control_activated.connect(_on_mode_pick_control)
 	_mode_pick.pointed.connect(_on_pointed)
 	_host.add_child(_mode_pick)
@@ -224,7 +209,7 @@ func _build_shell() -> void:
 	_shared_setup.name = "SharedSetup"
 	_shared_setup.visible = false
 	_shared_setup.custom_minimum_size = Vector2(320, 360)
-	place_centered(_shared_setup, 60.0)
+	_place_centred_column(_shared_setup, 60.0)
 	_shared_setup.control_activated.connect(_on_shared_setup_control)
 	_shared_setup.pointed.connect(_on_pointed)
 	_host.add_child(_shared_setup)
@@ -250,7 +235,7 @@ func _build_shell() -> void:
 	_shared_result.name = "SharedResult"
 	_shared_result.visible = false
 	_shared_result.custom_minimum_size = Vector2(320, 220)
-	place_centered(_shared_result, 120.0)
+	_place_centred_column(_shared_result, 120.0)
 	_shared_result.control_activated.connect(_on_shared_result_control)
 	_shared_result.pointed.connect(_on_pointed)
 	_host.add_child(_shared_result)
@@ -475,6 +460,31 @@ func _show_advice_update(state: Dictionary) -> void:
 		and state.get("advice_eval", null) is int
 	)
 	_board.render_advice(state.get("advice_best_move", null) if shown else null)
+
+
+## UI-mode-pick / shared-setup / shared-result — one placement model per panel:
+## anchors centre x in the parent rect and pin the top, so the column follows
+## any logical frame size and no absolute `position` overrides the anchors.
+## `top_px` is the reference-frame vertical top the mockups keep.
+func _place_centred_column(panel: Control, top_px: float) -> void:
+	Presentation.place_centered(panel, top_px)
+
+
+## #616 — the one placement model for a chrome panel: horizontally centered in
+## its parent at a fixed vertical top. Offsets are written against the 0.5
+## anchors from the panel's min size, never a fixed x or its laid-out size, so
+## the column stays centered when the `expand` frame changes size — a panel is
+## placed while still hidden, before its content has sized it.
+static func place_centered(panel: Control, top_px: float) -> void:
+	var half_width := panel.custom_minimum_size.x * 0.5
+	panel.anchor_left = 0.5
+	panel.anchor_right = 0.5
+	panel.anchor_top = 0.0
+	panel.anchor_bottom = 0.0
+	panel.offset_left = -half_width
+	panel.offset_right = half_width
+	panel.offset_top = top_px
+	panel.offset_bottom = top_px + panel.custom_minimum_size.y
 
 
 func _layout_shared_play_regions() -> void:
