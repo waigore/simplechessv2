@@ -78,9 +78,10 @@ var _press := -1
 var _drag_moved := false
 var _end_panel: PanelContainer
 
-# Scripted exercise: a refused bad drop (PHY.M5/PER.R8), castling (PHY.M4),
-# capture breaks (PHY.M2), a check (I7/PER.R6), and a capture promotion morph
-# (PHY.M3). Every "move" entry is a legal UCI move in the line below.
+# Scripted exercise: a refused bad drop (PHY.M5/PER.R8), capture breaks (PHY.M2),
+# a check (I7/PER.R6), and a capture promotion morph (PHY.M3). Every "move" entry
+# is a legal UCI move in the line below. Castling (PHY.M4) and en passant are
+# implemented in chess_rules.gd but not scripted here.
 const EXERCISE := [
 	{"bad_drop": ["f1", "c3"]},
 	{"move": "e2e4"}, {"move": "e7e5"},
@@ -477,6 +478,8 @@ func _run_autodrive() -> void:
 	## Headless exercise + checkmate ending; fails loudly on a scripted illegal move.
 	print("[demo] autodrive begin")
 	var problems: PackedStringArray = PackedStringArray()
+	# FRM.P1/P2: every body drawn inside the SPC.E1 extent, King tallest.
+	problems.append_array(_body_problems())
 	await _run_scenarios(EXERCISE, problems, "exercise")
 	print("[demo] exercise complete")
 	await _capture("exercise")
@@ -495,6 +498,14 @@ func _run_autodrive() -> void:
 		for problem in problems:
 			print("[demo] FAIL: %s" % problem)
 		get_tree().quit(1)
+
+
+func _body_problems() -> PackedStringArray:
+	# SPC.E1 / FRM.P1-P2: the measured body extents, as printed for the record.
+	var out: PackedStringArray = PackedStringArray()
+	for problem in view.measure_piece_bodies():
+		out.append(str(problem))
+	return out
 
 
 func _check_end_panel(problems: PackedStringArray) -> void:
@@ -566,12 +577,16 @@ func _run_command(command: Dictionary, problems: PackedStringArray, label: Strin
 		print("[demo] FAIL illegal scripted move %s; stop" % uci)
 		return
 	var move: Dictionary = matches[0]
+	var board_before: PackedStringArray = pos["board"].duplicate()
 	if str(move["promo"]) != "":
-		# Scripted promotion opens the chooser and taps the queen like a player.
+		# Scripted promotion opens the chooser and picks the queen like a player,
+		# so the chooser is dismissed too (leaving it open swallowed the move
+		# after the promotion).
 		_press_at(_screen_of_index(from))
 		await _quiet(0.3)
 		_execute_move(move)  # opens the chooser (I33)
 		await _quiet(0.45)
+		view.hide_promo_choice()
 		_pending_promo = "q"
 		_finish_promoted_move()
 	else:
@@ -584,6 +599,11 @@ func _run_command(command: Dictionary, problems: PackedStringArray, label: Strin
 			if target["succ"]:
 				_execute_move(target["move"])
 	await _quiet(0.8)
+	# A scripted move that never reached the board must fail the run, not pass
+	# silently (input gating such as a still-open chooser used to swallow one).
+	if pos["board"] == board_before:
+		problems.append(String("scripted %s move %s never executed" % [label, uci]))
+		print("[demo] FAIL scripted move %s had no effect" % uci)
 
 
 func _bad_drop(from_name: String, to_name: String) -> void:

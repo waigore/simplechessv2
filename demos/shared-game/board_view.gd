@@ -21,12 +21,16 @@ const LEGAL_CAPTURE_W := 0.10
 const SELECT_STROKE := 0.06            # far under 10% of the body (PER.R1/R3)
 const REJECT_STROKE := 0.10
 const CHECK_STROKE := 0.10
-## SPC.E1 piece body extent. The catalog sprites carry a transparent side margin
-## and do not all reach the top of their canvas (the King does, the Pawn's crown
-## sits lower), so scaling the 512 px canvas drew bodies of 0.52-0.72 units —
-## the measured miss in defect #427 item 1. Every piece is fitted to the extent
-## and drawn on one ground line, which widens and lifts them into the square
-## while keeping the FRM.P2 height order the artwork already encodes.
+## SPC.E1 piece body extent (FRM.P1): a 0.85 x 0.85 box centered on the square,
+## and every body drawn inside it on one ground line. The catalog sprites are
+## tall and narrow (body 1.6-2.1 times taller than wide) and float in a
+## transparent canvas, so neither the canvas nor one axis alone can be the fit.
+## One shared body scale is taken from the tallest body (the King): the King
+## reaches the full 0.85 height, each shorter type keeps its artwork proportion
+## and the FRM.P2 height order, and no body is ever wider or taller than the
+## extent. (Scaling the canvas drew bodies 0.52-0.72 units tall — the miss in
+## #427 item 1; scaling the body width instead drew them 1.32-1.81 tall — the
+## acceptance miss on #63.)
 const PIECE_EXTENT := 0.85
 ## Solid wooden bevel (defect #427 item 4, SRF.M1 wood, AES.P3 physical set):
 ## a frame around the 8x8 so the board reads as one carved wooden object on the
@@ -62,6 +66,11 @@ const SETTLE_S := 0.03                 # PHY.I1 settle window
 const PROMOTE_SPRITE_SCALE := 0.75     # chooser cell share of the fitted body scale
 
 const PROMOTE_ORDER := ["q", "r", "b", "n"]  # I33/I34 demo chooser order
+## FRM.P2 opaque height per type as a fraction of one square, +-0.01.
+const FRM_P2_HEIGHTS := {
+	"wK": 0.85, "wQ": 0.79, "wB": 0.76, "wN": 0.75, "wR": 0.68, "wP": 0.62,
+}
+const FRM_P2_TOLERANCE := 0.01
 
 var font_resource: Font
 
@@ -77,7 +86,8 @@ var _check_rim: Line2D
 var _promo_root: Node2D
 
 var _loaded_assets: Dictionary = {}
-var _body_px: Dictionary = {}  # texture instance id -> opaque body width, px
+var _fit_scale := 0.0        # board units per canvas px, shared by all piece types
+var _tallest_body_px := 0.0  # the King's opaque body height, px
 var _pieces: Dictionary = {}   # square index -> Node2D
 var _drag_square := -1
 var _motion_busy := false
@@ -312,38 +322,64 @@ func _make_piece(index: int, code: String) -> void:
 	_pieces[index] = node
 
 
-## Fits a piece sprite to the SPC.E1 extent (defect #427 item 1). The twelve
-## catalog canvases share one layout — a transparent margin on every side around
-## the body. Scaling the whole 512 px canvas (with a fixed side-margin guess) drew
-## bodies of 0.61-0.75 units, under the extent, sitting high in their squares.
-## The scale is now the body's opaque alpha width mapped to PIECE_EXTENT and the
-## body is centered in the square, so silhouettes fill their squares (PER.R1,
-## AES.P2) on one ground line. FRM.P1 holds: the body is exactly the extent, never
-## more. The same fit serves placement, promotion, and the promotion chooser.
+## Draws one piece at the shared body scale inside the SPC.E1 extent (FRM.P1):
+## the scale is the same for every type, so the King stands the full 0.85 tall
+## and each shorter type keeps its own height and the FRM.P2 order, and every
+## body sits on the extent box's ground line, centered on the square. The same
+## fit serves placement, promotion, and the promotion chooser.
 func _apply_piece_texture(sprite: Sprite2D, code: String) -> void:
 	var texture := _texture_for(code)
 	if texture == null:
 		return
 	sprite.texture = texture
-	var scale := PIECE_EXTENT / _body_width_px(texture)
-	sprite.scale = Vector2.ONE * scale
-	# Center the opaque body's vertical span on the square center: the canvas's
-	# lower transparent margin no longer lifts a piece off the ground square.
+	sprite.scale = Vector2.ONE * _piece_fit()
+	# The extent box is centered on the square, so its ground line is half an
+	# extent below the node origin; shift the canvas until the opaque body's
+	# bottom edge meets that line.
+	var body := _body_rect(texture)
 	sprite.offset = Vector2(0.0,
-		float(texture.get_height()) / 2.0 - _body_center_y(texture))
+		float(texture.get_height()) / 2.0 - float(body.end.y) + _tallest_body_px / 2.0)
 
 
-## The opaque body's width in canvas pixels: the long axis of the shared layout.
-func _body_width_px(texture: Texture2D) -> float:
-	var key := texture.get_instance_id()
-	if not _body_px.has(key):
-		_body_px[key] = float(maxi(_body_rect(texture).size.x, 1))
-	return float(_body_px[key])
+## The shared body scale in board units per canvas pixel: the tallest body in the
+## set maps to PIECE_EXTENT, so every other body stays inside the extent.
+func _piece_fit() -> float:
+	if _fit_scale <= 0.0:
+		var tallest := 1.0
+		for asset_id in _piece_ids.values():
+			var texture := _loaded_assets.get(str(asset_id), null) as Texture2D
+			if texture != null:
+				tallest = maxf(tallest, float(maxi(_body_rect(texture).size.y, 1)))
+		_tallest_body_px = tallest
+		_fit_scale = PIECE_EXTENT / tallest
+	return _fit_scale
 
 
-func _body_center_y(texture: Texture2D) -> float:
-	var rect := _body_rect(texture)
-	return float(rect.position.y) + float(rect.size.y) / 2.0
+## FRM.P1/P2 evidence: each type's drawn body in board units against the extent
+## and its FRM.P2 height (+-0.01). The autodrive logs the lines and fails on any
+## problem.
+func measure_piece_bodies() -> Array:
+	var problems: Array = []
+	for code in FRM_P2_HEIGHTS:
+		var texture := _texture_for(code)
+		if texture == null:
+			problems.append("no piece texture for %s" % code)
+			continue
+		var body := _body_rect(texture)
+		var size := Vector2(float(body.size.x), float(body.size.y)) * _piece_fit()
+		var expected := float(FRM_P2_HEIGHTS[code])
+		print("[demo] %s body %.2f x %.2f units (SPC.E1 %.2f, FRM.P2 %.2f)" % [
+			code, size.x, size.y, PIECE_EXTENT, expected,
+		])
+		if size.x > PIECE_EXTENT + FRM_P2_TOLERANCE or size.y > PIECE_EXTENT + FRM_P2_TOLERANCE:
+			problems.append("%s body %.2f x %.2f exceeds the SPC.E1 extent" % [
+				code, size.x, size.y,
+			])
+		if absf(size.y - expected) > FRM_P2_TOLERANCE:
+			problems.append("%s body height %.2f is not the FRM.P2 %.2f" % [
+				code, size.y, expected,
+			])
+	return problems
 
 
 func _body_rect(texture: Texture2D) -> Rect2i:
@@ -360,6 +396,8 @@ func _texture_for(code: String) -> Texture2D:
 
 func provide_assets(resources_by_id: Dictionary) -> void:
 	_loaded_assets.merge(resources_by_id)
+	_fit_scale = 0.0  # the shared body scale is measured over the loaded set
+	_tallest_body_px = 0.0
 
 
 func piece_node(index: int) -> Node2D:
