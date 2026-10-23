@@ -55,6 +55,22 @@ python3 -m advice_backend.catalog check /srv/puzzle_snapshot.json
 count, every record's moves length, and the mate-in-one mark. A new snapshot is
 a new ADR-0008 decision; the served one is never edited in place (L2–L3).
 
+To rehearse the deploy path on a prepared slice — the export stays host-side
+(ADR-0008), so the full count cannot be reproduced from a clean checkout — pass
+the slice's own record count:
+
+```bash
+python3 -m advice_backend.catalog check /srv/slice.json --expected-count 3
+PUZZLE_CATALOG_EXPECTED_COUNT=3 .github/scripts/deploy_advice_backend.sh
+```
+
+Leave `PUZZLE_CATALOG_EXPECTED_COUNT` unset when serving the real snapshot: I1
+then requires all 6,157,341 records.
+
+Selection follows `DIF.Y1` server-side: an unseen puzzle wins at any band
+before a recently solved one, and the recent-id rule is relaxed only once
+widening has spanned the snapshot.
+
 ## Wire
 
 `POST /advice` with `{"api_key", "fen", "time_ms"}` (`CTR-advice-stream` O1).
