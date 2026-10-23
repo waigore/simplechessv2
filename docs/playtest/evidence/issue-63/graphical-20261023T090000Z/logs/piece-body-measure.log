@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+code-colour  body_w  body_h  (board units; SPC.E1/FRM.P1 extent = 0.85 x 0.85)
+k-white   0.850   1.795
+k-black   0.850   1.812
+q-white   0.850   1.675
+q-black   0.850   1.671
+r-white   0.850   1.436
+r-black   0.850   1.452
+b-white   0.850   1.645
+b-black   0.850   1.691
+n-white   0.850   1.323
+n-black   0.850   1.334
+p-white   0.850   1.395
+p-black   0.850   1.444
