@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/technical/modules.md`](../../.agents/spec
 | ID | Name | Contains | Boundary rule |
 |----|------|----------|---------------|
 | M1 | `client` | Godot 4.7.2 Web app under `game/`: all L1–L4 components; playtest build flags | No Stockfish; no UCI |
-| M2 | `advice-backend` | One Python server: invokes Stockfish locally; streams eval/best-move to M1 ([ADR-0011](../adr/decisions/0011-local-stockfish-invocation.md)) | Client never imports engine. No network hop to Stockfish |
+| M2 | `advice-backend` | One Python server: invokes Stockfish locally; streams eval/best-move to M1 ([ADR-0011](../adr/decisions/0011-local-stockfish-invocation.md)); serves the puzzle catalog route ([ADR-0013](../adr/decisions/0013-puzzle-catalog-api.md)) | Client never imports engine. No network hop to Stockfish. No snapshot, list, or file over the catalog route |
 
 Godot project root: `game/` at the repo root (sibling of `asset_catalog/`, `game_assets/`, `specs/`) ([ADR-0001](../adr/decisions/0001-godot-engine.md)).
 
@@ -20,7 +20,7 @@ Web export output: `build/web/` at the repo root, outside `game/` and the manife
 
 | ID | From | To | Allowed | Forbidden |
 |----|------|----|---------|-----------|
-| B1 | M1 | M2 | Position request; streamed advice until `CFG.ADVICE_TIME_MS`; cancel | Direct Stockfish or UCI |
+| B1 | M1 | M2 | Position request; streamed advice until `CFG.ADVICE_TIME_MS`; cancel; one-record catalog deal | Direct Stockfish or UCI; catalog list, page, file, or snapshot |
 | B2 | M2 | Stockfish | Local UCI inside the same Python server | A network connection to Stockfish; exposing Stockfish to M1 |
 | B3 | M1 | Browser | `localStorage`; Web export APIs | Server-side save ([ADR-0003](../adr/decisions/0003-localstorage-persistence.md)) |
 

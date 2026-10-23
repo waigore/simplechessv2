@@ -123,8 +123,8 @@ func _send(client: HTTPClient, endpoint: String, message: Dictionary) -> Error:
 
 
 ## Poll the response until E2, a disconnect, a cancel, or the client deadline.
-## STATUS_CONNECTED / STATUS_REQUESTING just mean the exchange is in flight, so
-## only a real disconnect ends an unterminated stream (FAIL.T1).
+## STATUS_CONNECTED / STATUS_REQUESTING / STATUS_BODY just mean the exchange is in
+## flight, so only a real disconnect ends an unterminated stream (FAIL.T1).
 func _read_stream(client: HTTPClient, cap_ms: int) -> void:
 	var reader := AdviceWireReader.new()
 	var updates: Array = []
@@ -140,7 +140,7 @@ func _read_stream(client: HTTPClient, cap_ms: int) -> void:
 			var chunk := client.read_response_body_chunk()
 			if not chunk.is_empty():
 				reader.feed(chunk, updates)
-		elif status >= HTTPClient.STATUS_DISCONNECTED:
+		elif AdviceWireReader.is_terminal_status(status):
 			reader.closed(updates)
 			break
 		OS.delay_msec(5)

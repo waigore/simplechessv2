@@ -61,9 +61,11 @@ func fail_until_reconnect() -> void:
 	_parked = true
 
 
-## X3 — the browser is online again; the next `start` may open a stream.
+## X3 — the browser is online again; the next `start` may open a stream, and a
+## later failure is a new failure worth reporting (not a repeat of the old one).
 func resume() -> void:
 	_parked = false
+	_failed = false
 
 
 ## O1 `time_ms`: `T6` when configured in range, otherwise the 2000 default (R7).

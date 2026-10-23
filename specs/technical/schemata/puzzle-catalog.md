@@ -3,10 +3,10 @@
 Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/specs/rules/technical/schemata.md).
 
 - **Kind**: resource
-- **Owner**: Host publish of the snapshot ([ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md)). [`CMP-puzzle-session`](../components/puzzle-session.md) reads a dealt record and does not mutate the snapshot.
+- **Owner**: Host publish of the snapshot ([ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)). [`CMP-puzzle-session`](../components/puzzle-session.md) reads a dealt record and does not mutate the snapshot.
 - **Serves**: Puzzle stream; [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md)
 - **Informed by**: [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md) R1–R5, I3, X1; `GS.puzzleId`, `GS.puzzleElo`, `GS.requiredSequence`, `GS.recentSolved`
-- **ADRs**: [ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md)
+- **ADRs**: [ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)
 
 ## Fields
 
@@ -49,6 +49,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 |----------------|-------------|-------|
 | [`SCH-persist-doc`](persist-doc.md) | ids only | `recent_solved` stores F2, not records |
 | [`SCH-puzzle-attempt`](puzzle-attempt.md) | one deal | Copies F2, F5, and the derived sequence |
+| [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | one record | Every deal carries F1–F13 once, never a list |
 
 ## Diagram
 

@@ -57,11 +57,18 @@ class SearchSession:
         self._lock = threading.Lock()
         self._sink: UpdateSink | None = None
         self._cancelled = False
+        self._failed = False
 
     @property
     def cancelled(self) -> bool:
         """True once O2 was asked for, from this session or another thread."""
         return self._cancelled or self._search.stop_requested
+
+    @property
+    def failed(self) -> bool:
+        """True when the search ended because the engine failed (E2 reason)."""
+        with self._lock:
+            return self._failed
 
     @property
     def reached_deadline(self) -> bool:
@@ -70,7 +77,12 @@ class SearchSession:
 
     def run(self, on_update: UpdateSink) -> None:
         self._sink = on_update
-        self._search.run(self._forward)
+        try:
+            self._search.run(self._forward)
+        except (OSError, ValueError):
+            # The engine is gone: the stream still owes its client an E2.
+            with self._lock:
+                self._failed = True
 
     def cancel(self) -> None:
         """O2: stop the search; a second call is a no-op."""
@@ -218,18 +230,13 @@ class AdviceHandler(BaseHTTPRequestHandler):
                 session.cancel()
 
         LOGGER.info("advice_start fen=%s cap_ms=%d", request.fen, cap_ms)
-        reason = END_ERROR
-        try:
-            session.run(write)
-            # A search that ran to its deadline ended on the cap; one that
-            # stopped first was cancelled (O2). A cancel on the cap's own tick
-            # is indistinguishable, and the cap is the honest label for it.
-            reason = END_CANCEL if session.cancelled and not session.reached_deadline else END_CAP
-        except (OSError, ValueError) as failure:
+        session.run(write)
+        reason = self._end_reason(session)
+        if session.failed:
             LOGGER.error(
                 "advice_error reason=engine fen=%s detail=%s elapsed_ms=%d",
                 request.fen,
-                failure,
+                "the engine stopped without a bestmove",
                 _elapsed_ms(state.started),
             )
         self._close_stream(state, reason)
@@ -238,6 +245,20 @@ class AdviceHandler(BaseHTTPRequestHandler):
         except OSError as failure:
             # E2 is already on the wire; a child that will not die is noise here.
             LOGGER.warning("advice_error reason=engine_shutdown detail=%s", failure)
+
+    @staticmethod
+    def _end_reason(session: SearchSession) -> str:
+        """The E2 reason for a finished search.
+
+        The engine failed, ran to the cap, or stopped early for one of two
+        reasons: O2. A cancel on the cap's own tick is indistinguishable from
+        the cap, and the cap is the honest label for it.
+        """
+        if session.failed:
+            return END_ERROR
+        if session.reached_deadline or not session.cancelled:
+            return END_CAP
+        return END_CANCEL
 
     def _close_stream(self, state: _RequestState, reason: str) -> None:
         if not state.disconnected:
