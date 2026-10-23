@@ -1,0 +1,16 @@
+# coordinate label measurement (defect #592)
+# before = main abc6469; after = this PR
+
+# /tmp/opencode/shots_main/demo-shared-game-exercise.png
+# cream on band 7.38:1; cream on margin 1.28:1
+# files: 0 glyph clusters in rows 930..933; 0 ink px on the light margin or board
+#   []; file centres [108, 180, 252, 324, 396, 468, 540, 612] (+1 px raster offset)
+# ranks: 18 cream row runs in the left band (x 65..70)
+#   [(353, 359), (368, 371), (415, 418), (424, 443), (487, 493), (497, 502), (511, 515), (559, 562), (570, 574), (583, 587), (631, 644), (650, 653), (703, 707), (713, 719), (727, 731), (775, 779), (788, 803), (847, 875)]; rank centres [892, 820, 748, 676, 604, 532, 460, 388]
+
+# /tmp/opencode/shots/demo-shared-game-exercise.png
+# cream on band 7.38:1; cream on margin 1.28:1
+# files: 8 glyph clusters in rows 930..933; 0 ink px on the light margin or board
+#   [(106, 108), (178, 181), (250, 252), (322, 325), (394, 396), (467, 468), (538, 541), (610, 613)]; file centres [108, 180, 252, 324, 396, 468, 540, 612] (+1 px raster offset)
+# ranks: 0 cream row runs in the left band (x 65..70)
+#   []; rank centres [892, 820, 748, 676, 604, 532, 460, 388]
