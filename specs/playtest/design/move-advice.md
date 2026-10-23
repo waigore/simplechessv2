@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 - **Level**: Design
 - **Spec key**: `PTD-move-advice`
-- **Environment**: Headless only
+- **Environment**: `ENV.1` Headless only
 - **Cites**: `F-move-advice` (R1–R9)
 - **Situational tools**: None
 
@@ -35,4 +35,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. Log timing for P1.
+Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot.
