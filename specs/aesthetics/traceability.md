@@ -34,4 +34,4 @@ Authoring rules: [`.agents/specs/rules/aesthetics/traceability.md`](../../.agent
 | Accessible color and type | [`palette.md`](palette.md), [`ui-style.md`](ui-style.md) | Applies — Accessibility Applies |
 | Script coverage | [`ui-style.md`](ui-style.md) | Applies — Localization Applies |
 | Reference images | [`references.md`](references.md) | Applies — None yet |
-| Sheets | [`sheets/`](sheets/) | Applies — depth full |
+| Reference sheets | [`sheets/`](sheets/) | Applies — depth full |
