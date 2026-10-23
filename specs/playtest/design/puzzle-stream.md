@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 - **Level**: Design
 - **Spec key**: `PTD-puzzle-stream`
 - **Environment**: Headless only
-- **Cites**: `L-puzzle-stream` (K1–K4, E1), `END.L4`, `END.L5`, `END.L6`
+- **Cites**: `L-puzzle-stream` (K1–K4, E1), `END.L4`, `END.L5`, `DIF.Y1`
 - **Situational tools**: `SIT.1`
 
 ## Steps
@@ -14,10 +14,10 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 |----|--------|
 | S1 | Enter Puzzle stream from mode-pick; note dealt `puzzleId` / Elo (K1). |
 | S2 | Play required sequence with no wrong move; confirm solve and next deal (K3). |
-| S3 | On next puzzle, play a wrong move; confirm the open puzzle returns to its start with the same `puzzleId` and no next puzzle is dealt, then play another wrong move and confirm it is still retryable (K2). |
+| S3 | On next puzzle, play a wrong move; confirm the open puzzle returns to its start with the same `puzzleId` and no next puzzle is dealt, then play another wrong move and confirm the puzzle is still retryable (K2). |
 | S4 | Reveal solution on a puzzle; confirm failure then next deal (K2). |
 | S5 | Leave stream confirmed; return to mode-pick (K4/E1). |
-| S6 | On an open puzzle, play a wrong move, then complete the required sequence; confirm `END.L4`, an Elo update and exactly one next deal (K3). |
+| S6 | On an open puzzle, play a wrong move, then complete the required sequence; confirm `END.L4`, Player Elo dropping as `DIF.Y1` scores it a loss (S = 0), and exactly one next deal (K3). |
 
 ## Pass
 
