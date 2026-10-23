@@ -26,6 +26,14 @@ const END_D4 := "END.D4"
 const FIFTY_MOVE_LIMIT := 100
 
 const _PROMOTE_KINDS: Array = [KIND_QUEEN, KIND_ROOK, KIND_BISHOP, KIND_KNIGHT]
+const _KIND_BY_GLYPH := {
+	"k": KIND_KING,
+	"q": KIND_QUEEN,
+	"r": KIND_ROOK,
+	"b": KIND_BISHOP,
+	"n": KIND_KNIGHT,
+	"p": KIND_PAWN,
+}
 const _ORTHO: Array = [
 	Vector2i(1, 0),
 	Vector2i(-1, 0),
@@ -71,6 +79,7 @@ var _ending_reason := ""
 
 
 func _init() -> void:
+	reset_opening()
 	var queen_dirs: Array = []
 	queen_dirs.append_array(_ORTHO)
 	queen_dirs.append_array(_DIAG)
@@ -110,10 +119,12 @@ func load_position(
 	castling: Dictionary = {},
 	en_passant: String = "",
 ) -> void:
-	_occupancy = {}
+	# A literal here shares one dictionary with every board this script ever builds.
+	var occupancy := {}
 	for entry in pieces:
 		var square := str(entry["square"])
-		_occupancy[square] = {"color": str(entry["color"]), "kind": str(entry["kind"])}
+		occupancy[square] = {"color": str(entry["color"]), "kind": str(entry["kind"])}
+	_occupancy = occupancy
 	_side_to_move = side
 	if castling.is_empty():
 		_castling = _full_castling()
@@ -136,6 +147,48 @@ func position_field() -> Dictionary:
 		"occupancy": _occupancy.duplicate(true),
 		"side_to_move": _side_to_move,
 	}
+
+
+## Load a FEN position (Puzzle stream dealing). False when the FEN is malformed.
+func _load_fen(fen: String) -> bool:
+	var parts := fen.strip_edges().split(" ", false)
+	if parts.size() < 2:
+		return false
+	var placement := parts[0].split("/", false)
+	if placement.size() != 8:
+		return false
+	var pieces: Array = []
+	for row in range(8):
+		var rank := 8 - row
+		var file := 0
+		for glyph in placement[row]:
+			if glyph.is_valid_int():
+				file += int(glyph)
+				continue
+			var color := SIDE_WHITE if glyph == glyph.to_upper() else SIDE_BLACK
+			var kind := _kind_for(glyph.to_lower())
+			if kind.is_empty() or file >= 8:
+				return false
+			pieces.append(_placed("%s%d" % [char(97 + file), rank], color, kind))
+			file += 1
+		if file != 8:
+			return false
+	var side := parts[1]
+	if side != "w" and side != "b":
+		return false
+	var castling := {
+		"white_kingside": parts[2].contains("K") if parts.size() > 2 else false,
+		"white_queenside": parts[2].contains("Q") if parts.size() > 2 else false,
+		"black_kingside": parts[2].contains("k") if parts.size() > 2 else false,
+		"black_queenside": parts[2].contains("q") if parts.size() > 2 else false,
+	}
+	var en_passant := parts[3] if parts.size() > 3 and parts[3] != "-" else ""
+	load_position(pieces, SIDE_WHITE if side == "w" else SIDE_BLACK, castling, en_passant)
+	return true
+
+
+func _kind_for(glyph: String) -> String:
+	return _KIND_BY_GLYPH.get(glyph, "")
 
 
 func castling_ep() -> Dictionary:
@@ -385,6 +438,14 @@ func is_pseudo_legal(from_square: String, to_square: String) -> bool:
 	if str(piece["color"]) != _side_to_move:
 		return false
 	return _candidate_squares(from_square, piece, false).has(to_square)
+
+
+## True when the move is a pawn step onto the last rank that needs a promotion kind.
+func _needs_promotion(from_square: String, to_square: String) -> bool:
+	var piece: Dictionary = _occupancy.get(from_square, {})
+	if piece.is_empty() or not _is_square(to_square):
+		return false
+	return _is_promotion_move(piece, to_square)
 
 
 func _can_apply_move(from_square: String, to_square: String, promotion: String = "") -> bool:
