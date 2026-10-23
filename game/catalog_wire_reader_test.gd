@@ -143,8 +143,13 @@ func _check_snapshot_is_the_served_one() -> String:
 func _check_i2_and_i3_hold() -> String:
 	var one_move := _body()
 	one_move["moves"] = ["e2e4"]
-	if bool(CatalogWireReader.read(JSON.stringify(one_move)).get("ok", true)):
+	# Unmarked, so I3 (the mate mark) cannot be what refuses this record: I2 does.
+	var too_short := CatalogWireReader.read(JSON.stringify(one_move))
+	if bool(too_short.get("ok", true)):
 		return "SCH-puzzle-catalog I2: moves shorter than two must fail"
+	var got := str(too_short.get("reason", ""))
+	if got != CatalogWireReader.REASON_MALFORMED:
+		return "SCH-puzzle-catalog I2: a one-move record is malformed, not %s" % got
 	var marked_long := _body()
 	marked_long["themes"] = ["mateIn1"]
 	marked_long["any_checkmate_wins"] = true
