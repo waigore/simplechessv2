@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | F-move-advice; CFG.ADVICE_TIME_MS | design | [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0010](decisions/0010-advice-backend-stack.md) |
 | Loops; game-state; end conditions | design | [ADR-0006](decisions/0006-layered-client-architecture.md) |
 | PRG.P1 P2 M1; GS persist fields | design | [ADR-0003](decisions/0003-localstorage-persistence.md) |
-| Puzzle catalog; DIF.Y1; GS.recentSolved | design | [ADR-0008](decisions/0008-puzzle-catalog-storage.md) |
+| Puzzle catalog; DIF.Y1; GS.recentSolved | design | [ADR-0008](decisions/0008-puzzle-catalog-storage.md), [ADR-0013](decisions/0013-puzzle-catalog-api.md) |
 | 2D Web board view | view | [ADR-0001](decisions/0001-godot-engine.md) |
 | Playtest `ENV.1` `ENV.2` `DBG.*` `TEL.*` | playtest | [ADR-0004](decisions/0004-dual-playtest-environments.md), [ADR-0006](decisions/0006-layered-client-architecture.md) |
 | Asset catalog / asset roots; Recraft-only visual; ElevenLabs SFX/music (TL.2, TL.3) | assets | [ADR-0005](decisions/0005-asset-catalog-roots.md) |
@@ -48,3 +48,9 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | ADR-0011 | [SEQ-advice-stream](../technical/sequences/advice-stream.md) S3 | Cited |
 | ADR-0012 | [CMP-advice-backend](../technical/components/advice-backend.md) | Cited |
 | ADR-0012 | [ADR-0002](decisions/0002-stockfish-advice-backend.md) licensing | Cited |
+| ADR-0013 | [F-puzzle-catalog](../design/features/puzzle-catalog.md) | Cited |
+| ADR-0013 | [SCH-puzzle-catalog](../technical/schemata/puzzle-catalog.md) | Cited |
+| ADR-0013 | [`CMP-puzzle-session`](../technical/components/puzzle-session.md) | Cited |
+| ADR-0013 | [`CMP-catalog-service`](../technical/components/catalog-service.md) | Cited |
+| ADR-0013 | [`CTR-puzzle-catalog-read`](../technical/contracts/puzzle-catalog-read.md) | Cited |
+| ADR-0013 | [`specs/technical/configuration.md`](../technical/configuration.md) | Cited |
