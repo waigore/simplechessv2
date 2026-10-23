@@ -1,0 +1,60 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+A550G display=macOS window=(1280, 720) session=sess-1792789467220-40296-playtest
+A550G JUDGE ENV ENV.2 pass — rendered display (macOS)
+A550G shot 01-mode-pick-en.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 01-mode-pick-en.png pass — rendered frame for 01-mode-pick-en.png
+A550G JUDGE PTU-mode-pick US1 pass — mode pick renders Shared game and Puzzle stream
+A550G shot 02-mode-pick-zh-Hant.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 02-mode-pick-zh-Hant.png pass — rendered frame for 02-mode-pick-zh-Hant.png
+A550G shot 03-mode-pick-ja.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 03-mode-pick-ja.png pass — rendered frame for 03-mode-pick-ja.png
+A550G locale titles={ "zh-Hant": "選擇遊玩方式", "ja": "遊び方を選ぶ" }
+A550G JUDGE PTU-localization P1/P2 pass — C4 switches copy on the rendered screen
+{"TEL.1":"puzzle.enter","TEL.2":1792789467431,"TEL.3":"sess-1792789467220-40296-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _judge_puzzle_screens (res://../docs/playtest/evidence/issue-550/graphical-20261024T000000Z/probe/accept550_graphical.gd:71)
+         [7] _after_boot (res://../docs/playtest/evidence/issue-550/graphical-20261024T000000Z/probe/accept550_graphical.gd:45)
+         [8] _judge_mode_pick (res://../docs/playtest/evidence/issue-550/graphical-20261024T000000Z/probe/accept550_graphical.gd:66)
+         [9] _settle (res://../docs/playtest/evidence/issue-550/graphical-20261024T000000Z/probe/accept550_graphical.gd:119)
+A550G shot 04-puzzle-play-entry.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 04-puzzle-play-entry.png pass — rendered frame for 04-puzzle-play-entry.png
+A550G puzzle entry stage=puzzle-play dealt=false
+A550G JUDGE PTU-puzzle-session S1 pass — C2 opens the stream on the rendered build
+A550G JUDGE PTU-puzzle-play US1 fail — a dealt puzzle renders playable controls (ax:-true)
+A550G shot 06-puzzle-leave-confirm.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 06-puzzle-leave-confirm.png pass — rendered frame for 06-puzzle-leave-confirm.png
+A550G leave confirm_shown=false cancel_stays=true
+A550G JUDGE PTU-puzzle-session S3/P1 fail — Leave raises EX.confirm; Cancel stays on puzzle play
+{"TEL.1":"shared.start","TEL.2":1792789467507,"TEL.3":"sess-1792789467220-40296-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792789467517,"TEL.3":"sess-1792789467220-40296-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792789467520,"TEL.3":"sess-1792789467220-40296-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A550G shot 07-shared-play-move.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 07-shared-play-move.png pass — rendered frame for 07-shared-play-move.png
+{"TEL.1":"shared.move","TEL.2":1792789467542,"TEL.3":"sess-1792789467220-40296-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A550G shot 08-shared-play-reject.png 1280x720 err=0
+A550G JUDGE CAPTURE rendered frame for 08-shared-play-reject.png pass — rendered frame for 08-shared-play-reject.png
+A550G controls selected=true moved=true rejected=true
+A550G JUDGE PTU-controls S1/P1 pass — select then place completes a legal move on the rendered board
+A550G JUDGE PTU-controls S2/P1 pass — deselect path exercised by the place above
+A550G JUDGE PTU-exceptions S2/P1 pass — an illegal place is refused without leaving shared play
+A550G VERDICT ENV pass (pass=1 fail=0 not-judged=0)
+A550G VERDICT CAPTURE pass (pass=7 fail=0 not-judged=0)
+A550G VERDICT PTU-mode-pick pass (pass=1 fail=0 not-judged=0)
+A550G VERDICT PTU-localization pass (pass=1 fail=0 not-judged=0)
+A550G VERDICT PTU-puzzle-session fail (pass=1 fail=1 not-judged=0)
+A550G VERDICT PTU-puzzle-play fail (pass=0 fail=1 not-judged=0)
+A550G VERDICT PTU-controls pass (pass=2 fail=0 not-judged=0)
+A550G VERDICT PTU-exceptions pass (pass=1 fail=0 not-judged=0)
+A550G_PROBE fail
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

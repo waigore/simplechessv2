@@ -1,0 +1,78 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+A550 playtest_build=true session=sess-1792788917499-38686-playtest godot=4.7.2-stable (official)
+A550 JUDGE ENV ENV.1 pass — headless display (headless)
+A550 JUDGE ENV TEL.3 pass — session id marks a playtest build
+A550 JUDGE ENV seams pass — playtest seams are live on this build
+A550 mode-pick state ui=S1 last_mode=none
+A550 JUDGE PTU-mode-pick US1/P1 entries pass — C1/C2 entries carry their Copy rows (["C1", "C2"])
+A550 JUDGE PTU-mode-pick S5/P3 locale pass — the locale row reads the live locale's own name
+A550 checkpoint before-stream
+{"TEL.1":"puzzle.enter","TEL.2":1792788917583,"TEL.3":"sess-1792788917499-38686-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _judge_puzzle_stream (res://../docs/playtest/evidence/issue-550/headless-20261024T000000Z/probe/accept550_probe.gd:99)
+         [7] _after_boot (res://../docs/playtest/evidence/issue-550/headless-20261024T000000Z/probe/accept550_probe.gd:59)
+         [8] _settle (res://../docs/playtest/evidence/issue-550/headless-20261024T000000Z/probe/accept550_probe.gd:485)
+A550 after C2 stage=puzzle-play flow=true
+A550 JUDGE PTU-puzzle-session S1/P1 entry pass — C2 → puzzle-play (J-puzzle-session.S1)
+ERROR: String formatting error: a number is required.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] _judge_puzzle_stream (res://../docs/playtest/evidence/issue-550/headless-20261024T000000Z/probe/accept550_probe.gd:115)
+       [1] _settle (res://../docs/playtest/evidence/issue-550/headless-20261024T000000Z/probe/accept550_probe.gd:485)
+%s deal dealt=%s puzzle_id=%s elo=%d player_elo=%.1f
+A550 JUDGE PTD-puzzle-stream S1/P1 deal fail — K1 — a deal yields a puzzle (F-puzzle-catalog X2 on a failed read)
+A550 JUDGE PTU-puzzle-play S1/P1 controls fail — the board is playable on a dealt puzzle
+A550 BLOCKER no puzzle was dealt — the stream cannot open an attempt on this build
+A550 no-deal reason=status endpoint= key_set=false
+A550 JUDGE PTD-puzzle-stream S2–S6 K2–K4 not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 JUDGE PTD-difficulty S1 DIF.Y1 not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 JUDGE PTD-progression S1–S3 PRG not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 JUDGE PTD-game-state S1–S2 GS not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 JUDGE PTD-pieces-common S1 not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 JUDGE PTU-puzzle-play S2–S4 not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 JUDGE PTD-puzzle-stream F1 wrong-move deals not-judged — no puzzle deal on this build (B5 / X2: status)
+A550 B5 endpoint_empty=true key_empty=true
+A550 JUDGE PTD-puzzle-stream B5 T9/T10 not-judged — F-puzzle-catalog R1 consumes T9/T10, which this build leaves unset (endpoint=true key=true); delivery is #648 / #479
+A550 checkpoint after-stream failed=true
+A550 locale=en title=Choose how to play
+A550 locale=zh-Hant title=選擇遊玩方式
+A550 locale=ja title=遊び方を選ぶ
+A550 JUDGE PTU-localization P2 pass — mode-pick title differs across en / zh-Hant / ja: { "en": "Choose how to play", "zh-Hant": "選擇遊玩方式", "ja": "遊び方を選ぶ" }
+A550 JUDGE PTU-localization P5 pass — rendered mode-pick strings are Copy values, not raw keys
+A550 nav C1=shared-setup C6=mode-pick
+A550 JUDGE PTU-navigation S1/P1 shared pass — C1 → shared-setup
+A550 JUDGE PTU-navigation S2/P1 back pass — Shared set-up Back returns to mode-pick (NAV.US1)
+A550 JUDGE PTU-navigation S3/P1 exits pass — no dead end: mode-pick Screen pick stays put
+{"TEL.1":"shared.start","TEL.2":1792788917605,"TEL.3":"sess-1792788917499-38686-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792788917608,"TEL.3":"sess-1792788917499-38686-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.resign","TEL.2":1792788917610,"TEL.3":"sess-1792788917499-38686-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792788917613,"TEL.3":"sess-1792788917499-38686-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792788917613,"TEL.3":"sess-1792788917499-38686-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+A550 exceptions rejected=true stage_after=shared-play
+A550 JUDGE PTU-exceptions S2/P1 rejected pass — an illegal place is refused without a crash or screen change
+A550 JUDGE PTU-exceptions S1/P1 confirm pass — Offline advice path is out of this wave's scope (no Advice in wave 1/2)
+A550 VERDICT ENV pass (pass=3 fail=0 not-judged=0)
+A550 VERDICT PTU-mode-pick pass (pass=2 fail=0 not-judged=0)
+A550 VERDICT PTU-puzzle-session pass (pass=1 fail=0 not-judged=0)
+A550 VERDICT PTD-puzzle-stream fail (pass=0 fail=1 not-judged=3)
+A550 VERDICT PTU-puzzle-play fail (pass=0 fail=1 not-judged=1)
+A550 VERDICT PTD-difficulty not-judged (pass=0 fail=0 not-judged=1)
+A550 VERDICT PTD-progression not-judged (pass=0 fail=0 not-judged=1)
+A550 VERDICT PTD-game-state not-judged (pass=0 fail=0 not-judged=1)
+A550 VERDICT PTD-pieces-common not-judged (pass=0 fail=0 not-judged=1)
+A550 VERDICT PTU-localization pass (pass=2 fail=0 not-judged=0)
+A550 VERDICT PTU-navigation pass (pass=3 fail=0 not-judged=0)
+A550 VERDICT PTU-exceptions pass (pass=2 fail=0 not-judged=0)
+A550 TALLY pass=13 fail=2 not-judged=8 rows=23
+A550_PROBE fail
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
