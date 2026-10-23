@@ -1,4 +1,4 @@
-# Stories: Play fields — session and run
+# Stories: Play fields — run
 
 Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/specs/rules/design/story.md).
 
@@ -17,7 +17,7 @@ Split from [`stories/game-state.md`](../game-state.md) by scope. Moment fields: 
 | GS.wrongMoveOnPuzzle | PS1.6 PS1.8 PS1.9 | GS.requiredSequence | PS1.9 PS1.11 |
 | GS.sequenceIndex | PS1.9 | | |
 
-## PS1: Session fields
+## PS1: Run fields
 
 As a casual player, I rely on consistent run state so that every game starts clean.
 
@@ -31,7 +31,7 @@ When the puzzle resets
 Then GS.position is the dealt start And GS.sideToMove is the dealt side
 ```
 
-### PS1.2: New game resets session fields
+### PS1.2: New game resets run fields
 
 - **Proves**: GS.position, GS.sideToMove
 

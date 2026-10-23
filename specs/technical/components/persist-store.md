@@ -22,7 +22,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | [`CMP-session-router`](session-router.md) | listens | [`CTR-persist-document`](../contracts/persist-document.md) | Load / Last mode |
-| C2 | [`CMP-puzzle-session`](puzzle-session.md) | listens | [`CTR-persist-document`](../contracts/persist-document.md) | Elo / recentSolved |
+| C2 | [`CMP-puzzle-session`](puzzle-session.md) | listens | [`CTR-persist-document`](../contracts/persist-document.md) | Elo / recentSolved commit of [`CMP-puzzle-progression`](puzzle-progression.md) O1 values |
 
 ## Owns / mutates
 

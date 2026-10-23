@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/ux/presentation.md`](../../.agents/specs/
 
 - **Serves**: Instant play, Clear board, Cafe calm; Accessibility, Localization (quality); [ui-style.md](../aesthetics/ui-style.md); screens and journeys.
 
-## Binding
+## Design-system binding
 
 - **Design system**: `linear-app` / `design-systems/linear-app` (Open Design slug for Linear)
 - **Content root**: `OPEN_DESIGN_ROOT`, or `~/.open-design-skill/repo` when unset
