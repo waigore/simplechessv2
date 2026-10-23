@@ -82,3 +82,4 @@ Global specs: [`glossary.md`](glossary.md), [`ids.md`](ids.md), [`traceability.m
 - [`ux/controls.md`](ux/controls.md)
 - [`ux/navigation.md`](ux/navigation.md)
 - [`ux/exceptions.md`](ux/exceptions.md)
+- [`ux/localization.md`](ux/localization.md)
