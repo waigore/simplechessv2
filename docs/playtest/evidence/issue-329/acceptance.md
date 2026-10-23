@@ -9,6 +9,10 @@ Inputs: a 3-record slice written for this run (`advice_backend/` never carries
 the export, ADR-0008), player Elo 1480, `CFG` defaults (match range 100, widen
 50, recent window 20).
 
+Served-slice probes — deploy path, wire contract, release bundle, client
+failure path, and clean-tree unit tests/lint — are in
+[acceptance-served-slice.md](acceptance-served-slice.md).
+
 ## 1. `select_puzzle` / `DIF.Y1` (probe script, `PYTHONPATH=<clean tree>`)
 
 | Probe | Expected | Got |
@@ -89,7 +93,7 @@ through the `400` / `401` / `503` no-record responses.
 ## 8. Not recorded here: I1 against the real 6,157,341-record snapshot
 
 The Lichess export is host-side (ADR-0008); the repository holds no snapshot
-bytes. The check above shows the I1 gate enforced at the served count and
+bytes. The checks above show the I1 gate enforced at the served count and
 passing at a slice's own count, but the operator run on the host is still open:
 
 ```bash

@@ -1,0 +1,57 @@
+1599ms [warn] [.WebGL-0x134000c8400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+1600ms [nav] status=200
+1638ms [resp] 200 https://waigore.github.io/simplechessv2/index.pck
+2005ms [log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2099ms [log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2294ms [log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2450ms [error] ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2450ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2450ms [error] WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2450ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2450ms [error] ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2450ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2451ms [error] WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2451ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2451ms [error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2451ms [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2451ms [error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2451ms [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2451ms [error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2451ms [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2451ms [error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2451ms [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2451ms [error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2452ms [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2452ms [error] ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2453ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2453ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2453ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2453ms [error] ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2453ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2453ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2453ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2453ms [error] ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2454ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2454ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2454ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2455ms [error] ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2455ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2455ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2455ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2455ms [error] ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2455ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2456ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2456ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2456ms [error] ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2456ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2456ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2456ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2456ms [error] ERROR: Error opening file 'game_assets/icons/back.svg'.
+2456ms [error]    at: load_image (core/io/image_loader.cpp:91)
+2456ms [error] WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2456ms [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2456ms [error] ERROR: Preload boot left 9 approved IDs unresolved
+2456ms [error]    at: push_error (core/variant/variant_utility.cpp:1023)
+2467ms [warn] [.WebGL-0x134000de600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2467ms [warn] [.WebGL-0x134000e0a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+26604ms [body-text] ""

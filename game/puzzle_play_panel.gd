@@ -251,22 +251,13 @@ func _action(node_name: String, control_id: String, into: Control) -> Button:
 	return btn
 
 
-## EX.confirm / EX.save-failure (#616) — one placement model per dialog: anchors
-## centre x in the full-rect play panel and pin the top, so no absolute
-## `position` overrides the anchors and the box follows the frame size.
-func _place_centred_column(box: Control, top_px: float) -> void:
-	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_KEEP_SIZE)
-	box.offset_top = top_px
-
-
 ## S2 — EX.confirm: named prompt, Confirm runs the action, Cancel → S1.
 func _build_confirm() -> void:
 	_confirm_box = VBoxContainer.new()
 	_confirm_box.name = "StreamConfirm"
 	_confirm_box.visible = false
 	_confirm_box.custom_minimum_size = Vector2(280, 140)
-	# UI-puzzle-play EX.confirm: centred column, top kept at 220.
-	_place_centred_column(_confirm_box, 220.0)
+	Presentation.place_centered(_confirm_box, 220.0)
 	_confirm_box.add_theme_constant_override("separation", 12)
 	add_child(_confirm_box)
 	var panel := PanelContainer.new()
@@ -307,8 +298,7 @@ func _build_save_failure() -> void:
 	_save_box.name = "SaveFailure"
 	_save_box.visible = false
 	_save_box.custom_minimum_size = Vector2(280, 120)
-	# UI-puzzle-play EX.save-failure: centred column, top kept at 220.
-	_place_centred_column(_save_box, 220.0)
+	Presentation.place_centered(_save_box, 220.0)
 	_save_box.add_theme_constant_override("separation", 12)
 	add_child(_save_box)
 	var panel := PanelContainer.new()

@@ -669,7 +669,10 @@ func _apply_kind_texture(node: Node2D, color: String, kind: String) -> void:
 	var px := float(maxi(texture.get_width(), texture.get_height()))
 	if px <= 0.0:
 		px = 1.0
-	sprite.scale = Vector2.ONE * (BoardGeometry.PIECE_EXTENT / px)
+	# _world mirrors board space (board y up, screen y down). Raster art cancels
+	# that locally so pieces read as authored and still rotate with CAM-board.M2 (#617).
+	var s := BoardGeometry.PIECE_EXTENT / px
+	sprite.scale = Vector2(s, -s)
 
 
 func _sync_overlays() -> void:
@@ -834,7 +837,9 @@ func _scale_promote_sprite(sprite: Sprite2D) -> void:
 	var px := float(maxi(sprite.texture.get_width(), sprite.texture.get_height()))
 	if px <= 0.0:
 		px = 1.0
-	sprite.scale = Vector2.ONE * (BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px)
+	# Same local Y cancel as _apply_kind_texture: the chooser overrides that scale (#617).
+	var s := BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px
+	sprite.scale = Vector2(s, -s)
 
 
 func clear_promotion_choice() -> void:
@@ -878,7 +883,8 @@ func _fit_board_sprite() -> void:
 	var tex := _board_sprite.texture
 	var w := float(maxi(tex.get_width(), 1))
 	var h := float(maxi(tex.get_height(), 1))
-	_board_sprite.scale = Vector2(10.0 / w, 10.0 / h)
+	# Frame art cancels the world Y mirror like the pieces do (#617).
+	_board_sprite.scale = Vector2(10.0 / w, -10.0 / h)
 
 
 func _refresh_piece_textures() -> void:
