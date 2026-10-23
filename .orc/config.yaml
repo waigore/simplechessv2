@@ -65,6 +65,7 @@ agents:
     cooldown_seconds: 3600
     prompt: |
       Run the project-planner-agent skill unattended.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
       One breadth or depth pass; mutate issues only; do not edit the repo; then exit.
 
   issue-workflow-review-agent:
@@ -76,9 +77,24 @@ agents:
         - sh
         - -c
         - test "$(gh issue list --state open --label status:pending-review --limit 1 --json number)" != "[]"
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --state
+        - open
+        - --label
+        - status:pending-review
+        - --limit
+        - "100"
+        - --json
+        - number
     prompt: |
       Run the issue-workflow-review-agent skill unattended.
-      Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
+      Follow docs/issues/workflow-dispatch.md.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
+      Handle that issue if assigned, otherwise one discovered issue, then exit.
 
   issue-workflow-refine-agent:
     skill: issue-workflow-refine-agent
@@ -89,9 +105,24 @@ agents:
         - sh
         - -c
         - test "$(gh issue list --state open --label status:pending-refinement --limit 1 --json number)" != "[]"
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --state
+        - open
+        - --label
+        - status:pending-refinement
+        - --limit
+        - "100"
+        - --json
+        - number
     prompt: |
       Run the issue-workflow-refine-agent skill unattended.
-      Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
+      Follow docs/issues/workflow-dispatch.md.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
+      Handle that issue if assigned, otherwise one discovered issue, then exit.
 
   issue-workflow-implement-agent:
     skill: issue-workflow-implement-agent
@@ -102,9 +133,24 @@ agents:
         - sh
         - -c
         - test "$(gh issue list --state open --label status:pending-implementation --limit 1 --json number)" != "[]"
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --state
+        - open
+        - --label
+        - status:pending-implementation
+        - --limit
+        - "100"
+        - --json
+        - number
     prompt: |
       Run the issue-workflow-implement-agent skill unattended.
-      Follow docs/issues/workflow-dispatch.md. Do the work for one issue, then implement-project-issue; exit.
+      Follow docs/issues/workflow-dispatch.md.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
+      Do the work for that issue if assigned, otherwise one discovered issue, then implement-project-issue; exit.
 
   issue-workflow-verify-agent:
     skill: issue-workflow-verify-agent
@@ -115,9 +161,24 @@ agents:
         - sh
         - -c
         - test "$(gh issue list --state open --label status:pending-verification --limit 1 --json number)" != "[]"
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --state
+        - open
+        - --label
+        - status:pending-verification
+        - --limit
+        - "100"
+        - --json
+        - number
     prompt: |
       Run the issue-workflow-verify-agent skill unattended.
-      Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
+      Follow docs/issues/workflow-dispatch.md.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
+      Handle that issue if assigned, otherwise one discovered issue, then exit.
 
   issue-workflow-accept-agent:
     skill: issue-workflow-accept-agent
@@ -128,9 +189,24 @@ agents:
         - sh
         - -c
         - test "$(gh issue list --state open --label status:pending-acceptance --limit 1 --json number)" != "[]"
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --state
+        - open
+        - --label
+        - status:pending-acceptance
+        - --limit
+        - "100"
+        - --json
+        - number
     prompt: |
       Run the issue-workflow-accept-agent skill unattended.
-      Follow docs/issues/workflow-dispatch.md. Handle one issue, then exit.
+      Follow docs/issues/workflow-dispatch.md.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
+      Handle that issue if assigned, otherwise one discovered issue, then exit.
 
   babysit-pr-agent:
     skill: babysit-pr-agent
@@ -142,4 +218,5 @@ agents:
         - .agents/skills/babysit-pr-agent/scripts/gate.sh
     prompt: |
       Run the babysit-pr-agent skill unattended.
+      Parallel id: {parallel_id}. Assigned issue: {issue}.
       One same-repo pull request, then exit. Skip fork PRs.

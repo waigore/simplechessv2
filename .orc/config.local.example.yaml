@@ -12,6 +12,7 @@
 #     enabled: false
 #   issue-workflow-implement-agent:
 #     provider: opencode
+#     parallel_run: 2
 #     cooldown_seconds: 30
 #     gate_backoff_initial_seconds: 15
 #     gate_backoff_max_seconds: 120

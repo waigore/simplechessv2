@@ -26,11 +26,11 @@ def setup_orchestrator_logging(logs_dir: Path) -> Path:
     return path
 
 
-def agent_run_log_path(logs_dir: Path, agent_name: str) -> Path:
+def agent_run_log_path(logs_dir: Path, agent_name: str, parallel_id: int = 1) -> Path:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     directory = logs_dir / agent_name
     directory.mkdir(parents=True, exist_ok=True)
-    return directory / f"run-{stamp}.log"
+    return directory / f"run-{parallel_id}-{stamp}.log"
 
 
 def agent_logger(agent_name: str) -> logging.Logger:

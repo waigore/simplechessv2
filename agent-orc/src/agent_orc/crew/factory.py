@@ -8,6 +8,7 @@ from typing import Callable
 
 from crewai import Agent, Crew, Process, Task
 
+from agent_orc.assignment import UNASSIGNED_ISSUE
 from agent_orc.config import AgentConfig, AppConfig
 from agent_orc.crew.tools import ProviderCliTool, run_provider_command
 from agent_orc.logging_setup import agent_run_log_path
@@ -71,6 +72,8 @@ def run_skill_once(
     on_pid: Callable[[int], None] | None = None,
     on_pid_done: Callable[[int], None] | None = None,
     use_crew_kickoff: bool = False,
+    parallel_id: int = 1,
+    issue: str = UNASSIGNED_ISSUE,
 ) -> int:
     """
     Construct CrewAI objects, then run the provider CLI.
@@ -78,10 +81,18 @@ def run_skill_once(
     By default invokes the tool directly (no LLM required). Set
     use_crew_kickoff=True to call crew.kickoff() instead.
     """
-    log_path = agent_run_log_path(logs_dir, agent_cfg.name)
+    log_path = agent_run_log_path(logs_dir, agent_cfg.name, parallel_id)
     log_path.write_text("", encoding="utf-8")
     crew, tool = build_crew(agent_cfg, config, workdir=workdir, log_path=log_path)
-    publish("skill.start", {"agent": agent_cfg.name, "workdir": str(workdir)})
+    publish(
+        "skill.start",
+        {
+            "agent": agent_cfg.name,
+            "parallel_id": parallel_id,
+            "issue": issue,
+            "workdir": str(workdir),
+        },
+    )
     tool.set_pid_hooks(on_pid, on_pid_done)
 
     if use_crew_kickoff:
@@ -102,6 +113,12 @@ def run_skill_once(
 
     publish(
         "skill.end",
-        {"agent": agent_cfg.name, "exit_code": code, "log": str(log_path)},
+        {
+            "agent": agent_cfg.name,
+            "parallel_id": parallel_id,
+            "issue": issue,
+            "exit_code": code,
+            "log": str(log_path),
+        },
     )
     return code

@@ -20,7 +20,7 @@ Thin automation entrypoint for `status:pending-clarification`.
 
 ## Steps
 
-1. **Resolve** one target issue per the dispatch contract (`#n`, or discover `status:pending-clarification`). Skip candidates that need PO input you do not have.
+1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-clarification`. Skip candidates that need PO input you do not have.
 2. If no PO clarification is available in the dispatch context, **stop and report** — do not invent answers.
 3. Otherwise **read and run** `clarify-project-issue` for that issue.
 4. **Report** the underlying skill's outcome (URL, new status), or that clarification was unavailable.
