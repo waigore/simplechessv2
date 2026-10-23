@@ -43,7 +43,4 @@ A protocol that says no screenshot may be accepted from the headless run alone.
 
 ## Outcomes
 
-- **Pass** — every required protocol passed and required graphical-run screenshots for the same build are citable.
-- **Fail** — a required protocol failed for a game or interface reason. Record notes and logs and stop that protocol; other protocols may still run for signal, but acceptance must not pass. May file a defect without screenshots.
-- **Waiting** — folder-level. Judgement is recorded and screenshots still wait on a graphical re-run. Stay on `status:pending-acceptance`.
-- **Notes** — non-blocking only if the protocol marks that observation as non-blocking; otherwise treat as fail.
+Pass, fail, waiting, and notes, plus how a failure is filed: [`procedures-outcomes.md`](procedures-outcomes.md).
