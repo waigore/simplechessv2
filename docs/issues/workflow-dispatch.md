@@ -11,7 +11,7 @@ Automation entrypoints for unattended runs of the [issue workflow](workflow.md).
 | `issue-workflow-verify-agent` | `status:pending-verification` | `verify-project-issue` |
 | `issue-workflow-accept-agent` | `status:pending-acceptance` | `accept-project-issue` |
 
-No agent for `status:accepted` (terminal).
+No agent for `status:accepted` (terminal). `status:superseded` is terminal too: dispatch skips it and no agent applies it ([terminal-states.md](terminal-states.md)).
 
 ## Resolve the target issue
 

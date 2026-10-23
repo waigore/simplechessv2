@@ -21,7 +21,7 @@ Keep the live plan aligned with `specs/`. Anything the specs require is either a
 ## Principles
 
 - **Specs are the target.** Every layer under `specs/` counts. [`docs/requirements/`](../../../docs/requirements/README.md) notes are not authority.
-- **Three buckets.** For each obligation you examine: **catered for** (accepted or closed issue coverage, or the tree already demonstrates it in code, demos, or playtests), **planned** (an open issue owns it and, by judgement against [the issue workflow](../../../docs/issues/workflow.md), can proceed without the human owner), or **neither**. Drive neither toward planned.
+- **Three buckets.** For each obligation you examine: **catered for** (accepted issue coverage, closed work that delivered, a `status:superseded` issue whose named successor is on the default branch or in the plan, or the tree already demonstrates it in code, demos, or playtests), **planned** (an open issue owns it and, by judgement against [the issue workflow](../../../docs/issues/workflow.md), can proceed without the human owner), or **neither**. Drive neither toward planned. A `status:superseded` issue is never planned work.
 - **Read hard, write nowhere in the tree.** Inspect code, demos, playtests, and specs as far as the gap requires. Surface what you find as issues.
 - **Judgement over procedure.** You are expected to see cross-cutting dependencies and incomplete coverage. Choose scope, ordering, splits, merges, blockers, and which delegate to call. Do not wait for confirmation.
 - **One pass shape.** Each run is either **breadth** (many epics, only a few issues deep) or **depth** (one epic and its full issue tree). Say which you chose.
