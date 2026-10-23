@@ -1,0 +1,52 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R375 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R375 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R375 {"check":"router_present","detail":"","ok":true}
+R375 {"check":"presentation_present","detail":"","ok":true}
+R375 {"check":"setup_reached","detail":"shared-setup","ok":true}
+R375 {"check":"setup_advice_default_on","detail":"true","ok":true}
+R375 {"check":"setup_c4_off","detail":"false","ok":true}
+R375 {"check":"setup_c4_on","detail":"true","ok":true}
+R375 {"check":"play_reached","detail":"shared-play","ok":true}
+R375 {"check":"session_has_client","detail":"","ok":true}
+R375 {"check":"client_is_shipped_transport","detail":"","ok":true}
+R375 {"check":"board_and_marks_present","detail":"","ok":true}
+advice: ready after 41 ms
+R375 {"check":"marks_appear_after_start","detail":"from=e2 to=e4 children=11","ok":true}
+R375 {"check":"advice_best_move_dict","detail":"{ \"from\": \"e2\", \"to\": \"e4\" }","ok":true}
+R375 {"check":"advice_eval_int","detail":"18","ok":true}
+R375 {"check":"presentation_rendered_eval","detail":"+0.18","ok":true}
+R375 {"displayed":{"best_move":{"from":"e2","to":"e4"},"eval":18,"eval_text":"+0.18"}}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R375 {"check":"local_move_applied","detail":"side_to_move=black","ok":true}
+R375 {"check":"local_move_not_delayed","detail":"waited_ms=14","ok":true}
+R375 {"check":"move_complete_clears_advice","detail":"from= to= children=0","ok":true}
+advice: ready after 14 ms
+R375 {"check":"black_advice_appears","detail":"from=e7 to=e5 children=11","ok":true}
+R375 {"summary":{"checks":20,"failed":0}}
+
+================================================================
+handle_crash: Program crashed with signal 11
+Engine version: Godot Engine v4.7.2.stable.official (ed1daf0bf001b61586d9930840f2f1394092c079)
+Dumping the backtrace. Please include this when reporting the bug on: https://github.com/godotengine/godot/issues
+Load address: 10004c000
+
+[1] 187ac8144 (libsystem_platform.dylib+4144) - _sigtramp + 56
+[2] 100d576c8 (main+d0b6c8) - main + 6024148
+[3] 100c2742c (main+bdb42c) - main + 4778296
+[4] 10664312c (main+65f712c) - GL_ShadingRateQCOM + 22734664
+[5] 104b2e740 (main+4ae2740) - ZSTD_decompressStream_simpleArgs + 3745500
+[6] 100d56d80 (main+d0ad80) - main + 6021772
+[7] 100c2742c (main+bdb42c) - main + 4778296
+[8] 10664312c (main+65f712c) - GL_ShadingRateQCOM + 22734664
+[9] 104afbeb4 (main+4aafeb4) - ZSTD_decompressStream_simpleArgs + 3538512
+[10] 104aff5d8 (main+4ab35d8) - ZSTD_decompressStream_simpleArgs + 3552628
+[11] 1047b5820 (main+4769820) - ZSTD_decompressStream_simpleArgs + 104380
+[12] 101aa67f8 (main+1a5a7f8) - WebPGetColorPalette + 542628
+[13] 187abdd00 (libsystem_pthread.dylib+6d00) - _pthread_start + 136
+[14] 187ab8cec (libsystem_pthread.dylib+1cec) - thread_start + 8
+-- END OF C++ BACKTRACE --
+================================================================
