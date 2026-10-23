@@ -243,10 +243,10 @@ const _SHARED_PLAY := {
 		"check": "將軍",
 		"choose_promotion": "選擇升變",
 		"refused_place": "無法落子",
-		"queen": "后",
-		"rook": "車",
-		"bishop": "象",
-		"knight": "馬",
+		"queen": "Queen",
+		"rook": "Rook",
+		"bishop": "Bishop",
+		"knight": "Knight",
 	},
 	"ja":
 	{
@@ -269,10 +269,10 @@ const _SHARED_PLAY := {
 		"check": "チェック",
 		"choose_promotion": "プロモーションを選択",
 		"refused_place": "置けません",
-		"queen": "クイーン",
-		"rook": "ルーク",
-		"bishop": "ビショップ",
-		"knight": "ナイト",
+		"queen": "Queen",
+		"rook": "Rook",
+		"bishop": "Bishop",
+		"knight": "Knight",
 	},
 }
 

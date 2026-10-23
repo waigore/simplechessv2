@@ -5,6 +5,24 @@ extends SceneTree
 const VIEW_SIZE := Vector2(720, 1280)
 const GROWTH := 0.4
 
+## SCH-string-table I5 / `specs/ux/localization.md` L3: the rows allowed to render
+## their `en` value in every locale, as `owner.key` pairs. This constant is the
+## gate form of L3's prose (the screens mark their rows in words, not a marker);
+## `_marked_rows_match_l3` keeps it a subset of the rows L3 names.
+const L3_MARKED_KEYS := [
+	"mode-pick.locale",
+	"shared-play.queen", "shared-play.rook", "shared-play.bishop", "shared-play.knight",
+	"puzzle-play.queen", "puzzle-play.rook", "puzzle-play.bishop", "puzzle-play.knight",
+]
+
+## L3's named rows that also live in a shipped owner table; `puzzle-play` joins
+## only once it is a shipped owner (F2).
+const L3_PIECE_NAMES := ["queen", "rook", "bishop", "knight"]
+
+const MARKED_OWNERS := ["mode-pick", "shared-play", "puzzle-play"]
+
+var _owner_getters: Dictionary = {}
+
 var _presentation: Presentation
 var _router: SessionRouter
 var _ui_font: Font
@@ -35,6 +53,10 @@ func _start() -> void:
 func _after_boot() -> void:
 	var problem := _all_locales_populated()
 	if problem.is_empty():
+		problem = _marked_rows_match_l3()
+	if problem.is_empty():
+		problem = _marked_rows_en_equal()
+	if problem.is_empty():
 		problem = _no_english_leak_in_puzzle_play()
 	if problem.is_empty():
 		problem = _no_english_leak_in_cjk()
@@ -51,16 +73,29 @@ func _after_boot() -> void:
 	quit(1)
 
 
-func _all_locales_populated() -> String:
-	var suites: Array = [
-		["mode-pick", StringTable.mode_pick_keys(), Callable(StringTable, "mode_pick")],
-		["shared-setup", StringTable.shared_setup_keys(), Callable(StringTable, "shared_setup")],
-		["shared-play", StringTable.shared_play_keys(), Callable(StringTable, "shared_play")],
-		["shared-result", StringTable.shared_result_keys(), Callable(StringTable, "shared_result")],
-		["exceptions", StringTable.exception_keys(), Callable(StringTable, "exception_text")],
-		["puzzle-play", StringTable.puzzle_play_keys(), Callable(StringTable, "puzzle_play")],
+## Every shipped copy owner with its key list and read function, in table order.
+func _all_locales_suites() -> Array:
+	if _owner_getters.is_empty():
+		_owner_getters = {
+			"mode-pick": Callable(StringTable, "mode_pick"),
+			"shared-setup": Callable(StringTable, "shared_setup"),
+			"shared-play": Callable(StringTable, "shared_play"),
+			"shared-result": Callable(StringTable, "shared_result"),
+			"exceptions": Callable(StringTable, "exception_text"),
+			"puzzle-play": Callable(StringTable, "puzzle_play"),
+		}
+	return [
+		["mode-pick", StringTable.mode_pick_keys(), _owner_getters["mode-pick"]],
+		["shared-setup", StringTable.shared_setup_keys(), _owner_getters["shared-setup"]],
+		["shared-play", StringTable.shared_play_keys(), _owner_getters["shared-play"]],
+		["shared-result", StringTable.shared_result_keys(), _owner_getters["shared-result"]],
+		["exceptions", StringTable.exception_keys(), _owner_getters["exceptions"]],
+		["puzzle-play", StringTable.puzzle_play_keys(), _owner_getters["puzzle-play"]],
 	]
-	for suite in suites:
+
+
+func _all_locales_populated() -> String:
+	for suite in _all_locales_suites():
 		var label := str(suite[0])
 		var keys: PackedStringArray = suite[1]
 		var getter: Callable = suite[2]
@@ -71,6 +106,72 @@ func _all_locales_populated() -> String:
 				var text := str(getter.call(key, locale))
 				if text.is_empty() or text == key:
 					return "%s.%s missing in %s" % [label, key, locale]
+	return ""
+
+
+## SCH-string-table I5 / L3: every row L3 marks same in every locale renders its
+## `en` value in `zh-Hant` and `ja`. `mode-pick.locale` is the carve-out: it is
+## synthesized from LOCALE_OWN_NAME, so it asserts own-name identity per locale.
+func _marked_rows_en_equal() -> String:
+	for pair in L3_MARKED_KEYS:
+		var owner: String = str(pair).split(".", true, 1)[0]
+		var key: String = str(pair).split(".", true, 1)[1]
+		if not _all_owner_getter(owner):
+			return "%s marked in L3 but its owner is not shipped" % pair
+		if owner == "mode-pick" and key == "locale":
+			var own := _locale_own_names()
+			if not own.is_empty():
+				return own
+			continue
+		var getter: Callable = _all_owner_getter(owner)
+		var en := str(getter.call(key, "en"))
+		for locale in StringTable.LOCALES:
+			if locale == "en":
+				continue
+			if str(getter.call(key, locale)) != en:
+				return "%s not en-equal in %s" % [pair, locale]
+	return ""
+
+
+func _all_owner_getter(owner: String) -> Callable:
+	for suite in _all_locales_suites():
+		if str(suite[0]) == owner:
+			return suite[2]
+	return Callable()
+
+
+func _locale_own_names() -> String:
+	for locale in StringTable.LOCALES:
+		var want := str(StringTable.LOCALE_OWN_NAME[locale])
+		if StringTable.mode_pick("locale", locale) != want:
+			return "mode-pick.locale own name wrong in %s" % locale
+	return ""
+
+
+## L3 drift guard: every row L3 names is in L3_MARKED_KEYS, every marked row is one
+## L3 names, and every marked owner is a shipped copy owner.
+func _marked_rows_match_l3() -> String:
+	var shipped: Array = []
+	for suite in _all_locales_suites():
+		shipped.append(str(suite[0]))
+	for owner in MARKED_OWNERS:
+		if not owner in shipped:
+			return "marked owner %s has no copy keys" % owner
+	for pair in L3_MARKED_KEYS:
+		var owner: String = str(pair).split(".", true, 1)[0]
+		var key: String = str(pair).split(".", true, 1)[1]
+		if not _all_owner_getter(owner):
+			return "%s marked but its owner is not a copy owner" % pair
+		var named := (owner == "mode-pick" and key == "locale") \
+			or (owner in ["shared-play", "puzzle-play"] and key in L3_PIECE_NAMES)
+		if not named:
+			return "%s marked but L3 does not name it" % pair
+	for owner in ["shared-play", "puzzle-play"]:
+		for name in L3_PIECE_NAMES:
+			if not "%s.%s" % [owner, name] in L3_MARKED_KEYS:
+				return "%s.%s named in L3 but not marked" % [owner, name]
+	if not "mode-pick.locale" in L3_MARKED_KEYS:
+		return "mode-pick.locale named in L3 but not marked"
 	return ""
 
 
