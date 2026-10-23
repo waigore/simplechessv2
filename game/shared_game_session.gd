@@ -225,7 +225,7 @@ func can_place(from_square: String, to_square: String, promotion: String = "") -
 
 
 func _needs_promotion(from_square: String, to_square: String) -> bool:
-	return rules._reject_reason(from_square, to_square, "") == ChessRules.REASON_PROMOTION
+	return rules._needs_promotion(from_square, to_square)
 
 
 ## C2 / B3 / B10 — place; refused place → S5; last-rank without kind → S4.
