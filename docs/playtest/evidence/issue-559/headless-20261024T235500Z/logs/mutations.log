@@ -1,0 +1,6 @@
+$ python3 docs/playtest/evidence/issue-559/headless-20261024T235500Z/mutations.py
+
+start waits for the answer: exit 1 — FAIL as expected: FAIL _check_readiness_within_configured_t6: repeat 0: start must return before any update exists (anti-tautology)
+T6 ignored, always 3500: exit 1 — FAIL as expected: FAIL _check_time_ms_follows_t6: T6 500 must be sent as O1 time_ms (R7), sent 3500
+move path waits on the stream: exit 1 — FAIL as expected: FAIL _check_local_move_never_waits_on_silent_peer: repeat 0: a local move waited 130 ms on advice (ceiling 40, I1)
+move path stalls 300 ms: exit 1 — FAIL as expected: FAIL _check_local_move_never_waits_on_silent_peer: repeat 0: a local move waited 312 ms on advice (ceiling 40, I1)

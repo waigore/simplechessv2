@@ -40,7 +40,10 @@ const PIECE_EXTENT := 0.85
 ## a frame around the 8x8 so the board reads as one carved wooden object on the
 ## cafe table. It uses the board's own outer band, so it never covers a piece
 ## square (SPC.E1) and never adds chrome inside the play area.
-const RIM_OUTER := 0.10                # wooden lip around the 0..8 square bounds
+## The lip is 0.26 units deep so the 0.16-unit coordinate band fits in it
+## entirely outside the 8x8 (defect #592 rework: at 0.10 the band overran the
+## 8x8 and its labels landed inside the a-file / rank-1 squares).
+const RIM_OUTER := 0.26                # wooden lip around the 0..8 square bounds
 const BEVEL_FRAME := 0.10              # raised frame outside the lip
 const BEVEL_LIP_COLOR := Color("8B5A3C")     # PAL.C2 grain, lit from top-left
 const BEVEL_SHADOW_COLOR := Color("43281D")  # C5 deepened, shadowed lip
@@ -58,18 +61,24 @@ const BEVEL_LIP_INK_BAND := 0.16       # depth of each coordinate band, units
 ## The label must fit the field it is painted on: the glyph's whole ink box has
 ## to stay inside the BEVEL_LIP_INK_BAND-wide band, or the part that hangs over
 ## the light PAL.C1 table margin reads at 1.28:1 (defect #592). The font is
-## therefore clamped to the largest em that inks COORD_BAND_SHARE of the band,
-## and the labels are centred in the band, not in the lip. UIS.T2's 16 px floor
-## is a 640 px-frame figure and cannot also fit a 0.16-unit band; R7's contrast
-## floor wins here (defect #592).
-const COORD_BAND_SHARE := 0.8          # share of the band the glyph may ink
+## clamped so its ascent + descent fits the band (and the rendered-glyph check
+## against the rasterized box), and the labels are centred in the band, not in
+## the lip. UIS.T2's 16 px floor is a 640 px-frame figure and cannot also fit a
+## 0.16-unit band; R7's contrast floor wins here (defect #592).
+const COORD_BAND_SHARE := 0.8          # share of the band the metric may ink
 const COORD_UNIT_PX := 72.0            # PRJ.P1: screen px per board unit here
+## The demo frame (main.gd FRAME_SIZE, project.godot). The coordinate canvas
+## uses the same px-per-unit at 1x; the rendered-ink probe rescales a screenshot
+## of any size to this frame.
+const FRAME_SIZE := Vector2(720.0, 1280.0)
 const COORD_CANVAS_UNITS := 10.0       # canvas spans the 10-unit frame
-const COORD_CANVAS_POSITION := Vector2.ZERO
 ## The canvas is pinned to the 0..8 board bounds, so its origin is the board's
 ## own (0, 0) in board units (defect #427 item 3: the labels used to shift by
 ## this inset on top of an inset that was already part of their positions, which
-## put the files one rank below and the ranks one file left).
+## put the files one rank below and the ranks one file left). The bands are
+## placed in the same canvas coordinates, so they run negative in x (the left
+## band) and past 8 in y (the bottom band); see CoordLabels.spots().
+const COORD_CANVAS_POSITION := Vector2.ZERO
 const TRAVEL_S := 0.15                 # PHY.M1 / MOT.T1 budget
 const RETURN_S := 0.15                 # PHY.M5 bad-drop return
 const SETTLE_S := 0.03                 # PHY.I1 settle window
@@ -102,6 +111,7 @@ var _pieces: Dictionary = {}   # square index -> Node2D
 var _drag_square := -1
 var _motion_busy := false
 var flipped := false           # CAM-board.M2: Solving side Black turns the view over
+var _probe_hidden := {}
 
 
 func setup(piece_ids: Dictionary, font: Font, board_bg: Texture2D) -> void:
@@ -236,18 +246,20 @@ func _add_band(band_name: String, color: Color, lo: Vector2, hi: Vector2) -> voi
 func _build_coords() -> void:
 	if font_resource == null:
 		return
-	# PER.R7: the labels are a canvas-sized Control in canvas pixels, scaled by
-	# 1 / COORD_UNIT_PX into board units, so the font size stays a real canvas
-	# size (a Node2D glyph at a sub-pixel size is dropped). Its z_index sits above
-	# the board polygons and below the pieces.
+	# A Control's transform starts at its own top-left, so the labels are placed
+	# in canvas pixels and the node is scaled to the board's px-per-unit: a
+	# Label under the board's Node2D would keep its screen font size, and a
+	# one-unit Node2D glyph is below the font rasterizer's minimum size.
 	var coords := CoordLabels.new()
 	coords.name = "Coordinates"
 	coords.font = font_resource
 	coords.font_px = coord_font_px()
-	coords.flipped = flipped
-	coords.size = Vector2.ONE * COORD_CANVAS_UNITS * COORD_UNIT_PX
-	coords.scale = coords.layout_multiplier()
+	coords.flipped = flipped   # CAM-board.M2: labels stay upright when turned over
+	coords.size = Vector2.ONE * (COORD_CANVAS_UNITS * COORD_UNIT_PX)
+	coords.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	coords.scale = Vector2.ONE / COORD_UNIT_PX
 	coords.position = COORD_CANVAS_POSITION
+	coords.z_index = 1  # above the bevel and the squares, below the pieces
 	add_child(coords)
 
 
@@ -265,7 +277,9 @@ func coord_font_px() -> float:
 	return px
 
 
-## The ink height of the shipped face at `px`: ascent + descent.
+## The ink height of the shipped face at `px`: ascent + descent, as the
+## rasterizer reports them. The outlines are hinted to whole px, so the ink box
+## can be 1-2 px taller than this sum (checked by the rendered probe).
 func coord_text_height(px: float) -> float:
 	if font_resource == null:
 		return 0.0
@@ -276,6 +290,11 @@ func coord_text_height(px: float) -> float:
 ## glyph, x and y) inside the wooden coordinate band it sits on, so none of its
 ## ink can land on the 1.28:1 table margin or inside the 8x8. Canvas pixels;
 ## the coordinates node scales them to board units unchanged.
+##
+## The band rectangles are read back from the drawn `BevelLipLeftInk` /
+## `BevelLipBottomInk` polygons, not from `CoordLabels.spots()`: the check that
+## compared label boxes against the same geometry that placed them passed while
+## the rank numerals were painted inside the a-file (defect #592 rework).
 func measure_coord_labels() -> Array:
 	var problems: Array = []
 	if font_resource == null:
@@ -284,60 +303,198 @@ func measure_coord_labels() -> Array:
 	print("[demo] coordinates %.1f px glyph ink %.1f px in a %.1f px band (PER.R7)" % [
 		px, coord_text_height(px), BEVEL_LIP_INK_BAND * COORD_UNIT_PX,
 	])
+	var drawn := _drawn_band_rects()
+	if drawn.size() != 2:
+		problems.append("coordinate bands not drawn: %d of 2 found" % drawn.size())
 	for spot in CoordLabels.spots(flipped):
 		var text: String = spot["text"]
 		var rect := CoordLabels.text_rect(font_resource, text, spot["at"] as Vector2, px)
-		var band := spot["band"] as Rect2
-		print("[demo]   %s box x %.1f..%.1f y %.1f..%.1f px; band x %.1f..%.1f y %.1f..%.1f" % [
+		var band_name: String = spot["band"]
+		if not drawn.has(band_name):
+			problems.append("%s label has no drawn band %s" % [text, band_name])
+			continue
+		var band: Rect2 = drawn[band_name]
+		print("[demo]   %s box x %.1f..%.1f y %.1f..%.1f px; band %s x %.1f..%.1f y %.1f..%.1f" % [
 			text, rect.position.x, rect.end.x, rect.position.y, rect.end.y,
-			band.position.x, band.end.x, band.position.y, band.end.y,
+			band_name, band.position.x, band.end.x, band.position.y, band.end.y,
 		])
 		if not band.encloses(rect):
 			problems.append("%s label %s leaves its coordinate band %s" % [text, rect, band])
 	return problems
 
 
+## The coordinate bands as drawn, in canvas pixels: the axis-aligned bounds of
+## the bevel polygons that carry them. Bands must also sit entirely outside the
+## 8x8 (PER.R7 "never inside squares").
+func _drawn_band_rects() -> Dictionary:
+	var out := {}
+	var square_lo := Vector2.ZERO
+	var square_hi := Vector2.ONE * (8.0 * COORD_UNIT_PX)
+	for band_name in ["BevelLipLeftInk", "BevelLipBottomInk"]:
+		var band := get_node_or_null(NodePath(band_name)) as Polygon2D
+		if band == null or band.polygon.is_empty():
+			continue
+		var lo := band.polygon[0]
+		var hi := band.polygon[0]
+		for point in band.polygon:
+			lo = Vector2(minf(lo.x, point.x), minf(lo.y, point.y))
+			hi = Vector2(maxf(hi.x, point.x), maxf(hi.y, point.y))
+		var rect := Rect2(lo * COORD_UNIT_PX, (hi - lo) * COORD_UNIT_PX)
+		out[band_name] = rect
+		if rect.intersects(Rect2(square_lo, square_hi - square_lo)):
+			push_warning("%s overlaps the 8x8: %s" % [band_name, rect])
+			out[band_name] = Rect2()  # force every label on it to fail
+	return out
+
+
+## Hides everything except the backdrop, bevel, squares, and coordinate labels so
+## the rendered-ink probe sees only coordinate glyph pixels.
+func set_coord_probe_visibility(on: bool) -> void:
+	if on:
+		_probe_hidden.clear()
+		for child_name in ["Pieces", "Fragments", "Overlays", "PromoChoice"]:
+			var node := get_node_or_null(NodePath(child_name)) as CanvasItem
+			if node != null:
+				_probe_hidden[child_name] = node.visible
+				node.visible = false
+	else:
+		for child_name in _probe_hidden:
+			var node := get_node_or_null(NodePath(child_name)) as CanvasItem
+			if node != null:
+				node.visible = bool(_probe_hidden[child_name])
+		_probe_hidden.clear()
+
+
+## Rendered-ink check for the graphical autodrive: the only allowed home for the
+## coordinate ink is the two wooden bands, and each band must carry ink. It fails
+## on cream PAL.C10 found inside the 8x8 (PER.R7 forbids the ink on any square;
+## on a light PAL.C1 square it reads 1.28:1), on the table outside the board, or
+## anywhere on the board that is not a coordinate band. This measures what the
+## renderer drew, unlike measure_coord_labels() which checks geometry;
+## set_coord_probe_visibility() hides the piece sprites first, so every cream
+## pixel here is coordinate ink.
+func coord_ink_problems(image: Image) -> Array:
+	var problems: Array = []
+	var drawn := _drawn_band_rects()
+	if drawn.size() != 2:
+		return ["coordinate bands not drawn: %d of 2" % drawn.size()]
+	var to_px := Vector2(image.get_width(), image.get_height()) / Vector2(FRAME_SIZE)
+	var xf := get_global_transform()
+	var origin := xf.origin * to_px
+	var scale_px := xf.get_scale() * to_px
+	var square := _to_image_rect(_canvas_rect(Vector2.ZERO, Vector2.ONE * 8.0), origin, scale_px)
+	var board := _to_image_rect(
+		_canvas_rect(Vector2.ONE * -RIM_OUTER, Vector2.ONE * (8.0 + RIM_OUTER)), origin, scale_px)
+	var bands := {}
+	for band_name in drawn:
+		bands[band_name] = _to_image_rect(drawn[band_name], origin, scale_px)
+	var ink := {}
+	for band_name in bands:
+		ink[band_name] = 0
+	var inside_square := 0
+	var off_band := 0
+	# One pass over the board and its lip: every cream pixel is counted once, in
+	# the band it sits in or in the bucket of the forbidden field it lands in.
+	for y in range(maxi(int(board.position.y), 0), mini(int(board.end.y) + 1, image.get_height())):
+		for x in range(maxi(int(board.position.x), 0), mini(int(board.end.x) + 1, image.get_width())):
+			if not _is_coord_ink(image.get_pixel(x, y)):
+				continue
+			var pixel := Vector2(x, y)
+			var band_hit := ""
+			for band_name in bands:
+				if (bands[band_name] as Rect2).grow(0.5).has_point(pixel):
+					band_hit = band_name
+					break
+			if band_hit != "":
+				ink[band_hit] += 1
+			elif square.has_point(pixel):
+				inside_square += 1
+			else:
+				off_band += 1
+	print("[demo] rendered coordinate ink: left band %d px, bottom band %d px, inside 8x8 %d px, off-band %d px" % [
+		int(ink.get("BevelLipLeftInk", 0)), int(ink.get("BevelLipBottomInk", 0)),
+		inside_square, off_band,
+	])
+	for band_name in ink:
+		if int(ink[band_name]) == 0:
+			problems.append("no rendered coordinate ink in %s" % band_name)
+	if inside_square > 0:
+		problems.append("%d rendered coordinate-ink pixels inside the 8x8" % inside_square)
+	if off_band > 0:
+		problems.append("%d rendered coordinate-ink pixels off their coordinate bands" % off_band)
+	return problems
+
+
+## True when the ink at `pixel` covers a board square. PER.R7 allows the ink on
+## the wooden bands only, so any pixel of the 8x8 counts: on the light PAL.C1
+## square it reads 1.28:1 and on the dark PAL.C2 square it is inside the play
+## area. The probe draws the square it measures.
+func _is_ink_on_square(pixel: Vector2, square: Rect2) -> bool:
+	return square.has_point(pixel)
+
+
+## One rectangle in board units as canvas pixels (the unit of the coordinate canvas).
+static func _canvas_rect(lo: Vector2, hi: Vector2) -> Rect2:
+	return Rect2(lo * COORD_UNIT_PX, (hi - lo) * COORD_UNIT_PX)
+
+
+## A coordinate-canvas rectangle in frame pixels: canvas px -> board units ->
+## the board's frame placement, rescaled to the screenshot's own size.
+func _to_image_rect(canvas_rect: Rect2, origin: Vector2, scale_px: Vector2) -> Rect2:
+	var lo := origin + canvas_rect.position / COORD_UNIT_PX * scale_px
+	var hi := origin + canvas_rect.end / COORD_UNIT_PX * scale_px
+	return Rect2(lo, hi - lo)
+
+
+func _is_coord_ink(color: Color) -> bool:
+	# Cream PAL.C10; the 0.01 tolerance accepts antialiasing cores but no other
+	# demo color (squares, table, bevel, piece sprites are hidden by the probe).
+	return absf(color.r - COORD_COLOR.r) < 0.01 \
+		and absf(color.g - COORD_COLOR.g) < 0.01 \
+		and absf(color.b - COORD_COLOR.b) < 0.01
+
+
 ## PER.R7: files a-h and ranks 1-8 in cream PAL.C10 on the coordinate bands of
-## the wooden bevel (7.4:1 against the band). Drawn in board units by the
-## board's own transform, so the glyphs stay vector; the geometry is computed in
-## canvas px (PRJ.P1: COORD_UNIT_PX per unit) and scaled back down.
+## the wooden bevel (7.4:1 against the band). Painted in canvas pixels; the
+## node's scale maps them to board units. Canvas x runs files (0 at file a) and
+## canvas y runs ranks (0 at rank 8), matching the board's own axes.
 class CoordLabels extends Control:
 	var font: Font
-	var font_px := 0.0    # the PER.R7 clamped canvas size, set when the labels are built
-	var flipped := false  # CAM-board.M2: mirrored board keeps the labels upright
+	var font_px := 0.0    # the PER.R7 clamped size, set when the labels are built
+	var flipped := false  # CAM-board.M2: a turned-over board keeps the labels upright
 
-	## The file and rank label spots in canvas px, centred in the band they sit
-	## on, with the band they must stay inside. Canvas x runs files (0 at file a)
-	## and canvas y runs ranks (0 at rank 8). A flipped board labels the screen
+	## The file and rank label spots: centred along their column/row and centred
+	## in the band they sit on. Canvas x runs files (0 at file a) and canvas y
+	## runs ranks (0 at rank 8), matching the board's own axes; the coordinate
+	## bands lie on the lip outside the 8x8, so their rectangles run negative in
+	## x (ranks) or past 8 in y (files). A flipped board labels each screen
 	## column/row with its own board file/rank, so the letters and numbers stay
-	## upright while the squares turn over.
+	## upright while the squares turn over (CAM-board.M2).
 	static func spots(flipped: bool) -> Array:
-		var left := Rect2(0.0, 0.0,
-			BEVEL_LIP_INK_BAND * COORD_UNIT_PX,
-			(8.0 + RIM_OUTER) * COORD_UNIT_PX)  # the left band runs the lip's height
-		var bottom := Rect2(0.0, (8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND) * COORD_UNIT_PX,
-			(8.0 + RIM_OUTER) * COORD_UNIT_PX, BEVEL_LIP_INK_BAND * COORD_UNIT_PX)
 		var out: Array = []
 		for screen_file in range(8):
 			var file_index := 7 - screen_file if flipped else screen_file
 			out.append({
 				"text": String.chr(97 + file_index),
-				"at": Vector2((float(screen_file) + 0.5) * COORD_UNIT_PX, bottom.get_center().y),
-				"band": bottom,
+				"at": Vector2((float(screen_file) + 0.5) * COORD_UNIT_PX,
+					(8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND / 2.0) * COORD_UNIT_PX),
+				"band": "BevelLipBottomInk",
 			})
 		for screen_row in range(8):
 			var rank := screen_row + 1 if flipped else 8 - screen_row
 			out.append({
 				"text": str(rank),
-				"at": Vector2(left.get_center().x, (float(screen_row) + 0.5) * COORD_UNIT_PX),
-				"band": left,
+				"at": Vector2((-RIM_OUTER + BEVEL_LIP_INK_BAND / 2.0) * COORD_UNIT_PX,
+					(float(screen_row) + 0.5) * COORD_UNIT_PX),
+				"band": "BevelLipLeftInk",
 			})
 		return out
 
-	## The ink box of one label centred on `at` (canvas px). draw_string takes the
-	## glyph's baseline, not its top, so the top is one ascent above it and the
-	## ink height is ascent + descent (defect #592: the old stamp took the
+	## The ink box of one label of font size `px` centred on `at` (canvas px). draw_string takes
+	## the glyph's baseline, not its top, so the top is one ascent above it and
+	## the ink height is ascent + descent (defect #592: the old stamp took the
 	## baseline for the top and drew every label ~0.43 unit too high).
+	## The rectangle is returned in canvas pixels, the unit of `at`.
 	static func text_rect(f: Font, text: String, at: Vector2, px: float) -> Rect2:
 		var width := f.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, px).x
 		var ascent := float(f.get_ascent(px))
@@ -345,24 +502,15 @@ class CoordLabels extends Control:
 		return Rect2(at - Vector2(width / 2.0, (ascent + descent) / 2.0),
 			Vector2(width, ascent + descent))
 
-	## PER.R7 placement: every spot is set in canvas px (one unit = COORD_UNIT_PX
-	## px). The Control is canvas-sized and sits on the board's top-left corner.
-	func layout_multiplier() -> Vector2:
-		return Vector2.ONE / COORD_UNIT_PX
-
 	func _draw() -> void:
-		# A Control in the 2D tree sorts by z_index as a canvas item: the labels
-		# sit above the board's polygons (z 0) and below the pieces (z 3).
-		z_index = 2
-		if font == null or font_px <= 1.0:
-			return
 		for spot in spots(flipped):
-			var text := str(spot["text"])
-			var at: Vector2 = spot["at"]
-			var box := text_rect(font, text, at, font_px)
-			var baseline := box.end.y - float(font.get_descent(font_px))
-			draw_string(font, Vector2(box.position.x, baseline), text,
-				HORIZONTAL_ALIGNMENT_LEFT, -1, font_px, COORD_COLOR)
+			_stamp(str(spot["text"]), spot["at"] as Vector2)
+
+	func _stamp(text: String, at: Vector2) -> void:
+		var box := text_rect(font, text, at, font_px)  # `at` is already canvas px
+		var baseline := box.end.y - float(font.get_descent(font_px))
+		draw_string(font, Vector2(box.position.x, baseline), text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, font_px, COORD_COLOR)
 
 
 func _build_squares() -> void:
