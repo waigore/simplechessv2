@@ -19,6 +19,6 @@ Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/spe
 | K8 | Board coordinates read on the cafe margin | Coordinate ink on C5 | Contrast ≥ 4.5:1 ([PER.R7](../view/perception.md)); stated pair about 1.4:1; which swatch changes is TBD — which swatch changes? | Accessibility; [PER.R7](../view/perception.md) |
 | K9 | Overlay accents are not told apart by hue alone | C6, C7, C8, C11 on C1 and C2 | No mark alone carries its meaning: selection and refused place also change piece or square state, and check has its own indicator and end cue; how they stay distinct without hue is TBD — what mark form and placement tell them apart? | Accessibility; [experience.md](../design/experience.md) Channels |
 
-## Swatch and set files
+## Swatches and palette sets
 
-The swatch and set tables are in [`palette/swatches.md`](palette/swatches.md) and [`palette/sets.md`](palette/sets.md).
+`C1`–`C11` are in [`palette/swatches.md`](palette/swatches.md); `S1`–`S3`, each with its context and color limit, in [`palette/sets.md`](palette/sets.md).
