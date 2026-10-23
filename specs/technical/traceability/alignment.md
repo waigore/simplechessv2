@@ -8,6 +8,7 @@ Authoring rules: [`.agents/specs/rules/technical/traceability.md`](../../../.age
 |---------------|--------|-----------|
 | Instant play; on-device moves | vision; definition; ADR-0001 | [`layers.md`](../layers.md); [`CMP-chess-rules`](../components/chess-rules.md); [`CTR-local-move`](../contracts/local-move.md); [`SEQ-apply-local-move`](../sequences/apply-local-move.md) |
 | Layered client architecture | ADR-0006 | [`layers.md`](../layers.md); [`modules.md`](../modules.md) `M1`, `M2`, `B1`–`B3` |
+| Uncommitted Web export `build/web/` | ADR-0007 | [`modules.md`](../modules.md) web-export output note under Modules |
 | Shared game loop; clocks; end conditions | design `L-two-player-game`; end-conditions | [`CMP-shared-game-session`](../components/shared-game-session.md); [`CMP-presentation`](../components/presentation.md); [`CTR-local-move`](../contracts/local-move.md); [`SEQ-apply-local-move`](../sequences/apply-local-move.md); [`SEQ-shared-end-new-session`](../sequences/shared-end-new-session.md) |
 | Puzzle stream; DIF; PRG | design `L-puzzle-stream`; DIF; PRG | [`CMP-puzzle-session`](../components/puzzle-session.md); [`CTR-local-move`](../contracts/local-move.md); [`SCH-play-state`](../schemata/play-state.md); [`SCH-puzzle-attempt`](../schemata/puzzle-attempt.md); [`SEQ-puzzle-result-commit`](../sequences/puzzle-result-commit.md) |
 | Mode pick; Last mode; cold open to playable board | design `FL-mode-pick`; `GS.lastMode`; quality | [`CMP-session-router`](../components/session-router.md); [`SEQ-cold-open`](../sequences/cold-open.md) |

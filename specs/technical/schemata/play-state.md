@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/specs/rules/technical/schemata.md).
 
 - **Kind**: entity — in-memory session play
-- **Owner**: [`CMP-chess-rules`](../components/chess-rules.md)
+- **Owner**: [`CMP-shared-game-session`](../components/shared-game-session.md) (Shared) and [`CMP-puzzle-session`](../components/puzzle-session.md) (Puzzle) create and destroy it; [`CMP-chess-rules`](../components/chess-rules.md) is its `F1` / `F2` writer
 - **Serves**: Shared game; Puzzle stream; Advice marks
 - **Informed by**: [`fields-play`](../../design/game-state/fields-play.md); F-move-advice state
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md)
@@ -36,9 +36,9 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 
 | ID | Phase | Who | What changes |
 |----|-------|-----|--------------|
-| L1 | create | Session start | Initial position / puzzle deal |
+| L1 | create | Beginning a Shared game or a puzzle attempt by its L2 session (Owner) | Initial position / puzzle deal |
 | L2 | update | Move / clock / advice | Fields above |
-| L3 | destroy | Leave session | Drop ephemeral state |
+| L3 | destroy | Leaving that Shared game or puzzle attempt | Drop ephemeral state |
 
 ## Relationships
 
