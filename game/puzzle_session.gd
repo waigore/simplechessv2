@@ -46,7 +46,8 @@ const CONFIRM_ABANDON := "abandon_confirm"
 const CONFIRM_LEAVE := "leave_confirm"
 
 const ELO_START := 1000.0
-const ELO_K := 32.0
+## S1 / T3 elo_k — mirrors CFG.ELO_K (design default 20, range 10–40).
+const ELO_K := 20.0
 const ELO_MATCH_RANGE := 100
 const ELO_RECENT_WINDOW := 20
 const ELO_BAND_WIDEN := 50
@@ -63,6 +64,9 @@ var reject_square := ""
 var confirm_kind := ""
 
 var rules: ChessRules
+## T3 `elo_k` (CFG.ELO_K, default 20, range 10–40) as read at construction; Elo updates
+## use this value, so the tunable has one reader rather than a second local constant.
+var elo_k := ELO_K
 var player_elo := ELO_START
 var recent_solved: Array = []
 ## GS.lastMode — committed by CMP-session-router (R3); kept here so a result commit is whole.
@@ -501,7 +505,7 @@ func dismiss_save_failure() -> Dictionary:
 func _apply_outcome(ending: String) -> Dictionary:
 	var score := 1.0 if ending == END_W1 else 0.0
 	var expected := 1.0 / (1.0 + pow(10.0, (float(puzzle_elo) - player_elo) / 400.0))
-	player_elo += ELO_K * (score - expected)
+	player_elo += elo_k * (score - expected)
 	if ending == END_W1 and not puzzle_id.is_empty():
 		recent_solved.append(puzzle_id)
 		recent_solved = _trim_recent(recent_solved)
