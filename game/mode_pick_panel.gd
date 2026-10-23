@@ -1,6 +1,6 @@
 class_name ModePickPanel
 extends PanelContainer
-## UI-mode-pick regions R1–R3 and states S1, S3, S4. C2 is Wave 2 — absent.
+## UI-mode-pick regions R1–R3 and states S1, S3, S4. C2 (Wave 2) enters `puzzle-play`.
 
 signal control_activated(control_id: String)
 signal pointed(control_id: String)
@@ -13,6 +13,7 @@ var ui_state := "S1"
 
 var _title: Label
 var _shared: Button
+var _puzzle: Button
 var _quit: Button
 var _locale_btn: Button
 var _default_box: VBoxContainer
@@ -55,9 +56,9 @@ func focusable_controls() -> Array[Control]:
 		"S3":
 			return [_confirm_ok, _confirm_cancel]
 		"S4":
-			return [_dismiss, _shared, _quit, _locale_btn]
+			return [_dismiss, _shared, _puzzle, _quit, _locale_btn]
 		_:
-			return [_shared, _quit, _locale_btn]
+			return [_shared, _puzzle, _quit, _locale_btn]
 
 
 func _build() -> void:
@@ -82,6 +83,15 @@ func _build() -> void:
 	_shared.focus_entered.connect(_on_point.bind("C1"))
 	_shared.mouse_entered.connect(_on_point.bind("C1"))
 	_default_box.add_child(_shared)
+
+	# UI-mode-pick.C2 / NAV.T2 — Puzzle stream sits beside Shared game.
+	_puzzle = Button.new()
+	_puzzle.name = "PuzzleStream"
+	_puzzle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_puzzle.pressed.connect(_on_activate.bind("C2"))
+	_puzzle.focus_entered.connect(_on_point.bind("C2"))
+	_puzzle.mouse_entered.connect(_on_point.bind("C2"))
+	_default_box.add_child(_puzzle)
 
 	var footer := HBoxContainer.new()
 	footer.alignment = BoxContainer.ALIGNMENT_BEGIN
@@ -152,6 +162,7 @@ func _build() -> void:
 
 func _style_all() -> void:
 	UiChrome.style_button(_shared, false, _is_last_shared(), _text_scale)
+	UiChrome.style_button(_puzzle, false, _is_last_puzzle(), _text_scale)
 	UiChrome.style_button(_quit, false, false, _text_scale)
 	UiChrome.style_button(_locale_btn, false, false, _text_scale)
 	UiChrome.style_button(_confirm_ok, true, false, _text_scale)
@@ -168,6 +179,7 @@ func _apply_font() -> void:
 	for node in [
 		_title,
 		_shared,
+		_puzzle,
 		_quit,
 		_locale_btn,
 		_confirm_msg,
@@ -182,6 +194,7 @@ func _apply_font() -> void:
 func _apply_copy() -> void:
 	_title.text = StringTable.mode_pick("title", locale)
 	_shared_label()
+	_puzzle_label()
 	_quit.text = StringTable.mode_pick("quit", locale)
 	_locale_btn.text = StringTable.mode_pick("locale", locale)
 	_confirm_msg.text = StringTable.mode_pick("quit_confirm", locale)
@@ -199,14 +212,29 @@ func _shared_label() -> void:
 		_shared.text = shared
 
 
+func _puzzle_label() -> void:
+	var puzzle := StringTable.mode_pick("puzzle", locale)
+	if _is_last_puzzle():
+		_puzzle.text = "%s · %s" % [puzzle, StringTable.mode_pick("last", locale)]
+	else:
+		_puzzle.text = puzzle
+
+
 func _refresh_last_mode() -> void:
 	_shared_label()
+	_puzzle_label()
 	UiChrome.style_button(_shared, false, _is_last_shared(), _text_scale)
+	UiChrome.style_button(_puzzle, false, _is_last_puzzle(), _text_scale)
 
 
 func _is_last_shared() -> bool:
 	## FL-mode-pick.N1: Shared is the default when Last mode is none.
 	return last_mode.is_empty() or last_mode == "none" or last_mode == "shared"
+
+
+## FL-mode-pick.N1 / PRG.M1 — Puzzle is the default when Last mode is puzzle.
+func _is_last_puzzle() -> bool:
+	return last_mode == PersistStore.MODE_PUZZLE
 
 
 func _show_state(state_id: String) -> void:
