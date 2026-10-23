@@ -11,6 +11,17 @@ const LOCALE_OWN_NAME := {
 	"ja": "日本語",
 }
 
+## SCH-string-table I5 / `specs/ux/localization.md` L3: the rows allowed to render
+## their `en` value in every locale, keyed by owner then key. L3 closes the set to
+## three owners and nine rows (the `mode-pick` own name plus four piece names in
+## `shared-play` and `puzzle-play`); the I5 tests read this map both ways, so a row
+## missing here fails as "not en-equal" / "not every-locale" rather than slipping by.
+const EVERY_LOCALE_ROWS: Dictionary = {
+	"mode-pick": ["locale"],
+	"shared-play": ["queen", "rook", "bishop", "knight"],
+	"puzzle-play": ["queen", "rook", "bishop", "knight"],
+}
+
 const _MODE_PICK := {
 	"en":
 	{
@@ -58,7 +69,14 @@ const _MODE_PICK := {
 
 ## UI-puzzle-play Copy table (specs/ux/screens/puzzle-play.md). Puzzle play is its own
 ## owner: rows sharing a bare name with another owner are carried here, never resolved across.
-const MARKED_PIECE_NAMES: PackedStringArray = ["queen", "rook", "bishop", "knight"]
+
+## The `en` value L3 names for each same-in-every-locale piece row.
+const PIECE_NAMES := {
+	"queen": "后",
+	"rook": "Rook",
+	"bishop": "Bishop",
+	"knight": "Knight",
+}
 
 const _PUZZLE_PLAY := {
 	"en":
@@ -382,6 +400,22 @@ static func mode_pick_keys() -> PackedStringArray:
 
 static func shared_setup_keys() -> PackedStringArray:
 	return _keys_of(_SHARED_SETUP)
+
+
+## The piece names L3 marks same in every locale, in `PIECE_NAMES` order.
+static func piece_name_keys() -> PackedStringArray:
+	return PackedStringArray(PIECE_NAMES.keys())
+
+
+## The canonical `en` value of a piece-name row, or `key` itself for other rows.
+static func piece_name(key: String) -> String:
+	return str(PIECE_NAMES.get(key, key))
+
+
+## True when L3 marks `owner`.`key` as the same string in every locale.
+static func every_locale_row(owner: String, key: String) -> bool:
+	var rows: Variant = EVERY_LOCALE_ROWS.get(owner)
+	return rows is Array and (rows as Array).has(key)
 
 
 static func shared_play_keys() -> PackedStringArray:
