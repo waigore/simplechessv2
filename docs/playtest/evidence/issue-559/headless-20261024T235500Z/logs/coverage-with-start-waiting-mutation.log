@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+advice: ready after 26 ms
+FAIL _check_readiness_within_configured_t6: repeat 0: start must return before any update exists (anti-tautology)
+ERROR: repeat 0: start must return before any update exists (anti-tautology)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _start (res://advice_readiness_test.gd:51)
+Fail: res://advice_readiness_test.gd
