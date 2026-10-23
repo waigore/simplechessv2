@@ -486,6 +486,9 @@ func _run_autodrive() -> void:
 	await _run_scenarios(EXERCISE, problems, "exercise")
 	print("[demo] exercise complete")
 	await _capture("exercise")
+	# PER.R7 rendered ink: before a mate ends the game, because the end panel and
+	# its resolve cue stay out of this probe.
+	problems.append_array(await _rendered_coord_problems())
 	_new_game()
 	await _run_scenarios(MATE, problems, "mate")
 	if rule_end != "checkmate:w":
@@ -501,6 +504,82 @@ func _run_autodrive() -> void:
 		for problem in problems:
 			print("[demo] FAIL: %s" % problem)
 		get_tree().quit(1)
+
+
+func _rendered_coord_problems() -> Array:
+	# PER.R7, measured on rendered pixels: hide everything but the board and its
+	# coordinates, then assert the cream ink lands in the two wooden bands and
+	# never inside the 8x8. The graphical autodrive measures the frame itself; a
+	# headless run has no framebuffer, so with DEMO_COORD_PROBE=1 it renders the
+	# board into a SubViewport and measures that image.
+	if DisplayServer.get_name() == "headless":
+		if OS.get_environment("DEMO_COORD_PROBE") != "1":
+			print("[demo] rendered coordinate probe skipped: headless; set DEMO_COORD_PROBE=1 to render it")
+			return []
+		return await _offscreen_coord_problems()
+	var chip_panel := chip.get_parent() as CanvasItem
+	var restore: Array = []
+	for node in [chip_panel, _end_panel]:
+		if node != null and node.visible:
+			node.visible = false
+			restore.append(node)
+	view.set_coord_probe_visibility(true)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	var image := get_viewport().get_texture().get_image()
+	view.set_coord_probe_visibility(false)
+	for node in restore:
+		(node as CanvasItem).visible = true
+	return view.coord_ink_problems(image)
+
+
+## A headless build runs the dummy renderer, so it cannot read a texture back. The
+## probe then writes the board's drawing instead — the glyph boxes of every
+## coordinate label in frame pixels (the font size is final, so these are the ink
+## boxes the renderer gets) and the drawn coordinate bands — and the evidence
+## tooling (docs/playtest/evidence/issue-63/check_coord_probe.py) applies the same
+## PER.R7 rules to it. The graphical autodrive measures real pixels instead.
+func _offscreen_coord_problems() -> Array:
+	var path := OS.get_environment("DEMO_COORD_PROBE_OUT")
+	if path == "":
+		path = "user://demo-shared-game-coord-probe.txt"
+	var coords := view.get_node_or_null(NodePath("Coordinates")) as Control
+	if coords == null:
+		return ["coordinate labels are not built"]
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return ["coordinate probe cannot write %s" % path]
+	# The label node maps its canvas pixels into board units (`scale`) and sits at
+	# `position` in the board's units; the board maps units into the frame.
+	var to_frame := view.get_global_transform() * Transform2D(0.0, coords.position) \
+		* Transform2D(0.0, Vector2.ZERO).scaled(coords.scale)
+	file.store_line("frame %.1f %.1f" % [FRAME_SIZE.x, FRAME_SIZE.y])
+	file.store_line("square %.1f %.1f %.1f %.1f" % [
+		BOARD_ORIGIN.x, BOARD_ORIGIN.y, BOARD_ORIGIN.x + 8.0 * UNIT, BOARD_ORIGIN.y + 8.0 * UNIT,
+	])
+	for spot in DemoBoardView.CoordLabels.spots():
+		var text: String = spot["text"]
+		var at: Vector2 = to_frame * (spot["at"] as Vector2)
+		var box := DemoBoardView.CoordLabels.text_rect(
+			view.font_resource, text, at, coords.font_px * to_frame.get_scale().y)
+		file.store_line("ink %s %s %.3f %.3f %.3f %.3f" % [
+			text, spot["band"], box.position.x, box.position.y, box.end.x, box.end.y,
+		])
+	for band_name in ["BevelLipLeftInk", "BevelLipBottomInk"]:
+		var band := view.get_node_or_null(NodePath(band_name)) as Polygon2D
+		if band == null:
+			continue
+		var poly := band.get_global_transform() * band.polygon
+		var lo := Vector2(INF, INF)
+		var hi := Vector2(-INF, -INF)
+		for point in poly:
+			lo = Vector2(minf(lo.x, point.x), minf(lo.y, point.y))
+			hi = Vector2(maxf(hi.x, point.x), maxf(hi.y, point.y))
+		file.store_line("band %s %.3f %.3f %.3f %.3f" % [band_name, lo.x, lo.y, hi.x, hi.y])
+	file.close()
+	print("[demo] coordinate probe drawing written to %s" % path)
+	return []
 
 
 func _body_problems() -> PackedStringArray:
