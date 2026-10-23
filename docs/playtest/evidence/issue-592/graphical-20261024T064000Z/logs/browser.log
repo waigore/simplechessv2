@@ -1,0 +1,27 @@
+[2026-10-23T22:36:31.834Z] CONSOLE.warn: [.WebGL-0x13c000ca200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[2026-10-23T22:36:32.218Z] loaded http://127.0.0.1:8791/index.html?v=1792794990104 (fresh profile /var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/acc592c-chrome-mIynfD, cache disabled)
+[2026-10-23T22:36:32.220Z] RESPONSE 200 http://127.0.0.1:8791/index.wasm len=39514754
+[2026-10-23T22:36:32.220Z] RESPONSE 200 http://127.0.0.1:8791/index.pck len=9363612
+[2026-10-23T22:36:32.551Z] CONSOLE.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+[2026-10-23T22:36:32.728Z] CONSOLE.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+[2026-10-23T22:36:32.923Z] CONSOLE.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+[2026-10-23T22:36:33.445Z] CONSOLE.warn: [.WebGL-0x13c000df200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+[2026-10-23T22:36:33.445Z] [A] status overlay removed (engine started) canvas={"w":720,"h":1280,"cw":720,"ch":1280}
+[2026-10-23T22:36:41.448Z] [A] settled 8000ms after engine start
+[2026-10-23T22:36:41.525Z] [A] saved /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc592/shots/acc592-web-full.png (720x1280 dsf1, engineStarted=true)
+[2026-10-23T22:36:41.591Z] [A] saved /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc592/shots/acc592-web-board.png (clip x0 y150 720x650)
+[2026-10-23T22:36:41.592Z] [A] canvas probe: canvas 720x1280 css 720x1280
+[2026-10-23T22:36:43.363Z] CONSOLE.2x.warn: [.WebGL-0x114000ca200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[2026-10-23T22:36:43.746Z] [B] loaded http://127.0.0.1:8791/index.html?v=1792794990105 (fresh profile /var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/acc592c-chrome-MOAn4L, cache disabled, dsf 2)
+[2026-10-23T22:36:44.079Z] CONSOLE.2x.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+[2026-10-23T22:36:44.254Z] CONSOLE.2x.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+[2026-10-23T22:36:44.447Z] CONSOLE.2x.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+[2026-10-23T22:36:44.952Z] CONSOLE.2x.warn: [.WebGL-0x114000dda00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+[2026-10-23T22:36:44.952Z] [B] status overlay removed (engine started) canvas={"w":1440,"h":2560,"cw":720,"ch":1280}
+[2026-10-23T22:36:52.952Z] [B] settled 8000ms after engine start
+[2026-10-23T22:36:53.126Z] [B] saved intermediate /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc592/shots/work/full-2x.png (720x1280 dsf2 -> 1440x2560 px)
+[2026-10-23T22:36:53.291Z] [B] saved /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc592/shots/acc592-web-board-2x.png (clip x0 y150 720x650 at dsf2)
+[2026-10-23T22:36:53.422Z] [B] saved /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc592/shots/acc592-web-coord-2x.png (clip x40 y620 660x150 at dsf2)
+[2026-10-23T22:36:53.422Z] [B] engineStarted=true
+[2026-10-23T22:36:53.531Z] SUMMARY: asset-missing warnings = 0
+[2026-10-23T22:36:53.531Z] SUMMARY: console error/pageerror/requestfailed lines = 0
