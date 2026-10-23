@@ -296,9 +296,8 @@ func _build() -> void:
 	_confirm_box = VBoxContainer.new()
 	_confirm_box.name = "ResignConfirm"
 	_confirm_box.visible = false
-	_confirm_box.set_anchors_preset(Control.PRESET_CENTER)
 	_confirm_box.custom_minimum_size = Vector2(280, 140)
-	_confirm_box.position = Vector2(40, 200)
+	Presentation.place_centered(_confirm_box, 200.0)
 	_confirm_box.add_theme_constant_override("separation", 12)
 	add_child(_confirm_box)
 	var panel := PanelContainer.new()
