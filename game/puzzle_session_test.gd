@@ -34,6 +34,12 @@ func _run_all() -> String:
 		_check_first_move_is_applied,
 		_check_x1_empty_solution,
 		_check_x2_failed_read,
+		_check_deal_requests_one_record,
+		_check_deal_never_waits_on_the_read,
+		_check_dealt_record_is_the_served_one,
+		_check_read_failure_deals_nothing,
+		_check_leave_drops_a_read_in_flight,
+		_check_hand_in_list_is_not_a_production_path,
 		_check_w1_elo_and_recent,
 		_check_l5_reveal,
 		_check_l6_abandon,
@@ -213,6 +219,165 @@ func _check_x2_failed_read() -> String:
 	if session.player_elo != before:
 		return "F-puzzle-catalog X2 must leave GS.playerElo unchanged"
 	return ""
+
+
+# --- C5 deal read ------------------------------------------------------------------
+
+
+## A session whose deal read goes to a simulated catalog service.
+func _reading_session(peer: FakeCatalogTransport, elo: float = 1000.0) -> PuzzleSession:
+	var client := CatalogDealClient.new(func() -> RefCounted: return peer)
+	client.configure("http://advice.test/catalog/deal", "test-key")
+	var session := PuzzleSession.new()
+	session.player_elo = elo
+	session.catalog = []
+	session.catalog_client = client
+	return session
+
+
+## The O1 success body CTR-puzzle-catalog-read returns: one F1–F13 record.
+func _served_record(id: String = "served", rating: int = 1040) -> Dictionary:
+	return {
+		"snapshot_id": PuzzleSession.SNAPSHOT_ID,
+		"puzzle_id": id,
+		"fen": PuzzleSession.START_FEN,
+		"moves": ["e2e4", "e7e5"],
+		"rating": rating,
+		"rating_deviation": 80,
+		"popularity": 90,
+		"nb_plays": 1200,
+		"themes": ["fork"],
+		"game_url": "https://example.test/game",
+		"opening_tags": "",
+		"daily_date": "",
+		"any_checkmate_wins": false,
+	}
+
+
+## CMP-puzzle-session R1 — the production deal asks C5 and sends Elo and recent ids.
+func _check_deal_requests_one_record() -> String:
+	FakeCatalogTransport.all_requests.clear()
+	var peer := FakeCatalogTransport.new()
+	var session := _reading_session(peer, 1234.0)
+	session.recent_solved = ["old1"]
+	var dealt := session.deal()
+	if not bool(dealt.get("pending", false)):
+		return "a production deal must wait for the read (got %s)" % dealt
+	if FakeCatalogTransport.all_requests.size() != 1:
+		return "a production deal must send exactly one O1 request"
+	var sent: Dictionary = FakeCatalogTransport.all_requests[0]
+	if not is_equal_approx(float(sent.get("player_elo", 0.0)), 1234.0):
+		return "O1 must carry GS.playerElo"
+	if sent.get("recent_solved", []) != ["old1"]:
+		return "O1 must carry the recent solved ids"
+	return ""
+
+
+## G3 — a deal never waits on the read, and a move is unaffected while one is in flight.
+func _check_deal_never_waits_on_the_read() -> String:
+	var peer := FakeCatalogTransport.new()
+	peer.blocking = true
+	var session := _reading_session(peer)
+	session.deal()
+	if session.has_open_puzzle():
+		return "nothing may be dealt before the record arrives"
+	if not session.catalog_client.in_flight():
+		return "the session must report the read in flight"
+	var second := session.deal()
+	if bool(second.get("pending", false)) or not session.catalog_client.in_flight():
+		return "a deal while a read is in flight must not start another"
+	var moved := session.place("e2", "e4")
+	if not bool(moved.get("illegal", false)):
+		return "an in-flight read must not open the board"
+	return ""
+
+
+## The dealt puzzle is the single record the server sent, by its wire names.
+func _check_dealt_record_is_the_served_one() -> String:
+	var peer := FakeCatalogTransport.new()
+	var session := _reading_session(peer, 1040.0)
+	session.deal()
+	if not session.poll_deal().is_empty():
+		return "the tick must not deal before the record was pushed"
+	peer.push_record(_served_record())
+	var outcome := session.poll_deal()
+	if str(outcome.get("event", "")) != "puzzle.dealt":
+		return "a record handed to the tick must deal (got %s)" % outcome
+	if session.puzzle_id != "served" or int(session.puzzle_elo) != 1040:
+		return "GS.puzzleId / GS.puzzleElo must be the served record"
+	if session.required_sequence.size() != 1:
+		return "the served record's later moves are the required sequence"
+	return ""
+
+
+## X2 / FAIL.T14 — one failed read shape: nothing dealt, Elo kept, failure surfaced.
+func _check_read_failure_deals_nothing() -> String:
+	var reasons: Array = [
+		CatalogWireReader.REASON_ERROR,
+		CatalogWireReader.REASON_STATUS,
+		CatalogWireReader.REASON_TIMEOUT,
+		CatalogWireReader.REASON_BULK,
+		CatalogWireReader.REASON_MALFORMED,
+	]
+	for reason in reasons:
+		var existing_problem := _failed_read_deals_nothing(str(reason))
+		if not existing_problem.is_empty():
+			return existing_problem
+	return ""
+
+
+func _failed_read_deals_nothing(reason: String) -> String:
+	var peer := FakeCatalogTransport.new()
+	var session := _reading_session(peer, 1040.0)
+	var before := session.player_elo
+	session.deal()
+	peer.push_failure(reason)
+	var outcome := session.poll_deal()
+	if str(outcome.get("event", "")) != "puzzle.read_failed":
+		return "a failed read must surface as puzzle.read_failed (got %s)" % outcome
+	if session.has_open_puzzle() or session.puzzle_id != "":
+		return "X2: a failed read (%s) must deal nothing" % reason
+	if session.player_elo != before:
+		return "X2: a failed read (%s) must keep GS.playerElo" % reason
+	var next := session.deal()
+	if bool(next.get("ok", false)):
+		return "the deal after a failed read must not reuse the failure"
+	return ""
+
+
+## A deal still in flight when the stream is left never deals.
+func _check_leave_drops_a_read_in_flight() -> String:
+	var peer := FakeCatalogTransport.new()
+	peer.blocking = true
+	var session := _reading_session(peer)
+	session.deal()
+	session.leave()
+	peer.blocking = false
+	peer.push_record(_served_record())
+	if not session.poll_deal().is_empty():
+		return "a read retired by leave must never deal"
+	if session.has_open_puzzle():
+		return "leave must leave no puzzle open"
+	return ""
+
+
+## A hand-in record list (tests) backs one deal; the next deal goes to C5.
+func _check_hand_in_list_is_not_a_production_path() -> String:
+	FakeCatalogTransport.all_requests.clear()
+	var peer := FakeCatalogTransport.new()
+	var session := _reading_session(peer)
+	session.catalog = [_record("byhand", 1000)]
+	if session.has_open_puzzle():
+		return "a hand-in list must not deal before a deal is asked"
+	if not bool(session.deal(session.catalog).get("ok", false)):
+		return "a test's hand-in list must back the deal it is given to"
+	FakeCatalogTransport.all_requests.clear()
+	var next := session.deal()
+	if not bool(next.get("pending", false)) or not session.catalog_client.in_flight():
+		return "after the hand-in, the production path must ask C5"
+	if FakeCatalogTransport.all_requests.size() == 1:
+		return ""
+	return "after the hand-in, the deal must send one O1 request"
 
 
 # --- R2 judging --------------------------------------------------------------------

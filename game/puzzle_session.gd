@@ -40,6 +40,11 @@ const UI_S4 := "S4"
 const UI_S5 := "S5"
 const PROMOTE_ORDER := ["queen", "rook", "bishop", "knight"]
 
+## CTR-puzzle-catalog-read O1 — the wire field `puzzle_id` becomes `GS.puzzleId`.
+const WIRE_PUZZLE_ID := "puzzle_id"
+## CTR-puzzle-catalog-read O1 — the wire field `rating` becomes `GS.puzzleElo`.
+const WIRE_RATING := "rating"
+
 ## EX.confirm (UI-puzzle-play S2) — the stream verb waiting on Confirm / Cancel.
 const CONFIRM_REVEAL := "reveal_confirm"
 const CONFIRM_ABANDON := "abandon_confirm"
@@ -86,14 +91,26 @@ var attempt_any_checkmate_wins := false
 var outcome := ""
 
 ## What the host catalog serves this sitting. Empty means a failed read (X2).
+## A test may set this to hand in a record list; the production path never does.
 var catalog: Array = []
 
 ## Persistence: CTR-persist-document consumer (C3).
 var store: PersistStore = null
 
+## C5 — the catalog-service peer. Session #333 sets it; without one every deal
+## is a failed read (FAIL.T14).
+var catalog_client: CatalogDealClient = null
 
+## A test's hand-in list is used once, then dropped: the production path asks C5.
+var _hands_in_catalog := false
+## The record a finished read returned, waiting for the next `deal()`.
+var _fetched_record: Dictionary = {}
+## Set by a failed read: the next `deal()` reports it rather than asking again.
+var _read_failure := ""
+
+
+## A fresh CMP-chess-rules instance per session: nothing is cached or shared.
 func _init(chess_rules: ChessRules = null, persist_store: PersistStore = null) -> void:
-	# A fresh CMP-chess-rules instance per session: nothing is cached or shared.
 	rules = chess_rules if chess_rules != null else ChessRules.new()
 	store = persist_store
 
@@ -141,30 +158,76 @@ func gestures_available() -> bool:
 	return has_open_puzzle() and GESTURE_STATES.has(play_ui_state)
 
 
-## R1 / DIF.Y1 / F-puzzle-catalog R3 — deal the next puzzle at the player's level.
-## Returns {ok, puzzle_id, rating, reason}. X1 and X2 deal nothing.
+## R1 / CTR-puzzle-catalog-read — deal the next puzzle at the player's level.
+## Production asks C5 for one record and deals nothing until the session tick
+## (`poll_deal`) hands it that record (G3). A test may set `catalog`.
+## Returns {ok, puzzle_id, rating} or {ok: false, reason}. X1 and X2 deal nothing.
 func deal(catalog_records: Array = []) -> Dictionary:
-	var records: Array = catalog_records
-	if records.is_empty():
-		records = catalog
-	var pick: Dictionary = _select(records)
+	if not catalog_records.is_empty():
+		catalog = catalog_records
+		_hands_in_catalog = true
+		return _deal_record(_select(catalog))
+	if not _read_failure.is_empty():
+		var failure := _read_failure
+		_read_failure = ""
+		return _failed_deal(failure)
+	if _hands_in_catalog:
+		# A test's hand-in list backed its one deal; the production path asks C5.
+		return _request_record()
+	if not catalog.is_empty():
+		return _deal_record(_select(catalog))
+	return _request_record()
+
+
+## C5 — ask the catalog service for one record; nothing is dealt until it arrives.
+func _request_record() -> Dictionary:
+	if catalog_client != null:
+		_close_puzzle()
+		if not catalog_client.request(player_elo, recent_solved):
+			# B5 / one deal at a time: no read started, nothing dealt.
+			return _failed_deal("unavailable")
+		# `pending` is the in-flight read: the session tick deals when it lands.
+		return {"ok": false, "pending": true, "reason": "pending"}
+	# No peer configured: every deal fails and Elo stays put (FAIL.T14).
+	return _failed_deal("no_peer")
+
+
+## C5 — the session tick reads the in-flight deal (X2).
+func poll_deal() -> Dictionary:
+	if catalog_client == null:
+		return {}
+	var outcome := catalog_client.poll()
+	if outcome.is_empty():
+		return {}
+	var dealt := _deal_record(outcome.get("record", {}))
+	if not bool(dealt.get("ok", false)):
+		return _read_failed(str(dealt.get("reason", "malformed")))
+	dealt["event"] = "puzzle.dealt"
+	return dealt
+
+
+## Close the attempt around one record; a failed or X1 record deals nothing.
+func _deal_record(pick: Dictionary) -> Dictionary:
 	_close_puzzle()
 	if pick.is_empty():
-		return {"ok": false, "reason": "no_record"}
-	var moves: Array = _moves_of(pick)
+		return _failed_deal("no_record")
+	var moves: Array = []
+	var wire_moves: Variant = pick.get("Moves", pick.get(CatalogWireReader.FIELD_MOVES, []))
+	if wire_moves is Array:
+		moves = (wire_moves as Array).duplicate()
 	if moves.size() < 2:
-		return {"ok": false, "reason": "empty_solution"}
-	var fen := str(pick.get("FEN", START_FEN))
+		return _failed_deal("empty_solution")
+	var fen := str(pick.get("FEN", pick.get(CatalogWireReader.FIELD_FEN, START_FEN)))
 	if not rules._load_fen(fen):
-		return {"ok": false, "reason": "bad_fen"}
+		return _failed_deal("bad_fen")
 	var first := _uci_parts(str(moves[0]))
 	if not rules.try_move(first["from"], first["to"], _promotion_kind(str(first["promotion"]))):
-		return {"ok": false, "reason": "bad_first_move"}
+		return _failed_deal("bad_first_move")
 	# PRG.M1 M4 — only snapshot 2026-10-05 PuzzleIds are ever open or saved.
 	if str(pick.get("snapshot_id", SNAPSHOT_ID)) != SNAPSHOT_ID:
-		return {"ok": false, "reason": "snapshot"}
-	puzzle_id = str(pick.get("PuzzleId", ""))
-	puzzle_elo = int(pick.get("Rating", 0))
+		return _failed_deal("snapshot")
+	puzzle_id = str(pick.get("PuzzleId", pick.get(WIRE_PUZZLE_ID, "")))
+	puzzle_elo = int(pick.get("Rating", pick.get(WIRE_RATING, 0)))
 	attempt_start_position = fen
 	attempt_first_move = first
 	attempt_any_checkmate_wins = any_checkmate_wins(pick)
@@ -178,6 +241,20 @@ func deal(catalog_records: Array = []) -> Dictionary:
 	selected_piece = ""
 	last_reject = ""
 	return {"ok": true, "puzzle_id": puzzle_id, "rating": puzzle_elo}
+
+
+## X2 — surface a failed read: nothing dealt, Elo kept, the reason reported.
+func _read_failed(failure: String) -> Dictionary:
+	var reason := failure
+	_read_failure = reason
+	push_warning("catalog: deal read failed (%s)" % reason)
+	return {"event": "puzzle.read_failed", "reason": reason, "ok": false}
+
+
+## FAIL.T14 / X2 — a failed read deals nothing and keeps `GS.playerElo`.
+func _failed_deal(reason: String) -> Dictionary:
+	_close_puzzle()
+	return {"ok": false, "reason": reason, "player_elo": player_elo}
 
 
 ## F-puzzle-catalog F13 / I3 — true iff the record is marked mateIn1.
@@ -444,6 +521,11 @@ func leave() -> Dictionary:
 	if play_ui_state == UI_S2 and confirm_kind != CONFIRM_LEAVE:
 		return {"ok": false, "reason": "confirm"}
 	_close_confirm()
+	if catalog_client != null:
+		# A deal still in flight from this stream never deals after the leave.
+		catalog_client.cancel()
+	_fetched_record = {}
+	_read_failure = ""
 	_close_puzzle()
 	return {"ok": true, "event": "puzzle.leave", "player_elo": player_elo}
 
