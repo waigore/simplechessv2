@@ -16,6 +16,8 @@ func _run() -> void:
 		await process_frame
 		err = _check_seat(board)
 		if err.is_empty():
+			err = await _check_art_orientation(board)
+		if err.is_empty():
 			err = await _check_viewport(board)
 		if err.is_empty():
 			err = await _check_motion(board)
@@ -95,6 +97,160 @@ func _check_seat(board: BoardPresentation) -> String:
 		[board.camera_offset == Vector2.ZERO, "camera must stay fixed (no offset)"],
 	]
 	return _first_fail(checks)
+
+
+## #617: _world mirrors board space (board y up, screen y down); every raster
+## sprite must cancel that locally so art reads as authored under CAM-board.M2.
+func _check_art_orientation(board: BoardPresentation) -> String:
+	var assets := _synthetic_assets()
+	var rules := ChessRules.new()
+	rules.reset_opening()
+	board.provide_assets(assets)
+	for seat in [BoardGeometry.SEAT_BOTTOM, BoardGeometry.SEAT_TOP]:
+		board.render_position(rules.position_field(), "", PackedStringArray(), {"white_seat": seat})
+		board.show_promotion_choice("e8", "white")
+		await process_frame
+		var err := _orientation_checks(board, seat)
+		board.clear_promotion_choice()
+		if not err.is_empty():
+			return err
+		# Re-entry: provide_assets() re-enters _apply_kind_texture(); the sign must persist.
+		board.provide_assets(assets)
+		await process_frame
+		err = _orientation_scale_checks(board, seat, false)
+		if not err.is_empty():
+			return err
+	board.clear_promotion_choice()
+	await process_frame
+	return await _settle_restores_scale(board)
+
+
+## A white field with a dark top-left pixel: any mirror or 180° move is detectable.
+func _synthetic_assets() -> Dictionary:
+	var image := Image.create(8, 8, false, Image.FORMAT_RGBA8)
+	image.fill(Color.WHITE)
+	image.set_pixel(0, 0, Color("202020"))
+	var texture := ImageTexture.create_from_image(image)
+	var assets := {BoardPresentation.BOARD_BG_ID: texture}
+	for key in BoardPresentation.PIECE_IDS.keys():
+		assets[str(BoardPresentation.PIECE_IDS[key])] = texture
+	return assets
+
+
+func _orientation_checks(board: BoardPresentation, seat: String) -> String:
+	var err := _orientation_scale_checks(board, seat, true)
+	if not err.is_empty():
+		return err
+	var piece := _sprite_at(board, "World/Seat/Content/Pieces/piece_e1")
+	if piece == null:
+		return "orientation setup missing e1"
+	var transform := piece.get_global_transform_with_canvas()
+	var det := transform.x.cross(transform.y)
+	if det <= 0.0:
+		return "piece art mirrored at seat %s (global determinant %.2f)" % [seat, det]
+	var want_rotation := 0.0 if seat == BoardGeometry.SEAT_BOTTOM else PI
+	if absf(angle_difference(transform.get_rotation(), want_rotation)) > 0.001:
+		return (
+			"piece rotation at seat %s is %.3f, want %.3f"
+			% [seat, transform.get_rotation(), want_rotation]
+		)
+	return _marked_corner_error(piece, seat)
+
+
+func _orientation_scale_checks(
+	board: BoardPresentation, seat: String, with_chooser: bool
+) -> String:
+	var specs: Array = [
+		["piece", _sprite_at(board, "World/Seat/Content/Pieces/piece_e1")],
+		["board backdrop", _sprite_at(board, "World/Seat/Content/Board/BoardBackdrop")],
+	]
+	if with_chooser:
+		specs.insert(1, ["promotion chooser", _promote_sprite(board, "knight")])
+	for spec in specs:
+		var err := _art_scale_error(spec[1] as Sprite2D, str(spec[0]), seat)
+		if not err.is_empty():
+			return err
+	return ""
+
+
+func _art_scale_error(sprite: Sprite2D, label: String, seat: String) -> String:
+	if sprite == null:
+		return "%s sprite missing at seat %s" % [label, seat]
+	# No texture means _apply_kind_texture never scaled, so the sign check would pass
+	# vacuously (#617 step 1).
+	if sprite.texture == null:
+		return "%s sprite has no texture at seat %s" % [label, seat]
+	if sprite.scale.x <= 0.0 or sprite.scale.y >= 0.0:
+		return (
+			"%s art must cancel the world Y mirror at seat %s (scale %s)"
+			% [label, seat, sprite.scale]
+		)
+	return ""
+
+
+func _marked_corner_error(sprite: Sprite2D, seat: String) -> String:
+	var tex := sprite.texture
+	var corner := -Vector2(float(tex.get_width()), float(tex.get_height())) * 0.5
+	var transform := sprite.get_global_transform_with_canvas()
+	var offset := transform * corner - transform * Vector2.ZERO
+	if seat == BoardGeometry.SEAT_BOTTOM:
+		if offset.x >= 0.0 or offset.y >= 0.0:
+			return "art marker at %s at seat %s, want the sprite's screen top-left" % [offset, seat]
+	elif offset.x <= 0.0 or offset.y <= 0.0:
+		return "art marker at %s at seat %s, want the sprite's screen bottom-right" % [offset, seat]
+	return ""
+
+
+## #617: parents queue_free their children, so a rebuilt chooser is renamed
+## @Node2D@…; look sprites up by their promote_kind meta, never by node name.
+func _promote_sprite(board: BoardPresentation, kind: String) -> Sprite2D:
+	var root := board.get_node_or_null("World/Seat/Content/Overlays/PromoteChoice")
+	if root == null:
+		return null
+	for child in root.get_children():
+		var node := child as Node2D
+		if node == null or str(node.get_meta("promote_kind", "")) != kind:
+			continue
+		return node.get_node_or_null("Sprite") as Sprite2D
+	return null
+
+
+func _sprite_at(board: BoardPresentation, path: String) -> Sprite2D:
+	var node := board.get_node_or_null(path)
+	if node == null:
+		return null
+	if node is Sprite2D:
+		return node as Sprite2D
+	return node.get_node_or_null("Sprite") as Sprite2D
+
+
+## #617 step 7: _settle squashes toward base * (1, 0.92) and restores base.
+func _settle_restores_scale(board: BoardPresentation) -> String:
+	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
+				"side_to_move": "white",
+			}
+		)
+	)
+	await process_frame
+	var err := _art_scale_error(
+		_sprite_at(board, "World/Seat/Content/Pieces/piece_e2"), "settle pawn", "bottom"
+	)
+	if not err.is_empty():
+		return err
+	var base := (_sprite_at(board, "World/Seat/Content/Pieces/piece_e2") as Sprite2D).scale
+	board.update_drag("begin", {"square": "e2", "world": Vector2(4.5, 1.5)})
+	await board.end_drag_legal("e4")
+	var settled := _sprite_at(board, "World/Seat/Content/Pieces/piece_e4")
+	if settled == null:
+		return "settle landed piece missing on e4"
+	if not settled.scale.is_equal_approx(base):
+		return "settle did not restore the art scale (%s → %s)" % [base, settled.scale]
+	return ""
 
 
 func _check_viewport(board: BoardPresentation) -> String:
