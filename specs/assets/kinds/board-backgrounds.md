@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Backgrounds
 - **Source types**: AI generation; human-made
-- **Style**: P3; [PAL.C1 C2 C5](../../aesthetics/palette.md); [SRF.M1](../../aesthetics/surface.md); [FRM.S2](../../aesthetics/form.md)
+- **Style**: [AES.P3](../../aesthetics/aesthetics.md); [PAL.C1 C2 C5](../../aesthetics/palette.md); [SRF.M1](../../aesthetics/surface.md); [FRM.S2](../../aesthetics/form.md)
 - **Tool roles**: TL.1
 - **Approval**: As hub
 - **Serves**: Cafe calm; Clear board; [PER.R2](../../view/perception.md); Shared/Puzzle play
@@ -37,36 +37,27 @@ S5–S7 definitive for SS1 look.
 
 ## Style series
 
+Full fields: [`board-backgrounds/style-series.md`](board-backgrounds/style-series.md).
+
 ### SS1 — primary
 
-- **State**: active
-- **Modality**: visual
-- **Enforce**: hard
-- **Style anchors**: `01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855` (`board-backgrounds/play-table`)
-- **Style binding**: reuses piece-sprites SS1 Recraft `recraft_style_id` `58840487-cf72-41fa-b83f-5773ea7a1c11` (no separate board style)
-- **Aesthetics**: P3; PAL.C1 C2 C5; SRF.M1; FRM.S2
-- **Built from**: `01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855` on 2026-10-19 (palette-remapped; binding shared with piece-sprites SS1)
-- **Refresh when**: aesthetics / anchors change, piece SS1 refresh, or review Fail pattern
+- **State**: active — see style-series.md for binding, anchors, aesthetics
 
 #### Prompt policy
 
-- **Compose**: subject-first when `active`; append master + negative; cite IDs only.
-- **Master**: quiet mahogany cafe chessboard; warm wood; soft daylight (SRF.L1); square readability (PAL.C1 C2 C5; PAL.K1; FRM.S2)
-- **Negative**: neon; esports chrome; 3D board; cluttered props; blood (vs PAL.C1 C2 C5; PAL.K1; FRM.S2)
+See [`board-backgrounds/style-series.md`](board-backgrounds/style-series.md).
 
 ## Recipes
 
+Full recipes: [`board-backgrounds/recipes.md`](board-backgrounds/recipes.md).
+
 ### R1 — Recraft board
 
-- **Source type**: AI generation
-- **Tool role**: TL.1
-- **Inputs**: style anchors when set
-- **Prompt template (bootstrap)**: mahogany 8×8 on cafe table; compose with prompt_policy
-- **Prompt template (series)**: board plane {slot}; compose with prompt_policy
-- **Settings**: Recraft style when active; palette-locked C1 C2 C5; square canvas
-- **Seed policy**: record or `n/a`
-- **Post-processing**: S5–S7 (orient BR light; rasterize; layout JSON)
-- **Outputs**: one V1 file; preview via `docs/asset-previews/rebuild_starting_position.py`
+- **Source type**: AI generation — see recipes.md for prompts/settings/outputs
+
+### R2 — Hand-drawn board
+
+- **Source type**: human-made — see recipes.md for N/A tool/prompts/settings/seed
 
 ## Checks
 
@@ -75,7 +66,7 @@ S5–S7 definitive for SS1 look.
 | K1 | Square contrast | Luminance / color-blind sim | PAL.K1 |
 | K2 | Spec S1–S7 | Look review | Spec met |
 | K3 | Budget | File size | ≤ 400 KB |
-| K4 | Cafe calm | Look vs P3 | Quiet wood, not tournament chrome |
+| K4 | Cafe calm | Look vs AES.P3 | Quiet wood, not tournament chrome |
 | K5 | Orientation | Inspect h1 | Light square bottom-right |
 
 ## Naming
