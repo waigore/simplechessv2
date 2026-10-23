@@ -3,7 +3,7 @@ extends SceneTree
 ## CMP-puzzle-session R1–R4, DIF.Y1, END.W1/L4/L5/L6, F-puzzle-catalog R3–R5 / X1–X2,
 ## PRG.M1 commit path. PTD-difficulty deal cases, PTD-puzzle-stream K1–K4.
 
-const MATE_FEN := "6k1/5ppp/8/8/8/8/5PPP/1R4K1 w - - 0 1"
+const PROMOTION_FEN := "7p/5PP1/8/8/8/8/8/K7 b - - 0 1"
 
 
 func _initialize() -> void:
@@ -28,6 +28,7 @@ func _run_all() -> String:
 		_check_w1_elo_and_recent,
 		_check_l5_reveal,
 		_check_l6_abandon,
+		_check_outcomes_exclusive,
 		_check_elo_formula_and_start,
 		_check_recent_trim,
 		_check_leave_keeps_elo_unscored,
@@ -35,6 +36,14 @@ func _run_all() -> String:
 		_check_restore,
 		_check_no_advice,
 		_check_mate_in_one_mark,
+		_check_confirm_reveal,
+		_check_confirm_leave_unscored,
+		_check_confirm_blocks_board,
+		_check_save_failure_state,
+		_check_selection_and_flash,
+		_check_promotion_judged_after_commit,
+		_check_deal_after_ending,
+		_check_no_clocks,
 	]
 	for check in checks:
 		var problem: String = check.call()
@@ -76,15 +85,23 @@ func _check_sequence_outcomes() -> String:
 	if not str(wrong.get("end_reason", "")).is_empty():
 		return "a Wrong move must not end the puzzle"
 
-	# END.L4 — a completed sequence after a Wrong move scores S = 0 as a failure.
+	return _check_l4_after_wrong_move()
+
+
+## END.L4 — the completed sequence after a Wrong move (second half of the K2 pass).
+func _check_l4_after_wrong_move() -> String:
+	# END.L4 — a completed sequence after a Wrong move scores S = 0 as a failure. The player
+	# tries again from the reset start, and completing it now ends L4, never W1.
 	var failed := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
 	failed.deal()
 	failed.place("e7", "e6")
 	var before := failed.player_elo
-	var l4 := failed.finish_after_wrong_move()
+	var l4: Dictionary = failed.place("e7", "e5")
 	var scored_down := failed.player_elo < before and not failed.recent_solved.has("abc")
 	if str(l4.get("end_reason", "")) != PuzzleSession.END_L4 or not scored_down:
-		return "END.L4 must fire after a Wrong move and apply S = 0"
+		return "END.L4 must fire after a Wrong move and apply S = 0 (got %s)" % l4
+	if failed.sequence_index != failed.required_sequence.size():
+		return "END.L4 must follow a completed sequence"
 	return ""
 
 
@@ -226,11 +243,22 @@ func _check_l6_abandon() -> String:
 		return "abandoning the puzzle must be END.L6"
 	if session.player_elo >= before:
 		return "END.L6 (abandon) must apply S = 0"
-	if session.has_open_puzzle():
-		return "END.L6 must close the puzzle before the next deal"
-	var next := session.advance()
-	if not bool(next.get("ok", false)) or next.get("puzzle_id") != "abc":
+	if str(abandoned.get("cue", "")) != "cue_abandon":
+		return "END.L6 must show cue_abandon"
+	return _check_abandon_deals_next(session, abandoned)
+
+
+## K3 — L6 deals the next puzzle itself, after the Elo update.
+func _check_abandon_deals_next(session: PuzzleSession, abandoned: Dictionary) -> String:
+	var dealt: Dictionary = abandoned.get("next", {})
+	if not bool(dealt.get("ok", false)) or dealt.get("puzzle_id") != "abc":
 		return "K3 must deal the next puzzle after the Elo update"
+	if not session.has_open_puzzle() or session.puzzle_id != "abc":
+		return "K3 must leave the next puzzle open"
+	if session.wrong_move_on_puzzle:
+		return "the next deal must start clean"
+	if bool(session.advance().get("ok", true)):
+		return "advance must not deal a second puzzle over an open one"
 	return ""
 
 
@@ -349,6 +377,247 @@ func _check_no_advice() -> String:
 	if str(state.get("advice", "")) != "none":
 		return "GS.V3: advice must stay none in Puzzle stream"
 	return ""
+
+
+## END.P1 — W1, L4, L5, L6 are never true together, and a Wrong move blocks W1 for that
+## puzzle only: the same session deals the next puzzle clean.
+func _check_outcomes_exclusive() -> String:
+	var endings := PuzzleSession.CUE_BY_ENDING
+	if not endings.has(PuzzleSession.END_W1) or endings.size() != 4:
+		return "END.P1: one cue per ending and no more"
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal()
+	session.place("e7", "e6")
+	var wrong := session.place("e7", "e5")
+	if str(wrong.get("end_reason", "")) != PuzzleSession.END_L4:
+		return "a completed sequence after a Wrong move is L4, never W1 (END.P1)"
+	if str(wrong.get("cue", "")) != "cue_failed":
+		return "L4 must show cue_failed, never cue_solved"
+	session.leave()
+	session.advance()
+	if session.sequence_index != 0 or session.wrong_move_on_puzzle:
+		return "a fresh deal must clear GS.wrongMoveOnPuzzle so W1 can fire"
+	return _check_clean_w1(session)
+
+
+## The block is per puzzle: the next deal can still be W1.
+func _check_clean_w1(session: PuzzleSession) -> String:
+	var clean: Dictionary = session.place("e7", "e5")
+	if str(clean.get("end_reason", "")) != PuzzleSession.END_W1:
+		return "a clean completion after a new deal is W1"
+	if str(clean.get("cue", "")) != "cue_solved":
+		return "W1 must show cue_solved"
+	return ""
+
+
+## UI-puzzle-play S2 / EX.confirm / J-puzzle-session B1 — C3 raises reveal_confirm, and
+## Confirm (never the C3 tap itself) runs END.L5.
+func _check_confirm_reveal() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal()
+	var before := session.player_elo
+	var raised := session.request_confirm("C3")
+	if not bool(raised.get("ok", false)) or session.play_ui_state != PuzzleSession.UI_S2:
+		return "C3 must raise EX.confirm (S2), not reveal at once"
+	if session.confirm_kind != PuzzleSession.CONFIRM_REVEAL:
+		return "C3 must raise the named reveal_confirm"
+	if session.player_elo != before or not session.has_open_puzzle():
+		return "opening a confirm must not score or close the puzzle"
+	if not bool(session.cancel_confirm().get("ok", false)) or not session.has_open_puzzle():
+		return "Cancel must return to S1 with the puzzle still open"
+	return _check_reveal_commit(session, before)
+
+
+## Confirm — the reveal runs END.L5, scores S = 0, and K3 deals the next puzzle.
+func _check_reveal_commit(session: PuzzleSession, before: float) -> String:
+	session.request_confirm("C3")
+	var confirmed := session.confirm()
+	if str(confirmed.get("end_reason", "")) != PuzzleSession.END_L5:
+		return "Confirm on reveal_confirm must end END.L5 (got %s)" % confirmed
+	if str(confirmed.get("cue", "")) != "cue_failed" or session.player_elo >= before:
+		return "END.L5 must show cue_failed and apply S = 0"
+	var scored: Dictionary = confirmed.get("elo", {})
+	if float(scored.get("score", -1.0)) != 0.0:
+		return "END.L5 must score S = 0"
+	if not session.has_open_puzzle():
+		return "END.L5 must deal the next puzzle after the Elo update"
+	return ""
+
+
+## S2 leave confirm → Confirm leaves unscored (K4/E1) with the puzzle still open.
+func _check_confirm_leave_unscored() -> String:
+	var store := _stored_session()
+	var session := PuzzleSession.new(ChessRules.new(), store)
+	session.catalog = [_record("abc", 1000, ["e2e4", "e7e5"])]
+	session.deal()
+	var committed_before: float = float(store.read_committed()["player_elo"])
+	session.request_confirm("C5")
+	if session.confirm_kind != PuzzleSession.CONFIRM_LEAVE:
+		return "C5 must raise the named leave_confirm"
+	var left := session.confirm()
+	if not bool(left.get("ok", false)) or session.has_open_puzzle():
+		return "Confirm on leave_confirm must leave the stream"
+	if session.player_elo != committed_before:
+		return "leaving must not score the open puzzle as abandon (K4/E1)"
+	if session.play_ui_state != PuzzleSession.UI_S1:
+		return "leaving must drop the confirm state"
+	return ""
+
+
+## US5.4 / US1.10 — S2 blocks select and place; the open puzzle is untouched.
+func _check_confirm_blocks_board() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal()
+	session.request_confirm("C4")
+	if bool(session.select_own("e7").get("ok", true)):
+		return "C1 must be unavailable in S2"
+	var placed := session.place("e7", "e5")
+	if bool(placed.get("ok", true)) or session.play_ui_state != PuzzleSession.UI_S2:
+		return "C2 must place nothing in S2"
+	return ""
+
+
+## US1.8 / US1.11 / EX.save-failure — S3 shows on the failure, the sitting keeps its Elo,
+## and Dismiss returns to S1.
+func _check_save_failure_state() -> String:
+	var store := _stored_session()
+	var session := PuzzleSession.new(ChessRules.new(), store)
+	session.catalog = [_record("abc", 1000, ["e2e4", "e7e5"])]
+	session.deal()
+	store.force_write_failure = true
+	var solved := session.place("e7", "e5")
+	var elo: Dictionary = solved.get("elo", {})
+	if bool(elo.get("committed", true)):
+		return "SEQ-puzzle-result-commit B2 must report the failed commit"
+	if session.play_ui_state != PuzzleSession.UI_S3:
+		return "EX.save-failure must put the screen in S3"
+	if not session.gestures_available():
+		return "C1–C5 must stay usable in S3"
+	if not bool(session.dismiss_save_failure().get("ok", false)):
+		return "Dismiss must close S3"
+	if (
+		session.play_ui_state != PuzzleSession.UI_S1
+		or session.player_elo <= PuzzleSession.ELO_START
+	):
+		return "Dismiss must return to S1 with the sitting's in-memory Elo kept"
+	return ""
+
+
+## US1.1 / US3.3 / US2.3, US2.9 — select a Solving-side piece, then a refused place
+## flashes S5 with the selection kept and is not a Wrong move.
+func _check_selection_and_flash() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal()
+	if bool(session.select_own("e2").get("ok", true)):
+		return "C1 must only select the Solving side"
+	if not bool(session.select_own("e7").get("ok", false)) or session.selected_piece != "e7":
+		return "C1 must select a Solving-side piece"
+	if not session.legal_targets_for("e7").has("e5"):
+		return "R1 legal marks must come from the puzzle position"
+	var refused := session.place("e7", "e4")
+	if not bool(refused.get("illegal", false)) or session.play_ui_state != PuzzleSession.UI_S5:
+		return "EX.rejected must flash S5 (got %s)" % refused
+	if session.selected_piece != "e7" or session.wrong_move_on_puzzle:
+		return "a refused place keeps the selection and is not a Wrong move"
+	return _check_flash_clears(session)
+
+
+## US3.3 — the flash clears, then a real Wrong move resets the puzzle.
+func _check_flash_clears(session: PuzzleSession) -> String:
+	if not bool(session.finish_reject_flash().get("ok", false)):
+		return "the S5 flash must clear back to S1"
+	if session.place("e7", "e6").get("outcome", "") != "wrong":
+		return "a Wrong move resets the puzzle"
+	return ""
+
+
+## US3.4 / S4 / C6 — a last-rank pawn place opens S4, C6 commits the type, and only then
+## does the puzzle judge the move (L-puzzle-stream K2).
+func _check_promotion_judged_after_commit() -> String:
+	var session := _session([_promotion_record()])
+	session.player_elo = 1400.0
+	if not bool(session.deal().get("ok", false)):
+		return "the promotion fixture must deal"
+	var opened := session.place("g7", "g8")
+	if not bool(opened.get("promote", false)) or session.play_ui_state != PuzzleSession.UI_S4:
+		return "a last-rank pawn place must enter S4 (got %s)" % opened
+	if session.wrong_move_on_puzzle or session.outcome != "":
+		return "S4 must not judge the move before C6"
+	return _check_promotion_deselect(session)
+
+
+## S4 waits on C6; IN.deselect drops the choice but keeps the pawn selected.
+func _check_promotion_deselect(session: PuzzleSession) -> String:
+	if bool(session.select_own("a1").get("ok", true)):
+		return "the board must wait on C6 in S4"
+	var cleared := session.clear_selection()
+	if not bool(cleared.get("ok", false)) or session.play_ui_state != PuzzleSession.UI_S1:
+		return "IN.deselect in S4 must drop the promotion choice (got %s)" % cleared
+	if session.selected_piece != "g7":
+		return "IN.deselect in S4 must keep the pawn selected"
+	return _check_promotion_commit(session)
+
+
+## C6 — the committed type is judged as the puzzle move.
+func _check_promotion_commit(session: PuzzleSession) -> String:
+	session.place("g7", "g8")
+	var committed := session.commit_promotion("queen")
+	if str(committed.get("outcome", "")) != "outcome":
+		return "C6 must commit the type and then judge the place (got %s)" % committed
+	if str(committed.get("end_reason", "")) != PuzzleSession.END_W1:
+		return "the recorded promotion must solve the puzzle"
+	if str(session.rules.piece_on("g8").get("kind", "")) != ChessRules.KIND_QUEEN:
+		return "the committed type must be the piece placed"
+	return ""
+
+
+## K3 — after W1 the dealt puzzle stays open behind the cue and the next deal is refused
+## until the stream advances once; after L5/L6 the ending itself deals the next.
+func _check_deal_after_ending() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal()
+	session.place("e7", "e5")
+	if bool(session.advance().get("ok", true)) or not session.has_open_puzzle():
+		return "K3 must not deal over the ended puzzle before the cue"
+	var closed := session.leave()
+	if not bool(session.advance().get("ok", false)) or not session.has_open_puzzle():
+		return "K3 must deal the next puzzle once the stream moves on"
+	if closed.is_empty():
+		return "leaving after a solved puzzle must succeed"
+	var revealed := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	revealed.deal()
+	var l5 := revealed.reveal()
+	if not bool(l5.get("next", {}).get("ok", false)) or not revealed.has_open_puzzle():
+		return "END.L5 must deal the next puzzle after the Elo update"
+	return ""
+
+
+## GS.V1 / GS.H1 / CFG.K3 — no clock runs and no shared-game ending can fire in this mode.
+func _check_no_clocks() -> String:
+	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.deal()
+	if session.play_state().has("clocks"):
+		return "CFG.K3: no clock runs in Puzzle stream"
+	var ended := false
+	session.place("e7", "e5")
+	ended = bool(session.rules.game_ended_field().get("ended", false))
+	if ended:
+		return "no shared-game ending may fire in Puzzle stream (END.L1–L3/D1–D5)"
+	if not session.rules.end_signals().has("ending"):
+		return "the domain still reports the move's signals (GS.V1)"
+	if session.play_state().get("advice", "x") != "none":
+		return "GS.V3: advice must stay none after a move"
+	return ""
+
+
+## FEN before the recorded first move `h8h7`; White's `g7g8q` is the required Solving-side
+## step. The kings sit clear of the g-file so the push does not leave White in check.
+func _promotion_record() -> Dictionary:
+	# R3 — the first move is the opponent's and is applied before presenting; the last-rank
+	# push is the required Solving-side step.
+	var record := _record("promo", 1400, ["h8h7", "g7g8q"])
+	record["FEN"] = PROMOTION_FEN
+	return record
 
 
 func _stored_session() -> PersistStore:
