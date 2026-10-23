@@ -33,6 +33,7 @@ var advice_api_key := ""
 var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
 var options_locked := false
 var session_ended := false
+## EX.error / S3 — an advice fetch failed while On; cleared by Dismiss (states.md).
 
 var shared_session: SharedGameSession
 
@@ -46,7 +47,11 @@ var selected_piece: String:
 
 var play_ui_state: String:
 	get:
-		return shared_session.play_ui_state if shared_session != null else SharedGameSession.UI_S1
+		if shared_session == null:
+			return SharedGameSession.UI_S1
+		return (
+			SharedGameSession.UI_S3 if shared_session.advice_error else shared_session.play_ui_state
+		)
 	set(value):
 		if shared_session != null:
 			shared_session.play_ui_state = value
@@ -407,8 +412,18 @@ func _go_mode_pick(ui_state: String = "S1") -> void:
 ## CMP-advice-client R1 / R6 / R7 — edge component configured from T6 / T9 / T10.
 func _make_advice_client() -> AdviceClient:
 	var client := AdviceClient.new()
+	client.sim_factory = _advice_sim_factory()
 	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
 	return client
+
+
+## The simulated advice peer for tests and playtests (ADR-0002 Testability): the
+## playtest build runs FakeAdviceTransport; the shipped export has no seam node,
+## so production talks only to the configured backend. Never Stockfish.
+func _advice_sim_factory() -> Variant:
+	if _seams == null:
+		return null
+	return Callable(FakeAdviceTransport, "new")
 
 
 ## Drain streamed advice and report it (quality.md Observability; TEL.4 / TEL.5).
@@ -432,6 +447,16 @@ func _drive_advice(control_id: String) -> void:
 		)
 
 
+## S3 Dismiss — back to S1 with C1–C5 as S1; FAIL.T1 leaves the service offline.
+## The session owns EX.error; this only reports the dismissal and re-renders.
+func dismiss_advice_error() -> void:
+	if shared_session == null or not shared_session.advice_error:
+		return
+	shared_session.advice_control("dismiss")
+	_emit_tel("shared.advice.dismiss", "ok", "UI-shared-play.S3")
+	_emit_play_screen()
+
+
 ## What L1 can show for advice; only an E1 update changes it.
 func _advice_shown() -> String:
 	if shared_session == null:
@@ -440,7 +465,8 @@ func _advice_shown() -> String:
 	return "%s|%s" % [str(state.get("advice_best_move", null)), str(state.get("advice_eval", null))]
 
 
-## R9 — leaving the Shared game clears advice and stops evaluation.
+## R9 — leaving the Shared game clears advice and stops evaluation. The S3 error
+## panel goes with the game (it belongs to the shared-play screen).
 func _leave_advice() -> void:
 	_drive_advice("leave")
 

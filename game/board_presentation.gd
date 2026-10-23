@@ -73,6 +73,8 @@ var _overlay_root: Node2D
 var _select_frame: Line2D
 var _legal_root: Node2D
 var _reject_flash: Line2D
+## PER.R5 advice marks (E4 `show_advice`), over the pieces.
+var _advice_marks: AdviceMarks
 var _promote_root: Node2D
 var _promote_square := ""
 var _promote_color := ""
@@ -157,6 +159,9 @@ func _ready() -> void:
 	_promote_root.z_index = 2
 	_overlay_root.add_child(_promote_root)
 
+	_advice_marks = AdviceMarks.new()
+	_overlay_root.add_child(_advice_marks)
+
 	_coords_root = Control.new()
 	_coords_root.name = "Coordinates"
 	_coords_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -222,6 +227,23 @@ func render_position(
 	_apply_choice_overlays(options)
 
 
+## E4 `show_advice` under CMP-presentation.R4 — best move marks or none. Called
+## by the presentation whenever the advice fields change; no CTR operation added.
+func render_advice(advice_best_move: Variant) -> void:
+	if _advice_marks == null:
+		return
+	if not (advice_best_move is Dictionary):
+		_advice_marks.clear()
+		return
+	var move: Dictionary = advice_best_move
+	var from_square := str(move.get("from", ""))
+	var to_square := str(move.get("to", ""))
+	if from_square.is_empty() or to_square.is_empty():
+		_advice_marks.clear()
+		return
+	_advice_marks.show_best_move(from_square, to_square)
+
+
 func set_white_seat(seat: String) -> void:
 	white_seat = (
 		BoardGeometry.SEAT_TOP if seat == BoardGeometry.SEAT_TOP else BoardGeometry.SEAT_BOTTOM
@@ -238,7 +260,17 @@ func piece_world_center(square: String) -> Vector2:
 	return BoardGeometry.square_center(square)
 
 
-func begin_drag(square: String, world: Vector2) -> void:
+## B10 drag follow: `begin` with the square and world point, then `move`.
+func update_drag(cmd: Variant, payload: Variant = null) -> void:
+	match str(cmd):
+		"begin":
+			var start: Dictionary = payload
+			_begin_drag(str(start.get("square", "")), start.get("world", Vector2.ZERO))
+		"move":
+			_move_drag(payload)
+
+
+func _begin_drag(square: String, world: Vector2) -> void:
 	if not _piece_nodes.has(square) or _motion_busy:
 		return
 	_drag_square = square
@@ -248,7 +280,7 @@ func begin_drag(square: String, world: Vector2) -> void:
 	node.position = world
 
 
-func update_drag(world: Vector2) -> void:
+func _move_drag(world: Vector2) -> void:
 	if _drag_square.is_empty():
 		return
 	_drag_world = world
