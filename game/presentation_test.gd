@@ -1,14 +1,17 @@
 class_name PresentationTest
 extends SceneTree
 
-## #616 — chrome panels are a centred column, not a fixed 40 px corner. Each
-## panel's x follows its parent rect at every frame size; its vertical top is the
-## landed reference value. A fixed x fails the second size, so a constant cannot
-## pass. A centring preset puts the panel's `position` at `-size.x / 2`, so the
-## drawn center is `position.x + pivot_offset.x`; this stays correct before the
-## panels have laid out their content-sized height.
+## #616 — chrome panels are a centred column, not a fixed 40 px corner. The guard
+## measures each panel's **drawn** rect (`get_global_rect()`) against its parent
+## rect: center x within 1 px and the landed vertical top. It runs at the
+## reference frame, a larger frame and the SIT.6 phone frame, so a fixed offset
+## or a rect that grows only to the right from its anchor fails, while the
+## vertical composition stays as landed (centring is horizontal only).
 const CHROME_REFERENCE_SIZE := Vector2(1280, 720)
 const CHROME_SECOND_SIZE := Vector2(1600, 900)
+## SIT.6 phone-width frame — narrower than the 320 px panel, so only a centre
+## anchor can pass here.
+const CHROME_PHONE_SIZE := Vector2(390, 844)
 const CHROME_TOPS := {
 	"ScreenHost/ModePick": 80.0,
 	"ScreenHost/SharedSetup": 60.0,
@@ -17,6 +20,31 @@ const CHROME_TOPS := {
 	"ScreenHost/PuzzlePlay/StreamConfirm": 220.0,
 	"ScreenHost/PuzzlePlay/SaveFailure": 220.0,
 }
+
+## Every panel is measured only while the game itself shows it: a hidden control
+## is not laid out, so `get_global_rect()` would be stale. The three screens come
+## from `show_screen`; the three dialogs are raised by their own state ids (S2
+## confirm, S3 save failure), so no visibility is forced from the test.
+const CHROME_STEPS := [
+	{"screen": "mode-pick", "panels": ["ScreenHost/ModePick"]},
+	{"screen": "shared-setup", "panels": ["ScreenHost/SharedSetup"]},
+	{"screen": "shared-result", "panels": ["ScreenHost/SharedResult"]},
+	{
+		"screen": "shared-play",
+		"state": {"ui_state": "S2", "confirm_kind": "resign"},
+		"panels": ["ScreenHost/SharedPlay/ResignConfirm"],
+	},
+	{
+		"screen": "puzzle-play",
+		"state": {"ui_state": "S2", "puzzle_open": true, "confirm_kind": "reveal"},
+		"panels": ["ScreenHost/PuzzlePlay/StreamConfirm"],
+	},
+	{
+		"screen": "puzzle-play",
+		"state": {"ui_state": "S3", "puzzle_open": true},
+		"panels": ["ScreenHost/PuzzlePlay/SaveFailure"],
+	},
+]
 
 var _presentation: Presentation
 var _router: SessionRouter
@@ -136,39 +164,40 @@ func _log_size() -> int:
 
 
 func _check_chrome_placement() -> bool:
-	for frame_size in [CHROME_REFERENCE_SIZE, CHROME_SECOND_SIZE]:
+	for frame_size in [CHROME_REFERENCE_SIZE, CHROME_SECOND_SIZE, CHROME_PHONE_SIZE]:
 		_presentation.size = frame_size
 		await process_frame
-		var problem := _chrome_placement_problem(frame_size)
-		if not problem.is_empty():
-			return _fail(problem)
+		for step in CHROME_STEPS:
+			_presentation.show_screen(str(step["screen"]), step.get("state", {}))
+			await process_frame
+			var problem := _chrome_placement_problem(frame_size, step["panels"])
+			if not problem.is_empty():
+				return _fail(problem)
 	return true
 
 
-func _chrome_placement_problem(frame_size: Vector2) -> String:
-	for path in CHROME_TOPS.keys():
+## A panel is placed correctly when what it *draws* is centred: the global rect
+## the renderer uses, not `position` (the left edge) and not `position + pivot`.
+## A fixed x, or a rect that grows only to the right from its anchor, both fail
+## this at 1600×900 and at the phone frame.
+func _chrome_placement_problem(frame_size: Vector2, paths: Array) -> String:
+	for path in paths:
 		var panel := _presentation.get_node_or_null(str(path)) as Control
 		if panel == null:
 			return "missing chrome panel %s" % path
-		var parent := panel.get_parent() as Control
-		if parent == null:
-			return "%s has no Control parent" % path
-		var centre_x := _centre_x(panel)
-		var parent_centre_x := parent.position.x + parent.size.x * 0.5
-		if absf(centre_x - parent_centre_x) > 1.0:
+		if not panel.is_visible_in_tree():
+			return "%s is not visible when measured at %s" % [path, frame_size]
+		var drawn := panel.get_global_rect()
+		var parent_rect := (panel.get_parent() as Control).get_global_rect()
+		if absf(drawn.get_center().x - parent_rect.get_center().x) > 1.0:
 			return (
-				"%s center x %.1f != parent center x %.1f at %s"
-				% [path, centre_x, parent_centre_x, frame_size]
+				"%s drawn center x %.1f != parent center x %.1f at %s (rect %s)"
+				% [path, drawn.get_center().x, parent_rect.get_center().x, frame_size, drawn]
 			)
 		var top_px := float(CHROME_TOPS[path])
-		if absf(panel.position.y - top_px) > 1.0:
-			return "%s top %.1f != %.1f at %s" % [path, panel.position.y, top_px, frame_size]
+		if absf(drawn.position.y - top_px) > 1.0:
+			return "%s top %.1f != %.1f at %s" % [path, drawn.position.y, top_px, frame_size]
 	return ""
-
-
-func _centre_x(control: Control) -> float:
-	## Where the control's center sits: its position plus half of what it draws.
-	return control.position.x + control.pivot_offset.x
 
 
 func _exercise_screens() -> bool:

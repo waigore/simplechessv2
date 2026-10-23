@@ -200,7 +200,7 @@ func _build_shell() -> void:
 	_mode_pick.custom_minimum_size = Vector2(320, 280)
 	# UI-mode-pick: the mockup centres the column under a header, so x follows the
 	# frame and y keeps the R1–R3 top-down reading (top 80).
-	_place_centred_column(_mode_pick, 80.0)
+	UiChrome.place_centred_column(_mode_pick, 80.0)
 	_mode_pick.control_activated.connect(_on_mode_pick_control)
 	_mode_pick.pointed.connect(_on_pointed)
 	_host.add_child(_mode_pick)
@@ -209,7 +209,7 @@ func _build_shell() -> void:
 	_shared_setup.name = "SharedSetup"
 	_shared_setup.visible = false
 	_shared_setup.custom_minimum_size = Vector2(320, 360)
-	_place_centred_column(_shared_setup, 60.0)
+	UiChrome.place_centred_column(_shared_setup, 60.0)
 	_shared_setup.control_activated.connect(_on_shared_setup_control)
 	_shared_setup.pointed.connect(_on_pointed)
 	_host.add_child(_shared_setup)
@@ -235,7 +235,7 @@ func _build_shell() -> void:
 	_shared_result.name = "SharedResult"
 	_shared_result.visible = false
 	_shared_result.custom_minimum_size = Vector2(320, 220)
-	_place_centred_column(_shared_result, 120.0)
+	UiChrome.place_centred_column(_shared_result, 120.0)
 	_shared_result.control_activated.connect(_on_shared_result_control)
 	_shared_result.pointed.connect(_on_pointed)
 	_host.add_child(_shared_result)
@@ -460,15 +460,6 @@ func _show_advice_update(state: Dictionary) -> void:
 		and state.get("advice_eval", null) is int
 	)
 	_board.render_advice(state.get("advice_best_move", null) if shown else null)
-
-
-## UI-mode-pick / shared-setup / shared-result — one placement model per panel:
-## anchors centre x in the parent rect and pin the top, so the column follows
-## any logical frame size and no absolute `position` overrides the anchors.
-## `top_px` is the reference-frame vertical top the mockups keep.
-func _place_centred_column(panel: Control, top_px: float) -> void:
-	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_KEEP_SIZE)
-	panel.offset_top = top_px
 
 
 func _layout_shared_play_regions() -> void:

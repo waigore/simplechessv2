@@ -204,6 +204,19 @@ static func apply_font(control: Control, font: Font) -> void:
 	control.add_theme_font_override("font", font)
 
 
+## #616 — the one chrome-column placement rule: centre x in the parent rect and
+## pin the vertical top at the reference-frame value. `PRESET_MODE_MINSIZE` sizes
+## the rect from `custom_minimum_size` and writes symmetric `offset_left` /
+## `offset_right`, so the drawn rect's center follows the parent at any frame
+## size; `grow_horizontal` is BOTH so content wider than the minimum grows to
+## each side instead of only to the right. Vertical composition is not touched:
+## `PRESET_CENTER_TOP` leaves y to `offset_top` alone.
+static func place_centred_column(panel: Control, top_px: float) -> void:
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_MINSIZE)
+	panel.offset_top = top_px
+
+
 static func panel_style() -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()
 	box.bg_color = COLOR_BG
