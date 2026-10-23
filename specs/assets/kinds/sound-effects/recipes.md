@@ -37,7 +37,7 @@ N/A — see [`style-series.md`](style-series.md).
 - **Prompt template (series)**: {category} only; compose with prompt_policy
 - **Settings**: duration in S1 band; mono OK
 - **Seed policy**: `n/a` when tool has no seed
-- **Post-processing**: trim silence; loudness toward L2; encode OGG
+- **Post-processing**: trim silence; true peak to L2 (−14 dBTP); encode OGG
 - **Outputs**: one file per V row
 
 ### R2 — Human-made SFX
@@ -49,7 +49,7 @@ N/A — see [`style-series.md`](style-series.md).
 - **Prompt template (series)**: N/A — human-made
 - **Settings**: N/A — human-made
 - **Seed policy**: N/A — human-made
-- **Post-processing**: trim silence; loudness toward L2; encode OGG
+- **Post-processing**: trim silence; true peak to L2 (−14 dBTP); encode OGG
 - **Outputs**: one file per V row
 
 ## Checks
