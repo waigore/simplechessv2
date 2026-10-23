@@ -1,0 +1,16 @@
+shared-play:
+  en       queen=Queen  rook=Rook  bishop=Bishop  knight=Knight
+  zh-Hant  queen=Queen  rook=Rook  bishop=Bishop  knight=Knight
+  ja       queen=Queen  rook=Rook  bishop=Bishop  knight=Knight
+  en-equal: True
+
+puzzle-play:
+  en       queen=Queen  rook=Rook  bishop=Bishop  knight=Knight
+  zh-Hant  queen=Queen  rook=Rook  bishop=Bishop  knight=Knight
+  ja       queen=Queen  rook=Rook  bishop=Bishop  knight=Knight
+  en-equal: True
+
+mode-pick.locale own names (synthesized from LOCALE_OWN_NAME, never en-equal):
+  en       English
+  zh-Hant  繁體中文
+  ja       日本語
