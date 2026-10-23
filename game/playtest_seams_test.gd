@@ -117,36 +117,44 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 	## S13 / SIT.6 — O12 applies a viewport on ENV.2 only; the report never lies.
 	var reports: Array = []
 	seams.viewport_changed.connect(_remember_viewport.bind(reports))
-	var phone := seams.set_viewport(
-		PlaytestSeams.VIEWPORT_PHONE_WIDTH,
-		PlaytestSeams.VIEWPORT_PHONE_HEIGHT,
-		_frame_ratio(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
-	)
+	var wanted := Vector2i(PlaytestSeams.VIEWPORT_PHONE_WIDTH, PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+	var phone := seams.set_viewport(wanted.x, wanted.y, _frame_ratio(wanted.y))
 	var shown := seams.last_viewport_report()
-	var graphical := DisplayServer.get_name() != "headless"
+	# The unit-test binary runs this seam outside the tree, so it holds no frame
+	# yet: the report keeps its shape but no limb may claim the requested one.
+	var framed := PlaytestGate.in_frame(seams)
+	var frame := int(phone.get("frame_height_px", 0))
 	var empty := seams.set_viewport(0, 844, 1.0)
-	var reference := UiChrome.scaled_px(UiChrome.BODY_PX, _frame_ratio(640))
-	var phone_expected := UiChrome.scaled_px(
-		UiChrome.BODY_PX, _frame_ratio(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
-	)
 	# UIS.T2 is a ratio to the reference height, so a taller phone frame sits above
 	# BODY_PX; a hardcoded or clamped size at BODY_PX fails `scales_with_frame`.
-	var scales_with_frame := phone_expected > UiChrome.BODY_PX and phone_expected > reference
+	var phone_expected := Presentation.scaled_body_px(_frame_ratio(wanted.y))
+	var scales_with_frame := (
+		phone_expected > UiChrome.BODY_PX
+		and phone_expected > Presentation.scaled_body_px(_frame_ratio(640))
+	)
 	var panel_button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
 	var problem := ""
 	if reports.size() != 1 or phone.is_empty() or shown != phone:
 		problem = "S13 viewport report"
-	elif bool(phone.get("applied", false)) != graphical:
-		problem = "S13 ENV.2 boundary"
-	elif graphical and (int(phone["width"]) != 390 or int(phone["height"]) != 844):
-		problem = "S13 applied size"
-	elif not is_equal_approx(float(phone["text_scale"]), _frame_ratio(844)):
+	elif int(phone["width"]) != wanted.x or int(phone["height"]) != wanted.y:
+		problem = "S13 requested size"
+	elif not _application_matches(phone, framed, wanted.y):
+		problem = "S13 report must match the viewport the runner really applied"
+	elif not is_equal_approx(float(phone["text_scale"]), _frame_ratio(wanted.y)):
 		problem = "S13 applied text scale"
-	elif int(phone["body_text_px"]) != phone_expected:
+	elif frame <= 0 and int(phone["body_text_px"]) != 0:
+		problem = "S13 no frame, no body-text claim"
+	elif (
+		frame > 0
+		and (
+			int(phone["body_text_px"])
+			!= Presentation.scaled_body_px(Presentation.text_scale_for_frame_height(frame))
+		)
+	):
 		problem = "S13 body text must come from the presentation ratio"
 	elif not scales_with_frame:
 		problem = "S13 clamped text size (body text must scale with frame height)"
-	elif not _bound_report_matches(seams):
+	elif not _bound_report_matches(seams, framed):
 		problem = "S13 seam must report the bound presentation size, not its own"
 	elif not empty.is_empty():
 		problem = "S13 invalid input must not return a report"
@@ -157,13 +165,27 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 	return true
 
 
-func _bound_report_matches(seams: PlaytestSeams) -> bool:
+func _application_matches(report: Dictionary, framed: bool, wanted_px: int) -> bool:
+	## `applied` names ENV.2, and only a seam inside a frame may name its height.
+	if bool(report.get("applied", false)) != PlaytestGate.has_display():
+		return false
+	if not framed:
+		return int(report.get("frame_height_px", 0)) == 0
+	return int(report.get("frame_height_px", 0)) == wanted_px
+
+
+func _bound_report_matches(seams: PlaytestSeams, framed: bool) -> bool:
 	## The seam must echo the presentation hook, never compute a size of its own.
 	var sentinel := 1234.0
 	seams.bind_text_report(func() -> float: return sentinel)
 	var bound := seams.set_viewport(390, 844, 1.0)
 	seams.bind_text_report(Callable())
-	return is_equal_approx(float(bound.get("body_text_px", 0.0)), sentinel)
+	if not is_equal_approx(float(bound.get("body_text_px", 0.0)), sentinel):
+		return false
+	if not framed:
+		return true
+	var named := int(bound.get("frame_height_px", 0))
+	return named == int(round(Presentation.frame_height_for_body_px(sentinel)))
 
 
 func _frame_ratio(height_px: int) -> float:

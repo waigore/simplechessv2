@@ -16,3 +16,21 @@ static func is_playtest(override: int = -1) -> bool:
 	if override >= 0:
 		return override == 1
 	return true
+
+
+## `S13` frame limbs (I6). A drive op can always say whether a display exists;
+## a real frame height is the seam's own, which it has only once it entered the
+## tree. Reporting a frame the seam cannot see is what `S13` forbids.
+static func has_display() -> bool:
+	return not DisplayServer.get_name() == "headless"
+
+
+## Whether the seam has entered a tree yet; before that it holds no frame size.
+static func in_frame(seam: Node) -> bool:
+	return seam.is_inside_tree() and seam.get_tree() != null
+
+
+static func frame_height(seam: Node) -> int:
+	if not in_frame(seam):
+		return 0
+	return seam.get_tree().root.size.y

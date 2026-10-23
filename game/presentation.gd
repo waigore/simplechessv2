@@ -58,9 +58,20 @@ func text_scale() -> float:
 	return text_scale_for_frame_height(_frame_height())
 
 
+## UIS.T2 body text for a given scale, for callers without a window yet (S13).
+static func scaled_body_px(text_scale_value: float) -> int:
+	return UiChrome.scaled_px(UiChrome.BODY_PX, text_scale_value)
+
+
+## The frame height behind a given body-text size, so a report can name the
+## frame it measured; the inverse of `scaled_body_px` (S13).
+static func frame_height_for_body_px(body_px: float) -> float:
+	return body_px / float(UiChrome.BODY_PX) * REFERENCE_FRAME_HEIGHT_PX
+
+
 ## Body text as it reaches the screen for the current frame height (UIS.T2).
 func body_text_screen_px() -> float:
-	return float(UiChrome.scaled_px(UiChrome.BODY_PX, text_scale()))
+	return float(scaled_body_px(text_scale()))
 
 
 ## Reserve R2–R4 chrome so R1 is not covered (PRJ.A1). Scales with UIS.T2.
