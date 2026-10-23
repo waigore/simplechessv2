@@ -19,6 +19,17 @@ const SFX_IDS := {
 	"check": "01a151f8-b7d8-7e05-9921-e892e9a2e064",  # SND.X3 check
 	"end": "01a151f8-b7d8-7fe3-b94f-e3a562395d96",    # SND.X4 end resolve
 }
+## Per-cue gain (SND.L2): one soft family of wood taps. The select cue is the
+## same touch family as the settle knock, only lighter — PBX 0 dB, the pick-up
+## at -5.4 dB so its peak lands ~1.5 dB under the settle cue's and its first
+## 60 ms ~3 dB under it, instead of the +4.6 dB / -4.3 dB that read as a harsh
+## snap (defect #427 item 2). The other cues already follow the settle cue.
+const CUE_GAIN_DB := {
+	"select": -5.4,
+	"land": 0.0,
+	"check": 0.0,
+	"end": 0.0,
+}
 const BED_IDS := [
 	"01a15200-69b2-7d13-a30d-696fa4ff390b",            # SND.M1 bed A
 	"01a15200-69b2-7964-a602-ad5b19583125",            # SND.M2 bed B
@@ -133,6 +144,7 @@ func _setup_audio(loader: DemoAssetLoader) -> void:
 	for cue_name in SFX_IDS:
 		var player := AudioStreamPlayer.new()
 		player.stream = loader.resolve(SFX_IDS[cue_name])
+		player.volume_db = float(CUE_GAIN_DB.get(cue_name, 0.0))  # SND.L2 cue gains
 		add_child(player)
 		_sfx[cue_name] = player
 	for bed_id in BED_IDS:
