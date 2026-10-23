@@ -107,11 +107,18 @@
 				"sound-effects/move-settle.ogg"
 			]
 		},
-		"01a151f8-b7d8-7fe3-b94f-e3a562395d96": {
-			"handle": "sound-effects/end-resolve",
+		"01a151f8-b7d8-7e05-9921-e892e9a2e064": {
+			"handle": "sound-effects/check",
 			"state": "approved",
 			"files": [
-				"sound-effects/end-resolve.ogg"
+				"sound-effects/check.ogg"
+			]
+		},
+		"01a151f8-b7d8-759c-89c5-e1be5eecb2b2": {
+			"handle": "sound-effects/puzzle-fail",
+			"state": "approved",
+			"files": [
+				"sound-effects/puzzle-fail.ogg"
 			]
 		},
 		"01a15200-69b2-7d13-a30d-696fa4ff390b": {
@@ -134,13 +141,6 @@
 			"files": [
 				"fonts/noto-sans-latin-400.woff2",
 				"fonts/noto-sans-latin-500.woff2"
-			]
-		},
-		"01a151f8-b7d8-759c-89c5-e1be5eecb2b2": {
-			"handle": "sound-effects/puzzle-fail",
-			"state": "approved",
-			"files": [
-				"sound-effects/puzzle-fail.ogg"
 			]
 		}
 	}

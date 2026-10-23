@@ -1,8 +1,10 @@
 class_name DemoChessRules
 extends RefCounted
-## Pure chess rules for demo #63. Spec source: specs/design/entities/pieces
-## (common I1-I11, officers I23-I27, king I12-I22, pawn I28-I34, I35),
-## end-conditions L1 and the D1 stalemate branch, L-two-player-game.K2.
+## Pure chess rules for demo #335, reused unchanged from demo #63.
+## Spec source: specs/design/entities/pieces (common I1-I11, officers I23-I27,
+## king I12-I22, pawn I28-I34, I35). The positions these rules play are read
+## from a FEN by fen_codec.gd (F-puzzle-catalog R3). The one changed line is
+## castle_rights below, which asks the position for its own castling rights.
 
 const WHITE := "w"
 const BLACK := "b"
@@ -34,10 +36,15 @@ static func piece_kind(code: String) -> String:
 	return code.substr(1, 1)
 
 
-static func start_position() -> Dictionary:
+static func _empty_board() -> PackedStringArray:
 	var board := PackedStringArray()
 	for i in range(64):
 		board.append("")
+	return board
+
+
+static func start_position() -> Dictionary:
+	var board := _empty_board()
 	for file in range(8):
 		board[8 + file] = "wP"
 		board[6 * 8 + file] = "bP"
@@ -49,6 +56,7 @@ static func start_position() -> Dictionary:
 		"board": board,
 		"moved": PackedByteArray(),
 		"ep_target": -1,
+		"castling": "KQkq",
 		"side": WHITE,
 		"king": {},
 	}
@@ -56,13 +64,16 @@ static func start_position() -> Dictionary:
 
 static func duplicate_position(pos: Dictionary) -> Dictionary:
 	var king: Variant = pos["king"]
-	return {
+	var moved: PackedByteArray = (pos["moved"] as PackedByteArray).duplicate()
+	var copy := {
 		"board": (pos["board"] as PackedStringArray).duplicate(),
-		"moved": (pos["moved"] as PackedByteArray).duplicate(),
+		"moved": moved,
 		"ep_target": int(pos["ep_target"]),
+		"castling": str(pos.get("castling", "")),
 		"side": str(pos["side"]),
 		"king": (king as Dictionary).duplicate(true) if king is Dictionary else {},
 	}
+	return copy
 
 
 static func init_king(pos: Dictionary) -> void:
@@ -84,18 +95,25 @@ static func _mark_moved(pos: Dictionary, index: int) -> void:
 	var moved: PackedByteArray = pos["moved"]
 	if moved.size() < 64:
 		moved.resize(64)
-	moved[index] = 1
+	if index >= 0 and index < 64:
+		moved[index] = 1
 
 
 static func castle_rights(pos: Dictionary, color: String) -> Dictionary:
-	# I16-I17: the king and the corner rook have never moved and are still there.
+	# I16-I17: the king and the corner rook have never moved and are still there,
+	# and the FEN's castling field grants the right. A puzzle position's FEN
+	# carries no castling rights (fen_codec.gd), so a puzzle never offers castling.
 	var board: PackedStringArray = pos["board"]
+	var rights := str(pos.get("castling", ""))
 	var rank := 0 if color == WHITE else 7
 	var king_sq := rank * 8 + 4
+	var king_ok := board[king_sq] == color + "K" and not has_moved(pos, king_sq)
+	var k_char := "K" if color == WHITE else "k"
+	var q_char := "Q" if color == WHITE else "q"
 	return {
-		"k": board[king_sq] == color + "K" and not has_moved(pos, king_sq)
+		"k": king_ok and rights.find(k_char) >= 0 \
 			and board[rank * 8 + 7] == color + "R" and not has_moved(pos, rank * 8 + 7),
-		"q": board[king_sq] == color + "K" and not has_moved(pos, king_sq)
+		"q": king_ok and rights.find(q_char) >= 0 \
 			and board[rank * 8 + 0] == color + "R" and not has_moved(pos, rank * 8 + 0),
 	}
 
@@ -109,7 +127,7 @@ static func ray_squares(pos: Dictionary, index: int, directions: Array, jump: bo
 	for dir in directions:
 		var f := file
 		var r := rank
-		while true:
+		for step in range(8):
 			f += int(dir[0])
 			r += int(dir[1])
 			if f < 0 or f > 7 or r < 0 or r > 7:
@@ -175,7 +193,9 @@ static func is_attacked_by(pos: Dictionary, index: int, by_color: String) -> boo
 		for dir in ort[pair]:
 			var f := index % 8 + int(dir.x)
 			var r := index / 8 + int(dir.y)
-			while f >= 0 and f <= 7 and r >= 0 and r <= 7:
+			for step in range(8):
+				if f < 0 or f > 7 or r < 0 or r > 7:
+					break
 				var code := board[r * 8 + f]
 				if code != "":
 					if piece_color(code) == by_color:
@@ -300,7 +320,8 @@ static func _add_king_moves(pos: Dictionary, from: int, out: Array) -> void:
 					"rook_from": rank * 8 + 7, "rook_to": rank * 8 + 5, "promo": "",
 				})
 	if rights["q"]:
-		if board[rank * 8 + 1] == "" and board[rank * 8 + 2] == "" and board[rank * 8 + 3] == "":
+		var queen_clear := board[rank * 8 + 1] == "" and board[rank * 8 + 2] == ""
+		if queen_clear and board[rank * 8 + 3] == "":
 			if not is_attacked_by(pos, rank * 8 + 2, opponent) \
 					and not is_attacked_by(pos, rank * 8 + 3, opponent):
 				# I15: e1-c1 / a1-d1 (White), e8-c8 / a8-d8 (Black).
@@ -342,12 +363,14 @@ static func _add_slider_moves(pos: Dictionary, from: int, dirs: Array, out: Arra
 		var step := dir as Vector2i
 		var f := from % 8 + step.x
 		var r := from / 8 + step.y
-		while f >= 0 and f <= 7 and r >= 0 and r <= 7:
+		for i in range(8):
+			if f < 0 or f > 7 or r < 0 or r > 7:
+				break
 			var mv := _pseudo_move(pos, from, r * 8 + f)
 			if mv.is_empty():
 				break
 			out.append(mv)
-			if mv["capture"] != -1:
+			if int(mv["capture"]) != -1:
 				break
 			f += step.x
 			r += step.y
@@ -413,7 +436,7 @@ static func any_legal_move(pos: Dictionary) -> bool:
 
 static func result(pos: Dictionary) -> String:
 	# L1: the side to move is in check with no legal move -> mate (loop E1).
-	# The same query with no check is stalemate (D1). Free to compute here.
+	# The same query with no check is stalemate (D1).
 	if any_legal_move(pos):
 		return ""
 	if in_check(pos, str(pos["side"])):

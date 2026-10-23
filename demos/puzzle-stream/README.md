@@ -3,70 +3,50 @@
 Reference artifact, not production code. Contract: `docs/demos.md`, `docs/demo-style-assets.md`.
 
 - **Question**: Does the solo stream deal at the player's level, reset a wrong move without ending the stream, and drift `GS.playerElo` gently?
-- **Type**: Gameplay demo — the two screens the stream needs (mode pick, puzzle play), their controls, three `EX.confirm` verbs, the promotion state, and the save-failure state. No shared game, setup, result, clocks, advice, or locale switch.
+- **Type**: Gameplay demo — a played stream with the puzzle-play screen's three regions (board, Elo and status, stream actions), a minimal mode pick, and the confirm/promote/reject overlays. No setup, result, clocks, advice, save-failure state, or localization.
 - **Issue**: #335 (from epic #35's demo-ready ID set)
-- **Engine**: Godot 4.7.2 + GDScript — Engine ADR `specs/adr/decisions/0001-godot-engine.md`; catalog stance per ADR-0008 and ADR-0013.
+- **Engine**: Godot 4.7.2 + GDScript — Engine ADR `specs/adr/decisions/0001-godot-engine.md`
 
 ## Scope
 
 ### Included
 
-Every ID below exists in `specs/`.
+Every ID below exists in `specs/` and is part of epic #35's demo-ready set. The catalog stand-in is the epic's sanctioned exception: a small recorded-format slice in place of the host-served snapshot (`F-puzzle-catalog` R1, ADR-0008).
 
 | Spec element | How the demo shows it |
 |--------------|-----------------------|
-| `L-puzzle-stream.K1`, `K2`, `K3`, `K4` | `main.gd` + `puzzle_stream.gd`: mode pick deals per `DIF.Y1`; a Solving-side move is judged, a required reply plays at once, an ending updates Elo and the next puzzle deals; leaving returns to mode pick. |
-| `L-puzzle-stream.E1` | Leave stream is a player choice, not a win or loss (`_scenario_leave`, `PRG.Z1`). |
-| `DIF.Y1` | `DemoPuzzleStream._select`: within ±`CFG.ELO_MATCH_RANGE` (100) of `playerElo`, preferring ids outside `recent_solved` (cap 20), then widening by `CFG.ELO_BAND_WIDEN` (50) and/or allowing a recent id; `_apply_ending` runs `E = 1/(1+10^((puzzleElo−playerElo)/400))`, `playerElo ← playerElo + 20 × (S − E)`; `Puzzle Elo` never changes. A deal is asserted inside the band. |
-| `DIF.C1` | The demo has no hand-set Elo control; only W1/L4/L5/L6 write it. |
-| `END.W1` | A completed sequence with no Wrong move on that puzzle is a win (S = 1) and the id joins `recent_solved`. |
-| `END.L4` | Completing the sequence after a Wrong move is a loss; the demo prints the drop. |
-| `END.L5` | Reveal (C3 → Confirm) is a loss with S = 0. |
-| `END.L6` | Abandon (C4 → Confirm) is a loss with S = 0, then the Elo update and a new deal. |
-| `END.P1` | W1 is the only S = 1 row; the four endings are never co-true — each closes the puzzle before the next deals. |
-| `F-puzzle-catalog.R1` | The catalog is the fixture slice `catalog_slice.json`; no export bytes are in the demo (`ADR-0008`), and the host decision is untouched. |
-| `F-puzzle-catalog.R2`, `R3`, `I1` | The slice records carry the served snapshot id `2026-10-05` and the recorded columns; a deal applies the first move and presents that position; `GS.puzzleId`/`GS.puzzleElo`/`GS.requiredSequence` come from the record; selection reads `playerElo` and `recentSolved`. |
-| `F-puzzle-catalog.R4` | A non-mate puzzle accepts only the recorded step (`0002`, `0003`, `0005`). |
-| `F-puzzle-catalog.R5` | `0001` and `0004` are marked `mateIn1`; the demo solves `0001` with `Qb8#`, a mate the record does not name, and the run asserts the solve. |
-| `F-puzzle-catalog.I2`, `I3`, `X1`, `X2` | Even steps play as replies; a solve appends the PuzzleId; a record with fewer than two moves or an unreachable host deals nothing and leaves the Elo alone. |
-| `E-pieces.I1`–`I35` | `chess_rules.gd` (copied from the wave-1 demo): the full orthodox rules judge every scripted and played move. |
-| `FL-mode-pick.P1`, `P3`, `T2`, `T4` | Mode pick → Puzzle stream in one tap (`T2`), Leave stream → mode pick (`T4`); the board is unreachable on mode pick. |
-| `PRG.A1`, `P1`, `M1`, `P3`, `F1`, `Z1` | Player Elo drifts per result and is never reset by leaving; `playerElo`, Last mode, and `recentSolved` commit to `user://` after each result and re-entry restores them; `recentSolved` trims to `CFG.ELO_RECENT_WINDOW`; a shared game carries nothing (no shared game here); stopping is the player's. |
-| `GS.puzzleId`, `puzzleElo`, `requiredSequence`, `sequenceIndex`, `solvingSide`, `wrongMoveOnPuzzle`, `playerElo`, `recentSolved`, `lastMode`, `position`, `sideToMove`, `selectedPiece` | `DemoPuzzleStream` carries exactly these fields; they clear together on a new deal or on leave, while Elo and `recentSolved` survive. |
-| `GS.V1` | Only the side to move moves: an own-piece test runs before a place, and the reply plays for the other side. |
-| `GS.V3` | No advice fields exist in the demo (`CFG.K3`). |
-| `GS.H1` | `required_sequence` is the data, but the UI never shows it; only the position and the Solving side are exposed (`R1`, `R2`). |
-| `GS.Q1` | `_select` picks at random among the candidate set; the autodrive seeds the pick so a run is reproducible. |
-| `CFG.ELO_START`, `ELO_K`, `ELO_MATCH_RANGE`, `ELO_RECENT_WINDOW`, `ELO_BAND_WIDEN`, `K3` | `puzzle_stream.gd` constants at the design defaults; no advice in this mode. |
-| `SPC.P1`, `P2`, `E1`, `L1`; `PRJ.P1`, `V1`; `CAM-board.F1`, `M2`; `PHY.M1`–`M5`, `I1`–`I3`; `PER.R1`–`R4`, `R6`–`R8`; `AES.P1`–`P3`; `MOT.T1`–`T3` | `board_view.gd` (copied from the wave-1 demo): 10-unit board with 1-unit margins, 72 px per unit, White seat with rank 1 nearest, 0.15 s quad ease-out travel with settle, capture fragments, bad-drop return, select frame and legal marks, refusal flash. The copied view still measures its piece bodies against `SPC.E1`/`FRM.P2` and its coordinate labels against `PER.R7` every run. Board orientation stays White's: a Black-side puzzle would need `CAM-board.M2`'s 180° turn, which this demo does not do (see Known limitations). |
-| `SND.X1`, `X2`, `X3`, `X5`, `M1`, `M2`, `L1`, `L2` | Touch-select on pick-up, move-settle on each landing (including the required reply), end-resolve on a result, and `X5 puzzle-fail` on a Wrong move; the cafe bed alternates A → B → A under the cues. `X3` (check) is not cued in puzzle play — the puzzle-play feedback set names `SND.X5` only — so `check.ogg` stays unused. |
-| `UI-mode-pick.R1` (C2), `C2` | Mode pick offers Puzzle stream and shows it as Last mode; one tap enters the stream (`NAV.T2`). |
-| `UI-puzzle-play.R1` | The board region: position, edge coordinates, selection and legal marks; deselect clears. |
-| `UI-puzzle-play.R2` | Elo and status: `Elo <n>` always, the result cue (`Solved`, `Wrong move`, `Failed`, `Abandoned`), and the side to move with the puzzle's rating. |
-| `UI-puzzle-play.R3`, `C1`–`C5` | Reveal, Abandon, Leave stream in their own region below the board, plus the board controls (select, place). |
-| `UI-puzzle-play.S1`, `S2`, `S3`, `S4`, `S5` | Default; the named `EX.confirm` panel for C3/C4/C5 with Confirm/Cancel; the save-failure panel over the S1 board; the Q/R/B/N chooser on a last-rank pawn; the danger flash with the selection kept. |
-| `UI-puzzle-play.C6` | The tapped promotion type commits first, then the puzzle judges the move. |
-| `EX.confirm` | Reveal, Abandon, and Leave each name their action and wait for Confirm; Cancel returns to S1 (B1 for leave). |
-| `EX.promote` | S4 chooser in Q/R/B/N order; the move is judged only after the type is committed. |
-| `EX.rejected` | An illegal place flashes `PAL.C8` and is *not* a Wrong move: no reset, no deal. |
-| `EX.save-failure` | A failed write restores the prior committed Elo and raises the S3 panel. |
-| `J-puzzle-session.N1`, `N2`, `S1`, `S2`, `B1` | Starts on mode pick, `C2` into puzzle play, `C5` + Confirm back to mode pick, Cancel stays. |
-| `NAV.T2`, `T9` | Both transitions are scripted and asserted. |
-| `IN.select`, `IN.move`, `IN.deselect`, `B2`, `B3`, `B8`–`B11` | Tap-tap and press-drag-release; a tap of the selected piece keeps the selection; pressing off a destination deselects; a bad drop returns the piece and flashes. |
-| `PAL.C1`, `C2`, `C5`, `C6`, `C8`, `C9`, `C10`, `C11` | Squares, table, select, refusal/check rose, ink, cream panels, legal marks — the copied board view plus the cream HUD and action bar. |
-| `SCH-puzzle-catalog` F1–F13 with ADR-0008 | The fixture slice carries F1–F13 per record (`any_checkmate_wins` derived from `themes`), and the run checks every record: legal FEN, legal move order, and a real mate for each `mateIn1`. |
+| `F-puzzle-catalog.R1`–`R5`, `I1`–`I3`, `X1`–`X2`, `D1` | `catalog_service.gd` reads `fixtures/catalog-slice.txt` one record per line in the recorded format (`R3`); no client catalog, no Elo bands, no sitting-sized inventory (`R1`, `R2`). The deal ladder is `I1`/`D1`: inside ±`CFG.ELO_MATCH_RANGE` and not in `GS.recentSolved`, then widen by `CFG.ELO_BAND_WIDEN` step by step, then allow a recently solved id, widening again — the first rung with any member wins. `R5` (mate-in-one accepts any legal checkmating move) is shown by `demo0002`, whose presented position has two mating moves. `I3` appends the `PuzzleId` to `GS.recentSolved` on `W1` only and trims to `CFG.ELO_RECENT_WINDOW`. `X1` (a record with no move after the first) is not dealt; `X2` (an unreadable slice) deals nothing and leaves `GS.playerElo` alone — the autodrive points the same reader at `fixtures/missing-slice.txt`. |
+| `L-puzzle-stream.K1`–`K4`, `E1` | `main.gd`/`stream_session.gd`: entering the stream deals one puzzle at Player Elo (`K1`); the Solving side moves, required replies play at once, a mate-in-one step accepts any mate (`K2`); the result cue appears, Elo updates once, and exactly one next puzzle is dealt (`K3`); Leave stream keeps Player Elo and scores the open puzzle nothing (`K4`, `E1`). |
+| `DIF.Y1`, `DIF.C1` | `progression.gd`: classic Elo update with `CFG.ELO_K` — `W1` is a win, `L4`/`L5`/`L6` a loss, `E = 1 / (1 + 10^((puzzleElo − playerElo)/400))`, `playerElo += K × (S − E)`. Autodrive: W1 vs 900 → 1007.2, L6 vs 900 → 987.2, even-Elo W1 → 1010, even-Elo L6 → 990. No hand-set Elo anywhere (`DIF.C1`). |
+| `END.W1`, `END.L4`–`L6`, `END.P1` | `stream_session.gd` judges the four endings: sequence completed clean (`W1`), completed after a Wrong move (`L4`), reveal (`L5`), abandon (`L6`). `END.P1` holds because the session has one outcome per puzzle and clears it on the next deal. |
+| `GS.puzzleId`, `GS.puzzleElo`, `GS.requiredSequence`, `GS.sequenceIndex`, `GS.solvingSide`, `GS.wrongMoveOnPuzzle`, `GS.playerElo`, `GS.recentSolved`, `GS.lastMode`, `GS.position`, `GS.sideToMove`, `GS.selectedPiece`, `GS.V1`, `GS.V3`, `GS.H1`, `GS.Q1` | The session object holds exactly those fields; `UCI` strings are the required sequence, `index` is the sequence index, the presented side to move is the solving side, and the wrong-move flag sticks until the next deal. `GS.Q1` is shown by the candidate-set check (two deals can differ, both are members). `GS.V3` holds by construction: the demo contains no advice field. `GS.H1` is realized only in the sense that the demo never shows the recorded line; the reveal action is `L5`, not a line display. |
+| `E-pieces.I1`–`I35` | `chess_rules.gd`, copied from `demos/shared-game/` unchanged in behavior: orthodox moves, check, castling (now gated on the record's castling rights), en passant, promotion, mate and stalemate. Rule generation is not the demo's question; it is reused so the judging is real. |
+| `CFG.ELO_START`, `CFG.ELO_K`, `CFG.ELO_MATCH_RANGE`, `CFG.ELO_RECENT_WINDOW`, `CFG.ELO_BAND_WIDEN`, `CFG.K3` | One `CFG` dictionary in `main.gd` (1000 / 20 / 100 / 20 / 50) feeds both the deal and the Elo update. Untimed throughout: no clock, no advice, nothing but calm practice (`CFG.K3`). |
+| `PRG.A1`, `PRG.P1`–`P3`, `PRG.M1`, `PRG.F1`, `PRG.Z1` | One Player Elo axis advanced only by puzzle results (`A1`, `F1`, `Z1`); Player Elo, last mode, and `GS.recentSolved` are bound when the stream is entered and kept across a leave/re-enter inside the run (`P1`–`P3`, in memory — see assumption A1); Elo commits once per result, `GS.recentSolved` with each `W1` (`M1`). |
+| `FL-mode-pick.P1`, `P3`, `T2`, `T4`, `U1` | `main.gd` opens on a minimal mode pick (`P1`); choosing Puzzle stream enters the stream (`T2`/`P3`); Leave returns there (`T4`, `U1` re-entry deals at the committed Elo). |
+| `UI-mode-pick.C2` | The one live mode button on the demo mode pick. |
+| `UI-puzzle-play.R1`–`R3`, `C1`–`C6`, `S1`–`S5` | Region R1 is the board with edge coordinates, selection, and legal marks; R2 holds `Elo <n>` and the result cue (`Solved`, `Wrong move`, `Failed`, `Abandoned`); R3 holds Reveal, Abandon, Leave stream. C1–C5 drive play, reveal, abandon, and leave; C6 is the in-board promotion chooser; S1 is the default state, S2 the named confirm for reveal/abandon/leave, S4 the promotion chooser (the move is judged only after the type commits), S5 the refusal flash that is not a wrong puzzle move. S3 (`EX.save-failure`) is excluded — see Excluded. |
+| `J-puzzle-session.N1`–`N2`, `S1`–`S2`, `B1` | Mode pick → puzzle play in one tap (`N1`, `S1`), Leave stream + Confirm → mode pick (`S2`, `N2`), Cancel stays in play (`B1`). |
+| `NAV.T2`, `T9` | One tap from the mode pick into the stream; Leave stream is always on screen and returns to mode pick. |
+| `IN.select`, `IN.move`, `IN.deselect`, `IN.activate`, `B2`–`B3`, `B8`–`B11` | `main.gd` pointer input: press a solving-side piece to select and mark legal places, release on a target to move, plain tap-tap also plays, press elsewhere deselects, a drag follows the pointer and a refused drop returns the piece (`S5`, not a wrong move). |
+| `EX.confirm`, `EX.promote`, `EX.rejected`, `EX.save-failure` | One named confirm panel for reveal/abandon/leave; the promotion chooser; the rose refusal flash on an illegal place. `EX.save-failure` is in the set but not reachable here: nothing is saved (A1), so S3 cannot occur. |
+| `CAM-board.F1`–`F2`, `M2` | `board_view.gd`: world axes with local y down toward rank 1, and the puzzle orientation of `M2` — Solving side White faces the player at 0°, Solving side Black turns the board 180° at deal with no motion. Coordinates stay upright and name their own board file/rank. The autodrive round-trips all 64 squares in both orientations and checks a1↔h8. |
+| `SPC.P1`–`P2`, `E1`–`E2`, `L1`–`L4`, `PRJ.P1`, `PRJ.V1`, `PHY.M1`–`M5`, `I1`–`I3` | Shared with the wave-1 demo: 10-unit short axis, 0.85 × 0.85 piece extent, one uniform scale, 72 px unit, board on the frame center, 0.15 s ease-out travel, capture break, promotion morph, drag follow, refusal return, settle window before input reopens. |
+| `PER.R1`–`R4`, `R6`–`R8` | Piece bodies at their `FRM.P2` heights inside the extent, thin select stroke with gold fill, ≥ ¼-square green legal marks (diamonds empty, rings capture), rose check rim plus the check cue, cream coordinate labels inside the wooden bands, refusal flash. The autodrive prints and bounds the measured bodies and coordinate ink boxes every run. |
+| `AES.P1`–`P3`, `MOT.T1`–`T3`, `PAL.C11` | Everything settles inside the 0.15 s budget; types read from silhouette; quiet mahogany table, no chrome; green legal marks. |
+| `SND.X1`–`X3`, `SND.X5`, `SND.M1`–`M2`, `SND.L1`–`L2` | Feather-light select, settle on land, check sting, soft `X5` fail tap on a Wrong move; cafe bed alternates A → B → A with a hard handoff, ducked under cues. Puzzle results are the R2 status cue only — `SND.X4` stays with shared-game endings. |
+| `SCH-puzzle-catalog` F1–F13, ADR-0008 | `fixtures/catalog-slice.txt` holds four records with every F-field, one snapshot id, and `any_checkmate_wins` derived from `themes` when absent. See `fixtures/README.md`. |
 
 ### Excluded
 
 | Spec element or area | Reason |
 |----------------------|--------|
-| Shared game, `L-two-player-game`, `END.L1`–`L3`, `D1`–`D5`, clocks, resign, draw offer, `UI-shared-*` | Another mode (epic #34); the demo question is the solo stream only. |
-| Advice (`F-move-advice`, `CFG.K3`), `GS.adviceBestMove`/`adviceEval` | Forbidden in this mode; wave 3. |
-| Locale (`GS.locale`, `UI-mode-pick.R3`/`C4`, `LOC`) | The copy is demo-authored English (assumption A2); no locale switch, as the wave-1 demo. |
-| `CAM-board.M2` 180° turn for a Black-side puzzle | Out of the demo question; it would need view work the wave-1 board has no path for. The slice only deals White-side puzzles, which is not the same as restricting the stream (see A6). |
-| `EX.loading` (cold open) | No loading gate; assets load from the local asset root. |
-| `UI-puzzle-play.S3` retry | S3 offers Dismiss only, exactly as the screen spec says; no retry button. |
-| Real host catalog service (`CTR-puzzle-catalog-read`, `CMP-catalog-service`) | The demo stands in the fixture slice; serving the snapshot is task #329 and defect #528's territory. |
+| `EX.save-failure`, `UI-puzzle-play.S3` | The demo keeps Player Elo, last mode, and `GS.recentSolved` in memory for the run (assumption A1); a failed save cannot happen, so its state would be faked. |
+| Host serving of the snapshot (#328, #329), the full export | The catalog stays on the host by ADR-0008; the demo reads a four-record recorded-format slice instead, and the slice is never treated as an inventory. |
+| Localization (`en`, `zh-Hant`, `ja`) | Demo copy is literal English; the screen's Copy table is the source for the strings used. |
+| Shared game, clocks, `END.L1`–`L3`, draws | Wave-1 scope; the stream never ends the session. |
+| Advice (`F-move-advice`, `CFG.K3`) | Forbidden in this mode; `GS.V3` holds because nothing advice-shaped exists. |
+| Setup, result, and settings screens, `PAL.C6`, `SND.X4` | Not part of the stream's played surface; the demo has no game result to resolve. |
 
 ## Style
 
@@ -74,16 +54,18 @@ Aesthetics elements the demo expresses (`specs/aesthetics/`).
 
 | Style element | Where it is seen or heard |
 |---------------|---------------------------|
-| `AES.P1` | Every travel is an ease-out inside the 0.15 s budget, and the result cue appears within 0.45 s of the ending. |
-| `AES.P2` | Approved `piece-sprites/*` bodies at the one shared `FRM.P1` scale, readable by silhouette alone. |
-| `AES.P3` | Mahogany board on the `PAL.C5` cafe table, cream HUD panels, rose only for refusals; no tournament chrome. |
-| `PAL.C1`–`C2`, `C5`–`C6`, `C8`–`C11` | See the included table. |
-| `MOT.T1`–`T3` | Travel, settle, and return curves. |
-| `SND.X1`–`X3`, `X5`, `M1`–`M2`, `L1`–`L2` | Soft cue family under the cafe bed; `X5` is the one negative cue and stays `−3 dB`. |
+| `AES.P1` snappy motion | Every travel, return, and morph inside the 0.15 s budget; the autodrive replays the moves and measures nothing slower. |
+| `AES.P2` silhouette-first pieces | Approved `piece-sprites/*` at one uniform `FRM.P1` scale; measured bodies K 0.40 × 0.85, Q 0.40 × 0.79, B 0.39 × 0.76, N 0.48 × 0.75, R 0.40 × 0.68, P 0.38 × 0.62, printed each run and bounded to `SPC.E1`. |
+| `AES.P3` calm cafe mood | Mahogany `board-backgrounds/play-table` on the `PAL.C5` table ground, warm wood palette, cream panels, rose only for check/refusal/failure; no clocks, no advice, no tournament chrome; the cafe bed never stops for a result. |
+| `PAL.C1`, `C2`, `C5`, `C8`, `C9`, `C10`, `C11` | Squares, table, select, rose check/refusal/negative cue, ink text, cream panels, green legal marks. |
+| `MOT.T1`–`T3` | Quad ease-out travel, settle, and return inside the one budget. |
+| `SND.X1`–`X3`, `SND.X5` | Soft wood family; the wrong-move tap is the only negative sound and it plays once per Wrong move; the check sting (`X3`) plays with the rose check rim. `SND.X4` is not used: a puzzle result is R2 status, not a game ending. |
+| `SND.M1`–`M2`, `SND.L1`–`L2` | Cafe beds alternate A → B → A on a hard handoff, under all cues; the select tap sits 5.4 dB under the settle knock. |
+| `PER.R7` contrast | Coordinate labels measured at 6.5 px ink inside the 11.5 px wooden band at 7.38:1; the autodrive prints the boxes and fails if one leaves its band. The 0.26-unit wooden lip keeps the 0.16-unit band entirely outside the 8x8 (defect #592 rework). |
 
 ## Assets
 
-Every asset the demo shows or plays. All are cataloged with a `review-asset` Pass or a person-granted review exemption. Asset root is `game_assets/` (ADR-0005); Ogg Opus masters are served through `audio_runtime/` Vorbis copies (`AST.O3`).
+Every asset the demo shows or plays. All are cataloged with a `review-asset` Pass. Asset root is `game_assets/` (ADR-0005); Ogg Opus masters are served through `audio_runtime/` Vorbis copies (`AST.O3`).
 
 | Asset ID | Handle | Source type | Kind spec | Coverage rule | Tool role (ADR) | Version | State | Review |
 |----------|--------|-------------|-----------|---------------|-----------------|---------|-------|--------|
@@ -102,8 +84,8 @@ Every asset the demo shows or plays. All are cataloged with a `review-asset` Pas
 | 01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855 | board-backgrounds/play-table | AI generation | AK-board-backgrounds | AK-board-backgrounds.V1 | TL.1 (adr-free) | 1 | approved | Pass |
 | 01a151f8-b7d8-7ae6-84af-767ba53d09f6 | sound-effects/touch-select | AI generation | AK-sound-effects | AK-sound-effects.V1 | TL.2 (adr-free) | 1 | approved | Pass |
 | 01a151f8-b7d8-710a-b767-92c9137bfd63 | sound-effects/move-settle | AI generation | AK-sound-effects | AK-sound-effects.V1 | TL.2 (adr-free) | 1 | approved | Pass |
-| 01a151f8-b7d8-7fe3-b94f-e3a562395d96 | sound-effects/end-resolve | AI generation | AK-sound-effects | AK-sound-effects.V1 | TL.2 (adr-free) | 1 | approved | Pass |
-| 01a151f8-b7d8-759c-89c5-e1be5eecb2b2 | sound-effects/puzzle-fail | AI generation | AK-sound-effects | AK-sound-effects.V5 | TL.2 (adr-free) | 1 | approved | Pass — `SND.X5` soft anchor |
+| 01a151f8-b7d8-7e05-9921-e892e9a2e064 | sound-effects/check | AI generation | AK-sound-effects | AK-sound-effects.V1 | TL.2 (adr-free) | 1 | approved | Pass |
+| 01a151f8-b7d8-759c-89c5-e1be5eecb2b2 | sound-effects/puzzle-fail | AI generation | AK-sound-effects | AK-sound-effects.V5 | TL.2 (adr-free) | 1 | approved | Pass (SND.X5 SS1 soft anchor, PO listened) |
 | 01a15200-69b2-7d13-a30d-696fa4ff390b | music/cafe-ambient-a | AI generation | AK-music | AK-music.V1 | TL.3 (adr-free) | 1 | approved | Pass |
 | 01a15200-69b2-7964-a602-ad5b19583125 | music/cafe-ambient-b | AI generation | AK-music | AK-music.V1 | TL.3 (adr-free) | 1 | approved | Pass |
 | 01a15215-15bd-7e3f-a3f8-ffcb1333a0ab | fonts/noto-sans | Third-party | AK-fonts | AK-fonts.V1 | N/A — not generated | 1 | approved | Pass |
@@ -114,7 +96,7 @@ Problems met while producing or registering the assets, each filed as a spec cha
 
 | ID | Finding | Element | Filed as |
 |----|---------|---------|----------|
-| None | The demo consumed cataloged approved assets as-is, including `sound-effects/puzzle-fail`, which is already the approved `SND.X5` soft anchor; no generation or registration was needed. | — | — |
+| None | The demo consumed cataloged approved assets as-is; no generation, registration, or style problem surfaced. The fixture slice is demo content, not an asset, and its records were re-derived until every line was legal (see `fixtures/README.md`). | — | — |
 
 ## Decisions
 
@@ -122,19 +104,18 @@ Design decisions encoded in the code, each traced to the spec.
 
 | ID | Decision as encoded | Spec element | Code location |
 |----|---------------------|--------------|---------------|
-| D1 | The catalog is a hand-cut recorded-format slice (`catalog_slice.json`, six puzzles, ratings 880–1150) that stands in for the host-served snapshot; nothing in the demo fetches or ships the export. | `F-puzzle-catalog.R1`, `ADR-0008`, epic #35 Notes | `catalog_slice.json`, `main.gd` `_load_catalog` |
-| D2 | A deal applies the record's first move and presents that position; `solvingSide` is the side to move there; a Wrong move restores *that* position, not the record's labels. | `F-puzzle-catalog.R3`, `GS.solvingSide`, `GS.sequenceIndex` | `puzzle_stream.gd` `deal`, `_wrong_move` |
-| D3 | The whole move list is checked against the running position at deal time; a record with an unplayable entry is refused (`bad_move`) and deals nothing. | `F-puzzle-catalog.X1` | `puzzle_stream.gd` `deal` |
-| D4 | Selection prefers an unsolved candidate inside ±100 Elo, widens by 50 and/or allows a recent id, and otherwise falls back to any usable record. The pick is random within the set. | `DIF.Y1`, `GS.Q1`, `F-puzzle-catalog.I1` | `puzzle_stream.gd` `_select` |
-| D5 | Elo moves by `20 × (S − E)` with `E` from the puzzle's fixed rating; only W1 appends to `recentSolved`; both persist to `user://puzzle-stream-demo-save.json` after each result and on entry. | `DIF.Y1`, `F-puzzle-catalog.I3`, `PRG.A1`/`M1`/`P3` | `puzzle_stream.gd` `_apply_ending`, `save_document`, `main.gd` `_commit_save` |
-| D6 | A mate-in-one step accepts any checkmating move (found by applying each legal move and asking the rules for mate); the recorded mate is not required. | `F-puzzle-catalog.R5`, `END.W1` | `puzzle_stream.gd` `_matches_expected` |
-| D7 | A Wrong move resets the board and shows the `Wrong move` cue; it does not deal. Reveal and Abandon confirm, then show `Failed` / `Abandoned`, then deal. | `L-puzzle-stream.K2`, `END.L4`–`L6` | `main.gd` `_apply_place`, `_confirm_action`, `_after_ending` |
-| D8 | Leave stream stops the stream with the open puzzle unscored; the mode pick returns with the Elo unchanged. | `L-puzzle-stream.K4`/`E1`, `NAV.T9`, `PRG.Z1` | `puzzle_stream.gd` `leave`, `main.gd` `_confirm_action` |
-| D9 | A place the piece rules refuse flashes the rose rim and is not a Wrong move: no reset, no deal. | `EX.rejected`, `UI-puzzle-play.S5`, `PER.R8` | `main.gd` `_place` |
-| D10 | A last-rank pawn opens the Q/R/B/N chooser; the judged move runs only after the type is tapped. | `EX.promote`, `UI-puzzle-play.C6`/`S4`, `I33` | `main.gd` `_place`, `_pick_promo_at` |
-| D11 | The HUD sits above the board and the Reveal/Abandon/Leave actions below it, both clear of the 8×8 and inside the frame; the run asserts the rectangles. | `UI-puzzle-play.R1`–`R3`, `SPC.P1` | `main.gd` `_setup_hud`, `_setup_actions`, `_scenario_board_style` |
-| D12 | The wrong-move cue is `SND.X5` (`sound-effects/puzzle-fail`) at −3 dB; the select cue stays 5.4 dB under the settle knock. | `SND.X5`, `SND.X1`–`X2`, `SND.L2` | `main.gd` `SFX_IDS`, `CUE_GAIN_DB` |
-| D13 | A failed save restores the last committed document (Elo, Last mode, `recentSolved`) and opens the S3 panel; Dismiss returns to S1. | `EX.save-failure`, `UI-puzzle-play.S3`, `PRG.M1` | `main.gd` `_commit_save`, `_dismiss_save_failure` |
+| D1 | The deal ladder is a candidate set, and the deal is its first member: prefer ids outside `GS.recentSolved`, in band then widening by `CFG.ELO_BAND_WIDEN` step by step; only then allow a recently solved id, again in band then widening. Widen is a numeric window growth, never a named band. | `DIF.Y1`, `F-puzzle-catalog.I1`, `D1`, `GS.Q1` | `catalog_service.gd` `candidate_set`/`deal`, `_in_band` |
+| D2 | A deal presents the position after the record's first (opponent) move; the required sequence is the rest, alternating solving side and required reply; odd steps play at once for the other side. | `F-puzzle-catalog.R3`, `L-puzzle-stream.K2`, `I2` | `stream_session.gd` `open_puzzle`, `try_move` |
+| D3 | A Wrong move costs nothing on the same puzzle: the session restores the stored presented position, resets the index, sets `GS.wrongMoveOnPuzzle`, plays the soft fail tap once, and deals nothing. The retried sequence then scores `L4`. | `L-puzzle-stream.K2`, `END.L4`, `END.P1`, `SND.X5` | `stream_session.gd` `try_move`, `start_pos`; `main.gd` `_commit_player_move` |
+| D4 | Mate-in-one (F13 `any_checkmate_wins`, derived from `themes` when absent) matches the recorded first step or any legal checkmating move; the required sequence itself is never rewritten. | `F-puzzle-catalog.R5`, `I3` | `stream_session.gd` `try_move` (`_is_checkmate`), `catalog_service.gd` `open` |
+| D5 | Elo is committed once per result by the session, then exactly one next puzzle is dealt; the progression math lives beside the session and returns values the session commits rather than computing them inline. | `DIF.Y1`, `PRG.M1`, `L-puzzle-stream.K3` | `progression.gd` `score`, `stream_session.gd` `score`, `main.gd` `_finish` |
+| D6 | Leave stream (confirmed) keeps Player Elo, clears the open puzzle without scoring `L6`, and returns to mode pick; re-entering deals at the kept Elo and history. | `L-puzzle-stream.K4`, `E1`, `PRG.P1`, `J-puzzle-session.B1` | `main.gd` `_leave`, `_enter_stream` |
+| D7 | The puzzle view turns 180° at deal when the Solving side is Black: pieces, overlays, and the input mapping use the turned point, while the wooden bevel and squares stay as drawn (they are symmetric) and the coordinate labels stay upright, naming their own board file/rank. | `CAM-board.M2`, `F1`–`F2`, `PER.R7` | `board_view.gd` `place_point`, `set_orientation`, `index_from_unit`, `CoordLabels.spots` |
+| D8 | A place the piece rules refuse is `EX.rejected` — the piece returns, the square flashes rose, and the selection clears — and is never judged as a wrong puzzle move. | `EX.rejected`, `UI-puzzle-play.S5`, `PER.R8`, `IN.deselect` | `main.gd` `_release_at` |
+| D9 | Promotion opens the in-board chooser and only judges the move after the type commits. | `UI-puzzle-play.S4`, `EX.promote`, `C6` | `main.gd` `_execute_move`, `_pick_promo_at`, `_finish_promoted_move` |
+| D10 | The result is a status cue in R2, not a screen and not an end cue: `Solved`/`Failed`/`Abandoned` text for one beat, then the next deal. `SND.X4` stays with shared-game endings. | `UI-puzzle-play.R2`, `SND` X4/X5 rows, `AES.P3` | `main.gd` `_finish`, `_set_cue` |
+| D11 | The cafe bed alternates A → B → A on a hard handoff and is never stopped by a result or a leave. | `SND.M1`–`M2`, `SND.L1`–`L2` | `main.gd` `_setup_audio`, `_on_bed_finished`, `_leave` |
+| D12 | Castling is offered only when the record's castling-rights field still grants it and the king and corner rook are unmoved, so a fixture position can never castle without rights. | `E-pieces.I1`–`I35` (rules reused unchanged) | `chess_rules.gd` `castle_rights`, `fen_codec.gd` |
 
 ## Assumptions
 
@@ -142,41 +123,34 @@ Non-blocking gaps filled for the demo only (tuning, copy, layout details; never 
 
 | ID | Assumption | Why not blocking | Spec it belongs in |
 |----|------------|------------------|--------------------|
-| A1 | The fixture slice's six puzzles are hand-cut: their FENs, moves, and ratings are demo data, not snapshot bytes. | Epic #35's Notes allow a small recorded-format fixture stand-in and keep the host decision unchanged. | `specs/design/features/puzzle-catalog.md` (demo note) |
-| A2 | Screen copy is the `puzzle-play.md` and `mode-pick.md` Copy table in English only; the status line "White/Black to move · puzzle <rating>" is demo-added. | Locale is out of scope (task #334 owns the copy); the wording mirrors the Copy table. | `specs/ux/screens/puzzle-play.md` (status-line wording), `specs/ux/localization.md` |
-| A3 | The puzzle's rating shows beside the side to move rather than only in a tooltip. | R2 requires Player Elo and the result cue; the puzzle rating is extra context, not a required element. | `specs/ux/screens/puzzle-play.md` (R2 note) |
-| A4 | The next deal waits 0.45 s after the result cue. | R2 only says the cue shows "after W1, L4–L6 before next deal"; the pause length is untuned. | `specs/ux/screens/puzzle-play.md` (cue timing) |
-| A5 | Reveal shows only the `Failed` cue; the demo does not animate the remaining solution on the board. | K2/L5 require the ending and the cue; the demo question does not need the reveal animation. | `specs/design/loops/puzzle-stream.md` (reveal presentation) |
-| A6 | The demo's slice holds White-side puzzles only, so board orientation never turns; the stream itself still deals by rating alone. | A Black-side deal needs the `CAM-board.M2` 180° turn, which is view work outside the demo question. | `specs/view/cameras/board.md` (`CAM-board.M2` demo note) |
-| A7 | `DEMO_FORCE_SAVE_FAIL=1` stands in for an unwritable save, so S3 can be shown without a broken disk. | The save path is a demo-local `user://` file; the failure trigger is a test seam. | `specs/technical/` (`SEQ-puzzle-result-commit` failure path) |
+| A1 | Player Elo, last mode, and `GS.recentSolved` live in memory for the run: re-entering the stream keeps them, quitting the process forgets them. No save, so `EX.save-failure` (S3) cannot occur. | The demo question is the deal, the reset, and the drift inside one sitting; the commit path of `PRG.P1`–`P3` is main-code work with its own durability row. | `specs/technical/components/puzzle-session.md` (commit/restore path), `specs/design/progression.md` (demo note) |
+| A2 | The order of the two relax rules is widen-not-recent fully first, then allow-recent with widening again. | `DIF.Y1`/`I1` say "widening and/or allowing a recent id until one is found" without ordering the two; any order yields a legal in-window pick as soon as the slice has one. | `specs/design/difficulty.md` (`DIF.Y1` relax order) |
+| A3 | Demo-authored copy beyond the `UI-puzzle-play` Copy table: the `Your move` prompt, `No puzzle available` for `X1`/`X2`, `Elo <n>` formatting, and the mode pick's `Puzzles` / `Shared game (stub)` labels. | The screen's Copy table fixes the result cues, the confirm strings, and the actions, which are used verbatim; the prompt and the no-puzzle line are demo chrome. | `specs/ux/screens/puzzle-play.md` (R2 copy), `specs/ux/screens/mode-pick.md` |
+| A4 | The board turns by drawing pieces, overlays, and input at the turned point rather than rotating the view node, and the coordinate labels stay upright rather than upside down. | `CAM-board.M2` fixes which side faces the player, not how the turn is implemented; the squares and bevel are symmetric, so the shown board is identical. | `specs/view/cameras/board.md` (`M2` implementation note) |
+| A5 | The demo opens on a mode pick with one live mode; leaving the stream returns to it without re-dealing the last puzzle as recent. | `FL-mode-pick.P1`/`T2`/`T4` and `J-puzzle-session.N1`–`N2` need a mode pick to exist; the demo only needs the one path into the stream. | `specs/ux/screens/mode-pick.md` (demo note) |
+
+None of A1–A5 blocks the demo question. A1 and A2 are the two that touch main-code behavior and should be confirmed and written into `specs/` before implementation leaves on #332 and #331 rely on them.
 
 ## Run
 
 - **Setup**: checkout the repo; the demo is a standalone Godot project at `demos/puzzle-stream/` (its own `project.godot`). It loads cataloged assets by ID at runtime from `game_assets/` and `audio_runtime/` at the repo root (ADR-0005), so it must run with the repo checkout intact.
 - **Import once** (fresh checkout): `godot --headless --path demos/puzzle-stream --import --quit`
-- **Run**: `godot --path demos/puzzle-stream`
-  - Mode pick: tap **Puzzle stream** (shown as Last) to enter; **Quit** ends the session.
-  - Puzzle play: tap a piece of the Solving side, then a marked square (or drag it) to place. **Reveal**, **Abandon**, and **Leave stream** each ask first; **Confirm** runs the action, **Cancel** stays.
-  - On a last-rank pawn, tap the promotion type; the move is judged after the tap.
-- **Headless smoke (autodrive)**: `godot --headless --path demos/puzzle-stream` — prints `[demo] PASS` on success. It drives, in order:
-  1. mode pick → C2 → a real `DIF.Y1` deal at `CFG.ELO_START` (asserted inside the band);
-  2. a Wrong move on `0002` (a legal non-required move) — the board returns to the deal, `sequenceIndex` is 0, the same puzzle stays open, Elo does not move — then the completion is `END.L4` and Elo drops;
-  3. `END.L5` (reveal) on `0003` and `END.L6` (abandon) on `0005`, each lowering Elo and setting its cue;
-  4. `END.W1` on the mate-in-one `0001`, solved with `Qb8#` rather than the recorded `Ra8#`, raising Elo and appending the id to `recentSolved`;
-  5. `EX.rejected`: an illegal place is refused, is not a Wrong move, and leaves the puzzle open;
-  6. Leave stream through `EX.confirm`: back on mode pick, Elo kept, the open puzzle unscored;
-  7. `EX.promote`: a last-rank pawn asks for the type, then the place is judged;
-  8. the fixture slice: every record's FEN opens, its moves are legal in order, and each `mateIn1` is a real mate;
-  9. the copied board view's own measurements (piece bodies against `SPC.E1`/`FRM.P2`, coordinate labels against `PER.R7`) and the HUD/action rectangles against `UI-puzzle-play.R1`–`R3`;
-  10. persistence: Elo, Last mode, and `recentSolved` round-trip, `recentSolved` trims to `CFG.ELO_RECENT_WINDOW`, and a failed write keeps the prior Elo and reaches S3.
-- **Screenshots (graphical run)**: `DEMO_AUTODRIVE=1 DEMO_SHOT_DIR=/tmp/shots godot --path demos/puzzle-stream` saves `demo-puzzle-stream-mode-pick.png` and `demo-puzzle-stream-puzzle-play.png`.
+- **Run**: `godot --path demos/puzzle-stream` — tap `Puzzle stream`, then play: tap a solving-side piece and a legal square (or drag it), Reveal / Abandon / Leave stream after confirming.
+- **Headless smoke (autodrive)**: `godot --headless --path demos/puzzle-stream` (or `DEMO_AUTODRIVE=1` in a windowed run, which also plays the motion paths) — prints `[demo] PASS` on success and exits non-zero on any failed check. It covers:
+  - the slice's four records (F1–F13 fields, snapshot id, derived mate-in-one mark), `X1` (a record with no step after the first is not dealt) and `X2` (an unreadable path deals nothing and leaves Player Elo alone);
+  - the deal ladder at Player Elo 1000 — in-band candidates, the 1150 id only after widening, recent ids skipped, a recent deal still preferring the band, and both deals being candidate-set members (`GS.Q1`);
+  - `CAM-board.M2` round-tripping all 64 squares in both orientations, the measured piece bodies, and the 16 coordinate ink boxes;
+  - the session battery: a clean solve (`W1` → Elo 1007.2), a wrong move that resets the board and index without ending the stream, the retried sequence scoring `L4` (Elo down), a mate-in-one accepted by its alternate mating move (`R5`), reveal (`L5`), abandon (`L6` → Elo 987.2), leave (`K4`) keeping Elo, and the even-Elo formula and recent-window trim;
+  - the demo question end to end through the view path: deal at 1000, solve, Elo drifts up, the next deal is the in-band mate-in-one, a wrong move resets it, the retried loss drifts Elo down, and leaving keeps Elo.
+- **Screenshots**: not produced by this demo; run it windowed to see it.
 
 ## Known limitations
 
-- The catalog is a six-puzzle fixture slice, and the autodrive narrows the slice per case so each rule can be shown; the interactive run deals from the whole slice.
-- A real host read can fail; the demo's stand-in cannot, so `F-puzzle-catalog X2` is only shown by the deal's refusal paths (`no_record`, `empty_solution`, `bad_move`).
-- The board never turns: no Black-side puzzle is in the slice (A6).
-- The reveal shows the failure cue but not the remaining moves (A5).
-- Persistence is a demo-local JSON file, not the game's `SEQ-persist-document`; the failure trigger is the `DEMO_FORCE_SAVE_FAIL` seam (A7).
-- No locale switch, no shared game, no advice, no clocks — out of the demo question.
-- Audio: under headless runs the audio devices may be absent, so cues and beds no-op silently; loading them is still exercised.
+- No persistence: Player Elo, last mode, and `GS.recentSolved` reset when the process exits (A1), so `EX.save-failure`/S3 never appears.
+- The fixture slice is four records; the deal ladder is real but shallow — the widen rung is reached only when the three in-band ids are all recently solved, and two deals in a row may legitimately repeat a puzzle that was played but not solved.
+- No localization: all copy is the English Copy table plus the demo chrome listed in A3.
+- The mode pick is a stub with one live mode; there is no Setup, Result, or Settings screen, and no Shared game.
+- Advice, clocks, and every shared-game ending are absent by scope, not by omission.
+- The reveal action scores `L5` and deals the next puzzle; it does not display the recorded line (`GS.H1` stays hidden).
+- The FEN reader takes the board, the side to move, and the castling field; an en passant target and the halfmove/fullmove counters are ignored. A record whose line needed an en passant capture would therefore fail to apply its first move and be treated as not dealt (`X1`); no fixture record is like that.
+- Audio is muted in the headless smoke (the dummy driver only leaks playbacks at exit); a windowed run plays cues and the cafe bed.

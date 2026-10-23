@@ -1,9 +1,10 @@
 class_name DemoBoardView
 extends Node2D
-## Board, pieces, motion, and overlays for demo #63, in SPC world units.
+## Board, pieces, motion, and overlays for demo #335, in SPC world units.
 ## The origin sits at the board's top-left on screen; local x runs files a-h
-## and local y runs down toward rank 1, realizing CAM-board.M2 for the White
-## seat (White's near edge faces Bottom; rotation 0).
+## and local y runs down toward rank 1. CAM-board.M2 (puzzle): the Solving side
+## Black rotates the whole view 180° about the board center so that side's near
+## edge faces the player; White solves at rotation 0. Cut at deal, no motion.
 
 const COLOR_LIGHT := Color("E8D5B5")   # PAL.C1
 const COLOR_DARK := Color("8B5A3C")    # PAL.C2
@@ -109,6 +110,7 @@ var _tallest_body_px := 0.0  # the King's opaque body height, px
 var _pieces: Dictionary = {}   # square index -> Node2D
 var _drag_square := -1
 var _motion_busy := false
+var flipped := false           # CAM-board.M2: Solving side Black turns the view over
 var _probe_hidden := {}
 
 
@@ -252,6 +254,7 @@ func _build_coords() -> void:
 	coords.name = "Coordinates"
 	coords.font = font_resource
 	coords.font_px = coord_font_px()
+	coords.flipped = flipped   # CAM-board.M2: labels stay upright when turned over
 	coords.size = Vector2.ONE * (COORD_CANVAS_UNITS * COORD_UNIT_PX)
 	coords.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	coords.scale = Vector2.ONE / COORD_UNIT_PX
@@ -303,7 +306,7 @@ func measure_coord_labels() -> Array:
 	var drawn := _drawn_band_rects()
 	if drawn.size() != 2:
 		problems.append("coordinate bands not drawn: %d of 2 found" % drawn.size())
-	for spot in CoordLabels.spots():
+	for spot in CoordLabels.spots(flipped):
 		var text: String = spot["text"]
 		var rect := CoordLabels.text_rect(font_resource, text, spot["at"] as Vector2, px)
 		var band_name: String = spot["band"]
@@ -362,12 +365,6 @@ func set_coord_probe_visibility(on: bool) -> void:
 		_probe_hidden.clear()
 
 
-## Rendered-ink check for the graphical autodrive: finds the coordinate ink
-## (cream PAL.C10) in the frame and fails when any of it lands inside the 8x8, on
-## the light PAL.C1 margin (1.28:1), or off the board's bevel, or when a band
-## carries no ink. This measures what the renderer drew, unlike
-## measure_coord_labels() which checks geometry; set_coord_probe_visibility()
-## hides the piece sprites first, so every cream pixel here is coordinate ink.
 ## Rendered-ink check for the graphical autodrive: the only allowed home for the
 ## coordinate ink is the two wooden bands, and each band must carry ink. It fails
 ## on cream PAL.C10 found inside the 8x8 (PER.R7 forbids the ink on any square;
@@ -436,7 +433,6 @@ func _is_ink_on_square(pixel: Vector2, square: Rect2) -> bool:
 	return square.has_point(pixel)
 
 
-
 ## One rectangle in board units as canvas pixels (the unit of the coordinate canvas).
 static func _canvas_rect(lo: Vector2, hi: Vector2) -> Rect2:
 	return Rect2(lo * COORD_UNIT_PX, (hi - lo) * COORD_UNIT_PX)
@@ -465,31 +461,31 @@ func _is_coord_ink(color: Color) -> bool:
 class CoordLabels extends Control:
 	var font: Font
 	var font_px := 0.0    # the PER.R7 clamped size, set when the labels are built
+	var flipped := false  # CAM-board.M2: a turned-over board keeps the labels upright
 
 	## The file and rank label spots: centred along their column/row and centred
 	## in the band they sit on. Canvas x runs files (0 at file a) and canvas y
 	## runs ranks (0 at rank 8), matching the board's own axes; the coordinate
 	## bands lie on the lip outside the 8x8, so their rectangles run negative in
-	## x (ranks) or past 8 in y (files).
-	static func spots() -> Array:
-		var left := DemoBoardView._canvas_rect(
-			Vector2(-RIM_OUTER, -RIM_OUTER),
-			Vector2(-RIM_OUTER + BEVEL_LIP_INK_BAND, 8.0 + RIM_OUTER))
-		var bottom := DemoBoardView._canvas_rect(
-			Vector2(-RIM_OUTER, 8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND),
-			Vector2(8.0 + RIM_OUTER, 8.0 + RIM_OUTER))
+	## x (ranks) or past 8 in y (files). A flipped board labels each screen
+	## column/row with its own board file/rank, so the letters and numbers stay
+	## upright while the squares turn over (CAM-board.M2).
+	static func spots(flipped: bool) -> Array:
 		var out: Array = []
-		for file in range(8):
+		for screen_file in range(8):
+			var file_index := 7 - screen_file if flipped else screen_file
 			out.append({
-				"text": String.chr(97 + file),
-				"at": Vector2((float(file) + 0.5) * COORD_UNIT_PX, bottom.get_center().y),
+				"text": String.chr(97 + file_index),
+				"at": Vector2((float(screen_file) + 0.5) * COORD_UNIT_PX,
+					(8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND / 2.0) * COORD_UNIT_PX),
 				"band": "BevelLipBottomInk",
 			})
-		for rank_index in range(1, 9):
+		for screen_row in range(8):
+			var rank := screen_row + 1 if flipped else 8 - screen_row
 			out.append({
-				"text": str(rank_index),
-				"at": Vector2(left.get_center().x,
-					(float(8 - rank_index) + 0.5) * COORD_UNIT_PX),
+				"text": str(rank),
+				"at": Vector2((-RIM_OUTER + BEVEL_LIP_INK_BAND / 2.0) * COORD_UNIT_PX,
+					(float(screen_row) + 0.5) * COORD_UNIT_PX),
 				"band": "BevelLipLeftInk",
 			})
 		return out
@@ -507,7 +503,7 @@ class CoordLabels extends Control:
 			Vector2(width, ascent + descent))
 
 	func _draw() -> void:
-		for spot in spots():
+		for spot in spots(flipped):
 			_stamp(str(spot["text"]), spot["at"] as Vector2)
 
 	func _stamp(text: String, at: Vector2) -> void:
@@ -535,10 +531,31 @@ static func square_center(index: int) -> Vector2:
 	return Vector2(float(index % 8) + 0.5, float(7 - index / 8) + 0.5)
 
 
-static func index_from_unit(unit_pos: Vector2) -> int:
+## CAM-board.M2: the puzzle view rotates 180° about F1 (4, 4) so the Solving
+## side's near edge faces the player. Squares and the wooden bevel are symmetric,
+## so only the piece/overlay positions and the input mapping turn over.
+func place_point(index: int) -> Vector2:
+	var c := square_center(index)
+	if flipped:
+		return Vector2(8.0 - c.x, 8.0 - c.y)
+	return c
+
+
+func set_orientation(flipped_board: bool) -> void:
+	flipped = flipped_board
+	var coords := get_node_or_null("Coordinates")
+	if coords != null:
+		coords.set("flipped", flipped)
+		coords.queue_redraw()
+
+
+func index_from_unit(unit_pos: Vector2) -> int:
 	## Unit-space point (relative to the board origin) -> square; -1 off board.
-	var f := int(floorf(unit_pos.x))
-	var row := int(floorf(unit_pos.y))
+	var point := unit_pos
+	if flipped:
+		point = Vector2(8.0 - unit_pos.x, 8.0 - unit_pos.y)
+	var f := int(floorf(point.x))
+	var row := int(floorf(point.y))
 	if f < 0 or f > 7 or row < 0 or row > 7:
 		return -1
 	return (7 - row) * 8 + f
@@ -562,7 +579,7 @@ func setup_position(pos: Dictionary) -> void:
 
 func _make_piece(index: int, code: String) -> void:
 	var node := Node2D.new()
-	node.position = square_center(index)
+	node.position = place_point(index)
 	var sprite := Sprite2D.new()
 	sprite.name = "Sprite2D"  # demos move code finds it by name
 	sprite.centered = true
@@ -666,7 +683,7 @@ func set_selection(selected: int, legal: Array, capture_targets: Array) -> void:
 	if selected < 0 or not _pieces.has(selected):
 		_select_frame.visible = false
 		return
-	var c := square_center(selected)
+	var c := place_point(selected)
 	var half := 0.5 - SELECT_STROKE * 0.5
 	_select_frame.clear_points()
 	_select_frame.add_point(c + Vector2(-half, -half))
@@ -675,7 +692,7 @@ func set_selection(selected: int, legal: Array, capture_targets: Array) -> void:
 	_select_frame.add_point(c + Vector2(-half, half))
 	_select_frame.visible = true
 	for target in legal:
-		var mark_c := square_center(int(target))
+		var mark_c := place_point(int(target))
 		if capture_targets.has(int(target)):
 			var ring := Line2D.new()
 			ring.width = LEGAL_CAPTURE_W
@@ -719,7 +736,7 @@ func set_check_rim(king_index: int) -> void:
 
 
 func _rim_square(rim: Line2D, index: int) -> void:
-	var c := square_center(index)
+	var c := place_point(index)
 	var half := 0.5 - rim.width * 0.5
 	rim.clear_points()
 	rim.add_point(c + Vector2(-half, -half))
@@ -759,7 +776,7 @@ func return_piece(index: int) -> void:
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUAD)
-	tween.tween_property(node, "position", square_center(index), RETURN_S)
+	tween.tween_property(node, "position", place_point(index), RETURN_S)
 	tween.tween_callback(_end_motion)
 	node.z_index = 0
 
@@ -803,7 +820,7 @@ func move_piece(mover: int, dest: int, capture_index: int, promo_kind: String, d
 	tween.set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUAD)
-	tween.tween_property(node, "position", square_center(dest), dur)
+	tween.tween_property(node, "position", place_point(dest), dur)
 	for frag in fragments:
 		tween.tween_property(frag, "modulate:a", 0.0, dur)
 	if promo_kind != "":
@@ -837,9 +854,9 @@ func castle_move(king_from: int, king_to: int, rook_from: int, rook_to: int, dur
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUAD)
 	if king_node != null:
-		tween.tween_property(king_node, "position", square_center(king_to), dur)
+		tween.tween_property(king_node, "position", place_point(king_to), dur)
 	if rook_node != null:
-		tween.tween_property(rook_node, "position", square_center(rook_to), dur)
+		tween.tween_property(rook_node, "position", place_point(rook_to), dur)
 	await tween.finished
 	_motion_busy = false
 
@@ -851,7 +868,7 @@ func codes_match(index: int) -> bool:
 ## I33/I34: four upright sprites in a 2x2 on the destination square.
 func show_promo_choice(dest_index: int, color: String) -> void:
 	hide_promo_choice()
-	var c := square_center(dest_index)
+	var c := place_point(dest_index)
 	var offsets := [Vector2(-0.3, -0.3), Vector2(0.3, -0.3), Vector2(-0.3, 0.3), Vector2(0.3, 0.3)]
 	for i in range(PROMOTE_ORDER.size()):
 		var kind := str(PROMOTE_ORDER[i])
