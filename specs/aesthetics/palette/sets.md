@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../../.agents/specs/rules/aesthetics/palette.md).
 
-Sets `S1`–`S3` of [`palette.md`](../palette.md). Swatches `C1`–`C11` are defined there.
+Sets `S1`–`S3` of [`palette.md`](../palette.md). Swatches `C1`–`C11` are in [`swatches.md`](swatches.md).
 
 | ID | Context | Swatches | Color limit |
 |----|---------|----------|-------------|
