@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `GS`
 - **Glossary terms**: [Puzzle](../../glossary.md), [Required sequence](../../glossary.md), [Solving side](../../glossary.md)
 
-Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other session fields.
+Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other run fields.
 
 ## Coverage
 

@@ -5,7 +5,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 - **Kind**: entity — in-memory session play
 - **Owner**: [`CMP-shared-game-session`](../components/shared-game-session.md) (Shared) and [`CMP-puzzle-session`](../components/puzzle-session.md) (Puzzle) create and destroy it; [`CMP-chess-rules`](../components/chess-rules.md) is its `F1` / `F2` writer
 - **Serves**: Shared game; Puzzle stream; Advice marks
-- **Informed by**: [`fields-play`](../../design/game-state/fields-play.md); F-move-advice state
+- **Informed by**: [`fields-play`](../../design/game-state/fields-play.md); [Run](../../design/glossary/session.md) scope; F-move-advice state
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md)
 
 ## Fields
@@ -19,8 +19,8 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | F5 | advice_eval | int cp from White or none | no | With F4 |
 | F6 | game_ended | bool + reason | yes | End-conditions (`END.*` id) |
 | F7 | mode | shared / puzzle | yes | Session |
-| F8 | repetition_history | occurrence keys (position, side, castling, en passant) | yes | `END.D3`; Domain; clear only on new session |
-| F9 | fifty_move_count | int half-moves since capture or pawn | yes | `END.D4`; Domain; clear on capture, pawn move, or new session |
+| F8 | repetition_history | occurrence keys (position, side, castling, en passant) | yes | `END.D3`; Domain; clear only on new run |
+| F9 | fifty_move_count | int half-moves since capture or pawn | yes | `END.D4`; Domain; clear on capture, pawn move, or new run |
 
 ## Invariants
 
@@ -30,7 +30,7 @@ Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/
 | I2 | F4/F5 never gate F1 updates |
 | I3 | Only side-to-move clock runs when timed |
 | I4 | Only the active L2 session mutates F3, F6, F7; F4/F5 are written only by [`CMP-advice-client`](../components/advice-client.md) (never gating position, per I2) |
-| I5 | F8 lasts the game; F9 is 0–100 and resets on capture, pawn move, or new session |
+| I5 | F8 lasts the game; F9 is 0–100 and resets on capture, pawn move, or new run |
 
 ## Lifecycle
 
