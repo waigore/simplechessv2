@@ -55,7 +55,7 @@ func _check_sequences() -> String:
 	return _check_sequence_outcomes()
 
 
-## Sequence steps share one session, so this half runs after the first K2 step is proven.
+## Sequence steps share one session; this half runs after the first K2 step passes.
 func _check_sequence_outcomes() -> String:
 	var no_wrong := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
 	no_wrong.deal()
