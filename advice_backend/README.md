@@ -22,6 +22,39 @@ must not be reachable without that TLS terminator. The client opens advice
 traffic only to its configured endpoint, carrying the API key (ADR-0010).
 There are no accounts and no player state.
 
+Both routes deploy from a clean checkout with one command, which prepares the
+catalog snapshot if asked and runs the integrity checks before serving:
+
+```bash
+PUZZLE_CATALOG_CSV=/srv/lichess_puzzles.csv \
+PUZZLE_CATALOG_PATH=/srv/puzzle_snapshot.json \
+ADVICE_API_KEY=<configured key> \
+.github/scripts/deploy_advice_backend.sh
+```
+
+## Puzzle catalog route
+
+The catalog is a second route on this server (ADR-0013,
+[`CMP-catalog-service`](../specs/technical/components/catalog-service.md)). It
+stores the ADR-0008 snapshot and runs `DIF.Y1` selection itself, so the client
+never receives a catalog, a page, or a file.
+
+```bash
+export PUZZLE_CATALOG_PATH=/srv/puzzle_snapshot.json   # unset: deals fail, advice runs
+export PUZZLE_CATALOG_RATE_LIMIT=30                    # T11, per key per minute
+```
+
+Prepare the snapshot from the Lichess export beside the server:
+
+```bash
+python3 -m advice_backend.catalog build /srv/lichess_puzzles.csv /srv/puzzle_snapshot.json
+python3 -m advice_backend.catalog check /srv/puzzle_snapshot.json
+```
+
+`check` enforces `SCH-puzzle-catalog` I1–I3: the served snapshot's record
+count, every record's moves length, and the mate-in-one mark. A new snapshot is
+a new ADR-0008 decision; the served one is never edited in place (L2–L3).
+
 ## Wire
 
 `POST /advice` with `{"api_key", "fen", "time_ms"}` (`CTR-advice-stream` O1).
@@ -29,6 +62,15 @@ The response is `application/x-ndjson`, chunked: one `advice_update` per line
 (`best_move_uci`, `eval_cp` in White centipawns, optional `mate_in`, `depth`,
 `time_ms`), then one `{"reason": "cap" | "cancel" | "error"}`. A missing or
 wrong key answers `401` with `{"reason": "error"}` without starting a search.
+
+`POST /catalog/deal` with `{"api_key", "player_elo", "recent_solved"}`
+(`CTR-puzzle-catalog-read` O1). A success body is exactly one
+`SCH-puzzle-catalog` F1–F13 record — never a list, a page, or the export. A
+missing or wrong key answers `401`, a malformed request `400`, and a
+rapid-fire refusal or empty snapshot `503`, each with no record, so nothing is
+dealt and `GS.playerElo` is unchanged (`F-puzzle-catalog` X2, `FAIL.T14`).
+There is no list, page, or file operation; every other path is `404`. The raw
+export is never a public static file and never enters the client bundle.
 
 The search stops at the earlier of the client's `time_ms` and
 `ADVICE_TIME_MS` (`CFG.ADVICE_TIME_MS`, default 2000) — F-move-advice R7 and

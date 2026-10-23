@@ -19,7 +19,7 @@ import time
 from dataclasses import dataclass, field
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 from .protocol import (
     DEFAULT_ADVICE_TIME_MS,
@@ -32,6 +32,12 @@ from .protocol import (
     parse_request,
 )
 from .stockfish import StockfishSearch, UpdateSink, resolve_engine_command
+
+if TYPE_CHECKING:
+    from .catalog import CatalogService
+
+# CTR-puzzle-catalog-read O1: the deal route on this server's host (ADR-0013).
+CATALOG_PATH = "/catalog/deal"
 
 LOGGER = logging.getLogger("advice_backend")
 
@@ -154,13 +160,21 @@ class _RequestState:
 
 
 class AdviceHandler(BaseHTTPRequestHandler):
-    """HTTP binding for one advice stream: read, frame, and write one stream."""
+    """HTTP binding for one advice stream: read, frame, and write one stream.
+
+    The same handler answers the catalog deal route (ADR-0013): ``catalog`` is
+    set on the bound handler when a snapshot is configured.
+    """
 
     service: AdviceService
+    catalog: CatalogService | None = None
 
     protocol_version = "HTTP/1.1"
 
     def do_POST(self) -> None:  # noqa: N802 - http.server API
+        if self.path == CATALOG_PATH:
+            self._deal()
+            return
         if self.path != ADVICE_PATH:
             self.send_error(HTTPStatus.NOT_FOUND)
             return
@@ -172,6 +186,36 @@ class AdviceHandler(BaseHTTPRequestHandler):
             self._send_json(HTTPStatus.UNAUTHORIZED, end_message(END_ERROR))
             return
         self._stream(request)
+
+    def _deal(self) -> None:
+        """CTR-puzzle-catalog-read O1: one record, or no record (O2, FAIL.T14).
+
+        The route exists whether or not a snapshot is configured: an unset
+        catalog is a failed read for that deal, not a missing endpoint.
+        """
+        from .catalog import parse_deal_request
+
+        length = int(self.headers.get("Content-Length") or 0)
+        raw = self.rfile.read(length) if length > 0 else b""
+        try:
+            request = parse_deal_request(json.loads(raw.decode("utf-8") or "null"))
+        except (UnicodeDecodeError, ValueError) as failure:
+            LOGGER.warning("catalog_error reason=bad_request detail=%s", failure)
+            self._send_json(HTTPStatus.BAD_REQUEST, {})
+            return
+        catalog = self.catalog
+        if catalog is None:
+            # No snapshot configured: every deal is a failed read, same as a wrong key.
+            LOGGER.warning("catalog_error reason=disabled")
+            self._send_json(HTTPStatus.SERVICE_UNAVAILABLE, {})
+            return
+        record = catalog.deal(request)
+        if record is None:
+            # Wrong key, rapid-fire refusal, or an empty snapshot: no record.
+            status = HTTPStatus.UNAUTHORIZED if not catalog.authorizes(request) else HTTPStatus.SERVICE_UNAVAILABLE
+            self._send_json(status, {})
+            return
+        self._send_json(HTTPStatus.OK, record)
 
     def log_message(self, format: str, *args: object) -> None:  # noqa: A002 - http.server API
         LOGGER.debug("%s - %s", self.address_string(), format % args)
@@ -284,7 +328,7 @@ class AdviceHandler(BaseHTTPRequestHandler):
         self.wfile.write(chunk_size(0) + b"\r\n\r\n")
         self.wfile.flush()
 
-    def _send_json(self, status: HTTPStatus, message: dict[str, str]) -> None:
+    def _send_json(self, status: HTTPStatus, message: dict[str, object]) -> None:
         body = json.dumps(message, separators=(",", ":")).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
@@ -308,7 +352,20 @@ class _AdviceServer(ThreadingHTTPServer):
     poll_interval = 0.05
 
 
-def make_server(service: AdviceService, host: str, port: int) -> ThreadingHTTPServer:
-    """Build the HTTP server bound to whatever listen address the process was given."""
-    handler = type("BoundAdviceHandler", (AdviceHandler,), {"service": service})
+def make_server(
+    service: AdviceService,
+    host: str,
+    port: int,
+    catalog: CatalogService | None = None,
+) -> ThreadingHTTPServer:
+    """Build the HTTP server bound to whatever listen address the process was given.
+
+    ``catalog`` publishes the deal route on the same host (ADR-0013); without
+    it the server answers advice only.
+    """
+    handler = type(
+        "BoundAdviceHandler",
+        (AdviceHandler,),
+        {"service": service, "catalog": catalog},
+    )
     return _AdviceServer((host, port), handler)

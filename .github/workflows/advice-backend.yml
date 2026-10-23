@@ -1,7 +1,9 @@
 name: Advice backend
 
-# Python unit tests for the advice backend (M2, specs/technical/components/advice-backend.md).
-# The suite uses a stand-in engine script, so no Stockfish binary is installed here.
+# Python unit tests for the advice backend and its puzzle catalog route (M2,
+# specs/technical/components/advice-backend.md, specs/technical/components/catalog-service.md).
+# The suite uses a stand-in engine script, so no Stockfish binary is installed here,
+# and a temporary snapshot, so the Lichess export is never part of the repo.
 
 on:
   pull_request:
