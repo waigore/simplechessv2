@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[demo] autodrive begin
+[demo] refused bad drop f1 -> c3 (PHY.M5 return + PER.R8 flash)
+[demo] move e2e4 done in 1 ms (budget 150 ms)
+[demo] move e7e5 done in 1 ms (budget 150 ms)
+[demo] move f1c4 done in 0 ms (budget 150 ms)
+[demo] move b8c6 done in 0 ms (budget 150 ms)
+[demo] move g1f3 done in 0 ms (budget 150 ms)
+[demo] move g7g6 done in 1 ms (budget 150 ms)
+[demo] move h2h4 done in 0 ms (budget 150 ms)
+[demo] move f8g7 done in 1 ms (budget 150 ms)
+[demo] move h4h5 done in 1 ms (budget 150 ms)
+[demo] move d7d6 done in 0 ms (budget 150 ms)
+[demo] move h5g6 done in 0 ms (budget 150 ms)
+[demo] move g8h6 done in 1 ms (budget 150 ms)
+[demo] move g6h7 done in 1 ms (budget 150 ms)
+[demo] move h6g8 done in 0 ms (budget 150 ms)
+[demo] move h7g8 done in 5 ms (budget 150 ms)
+[demo] exercise complete
+[demo] move e2e4 done in 1 ms (budget 150 ms)
+[demo] move e7e5 done in 1 ms (budget 150 ms)
+[demo] move f1c4 done in 0 ms (budget 150 ms)
+[demo] move b8c6 done in 0 ms (budget 150 ms)
+[demo] move d1h5 done in 0 ms (budget 150 ms)
+[demo] move g8f6 done in 0 ms (budget 150 ms)
+[demo] move h5f7 done in 2 ms (budget 150 ms)
+[demo] game ended: Checkmate — White wins
+[demo] travelled budget: every command completed as scripted
+[demo] end panel [P: (41.0, 582.5), S: (638.0, 185.0)] inside the frame; margins 230/160; z 10
+[demo] PASS
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
