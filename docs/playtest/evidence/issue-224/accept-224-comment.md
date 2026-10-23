@@ -17,6 +17,8 @@ The expected behavior's third bullet also asks the protocol's evidence to follow
 - **The `ENV` citation.** The expected behavior is phrased against `ENV` IDs, and [`ids.md`](../blob/main/.agents/specs/rules/playtest/ids.md) says an environment "is a tool row like any other Must tool, so protocols … cite it the same way". No protocol on `main` cited one. Each environment line now names it — `ENV.1` for every Design protocol, `ENV.1` and `ENV.2` for `PTU-shared-session` — and keeps the plain-language wording beside it.
 - **A dangling link.** The Evidence paragraph linked `../evidence.md#cite-from-acceptance`, a GitHub-style path that does not resolve from `specs/playtest/design/`; it now links `../evidence.md` relatively.
 
+Both land in [PR #683](https://github.com/waigore/simplechessv2/pull/683) (`defect/224-close-evidence-and-env-gaps`), a spec-only change that also carries this run's evidence folder. Merging it does not change the outcome below: acceptance still waits on screenshots.
+
 ### Playtesting
 
 The deliverables are **spec-only**, so by the hub gate in [`playtest.md`](../blob/main/specs/playtest/playtest.md) playtesting is not required. I ran the in-scope protocol anyway, because acceptance is the only place the fixed protocol is executed:
