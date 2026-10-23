@@ -47,6 +47,7 @@ Review a typed issue currently in `status:pending-review`.
 ## Rules
 
 - Do not redefine the state machine; link the workflow doc.
+- A superseded, duplicate, or retired issue is neither passed nor failed into implementation: state it in the review and gate it to `status:superseded`, naming the successor (an issue or an Accepted ADR) in the comment. Do not close it.
 - Fail cascade only for issues **named** in the fail comment.
 - Evidence is freeform; intent must be clear.
 - Call `enforce-task-workflow-status` for every label change.

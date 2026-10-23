@@ -4,7 +4,7 @@ Contract: [`docs/issues/workflow.md`](../../../../docs/issues/workflow.md). Do n
 
 ## Valid `status:*` labels
 
-`status:pending-review`, `status:pending-refinement`, `status:pending-clarification`, `status:pending-implementation`, `status:pending-verification`, `status:pending-acceptance`, `status:accepted`
+`status:pending-review`, `status:pending-refinement`, `status:pending-clarification`, `status:pending-implementation`, `status:pending-verification`, `status:pending-acceptance`, `status:accepted`, `status:superseded`
 
 Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 
@@ -24,6 +24,9 @@ Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 | pending-acceptance | accepted | Accept comment with test evidence |
 | pending-acceptance | pending-implementation | Fail accept (+ defect link) |
 | pending-acceptance | pending-clarification | Needs PO clarification |
+| pending-review, pending-refinement, pending-clarification, pending-implementation, pending-verification, pending-acceptance | superseded | Supersession comment naming the successor |
+
+`accepted` and `superseded` are terminal: no transition leaves either. Closing is the owner's act and only for `status:superseded` ([terminal-states.md](../../../../docs/issues/terminal-states.md)); this gate never closes an issue.
 
 ## Label swap (`gh`)
 
