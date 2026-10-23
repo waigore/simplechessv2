@@ -18,6 +18,7 @@ var session_id := ""
 var overlay_enabled := false
 var active_story_ids: PackedStringArray = PackedStringArray()
 var input_log: Array = []
+var _tel_log: Array = []
 
 var _play_keys := PackedStringArray(
 	[
@@ -49,6 +50,7 @@ func configure() -> void:
 	if _configured:
 		return
 	_configured = true
+	_tel_log.clear()
 	playtest_build = _resolve_playtest()
 	session_id = _make_session_id()
 	if not playtest_build:
@@ -168,12 +170,70 @@ func emit_tel(event_name: String, outcome: String, story_id: String = "") -> voi
 	}
 	if not story_id.is_empty():
 		payload["TEL.4"] = story_id
+	_tel_log.append(payload)
 	print(JSON.stringify(payload))
 	tel_event.emit(payload)
 
 
+## O11 — read this run's own emitted events back as a verdict (`SIT.5`).
+## Consumers pass `[{event, outcome, story_id}]`; field shape stays `E1`'s.
+func assert_telemetry(expected: Array) -> Dictionary:
+	var verdict := _empty_verdict()
+	if not playtest_build:
+		return verdict
+	var matched: Array = []
+	var missing: Array = []
+	var claimed := {}
+	for want in expected:
+		var expectation := _normalize_expectation(want)
+		var hit := _find_event(expectation, claimed)
+		if hit < 0:
+			missing.append(expectation)
+			continue
+		claimed[hit] = true
+		matched.append(_tel_log[hit])
+	verdict["verdict"] = "fail" if not missing.is_empty() else "pass"
+	verdict["matched"] = matched
+	verdict["missing"] = missing
+	return verdict
+
+
 func _resolve_playtest() -> bool:
 	return PlaytestGate.is_playtest(playtest_override)
+
+
+func _empty_verdict() -> Dictionary:
+	return {
+		"verdict": "fail",
+		"matched": [],
+		"missing": [],
+		"session_id": session_id,
+		"event_count": _tel_log.size(),
+	}
+
+
+func _normalize_expectation(want: Variant) -> Dictionary:
+	var source: Dictionary = want if want is Dictionary else {}
+	return {
+		"event": str(source.get("event", "")),
+		"outcome": str(source.get("outcome", "")),
+		"story_id": str(source.get("story_id", "")),
+	}
+
+
+func _find_event(expectation: Dictionary, claimed: Dictionary) -> int:
+	for index in _tel_log.size():
+		if claimed.has(index):
+			continue
+		var payload: Dictionary = _tel_log[index]
+		if str(payload.get("TEL.5", "")) != expectation["outcome"]:
+			continue
+		if str(payload.get("TEL.4", "")) != expectation["story_id"]:
+			continue
+		if str(payload.get("TEL.1", "")) != expectation["event"]:
+			continue
+		return index
+	return -1
 
 
 func _make_session_id() -> String:
@@ -207,6 +267,7 @@ func _build_debug_ui() -> void:
 	panel.add_child(_jump_field)
 	_add_button(panel, "Jump", _on_debug_jump)
 	_add_button(panel, "Overlay", _on_overlay_pressed)
+	_add_button(panel, "AssertTelemetry", _on_assert_telemetry_pressed)
 	_overlay_label = Label.new()
 	_overlay_label.name = "StoryOverlay"
 	_overlay_label.visible = false
@@ -240,3 +301,13 @@ func _on_overlay_pressed() -> void:
 		set_overlay(false, PackedStringArray())
 		return
 	set_overlay(true, PackedStringArray(["EX.loading"]))
+
+
+func _on_assert_telemetry_pressed() -> void:
+	var expected: Array = []
+	for story_id in active_story_ids:
+		expected.append({"event": "", "outcome": "pass", "story_id": story_id})
+	var verdict := assert_telemetry(expected)
+	print(JSON.stringify(verdict))
+	if verdict["verdict"] != "pass":
+		push_warning("Telemetry assertion failed: %s" % [verdict["missing"]])

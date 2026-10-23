@@ -24,6 +24,9 @@ func _check_release() -> bool:
 	seams.note_pointer({"kind": "touch"})
 	seams.replay_input([{"kind": "touch"}])
 	seams.emit_tel("pause", "pass", "EX.loading")
+	var release_verdict := seams.assert_telemetry(
+		[{"event": "pause", "outcome": "pass", "story_id": "EX.loading"}]
+	)
 	var problem := ""
 	if seams.playtest_build:
 		problem = "release build kept seams"
@@ -37,6 +40,13 @@ func _check_release() -> bool:
 		problem = "release jump"
 	elif not seams.dump_state().is_empty():
 		problem = "release dump"
+	elif (
+		release_verdict["verdict"] != "fail"
+		or not (release_verdict["matched"] as Array).is_empty()
+		or not (release_verdict["missing"] as Array).is_empty()
+		or int(release_verdict["event_count"]) != 0
+	):
+		problem = "release S12 assert_telemetry"
 	if not problem.is_empty():
 		return _fail(problem)
 	return true
@@ -91,6 +101,8 @@ func _check_playtest() -> bool:
 		problem = "dump beyond inspect"
 	if not problem.is_empty():
 		return _fail(problem)
+	if not _check_telemetry(seams):
+		return false
 	return _check_debug(seams, stage)
 
 
@@ -123,6 +135,10 @@ func _check_debug(seams: PlaytestSeams, stage: Dictionary) -> bool:
 	var overlay_text := overlay.text
 	var overlay_on := overlay.visible
 	var panel := "PlaytestDebug/DebugPanel/"
+	seams.emit_tel("play_move", "pass", "EX.loading")
+	seams.emit_tel("play_move", "pass", "SIT.2")
+	var assert_button := seams.get_node(panel + "AssertTelemetry") as Button
+	assert_button.pressed.emit()
 	var jump_id := seams.get_node(panel + "JumpId") as LineEdit
 	jump_id.text = "loading"
 	var jump_button := seams.get_node(panel + "Jump") as Button
@@ -159,6 +175,43 @@ func _check_debug(seams: PlaytestSeams, stage: Dictionary) -> bool:
 
 func _log_size(seams: PlaytestSeams) -> int:
 	return (seams.dump_state()["input_log"] as Array).size()
+
+
+func _check_telemetry(seams: PlaytestSeams) -> bool:
+	var wanted := [
+		{"event": "jump", "outcome": "pass", "story_id": "mode-pick"},
+		{"event": "note", "outcome": "pass", "story_id": ""},
+		{"event": "smoke_inspect", "outcome": "pass", "story_id": "EX.loading"},
+		{"event": "jump", "outcome": "fail", "story_id": ""},
+	]
+	var pass_verdict := seams.assert_telemetry(wanted)
+	var matched: Array = pass_verdict["matched"]
+	var fail_verdict := (
+		seams
+		. assert_telemetry(
+			[
+				{"event": "jump", "outcome": "pass", "story_id": "mode-pick"},
+				{"event": "play_move", "outcome": "pass", "story_id": "UI-shared-play.US1"},
+			]
+		)
+	)
+	var missing: Array = fail_verdict["missing"]
+	var problem := ""
+	if pass_verdict["verdict"] != "pass" or matched.size() != 4:
+		problem = "S12 pass verdict"
+	elif pass_verdict["session_id"] != seams.session_id or int(pass_verdict["event_count"]) < 4:
+		problem = "S12 log window"
+	elif fail_verdict["verdict"] != "fail" or missing.size() != 1:
+		problem = "S12 fail verdict"
+	elif str(missing[0]["story_id"]) != "UI-shared-play.US1":
+		problem = "S12 missing story"
+	elif not (fail_verdict["matched"] as Array).has(matched[0]):
+		problem = "S12 matched events"
+	elif seams.assert_telemetry([])["verdict"] != "pass":
+		problem = "S12 empty expectation"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
 
 
 func _provider(stage: Dictionary) -> Dictionary:
