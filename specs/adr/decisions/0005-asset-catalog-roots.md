@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 - **Date**: 2026-10-18
 - **Category**: Integration
 - **Supersedes**: None
-- **Informed by**: Asset pipeline Catalog; Load time; Instant play; ADR-0001; Recraft/ElevenLabs ADR-free
+- **Informed by**: Asset pipeline Catalog (`catalog.md` Catalog root); Asset pipeline Access (`access.md` A1–A3, G1–G3); Asset pipeline Tools (roles TL.1–TL.3, ADR-free Recraft and ElevenLabs CLI); Load time; Instant play; Reliability; Localization; ADR-0001
 
 ## Context
 
@@ -23,16 +23,16 @@ In scope: roots, default entry format, manifest boundary, file kinds, Godot proj
 - **Catalog root**: `asset_catalog/` — entry JSON only; never Godot-imported.
 - **Asset root**: `game_assets/` — cataloged files + `.import`/`.uid` sidecars; entry paths relative here.
 - **Godot project root**: `game/` (repo root sibling of the catalog and asset roots).
-- **Formats**: SVG preferred / PNG alpha; audio OGG; fonts TTF/OTF/WOFF2 (Web-embed license).
+- **Formats**: file medium is SVG preferred / PNG alpha for still art, OGG (Ogg Opus, matching `catalog.md` `CAT.I11` duration checks) for audio, and TTF/OTF/WOFF2 for fonts (Web-embed license). The kind specs carry these per kind (`AK-piece-sprites.S2`, `AK-board-backgrounds.S3`, `AK-interface-art.S2`, `AK-icons.S3`, `AK-sound-effects.S4`, `AK-music.S5`, `AK-fonts.S4`); approving a catalog entry with any other medium is a violation.
 - **Manifest**: generated from catalog, approved-only, at `game/asset_manifest.json`; committed; regenerate on catalog change (including CI).
-- Visual generate: **Recraft only** (no fal). Audio: **ElevenLabs**.
+- **Tool realization**: tool roles and their realization stay in [`tools.md`](../../assets/tools.md); this ADR sets none. Visual roles stay ADR-free (Recraft per `docs/asset-tools.md`) and audio roles ADR-free (ElevenLabs CLI per that doc). fal realizes no role and is not used for visual generation.
 
 ## Reasoning
 
-1. Split JSON catalog from importable files.
-2. Repo-root folders work before Godot scaffold.
-3. Default one-JSON-per-asset keeps PRs safe.
-4. Recraft-only matches style lock; drops fal.
+1. Split JSON catalog from importable files (definition Asset pipeline; Catalog).
+2. Repo-root folders work before the Godot scaffold exists (definition Asset pipeline; ADR-0001).
+3. Default one-JSON-per-asset keeps PRs safe (Catalog Format; Load time).
+4. Roles stay ADR-free and fal realizes none (Tools TL.1–TL.3; Instant play — no visual-generation service sits on the play path).
 
 Costs accepted: repo-root layout constraints; manifest tooling to maintain.
 
@@ -41,48 +41,25 @@ Costs accepted: repo-root layout constraints; manifest tooling to maintain.
 | Alternative | Why rejected |
 |-------------|--------------|
 | Catalog under `res://` | Entry JSON would import |
-| fal batch images | Recraft only |
+| fal batch images | Recraft only, and fal realizes no tool role |
 | Custom catalog DB | Default JSON enough |
 
 ## Non-functional requirements
 
+Moved to [`0005-asset-catalog-roots/non-functional.md`](0005-asset-catalog-roots/non-functional.md): quality expectations, including the Reliability sitting-soak how-checked, and engineering qualities.
+
 ### Quality expectations
 
-| Category | Effect | How |
-|----------|--------|-----|
-| Performance | No effect | Load path technical |
-| Load time / latency | Affects | Boot/play groups fit 3 s open |
-| Reliability | Affects | Approved-only manifest; ACC.A3 |
-| Observability | No effect | — |
-| Save durability | No effect | — |
-| Accessibility | Affects | Pieces/fonts meet shape/text |
-| Localization | Affects | Fonts for `en`/`zh-Hant`/`ja` |
+N/A — see the split file above.
 
 ### Engineering qualities
 
-| Quality | Assessment |
-|---------|------------|
-| Licensing and cost | Tool quotas outside repo; fonts licensed |
-| Maintainability | Flat roots; `asset_catalog.py` |
-| Testability | Catalog CI |
-| Portability | Web primary |
-| Security and privacy | No credentials in repo |
+N/A — see the split file above.
 
 ## Imposes
 
-| Spec or element | Constraint |
-|-----------------|------------|
-| `specs/assets/assets.md` Catalog | Roots as Decision |
-| `specs/assets/access.md` | Uses these roots |
-| `specs/technical/asset-access.md` | Manifest outside roots |
-| `specs/assets/tools.md` | fal is not used for visual generation |
+Moved to [`0005-asset-catalog-roots/imposes-validation.md`](0005-asset-catalog-roots/imposes-validation.md): one row per constrained spec element, including the kind-spec format rows and `tools.md`, which this ADR does not credit with any tool realization.
 
 ## Validation
 
-| Check | Method | When |
-|-------|--------|------|
-| Catalog integrity | `asset_catalog.py` | PRs with catalog |
-| Roots not mixed | Review | Every release |
-| 3 s open with boot/play groups | quality.md timed cold open | Every release |
-| Piece/font readability | quality.md readability checks | Every release |
-| Locale font coverage | quality.md locale spot-check | Every release |
+Moved to [`0005-asset-catalog-roots/imposes-validation.md`](0005-asset-catalog-roots/imposes-validation.md): each check, its method, and when it runs, including the sitting soak and the failed-resolve path.
