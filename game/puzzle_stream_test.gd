@@ -28,6 +28,7 @@ func _run_all() -> String:
 		_check_undeliverable_record_deals_nothing,
 		_check_leave_retires_the_read,
 		_check_missing_peer_fails_without_dealing,
+		_check_failure_leaves_the_open_puzzle_untouched,
 		_check_one_deal_at_a_time,
 		_check_usable,
 	]
@@ -222,13 +223,15 @@ func _check_leave_retires_the_read() -> String:
 	return ""
 
 
+## B5 / X2 — no peer and an unconfigured `T9` / `T10` are both failed reads: nothing is
+## dealt, the open puzzle is untouched, and Elo stays where it was.
 func _check_missing_peer_fails_without_dealing() -> String:
-	var session := _session()
+	var session := _session(1180.0)
 	session.deal([_record("open", 1000)])
 	var stream := PuzzleStream.new(session, null)
 	if stream.request():
 		return "no peer means no read can start"
-	if str(session.puzzle_id) != "" or session.puzzle_elo != null:
+	if session.puzzle_id != "open" or session.player_elo != 1180.0:
 		return "X2: a failed read must not leave a puzzle open or scored"
 	if stream.last_failure != CatalogWireReader.REASON_ERROR:
 		return "X2: the failure must be observable to the caller"
@@ -239,6 +242,28 @@ func _check_missing_peer_fails_without_dealing() -> String:
 		return "B5: T9 / T10 unset is a failed read, not a request"
 	if unconfigured_session.player_elo != 1000.0:
 		return "B5: a failed read leaves Elo unchanged"
+	return ""
+
+
+## CTR-puzzle-catalog-read Errors — "any failure leaves the prior open puzzle's state
+## untouched". A read that fails never reaches the deal, so the attempt the player is on
+## keeps its puzzle, its sequence progress, and its Elo.
+func _check_failure_leaves_the_open_puzzle_untouched() -> String:
+	var peer := FakeCatalogTransport.new()
+	var session := _session(1100.0)
+	var stream := PuzzleStream.new(session, _client(peer))
+	var dealt: Dictionary = session.deal([_record("open", 1100)])
+	if not bool(dealt.get("ok", false)):
+		return "the fixture must open a puzzle (got %s)" % dealt
+	var before := session.play_state()
+	stream.request()
+	peer.push_failure(CatalogWireReader.REASON_TIMEOUT)
+	var polled: Dictionary = stream.poll()
+	if str(polled.get("event", "")) != "puzzle.read_failed":
+		return "X2: a failed read must surface as one failed read (got %s)" % polled
+	var after := session.play_state()
+	if session.puzzle_id != "open" or after != before:
+		return "X2: a failed read must leave the open puzzle's state untouched"
 	return ""
 
 

@@ -86,11 +86,14 @@ func started(accepted: Variant) -> bool:
 	return bool(client.is_available()) and bool(accepted)
 
 
-## X2 — nothing was dealt (an O1 failure, X1, or a request that could not start):
-## close what was open, log it, and raise `deal_failed` so the caller sees the reason.
+## X2 — nothing was dealt (an O1 failure, X1, or a request that could not start): the
+## session holds no puzzle, its Elo is untouched, and `deal_failed` carries the reason.
+##
+## The failed read is never handed to `PuzzleSession.deal()`: a deal takes at least the
+## two moves a puzzle needs (I2), so a failure passed to it would read as X1
+## `empty_solution` rather than the O2 reason the peer reported.
 func refused(reason: String) -> void:
 	last_failure = reason
-	session.deal_failed()
 	push_warning("puzzle stream: deal read failed (%s)" % reason)
 	deal_failed.emit(reason)
 
@@ -105,8 +108,8 @@ static func usable(record: Dictionary) -> bool:
 	return false
 
 
-## A failed read: record the reason and tell the caller. `GS.puzzleId` and
-## `GS.playerElo` are untouched beyond the session closing the attempt it holds.
+## A failed read: record the reason and tell the caller. `GS.puzzleId` stays none and
+## `GS.playerElo` is never written by a read.
 func _failed(reason: String, dealt: Dictionary) -> Dictionary:
 	refused(reason)
 	return {"ok": false, "dealt": dealt, "reason": reason, "event": "puzzle.read_failed"}
