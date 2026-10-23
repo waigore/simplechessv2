@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 - **Layer**: L4 Edge
 - **Module**: M1 `client` (playtest builds only)
-- **Serves**: Observability; playtest `DBG.*` `TEL.*` `SIT.1`–`SIT.3`; Cafe calm in release
+- **Serves**: Observability; Performance; Load time; Accessibility; playtest `DBG.*` `TEL.*` `SIT.1`–`SIT.6`; Cafe calm in release
 - **Informed by**: [`specs/playtest/tools.md`](../../playtest/tools.md); [`verification.md`](../verification.md)
 - **ADRs**: [ADR-0004](../../adr/decisions/0004-dual-playtest-environments.md)
 
@@ -17,6 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Absent from the public release Web export: the release preset exports `main_release.tscn`, which carries no seam or harness node, with the `release` feature |
 | R4 | Work in both Headless and Graphical playtest runners |
 | R5 | Set seed, record and replay input, and dump full state (`SIT.1`–`SIT.3`) on playtest builds only |
+| R6 | Time a move and `EX.loading` clearing, assert the run's own telemetry, and render at a phone-width viewport (`SIT.4`–`SIT.6`) on playtest builds only |
 
 ## Communication
 
@@ -49,4 +50,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-[`failures.md`](../failures.md) T5; [`verification.md`](../verification.md) S3–S10; [`SEQ-playtest-headless-smoke`](../sequences/playtest-headless-smoke.md).
+[`failures.md`](../failures.md) T5; [`verification.md`](../verification.md) S3–S13; [`SEQ-playtest-headless-smoke`](../sequences/playtest-headless-smoke.md).
