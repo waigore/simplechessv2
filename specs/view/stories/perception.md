@@ -26,7 +26,7 @@ As a casual player, I read piece type and the board at a glance so that Clear bo
 - **Proves**: R1
 
 ```gherkin
-Given CAM-board Web 9:16, each piece type at SPC.E1 (0.85 units) under PRJ.V1 (~1/21 frame height)
+Given CAM-board Web 9:16, each piece type at its FRM.P2 height (King at SPC.E1, 0.85 units) under PRJ.V1 (~1/21 frame height)
 When viewed in PRJ.A2
 Then each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
 ```
@@ -36,7 +36,7 @@ Then each type is named from a solid-black silhouette And overlays cover ≤ 10%
 - **Proves**: R1
 
 ```gherkin
-Given CAM-board Web 16:9, each piece type at SPC.E1 (0.85 units) under PRJ.V1 (~1/12 frame height)
+Given CAM-board Web 16:9, each piece type at its FRM.P2 height (King at SPC.E1, 0.85 units) under PRJ.V1 (~1/12 frame height)
 When viewed in PRJ.A2
 Then each type is named from a solid-black silhouette And overlays cover ≤ 10% of the body
 ```
