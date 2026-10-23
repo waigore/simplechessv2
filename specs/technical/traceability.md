@@ -11,7 +11,7 @@ The full Alignment table, with one row per upstream item and its serving technic
 | Topic | Covered in | Applicability |
 |-------|------------|---------------|
 | Layer decomposition | [`layers.md`](layers.md) | Applies |
-| Modular decomposition | [`modules.md`](modules.md) | Applies |
+| Modular decomposition | [`modules.md`](modules.md) | Applies — includes the uncommitted Web export `build/web/` ([ADR-0007](../adr/decisions/0007-web-export-output.md)) |
 | Components | [`components/`](components/) | Applies — critical path + advice-backend + playtest-seams |
 | Contracts | [`contracts/`](contracts/) | Applies — includes asset-resolve, playtest-drive |
 | Schemata and lifecycles | [`schemata/`](schemata/) | Applies — includes advice-update, puzzle-attempt, puzzle-catalog |

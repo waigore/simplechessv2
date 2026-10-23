@@ -14,6 +14,8 @@ Authoring rules: [`.agents/specs/rules/technical/modules.md`](../../.agents/spec
 
 Godot project root: `game/` at the repo root (sibling of `asset_catalog/`, `game_assets/`, `specs/`) ([ADR-0001](../adr/decisions/0001-godot-engine.md)).
 
+Web export output: `build/web/` at the repo root, outside `game/` and the manifest, uncommitted and rebuilt by every export ([ADR-0007](../adr/decisions/0007-web-export-output.md)). It is the deployment artifact of M1 `client`; no module contains it.
+
 ## Boundaries
 
 | ID | From | To | Allowed | Forbidden |

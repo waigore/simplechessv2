@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
 | C1 | Playtest agent / harness | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | Drive + observe |
-| C2 | [`CMP-shared-game-session`](shared-game-session.md), [`CMP-puzzle-session`](puzzle-session.md), [`CMP-presentation`](presentation.md) | listens | [`CTR-local-move`](../contracts/local-move.md), [`CTR-presentation`](../contracts/presentation.md) | Observe play state and story IDs (D6) |
+| C2 | [`CMP-shared-game-session`](shared-game-session.md), [`CMP-puzzle-session`](puzzle-session.md), [`CMP-presentation`](presentation.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) `O3` inspect | Observe play state and story IDs ([`LAY.D6`](../layers.md)); no subscription to their contracts |
 
 ## Owns / mutates
 
@@ -39,8 +39,12 @@ flowchart LR
   H[harness]
   P[CMP-playtest-seams]
   R[CMP-session-router]
+  S[CMP-shared-game-session / CMP-puzzle-session]
+  V[CMP-presentation]
   H -->|CTR-playtest-drive| P
   P -.->|E2 jump_requested| R
+  P -.->|O3 inspect| S
+  P -.->|O3 inspect| V
 ```
 
 ## Failure / concurrency / persistence
