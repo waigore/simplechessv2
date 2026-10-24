@@ -1,0 +1,8 @@
+{"TEL.1":"report.assets","TEL.2":1792879524363,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"CTR-asset-resolve","TEL.5":"read"}
+{"TEL.1":"shared.start","TEL.2":1792879524436,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792879524468,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792879524480,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792879524511,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792879524543,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792879524547,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792879524558,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
