@@ -15,18 +15,18 @@ The only rows whose **Cites** is a bare journey key. That key judges `specs/ux/s
 
 **`puzzle-session` note.** The **Cites** parenthetical stops at `S2` while the Steps table runs to `S3` (cancel leave). The reached set follows the Steps table; this map does not edit the **Cites** line, which belongs to that protocol. No scenario is unreached in either journey row.
 
-## Actors — 9 rows, 2 judged
+## Actors — 9 rows, 9 judged
 
-No actor protocol exists under `specs/playtest/ux/`, so `PTU-shared-play`'s `ACT-bottom-player.US1` / `ACT-top-player.US1` cites make each actor `US1` row **single-cited**. The actor splits carry `US2`–`US5` headings, which no protocol cites.
+`PTU-actors` cites each actor split, so no actor row is single-cited. The `US1` rows stay with `PTU-shared-play`.
 
 | Story | Protocol | Reached | Level |
 |-------|----------|---------|-------|
 | [`actors/bottom-player.md#US1`](../../../ux/stories/actors/bottom-player.md) | `PTU-shared-play` | story-level | Full |
 | [`actors/top-player.md#US1`](../../../ux/stories/actors/top-player.md) | `PTU-shared-play` | story-level | Full |
-| [`actors/bottom-player-choices.md#US2`](../../../ux/stories/actors/bottom-player-choices.md) | `none — no protocol cites ACT-bottom-player.US2` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
-| [`actors/bottom-player-host.md#US3`](../../../ux/stories/actors/bottom-player-host.md) | `none — no protocol cites ACT-bottom-player.US3` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
-| [`actors/bottom-player-puzzle.md#US4`](../../../ux/stories/actors/bottom-player-puzzle.md) | `none — no protocol cites ACT-bottom-player.US4` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
-| [`actors/bottom-player-exceptions.md#US5`](../../../ux/stories/actors/bottom-player-exceptions.md) | `none — no protocol cites ACT-bottom-player.US5` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
-| [`actors/top-player-choices.md#US2`](../../../ux/stories/actors/top-player-choices.md) | `none — no protocol cites ACT-top-player.US2` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
-| [`actors/top-player-host.md#US3`](../../../ux/stories/actors/top-player-host.md) | `none — no protocol cites ACT-top-player.US3` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
-| [`actors/top-player-puzzle.md#US4`](../../../ux/stories/actors/top-player-puzzle.md) | `none — no protocol cites ACT-top-player.US4` | — | Full | [#701](https://github.com/waigore/simplechessv2/issues/701) |
+| [`actors/bottom-player-choices.md#US2`](../../../ux/stories/actors/bottom-player-choices.md) | `PTU-actors` | US2.1–US2.10 | Full |
+| [`actors/bottom-player-host.md#US3`](../../../ux/stories/actors/bottom-player-host.md) | `PTU-actors` | US3.1–US3.8 | Full |
+| [`actors/bottom-player-puzzle.md#US4`](../../../ux/stories/actors/bottom-player-puzzle.md) | `PTU-actors` | US4.1–US4.6 | Full |
+| [`actors/bottom-player-exceptions.md#US5`](../../../ux/stories/actors/bottom-player-exceptions.md) | `PTU-actors` | US5.1, US5.2 | Full |
+| [`actors/top-player-choices.md#US2`](../../../ux/stories/actors/top-player-choices.md) | `PTU-actors` | US2.1–US2.10 | Full |
+| [`actors/top-player-host.md#US3`](../../../ux/stories/actors/top-player-host.md) | `PTU-actors` | US3.1–US3.12 | Full |
+| [`actors/top-player-puzzle.md#US4`](../../../ux/stories/actors/top-player-puzzle.md) | `PTU-actors` | US4.1–US4.6 | Full |
