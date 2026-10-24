@@ -475,8 +475,12 @@ func _place_centred_column(panel: Control, top_px: float) -> void:
 ## anchors from the panel's min size, never a fixed x or its laid-out size, so
 ## the column stays centered when the `expand` frame changes size — a panel is
 ## placed while still hidden, before its content has sized it.
+## `GROW_DIRECTION_BOTH` keeps that true when localized copy makes the content
+## wider than the min size: the box widens to each side of the anchor instead of
+## to the right only, which would drift the drawn centre off the frame.
 static func place_centered(panel: Control, top_px: float) -> void:
 	var half_width := panel.custom_minimum_size.x * 0.5
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	panel.anchor_left = 0.5
 	panel.anchor_right = 0.5
 	panel.anchor_top = 0.0
