@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 Which runtime runs the advice backend, and how does the client reach and authenticate to it?
 
-In scope: server separation and runtime, the configured endpoint, and simple API-key auth. Out of scope: host vendor, deploy path and reproducibility, cost envelope, GPL, and the server implementation.
+In scope: server separation and runtime, the configured endpoint, and simple API-key auth. Out of scope: host vendor and deploy path ([ADR-0015](0015-advice-backend-operator-deployments.md)), cost envelope, GPL ([ADR-0012](0012-advice-backend-gpl-compliance.md)), and the server.
 
 ## Decision
 
@@ -67,4 +67,4 @@ Shared secret over TLS; endpoint is portable configuration.
 |-------|--------|------|
 | Wrong or missing key fails advice; local move unblocked | Automated test | Every build |
 | Client opens advice traffic only to the configured endpoint | Review rule / architecture test | Every release |
-| No host vendor, deploy path, cost, or GPL text; GPL is ADR-0012 | Spec lint | Before acceptance |
+| No host vendor, deploy path, cost, or GPL text here (0015, 0012) | Spec lint | Before acceptance |
