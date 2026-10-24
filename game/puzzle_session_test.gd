@@ -469,7 +469,7 @@ func _check_outcome_consumed_once() -> String:
 
 
 ## PRG.M1 / persistence.md G1 M2 M4 — the committed document keeps version 1 with the
-## wave-2 slots F2 and F4, and only snapshot-2026-10-05 PuzzleIds are ever saved.
+## slots F2 and F4, and only snapshot-2026-10-05 PuzzleIds are ever saved.
 func _check_committed_document_shape() -> String:
 	var store := _stored_session()
 	var session := PuzzleSession.new(ChessRules.new(), store)
