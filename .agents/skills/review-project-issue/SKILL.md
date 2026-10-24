@@ -42,7 +42,7 @@ Review a typed issue currently in `status:pending-review`.
 4. **Decide** one outcome:
    - **Pass** — post a clear pass review comment (must be the latest comment when transitioning). Gate: `pending-review` → `pending-implementation`.
    - **Fail** — post problems + refinement direction. Gate this issue: `pending-review` → `pending-refinement`. Cascade another issue only under [Cascade (fail review)](../../../docs/issues/workflow-cascade.md). A user order cascades from any status. An agent cascade needs a native blocked-by edge plus a written reason that the other issue’s implementation or verification cannot be done or judged while this fail stands. Leave an issue whose current step is review, refinement, or clarification unchanged. For each authorized issue, comment (point at this fail; for an agent cascade, include the edge and the deadlock) and apply the fail-review cascade via `enforce-task-workflow-status`, with that issue’s current status as `from`. For each blocked-by neighbor not cascaded, and for any issue the user asked about that was not ordered onto the cascade, comment why the status stays and leave it unchanged.
-   - **Clarify** — summarize questions that cannot be inferred from project scope. Gate: `pending-review` → `pending-clarification`.
+   - **Clarify** — summarize questions that cannot be inferred from project scope (including material spec ambiguity). Gate: `pending-review` → `pending-clarification`.
 5. **Report** URL, outcome, new status(es), and related issues touched.
 
 ## Rules
@@ -52,3 +52,4 @@ Review a typed issue currently in `status:pending-review`.
 - Authorize a cascade only as [Cascade (fail review)](../../../docs/issues/workflow-cascade.md) describes.
 - Evidence is freeform; intent must be clear.
 - Call `enforce-task-workflow-status` for every label change.
+- Do not file defects from review. Spec/design problems are refinement, clarification, or (if uncovered and material) a **task** — never a defect ([`requirements.md`](../../../docs/issues/requirements.md)). Do not Fail or spawn work for non-material paperwork.
