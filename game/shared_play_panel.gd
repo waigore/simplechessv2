@@ -10,8 +10,9 @@ const SCREEN_ID := "shared-play"
 const CHROME_TOP_PX := 12.0
 const CHROME_BOTTOM_PX := 156.0
 const CHROME_RESERVED_PX := 168.0
-## PAL.C8 check-rose keyline on the R2 check chip (PER.R6 / UIS.C4).
-const COLOR_CHECK := Color("C28A86")
+## PAL.C8 check-rose keyline on the R2 check chip (PER.R6 / UIS.C4); the palette
+## hex lives once, in UiChrome.
+const COLOR_CHECK: Color = UiChrome.COLOR_DANGER
 
 var locale := "en"
 var ui_state := "S1"
@@ -43,8 +44,9 @@ var c9_available := false
 var c10_available := true
 
 var _status: Label
-var _check: PanelContainer
-var _check_label: Label
+## PER.R6 — the Check word on a C10 chip whose border is the PAL.C8 mark.
+var _check_chip: PanelContainer
+var _check: Label
 var _clocks: Label
 var _advice_eval: Label
 var _advice_row: HBoxContainer
@@ -198,21 +200,20 @@ func _build() -> void:
 	UiChrome.style_label(_status, true)
 	_chrome.add_child(_status)
 
-	# PER.R6 / UI-shared-play.R2 — the check cue is non-audio and never hue alone
-	# (PAL.K9): the localized word Check on a C10 chip keylined in PAL.C8.
-	_check = PanelContainer.new()
+	# PER.R6 / PAL.K9 — the check cue is the word (C9 on C10, 12.73:1 ≥ 4.5:1)
+	# inside a PAL.C8 frame, so the mark never rides on hue or on C8 text.
+	_check_chip = PanelContainer.new()
+	_check_chip.name = "CheckChip"
+	_check_chip.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_check_chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_check_chip.add_theme_stylebox_override("panel", _check_chip_style())
+	_check = Label.new()
 	_check.name = "CheckCue"
-	_check.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_check.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	_check.add_theme_stylebox_override("panel", _check_chip_style())
-	_chrome.add_child(_check)
-	_check_label = Label.new()
-	_check_label.name = "CheckCueLabel"
-	_check_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	UiChrome.style_label(_check_label)
-	# C9 ink on the C10 chip: PAL.K4 12.73:1, the same tested pair as the copy.
-	_check_label.add_theme_color_override("font_color", UiChrome.COLOR_INK)
-	_check.add_child(_check_label)
+	_check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	UiChrome.style_label(_check)
+	_check.add_theme_color_override("font_color", UiChrome.COLOR_INK)
+	_check_chip.add_child(_check)
+	_chrome.add_child(_check_chip)
 
 	_clocks = Label.new()
 	_clocks.name = "Clocks"
@@ -446,8 +447,8 @@ func _link_focus_chain(controls: Array[Control]) -> void:
 
 func _style_all() -> void:
 	UiChrome.style_label(_status, true, _text_scale)
-	UiChrome.style_label(_check_label, false, _text_scale)
-	_check.add_theme_stylebox_override("panel", _check_chip_style())
+	UiChrome.style_label(_check, false, _text_scale)
+	_check_chip.add_theme_stylebox_override("panel", _check_chip_style())
 	UiChrome.style_label(_clocks, false, _text_scale)
 	UiChrome.style_label(_advice_eval, false, _text_scale)
 	UiChrome.style_label(_confirm_msg, false, _text_scale)
@@ -477,7 +478,7 @@ func _apply_font() -> void:
 		return
 	var nodes: Array = [
 		_status,
-		_check_label,
+		_check,
 		_clocks,
 		_select_focus,
 		_clear_focus,
@@ -505,8 +506,9 @@ func _apply_font() -> void:
 func _apply_copy() -> void:
 	var side_key := "white_to_move" if side_to_move == "white" else "black_to_move"
 	_status.text = StringTable.shared_play(side_key, locale)
-	_check_label.text = StringTable.shared_play("check", locale) if in_check else ""
+	_check.text = StringTable.shared_play("check", locale) if in_check else ""
 	_check.visible = in_check
+	_check_chip.visible = in_check
 	_advice.text = StringTable.shared_play("advice_on" if advice_on else "advice_off", locale)
 	_resign.text = StringTable.shared_play("resign", locale)
 	_offer.text = StringTable.shared_play("offer_draw", locale)

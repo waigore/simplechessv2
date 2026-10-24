@@ -1,0 +1,13 @@
+# route-probe-fetch.json — browser console / network, from the .json probe capture
+# url=http://127.0.0.1:8767/index.html
+0.042s net 200 http://127.0.0.1:8767/index.html
+0.050s net 200 http://127.0.0.1:8767/index.png
+0.051s net 200 http://127.0.0.1:8767/index.js
+1.752s net 200 http://127.0.0.1:8767/index.wasm
+1.752s net 200 http://127.0.0.1:8767/index.pck
+1.763s net 200 http://127.0.0.1:8767/index.icon.png
+3.294s net 200 blob:http://127.0.0.1:8767/8c016897-a5bb-4b0a-a1df-059c677d69ab
+3.401s net 200 blob:http://127.0.0.1:8767/8c016897-a5bb-4b0a-a1df-059c677d69ab
+9.972s console.log [zz_audio785] fetch bytes=0
+9.973s console.error ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+9.973s console.log [zz_audio785] load_from_buffer=<Object#null> len=-1.0

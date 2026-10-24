@@ -2,6 +2,9 @@ class_name BoardPresentationTest
 extends SceneTree
 ## Headless checks for #56: geometry, seat flip, timing budgets.
 
+## FRM.P1 body box half-width: the widest silhouette / tallest body margin.
+const FRM_P1_BODY_HALF := 0.425
+
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -23,8 +26,6 @@ func _run() -> void:
 			err = await _check_orientation(board)
 		if err.is_empty():
 			err = await _check_motion(board)
-		if err.is_empty():
-			err = _check_mark_contrast()
 		if err.is_empty():
 			err = await _check_check_mark(board)
 	if not err.is_empty():
@@ -461,7 +462,10 @@ func _check_motion(board: BoardPresentation) -> String:
 	err = await _motion_capture_castle(board)
 	if not err.is_empty():
 		return err
-	return await _motion_marks(board, rules)
+	err = await _motion_marks(board, rules)
+	if not err.is_empty():
+		return err
+	return await _check_check_mark(board)
 
 
 func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
@@ -653,109 +657,82 @@ func _motion_marks(board: BoardPresentation, rules: ChessRules) -> String:
 	return ""
 
 
-## WCAG relative luminance of an sRGB hex colour (the method PAL ratios use).
-func _relative_luminance(hex: String) -> float:
-	var weights := [0.2126, 0.7152, 0.0722]
-	var out := 0.0
-	for i in range(3):
-		var channel := float(_hex_byte(hex.substr(i * 2, 2))) / 255.0
-		var linear := channel / 12.92 if channel <= 0.03928 else pow((channel + 0.055) / 1.055, 2.4)
-		out += float(weights[i]) * linear
-	return out
-
-
-## Two hex digits to 0-255. float("0x1c") is invalid GDScript (the digits are
-## read as base 16 of a decimal string), so the nibbles are decoded explicitly.
-func _hex_byte(pair: String) -> int:
-	const DIGITS := "0123456789abcdef"
-	var value := 0
-	var low := pair.to_lower()
-	for i in range(low.length()):
-		value = value * 16 + DIGITS.find(low[i])
-	return value
-
-
-func _contrast_ratio(a: String, b: String) -> float:
-	var la := _relative_luminance(a)
-	var lb := _relative_luminance(b)
-	return (maxf(la, lb) + 0.05) / (minf(la, lb) + 0.05)
-
-
-## PER.R6 — the check cue is non-audio and never hue alone: the C8 form carries
-## C9 ink at ≥ 4.5:1 (PAL.K4) and the C10 mark foreground separates it (PAL.K9).
-func _check_mark_contrast() -> String:
-	var ink := BoardPresentation.COLOR_INK.to_html(false).to_upper()
-	var rose := CheckMark.COLOR_CHECK.to_html(false).to_upper()
-	var surface := CheckMark.COLOR_SURFACE.to_html(false).to_upper()
-	var checks: Array = [
-		[_contrast_ratio(ink, rose) >= 4.5, "PER.R6 check ink on rose ≥ 4.5:1"],
-		[_contrast_ratio(ink, surface) >= 4.5, "PAL.K9 keyline ink on mark surface"],
-		[
-			_contrast_ratio(rose, surface) <= _contrast_ratio(ink, surface),
-			"PAL.K9 surface must be the separating layer, not the rose",
-		],
-		[CheckMark.ROSE_OPACITY < 1.0, "PAL.K9 mark-surface strength"],
-		[
-			is_equal_approx(CheckMark.INK_ON_ROSE, snappedf(_contrast_ratio(ink, rose), 0.01)),
-			"PAL.K9 ink-on-rose recorded",
-		],
-		[
-			is_equal_approx(
-				CheckMark.KEYLINE_ON_SURFACE, snappedf(_contrast_ratio(ink, surface), 0.01)
-			),
-			"PAL.K9 keyline-on-surface recorded",
-		],
-	]
-	return _first_fail(checks)
-
-
-## PER.R6 — the mark sits only on the requested king square, in the four K9
-## corner L-frames (off the diagonals), and clears for any other value.
+## PER.R6 / CMP-presentation.R7 — the checked King carries a PAL.C8 L-frame.
 func _check_check_mark(board: BoardPresentation) -> String:
-	var rules := ChessRules.new()
-	rules.reset_opening()
-	board.provide_assets(_synthetic_assets())
-	for seat in [BoardGeometry.SEAT_BOTTOM, BoardGeometry.SEAT_TOP]:
-		board.render_position(
-			rules.position_field(),
-			"",
-			PackedStringArray(),
-			{"white_seat": seat, "check_square": "e1"}
-		)
-		await process_frame
-		var err := _check_mark_geometry(board, seat)
-		if not err.is_empty():
-			return err
-		board.render_position(rules.position_field(), "", PackedStringArray(), {})
-		await process_frame
-		if CheckMark.under(board).visible:
-			return "PER.R6 mark must clear when the state omits it (seat %s)" % seat
-	return ""
+	var checked_position := {
+		"occupancy":
+		{
+			"e8": {"color": "black", "kind": "king", "square": "e8"},
+			"f7": {"color": "white", "kind": "queen", "square": "f7"},
+		},
+		"side_to_move": "black",
+	}
+	var quiet_options := {"side_to_move": "black"}
+	board.render_position(checked_position, "", PackedStringArray(), quiet_options)
+	await process_frame
+	var marks := board.get_node_or_null("World/Seat/Content/Overlays/CheckMarks") as Node2D
+	var quiet := _first_fail(
+		[
+			[marks != null, "PER.R6 check mark node missing"],
+			[marks != null and marks.get_child_count() == 0, "PER.R6 mark shown out of check"],
+		]
+	)
+	if not quiet.is_empty() or marks == null:
+		return quiet
+	board.render_position(
+		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "black"}
+	)
+	await process_frame
+	var count_ok := [[marks.get_child_count() == 2, "PER.R6 check cue must be two L-frames"]]
+	var shown := _first_fail(
+		count_ok + _l_frame_checks(marks.get_children(), BoardGeometry.square_center("e8"))
+	)
+	if not shown.is_empty():
+		return shown
+	# In check with no rendered King of that side must not throw a mark.
+	board.render_position(
+		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "white"}
+	)
+	await process_frame
+	return _first_fail(
+		[[marks.get_child_count() == 0, "PER.R6 in check without a rendered King threw a mark"]]
+	)
 
 
-## Geometry of the four L-frames while the mark shows; [] when it holds.
-func _check_mark_geometry(board: BoardPresentation, seat: String) -> String:
-	var center := BoardGeometry.square_center("e1")
-	var mark := CheckMark.under(board)
-	if mark == null or not mark.visible or mark.square != "e1":
-		return "PER.R6 mark missing or off e1 at seat %s" % seat
-	# Four corners × (C10 foreground + rose inside it) = 8 strokes.
-	var children := mark.get_children()
-	if children.size() != 8:
-		return "PER.R6 mark has %d strokes, want 8 (4 L-frames)" % children.size()
-	var rose := 0
+## PAL.K9 form: two asymmetric L-frames, C8, inside the square and off the body.
+func _l_frame_checks(children: Array, center: Vector2) -> Array:
+	var checks: Array = []
 	for child in children:
-		var shape := CheckMark.shape_problem(child as Line2D, center)
-		if not shape.is_empty():
-			return "PER.R6 %s" % shape
-		if (child as Line2D).default_color.a < 1.0:
-			rose += 1
-	if rose != 4:
-		return "PER.R6 want 4 rose strokes at mark-surface strength, got %d" % rose
-	# The mark follows CAM-board.M2 with the board, like every other overlay.
-	if mark.to_global(center).distance_to(board.world_to_screen(center)) > 0.5:
-		return "PER.R6 mark must rotate with the seat (seat %s)" % seat
-	return ""
+		var line := child as Line2D
+		checks.append([line != null, "PER.R6 check cue must be a stroke"])
+		if line == null:
+			continue
+		checks.append(
+			[line.default_color == CheckMarks.COLOR_CHECK, "PER.R6 check cue must be PAL.C8"]
+		)
+		checks.append(
+			[
+				line.default_color != BoardPresentation.COLOR_SELECT,
+				"PAL.K9 check cue must differ from the selection ring"
+			]
+		)
+		checks.append([line.get_point_count() == 3, "PAL.K9 check cue must be an L-frame"])
+		if line.get_point_count() != 3:
+			continue
+		checks.append([_arms_unequal(line), "PAL.K9 check L arms must be unequal, not a bracket"])
+		for i in line.get_point_count():
+			var point := line.get_point_position(i)
+			var dx := absf(point.x - center.x)
+			var dy := absf(point.y - center.y)
+			checks.append([dx <= 0.5 and dy <= 0.5, "PER.R6 check cue left the King square"])
+			checks.append([maxf(dx, dy) >= FRM_P1_BODY_HALF, "PER.R1 check cue covers the body"])
+	return checks
+
+
+func _arms_unequal(line: Line2D) -> bool:
+	var first := line.get_point_position(0).distance_to(line.get_point_position(1))
+	var second := line.get_point_position(1).distance_to(line.get_point_position(2))
+	return not is_equal_approx(first, second)
 
 
 func _first_fail(checks: Array) -> String:

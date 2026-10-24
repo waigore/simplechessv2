@@ -73,6 +73,8 @@ var _pieces_root: Node2D
 var _overlay_root: Node2D
 var _select_frame: Line2D
 var _legal_root: Node2D
+## PER.R6 check L-frame on the checked King's square (E2 `in_check`).
+var _check_marks: CheckMarks
 var _reject_flash: Line2D
 ## PER.R6 check mark: the C8 L-frame on the checked king's square (CheckMark).
 var _check_mark: CheckMark
@@ -149,6 +151,8 @@ func _ready() -> void:
 	_legal_root = Node2D.new()
 	_legal_root.name = "LegalMarks"
 	_overlay_root.add_child(_legal_root)
+	_check_marks = CheckMarks.new()
+	_overlay_root.add_child(_check_marks)
 	_reject_flash = Line2D.new()
 	_reject_flash.name = "RejectFlash"
 	_reject_flash.width = REJECT_STROKE
@@ -225,6 +229,8 @@ func render_position(
 		_sync_overlays()
 		_apply_choice_overlays(options)
 		_occupancy = post_occ
+		# In-check is decided by L2 and arrives with the applied move (CTR-presentation G2).
+		_sync_check_marks(options)
 		_play_move_dict(move)
 		return
 	_occupancy = post_occ
@@ -232,6 +238,7 @@ func render_position(
 		_sync_pieces()
 	_sync_overlays()
 	_apply_choice_overlays(options)
+	_sync_check_marks(options)
 
 
 ## E4 `show_advice` under CMP-presentation.R4 — best move marks or none. Called
@@ -747,6 +754,28 @@ func _apply_choice_overlays(options: Dictionary) -> void:
 		clear_promotion_choice()
 	if _check_mark != null:
 		_check_mark.set_square(str(options.get("check_square", "")))
+
+
+## PER.R6 / R7 — mark the checked King while the side to move is in check. The
+## session's `in_check` carries the rules outcome; this only locates the King it
+## already renders, so no rules decision is made in L1 (CTR-presentation G2).
+func _sync_check_marks(options: Dictionary) -> void:
+	if _check_marks == null:
+		return
+	if not bool(options.get("in_check", false)):
+		_check_marks.clear()
+		return
+	_check_marks.show_square(_king_square(str(options.get("side_to_move", "white"))))
+
+
+func _king_square(color: String) -> String:
+	for square in _occupancy.keys():
+		var piece: Dictionary = _occupancy[square]
+		if str(piece.get("color", "")) != color:
+			continue
+		if str(piece.get("kind", "")) == "king":
+			return str(square)
+	return ""
 
 
 ## PER.R8 — full-strength PAL.C8 rim on the attempted square for 0.3 s (SPC.L4).
