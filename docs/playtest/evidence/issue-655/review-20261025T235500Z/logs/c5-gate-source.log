@@ -1,0 +1,35 @@
+$ sed -n "510,540p" game/puzzle_session.gd   # request_confirm, C5 exemption
+		"end_reason": ending,
+		"elo": _apply_outcome(ending),
+		"cue": str(CUE_BY_ENDING[ending]),
+		"story": story,
+	}
+
+
+## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
+## controls: C3 and C4 name an open puzzle; C5 does not — leave stream is available on
+## every S1 the stream can land in, including S1 with no puzzle dealt (US5.1).
+## C3 and C4 are refused on a settled attempt: they would raise a confirm whose one
+## action is refused (END.P1, one ending per attempt); C5 still leaves.
+func request_confirm(control_id: String) -> Dictionary:
+	var kind := ""
+	var needs_puzzle := true
+	var ends_attempt := false
+	match control_id:
+		"C3":
+			kind = CONFIRM_REVEAL
+			ends_attempt = true
+		"C4":
+			kind = CONFIRM_ABANDON
+			ends_attempt = true
+		"C5":
+			kind = CONFIRM_LEAVE
+			needs_puzzle = false
+		_:
+			return {"ok": false}
+	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+		return {"ok": false}
+	if ends_attempt and _is_settled():
+
+$ git log --oneline -1 -S"needs_puzzle = false" -- game/puzzle_session.gd
+2e389b5 Make C5 raise the leave confirm on S1 with no puzzle open (#655) (#694)
