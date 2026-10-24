@@ -12,8 +12,10 @@ playback audio copies as loose files under `res://`, at the routes
 `game/asset_resolver.gd` builds on Web. `prepare_asset_root` stages the repo-root
 directories under `game/` for the engine and copies them loose into the shipped
 tree; `ensure_staged_assets` fails a build that carries no cataloged asset file
-(#647) and `ensure_boot_assets_resolve` fails one whose `boot` assets sit at no
-route the resolver reads (#630, #715).
+(#647), `ensure_boot_assets_resolve` fails one whose `boot` assets sit at no
+route the resolver reads (#630, #715), and `ensure_group_assets_resolve` reads
+every preload group (`boot`, `play`, `ambient`) at the route its kind is read
+at, so a bundle that cannot play a group never publishes (#812).
 
 `ensure_no_client_engine` is the engine-boundary check of ADR-0002 §Validation
 ("No client Stockfish endpoint"; CTR-advice-stream G3): the `Web playtest` and
@@ -56,8 +58,14 @@ MANIFEST = "asset_manifest.json"
 # The byte a PCK file table puts after each entry path, so a match is that exact
 # route rather than a prefix of a longer one (`.svg` must not match `.svg.import`).
 PACK_ENTRY_END = chr(0)
+PACK_MAGIC = b"GDPC"
+# A PCK v4 directory entry after its path: offset, size, checksum, flags.
+PACK_ENTRY_TAIL = 8 + 8 + 16 + 4
 # The file kinds the resolver loads (`game/asset_resolver.gd` `_load_media`).
 LOADABLE_SUFFIXES = {".svg", ".png", ".woff2", ".ttf", ".otf", ".ogg"}
+# Every preload group the shipped tree must serve ([`AST.G1`]–[`G3`]) — `boot`,
+# `play` and `ambient` (#812).
+PRELOAD_GROUPS = ("boot", "play", "ambient")
 
 # The weight of the text the tree's scene code declares (#696, ADR-0002
 # §Validation "No client Stockfish endpoint", CTR-advice-stream G3). Client code
@@ -175,6 +183,40 @@ def staged_audio_files(shipped: Path) -> list[Path]:
     return [path for path in _data_files(shipped / AUDIO_RUNTIME) if path.suffix == ".ogg"]
 
 
+def pack_entries(pack: Path) -> list[str]:
+    """The route of every file entry in a Godot PCK, read through the engine's own layout.
+
+    The directory is counted, so a route is a real entry rather than a byte run
+    that happens to look like one; a `.import` sidecar's `path=` text is not an
+    entry (#812). Only the standalone v4 layout this preset writes is read; a
+    pack this cannot parse is `[]`, so a caller reports no route instead of
+    guessing one.
+    """
+    if not pack.is_file():
+        return []
+    data = pack.read_bytes()
+    if data[:4] != PACK_MAGIC or len(data) < 32:
+        return []
+    _version, major, _minor, _patch, _flags = struct.unpack_from("<IIIII", data, 4)
+    _file_base, directory = struct.unpack_from("<QQ", data, 24)
+    if major != 4 or directory == 0 or directory >= len(data):
+        return []
+    try:
+        count = struct.unpack_from("<I", data, directory)[0]
+        offset = directory + 4
+        routes: list[str] = []
+        for _ in range(count):
+            length = struct.unpack_from("<I", data, offset)[0]
+            offset += 4
+            # The engine writes the path with its NUL terminator inside `length`.
+            path = data[offset : offset + length]
+            offset += length + PACK_ENTRY_TAIL
+            routes.append(path.rstrip(b"\x00").decode("utf-8", "replace"))
+    except struct.error:
+        return []
+    return routes
+
+
 def shipped_blob(shipped: Path) -> bytes:
     """Every byte a shipped Web tree carries: loose files plus the pack.
 
@@ -276,6 +318,83 @@ def missing_boot_files(shipped: Path, repo_root: Path) -> list[tuple[str, str]]:
         if not served and not packed:
             unresolved.append((asset_id, path))
     return unresolved
+
+
+def group_members(document: dict, group: str) -> list[tuple[str, str]]:
+    """`(asset ID, asset-root-relative file)` for each file a preload group loads.
+
+    Read from the committed manifest, so the check follows the catalog.
+    """
+    return [
+        (str(asset_id), path)
+        for asset_id in document.get("groups", {}).get(group, [])
+        for path in asset_files(document, asset_id)
+    ]
+
+
+def missing_group_files(shipped: Path, repo_root: Path, group: str) -> list[tuple[str, str]]:
+    """The `group` files the shipped tree serves at no route resolution reads.
+
+    A file resolves when the Web route it is read at carries it. That route
+    differs by kind (`game/asset_resolver.gd`):
+    - `.ogg` reads the committed Vorbis copy `res://audio_runtime/<id>.ogg`, never
+      the catalog path, so that route is what must resolve (#812);
+    - every other kind reads `res://<asset_root>/<file>`.
+    Either route is served **loose** beside `index.html` or as a packed entry of
+    `index.pck` — the two places `res://…` reads reach on Web. The `.import`
+    sidecar the engine writes is not a route (#812).
+    """
+    blob = shipped_blob(shipped / PACK)
+    loose = {_relative(path, shipped / ASSET_ROOT) for path in staged_asset_files(shipped)}
+    loose_audio = {path.name for path in staged_audio_files(shipped)}
+    entries = set(pack_entries(shipped / PACK))
+    unresolved: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for asset_id, path in group_members(_manifest(repo_root), group):
+        # Audio plays from its Vorbis copy, not from the catalog path (AST.O3).
+        route = audio_route(asset_id) if Path(path).suffix == ".ogg" else path
+        if route in seen:
+            continue
+        seen.add(route)
+        if route == path:
+            served = path in loose and (shipped / ASSET_ROOT / path).is_file()
+            packed = f"res://{ASSET_ROOT}/{path}{PACK_ENTRY_END}".encode() in blob
+        else:
+            served = Path(route).name in loose_audio
+            packed = f"res://{route}" in entries
+        if not served and not packed:
+            unresolved.append((asset_id, route))
+    return unresolved
+
+
+def audio_route(asset_id: str) -> str:
+    """The route an approved audio ID plays from: its Vorbis copy ([`AST.O3`])."""
+    return f"{AUDIO_RUNTIME}/{asset_id}.ogg"
+
+
+def ensure_group_assets_resolve(shipped: Path, repo_root: Path, group: str) -> None:
+    """A shipped Web tree must serve each `group` ID at a route the resolver reads.
+
+    The `boot` guard (#630, #715) reads one group; `ambient` had none, so a bundle
+    whose builder never imported those copies shipped silent with every guard
+    green (#812). The reading is the resolver's own, so a bundle that plays the
+    group passes and one that cannot is refused.
+    """
+    members = group_members(_manifest(repo_root), group)
+    if not members:
+        raise ExportError(f"the manifest names no loadable file for the {group} group")
+    missing = missing_group_files(shipped, repo_root, group)
+    if not missing:
+        return
+    ids = ", ".join(f"{asset_id} ({route})" for asset_id, route in missing)
+    total = len({route for _, route in members})
+    resolved = total - len(missing)
+    if not asset_root_present(shipped, repo_root):
+        raise ExportError(
+            f"0 of {total} {group} asset file(s) resolved — {ASSET_ROOT}/ absent from the "
+            f"exported tree {shipped}: {ids}"
+        )
+    raise ExportError(f"{resolved} of {total} {group} asset file(s) resolved — no route serves: {ids}")
 
 
 def ensure_boot_assets_resolve(shipped: Path, repo_root: Path) -> None:
@@ -505,6 +624,11 @@ def main(argv: list[str] | None = None) -> int:
         help="fail unless the shipped tree serves each boot asset at a route the resolver reads",
     )
     parser.add_argument(
+        "--check-groups",
+        action="store_true",
+        help="fail unless the shipped tree serves each preload group (boot, play, ambient)",
+    )
+    parser.add_argument(
         "--pages-status",
         metavar="HTTP_STATUS",
         help="map a Pages probe status to present/absent (the release deploy gate)",
@@ -534,20 +658,23 @@ def main(argv: list[str] | None = None) -> int:
             args.pages_status is not None,
             args.check_assets,
             args.check_boot,
+            args.check_groups,
             args.check_engine is not None,
             args.synthetic_engine_verdicts,
             args.preset is not None,
         )
         if chosen
     ]
-    if args.pages_status is not None and (args.check_assets or args.check_boot):
+    if args.pages_status is not None and (args.check_assets or args.check_boot or args.check_groups):
         parser.error("--pages-status does not combine with an export-tree check")
-    # `--check-assets`/`--check-boot` read the export's output directory, so each
-    # needs `--preset`; every other pair of modes is exclusive.
-    tree_check = args.check_assets or args.check_boot
+    # `--check-assets`/`--check-boot`/`--check-groups` read the export's output
+    # directory, so each needs `--preset`; every other pair of modes is exclusive.
+    tree_check = args.check_assets or args.check_boot or args.check_groups
     engine_mode = args.check_engine is not None or args.synthetic_engine_verdicts
     if tree_check and args.preset is None:
-        parser.error("--check-assets/--check-boot need --preset to find the export's output directory")
+        parser.error(
+            "--check-assets/--check-boot/--check-groups need --preset to find the export's output directory"
+        )
     if engine_mode and (tree_check or args.preset is not None or args.pages_status is not None):
         parser.error(
             "--check-engine and --synthetic-engine-verdicts are mutually exclusive with "
@@ -555,7 +682,7 @@ def main(argv: list[str] | None = None) -> int:
         )
     if not modes:
         parser.error(
-            "one of --preset, --check-assets, --check-boot, --check-engine, "
+            "one of --preset, --check-assets, --check-boot, --check-groups, --check-engine, "
             "--synthetic-engine-verdicts or --pages-status is required"
         )
     if args.pages_status is not None:
@@ -594,6 +721,16 @@ def main(argv: list[str] | None = None) -> int:
             total = len({path for _, path in boot_asset_ids(_manifest(repo_root))})
             missing = missing_boot_files(output.parent, repo_root)
             print(f"{total - len(missing)} of {total} boot asset file(s) resolved from {output.parent}")
+            return 0
+        if args.check_groups:
+            for group in PRELOAD_GROUPS:
+                ensure_group_assets_resolve(output.parent, repo_root, group)
+                total = len({route for _, route in group_members(_manifest(repo_root), group)})
+                missing = missing_group_files(output.parent, repo_root, group)
+                print(
+                    f"{total - len(missing)} of {total} {group} asset file(s) resolved "
+                    f"from {output.parent}"
+                )
             return 0
         export(repo_root, args.preset, Path(args.godot), output)
     except ExportError as error:

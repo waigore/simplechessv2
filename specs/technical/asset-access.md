@@ -11,7 +11,7 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 | ID | Aspect | Realizes | Rule |
 |----|--------|----------|------|
 | R1 | Asset manifest | `ACC.A2` | Generated JSON from `asset_catalog/`; path `game/asset_manifest.json` (outside `asset_catalog/` and `game_assets/`); never hand-edited; regenerated when catalog entries change. |
-| R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by ID. A preload group leaving an approved ID unresolved settles as a surfaced failure on E4 ([`CTR-asset-resolve`](contracts/asset-resolve.md)), never an indefinite wait. On Web the read path is `res://<asset_root>/…` and the Vorbis copy `res://audio_runtime/<asset ID>.ogg`, both beside `index.html`; elsewhere repo root (ADR-0014). Opus audio loads the Vorbis copy in O3. |
+| R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by ID. A preload group leaving an approved ID unresolved settles as a surfaced failure on E4 ([`CTR-asset-resolve`](contracts/asset-resolve.md)), never an indefinite wait. On Web the read path is `res://<asset_root>/…` and the Vorbis copy `res://audio_runtime/<asset ID>.ogg`, both beside `index.html`; elsewhere repo root (ADR-0014). |
 | R3 | Unresolved asset ID | `ACC.A3` | Dev/playtest: log the unresolved ID and show the playtest debug overlay when that build has one. Release: skip draw, keep session, log once. |
 
 ## Engine resources
@@ -24,9 +24,10 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Output | Generator | Inputs | Location | Committed |
 |----|--------|-----------|--------|----------|-----------|
-| O1 | Godot import cache (`.godot/`) | Godot import (ADR-0001) | Files under `game_assets/` | `game/.godot/` — outside the asset root | Rebuilt on import; not committed (`.gitignore`). In-root `.import` / `.uid` sidecars are not this output: they are asset-root content under `ACC.P1`. |
+| O1 | Godot import cache (`.godot/`) | Godot import (ADR-0001) | Files under `game_assets/` | `game/.godot/` — outside the asset root | Rebuilt on import; not committed (`.gitignore`). In-root `.import` / `.uid` sidecars are asset root content (`ACC.P1`). |
 | O2 | Asset manifest | Catalog generator (ADR-0005) | Approved `asset_catalog/` entries | `game/asset_manifest.json` | Committed; regenerate in CI when catalog changes |
-| O3 | Playback audio | Catalog generator (ADR-0005, ADR-0001) | Approved music and sound-effects Ogg Opus | `audio_runtime/<asset-id>.ogg` | Committed Vorbis copy. Catalog files stay Opus. Godot 4.7.2 does not decode Opus. Regenerate with the manifest. |
+| O3 | Playback audio | Catalog generator (ADR-0005, ADR-0001) | Approved music and sound-effects Ogg Opus | `audio_runtime/<asset-id>.ogg` | Committed Vorbis copy (`AST.O3`). Regenerate with the manifest. |
+| O4 | Group gate | Export | `ACC.G1`–`G3` | `--check-groups` | Fails a group file with no read route (#812) |
 
 ## Load groups
 

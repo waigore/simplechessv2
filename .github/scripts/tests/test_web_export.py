@@ -79,20 +79,26 @@ def _fake_godot(tmp_path: Path, *, artifacts: bool, fail: bool = False, assets: 
     return runner
 
 
-def _fake_pack(pack: Path, paths: list[str]) -> None:
-    """A stand-in Godot 4 PCK whose file table carries `paths`.
+def _pck(pack: Path, paths: list[str]) -> None:
+    """A Godot 4 PCK whose file table carries `paths`, in the engine's own layout.
 
-    The header is `GDPC`, four version words and a format word (24 bytes), then
-    per entry a length-prefixed path, an 8-byte offset and an 8-byte size. This
-    matches `web_export.packed_paths`, which reads the real layout the engine
-    writes; the real export is exercised by the `Web release` workflow run.
+    `file_access_pack.cpp` (`PackedSourcePCK::try_open_pack`) reads magic, the
+    format version, three engine version words, the pack flags, a file base, the
+    directory offset and a reserved run to that offset; each entry is then a
+    length-prefixed path, offset, size, checksum and flags. `web_export.pack_entries`
+    reads exactly this, so a route here is an entry and nothing else (#812).
     """
-    table = bytearray(b"GDPC" + struct.pack("<IIIII", 4, 4, 7, 2, 2))
+    directory = 4 + 4 * 5 + 8 + 8 + 60
+    entries = bytearray(struct.pack("<I", len(paths)))
     for index, path in enumerate(paths):
-        raw = path.encode("utf-8")
-        table += struct.pack("<I", len(raw)) + raw + struct.pack("<QQ", index, 1)
+        # The engine writes the path with its NUL terminator inside the length.
+        raw = path.encode("utf-8") + b"\x00"
+        entries += struct.pack("<I", len(raw)) + raw
+        entries += struct.pack("<QQ", index, 1) + bytes(16) + struct.pack("<I", 0)
+    header = b"GDPC" + struct.pack("<IIIII", 4, 4, 7, 2, 0)
+    header += struct.pack("<QQ", 0, directory) + bytes(60)
     pack.parent.mkdir(parents=True, exist_ok=True)
-    pack.write_bytes(bytes(table))
+    pack.write_bytes(header + bytes(entries))
 
 
 class WebExportTest(unittest.TestCase):
@@ -327,7 +333,7 @@ class WebExportTest(unittest.TestCase):
         self._write_boot_manifest(["icons/quit.svg"])
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
-        _fake_pack(shipped / web_export.PACK, [f"res://{web_export.ASSET_ROOT}/icons/quit.svg.import"])
+        _pck(shipped / web_export.PACK, [f"res://{web_export.ASSET_ROOT}/icons/quit.svg.import"])
         assert web_export.asset_root_present(shipped, self.repo)
         with self.assertRaises(web_export.ExportError) as raised:
             web_export.ensure_boot_assets_resolve(shipped, self.repo)
@@ -338,7 +344,7 @@ class WebExportTest(unittest.TestCase):
         self._write_boot_manifest(["icons/quit.svg"])
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
-        _fake_pack(shipped / web_export.PACK, [f"res://{web_export.ASSET_ROOT}/icons/quit.svg"])
+        _pck(shipped / web_export.PACK, [f"res://{web_export.ASSET_ROOT}/icons/quit.svg"])
         assert web_export.missing_boot_files(shipped, self.repo) == []
 
     def test_boot_check_reports_the_partial_count(self) -> None:
@@ -358,6 +364,137 @@ class WebExportTest(unittest.TestCase):
         assert web_export.main(check) == 1
         self._stage_assets(shipped)
         assert web_export.main(check) == 0
+
+    # #812 — a preload group other than `boot`, read at the route its kind is read at.
+
+    def _write_group_manifest(self, groups: dict[str, list[str]], files: dict[str, list[str]]) -> None:
+        """A committed manifest whose entries and groups are read by the group check."""
+        assets = {
+            asset_id: {"state": "approved", "kind": "music", "files": paths}
+            for asset_id, paths in files.items()
+        }
+        (self.repo / "game" / "asset_manifest.json").write_text(
+            json.dumps({"asset_root": web_export.ASSET_ROOT, "assets": assets, "groups": groups}),
+            encoding="utf-8",
+        )
+
+    def _music_manifest(self) -> None:
+        """Two music beds in `ambient`, plus one cataloged `game_assets/` file.
+
+        A real manifest always names the asset root, so the tree has a root to
+        read; without one the check reports the root absent rather than a group
+        verdict.
+        """
+        self._write_group_manifest(
+            {"boot": ["icon"], "play": ["sfx"], "ambient": ["bed-a", "bed-b"]},
+            {
+                "bed-a": ["music/cafe-ambient-a.ogg"],
+                "bed-b": ["music/cafe-ambient-b.ogg"],
+                "sfx": ["sound-effects/check.ogg"],
+                "icon": ["icons/quit.svg"],
+            },
+        )
+
+    def test_group_check_passes_when_the_audio_copies_ship_loose(self) -> None:
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        for asset_id in ("bed-a", "bed-b"):
+            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(b"OggS")
+        web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
+        assert web_export.missing_group_files(shipped, self.repo, "ambient") == []
+
+    def test_group_check_names_the_audio_route_not_the_catalog_path(self) -> None:
+        """The catalog Opus file being present is not what the resolver plays (#812)."""
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        (shipped / web_export.ASSET_ROOT / "music").mkdir(parents=True)
+        for name in ("cafe-ambient-a.ogg", "cafe-ambient-b.ogg"):
+            (shipped / web_export.ASSET_ROOT / "music" / name).write_bytes(b"OpusHead")
+        with self.assertRaises(web_export.ExportError) as raised:
+            web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
+        assert "0 of 2 ambient asset file(s) resolved" in str(raised.exception)
+        assert "bed-a (audio_runtime/bed-a.ogg)" in str(raised.exception)
+        assert "bed-b (audio_runtime/bed-b.ogg)" in str(raised.exception)
+
+    def test_group_check_refuses_the_silent_bundle_while_the_catalog_check_passes(self) -> None:
+        """#812: the catalog guards stay green; the ambient group does not."""
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        (shipped / web_export.ASSET_ROOT / "music").mkdir(parents=True)
+        for name in ("cafe-ambient-a.ogg", "cafe-ambient-b.ogg"):
+            (shipped / web_export.ASSET_ROOT / "music" / name).write_bytes(b"OpusHead")
+        (shipped / web_export.AUDIO_RUNTIME / "other-sfx.ogg").write_bytes(b"OggS")
+        # The catalog check counts the asset root and an audio copy: both present.
+        assert web_export.asset_root_present(shipped, self.repo)
+        with self.assertRaises(web_export.ExportError) as raised:
+            web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
+        assert "0 of 2 ambient asset file(s) resolved" in str(raised.exception)
+
+    def test_group_check_passes_when_the_pack_carries_the_audio_route(self) -> None:
+        """The packed-only route: no loose copy, the entry is present."""
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        _pck(
+            shipped / web_export.PACK,
+            [f"res://audio_runtime/{asset_id}.ogg" for asset_id in ("bed-a", "bed-b")],
+        )
+        assert web_export.missing_group_files(shipped, self.repo, "ambient") == []
+
+    def test_group_check_ignores_an_import_sidecar_that_names_the_route(self) -> None:
+        """A `.import` sidecar's `path=` text is not an entry; the engine reads the entry (#812)."""
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        _pck(shipped / web_export.PACK, ["res://audio_runtime/bed-a.ogg.import"])
+        assert web_export.missing_group_files(shipped, self.repo, "ambient") == [
+            ("bed-a", "audio_runtime/bed-a.ogg"),
+            ("bed-b", "audio_runtime/bed-b.ogg"),
+        ]
+
+    def test_group_check_reads_each_non_audio_kind_at_the_asset_root(self) -> None:
+        self._write_group_manifest(
+            {"play": ["sfx", "board"]},
+            {"sfx": ["sound-effects/check.ogg"], "board": ["board-backgrounds/play-table.svg"]},
+        )
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, audio=False)
+        (shipped / web_export.AUDIO_RUNTIME / "sfx.ogg").write_bytes(b"OggS")
+        assert web_export.missing_group_files(shipped, self.repo, "play") == [
+            ("board", "board-backgrounds/play-table.svg")
+        ]
+
+    def test_group_check_fails_a_manifest_group_with_no_loadable_file(self) -> None:
+        self._write_group_manifest({"ambient": ["license-only"]}, {"license-only": ["music/OFL.txt"]})
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped)
+        with self.assertRaises(web_export.ExportError) as raised:
+            web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
+        assert "the manifest names no loadable file for the ambient group" in str(raised.exception)
+
+    def test_group_check_cli_is_red_then_green(self) -> None:
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, audio=False)
+        check = ["--check-groups", "--repo", str(self.repo), "--preset", web_export.RELEASE_PRESET]
+        assert web_export.main(check) == 1
+        for asset_id in ("bed-a", "bed-b", "sfx"):
+            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(b"OggS")
+        assert web_export.main(check) == 0
+
+    def test_pack_entries_reads_the_real_directory_and_no_sidecar_text(self) -> None:
+        pack = self.tmp_path / "index.pck"
+        _pck(pack, ["res://audio_runtime/bed-a.ogg", "res://game_assets/icons/quit.svg"])
+        assert web_export.pack_entries(pack) == [
+            "res://audio_runtime/bed-a.ogg",
+            "res://game_assets/icons/quit.svg",
+        ]
+        assert web_export.pack_entries(self.tmp_path / "absent.pck") == []
+        pack.write_bytes(b"not a pack")
+        assert web_export.pack_entries(pack) == []
 
     def test_export_stages_the_repo_asset_root_and_discards_it_after(self) -> None:
         repo = self._write_repo()
