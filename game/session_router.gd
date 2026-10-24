@@ -523,7 +523,16 @@ func _advice_shown() -> String:
 	if shared_session == null:
 		return ""
 	var state := shared_session.play_state()
-	return "%s|%s" % [str(state.get("advice_best_move", null)), str(state.get("advice_eval", null))]
+	# S3 `EX.error` is advice chrome too: entering or leaving it must re-render
+	# the play screen, or the panel never appears and Dismiss leaves it up.
+	return (
+		"%s|%s|%s"
+		% [
+			str(state.get("advice_best_move", null)),
+			str(state.get("advice_eval", null)),
+			str(shared_session.advice_error),
+		]
+	)
 
 
 ## R9 — leaving the Shared game clears advice and stops evaluation. The S3 error
