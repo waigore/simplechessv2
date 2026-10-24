@@ -1,0 +1,9 @@
+# criterion 1 — the 648 release-status sentence, on 1cb3a5e
+
+specs/technical/configuration.md:43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+specs/technical/components/catalog-service.md:56:Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on that server's deploy path, which the operator owns (ADR-0015). Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
+
+## commits carrying them
+e19401f Make T9/T10 agree with B5 on the catalog release state (#648) (#842)
+e19401f Make T9/T10 agree with B5 on the catalog release state (#648) (#842)
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
