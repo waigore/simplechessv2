@@ -17,7 +17,7 @@
 
 Selected agents run concurrently. Each agent starts `parallel_run` loops (default **1**). Loops are staggered. Within one loop: at most one agent process. Gate misses never start a worktree or CLI.
 
-When `parallel_run` is greater than 1 and `issues.command` is set, a loop claims the first free issue in the command's list order after the gate passes (shipped workflow agents list by priority, then number). One in-memory map covers the whole daemon, so an issue has at most one owner. The map is not saved. A claim miss uses the same backoff as a gate miss and does not count toward `-n`. Ownership is released when that run ends, including failure. A new process starts with an empty map.
+When `parallel_run` is greater than 1 and `issues.command` is set, a loop claims the first free issue in the command's list order after the gate passes (shipped workflow agents list by priority, then type — defect, task, epic — then earlier wave, then number). One in-memory map covers the whole daemon, so an issue has at most one owner. The map is not saved. A claim miss uses the same backoff as a gate miss and does not count toward `-n`. Ownership is released when that run ends, including failure. A new process starts with an empty map.
 
 `{parallel_id}` (stable slot number, from 1) and `{issue}` (`none` when unassigned) are filled in that run's prompt. Without `issues.command`, extra slots still run, with ids only. Cooldown and gate backoff apply separately to each slot.
 
