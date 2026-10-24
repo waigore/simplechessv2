@@ -1,0 +1,817 @@
+{
+  "build": {
+    "binary": "Godot 4.7.2.stable.official.ed1daf0bf",
+    "commit": "8cdfd45a1f1d7c1726244437a0d4277c6edd9e6c",
+    "display_driver": "macOS",
+    "export_preset": "Web Playtest",
+    "godot": "4.7.2-stable (official)",
+    "os": "macOS",
+    "os_version": "27.0.1",
+    "pck_sha256": "17a820b6b42ca261780110b01b1eb804b6f03a51415705317d5b44565eb75550",
+    "window_size": "(1280, 720)"
+  },
+  "errors": [],
+  "godot": "4.7.2-stable (official)",
+  "kind": "graphical",
+  "none_rows": {
+    "localization.md#US2": {
+      "defect": 788,
+      "protocol": "localization",
+      "reason": "out of playtest scope"
+    }
+  },
+  "protocols": {
+    "controls": {
+      "fail": [],
+      "not_judged": [
+        "controls-point.md#US3"
+      ],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "controls.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "controls-drag.md#US2"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "controls-point.md#US3"
+        }
+      ],
+      "verdict": "not-judged"
+    },
+    "end-conditions": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "exceptions": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "exceptions.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "exceptions-play.md#US1"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "game-state": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "localization": {
+      "fail": [],
+      "not_judged": [
+        "localization.md#US1"
+      ],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "screens/mode-pick.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/mode-pick-unavailable.md#US1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "localization.md#US1"
+        }
+      ],
+      "verdict": "not-judged"
+    },
+    "mode-and-config": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "mode-pick": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "screens/mode-pick.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/mode-pick-unavailable.md#US1"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "navigation": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "navigation.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "navigation-conditions.md#US2"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "pieces-common": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "pieces-king": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "pieces-officers": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "pieces-pawn": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "shared-game": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
+    },
+    "shared-play": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "screens/shared-play.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/shared-play-regions.md#US2"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/shared-play-choices.md#US3"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/shared-play-place.md#US3"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/shared-play-unavailable.md#US4"
+        },
+        {
+          "outcome": "pass",
+          "row": "actors/bottom-player.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "actors/top-player.md#US1"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "shared-result": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "screens/shared-result.md#US1"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "shared-session": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "journeys/shared-session.md#US1"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "shared-setup": {
+      "fail": [],
+      "not_judged": [],
+      "rows": [
+        {
+          "outcome": "pass",
+          "row": "screens/shared-setup.md#US1"
+        }
+      ],
+      "verdict": "pass"
+    }
+  },
+  "rows": {
+    "actors/bottom-player.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.6 select",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.5 place",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.10 Bottom cannot select on Top's turn (selection  → )",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.1 select on Top turn",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.2 place on Top turn",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "actors/top-player.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.4 advice toggle path",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.11 Top cannot select on Bottom's turn",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "controls-drag.md#US2": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US2.1 drag move asks the place",
+          "outcome": "pass",
+          "protocol": "controls"
+        }
+      ]
+    },
+    "controls-point.md#US3": {
+      "outcome": "not-judged",
+      "scenarios": [
+        {
+          "note": "US3.1 point on mode-pick C1 → C1",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US3.2–3.4 shared-setup focus chain: 5 of 6 documented controls available",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US3.2–3.4 shared-play focus chain: 6 of 10 documented controls available",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US3.2–3.4 shared-result focus chain: 2 of 2 documented controls available",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US3.5 is the puzzle-play screen (Wave 2), so no wave-1 step reaches it; IN.point on mode-pick C1 and the shared screens' focus chains were checked above",
+          "outcome": "not-judged",
+          "protocol": "controls"
+        }
+      ]
+    },
+    "controls.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.5 IN.select e2",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US1.7 clear on piece",
+          "outcome": "pass",
+          "protocol": "controls"
+        }
+      ]
+    },
+    "exceptions-play.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.10 rejected place → S5 (reject illegal @e5)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.11 flash ends",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.8 promotion choice shown at a8 (S4)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.9 deselect drops the choice, pawn stays on a7 and is not committed",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.12 draw offer panel open with Accept/Decline/Withdraw (S6)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        }
+      ]
+    },
+    "exceptions.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.7 confirm shown on resign",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.2 confirm cancel",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.3/1.15 interrupt: cold boot returns mode-pick (log)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.6 non-touch input shows EX.unsupported-input; control did not activate (S1)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        }
+      ]
+    },
+    "journeys/shared-session.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.1 C1 → shared-setup, C5 → shared-play",
+          "outcome": "pass",
+          "protocol": "shared-session"
+        },
+        {
+          "note": "US1.5 resign → shared-result",
+          "outcome": "pass",
+          "protocol": "shared-session"
+        },
+        {
+          "note": "US1.2 Stop → mode-pick",
+          "outcome": "pass",
+          "protocol": "shared-session"
+        },
+        {
+          "note": "US1.3 Play again → shared-setup",
+          "outcome": "pass",
+          "protocol": "shared-session"
+        },
+        {
+          "note": "US1.4 Back → mode-pick",
+          "outcome": "pass",
+          "protocol": "shared-session"
+        }
+      ]
+    },
+    "localization.md#US1": {
+      "outcome": "not-judged",
+      "scenarios": [
+        {
+          "note": "LOC.US1.3 title/shared/puzzle differ; locale own names 繁體中文 日本語",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.2 own-name row reads its own name",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.1 key names are a spec review",
+          "outcome": "not-judged",
+          "protocol": "localization"
+        }
+      ]
+    },
+    "navigation-conditions.md#US2": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US2.3 T6 fail-stay",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US2.1 T3 fail-stay",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US2.6/2.7 loading blocks C1/C2 (cold open log)",
+          "outcome": "pass",
+          "protocol": "navigation"
+        }
+      ]
+    },
+    "navigation.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.1 T1",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.5 T5",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.4 T4",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.6 T6",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.7 T7",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.10 N1 opens at mode-pick",
+          "outcome": "pass",
+          "protocol": "navigation"
+        }
+      ]
+    },
+    "screens/mode-pick-unavailable.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.10–1.13 C1 not offered in S3 (offered=false)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.10–1.13 C2 not offered in S3 (offered=false)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.10–1.13 C3 not offered in S3 (offered=false)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.10–1.13 C4 not offered in S3 (offered=false)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.10 C1 press reaches nothing while S3 (pressed=false)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.13 C4 unavailable in S3",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.14/1.15 Confirm and Cancel are offered in S3",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.15 Cancel returns S1 (S1)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        }
+      ]
+    },
+    "screens/mode-pick.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "S1 shows Title/Shared/Puzzle/Quit/locale",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.3 C1 → shared-setup",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.4 C2 → puzzle-play",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.5/1.7 C3 → S3, Cancel → S1",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.8 save-failure → S4, Dismiss → S1",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.9 first C4 → locale zh-Hant, R3 繁體中文",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "FAIL.T13 misses in run log: true",
+          "outcome": "pass",
+          "protocol": "localization"
+        }
+      ]
+    },
+    "screens/shared-play-choices.md#US3": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US3.1 C5 → S2 offer confirm (offer)",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.12/3.15 offer on the table → S6, side white",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.7 decline → S1, offer cleared",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.9 withdraw → S1, offer cleared",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.5 accept ends the game (S1)",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "screens/shared-play-place.md#US3": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US3.11 refused place → S5 (ok=false, illegal=true)",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.11 selected + empty illegal destination deselects, no reject flash",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.16 pick-and-drag place asked",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.13 last-rank pawn shows the promotion choice (S4)",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US3.14 draw offer lapses when a move completes",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "screens/shared-play-regions.md#US2": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US2.1/2.2 board renders GS.position (e1 = { \"color\": \"white\", \"kind\": \"king\" })",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US2.4 White to move shown",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US2.6 no clock when Untimed",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US2.3/2.10 selection + 2 legal marks on d2",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US2.9 no advice marks when unset",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "screens/shared-play-unavailable.md#US4": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US4.1/4.13 C1/C10 in S2 refused",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.2 C2 in S2 no place",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.3 C3 in S2",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.4 C4 in S2",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.5 C5 in S2",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.6–4.8 C7/C8/C9 without an offer stay S1 ([\"S1\", \"S1\", \"S1\"])",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.11 C4 in S6 refused",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.12 C5 in S6 refused",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US4.9/4.10 select and place unavailable in S4 (in_s4=true c1=false c2=false ui=S4)",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "screens/shared-play.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.2 C1 on e2 → selectedPiece e2",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.3 C2 e2→e4 placed, selection cleared",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.10 C10 clears selection",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.4 C3 toggles advice true → false",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.1 C4 → S2 resign confirm",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        },
+        {
+          "note": "US1.8 Cancel resign → S1",
+          "outcome": "pass",
+          "protocol": "shared-play"
+        }
+      ]
+    },
+    "screens/shared-result.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.1 result shown after resign (shared-result)",
+          "outcome": "pass",
+          "protocol": "shared-result"
+        },
+        {
+          "note": "US1.2 Play again → shared-setup",
+          "outcome": "pass",
+          "protocol": "shared-result"
+        },
+        {
+          "note": "US1.3 Stop → mode-pick",
+          "outcome": "pass",
+          "protocol": "shared-result"
+        }
+      ]
+    },
+    "screens/shared-setup.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "S1 with Start/Back",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.4 C1 whiteSeat bottom → top",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.5 C2 clock untimed → blitz",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.6 increment 3 → 5",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.7 Increment unavailable when Untimed",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.8 C4 advice true → false",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.9 C6 Back → mode-pick",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        },
+        {
+          "note": "US1.3 C5 Start → shared-play",
+          "outcome": "pass",
+          "protocol": "shared-setup"
+        }
+      ]
+    }
+  },
+  "session_id": "sess-20261025-478-wave1-playtest",
+  "tel_count": 87
+}
