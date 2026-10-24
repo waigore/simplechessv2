@@ -1,0 +1,412 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/?mv=2",
+  "label": "mv2",
+  "move": "e2e4",
+  "selectAtMs": 18215,
+  "moveAtMs": 21019,
+  "page": {
+    "viewport": {
+      "width": 300,
+      "height": 150,
+      "dpr": 2
+    },
+    "touches": [
+      {
+        "x": 195,
+        "y": 172,
+        "t": 9835
+      },
+      {
+        "x": 120,
+        "y": 312,
+        "t": 12647
+      },
+      {
+        "x": 215,
+        "y": 632,
+        "t": 18279
+      },
+      {
+        "x": 215,
+        "y": 555,
+        "t": 21100
+      }
+    ],
+    "frames": 1106,
+    "loop_started": 1704,
+    "errors": []
+  },
+  "windows": {
+    "idle": {
+      "frames": 41,
+      "spanMs": 1116.5,
+      "fps": 35.83,
+      "p50": 33.3,
+      "p95": 49.9,
+      "p99": 50.1,
+      "max": 50.1,
+      "over16_7ms": 29,
+      "over33_4ms": 2,
+      "over100ms": 0
+    },
+    "move+0..1000": {
+      "frames": 39,
+      "spanMs": 966.6,
+      "fps": 39.31,
+      "p50": 33.3,
+      "p95": 33.4,
+      "p99": 33.4,
+      "max": 33.4,
+      "over16_7ms": 22,
+      "over33_4ms": 0,
+      "over100ms": 0
+    },
+    "move+0..2000": {
+      "frames": 80,
+      "spanMs": 1949.9,
+      "fps": 40.51,
+      "p50": 16.8,
+      "p95": 33.4,
+      "p99": 33.4,
+      "max": 33.4,
+      "over16_7ms": 42,
+      "over33_4ms": 0,
+      "over100ms": 0
+    },
+    "moveAll": {
+      "frames": 207,
+      "spanMs": 5033.2,
+      "fps": 40.93,
+      "p50": 16.7,
+      "p95": 33.4,
+      "p99": 33.4,
+      "max": 33.4,
+      "over16_7ms": 102,
+      "over33_4ms": 0,
+      "over100ms": 0
+    }
+  },
+  "overall": {
+    "frames": 1105,
+    "spanMs": 25382.4,
+    "fps": 43.49,
+    "p50": 16.7,
+    "p95": 33.4,
+    "p99": 50,
+    "max": 850,
+    "over16_7ms": 358,
+    "over33_4ms": 16,
+    "over100ms": 3
+  },
+  "marks": [
+    {
+      "tag": "mode-pick",
+      "atMs": 9723,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [],
+        "frames": 380,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-01-mode-pick.png",
+      "castSoFar": 378
+    },
+    {
+      "tag": "shared-setup",
+      "atMs": 12440,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          }
+        ],
+        "frames": 530,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-02-shared-setup.png",
+      "castSoFar": 530
+    },
+    {
+      "tag": "board",
+      "atMs": 15823,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          }
+        ],
+        "frames": 663,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-03-board.png",
+      "castSoFar": 663
+    },
+    {
+      "tag": "pre-select",
+      "atMs": 18007,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          }
+        ],
+        "frames": 742,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-04-pre-select.png",
+      "castSoFar": 742,
+      "square": "e2",
+      "point": {
+        "x": 215,
+        "y": 632
+      }
+    },
+    {
+      "tag": "selected",
+      "atMs": 19341,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          },
+          {
+            "x": 215,
+            "y": 632,
+            "t": 18279
+          }
+        ],
+        "frames": 791,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-05-selected.png",
+      "castSoFar": 791,
+      "square": "e2",
+      "point": {
+        "x": 215,
+        "y": 632
+      },
+      "touchSeen": [
+        {
+          "x": 195,
+          "y": 172,
+          "t": 9835
+        },
+        {
+          "x": 120,
+          "y": 312,
+          "t": 12647
+        },
+        {
+          "x": 215,
+          "y": 632,
+          "t": 18279
+        }
+      ]
+    },
+    {
+      "tag": "move+250",
+      "atMs": 21484,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          },
+          {
+            "x": 215,
+            "y": 632,
+            "t": 18279
+          },
+          {
+            "x": 215,
+            "y": 555,
+            "t": 21100
+          }
+        ],
+        "frames": 870,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-06-move+250.png",
+      "castSoFar": 870
+    },
+    {
+      "tag": "move+500",
+      "atMs": 21907,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          },
+          {
+            "x": 215,
+            "y": 632,
+            "t": 18279
+          },
+          {
+            "x": 215,
+            "y": 555,
+            "t": 21100
+          }
+        ],
+        "frames": 887,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-07-move+500.png",
+      "castSoFar": 887
+    },
+    {
+      "tag": "move+2000",
+      "atMs": 23566,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          },
+          {
+            "x": 215,
+            "y": 632,
+            "t": 18279
+          },
+          {
+            "x": 215,
+            "y": 555,
+            "t": 21100
+          }
+        ],
+        "frames": 954,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-08-move+2000.png",
+      "castSoFar": 955
+    },
+    {
+      "tag": "move+5000",
+      "atMs": 26749,
+      "page": {
+        "viewport": {
+          "width": 300,
+          "height": 150,
+          "dpr": 2
+        },
+        "touches": [
+          {
+            "x": 195,
+            "y": 172,
+            "t": 9835
+          },
+          {
+            "x": 120,
+            "y": 312,
+            "t": 12647
+          },
+          {
+            "x": 215,
+            "y": 632,
+            "t": 18279
+          },
+          {
+            "x": 215,
+            "y": 555,
+            "t": 21100
+          }
+        ],
+        "frames": 1090,
+        "loop_started": 1704,
+        "errors": []
+      },
+      "shot": "mv2-09-move+5000.png",
+      "castSoFar": 1090
+    }
+  ],
+  "screencastFrames": 1100
+}
