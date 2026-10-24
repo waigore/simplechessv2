@@ -430,6 +430,8 @@ func _show_shared_play(state: Dictionary) -> void:
 		"side_to_move": str(state.get("side_to_move", "white")),
 		"in_check": bool(state.get("in_check", false)),
 		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
+		# E2 `marks` — the session's check mark, drawn on the board (PER.R6).
+		"check_square": str(state.get("check_square", "")),
 	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
