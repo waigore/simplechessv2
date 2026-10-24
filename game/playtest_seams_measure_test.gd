@@ -314,8 +314,8 @@ func _check_report_shape() -> bool:
 func _check_debug_control() -> bool:
 	var seams := _new_seam()
 	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
-	var field := seams.get_node("PlaytestDebug/DebugPanel/MeasureKind") as LineEdit
-	var button := seams.get_node("PlaytestDebug/DebugPanel/Measure") as Button
+	var field := seams.get_node("PlaytestDebug/DebugPanel/Controls/MeasureKind") as LineEdit
+	var button := seams.get_node("PlaytestDebug/DebugPanel/Controls/Measure") as Button
 	if field == null or button == null:
 		return _fail("measure debug control missing")
 	field.text = PlaytestMeasure.KIND_FRAME_TIMES
