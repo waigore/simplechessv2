@@ -22,6 +22,22 @@ agents:
 
   issue-workflow-review-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
+    parallel_run: 3
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --repo
+        - waigore/simplechessv2
+        - --state
+        - open
+        - --label
+        - status:pending-review
+        - --limit
+        - "100"
+        - --json
+        - number
     gate:
       command:
         - sh
@@ -30,6 +46,22 @@ agents:
 
   issue-workflow-refine-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
+    parallel_run: 3
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --repo
+        - waigore/simplechessv2
+        - --state
+        - open
+        - --label
+        - status:pending-refinement
+        - --limit
+        - "100"
+        - --json
+        - number
     gate:
       command:
         - sh
@@ -38,7 +70,7 @@ agents:
 
   issue-workflow-implement-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
-    parallel_run: 5
+    parallel_run: 3
     issues:
       command:
         - gh
@@ -62,6 +94,22 @@ agents:
 
   issue-workflow-verify-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
+    parallel_run: 3
+    issues:
+      command:
+        - gh
+        - issue
+        - list
+        - --repo
+        - waigore/simplechessv2
+        - --state
+        - open
+        - --label
+        - status:pending-verification
+        - --limit
+        - "100"
+        - --json
+        - number
     gate:
       command:
         - sh
