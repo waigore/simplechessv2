@@ -1,0 +1,5 @@
+(no match: the criterion-1 sentence does not exist on origin/main)
+--- T9/T10/B5 ---
+| T9 | advice_endpoint | — (integration value, not a design param; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default |
+| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; T9 and T10 serve the catalog route too |
+| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | T9 or T10 missing: every deal fails ([`FAIL.T14`](failures.md)); Elo kept; log |
