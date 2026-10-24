@@ -116,6 +116,37 @@ Non-blocking gaps filled for the demo only (tuning, copy, layout details; never 
 | A5 | The `api_key` printed in the O1 log is the literal `demo-simulated-peer`; there is no secret in the demo. | The peer accepts anything; the real key belongs to the deployed backend (#373). | `specs/technical/contracts/advice-stream.md` Wire |
 | A6 | `board_view.gd`, `chess_rules.gd`, and `asset_loader.gd` are copied from `demos/shared-game` (demo #63) with the advice marks added, rather than imported. | Main code never imports demos, and demos do not import each other either; copying keeps each demo runnable on its own. | — (demo convention) |
 
+## Promotion act
+
+Filled by `require-demo-promotion`. Incomplete until every included element is keep or drop and any conflict spec PR has merged.
+
+| Element | Choice | Note |
+|---------|--------|------|
+| `F-move-advice.R1`–`R3` | keep | none |
+| `F-move-advice.R4`, `R5` | keep | none |
+| `F-move-advice.R6`, `I1` | keep | none |
+| `F-move-advice.R7`, `CFG.ADVICE_TIME_MS` | keep | none |
+| `F-move-advice.R8`, `X1`, `X4` | keep | none |
+| `F-move-advice.R9`, `X2`, `X3` | keep | none |
+| `F-move-advice.D1` | keep | none |
+| `GS.advice`, `online`, `adviceBestMove`, `adviceEval`, `H2`, `V3` | keep | none |
+| `L-two-player-game.K2` with `I1` | keep | none |
+| `UI-shared-play.R3`, `C3`, `S3` | keep | none |
+| `EX.error` (`FAIL.T1`) | keep | none |
+| `PER.R5` with `R1`, `R3`, `R4`, `R6` | keep | none |
+| `PAL.C7`, `C10`, `C9`, `C8` | keep | none |
+| `UIS.T2`, `I1` | keep | none |
+| `CTR-advice-stream` O1–O3, E1–E2, G1, G3 | keep | none |
+| `SCH-advice-update` F1–F6, L2, I3 | keep | none |
+| `CMP-advice-backend` R1–R4 (simulated) | keep | Simulated peer is the demo stand-in; real backend stays out of demo scope |
+| `CMP-advice-client` (simulated) | keep | none |
+| `advice-stream` S1–S7, B1–B3 | keep | none |
+| `feedback.md` “Advice ready” | keep | none |
+| `AES.P1`–`P3` | keep | none |
+| `ADR-0002` validation rows | keep | none |
+
+Act: complete
+
 ## Run
 
 - **Setup**: checkout the repo; the demo is a standalone Godot project at `demos/advice/` (its own `project.godot`). It loads cataloged assets by ID at runtime from `game_assets/` and `audio_runtime/` at the repo root (ADR-0005), so run it with the repo checkout intact.
