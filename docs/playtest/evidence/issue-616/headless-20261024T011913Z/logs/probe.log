@@ -1,0 +1,221 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== frame (1280.0, 720.0) ==
+ok ModePick           rect=[P: (480.0, 80.0), S: (320.0, 280.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=mode-pick frame=(1280.0, 720.0) total=9 outside_frame=0
+ok SharedSetup        rect=[P: (480.0, 60.0), S: (320.0, 1010.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=mode-pick frame=(1280.0, 720.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (480.0, 120.0), S: (320.0, 1047.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=mode-pick frame=(1280.0, 720.0) total=0 outside_frame=0
+{"TEL.1":"shared.start","TEL.2":1792804508833,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ok ModePick           rect=[P: (480.0, 80.0), S: (320.0, 280.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=shared-setup frame=(1280.0, 720.0) total=0 outside_frame=0
+ok SharedSetup        rect=[P: (480.0, 60.0), S: (320.0, 1174.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=shared-setup frame=(1280.0, 720.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (480.0, 120.0), S: (320.0, 1047.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=shared-setup frame=(1280.0, 720.0) total=0 outside_frame=0
+{"TEL.1":"shared.resign","TEL.2":1792804508851,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+ok ResignConfirm      rect=[P: (500.0, 200.0), S: (280.0, 140.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=resign-confirm frame=(1280.0, 720.0) total=6 outside_frame=0
+{"TEL.1":"shared.resign","TEL.2":1792804508906,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792804508909,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792804508909,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+ok ModePick           rect=[P: (480.0, 80.0), S: (320.0, 280.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=shared-result frame=(1280.0, 720.0) total=0 outside_frame=0
+ok SharedSetup        rect=[P: (480.0, 60.0), S: (320.0, 1174.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=shared-result frame=(1280.0, 720.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (480.0, 120.0), S: (320.0, 313.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=shared-result frame=(1280.0, 720.0) total=8 outside_frame=0
+{"TEL.1":"puzzle.enter","TEL.2":1792804508962,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _frame (res://probe_616_acceptance.gd:66)
+         [7] _settle (res://probe_616_acceptance.gd:180)
+{"TEL.1":"puzzle.confirm","TEL.2":1792804509016,"TEL.3":"sess-1792804508697-29291-playtest","TEL.5":"leave_confirm"}
+ok StreamConfirm      rect=[P: (500.0, 220.0), S: (280.0, 140.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=stream-confirm frame=(1280.0, 720.0) total=6 outside_frame=0
+{"TEL.1":"puzzle.cancel","TEL.2":1792804509045,"TEL.3":"sess-1792804508697-29291-playtest","TEL.5":"ok"}
+{"TEL.1":"puzzle.enter","TEL.2":1792804509099,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _frame (res://probe_616_acceptance.gd:77)
+         [7] _settle (res://probe_616_acceptance.gd:180)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:612)
+       [2] _apply_outcome (res://puzzle_session.gd:586)
+       [3] _settle (res://puzzle_session.gd:447)
+       [4] _judge (res://puzzle_session.gd:370)
+       [5] place (res://puzzle_session.gd:307)
+       [6] gesture (res://puzzle_play_flow.gd:123)
+       [7] handle_input_commit (res://session_router.gd:205)
+       [8] _frame (res://probe_616_acceptance.gd:83)
+       [9] _settle (res://probe_616_acceptance.gd:180)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792804509158,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792804509162,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792804509162,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+ok SaveFailure        rect=[P: (500.0, 220.0), S: (280.0, 133.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280.0, 720.0)
+  controls screen=save-failure frame=(1280.0, 720.0) total=4 outside_frame=0
+== frame (1600.0, 900.0) ==
+ok ModePick           rect=[P: (640.0, 80.0), S: (320.0, 375.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=mode-pick frame=(1600.0, 900.0) total=9 outside_frame=0
+ok SharedSetup        rect=[P: (640.0, 60.0), S: (320.0, 1174.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=mode-pick frame=(1600.0, 900.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (640.0, 120.0), S: (320.0, 313.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=mode-pick frame=(1600.0, 900.0) total=0 outside_frame=0
+{"TEL.1":"shared.start","TEL.2":1792804509240,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ok ModePick           rect=[P: (640.0, 80.0), S: (320.0, 375.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=shared-setup frame=(1600.0, 900.0) total=0 outside_frame=0
+ok SharedSetup        rect=[P: (640.0, 60.0), S: (320.0, 1369.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=shared-setup frame=(1600.0, 900.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (640.0, 120.0), S: (320.0, 313.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=shared-setup frame=(1600.0, 900.0) total=0 outside_frame=0
+{"TEL.1":"shared.resign","TEL.2":1792804509265,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+ok ResignConfirm      rect=[P: (650.0, 200.0), S: (300.0, 150.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=resign-confirm frame=(1600.0, 900.0) total=6 outside_frame=0
+{"TEL.1":"shared.resign","TEL.2":1792804509321,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792804509325,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792804509326,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+ok ModePick           rect=[P: (640.0, 80.0), S: (320.0, 375.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=shared-result frame=(1600.0, 900.0) total=0 outside_frame=0
+ok SharedSetup        rect=[P: (640.0, 60.0), S: (320.0, 1369.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=shared-result frame=(1600.0, 900.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (640.0, 120.0), S: (320.0, 354.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=shared-result frame=(1600.0, 900.0) total=8 outside_frame=0
+{"TEL.1":"puzzle.enter","TEL.2":1792804509376,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _frame (res://probe_616_acceptance.gd:66)
+         [7] _settle (res://probe_616_acceptance.gd:180)
+{"TEL.1":"puzzle.confirm","TEL.2":1792804509431,"TEL.3":"sess-1792804508697-29291-playtest","TEL.5":"leave_confirm"}
+ok StreamConfirm      rect=[P: (660.0, 220.0), S: (280.0, 140.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=stream-confirm frame=(1600.0, 900.0) total=6 outside_frame=0
+{"TEL.1":"puzzle.cancel","TEL.2":1792804509459,"TEL.3":"sess-1792804508697-29291-playtest","TEL.5":"ok"}
+{"TEL.1":"puzzle.enter","TEL.2":1792804509514,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _frame (res://probe_616_acceptance.gd:77)
+         [7] _settle (res://probe_616_acceptance.gd:180)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:612)
+       [2] _apply_outcome (res://puzzle_session.gd:586)
+       [3] _settle (res://puzzle_session.gd:447)
+       [4] _judge (res://puzzle_session.gd:370)
+       [5] place (res://puzzle_session.gd:307)
+       [6] gesture (res://puzzle_play_flow.gd:123)
+       [7] handle_input_commit (res://session_router.gd:205)
+       [8] _frame (res://probe_616_acceptance.gd:83)
+       [9] _settle (res://probe_616_acceptance.gd:180)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792804509571,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792804509575,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792804509575,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+ok SaveFailure        rect=[P: (660.0, 220.0), S: (280.0, 120.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600.0, 900.0)
+  controls screen=save-failure frame=(1600.0, 900.0) total=4 outside_frame=0
+== frame (390.0, 844.0) ==
+ok ModePick           rect=[P: (35.0, 80.0), S: (320.0, 361.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=mode-pick frame=(390.0, 844.0) total=9 outside_frame=0
+ok SharedSetup        rect=[P: (35.0, 60.0), S: (320.0, 1369.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=mode-pick frame=(390.0, 844.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (35.0, 120.0), S: (320.0, 354.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=mode-pick frame=(390.0, 844.0) total=0 outside_frame=0
+{"TEL.1":"shared.start","TEL.2":1792804509654,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+ok ModePick           rect=[P: (35.0, 80.0), S: (320.0, 361.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=shared-setup frame=(390.0, 844.0) total=0 outside_frame=0
+ok SharedSetup        rect=[P: (35.0, 60.0), S: (320.0, 1295.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=shared-setup frame=(390.0, 844.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (35.0, 120.0), S: (320.0, 354.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=shared-setup frame=(390.0, 844.0) total=0 outside_frame=0
+{"TEL.1":"shared.resign","TEL.2":1792804509679,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+ok ResignConfirm      rect=[P: (52.5, 200.0), S: (285.0, 146.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=resign-confirm frame=(390.0, 844.0) total=6 outside_frame=0
+{"TEL.1":"shared.resign","TEL.2":1792804509734,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792804509737,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792804509737,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+ok ModePick           rect=[P: (35.0, 80.0), S: (320.0, 361.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=shared-result frame=(390.0, 844.0) total=0 outside_frame=0
+ok SharedSetup        rect=[P: (35.0, 60.0), S: (320.0, 1295.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=shared-result frame=(390.0, 844.0) total=0 outside_frame=0
+ok SharedResult       rect=[P: (35.0, 120.0), S: (320.0, 340.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=shared-result frame=(390.0, 844.0) total=8 outside_frame=0
+{"TEL.1":"puzzle.enter","TEL.2":1792804509790,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _frame (res://probe_616_acceptance.gd:66)
+         [7] _settle (res://probe_616_acceptance.gd:180)
+{"TEL.1":"puzzle.confirm","TEL.2":1792804509845,"TEL.3":"sess-1792804508697-29291-playtest","TEL.5":"leave_confirm"}
+ok StreamConfirm      rect=[P: (55.0, 220.0), S: (280.0, 140.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=stream-confirm frame=(390.0, 844.0) total=6 outside_frame=0
+{"TEL.1":"puzzle.cancel","TEL.2":1792804509873,"TEL.3":"sess-1792804508697-29291-playtest","TEL.5":"ok"}
+{"TEL.1":"puzzle.enter","TEL.2":1792804509928,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _frame (res://probe_616_acceptance.gd:77)
+         [7] _settle (res://probe_616_acceptance.gd:180)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:612)
+       [2] _apply_outcome (res://puzzle_session.gd:586)
+       [3] _settle (res://puzzle_session.gd:447)
+       [4] _judge (res://puzzle_session.gd:370)
+       [5] place (res://puzzle_session.gd:307)
+       [6] gesture (res://puzzle_play_flow.gd:123)
+       [7] handle_input_commit (res://session_router.gd:205)
+       [8] _frame (res://probe_616_acceptance.gd:83)
+       [9] _settle (res://probe_616_acceptance.gd:180)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792804509984,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792804509987,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792804509987,"TEL.3":"sess-1792804508697-29291-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+ok SaveFailure        rect=[P: (55.0, 220.0), S: (280.0, 120.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390.0, 844.0)
+  controls screen=save-failure frame=(390.0, 844.0) total=4 outside_frame=0
+PROBE-616 RESULT fails=0
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
