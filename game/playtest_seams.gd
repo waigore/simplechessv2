@@ -74,7 +74,7 @@ func _ready() -> void:
 
 ## S11 observes the open window; the move path never calls this (`G3`).
 func _process(_delta: float) -> void:
-	if not playtest_build:
+	if not playtest_build or not measurement.is_armed():
 		return
 	measurement.observe()
 
@@ -363,8 +363,10 @@ func start_measurement(kind: String) -> Dictionary:
 
 
 ## SIT.4 / O10 — the report for the armed window; closes and disarms it (`D2`).
-## With an empty `kind` it is the disarm: the open window comes back `cancelled`,
-## keeping its samples and claiming no `max_ms` (`D1`).
+## A window that closed by itself is handed over on the first ask, once (`#544`
+## acceptance finding 1). An empty `kind` **is the disarm** (`D4`): an open window
+## comes back `cancelled`, keeping its samples and claiming no `max_ms` (`D1`), and
+## a window that already closed by itself is returned as it closed, once.
 func measure(kind: String) -> Dictionary:
 	if not playtest_build:
 		return _release_refusal(kind)
