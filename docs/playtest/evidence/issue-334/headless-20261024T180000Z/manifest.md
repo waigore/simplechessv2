@@ -5,7 +5,7 @@
 - **Build / session id**: Godot `4.7.2.stable.official.ed1daf0bf`, `origin/main` `8cdfd45` (worktree at the verified commit; PR #584 merge commit `a384c4c` is an ancestor of this build). Probe `TEL.3` `sess-1792858564177-96736-playtest-201666` (`logs/playtest-headless.log`). Graphical twin: **not run in this pass** — see `notes.md`, Outcome B.
 - **Coverage mode**: `full`, intersected with this leaf's scope: UX `PTU-localization` only (`specs/playtest/ux/localization.md`). The issue body defers `PTU-puzzle-play` and the growth layout to #333; design protocols are untouched by a copy change. View stories excluded.
 - **Story-row source**: the protocol file's own `Cites` rows (`UI-mode-pick.US1`, `LOC.US1`).
-- **Defects**: #788 (`LOC.US2` growth row, linked from #481) is pre-existing and not caused by this leaf; **no new defect filed** — the finding recorded here is that the "FR " regional-indicator glyphs of `zh-Hant` `shared` are absent (see `notes.md`, Finding B4).
+- **Defects**: #788 (`LOC.US2` growth row, linked from #481) is pre-existing; **no new defect filed** — the `zh-Hant` `shared` "FR " regional-indicator glyphs are absent (`notes.md`, Finding B4).
 - **Screenshots**: waiting on `../graphical-<run-id>/screenshots/`, same build. A headless run omits them without a fail.
 
 ## Results
