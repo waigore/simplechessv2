@@ -53,7 +53,7 @@ ADRs and technical design (including verification seams) must satisfy Must rows.
 
 ## Index
 
-Global specs: [`glossary.md`](glossary.md), [`ids.md`](ids.md), [`traceability.md`](traceability.md), [`traceability/story-protocol.md`](traceability/story-protocol.md), [`coverage.md`](coverage.md), [`tools.md`](tools.md), [`tools-situational.md`](tools-situational.md), [`procedures.md`](procedures.md), [`evidence.md`](evidence.md).
+Global specs: [`glossary.md`](glossary.md), [`ids.md`](ids.md), [`traceability.md`](traceability.md), [`traceability/story-protocol.md`](traceability/story-protocol.md), [`coverage.md`](coverage.md), [`story-rows.md`](story-rows.md), [`tools.md`](tools.md), [`tools-situational.md`](tools-situational.md), [`procedures.md`](procedures.md), [`evidence.md`](evidence.md).
 
 Situational artifact: [`filmed-seating.md`](filmed-seating.md) — a recorded Graphical sitting that the aesthetics review watches and listens to end to end.
 
