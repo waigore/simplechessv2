@@ -1,0 +1,24 @@
+Acceptance run for #334 — headless unit tests on a clean origin/main worktree.
+
+Build under test: origin/main d0e827d04b414acde913b193fbc7d82190ea43b5
+Godot: 4.7.2.stable.official.ed1daf0bf (macOS, /opt/homebrew/bin/godot)
+
+$ godot --headless --path game --import --quit
+exit=0
+
+$ GODOT_BIN=/opt/homebrew/bin/godot python3 .github/scripts/gdscript_tests.py test
+28 headless unit test(s) passed
+
+$ gdlint game
+Success: no problems found
+
+$ gdformat --check game
+62 files would be left unchanged
+
+$ python3 .github/scripts/spec_lint.py
+Spec lint: 0 error(s), 1 warning(s) across 10 checks.
+(the single warning is the pre-existing specs/view/glossary.md 'Diagram' duplicate, present on main before this task)
+
+Coverage: not re-measured in this acceptance worktree — `gdscript_tests.py coverage`
+refuses when gdtoolkit is not importable by the script's interpreter here. CI's
+`Coverage` check ran SUCCESS on PR #584's head (cbff807), which is the same tree.

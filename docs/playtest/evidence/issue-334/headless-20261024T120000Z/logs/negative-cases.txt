@@ -1,0 +1,51 @@
+Acceptance run for #334 — AC5 non-vacuity, re-derived by mutation on a clean origin/main worktree.
+
+Build: origin/main d0e827d. Each mutation was applied to game/string_table.gd,
+the suite was run, and the file was restored and diffed clean against main.
+
+Method: `GODOT_BIN=/opt/homebrew/bin/godot python3 .github/scripts/gdscript_tests.py test`
+and the `ERROR:` line the gate pushes is recorded below.
+
+--- Control: unmutated tree ---
+28 headless unit test(s) passed
+(_copy_gate_negative_cases() passes: shipped puzzle-play suite is clean, and both
+mutations it applies in-process are reported by _owner_missing)
+
+--- Mutation 1: empty cue_failed in zh-Hant (AC5 "dropped zh-Hant key must FAIL") ---
+ERROR: puzzle-play.cue_failed missing in zh-Hant
+Fail: res://string_table_test.gd
+
+--- Mutation 2: reveal in ja set to its en value "Reveal" (AC5 "en-copied varying key must FAIL") ---
+ERROR: puzzle-play.reveal still English in ja
+Fail: res://string_table_test.gd
+
+--- Mutation 3: knight in ja set to "Knight" (AC5 "en-copied MARKED piece row must PASS") ---
+28 headless unit test(s) passed
+
+Conclusion: all four AC5 states reproduce — clean passes, dropped key fails naming
+puzzle-play.<key>, en-copied varying key fails naming puzzle-play.<key>, en-copied
+marked L3 piece row passes. The gate cannot pass vacuously.
+
+--- AC1 key-set derivation (logs/copy-table-keys.txt) ---
+Spec source: `## Copy` table of specs/ux/screens/puzzle-play.md — 21 keys, parsed
+from the Key column, cue_failed included.
+Shipped source: _PUZZLE_PLAY in game/string_table.gd — 21 keys in each of en,
+zh-Hant, ja. Set difference in both directions is empty.
+mode-pick `puzzle` row: en "Puzzle stream", zh-Hant "謎題串流", ja "パズルストリーム".
+
+--- AC4: no cross-owner resolution ---
+_PUZZLE_PLAY carries its own rows for every shared bare name:
+queen, rook, bishop, knight, choose_promotion, refused_place, confirm, cancel,
+dismiss, save_failed — all present, none read from shared-play or mode-pick.
+
+--- AC6: mode-pick additions-only ---
+EVERY_LOCALE_ROWS on main: mode-pick ["locale"], shared-play [queen, rook, bishop,
+knight], puzzle-play [queen, rook, bishop, knight]. `mode-pick.locale` remains the
+own-name row; no fifth marked row exists.
+
+--- AC7: GS.locale untouched ---
+PR #584's only changed file is game/string_table_test.gd. No locale
+initialization or persistence code is touched by this task.
+
+--- AC5 "no schema text edited here" ---
+PR #584 files: game/string_table_test.gd (1 file). No spec/ file changed.
