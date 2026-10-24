@@ -20,9 +20,9 @@ Build `ba6a59a`, environment `ENV.1`, released scene graph.
 | 7–8 (Puzzle, `time_ms`) | pass | `puzzle_no_advice_fields`; every O1 `time_ms: 2000` (T6 unset, B3) |
 | 9–11 (endpoint/key, reachability, progressive E1) | pass | 8/8 peer rows `authorized`; `drive-failure-*.log`; depth progression |
 | 12–14 (off the move path, one error, no Stockfish endpoint) | pass | timings; 1 `advice.error`; AC 13 from this run's PCK probe, not #560's |
-| 15 (telemetry `TEL.4` / `TEL.5`) | **not captured** | no seam on the release graph — limit in [`notes.md`](notes.md) |
+| 15 (telemetry `TEL.4` / `TEL.5`) | **not captured** | no seam on the release graph, and this run predates `advice.cleared` (#711) — limit in [`notes.md`](notes.md); now carried by `game/advice_client_test.gd` |
 | 16 (lint / tests / coverage) | pass | 86.3% (80), 25 suites, lint clean |
 
 ## Judgement
 
-`PTD-move-advice` **pass**: P1, P2 and P3 hold on the shipped path; F1 and F2 not observed. No defect filed. AC 15 is the one criterion this run cannot evidence — recorded as a limit in [`notes.md`](notes.md), not as a pass.
+`PTD-move-advice` **pass**: P1, P2 and P3 hold on the shipped path; F1 and F2 not observed. No defect filed. AC 15 is the one criterion this run cannot evidence — recorded as a limit in [`notes.md`](notes.md), not as a pass; since #711 it is carried by `game/advice_client_test.gd` (`_check_cleared_reports_story`).
