@@ -1,0 +1,9 @@
+case                           write readback cli-w cli-rb  reason
+sentinel line only              True     True     1      1  body holds no content beyond '@-': gh stores the sentinel verbatim; use --body-file - for stdin
+two sentinel lines              True     True     1      1  body holds no content beyond '@-': gh stores the sentinel verbatim; use --body-file - for stdin
+heading only                    True     True     1      1  body holds a heading but no content under it
+heading + empty fence           True     True     1      1  body holds a heading but no content under it
+heading + rule                  True     True     1      1  body holds a heading but no content under it
+heading + HTML comment          True     True     1      1  body holds a heading but no content under it
+sentinel in prose (must pass)  False    False     0      0  
+normal body (must pass)        False    False     0      0  
