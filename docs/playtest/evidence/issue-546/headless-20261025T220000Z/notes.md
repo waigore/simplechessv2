@@ -59,13 +59,4 @@ python3 .github/scripts/spec_lint.py                             # 0 error(s), 1
 ```
 
 Logs: `logs/unit-tests.log`, `logs/gdformat.log`, `logs/gdlint.log`, `logs/spec-lint.log`.
-
-## Delivered landing points (read, then re-measured)
-
-| Deliverable | Commit / PR |
-|---|---|
-| `O12 set_viewport` initial seam | `1d3a164` (PR #593) |
-| frame-true reflow | `152260e` → `e91d6cf` (PR #716) |
-| rendered-frame report | `d8a3cb2` (PR #652), `614746c` (PR #653) |
-| #837 chrome collapse | `f320535` (PR #848), `4de4459` (PR #847) |
-| `S13` tests in the shared `_check_playtest` | in the above, plus `game/playtest_seams_measure_test.gd` |
+Landing commits are in the verify comment on #546.
