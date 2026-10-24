@@ -26,6 +26,8 @@ func _run() -> void:
 			err = await _check_orientation(board)
 		if err.is_empty():
 			err = await _check_motion(board)
+		if err.is_empty():
+			err = await _check_check_mark(board)
 	if not err.is_empty():
 		_fail(err)
 		return

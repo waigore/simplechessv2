@@ -16,6 +16,7 @@ const COLOR_INK := Color("2C2A28")
 const COLOR_CREAM := Color("F7F1E8")
 ## PAL.C8 check rose — refused-place flash (PER.R8 / PAL.K5 full strength ≥ 2:1).
 const COLOR_DANGER := Color("C28A86")
+
 ## Empty legal diamond half-diagonal so area 2 r² ≥ 1/4 square (PER.R4).
 const LEGAL_EMPTY_R := 0.36
 ## Capture ring radius / stroke so ink area ≈ 2π r w ≥ 1/4 square.
@@ -75,6 +76,8 @@ var _legal_root: Node2D
 ## PER.R6 check L-frame on the checked King's square (E2 `in_check`).
 var _check_marks: CheckMarks
 var _reject_flash: Line2D
+## PER.R6 check mark: the C8 L-frame on the checked king's square (CheckMark).
+var _check_mark: CheckMark
 ## PER.R5 advice marks (E4 `show_advice`), over the pieces.
 var _advice_marks: AdviceMarks
 var _promote_root: Node2D
@@ -158,6 +161,8 @@ func _ready() -> void:
 	_reject_flash.visible = false
 	_reject_flash.z_index = 0
 	_overlay_root.add_child(_reject_flash)
+	_check_mark = CheckMark.new()
+	_overlay_root.add_child(_check_mark)
 	_promote_root = Node2D.new()
 	_promote_root.name = "PromoteChoice"
 	_promote_root.visible = false
@@ -747,6 +752,8 @@ func _apply_choice_overlays(options: Dictionary) -> void:
 		show_promotion_choice(promote_to, promote_color, kinds_var)
 	else:
 		clear_promotion_choice()
+	if _check_mark != null:
+		_check_mark.set_square(str(options.get("check_square", "")))
 
 
 ## PER.R6 / R7 — mark the checked King while the side to move is in check. The

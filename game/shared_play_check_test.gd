@@ -85,6 +85,7 @@ func _check_cue() -> String:
 				_contrast_ratio(label.get_theme_color("font_color"), chip_bg) >= 4.5,
 				"PER.R6 check word under 4.5:1 on its chip"
 			],
+			[_readable(chip, label), "PER.R6 check word must draw on one unwrapped line"],
 			[marks.get_child_count() == 2, "PER.R6 checked King must carry the board mark"],
 			[marks.marked_square == "e8", "PER.R6 board mark must sit on the checked King"],
 			[
@@ -103,6 +104,15 @@ func _check_cue() -> String:
 			[marks.get_child_count() == 0, "PER.R6 board mark must clear with the check"],
 		]
 	)
+
+
+## PER.R6 — a legible word cue: the label must get at least its own text width,
+## so the chip cannot collapse to its padding and wrap the word letter by letter.
+func _readable(chip: PanelContainer, label: Label) -> bool:
+	var floor_px := label.get_combined_minimum_size().x
+	if label.size.x + 0.5 < floor_px or chip.size.x + 0.5 < floor_px:
+		return false
+	return label.get_line_count() == 1
 
 
 func _check_row() -> Dictionary:
