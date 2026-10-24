@@ -1,0 +1,153 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "started_at": "2026-10-24T01:21:12.818Z",
+  "finished_at": "2026-10-24T01:27:12.114Z",
+  "settle_ms": 25000,
+  "browser": "Chrome/156.0.8078.47",
+  "legs": [
+    {
+      "leg": 1,
+      "name": "quit/reload",
+      "outcome": "not-judged",
+      "reason": "mode pick never rendered, so no puzzle result could commit and no R2 Elo could be read before the close",
+      "before": {
+        "document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg1-before-close.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      },
+      "after": {
+        "document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg1-after-reopen.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      }
+    },
+    {
+      "leg": 2,
+      "name": "crash",
+      "outcome": "not-judged",
+      "reason": "mode pick never rendered, so no Last-mode selection could be made and then abandoned; there is no uncommitted mid-session value to test",
+      "before": {
+        "document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg2-before-crash.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      },
+      "after": {
+        "document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg2-after-reopen.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      }
+    },
+    {
+      "leg": 3,
+      "name": "faulted session",
+      "outcome": "not-judged",
+      "reason": "the wrapper was installed and restored, but the build never attempted a persist write, so PersistStore._web_set reached no round-trip check and EX.save-failure never had a chance to show",
+      "before": {
+        "document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg3-before-fault.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      },
+      "after": {
+        "document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg3-after-reopen.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      },
+      "fault": {
+        "writes_before": 0,
+        "writes_after": 0,
+        "writes": [],
+        "save_failure_shown": false,
+        "post_fault_document": {
+          "key_present": false,
+          "doc": null,
+          "localStorage_keys": [],
+          "visible_text": "",
+          "dialogs": [],
+          "has_loading": false,
+          "has_mode_pick": false
+        },
+        "screenshot": {
+          "path": "screenshots/leg3-after-fault.png",
+          "bytes": 17835,
+          "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+        }
+      }
+    }
+  ],
+  "screenshot_md5_all": [
+    "7ba3b2c7a110a2219608ad9ab65c5165",
+    "7ba3b2c7a110a2219608ad9ab65c5165",
+    "7ba3b2c7a110a2219608ad9ab65c5165",
+    "7ba3b2c7a110a2219608ad9ab65c5165",
+    "7ba3b2c7a110a2219608ad9ab65c5165",
+    "7ba3b2c7a110a2219608ad9ab65c5165",
+    "7ba3b2c7a110a2219608ad9ab65c5165"
+  ],
+  "screenshot_distinct_md5_count": 1
+}
