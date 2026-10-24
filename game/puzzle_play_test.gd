@@ -78,7 +78,9 @@ func _entry_and_leave() -> String:
 		var elo := _panel().find_child("PlayerElo", true, false) as Label
 		if elo == null or not elo.visible or not elo.text.begins_with("Elo"):
 			problem = "R2 does not show GS.playerElo"
-		elif _board().white_seat != BoardGeometry.SEAT_BOTTOM:
+		else:
+			problem = _r2_wrap_problem(elo, "PlayerElo")
+		if problem.is_empty() and _board().white_seat != BoardGeometry.SEAT_BOTTOM:
 			problem = "Solving side White must read 0° (CAM-board.M2)"
 	if problem.is_empty():
 		problem = await _solving_side_black()
@@ -147,6 +149,8 @@ func _actions_and_states() -> String:
 			problem = "a Wrong move did not play SND.X5"
 		elif audio.cue_play_count != 1:
 			problem = "a Wrong move played more than one cue"
+		else:
+			problem = _r2_wrap_problem(cue, "cue_wrong")
 	if problem.is_empty():
 		# S2 for Reveal: named prompt, Confirm ends the attempt with `cue_failed`.
 		_router.handle_control("puzzle-play", "C3")
@@ -160,6 +164,8 @@ func _actions_and_states() -> String:
 		await process_frame
 		if cue == null or cue.text != StringTable.puzzle_play("cue_failed", "en"):
 			problem = "L5 did not show cue_failed"
+		else:
+			problem = _r2_wrap_problem(cue, "cue_failed")
 	if problem.is_empty():
 		# S2 for Abandon: Confirm → END.L6 → `cue_abandon`.
 		_deal_mate()
@@ -168,10 +174,28 @@ func _actions_and_states() -> String:
 		await process_frame
 		if cue == null or cue.text != StringTable.puzzle_play("cue_abandon", "en"):
 			problem = "L6 did not show cue_abandon"
+		else:
+			problem = _r2_wrap_problem(cue, "cue_abandon")
 	if problem.is_empty():
 		_deal_mate()
 		problem = _s1_focus_order(_panel())
 	return problem
+
+
+## #794 — R2 renders one line: a word-wrapped label in the centred `EloAndStatus`
+## row was offered no width and grew 1 px wide and 405 px tall, so `Elo 1000` and
+## every cue drew one character per line while `visible` and `text` still passed.
+## A single line is at most twice its font height; anything taller has wrapped.
+func _r2_wrap_problem(label: Label, what: String) -> String:
+	if label == null:
+		return "R2 %s is missing" % what
+	if label.autowrap_mode != TextServer.AUTOWRAP_OFF:
+		return "R2 %s word-wraps instead of reading on one line (#794)" % what
+	var minimum := label.get_combined_minimum_size()
+	var line_px := label.get_theme_font_size("font_size") * 2.0
+	if minimum.x < 1.0 or minimum.y > line_px:
+		return "R2 %s wraps to %s instead of one line (#794)" % [what, str(minimum)]
+	return ""
 
 
 ## S1 availability and focus order (puzzle-play-controls.md), including the 44px class.
@@ -230,6 +254,8 @@ func _promotion_and_save_failure() -> String:
 		var cue := panel.find_child("ResultCue", true, false) as Label
 		if cue.text != StringTable.puzzle_play("cue_solved", "en"):
 			problem = "W1 did not show cue_solved (got %s)" % cue.text
+		else:
+			problem = _r2_wrap_problem(cue, "cue_solved")
 	if problem.is_empty():
 		problem = await _save_failure()
 	return problem
