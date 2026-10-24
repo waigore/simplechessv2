@@ -57,7 +57,78 @@ func _after_seed() -> void:
 	if int(dumped.get("seed", -1)) != 42:
 		_fail("seed was not repeatable")
 		return
+	if not await _exercise_board_taps():
+		return
 	quit(0)
+
+
+## #845 — the pointer leg of the tap→square check. The exported build plays the
+## 1280×720 base through `canvas_items`/`expand` in a phone frame, so every touch
+## below is pushed in frame pixels and reaches the presentation as canvas
+## coordinates, exactly as the browser delivers it. CMP-presentation.R2 owns the
+## conversion; this drives the real `_gui_input` path rather than the helper.
+func _exercise_board_taps() -> bool:
+	root.content_scale_size = Vector2i(1280, 720)
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+	root.size = Vector2i(PlaytestSeams.VIEWPORT_PHONE_WIDTH, PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+	_router.handle_control("mode-pick", "C1")
+	_router.handle_control("shared-setup", "C5")
+	await process_frame
+	await process_frame
+	var board := _presentation.get_node("ScreenHost/BoardPresentation") as BoardPresentation
+	if _router.stage != "shared-play" or board == null or not board.visible:
+		return _fail("#845 could not reach shared play for the board-tap check")
+	if root.get_final_transform() == Transform2D.IDENTITY:
+		return _fail("#845 the release stretch is identity; the tap check would prove nothing")
+	# A presentation that does not own the canvas origin must still hit right:
+	# the control's own transform is part of the pointer→board conversion.
+	_presentation.position = Vector2(0.0, 260.0)
+	await process_frame
+	await _tap_painted(board, "e2")
+	var offset_select := _router.selected_piece
+	_presentation.position = Vector2.ZERO
+	await process_frame
+	# B8: the same square again deselects, so the next tap is a fresh select.
+	await _tap_painted(board, "e2")
+	var deselected := _router.selected_piece
+	await _tap_painted(board, "e2")
+	var select := _router.selected_piece
+	await _tap_painted(board, "e4")
+	var moved := _router.side_to_move() == ChessRules.SIDE_BLACK
+	var problem := ""
+	if offset_select != "e2":
+		problem = "an offset presentation selected %s for a painted e2 tap" % offset_select
+	elif not deselected.is_empty():
+		problem = "a second painted e2 tap did not deselect (got %s)" % deselected
+	elif select != "e2":
+		problem = "a painted e2 tap selected %s" % select
+	elif not moved:
+		problem = "a painted e4 tap did not commit e2–e4"
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	root.content_scale_size = Vector2i(0, 0)
+	root.size = Vector2i(1280, 720)
+	if not problem.is_empty():
+		return _fail("#845 " + problem)
+	return true
+
+
+## Press and release at the painted centre of `square`, in frame pixels.
+func _tap_painted(board: BoardPresentation, square: String) -> void:
+	var painted: Vector2 = (
+		root.get_final_transform() * board.world_to_screen(board.framed_center(square))
+	)
+	var press := InputEventScreenTouch.new()
+	press.pressed = true
+	press.index = 1
+	press.position = painted
+	root.push_input(press)
+	var release := InputEventScreenTouch.new()
+	release.pressed = false
+	release.index = 1
+	release.position = painted
+	root.push_input(release)
+	await process_frame
 
 
 func _exercise_pointers() -> bool:
