@@ -38,6 +38,7 @@ Named typefaces are assets ([specs/assets/](../assets/assets.md)).
 | C3 | Accent / focus | [PAL.C6](palette.md) | Distinct from piece fills ([PAL.K3](palette.md)) |
 | C4 | Danger | [PAL.C8](palette.md) | Distinct from piece fills ([PAL.K3](palette.md)) |
 | C5 | Disabled | [PAL.C9](palette.md) at 40% opacity on [PAL.C10](palette.md) | [PAL.K7](palette.md) |
+| C6 | On-board mark surface | [PAL.C10](palette.md) at 100% opacity with a [PAL.C9](palette.md) keyline at 1.5 screen px ([`UIS.I1`](#iconography)) | Keeps every mark distinguishable with hue removed ([PAL.K9](palette/rules.md)); the layer split is stated in [PAL.K9](palette/rules.md) and [PAL.S2](palette/sets.md) |
 
 ## Interface motion
 
