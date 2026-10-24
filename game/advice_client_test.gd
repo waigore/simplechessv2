@@ -5,6 +5,8 @@ extends SceneTree
 ## backend is a simulated peer speaking CTR-advice-stream (ADR-0002 Testability);
 ## no Stockfish endpoint exists here.
 
+const FAIL_T1_STOPPED := "FAIL.T1: a failed stream stops and delivers nothing further"
+
 
 func _initialize() -> void:
 	call_deferred("_start")
@@ -261,25 +263,26 @@ func _check_offline_clears() -> String:
 	if bool(state["online"]):
 		return "a backend failure must clear GS.online (X3)"
 	# R9 / X3 clear both fields: a failed search leaves no mark and no number.
-	if state["advice_best_move"] != null or state["advice_eval"] != null:
+	var cleared := state["advice_best_move"] == null and state["advice_eval"] == null
+	if not cleared:
 		return "going offline must clear both advice fields (R9, X3)"
-	if not _has_outcome(events, "advice.error", "unavailable"):
+	var reported := _has_outcome(events, "advice.error", "unavailable")
+	var stopped := _stopped_after_failure(session)
+	if not reported:
 		return "FAIL.T1 must be reported for EX.error and telemetry"
-	if not session.gestures_available():
-		return "play must continue after an advice failure (FAIL.T1)"
-	return _stopped_after_failure(session)
+	if not (session.gestures_available() and stopped):
+		var detail := "%s: the failure must be reported, play must continue" % FAIL_T1_STOPPED
+		return "%s after it: %s" % [detail, events]
+	return ""
 
 
 ## FAIL.T1 "Stop eval": once a stream has failed, it delivers nothing further.
-func _stopped_after_failure(session: SharedGameSession) -> String:
-	for tick in range(5):
-		var later: Array = session.advice_control("poll").get("events", [])
-		if not later.is_empty():
-			return "a failed stream must stop, no further delivery (FAIL.T1): %s" % [later]
+func _stopped_after_failure(session: SharedGameSession) -> bool:
+	for _tick in range(5):
+		if not session.advice_control("poll").get("events", []).is_empty():
+			return false
 	var state := session.play_state()
-	if state["advice_best_move"] != null or state["advice_eval"] != null:
-		return "nothing may be delivered after the failure (FAIL.T1)"
-	return ""
+	return state["advice_best_move"] == null and state["advice_eval"] == null
 
 
 func _check_game_end_clears() -> String:

@@ -85,3 +85,6 @@ Situational artifact: [`filmed-seating.md`](filmed-seating.md) — a recorded Gr
 - [`ux/navigation.md`](ux/navigation.md)
 - [`ux/exceptions.md`](ux/exceptions.md)
 - [`ux/localization.md`](ux/localization.md)
+- [`ux/actors.md`](ux/actors.md)
+
+Out-of-scope story record (not a runnable protocol): [`traceability/story-out-of-scope.md`](traceability/story-out-of-scope.md).

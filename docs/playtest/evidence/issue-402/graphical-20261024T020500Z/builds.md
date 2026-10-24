@@ -25,8 +25,10 @@ emulation; `Runtime`, `Log`, `Page` and `Network` domains enabled over CDP. `SIT
 sample is not evidence ([`specs/playtest/evidence-manifest.md`](../../../../../specs/playtest/evidence-manifest.md)
 *Timing*).
 
-**No `TEL.3` session id** on either reading: the release export carries no seam, which is the defect cited
-for the Observability row (#729), not a measurement omission.
+**No `TEL.3` session id** on either reading: the release export carries no seam, and `CTR-playtest-drive` G2 /
+`CMP-playtest-seams` R3 specify exactly that. It is a **property of the build**, not a measurement omission and
+not a failure: the Observability row judges the playtest-certified build (`SIT.5` over `E1`), which these
+readings are not (#729).
 
 ## What each reading may and may not do
 

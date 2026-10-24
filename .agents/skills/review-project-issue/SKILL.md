@@ -8,7 +8,8 @@ description: |-
 
   Examples:
     - user: "Review #12" → holistic review, comment, gate status
-    - user: "Fail review on #8; also impacts #9" → fail + cascade named related
+    - user: "Fail review on #8; also impacts #9" → fail #8 and cascade #9 on the user's order
+    - user: "Fail review on #8" → fail #8; cascade a blocked-by neighbor only with an implementation or verification deadlock
     - user: "Needs clarification on #3" → questions comment → pending-clarification
 ---
 
@@ -40,7 +41,7 @@ Review a typed issue currently in `status:pending-review`.
      - Spec-authoring exception: the issue may name an element that does not exist yet when the deliverable is creating it (a new file under `components/`, `contracts/`, `schemata/`, or `sequences/`, or a new ID in `layers.md` or `modules.md`). It must not treat that name as an existing ID, and it must not ask to implement it.
 4. **Decide** one outcome:
    - **Pass** — post a clear pass review comment (must be the latest comment when transitioning). Gate: `pending-review` → `pending-implementation`.
-   - **Fail** — post problems + refinement direction; **explicitly name** impacted related issues. Gate this issue: `pending-review` → `pending-refinement`. For each named related issue, comment briefly (point at this fail) and apply fail-review cascade to `pending-refinement` per the transitions reference.
+   - **Fail** — post problems + refinement direction. Gate this issue: `pending-review` → `pending-refinement`. Cascade another issue only under [Cascade (fail review)](../../../docs/issues/workflow-cascade.md). A user order cascades from any status. An agent cascade needs a native blocked-by edge plus a written reason that the other issue’s implementation or verification cannot be done or judged while this fail stands. Leave an issue whose current step is review, refinement, or clarification unchanged. For each authorized issue, comment (point at this fail; for an agent cascade, include the edge and the deadlock) and apply the fail-review cascade via `enforce-task-workflow-status`, with that issue’s current status as `from`. For each blocked-by neighbor not cascaded, and for any issue the user asked about that was not ordered onto the cascade, comment why the status stays and leave it unchanged.
    - **Clarify** — summarize questions that cannot be inferred from project scope. Gate: `pending-review` → `pending-clarification`.
 5. **Report** URL, outcome, new status(es), and related issues touched.
 
@@ -48,6 +49,6 @@ Review a typed issue currently in `status:pending-review`.
 
 - Do not redefine the state machine; link the workflow doc.
 - A superseded, duplicate, or retired issue is neither passed nor failed into implementation: state it in the review and gate it to `status:superseded`, naming the successor (an issue or an Accepted ADR) in the comment. **Do not close** the issue (only [`project-planner-agent`](../project-planner-agent/SKILL.md) closes superseded work).
-- Fail cascade only for issues **named** in the fail comment.
+- Authorize a cascade only as [Cascade (fail review)](../../../docs/issues/workflow-cascade.md) describes.
 - Evidence is freeform; intent must be clear.
 - Call `enforce-task-workflow-status` for every label change.

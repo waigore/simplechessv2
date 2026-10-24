@@ -1,0 +1,11 @@
+V375 {"check":"release_graph_no_seams","detail":"","ok":true}
+V375 {"check":"router_found","detail":"","ok":true}
+V375 {"check":"presentation_found","detail":"","ok":true}
+V375 {"check":"play_reached","detail":"shared-play","ok":true}
+V375 {"check":"assets_loaded","detail":"","ok":true}
+V375 {"check":"advice_error_raised","detail":"","ok":true}
+V375 {"check":"ui_state_s3","detail":"S3","ok":true}
+V375 {"check":"pointer_gesture_g1f3_in_s3","detail":"selected_after_tap=g1 side=black","ok":true}
+V375 {"check":"ui_state_after_g1","detail":"S3","ok":true}
+V375 {"check":"advice_error_survives_the_move","detail":"","ok":true}
+V375 {"check":"board_still_playable","detail":"black is to move","ok":true}

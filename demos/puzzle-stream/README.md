@@ -131,6 +131,36 @@ Non-blocking gaps filled for the demo only (tuning, copy, layout details; never 
 
 None of A1–A5 blocks the demo question. A1 and A2 are the two that touch main-code behavior and should be confirmed and written into `specs/` before implementation leaves on #332 and #331 rely on them.
 
+## Promotion act
+
+Filled by `require-demo-promotion`. Incomplete until every included element is keep or drop and any conflict spec PR has merged.
+
+| Element | Choice | Note |
+|---------|--------|------|
+| `F-puzzle-catalog.R1`–`R5`, `I1`–`I3`, `X1`–`X2`, `D1` | keep | none |
+| `L-puzzle-stream.K1`–`K4`, `E1` | keep | none |
+| `DIF.Y1`, `C1` | keep | none |
+| `END.W1`, `L4`–`L6`, `P1` | keep | none |
+| `GS.puzzleId` … `Q1` (session field set) | keep | none |
+| `E-pieces.I1`–`I35` | keep | none |
+| `CFG.ELO_*`, `CFG.K3` | keep | none |
+| `PRG.A1`, `P1`–`P3`, `M1`, `F1`, `Z1` | keep | none |
+| `FL-mode-pick.P1`, `P3`, `T2`, `T4`, `U1` | keep | none |
+| `UI-mode-pick.C2` | keep | none |
+| `UI-puzzle-play.R1`–`R3`, `C1`–`C6`, `S1`–`S5` | keep | none |
+| `J-puzzle-session.N1`–`N2`, `S1`–`S2`, `B1` | keep | none |
+| `NAV.T2`, `T9` | keep | none |
+| `IN.select`, `move`, `deselect`, `activate`, `B2`–`B3`, `B8`–`B11` | keep | none |
+| `EX.confirm`, `promote`, `rejected`, `save-failure` | keep | `save-failure` kept as included; not reachable under demo A1 (in-memory only) |
+| `CAM-board.F1`–`F2`, `M2` | keep | Agrees with shared-game keep: puzzle Solving-side Black → 180°; Shared White Bottom → 0° (CAM-board.M2) |
+| `SPC` / `PRJ` / `PHY` shared board feel | keep | none |
+| `PER.R1`–`R4`, `R6`–`R8` | keep | none |
+| `AES.P1`–`P3`, `MOT.T1`–`T3`, `PAL.C11` | keep | none |
+| `SND.X1`–`X3`, `X5`, `M1`–`M2`, `L1`–`L2` | keep | `X4` stays with shared-game endings; puzzle uses `X5` fail tap |
+| `SCH-puzzle-catalog` F1–F13, ADR-0008 | keep | none |
+
+Act: complete
+
 ## Run
 
 - **Setup**: checkout the repo; the demo is a standalone Godot project at `demos/puzzle-stream/` (its own `project.godot`). It loads cataloged assets by ID at runtime from `game_assets/` and `audio_runtime/` at the repo root (ADR-0005), so it must run with the repo checkout intact.

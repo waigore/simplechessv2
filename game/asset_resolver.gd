@@ -218,6 +218,13 @@ func _load_media(asset_id: String, path: String) -> Resource:
 
 
 func _load_texture(path: String) -> Resource:
+	# On Web the packed route holds the imported texture, not the source file, so
+	# read the resource (the virtual filesystem falls back to the PCK); the loose
+	# source path stays available for builds that serve one.
+	if OS.has_feature("web"):
+		var loaded := ResourceLoader.load(path)
+		if loaded is Texture2D:
+			return loaded
 	var image := Image.new()
 	if image.load(path) != OK:
 		return null
@@ -225,6 +232,10 @@ func _load_texture(path: String) -> Resource:
 
 
 func _load_font(path: String) -> Resource:
+	if OS.has_feature("web"):
+		var loaded := ResourceLoader.load(path)
+		if loaded is Font:
+			return loaded
 	var font := FontFile.new()
 	if font.load_dynamic_font(path) != OK:
 		return null
@@ -232,6 +243,8 @@ func _load_font(path: String) -> Resource:
 
 
 func _load_audio(asset_id: String, path: String) -> Resource:
+	# `AST.O3` / `CTR-asset-resolve` G5: an approved Opus file plays from its
+	# committed Vorbis copy under `audio_runtime/`, on every platform.
 	if _header_contains(path, "OpusHead"):
 		var runtime := _runtime_audio_path(asset_id)
 		if not FileAccess.file_exists(runtime):
