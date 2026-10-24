@@ -27,6 +27,8 @@ func _run_all() -> String:
 		_check_candidate_prefers_fresh_in_band,
 		_check_candidate_widens,
 		_check_candidate_widens_before_allowing_recent,
+		_check_candidate_widens_to_exhaustion_before_recent,
+		_check_candidate_lowest_first,
 		_check_candidate_allows_recent_after_widen,
 		_check_candidate_any_member,
 		_check_candidate_empty,
@@ -120,13 +122,42 @@ func _check_candidate_widens_before_allowing_recent() -> String:
 	return ""
 
 
+## DIF.Y1 — widening runs to exhaustion with the recent rule still on, so an unsolved
+## puzzle far outside one widen step still wins over a recently solved in-band id.
+func _check_candidate_widens_to_exhaustion_before_recent() -> String:
+	var records := [_record("seen", 1000), _record("fresh", 1250)]
+	var found := PuzzleProgression.candidate_set(
+		records, 1000.0, ["seen"], 100, 50, "puzzle_id", "rating"
+	)
+	if found.size() != 1 or str(found[0]["puzzle_id"]) != "fresh":
+		return (
+			"DIF.Y1: a recently solved id may only be allowed once no band holds an "
+			+ (
+				"unsolved puzzle (dealt %s)"
+				% [found.map(func(record: Dictionary) -> String: return str(record["puzzle_id"]))]
+			)
+		)
+	return ""
+
+
+## DIF.Y1 — among the members of a rung the lowest Puzzle Elo comes first.
+func _check_candidate_lowest_first() -> String:
+	var records := [_record("high", 1090), _record("low", 1020)]
+	var found := PuzzleProgression.candidate_set(
+		records, 1000.0, [], 100, 50, "puzzle_id", "rating"
+	)
+	if found.size() != 2 or str(found[0]["puzzle_id"]) != "low":
+		return "DIF.Y1: the rung must start with the lowest Puzzle Elo"
+	return ""
+
+
 func _check_candidate_allows_recent_after_widen() -> String:
 	var records := [_record("seen", 1000), _record("seen2", 1120)]
 	var found := PuzzleProgression.candidate_set(
 		records, 1000.0, ["seen", "seen2"], 100, 50, "puzzle_id", "rating"
 	)
-	if found.size() != 1 or str(found[0]["puzzle_id"]) != "seen":
-		return "DIF.Y1: after widening finds nothing unsolved, a recent id in band is dealt"
+	if found.is_empty() or str(found[0]["puzzle_id"]) != "seen":
+		return "DIF.Y1: when every record was solved, the allow-recent rung deals one"
 	return ""
 
 

@@ -35,6 +35,8 @@ func _run_all() -> String:
 		_check_x1_empty_solution,
 		_check_x2_failed_read,
 		_check_deal_read_record_deals,
+		_check_deal_widens_before_allowing_recent,
+		_check_deal_any_member_of_rung,
 		_check_w1_elo_and_recent,
 		_check_l5_reveal,
 		_check_l6_abandon,
@@ -253,6 +255,52 @@ func _check_deal_read_record_deals() -> String:
 		return "F2/F5: the dealt puzzle must take the record's puzzle_id and rating"
 	if session.required_sequence.size() != 1:
 		return "I2: the derived required sequence must follow the record's moves"
+	return ""
+
+
+## R1 O2 through the session — the deal runs the Domain's DIF.Y1 ladder, not a copy of
+## it. A recently solved in-band record must lose to an unsolved one that only a
+## widened band reaches: widening comes before allow-recent (DIF.Y1, GS.Q1).
+func _check_deal_widens_before_allowing_recent() -> String:
+	var session := _session()
+	session.recent_solved = ["seen"]
+	var records := [
+		_record("seen", 1000, ["e2e4", "e7e5"]),
+		_record("fresh", 1250, ["e2e4", "e7e5"]),
+	]
+	var dealt: Dictionary = session.deal(records)
+	if not bool(dealt.get("ok", false)):
+		return "R1 O2: a set with an unsolved record must deal (got %s)" % dealt
+	if session.puzzle_id != "fresh":
+		return (
+			"DIF.Y1: widening must come before allowing a recent id (dealt %s)" % session.puzzle_id
+		)
+	return ""
+
+
+## GS.Q1 — any member of the winning rung may be dealt, and the same Elo and history
+## need not deal the same puzzle. Both in-band unsolved records are members; the
+## out-of-band one never is.
+func _check_deal_any_member_of_rung() -> String:
+	var records := [
+		_record("a", 1010, ["e2e4", "e7e5"]),
+		_record("b", 1040, ["e2e4", "e7e5"]),
+		_record("c", 1400, ["e2e4", "e7e5"]),
+	]
+	var seen := {}
+	for attempt in range(40):
+		var session := _session()
+		var dealt: Dictionary = session.deal(records)
+		if not bool(dealt.get("ok", false)):
+			return "R1 O2: an in-band record must deal (got %s)" % dealt
+		if session.puzzle_id == "c":
+			return "DIF.Y1: a record 400 outside the band must not deal while in-band ones fit"
+		seen[session.puzzle_id] = true
+	if seen.size() != 2:
+		return (
+			"GS.Q1: every in-band unsolved puzzle is a member; two deals may differ (saw %s)"
+			% [seen.keys()]
+		)
 	return ""
 
 
