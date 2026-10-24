@@ -35,6 +35,8 @@ var advice_api_key := ""
 var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
 var options_locked := false
 var session_ended := false
+## CTR-asset-resolve E4 — Boot's unresolved count when the Boot preload failed, else 0.
+var boot_failure_count := 0
 ## EX.error / S3 — an advice fetch failed while On; cleared by Dismiss (states.md).
 
 var shared_session: SharedGameSession
@@ -82,6 +84,7 @@ func _ready() -> void:
 	_persist = get_node_or_null("../PersistStore") as PersistStore
 	locale = StringTable.locale_from_os(OS.get_locale())
 	_resolver.boot_ready.connect(_on_boot_ready)
+	_resolver.boot_failed.connect(_on_boot_failed)
 	_resolver.ambient_ready.connect(_on_ambient_ready)
 	_resolver.must_overlay.connect(_on_unresolved_overlay)
 	var host := get_parent()
@@ -402,6 +405,15 @@ func _on_boot_ready() -> void:
 	_provide_assets(_resolver.resolve_group("boot"))
 	_load_persist()
 	_go_mode_pick()
+
+
+## CTR-asset-resolve E4 — Boot left approved IDs unresolved. The failure is
+## observable here instead of the caller waiting forever on a ready that never
+## comes. `EX.loading` has no specified failure exit or copy (#647 S2), so this
+## does not invent one: the wait stays until the UX owner specifies the surface.
+func _on_boot_failed(unresolved: int) -> void:
+	push_error("Boot assets failed: %d approved IDs unresolved" % unresolved)
+	boot_failure_count = unresolved
 
 
 func _on_asset_needed(asset_ids: PackedStringArray) -> void:

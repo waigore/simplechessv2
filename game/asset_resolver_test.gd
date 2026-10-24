@@ -80,7 +80,7 @@ func _after_boot() -> void:
 	if not problem.is_empty():
 		_fail(problem)
 		return
-	if not _check_unresolved() or not _check_preload_gap() or not _check_vorbis_copy(music_id):
+	if not _check_unresolved() or not await _check_preload_gap() or not _check_vorbis_copy(music_id):
 		return
 	if not _check_cjk_font_faces():
 		return
@@ -150,6 +150,43 @@ func _check_preload_gap() -> bool:
 		return _fail("partial play preload was marked ready")
 	if probe.resolve("missing-runtime") != null or not probe.session_playable:
 		return _fail("missing Vorbis copy resolved")
+	return await _check_boot_failure_surfaced()
+
+
+func _check_boot_failure_surfaced() -> bool:
+	## Inverted from the old "stall is correct" check: a Boot group that leaves an
+	## approved ID unresolved settles as CTR-asset-resolve E4, and the caller sees it.
+	var probe := AssetResolver.new()
+	probe.playtest_override = 1
+	root.add_child(probe)
+	probe.apply_manifest(
+		{
+			"asset_root": str(_manifest.get("asset_root", "")),
+			"groups": {"boot": ["missing-boot"], "play": [], "ambient": []},
+			"assets": {"missing-boot": {"state": "approved", "kind": "icons", "files": ["icons/none.svg"]}},
+		}
+	)
+	var ready: Array[bool] = [false]
+	var failed: Array[int] = [-1]
+	probe.boot_ready.connect(func() -> void: ready[0] = true)
+	probe.boot_failed.connect(func(count: int) -> void: failed[0] = count)
+	var settled: Array[bool] = [false]
+	probe.boot_settled.connect(func() -> void: settled[0] = true, CONNECT_ONE_SHOT)
+	probe.preload_boot()
+	await probe.boot_settled
+	if not settled[0] or ready[0] or failed[0] != 1 or probe.group_loaded("boot"):
+		return _fail("failed boot preload did not surface the failure")
+	if probe.boot_outcome != 1 or probe.group_loaded("boot"):
+		return _fail("failed boot preload did not log the unresolved count")
+	var router_probe := AssetResolver.new()
+	router_probe.playtest_override = 1
+	root.add_child(router_probe)
+	router_probe.boot_failed.connect(_router._on_boot_failed)
+	router_probe.apply_manifest(probe._manifest)
+	router_probe.preload_boot()
+	await router_probe.boot_settled
+	if _router.boot_failure_count != 1:
+		return _fail("session router did not observe the boot failure")
 	return true
 
 
