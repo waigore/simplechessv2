@@ -20,7 +20,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R6 | Expose no list, page, file, edit, or export operation, and the raw export as no public static file |
 | R7 | Keep records and snapshot_id immutable once served (L2–L3); a new snapshot is a new ADR-0008 decision |
 | R8 | Be a route on the advice Python server, on its host and deploy path |
-| R9 | Ship enabled in the published release: the client carries a real T9/T10 pair, and Puzzle stream releases only on a real deal at the published URL, never a seam build standing in. Value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
+| R9 | Ship enabled in the published release: the client carries a real T9/T10 pair, and Puzzle stream releases only on a real deal at the published URL, never a seam build standing in. Release status and the missing-value path are [`configuration.md`](../configuration.md) `T9` T10 `B5`; value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
 
 ## Communication
 
@@ -53,4 +53,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on the advice server's deploy path. Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
+Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on the advice server's deploy path. A missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
