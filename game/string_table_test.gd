@@ -629,29 +629,34 @@ func _drive_setup_advice(locale: String, want_on: bool, entry_on: bool) -> Strin
 	if _router.advice_on != want_on:
 		_router.handle_control("shared-setup", "C4")
 		await process_frame
-	if _router.advice_on != want_on:
-		return "shared-setup %s C4 did not toggle to %s" % [locale, "On" if want_on else "Off"]
 	var panel := _shared_setup()
-	var want := _setup_advice_line(locale, want_on)
+	var tag := "shared-setup %s C4 %s" % [locale, _setup_advice_flag(want_on)]
+	var err := await _setup_advice_cell(panel, tag, locale, want_on)
+	if err.is_empty() and _router.advice_on != entry_on:
+		## Return to the entry flag so the next locale starts from the same state.
+		_router.handle_control("shared-setup", "C4")
+		await process_frame
+		if _router.advice_on != entry_on:
+			err = "shared-setup %s C4 did not toggle back" % locale
+	return err
+
+
+## The C4 row of one cell: right flag, right label, readable.
+func _setup_advice_cell(panel: Control, tag: String, locale: String, want_on: bool) -> String:
+	if _router.advice_on != want_on:
+		return "shared-setup %s C4 did not toggle to %s" % [locale, _setup_advice_flag(want_on)]
 	var row := panel.find_child("Advice", true, false) as Button
 	if row == null:
 		return "shared-setup %s has no C4 row" % locale
+	var want := _setup_advice_line(locale, want_on)
 	if row.text != want:
-		return "shared-setup %s C4 %s reads %s, want %s" % [
-			locale, "On" if want_on else "Off", row.text, want
-		]
-	var tag := "shared-setup %s C4 %s" % [locale, "On" if want_on else "Off"]
-	var err := await _assert_readable(panel, tag)
-	if not err.is_empty():
-		return err
-	if entry_on == want_on:
-		return ""
-	## Return to the entry flag so the next locale starts from the same state.
-	_router.handle_control("shared-setup", "C4")
-	await process_frame
-	if _router.advice_on != entry_on:
-		return "shared-setup %s C4 did not toggle back" % locale
-	return ""
+		return "%s reads %s, want %s" % [tag, row.text, want]
+	return await _assert_readable(panel, tag)
+
+
+## The C4 label suffix for a wanted toggle state.
+func _setup_advice_flag(advice_on: bool) -> String:
+	return "On" if advice_on else "Off"
 
 
 ## The C4 label as `shared_setup.advice · shared_setup.advice_on|advice_off`.
@@ -747,9 +752,10 @@ func _s3_producer(panel: SharedPlayPanel, locale: String) -> String:
 		return "shared-play %s S3 AdviceErrorDismiss hidden" % locale
 	var want_dismiss := StringTable.shared_play("dismiss", locale)
 	if dismiss.text != want_dismiss:
-		return "shared-play %s S3 AdviceErrorDismiss reads %s, want %s" % [
-			locale, dismiss.text, want_dismiss
-		]
+		return (
+			"shared-play %s S3 AdviceErrorDismiss reads %s, want %s"
+			% [locale, dismiss.text, want_dismiss]
+		)
 	return ""
 
 
