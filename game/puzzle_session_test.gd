@@ -754,13 +754,26 @@ func _check_confirm_leave_empty_s1() -> String:
 	var session := _session()
 	if session.play_ui_state != PuzzleSession.UI_S1 or session.has_open_puzzle():
 		return "the fixture must be S1 with no puzzle open"
-	var asked := session.request_confirm("C5")
-	if not bool(asked.get("ok", false)):
+	var raised := _empty_s1_raises_confirm(session)
+	if not raised.is_empty():
+		return raised
+	return _empty_s1_cancel_and_leave(session)
+
+
+## US5.1 — C5 is available on the empty S1 and raises the named leave confirm.
+func _empty_s1_raises_confirm(session: PuzzleSession) -> String:
+	if not bool(session.request_confirm("C5").get("ok", false)):
 		return "US5.1: C5 must raise EX.confirm on S1 with no puzzle open"
 	if session.confirm_kind != PuzzleSession.CONFIRM_LEAVE:
 		return "US5.1: C5 must raise the named leave_confirm"
 	if session.play_ui_state != PuzzleSession.UI_S2:
 		return "US5.1: C5 must enter S2"
+	return ""
+
+
+## US5.3 / US5.2 / K4 — Cancel returns the empty S1 unchanged, the control works again,
+## and the leave it then confirms scores nothing.
+func _empty_s1_cancel_and_leave(session: PuzzleSession) -> String:
 	var cancelled := session.cancel_confirm()
 	if not bool(cancelled.get("ok", false)) or session.play_ui_state != PuzzleSession.UI_S1:
 		return "US5.3: Cancel must return the empty S1 unchanged"
