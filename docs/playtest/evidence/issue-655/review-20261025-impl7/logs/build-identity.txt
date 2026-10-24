@@ -1,0 +1,14 @@
+#279/#655 published-build identity, read 2026-10-25
+
+URL:            https://waigore.github.io/simplechessv2/index.pck
+last-modified:  Sat, 24 Oct 2026 13:00:58 GMT
+content-length: 9561236
+
+Producing CI run (`.github/workflows` "Web release"):
+  run 40096272525  sha a5b35ae  created 2026-10-24T13:00:14Z  conclusion success
+Later runs for the same day failed and published nothing:
+  run 40096532811  sha 38974ae  failure
+  run 40096643098  sha 232bfa0  failure
+
+=> the served artefact is unchanged since 2026-10-24 13:00:58Z and does not
+   include this pass's commit 064f134.

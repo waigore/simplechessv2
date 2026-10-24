@@ -1,0 +1,159 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+display=macOS
+playtest_build=true
+session_id=sess-1792853944191-57591-playtest-567360
+CHECK PASS mode-pick S1 has C2 Puzzle stream 
+CHECK PASS C2 label is the mode-pick puzzle key Puzzle stream
+mode_pick_c2_text=Puzzle stream
+screenshot=/tmp/opencode/accept333/mode-pick-s1.png size=(1280, 720)
+{"TEL.1":"puzzle.enter","TEL.2":1792853944407,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _mode_pick_checks (res://zz_accept333_probe.gd:90)
+         [7] _shot (res://zz_accept333_probe.gd:66)
+CHECK PASS NAV.T2 C2 enters puzzle-play puzzle-play
+CHECK PASS PRG.M1 last mode is puzzle puzzle
+CHECK PASS puzzle-play panel visible after C2 
+CHECK PASS puzzle stream flow open 
+dealt_puzzle_id=accept333-mate1
+CHECK PASS DBG.3 scenario dealt 
+CHECK PASS R2 playerElo region visible on deal 
+r2_elo_text=Elo 1000
+CHECK PASS S1 play state on deal S1
+solving_side=white side_to_move=white
+board_seat=Control(Presentation)::_puzzle_seat
+screenshot=/tmp/opencode/accept333/puzzle-play-s1.png size=(1280, 720)
+solving_side=white panel_solving_side=white
+{"TEL.1":"puzzle.select","TEL.2":1792853944564,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+after_select_state=S1 selected=<null>
+screenshot=/tmp/opencode/accept333/puzzle-play-selected.png size=(1280, 720)
+{"TEL.1":"puzzle.move","TEL.2":1792853944616,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792853944616,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] gesture (res://puzzle_play_flow.gd:126)
+         [7] handle_input_commit (res://session_router.gd:208)
+         [8] _played_move (res://zz_accept333_probe.gd:253)
+         [9] _shot (res://zz_accept333_probe.gd:66)
+after_place_state=S1 cue=cue_solved cue_text=Solved
+CHECK PASS a solved puzzle shows cue_solved cue_solved
+screenshot=/tmp/opencode/accept333/puzzle-play-solved.png size=(1280, 720)
+{"TEL.1":"puzzle.confirm","TEL.2":1792853944681,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"leave_confirm"}
+CHECK PASS C5 Leave asks confirm (S2) S2
+stream_confirm_text=Leave the puzzle stream?
+screenshot=/tmp/opencode/accept333/puzzle-play-s2-leave-confirm.png size=(1280, 720)
+{"TEL.1":"puzzle.cancel","TEL.2":1792853944746,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"ok"}
+CHECK PASS S2 cancel stays on puzzle-play puzzle-play
+CHECK PASS S2 cancel returns to S1 
+CHECK PASS S2 cancel keeps the puzzle open 
+CHECK PASS S2 cancel does not score the open puzzle 
+screenshot=/tmp/opencode/accept333/puzzle-play-s2-cancelled.png size=(1280, 720)
+{"TEL.1":"puzzle.confirm","TEL.2":1792853944812,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792853944833,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+CHECK PASS leave confirm → mode-pick mode-pick
+screenshot=/tmp/opencode/accept333/mode-pick-after-leave.png size=(1280, 720)
+{"TEL.1":"puzzle.enter","TEL.2":1792853944916,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _puzzle_session_journey (res://zz_accept333_probe.gd:204)
+         [7] _shot (res://zz_accept333_probe.gd:66)
+CHECK PASS C2 re-enters the stream 
+{"TEL.1":"puzzle.move","TEL.2":1792853944981,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"ok"}
+dealt_puzzle_id=accept333-mate1
+CHECK PASS DBG.3 scenario dealt 
+refused_move_ui_state=S5 cue=
+CHECK PASS a refused place enters S5 S5
+CHECK PASS a refused place is not a wrong move 
+screenshot=/tmp/opencode/accept333/puzzle-play-s5-refused.png size=(1280, 720)
+{"TEL.1":"puzzle.confirm","TEL.2":1792853945066,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"abandon_confirm"}
+abandon_confirm_state=S2 was=S1 confirm_kind=abandon_confirm
+screenshot=/tmp/opencode/accept333/puzzle-play-s2-abandon-confirm.png size=(1280, 720)
+abandon_confirm_text=Abandon this puzzle?
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _end_and_deal (res://puzzle_session.gd:521)
+         [5] abandon (res://puzzle_session.gd:510)
+         [6] confirm (res://puzzle_session.gd:575)
+         [7] _run_confirm (res://puzzle_play_flow.gd:237)
+         [8] control (res://puzzle_play_flow.gd:171)
+         [9] _on_puzzle_play_control (res://session_router.gd:781)
+         [10] handle_control (res://session_router.gd:202)
+         [11] _abandon_and_cue (res://zz_accept333_probe.gd:298)
+         [12] _shot (res://zz_accept333_probe.gd:66)
+{"TEL.1":"puzzle.end","TEL.2":1792853945131,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792853945131,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] _run_confirm (res://puzzle_play_flow.gd:237)
+         [7] control (res://puzzle_play_flow.gd:171)
+         [8] _on_puzzle_play_control (res://session_router.gd:781)
+         [9] handle_control (res://session_router.gd:202)
+         [10] _abandon_and_cue (res://zz_accept333_probe.gd:298)
+         [11] _shot (res://zz_accept333_probe.gd:66)
+abandon_result_state=S1 cue=cue_abandon
+CHECK PASS confirming Abandon shows cue_abandon cue_abandon
+screenshot=/tmp/opencode/accept333/puzzle-play-abandoned.png size=(1280, 720)
+promotion_fixture_side=white state=S1
+{"TEL.1":"puzzle.select","TEL.2":1792853945231,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.promote","TEL.2":1792853945249,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"ok"}
+promotion_choice_state=S4 promote_row=<Object#null>
+CHECK PASS last-rank place enters S4 promotion choice S4
+screenshot=/tmp/opencode/accept333/puzzle-play-s4-promotion.png size=(1280, 720)
+{"TEL.1":"puzzle.move","TEL.2":1792853945316,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792853945316,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] promotion (res://puzzle_play_flow.gd:149)
+         [7] _promotion (res://zz_accept333_probe.gd:228)
+         [8] _shot (res://zz_accept333_probe.gd:66)
+promotion_committed_ok=true ui_state=S1 cue=cue_solved
+CHECK PASS queen promotion commits 
+screenshot=/tmp/opencode/accept333/puzzle-play-after-promotion.png size=(1280, 720)
+{"TEL.1":"puzzle.confirm","TEL.2":1792853945388,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792853945402,"TEL.3":"sess-1792853944191-57591-playtest-567360","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+final_stage=mode-pick
+FAILURES=[]
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

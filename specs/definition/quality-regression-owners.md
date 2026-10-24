@@ -15,4 +15,4 @@ A row that fails on the shipped build is filed as a `type:defect` against the wa
 | Save durability | #35 Puzzle stream — the commit path is the puzzle result; a shared-game sitting writes nothing |
 | Accessibility — piece readability and no color-only information | #34 Shared game — pieces render on the shared board ([`PAL`](../aesthetics/palette.md) K1 K2) |
 | Accessibility — legibility at the smallest text size | #37 Release — it covers every screen at every locale |
-| Localization | #34 Shared game and #35 Puzzle stream for screen copy; #37 Release for the string-table gate and locale coverage |
+| Localization | #34 Shared game and #35 Puzzle stream for screen copy; #566 for the wave-3 Advice copy (`advice`, `advice_on`, `advice_off`, `advice_error`); #37 Release for the string-table gate and locale coverage |
