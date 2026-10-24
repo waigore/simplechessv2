@@ -142,6 +142,7 @@ func play_state() -> Dictionary:
 		"options_locked": options_locked,
 		"selected_piece": selected_piece,
 		"play_ui_state": play_ui_state,
+		"ui_state": _shown_ui_state(),
 		"advice": advice_on,
 		"online": online,
 		"advice_best_move": _advice_best_move,
@@ -179,11 +180,19 @@ func _end_reason() -> String:
 	return str(rules.game_ended_field().get("reason", ""))
 
 
+func _shown_ui_state() -> String:
+	## The state the screen shows (states.md S3): an advice failure is S3 over the
+	## underlying play state, which stays S1/S5/S6 behind it. One derivation for
+	## the gate, the confirm controls, the chrome, and the snapshot.
+	return UI_S3 if advice_error else play_ui_state
+
+
 func gestures_available() -> bool:
-	## Board stays playable in S1, S5 (flash), and S6 (draw panel). S4 waits on C6.
+	## Board stays playable in S1, S5 (flash), S6 (draw panel), and S3 — C1–C5 as
+	## S1 under `EX.error` (states.md S3, shared-play-controls.md C1/C2).
 	if game_ended():
 		return false
-	return play_ui_state == UI_S1 or play_ui_state == UI_S5 or play_ui_state == UI_S6
+	return _shown_ui_state() in [UI_S1, UI_S3, UI_S5, UI_S6]
 
 
 ## Display seconds for the running clock (null when untimed); used to throttle chrome.
@@ -382,11 +391,11 @@ func handle_play_control(control_id: String) -> Dictionary:
 	return result
 
 
-## C4/C5 available in S1/S4/S5 (not S2/S6); see shared-play-controls.md.
+## C4/C5 available in S1/S3/S4/S5 (not S2/S6); see shared-play-controls.md.
 func _confirm_openable() -> bool:
 	if game_ended():
 		return false
-	return play_ui_state == UI_S1 or play_ui_state == UI_S4 or play_ui_state == UI_S5
+	return _shown_ui_state() in [UI_S1, UI_S3, UI_S4, UI_S5]
 
 
 ## Drop S4 pending choice / S5 flash before entering EX.confirm (Cancel → S1).
@@ -529,9 +538,9 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 	var in_s2 := play_ui_state == UI_S2
 	var in_s4 := play_ui_state == UI_S4
 	var in_s6 := play_ui_state == UI_S6
-	var playable_board := not ended and not in_s2 and not in_s4
+	var playable_board := _shown_ui_state() in [UI_S1, UI_S3, UI_S5, UI_S6]
 	# S3 — EX.error does not block play: C1–C5 as S1, with the panel showing.
-	var ui_state := UI_S3 if advice_error else play_ui_state
+	var shown_state := _shown_ui_state()
 	return {
 		"locale": locale,
 		"white_seat": white_seat,
@@ -543,7 +552,7 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"advice_best_move": _advice_best_move,
 		"advice_eval": _advice_eval,
 		"options_locked": options_locked,
-		"ui_state": ui_state,
+		"ui_state": shown_state,
 		"advice_error": advice_error,
 		"position": field,
 		"selection": selected_piece,
