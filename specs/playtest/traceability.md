@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/traceability.md`](../../.agents/
 
 ## Alignment
 
-The alignment table is in [`traceability/alignment.md`](traceability/alignment.md). The story-to-protocol map is [`traceability/story-protocol.md`](traceability/story-protocol.md).
+The alignment table is in [`traceability/alignment.md`](traceability/alignment.md). Story rows no run observes are in [`traceability/story-out-of-scope.md`](traceability/story-out-of-scope.md); the story-to-protocol map is [`traceability/story-protocol.md`](traceability/story-protocol.md).
 
 ## Topic coverage
 
