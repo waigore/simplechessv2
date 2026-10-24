@@ -428,6 +428,7 @@ func _show_shared_play(state: Dictionary) -> void:
 		"reject_square": str(state.get("reject_square", "")),
 		"pending_promote_to": str(state.get("pending_promote_to", "")),
 		"side_to_move": str(state.get("side_to_move", "white")),
+		"in_check": bool(state.get("in_check", false)),
 		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
 	}
 	var move_var: Variant = state.get("move", null)
