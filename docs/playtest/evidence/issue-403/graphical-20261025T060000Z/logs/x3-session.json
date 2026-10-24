@@ -1,0 +1,37 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/?exact=3",
+  "label": "x3",
+  "probeInstalled": true,
+  "probedFrames": 746,
+  "documentOrigin": 1792878184593.5,
+  "firstDrawnFrame": {
+    "atMs": 3039,
+    "mean": 240
+  },
+  "firstNonBlankFrame": {
+    "atMs": 3039,
+    "mean": 240
+  },
+  "tail": [
+    [
+      15202,
+      240
+    ],
+    [
+      15219,
+      240
+    ],
+    [
+      15237,
+      240
+    ],
+    [
+      15253,
+      240
+    ],
+    [
+      15270,
+      240
+    ]
+  ]
+}
