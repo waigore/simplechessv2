@@ -27,8 +27,8 @@ The row unit, the UX and design judge rules, the multi-protocol rule, and the `n
 | Level | Rows | Judged | `none` |
 |-------|------|--------|--------|
 | UX | 34 (32 non-journey + 2 journey) | 19 | 15 |
-| Design | 41 | 37 | 4 |
-| **Total** | **75** | **56** | **19** |
+| Design | 41 | 41 | 0 |
+| **Total** | **75** | **60** | **15** |
 
 No row is `out`. Scenario-cell `none` is counted apart from row-level `none`.
 

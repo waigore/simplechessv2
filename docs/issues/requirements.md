@@ -7,6 +7,7 @@ Applies to every issue, whether filed from the GitHub form or by a skill. Index:
 - Be specific enough that an agent or human can act without guessing (paths, behaviors, environments).
 - Titles are concise and descriptive; no mandatory title prefix.
 - Every issue carries exactly one of `type:epic`, `type:task`, or `type:defect` (unless the user explicitly adds more labels).
+- Priority is optional on create: unlabeled means normal. Apply `priority:high` or `priority:critical` only when a human requests it; do not apply `priority:normal`. Only humans set or change priority.
 
 ## Epic
 

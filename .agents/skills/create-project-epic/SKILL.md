@@ -28,13 +28,14 @@ Create a repository **Epic** (`type:epic`).
 2. **Collect** `title` and content for every required Epic section; optional notes, `blocked_by`, `blocking`. Ask if required content is missing.
 3. **Build** the body exactly as specified in `body-shapes.md`.
 4. If `--no-create` / "draft only": print title + body and stop.
-5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:epic" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in).
+5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:epic" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in). Add `--label "priority:high"` or `--label "priority:critical"` only when the human explicitly requests that priority at create time; do not apply `priority:normal` (unlabeled means normal).
 6. **Blocked-by**: for each blocker, follow the linking reference.
-7. **Report** URL, labels (`type:epic`, `status:pending-review`), and dependency wiring.
+7. **Report** URL, labels (`type:epic`, `status:pending-review`, and `priority:*` only if set), and dependency wiring.
 
 ## Rules
 
-- Apply labels `type:epic` and `status:pending-review`.
+- Apply labels `type:epic` and `status:pending-review`. Apply `priority:high` or `priority:critical` only when the human requests it; leave priority unlabeled for normal.
+- Do not change priority after create; only humans set or change priority later.
 - Default: create on GitHub.
 - Do not create child tasks unless asked; use `create-project-task` for children.
 

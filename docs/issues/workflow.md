@@ -15,9 +15,9 @@ Exactly **one** `status:*` label per typed issue. Skills swap via `enforce-task-
 | `status:pending-verification` | Implemented; awaiting verification |
 | `status:pending-acceptance` | Verified; awaiting acceptance testing |
 | `status:accepted` | Accepted; **leave open** (do not close) |
-| `status:superseded` | Closed without delivering: superseded by, duplicate of, or retired for another issue or an Accepted ADR; the body or a linked comment names it |
+| `status:superseded` | Closed without delivering; name the successor ([terminal-states.md](terminal-states.md)) |
 
-Catalog: [`docs/labels.md`](../labels.md).
+Catalog and priority: [`docs/labels.md`](../labels.md) (unlabeled = normal; create skips `priority:normal`). Discovery: [workflow-dispatch.md](workflow-dispatch.md).
 
 ## Transitions and evidence
 
@@ -60,4 +60,4 @@ Move only the reviewed issue plus issues the fail comment **explicitly names**. 
 | `verify-project-issue` | Independent verify pass / fail |
 | `accept-project-issue` | Accept / fail / clarify |
 
-Create skills apply `status:pending-review`. Dispatch agents: [workflow-dispatch.md](workflow-dispatch.md).
+Create skills apply type + `status:pending-review`; priority unlabeled unless a human requested high or critical. Dispatch: [workflow-dispatch.md](workflow-dispatch.md).

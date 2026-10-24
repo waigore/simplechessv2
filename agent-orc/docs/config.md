@@ -64,7 +64,7 @@ Shipped `project-planner-agent` sets `cooldown_seconds: 3600` (one hour after ea
 
 **parallel_run:** integer **>= 1**. Omitted means **1** (one loop, no issue claim). Above 1, that many slots run. Each slot keeps its own cooldown and gate backoff. `-n` counts per slot.
 
-**issues.command:** optional. Prints a JSON array of objects with `number`, the same shape as `gh issue list --json number`. Used only when `parallel_run` > 1. After the gate passes, the slot claims the lowest number that no slot in this process owns. No free number is a claim miss: same backoff as a gate miss, no worktree, and it does not count toward `-n`. The map lives in memory for this process only. The prompt placeholders `{parallel_id}` and `{issue}` are always filled (`issue` is `none` when nothing was claimed). Shipped workflow agents (review, refine, implement, verify, accept) include an `issues.command` and those placeholders; set `parallel_run` in `config.local.yaml` to turn claims on. Planner and babysit ship no issue list, so extra slots get ids only.
+**issues.command:** optional. Prints a JSON array of objects with `number`, the same shape as `gh issue list --json number`. Used only when `parallel_run` > 1. After the gate passes, the slot claims the **first free number in that list order** that no slot in this process owns (list order is the priority order). No free number is a claim miss: same backoff as a gate miss, no worktree, and it does not count toward `-n`. The map lives in memory for this process only. The prompt placeholders `{parallel_id}` and `{issue}` are always filled (`issue` is `none` when nothing was claimed). Shipped workflow agents (review, refine, implement, verify, accept) call [`.orc/scripts/list-status-issues.sh`](../../.orc/scripts/list-status-issues.sh) so candidates are ordered `priority:critical` → `priority:high` → normal/unlabeled, then by number within a tier; set `parallel_run` in `config.local.yaml` to turn claims on. Planner and babysit ship no issue list, so extra slots get ids only. Within a tier, number order is only a parallel lock — agents discovering with `Assigned issue: none` still use judgement per [`docs/issues/workflow-dispatch.md`](../../docs/issues/workflow-dispatch.md).
 
 Shipped workflow gates (open issues that include the status label):
 
@@ -78,7 +78,7 @@ gate:
 
 `project-planner-agent` has no gate (always eligible).
 
-`babysit-pr-agent` gates with [`.agents/skills/babysit-pr-agent/scripts/gate.sh`](../../.agents/skills/babysit-pr-agent/scripts/gate.sh) (exit 0 when a same-repo open PR is conflicted, behind its base, or has a failing check). Provider: `cursor`.
+`babysit-pr-agent` gates with [`.agents/skills/babysit-pr-agent/scripts/gate.sh`](../../.agents/skills/babysit-pr-agent/scripts/gate.sh) (exit 0 when a same-repo open PR is conflicted, behind, or failing checks, or when more than three have queued/in-progress checks). Provider: `cursor`.
 
 ## Child projects
 

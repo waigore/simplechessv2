@@ -25,6 +25,7 @@ Issue labels for categorization and agent orchestration. Source of truth: `.gith
 | `type:task` | Concrete unit of agent work |
 | `type:defect` | Bug/problem with any deliverable (code, game, spec, etc.) |
 | `status:*` | Workflow state (see [`docs/issues/workflow.md`](docs/issues/workflow.md)) |
+| `priority:*` | Handling order: critical → high → normal (unlabeled = normal; see [`docs/labels.md`](docs/labels.md)) |
 | `no-automerge` | PR label: opt out of automatic squash-merge (user-requested only) |
 
 Synced by `.github/workflows/sync-labels.yml` (push to `main` when label config changes, or `workflow_dispatch`). Add labels with the `create-project-label` skill.

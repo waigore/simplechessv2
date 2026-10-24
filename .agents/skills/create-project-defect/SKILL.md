@@ -28,14 +28,15 @@ Create a repository **Defect** (`type:defect`).
 2. **Collect** `title` and content for every required Defect section; optional reproduction, context, `related`, `parent`, `blocked_by`, `blocking`. Ask if required content is missing.
 3. **Build** the body exactly as specified in `body-shapes.md`.
 4. If `--no-create` / "draft only": print title + body and stop.
-5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:defect" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in).
+5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:defect" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in). Add `--label "priority:high"` or `--label "priority:critical"` only when the human explicitly requests that priority at create time; do not apply `priority:normal` (unlabeled means normal).
 6. If `parent` is set: attach as sub-issue (linking reference); enforce depth rules from `hierarchy.md` when nesting under a task chain.
 7. **Blocked-by**: for each true blocker, follow the linking reference. Related-only issues stay in `## Related tasks or defects` per the docs.
-8. **Report** URL, labels (`type:defect`, `status:pending-review`), parent (if any), related links, and dependency wiring.
+8. **Report** URL, labels (`type:defect`, `status:pending-review`, and `priority:*` only if set), parent (if any), related links, and dependency wiring.
 
 ## Rules
 
-- Apply labels `type:defect` and `status:pending-review`.
+- Apply labels `type:defect` and `status:pending-review`. Apply `priority:high` or `priority:critical` only when the human requests it; leave priority unlabeled for normal.
+- Do not change priority after create; only humans set or change priority later.
 - Default: create on GitHub.
 
 ## Related
