@@ -20,9 +20,8 @@
 
 ## Defects filed
 
-- **No protocol is marked `fail` by this run** other than the pointer-gesture leg below, which is the S3 playability leg of `PTU-exceptions`. Its owner is filed on its own `type:defect` and its number is recorded on this line once filed.
-- **Filed**: pointer gestures (tap and drag) refused in Shared play on the shipped graph — press and release inside one frame lose the press (`_on_pointer_down` / `_presentation.can_process()` reset). Found by `logs/gesture-run.log`; stands in for #375's `EX.error` gesture-playability leg until fixed.
-- **Fixed in this branch, not a filed defect**: `EX.error` / S3 panel never rendered — the router re-rendered only on an advice-value change, so entering or leaving S3 never repainted (`game/session_router.gd` `_advice_shown`).
+- **Filed**: pointer tap and drag refused in Shared play on the shipped graph — a press and release inside one frame lose the press. This is `PTU-exceptions` S3's playability leg; number to be recorded when filed.
+- **Fixed on this branch**: the S3 `EX.error` panel never rendered — the router repainted only on an advice-value change (`game/session_router.gd` `_advice_shown`).
 
 ## Paths
 
