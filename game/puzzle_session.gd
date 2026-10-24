@@ -518,8 +518,11 @@ func _end(ending: String, story: String) -> Dictionary:
 
 
 ## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
+## controls: C3 and C4 name an open puzzle; C5 does not — leave stream is available on
+## every S1 the stream can land in, including S1 with no puzzle dealt (US5.1).
 func request_confirm(control_id: String) -> Dictionary:
 	var kind := ""
+	var needs_puzzle := true
 	match control_id:
 		"C3":
 			kind = CONFIRM_REVEAL
@@ -527,9 +530,10 @@ func request_confirm(control_id: String) -> Dictionary:
 			kind = CONFIRM_ABANDON
 		"C5":
 			kind = CONFIRM_LEAVE
+			needs_puzzle = false
 		_:
 			return {"ok": false}
-	if not has_open_puzzle() or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
 		return {"ok": false}
 	play_ui_state = UI_S2
 	confirm_kind = kind
