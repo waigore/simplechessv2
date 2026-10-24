@@ -33,6 +33,6 @@ One story file per UX spec that has element IDs and coverage other than None, at
 
 A story that spans several specs lives in the file of the spec whose element it mainly proves, and cites the others with qualified IDs.
 
-`stories.md` is the index: one row per UX spec that has element IDs, grouped as in the UX index. Columns: the UX spec link, core (yes or no), coverage (Full, Baseline, or None — reason), and the story file link (or "—" when None). If the index pushes the file past 500 words, move it to `stories/index.md` and leave a link.
+`stories.md` is the index: one row per UX spec that has element IDs, grouped as in the UX index. Columns: the UX spec link, core (yes or no), coverage (Full, Baseline, or None — reason), and the story file link (or "—" when None). When the spec has split story files, its `Story file` cell lists them after the base story file, separated by `<br>`. If the index pushes the file past 500 words, move it to `stories/index.md` and leave a link.
 
 Every indexed story file exists, and every story file has a UX spec.

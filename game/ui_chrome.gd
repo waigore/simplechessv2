@@ -14,6 +14,8 @@ const MIN_TOUCH := 44.0
 ## UIS.T2 project-space sizes at REFERENCE_FRAME_HEIGHT_PX (Presentation scales them).
 const BODY_PX := 16
 const TITLE_PX := 28
+## UIS.T2 reference frame height (SIT.6 / S13 read it, never set it).
+const REFERENCE_FRAME_HEIGHT_PX := 640.0
 const RADIUS := 8
 ## UIS.M1 screen / panel transition (0.15–0.25 s ease-out).
 const M1_S := 0.2
@@ -37,7 +39,7 @@ static func style_button(
 	button.custom_minimum_size = Vector2(MIN_TOUCH, MIN_TOUCH)
 	button.clip_text = false
 	button.focus_mode = Control.FOCUS_ALL
-	add_body_size(button, text_scale)
+	add_font_size(button, BODY_PX, text_scale)
 	button.add_theme_color_override("font_color", COLOR_INK)
 	button.add_theme_color_override("font_disabled_color", Color(COLOR_INK, 0.4))
 	var base_border := COLOR_ACCENT if (primary or last_mode) else COLOR_BORDER
@@ -149,9 +151,46 @@ static func add_body_size(control: Control, text_scale: float = 1.0) -> void:
 	add_font_size(control, BODY_PX, text_scale)
 
 
+static func add_title_size(control: Control, text_scale: float = 1.0) -> void:
+	add_font_size(control, TITLE_PX, text_scale)
+
+
+## UIS.T2 ratio to the 640 px reference frame height; Presentation reflows to it.
+static func text_scale_for_frame_height(frame_height_px: float) -> float:
+	if frame_height_px <= 0.0:
+		return 1.0
+	return frame_height_px / REFERENCE_FRAME_HEIGHT_PX
+
+
+## The frame every UIS.T2 surface currently renders into: the running window, the
+## same frame `S13` reports. A control's own height is never the frame — a 44 px
+## button would resolve `16 * 44 / 640` and draw at 1 px (#708). A headless runner
+## has no display frame (its root window stays at the 100 px placeholder), so a
+## full-rect control reports the project size instead.
+static func frame_height_of(control: Control) -> float:
+	if not is_instance_valid(control) or not control.is_inside_tree():
+		return 0.0
+	var tree := control.get_tree()
+	if tree != null and tree.root != null and DisplayServer.get_name() != "headless":
+		return float(tree.root.size.y)
+	return float(ProjectSettings.get_setting("display/window/size/viewport_height", 0))
+
+
+## Fills the frame: resized controls take the ratio of the frame they render in.
+## Every UIS.T2 write goes through here, so a restyle on any action keeps the
+## reflowed size instead of a stale cached scale (S13 / AC4).
+static func responsive_text_scale(control: Control, text_scale: float = 1.0) -> float:
+	if not control.is_inside_tree():
+		return text_scale
+	if not control.is_visible_in_tree():
+		return text_scale
+	return text_scale_for_frame_height(frame_height_of(control))
+
+
 ## The one place UIS.T2 sizes are applied: project-space px times the frame-height factor.
 static func add_font_size(control: Control, base_px: int, text_scale: float = 1.0) -> void:
-	control.add_theme_font_size_override("font_size", scaled_px(base_px, text_scale))
+	var ratio := responsive_text_scale(control, text_scale)
+	control.add_theme_font_size_override("font_size", scaled_px(base_px, ratio))
 
 
 static func scaled_px(base_px: int, text_scale: float) -> int:

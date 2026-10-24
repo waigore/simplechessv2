@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 - **Level**: Design
 - **Spec key**: `PTD-end-conditions`
-- **Environment**: Headless only
+- **Environment**: `ENV.1` Headless only
 - **Cites**: `END` (L1–L6, D1–D5, W1, P1)
 - **Situational tools**: `SIT.1`, `SIT.3`
 
@@ -34,4 +34,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules (Headless: no screenshots). Include `SIT.3` dump on fail.
+Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot.

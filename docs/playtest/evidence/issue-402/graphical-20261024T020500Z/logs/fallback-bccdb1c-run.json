@@ -1,0 +1,21 @@
+{
+  "reading": "fallback",
+  "commit": "bccdb1c9790b9033e790a425587215490607da36",
+  "export_path": "build/web/",
+  "why_fallback": "Web release run on bccdb1c: total_count 0. The commit carries #647's asset-root repair (merge of #712) and is unpublished.",
+  "served_from": "http://127.0.0.1:8791/index.html (python3 -m http.server, 127.0.0.1 bind)",
+  "environment": "Chrome headless=new, 390x844 CSS px, DPR 2, touch emulation, SwiftShader WebGL",
+  "capture_window_s": 25,
+  "tel_lines": 0,
+  "screen_at_end": "Loading…",
+  "frames": 1457,
+  "fps_over_span": 53.17,
+  "p50_ms": 16.7, "p95_ms": 16.8, "p99_ms": 33.3, "max_ms": 1166.6,
+  "deltas_over_16_7ms": 50,
+  "asset_open_failures": 14,
+  "preload_fail_s": 3.778,
+  "boot_assets_failed_line": true,
+  "check_assets": "35/35 cataloged game_assets/ file(s), 15 audio_runtime/ copy(ies), exit 0",
+  "screenshot": "screenshots/fallback-bccdb1c-390x844-25000ms.png",
+  "note": "A fallback reading never stands in for a published one. The repair changes the reported line (E4 boot_failed) and not the outcome: the browser still cannot open res://game_assets/… and EX.loading persists."
+}

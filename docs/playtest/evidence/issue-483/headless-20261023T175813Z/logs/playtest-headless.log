@@ -1,0 +1,67 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _reject (res://asset_resolver.gd:238)
+       [1] resolve (res://asset_resolver.gd:56)
+       [2] _preload (res://asset_resolver.gd:127)
+       [3] preload_ambient (res://asset_resolver.gd:38)
+       [4] start_music (res://session_router.gd:166)
+       [5] _go_mode_pick (res://session_router.gd:409)
+       [6] _on_boot_ready (res://session_router.gd:355)
+       [7] _preload (res://asset_resolver.gd:134)
+ERROR: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _reject (res://asset_resolver.gd:238)
+       [1] resolve (res://asset_resolver.gd:56)
+       [2] _preload (res://asset_resolver.gd:127)
+       [3] preload_ambient (res://asset_resolver.gd:38)
+       [4] start_music (res://session_router.gd:166)
+       [5] _go_mode_pick (res://session_router.gd:409)
+       [6] _on_boot_ready (res://session_router.gd:355)
+       [7] _preload (res://asset_resolver.gd:134)
+ERROR: Preload ambient left 2 approved IDs unresolved
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _preload (res://asset_resolver.gd:131)
+       [1] preload_ambient (res://asset_resolver.gd:38)
+       [2] start_music (res://session_router.gd:166)
+       [3] _go_mode_pick (res://session_router.gd:409)
+       [4] _on_boot_ready (res://session_router.gd:355)
+       [5] _preload (res://asset_resolver.gd:134)
+OK   scene nodes resolved
+OK   boot stage is mode-pick
+MODE_PICK {"locale_row":"English","quit":"Quit","screen":"mode-pick","shared":"Shared game · Last","state":"S1","table_puzzle":"Puzzle stream","table_shared":"Shared game","table_title":"Choose how to play","title":"Choose how to play"}
+MODE_PICK {"locale_row":"繁體中文","quit":"結束","screen":"mode-pick","shared":"共用對局 · 上次","state":"S1","table_puzzle":"謎題串流","table_shared":"共用對局","table_title":"選擇遊玩方式","title":"選擇遊玩方式"}
+MODE_PICK {"locale_row":"日本語","quit":"終了","screen":"mode-pick","shared":"シェア対局 · 前回","state":"S1","table_puzzle":"パズルストリーム","table_shared":"シェア対局","table_title":"遊び方を選ぶ","title":"遊び方を選ぶ"}
+OK   boot locale is en
+OK   first C4 activation switches to zh-Hant
+OK   R3 reads 繁體中文 after first activation
+OK   mode-pick stays S1 after first activation
+OK   table_title differs across en/zh-Hant/ja (["Choose how to play", "選擇遊玩方式", "遊び方を選ぶ"])
+OK   table_shared differs across en/zh-Hant/ja (["Shared game", "共用對局", "シェア対局"])
+OK   table_puzzle differs across en/zh-Hant/ja (["Puzzle stream", "謎題串流", "パズルストリーム"])
+OK   locale row in en reads own name English (got English)
+OK   locale row in zh-Hant reads own name 繁體中文 (got 繁體中文)
+OK   locale row in zh-Hant is never 'English'
+OK   locale row in ja reads own name 日本語 (got 日本語)
+OK   locale row in ja is never 'English'
+OK   mode-pick.title in en renders its Copy-table value (Choose how to play)
+OK   mode-pick.shared in en renders its Copy-table value (Shared game · Last)
+OK   mode-pick.quit in en renders its Copy-table value (Quit)
+OK   mode-pick.title in zh-Hant renders its Copy-table value (選擇遊玩方式)
+OK   mode-pick.shared in zh-Hant renders its Copy-table value (共用對局 · 上次)
+OK   mode-pick.quit in zh-Hant renders its Copy-table value (結束)
+OK   mode-pick.title in ja renders its Copy-table value (遊び方を選ぶ)
+OK   mode-pick.shared in ja renders its Copy-table value (シェア対局 · 前回)
+OK   mode-pick.quit in ja renders its Copy-table value (終了)
+OK   no FAIL.T13 locale miss logged (0)
+JUDGE P1 pass
+JUDGE P2 pass
+JUDGE P3 pass
+JUDGE P4 pass
+TEL_SESSION sess-1792778566323-90770-playtest
+TEL_COUNT 0
+PROBE pass fails=0

@@ -49,14 +49,14 @@ def test_list_issue_numbers_nonzero(tmp_path: Path) -> None:
 
 
 @pytest.mark.asyncio
-async def test_claim_lowest_free_then_release() -> None:
+async def test_claim_first_free_in_list_order_then_release() -> None:
     table = IssueOwnership()
     first = await table.claim("review#1", [12, 4, 4])
     second = await table.claim("review#2", [12, 4])
     blocked = await table.claim("refine#1", [4, 12])
-    assert first == 4
-    assert second == 12
+    assert first == 12
+    assert second == 4
     assert blocked is None
     await table.release("review#1")
-    assert await table.claim("refine#1", [12, 4]) == 4
+    assert await table.claim("refine#1", [12, 4]) == 12
     await table.release("nobody")

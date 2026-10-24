@@ -1,0 +1,329 @@
+2026-10-23T23:11:10.208Z leg1 console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:11:10.312Z leg1 console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:11:10.455Z leg1 console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:11:10.604Z leg1 console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:11:10.604Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.604Z leg1 console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:11:10.605Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.605Z leg1 console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:11:10.605Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.605Z leg1 console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:11:10.605Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.605Z leg1 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:11:10.605Z leg1 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:10.606Z leg1 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:11:10.606Z leg1 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:10.606Z leg1 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:11:10.606Z leg1 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:10.606Z leg1 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:11:10.606Z leg1 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:10.606Z leg1 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:11:10.606Z leg1 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:10.606Z leg1 console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:11:10.606Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.606Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:11:10.606Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.607Z leg1 console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:11:10.607Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.607Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:11:10.607Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.607Z leg1 console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:11:10.607Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.607Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:11:10.607Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.607Z leg1 console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:11:10.607Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.607Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:11:10.607Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.607Z leg1 console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:11:10.608Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.609Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:11:10.609Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.609Z leg1 console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:11:10.609Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.609Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:11:10.609Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.609Z leg1 console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:11:10.609Z leg1 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:10.609Z leg1 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:11:10.609Z leg1 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:10.610Z leg1 console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:11:10.610Z leg1 console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:11:39.792Z leg1 settled 30000 ms
+2026-10-23T23:11:39.797Z leg1 before-close document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:11:39.877Z leg1 STOP: no puzzle-play screen was reached, so no SEQ-puzzle-result-commit S1-S4 commit ran; there is no R2 Elo to read on screen and no committed value to survive the close.
+2026-10-23T23:11:40.029Z leg1-reopen console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:11:40.118Z leg1-reopen console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:11:40.214Z leg1-reopen console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:11:40.362Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:11:40.362Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.362Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:11:40.362Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.362Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:11:40.363Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.363Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:11:40.363Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.363Z leg1-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:11:40.364Z leg1-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:40.364Z leg1-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:11:40.364Z leg1-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:40.364Z leg1-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:11:40.364Z leg1-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:40.364Z leg1-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:11:40.364Z leg1-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:40.364Z leg1-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:11:40.364Z leg1-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:11:40.364Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:11:40.365Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.365Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:11:40.365Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.365Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:11:40.365Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.365Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:11:40.365Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.366Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:11:40.366Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.366Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:11:40.366Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.366Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:11:40.366Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.366Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:11:40.366Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.366Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.367Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.367Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.367Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.367Z leg1-reopen console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:11:40.367Z leg1-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:11:40.367Z leg1-reopen console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:11:40.367Z leg1-reopen console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:12:09.925Z leg1-reopen settled 30000 ms
+2026-10-23T23:12:09.928Z leg1 after-reopen document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:12:10.000Z leg1 RESULT: committed-before=null observed-after=null; mode pick not reached (screen stayed on EX.loading), so FL-mode-pick.N1 cannot be judged.
+2026-10-23T23:12:10.155Z leg2 console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:12:10.249Z leg2 console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:12:10.346Z leg2 console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:12:10.495Z leg2 console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:12:10.495Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.496Z leg2 console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:12:10.496Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.496Z leg2 console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:12:10.496Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.496Z leg2 console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:12:10.496Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.496Z leg2 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:12:10.496Z leg2 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:12:10.496Z leg2 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:12:10.496Z leg2 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:12:10.496Z leg2 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:12:10.496Z leg2 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:12:10.496Z leg2 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:12:10.496Z leg2 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:12:10.497Z leg2 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:12:10.497Z leg2 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:12:10.497Z leg2 console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:12:10.497Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.497Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:12:10.497Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.497Z leg2 console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:12:10.497Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.497Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:12:10.497Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.497Z leg2 console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:12:10.497Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.497Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:12:10.498Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.498Z leg2 console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:12:10.498Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.498Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:12:10.498Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.498Z leg2 console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:12:10.498Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.498Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:12:10.498Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.498Z leg2 console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:12:10.498Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.498Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:12:10.498Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.499Z leg2 console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:12:10.499Z leg2 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:12:10.499Z leg2 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:12:10.499Z leg2 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:12:10.499Z leg2 console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:12:10.499Z leg2 console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:12:40.040Z leg2 settled 30000 ms
+2026-10-23T23:12:40.041Z leg2 before-crash document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:12:40.042Z leg2 STOP: mode pick was never rendered, so no mid-session Last-mode selection could be abandoned before the kill.
+2026-10-23T23:15:40.043Z leg2 crash signal: Page.crash timed out. Increase the 'protocolTimeout' setting in launch/connect calls for a higher timeout if needed.
+2026-10-23T23:15:40.189Z leg2-reopen console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:15:40.281Z leg2-reopen console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:15:40.379Z leg2-reopen console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:15:40.529Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:15:40.529Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.529Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:15:40.529Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.529Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:15:40.530Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.530Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:15:40.530Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.530Z leg2-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:15:40.530Z leg2-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:15:40.530Z leg2-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:15:40.530Z leg2-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:15:40.530Z leg2-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:15:40.530Z leg2-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.531Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:15:40.531Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:15:40.532Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:15:40.532Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:15:40.532Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:15:40.532Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:15:40.532Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:15:40.532Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.532Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:15:40.533Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.533Z leg2-reopen console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:15:40.533Z leg2-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:15:40.533Z leg2-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:15:40.533Z leg2-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:15:40.533Z leg2-reopen console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:15:40.533Z leg2-reopen console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:16:10.081Z leg2-reopen settled 30000 ms
+2026-10-23T23:16:10.082Z leg2 after-reopen document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:16:10.148Z leg2 RESULT: no committed document existed to reopen with (observed-after=null); mode pick not reached, so the last committed Elo/Last mode cannot be read or compared.
+2026-10-23T23:16:10.299Z leg3 console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:16:10.391Z leg3 console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:16:10.489Z leg3 console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:16:10.640Z leg3 console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:16:10.641Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.641Z leg3 console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:16:10.641Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.641Z leg3 console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:16:10.641Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.641Z leg3 console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:16:10.641Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.641Z leg3 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:16:10.641Z leg3 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:10.641Z leg3 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:16:10.642Z leg3 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:10.642Z leg3 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:16:10.642Z leg3 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:10.642Z leg3 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:16:10.642Z leg3 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:10.642Z leg3 console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:16:10.642Z leg3 console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:10.642Z leg3 console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:16:10.642Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.642Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:16:10.642Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.642Z leg3 console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:16:10.643Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.643Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:16:10.643Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.643Z leg3 console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:16:10.643Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.643Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:16:10.643Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.643Z leg3 console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:16:10.643Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.644Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:16:10.644Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.644Z leg3 console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:16:10.644Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.644Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:16:10.644Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.644Z leg3 console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:16:10.644Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.644Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:16:10.644Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.644Z leg3 console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:16:10.644Z leg3 console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:10.644Z leg3 console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:16:10.644Z leg3 console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:10.644Z leg3 console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:16:10.644Z leg3 console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:16:40.189Z leg3 settled 30000 ms
+2026-10-23T23:16:40.191Z leg3 setItem wrapper installed for simplechessv2.persist.v1
+2026-10-23T23:16:40.193Z leg3 prior-document document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:16:40.193Z leg3 STOP: no puzzle-play result can be produced on this build, so the wrapper never received a commit write and EX.save-failure (puzzle-play S3) never showed.
+2026-10-23T23:16:40.194Z leg3 document-intact document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:16:40.194Z leg3 wrapper restored
+2026-10-23T23:16:40.256Z leg3 RESULT: prior=null observed=null; G2/I2 not exercised — no commit was attempted, no EX.save-failure surface was shown.
+2026-10-23T23:16:40.416Z leg3-reopen console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:16:40.507Z leg3-reopen console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:16:40.605Z leg3-reopen console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:16:40.754Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:16:40.754Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.754Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:16:40.754Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.754Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:16:40.754Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.754Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:16:40.754Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.754Z leg3-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:16:40.754Z leg3-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:40.755Z leg3-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:16:40.755Z leg3-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:40.755Z leg3-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:16:40.755Z leg3-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:40.755Z leg3-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:16:40.755Z leg3-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:40.755Z leg3-reopen console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:16:40.755Z leg3-reopen console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:16:40.755Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:16:40.755Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.755Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.756Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:16:40.756Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.757Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:16:40.757Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.757Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:16:40.757Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.757Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:16:40.757Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.757Z leg3-reopen console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:16:40.757Z leg3-reopen console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:16:40.757Z leg3-reopen console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:16:40.757Z leg3-reopen console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:16:40.757Z leg3-reopen console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:16:40.757Z leg3-reopen console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:17:10.304Z leg3-reopen settled 30000 ms
+2026-10-23T23:17:10.306Z leg3 after-reopen document[simplechessv2.persist.v1] = null (absent)
+2026-10-23T23:17:10.372Z leg3 RESULT reopen: observed=null; mode pick not reached.

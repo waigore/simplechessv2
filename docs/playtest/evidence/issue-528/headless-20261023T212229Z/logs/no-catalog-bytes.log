@@ -1,0 +1,54 @@
+$ grep -rn "catalog\|snapshot" game --include="*.gd" --include="*.cfg" --include="*.json" | grep -vi "snapshot_id\|SNAPSHOT_ID\|catalog_wire_reader\|catalog_deal_client\|catalog_deal_transport\|fake_catalog_transport\|CatalogDealClient\|CatalogWireReader\|CatalogDealTransport\|play_snapshot\|snapshot(base\|snapshot()"
+game/puzzle_stream_test.gd:3:## CMP-puzzle-session R1 / CTR-puzzle-catalog-read (#528): the stream's deal source
+game/puzzle_stream_test.gd:4:## reads one record from the catalog service and deals only that record. The peer is
+game/puzzle_stream_test.gd:50:	client.configure("http://advice.test/catalog/deal", "test-key")
+game/puzzle_stream_test.gd:57:	## SCH-puzzle-catalog F1–F13 — the one shape CTR-puzzle-catalog-read delivers.
+game/puzzle_stream_test.gd:83:		return "R1: a deal with no record must ask the catalog and deal nothing yet"
+game/puzzle_stream_test.gd:164:## G1 — a body that is not exactly one SCH-puzzle-catalog record is a failed read,
+game/puzzle_stream_test.gd:248:## CTR-puzzle-catalog-read Errors — "any failure leaves the prior open puzzle's state
+game/string_table_test.gd:511:		return "CJK catalog asset missing JP fallback face"
+game/presentation.gd:319:	## CTR-presentation.O5 — bind catalog resources by asset ID (from L2 only).
+game/puzzle_play_flow.gd:31:## stream for its first deal. `sim_factory` is the catalog peer for seams builds
+game/puzzle_play_flow.gd:56:## U4 → U2 — apply a finished catalog read; the board stays playable meanwhile.
+game/puzzle_play_flow.gd:64:		telemetry.emit("puzzle.deal_failed", str(outcome.get("reason", "")), "F-puzzle-catalog.X2")
+game/session_router.gd:732:## The simulated catalog peer for tests and playtests (ADR-0013 Testability).
+game/board_presentation.gd:543:	## PER.R7: UIS.T2 size, C9 ink on C10 cream chip (≥ 4.5:1), catalog font when bound.
+game/puzzle_stream.gd:8:## F-puzzle-catalog X2 — raised with the reason when a read failed; nothing was dealt.
+game/puzzle_stream.gd:18:## The catalog-service peer (CMP-catalog-service, C5); null means this stream cannot
+game/puzzle_stream.gd:19:## reach a catalog, so every request is a failed read that deals nothing (X2, B5).
+game/puzzle_stream.gd:37:## R1 — ask the catalog service for one puzzle at the player's level. False when a
+game/puzzle_session_test.gd:3:## CMP-puzzle-session R1–R4, DIF.Y1, END.W1/L4/L5/L6, F-puzzle-catalog R3–R5 / X1–X2,
+game/puzzle_session_test.gd:141:	## SCH-puzzle-catalog F1–F13 — the one shape CTR-puzzle-catalog-read delivers.
+game/puzzle_session_test.gd:210:		return "F-puzzle-catalog R3 must apply the first move before presenting"
+game/puzzle_session_test.gd:224:		return "F-puzzle-catalog X1: a record with one move must not be dealt"
+game/puzzle_session_test.gd:235:		return "F-puzzle-catalog X2: a failed catalog read must deal nothing"
+game/puzzle_session_test.gd:239:		return "F-puzzle-catalog X2 must leave GS.playerElo unchanged"
+game/puzzle_session_test.gd:243:## R1 / CTR-puzzle-catalog-read O1 → G1 — the one record the client read feeds the
+game/puzzle_session_test.gd:251:		return "the fixture must be a valid SCH-puzzle-catalog record (got %s)" % read
+game/puzzle_session_test.gd:254:		return "R1: a record read through CTR-puzzle-catalog-read must deal (got %s)" % dealt
+game/puzzle_session_test.gd:522:## F-puzzle-catalog R4–R5 / SCH-puzzle-catalog F13, I3 — only the mateIn1-marked record
+game/puzzle_session_test.gd:622:## F-puzzle-catalog R3 — MATE_FEN is the position before Black's move, so the record's
+game/puzzle_session.gd:5:## F-puzzle-catalog R3–R5 / X1–X2. Persistence: PRG.M1, SEQ-puzzle-result-commit S1–S4.
+game/puzzle_session.gd:15:## SCH-puzzle-catalog F1 / persistence M4 — the one served snapshot.
+game/puzzle_session.gd:18:## SCH-puzzle-catalog F1–F13 — the record shape CTR-puzzle-catalog-read delivers.
+game/puzzle_session.gd:164:## R1 / DIF.Y1 / F-puzzle-catalog R3 — deal the next puzzle at the player's level.
+game/puzzle_session.gd:165:## The record is the one CTR-puzzle-catalog-read returned; the service ran DIF.Y1.
+game/puzzle_session.gd:171:func deal(catalog_records: Array = []) -> Dictionary:
+game/puzzle_session.gd:175:	var pick: Dictionary = _select(catalog_records)
+game/puzzle_session.gd:188:## F-puzzle-catalog R3 — present the picked record: apply the opening move, then hold the
+game/puzzle_session.gd:226:## F-puzzle-catalog F13 / I3 — true iff the record is marked mateIn1.
+game/puzzle_session.gd:233:## the one record the service chose (CTR-puzzle-catalog-read G2) and widens nothing.
+game/puzzle_session.gd:404:## F-puzzle-catalog R4–R5 — the mate-in-one step accepts any legal checkmating move.
+--- export filters:
+9:export_filter="exclude"
+10:include_filter=""
+11:exclude_filter="*_test.gd,*_test.gd.uid"
+14:encryption_include_filters=""
+15:encryption_exclude_filters=""
+51:export_filter="exclude"
+52:include_filter=""
+53:exclude_filter="*_test.gd,*_test.gd.uid"
+56:encryption_include_filters=""
+57:encryption_exclude_filters=""
+--- data files under game/ (excluding .godot):
+game/asset_manifest.json

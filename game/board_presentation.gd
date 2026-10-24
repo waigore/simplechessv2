@@ -82,6 +82,7 @@ var _reject_square := ""
 var _board_sprite: Sprite2D
 var _coords_root: Control
 var _coord_font: Font
+var _text_scale := 1.0
 var _reject_tween: Tween
 
 
@@ -192,6 +193,7 @@ func render_position(
 ) -> void:
 	if options.has("white_seat"):
 		set_white_seat(str(options["white_seat"]))
+	_reflow_coordinates()
 	var post_occ: Dictionary = (position.get("occupancy", {}) as Dictionary).duplicate(true)
 	_selection = selection
 	_legal_marks = legal.duplicate()
@@ -555,15 +557,34 @@ func _make_coord_label(text: String, key: String) -> Label:
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", UiChrome.BODY_PX)
+	UiChrome.add_body_size(label, _text_scale)
 	label.add_theme_color_override("font_color", COLOR_INK)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.custom_minimum_size = Vector2(UiChrome.BODY_PX + 4, UiChrome.BODY_PX + 4)
+	label.custom_minimum_size = _coord_chip_size()
 	if _coord_font != null:
 		UiChrome.apply_font(label, _coord_font)
 	chip.add_child(label)
 	_coords_root.add_child(chip)
 	return label
+
+
+## SIT.6 / S13 — coordinate labels take UIS.T2 from the frame they render in, on
+## every render, so a phone-width frame keeps its sizes after any later action
+## (AC4). No second sizing path: `UiChrome.add_font_size` is the only write.
+func _reflow_coordinates() -> void:
+	if _coords_root == null:
+		return
+	_text_scale = UiChrome.responsive_text_scale(self, _text_scale)
+	for key in _coord_meta.keys():
+		var label := _coord_meta[key]["label"] as Label
+		if label != null:
+			UiChrome.add_body_size(label, _text_scale)
+			label.custom_minimum_size = _coord_chip_size()
+
+
+func _coord_chip_size() -> Vector2:
+	var side := float(UiChrome.scaled_px(UiChrome.BODY_PX, _text_scale) + 4)
+	return Vector2(side, side)
 
 
 func _refresh_coordinate_fonts() -> void:
@@ -578,7 +599,7 @@ func _refresh_coordinate_fonts() -> void:
 func _refresh_coordinates() -> void:
 	if _content == null or _coords_root == null:
 		return
-	var half := float(UiChrome.BODY_PX + 4) * 0.5
+	var half := _coord_chip_size().x * 0.5
 	for key in _coord_meta.keys():
 		var entry: Dictionary = _coord_meta[key]
 		var label := entry["label"] as Label
@@ -589,7 +610,7 @@ func _refresh_coordinates() -> void:
 		var local: Vector2 = get_global_transform_with_canvas().affine_inverse() * screen
 		if chip != null:
 			chip.position = local - Vector2(half, half)
-			chip.size = Vector2(UiChrome.BODY_PX + 4, UiChrome.BODY_PX + 4)
+			chip.size = _coord_chip_size()
 		else:
 			label.position = local - Vector2(half, half)
 
@@ -648,7 +669,10 @@ func _apply_kind_texture(node: Node2D, color: String, kind: String) -> void:
 	var px := float(maxi(texture.get_width(), texture.get_height()))
 	if px <= 0.0:
 		px = 1.0
-	sprite.scale = Vector2.ONE * (BoardGeometry.PIECE_EXTENT / px)
+	# _world mirrors board space (board y up, screen y down). Raster art cancels
+	# that locally so pieces read as authored and still rotate with CAM-board.M2 (#617).
+	var s := BoardGeometry.PIECE_EXTENT / px
+	sprite.scale = Vector2(s, -s)
 
 
 func _sync_overlays() -> void:
@@ -813,7 +837,9 @@ func _scale_promote_sprite(sprite: Sprite2D) -> void:
 	var px := float(maxi(sprite.texture.get_width(), sprite.texture.get_height()))
 	if px <= 0.0:
 		px = 1.0
-	sprite.scale = Vector2.ONE * (BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px)
+	# Same local Y cancel as _apply_kind_texture: the chooser overrides that scale (#617).
+	var s := BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px
+	sprite.scale = Vector2(s, -s)
 
 
 func clear_promotion_choice() -> void:
@@ -857,7 +883,8 @@ func _fit_board_sprite() -> void:
 	var tex := _board_sprite.texture
 	var w := float(maxi(tex.get_width(), 1))
 	var h := float(maxi(tex.get_height(), 1))
-	_board_sprite.scale = Vector2(10.0 / w, 10.0 / h)
+	# Frame art cancels the world Y mirror like the pieces do (#617).
+	_board_sprite.scale = Vector2(10.0 / w, -10.0 / h)
 
 
 func _refresh_piece_textures() -> void:

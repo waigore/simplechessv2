@@ -13,10 +13,11 @@ const MODE_PICK := "mode-pick"
 const SHARED_SETUP := "shared-setup"
 const SHARED_PLAY := "shared-play"
 const SHARED_RESULT := "shared-result"
+const PUZZLE_PLAY := "puzzle-play"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
 ## UIS.T2 reference frame height: UiChrome sizes are project-space px at this height.
-const REFERENCE_FRAME_HEIGHT_PX := 640.0
+const REFERENCE_FRAME_HEIGHT_PX := UiChrome.REFERENCE_FRAME_HEIGHT_PX
 
 var pointer_count := 0
 var last_pointer: Dictionary = {}
@@ -29,6 +30,7 @@ var _mode_pick: ModePickPanel
 var _shared_setup: SharedSetupPanel
 var _shared_play: SharedPlayPanel
 var _shared_result: SharedResultPanel
+var _puzzle_play: PuzzlePlayPanel
 var _board: BoardPresentation
 var _ended_label: Label
 var _unsupported: Label
@@ -56,14 +58,34 @@ func text_scale() -> float:
 	return text_scale_for_frame_height(_frame_height())
 
 
+## UIS.T2 body text for a given scale, for callers without a window yet (S13).
+static func scaled_body_px(text_scale_value: float) -> int:
+	return UiChrome.scaled_px(UiChrome.BODY_PX, text_scale_value)
+
+
+## The frame height behind a given body-text size, so a report can name the
+## frame it measured; the inverse of `scaled_body_px` (S13).
+static func frame_height_for_body_px(body_px: float) -> float:
+	return body_px / float(UiChrome.BODY_PX) * REFERENCE_FRAME_HEIGHT_PX
+
+
 ## Body text as it reaches the screen for the current frame height (UIS.T2).
 func body_text_screen_px() -> float:
-	return float(UiChrome.scaled_px(UiChrome.BODY_PX, text_scale()))
+	return body_text_screen_px_for_frame_height(_frame_height())
 
 
-## Reserve R2–R4 chrome so R1 is not covered (PRJ.A1). Scales with UIS.T2.
-func play_chrome_top_px() -> float:
-	return SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, text_scale())
+## SIT.6 / S13 — the seam reports this for the frame it rendered into; the size
+## is a function of the frame height alone, so there is one hook, not two.
+static func body_text_screen_px_for_frame_height(frame_height_px: float) -> float:
+	return float(scaled_body_px(text_scale_for_frame_height(frame_height_px)))
+
+
+## Reserve R2–R4 chrome so R1 is not covered (PRJ.A1). Scales with UIS.T2, and is
+## the one owner for the strip (the panel reads it through this call).
+func play_chrome_top_px(text_scale_value: float = -1.0) -> float:
+	if text_scale_value < 0.0:
+		text_scale_value = text_scale()
+	return SharedPlayPanel.CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
 
 
 func _ready() -> void:
@@ -93,6 +115,8 @@ func show_screen(screen_id: String, state: Dictionary) -> void:
 			_show_shared_play(state)
 		SHARED_RESULT:
 			_show_shared_result(state)
+		PUZZLE_PLAY:
+			_show_puzzle_play(state)
 		SESSION_ENDED:
 			_show_ended()
 		_:
@@ -173,9 +197,10 @@ func _build_shell() -> void:
 	_mode_pick = ModePickPanel.new()
 	_mode_pick.name = "ModePick"
 	_mode_pick.visible = false
-	_mode_pick.set_anchors_preset(Control.PRESET_CENTER)
 	_mode_pick.custom_minimum_size = Vector2(320, 280)
-	_mode_pick.position = Vector2(40, 80)
+	# UI-mode-pick: the mockup centres the column under a header, so x follows the
+	# frame and y keeps the R1–R3 top-down reading (top 80).
+	_place_centred_column(_mode_pick, 80.0)
 	_mode_pick.control_activated.connect(_on_mode_pick_control)
 	_mode_pick.pointed.connect(_on_pointed)
 	_host.add_child(_mode_pick)
@@ -183,9 +208,8 @@ func _build_shell() -> void:
 	_shared_setup = SharedSetupPanel.new()
 	_shared_setup.name = "SharedSetup"
 	_shared_setup.visible = false
-	_shared_setup.set_anchors_preset(Control.PRESET_CENTER)
 	_shared_setup.custom_minimum_size = Vector2(320, 360)
-	_shared_setup.position = Vector2(40, 60)
+	_place_centred_column(_shared_setup, 60.0)
 	_shared_setup.control_activated.connect(_on_shared_setup_control)
 	_shared_setup.pointed.connect(_on_pointed)
 	_host.add_child(_shared_setup)
@@ -210,12 +234,19 @@ func _build_shell() -> void:
 	_shared_result = SharedResultPanel.new()
 	_shared_result.name = "SharedResult"
 	_shared_result.visible = false
-	_shared_result.set_anchors_preset(Control.PRESET_CENTER)
 	_shared_result.custom_minimum_size = Vector2(320, 220)
-	_shared_result.position = Vector2(40, 120)
+	_place_centred_column(_shared_result, 120.0)
 	_shared_result.control_activated.connect(_on_shared_result_control)
 	_shared_result.pointed.connect(_on_pointed)
 	_host.add_child(_shared_result)
+
+	_puzzle_play = PuzzlePlayPanel.new()
+	_puzzle_play.name = "PuzzlePlay"
+	_puzzle_play.visible = false
+	_puzzle_play.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_puzzle_play.control_activated.connect(_on_puzzle_play_control)
+	_puzzle_play.pointed.connect(_on_pointed)
+	_host.add_child(_puzzle_play)
 
 	_ended_label = Label.new()
 	_ended_label.name = "SessionEnded"
@@ -238,6 +269,34 @@ func _build_shell() -> void:
 	add_child(_unsupported)
 
 	gui_input.connect(handle_gui_input)
+	resized.connect(_on_frame_resized)
+
+
+## SIT.6 / S13 — the frame height changed: hand every panel the new ratio, so a
+## restyle on any later action keeps the reflowed sizes (AC4). One path, no
+## phone-width theme; the board reflows on its next render.
+func _on_frame_resized() -> void:
+	_reflow_text()
+	_layout_shared_play_regions()
+
+
+## #708 — `S13` only reports the frame the layout really renders in when the
+## ratio follows the window, not a stale one from before the resize. `O12` may
+## change the drawable without a `resized` signal (a content-scale change), so
+## the seam asks the node to reflow on every applied viewport.
+func reflow_text_for_frame() -> void:
+	_reflow_text()
+
+
+func _reflow_text() -> void:
+	if _router == null:
+		return
+	var scale := text_scale()
+	_shared_play.set_text_scale(scale)
+	_puzzle_play.set_text_scale(scale)
+	_mode_pick.set_text_scale(scale)
+	_shared_setup.set_text_scale(scale)
+	_shared_result.set_text_scale(scale)
 
 
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
@@ -303,6 +362,7 @@ func _show_mode_pick(state: Dictionary) -> void:
 	_board.visible = false
 	_shared_play.visible = false
 	_shared_result.visible = false
+	_puzzle_play.visible = false
 	_ended_label.visible = false
 	_reset_gesture()
 	var ui_state := str(state.get("ui_state", "S1"))
@@ -323,6 +383,7 @@ func _show_shared_setup(state: Dictionary) -> void:
 	_board.visible = false
 	_shared_play.visible = false
 	_shared_result.visible = false
+	_puzzle_play.visible = false
 	_ended_label.visible = false
 	_reset_gesture()
 	_shared_setup.configure(
@@ -344,6 +405,7 @@ func _show_shared_play(state: Dictionary) -> void:
 	_loading.visible = false
 	_mode_pick.visible = false
 	_shared_setup.visible = false
+	_puzzle_play.visible = false
 	_shared_result.visible = false
 	_ended_label.visible = false
 	_layout_shared_play_regions()
@@ -412,6 +474,35 @@ func _show_advice_update(state: Dictionary) -> void:
 	_board.render_advice(state.get("advice_best_move", null) if shown else null)
 
 
+## UI-mode-pick / shared-setup / shared-result — one placement model per panel:
+## anchors centre x in the parent rect and pin the top, so the column follows
+## any logical frame size and no absolute `position` overrides the anchors.
+## `top_px` is the reference-frame vertical top the mockups keep.
+func _place_centred_column(panel: Control, top_px: float) -> void:
+	Presentation.place_centered(panel, top_px)
+
+
+## #616 — the one placement model for a chrome panel: horizontally centered in
+## its parent at a fixed vertical top. Offsets are written against the 0.5
+## anchors from the panel's min size, never a fixed x or its laid-out size, so
+## the column stays centered when the `expand` frame changes size — a panel is
+## placed while still hidden, before its content has sized it.
+## `GROW_DIRECTION_BOTH` keeps that true when localized copy makes the content
+## wider than the min size: the box widens to each side of the anchor instead of
+## to the right only, which would drift the drawn centre off the frame.
+static func place_centered(panel: Control, top_px: float) -> void:
+	var half_width := panel.custom_minimum_size.x * 0.5
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	panel.anchor_left = 0.5
+	panel.anchor_right = 0.5
+	panel.anchor_top = 0.0
+	panel.anchor_bottom = 0.0
+	panel.offset_left = -half_width
+	panel.offset_right = half_width
+	panel.offset_top = top_px
+	panel.offset_bottom = top_px + panel.custom_minimum_size.y
+
+
 func _layout_shared_play_regions() -> void:
 	## R2–R4 stay in the top strip; R1 board fills the remaining viewport.
 	if _board == null or _shared_play == null:
@@ -432,6 +523,7 @@ func _show_shared_result(state: Dictionary) -> void:
 	_shared_setup.visible = false
 	_board.visible = false
 	_shared_play.visible = false
+	_puzzle_play.visible = false
 	_ended_label.visible = false
 	_reset_gesture()
 	_shared_result.configure(
@@ -442,6 +534,74 @@ func _show_shared_result(state: Dictionary) -> void:
 	)
 	UiChrome.transition_in(_shared_result)
 	_shared_result.focus_first()
+
+
+## UI-puzzle-play R1–R3 / S1–S5 — the same board gestures as shared play (#94),
+## oriented to the Solving side (CAM-board.M2: Black → 180°, White → 0°).
+func _show_puzzle_play(state: Dictionary) -> void:
+	current_screen = PUZZLE_PLAY
+	_loading.visible = false
+	_mode_pick.visible = false
+	_shared_setup.visible = false
+	_shared_play.visible = false
+	_shared_result.visible = false
+	_ended_label.visible = false
+	_clear_advice_chrome()
+	_layout_shared_play_regions()
+	_board.set_white_seat(_puzzle_seat(str(state.get("solving_side", ""))))
+	_puzzle_play.configure(state, _ui_font, text_scale())
+	_puzzle_play.puzzle_open = bool(state.get("puzzle_open", false))
+	_puzzle_play.refresh()
+	var position: Dictionary = state.get("position", {}) as Dictionary
+	var selection := str(state.get("selection", ""))
+	var legal: PackedStringArray = PackedStringArray()
+	var legal_var: Variant = state.get("legal", PackedStringArray())
+	if legal_var is PackedStringArray:
+		legal = legal_var
+	elif legal_var is Array:
+		for item in legal_var:
+			legal.append(str(item))
+	var opts := {
+		"ui_state": str(state.get("ui_state", "S1")),
+		"reject_square": str(state.get("reject_square", "")),
+		"pending_promote_to": str(state.get("pending_promote_to", "")),
+		"side_to_move": str(state.get("side_to_move", "white")),
+		"promote_kinds": state.get("promote_kinds", PuzzleSession.PROMOTE_ORDER),
+		"white_seat": _puzzle_seat(str(state.get("solving_side", ""))),
+	}
+	var move_var: Variant = state.get("move", null)
+	if move_var is Dictionary:
+		opts["move"] = move_var
+	_board.render_position(position, selection, legal, opts)
+	_board.visible = true
+	_board.modulate.a = 1.0
+	var first_show := not _puzzle_play.visible
+	if first_show:
+		UiChrome.transition_in(_puzzle_play)
+	else:
+		_puzzle_play.visible = true
+		_puzzle_play.modulate.a = 1.0
+	if _puzzle_play.wants_focus_on_show():
+		_puzzle_play.focus_first()
+	if not _play_assets_bound:
+		var needed: PackedStringArray = PackedStringArray()
+		for asset_id in BoardPresentation.PIECE_IDS.values():
+			needed.append(str(asset_id))
+		needed.append(BoardPresentation.BOARD_BG_ID)
+		needed.append(UiChrome.FONT_LATIN)
+		asset_needed.emit(needed)
+
+
+## CAM-board.M2 puzzle reading: the Solving side's near edge faces the player, so
+## Solving side Black → 180° (White seat top) and White → 0° (White seat bottom).
+static func _puzzle_seat(solving_side: String) -> String:
+	if solving_side == ChessRules.SIDE_BLACK:
+		return BoardGeometry.SEAT_TOP
+	return BoardGeometry.SEAT_BOTTOM
+
+
+func _on_puzzle_play_control(control_id: String) -> void:
+	control_activate.emit(PUZZLE_PLAY, control_id)
 
 
 func _show_ended() -> void:
@@ -462,6 +622,8 @@ func _hide_panels() -> void:
 	_shared_play.modulate.a = 1.0
 	_shared_result.visible = false
 	_shared_result.modulate.a = 1.0
+	_puzzle_play.visible = false
+	_puzzle_play.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
 	_clear_advice_chrome()
@@ -509,7 +671,7 @@ func _flash_unsupported() -> void:
 func _accept_pointer(record: Dictionary) -> void:
 	pointer_count += 1
 	last_pointer = record
-	if current_screen != SHARED_PLAY:
+	if current_screen != SHARED_PLAY and current_screen != PUZZLE_PLAY:
 		return
 	var pressed := bool(record.get("pressed", false))
 	var at := Vector2(float(record.get("x", 0.0)), float(record.get("y", 0.0)))
@@ -677,4 +839,4 @@ func _bind_playtest_seams() -> void:
 	var seams := get_node_or_null("PlaytestSeams") as PlaytestSeams
 	if seams == null:
 		return
-	seams.bind_text_report(body_text_screen_px)
+	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)

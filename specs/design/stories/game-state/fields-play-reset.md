@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/design/story.md`](../../../../.agents/spe
 - **Spec key**: `GS`
 - **Glossary terms**: [Side to move](../../glossary.md), [Shared game](../../glossary.md)
 
-Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other session fields. Ending-field initials and resets: [`fields-play-end.md`](fields-play-end.md).
+Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves the other run fields. Ending-field initials and resets: [`fields-play-end.md`](fields-play-end.md).
 
 ## Coverage
 
@@ -22,12 +22,12 @@ Split from [`fields-play.md`](fields-play.md) by logical unit; that file proves 
 
 As a casual player, I get a clean run state so that a previous game cannot leak into the next.
 
-### PS1.1: Shared start clears session state
+### PS1.1: Shared start clears run state
 
 - **Proves**: GS.whiteClock, GS.blackClock, GS.puzzleId, GS.puzzleElo, GS.requiredSequence, GS.sequenceIndex, GS.wrongMoveOnPuzzle, GS.solvingSide
 
 ```gherkin
-Given no session is open
+Given no run is open
 When an Untimed Shared game starts
 Then both clocks are none And GS.puzzleId and GS.puzzleElo are none And GS.requiredSequence is none And GS.sequenceIndex is 0 And GS.wrongMoveOnPuzzle is false And GS.solvingSide is none
 ```

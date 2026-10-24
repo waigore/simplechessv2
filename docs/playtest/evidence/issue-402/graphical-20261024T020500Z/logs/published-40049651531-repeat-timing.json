@@ -1,0 +1,31 @@
+{
+  "reading": "published",
+  "url": "https://waigore.github.io/simplechessv2/",
+  "attributed_commit": "dd1547913c71b623629c66711c098bdd42581d69",
+  "web_release_run": 40049651531,
+  "web_release_run_created": "2026-10-24T01:24:36Z",
+  "carries_647_repair": false,
+  "environment": "Chrome headless=new, 390x844 CSS px, DPR 2, touch emulation, SwiftShader WebGL",
+  "capture_window_s": [25, 20, 20, 20],
+  "tel_lines": 0,
+  "screen_at_end": "Loading…",
+  "cold_opens": [
+    {
+      "run": 1,
+      "capture_s": 25,
+      "frames": 1474,
+      "fps_over_span": 56.47,
+      "p50_ms": 16.7, "p95_ms": 16.8, "p99_ms": 33.4, "max_ms": 450,
+      "deltas_over_16_7ms": 48,
+      "asset_open_failures": 14,
+      "engine_boot_s": 2.522,
+      "preload_fail_s": 2.942,
+      "boot_assets_failed_line": false,
+      "screenshot": "screenshots/published-40049651531-390x844-25000ms.png"
+    },
+    { "run": 2, "capture_s": 20, "frames": 614, "fps_over_span": 26.46, "max_ms": 1633.2, "note": "concurrent with runs 3-4; frame delivery contended, not comparable with run 1" },
+    { "run": 3, "capture_s": 20, "frames": 621, "fps_over_span": 26.37, "max_ms": 1416.6, "note": "concurrent with runs 2 and 4" },
+    { "run": 4, "capture_s": 20, "frames": 611, "fps_over_span": 26.0, "max_ms": 1466.7, "note": "concurrent with runs 2 and 3" }
+  ],
+  "note": "Frame numbers describe a Loading… screen only. The Performance row's method times a move, which was never reachable, so the row is not-judged."
+}

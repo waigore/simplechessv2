@@ -1,0 +1,58 @@
+2026-10-23T23:10:06.235Z navigated; document.readyState pending
+2026-10-23T23:10:06.739Z console.log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-23T23:10:06.843Z console.log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-23T23:10:06.989Z console.log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-23T23:10:07.138Z console.error: ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+2026-10-23T23:10:07.138Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.138Z console.error: WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+2026-10-23T23:10:07.138Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.138Z console.error: ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+2026-10-23T23:10:07.138Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.139Z console.error: WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+2026-10-23T23:10:07.139Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.139Z console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+2026-10-23T23:10:07.139Z console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:10:07.139Z console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+2026-10-23T23:10:07.139Z console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:10:07.139Z console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+2026-10-23T23:10:07.139Z console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:10:07.139Z console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+2026-10-23T23:10:07.140Z console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:10:07.140Z console.error: ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+2026-10-23T23:10:07.140Z console.error:    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-23T23:10:07.140Z console.error: ERROR: Error opening file 'game_assets/icons/quit.svg'.
+2026-10-23T23:10:07.140Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.140Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+2026-10-23T23:10:07.140Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.140Z console.error: ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+2026-10-23T23:10:07.140Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.140Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+2026-10-23T23:10:07.140Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.140Z console.error: ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+2026-10-23T23:10:07.140Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.140Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+2026-10-23T23:10:07.140Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.140Z console.error: ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+2026-10-23T23:10:07.140Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.141Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+2026-10-23T23:10:07.141Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.141Z console.error: ERROR: Error opening file 'game_assets/icons/advice.svg'.
+2026-10-23T23:10:07.142Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.142Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+2026-10-23T23:10:07.142Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.142Z console.error: ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+2026-10-23T23:10:07.142Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.142Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+2026-10-23T23:10:07.142Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.142Z console.error: ERROR: Error opening file 'game_assets/icons/back.svg'.
+2026-10-23T23:10:07.142Z console.error:    at: load_image (core/io/image_loader.cpp:91)
+2026-10-23T23:10:07.142Z console.error: WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+2026-10-23T23:10:07.143Z console.error:    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-23T23:10:07.143Z console.error: ERROR: Preload boot left 9 approved IDs unresolved
+2026-10-23T23:10:07.143Z console.error:    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-23T23:10:36.238Z settled 30274 ms after navigation
+2026-10-23T23:10:36.239Z localStorage[simplechessv2.persist.v1] = null (no document)
+2026-10-23T23:10:36.354Z HTTP 404 https://waigore.github.io/simplechessv2/game_assets/icons/quit.svg
+2026-10-23T23:10:36.354Z console.error: Failed to load resource: the server responded with a status of 404 ()
+2026-10-23T23:10:36.356Z asset fetch game_assets/icons/quit.svg -> 404
+2026-10-23T23:10:36.356Z index.pck bytes -> 252080

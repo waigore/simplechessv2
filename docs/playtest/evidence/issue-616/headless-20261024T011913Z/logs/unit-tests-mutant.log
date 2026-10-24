@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: ModePick drawn centre x off by 440.0 px at (1280.0, 720.0) (drawn width=320.0, placed width=320.0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _run (res://chrome_placement_test.gd:57)
+       [1] _check_frame (res://chrome_placement_test.gd:71)
+       [2] _settle (res://chrome_placement_test.gd:224)
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+Fail: res://chrome_placement_test.gd

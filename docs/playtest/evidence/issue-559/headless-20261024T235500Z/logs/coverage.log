@@ -1,0 +1,4 @@
+$ python3 .github/scripts/gdscript_tests.py coverage
+
+25 headless unit test(s) passed
+statement-line coverage 86.5% (4399/5085); threshold 80

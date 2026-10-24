@@ -1,0 +1,159 @@
+{
+  "run_id": "20261024T022315Z",
+  "issue": 557,
+  "started_at": "2026-10-24T02:23:15.018Z",
+  "finished_at": "2026-10-24T02:25:44.276Z",
+  "build": {
+    "url": "https://waigore.github.io/simplechessv2/",
+    "commit": "fb1e57e3a07a573ec2f5c08a1bb24e22c43d07c1",
+    "web_release_run": "40053375882",
+    "source": "published URL",
+    "session_id": null,
+    "session_id_reason": "the release build strips CMP-playtest-seams (ADR-0004 G2), so it reports no TEL.3 id"
+  },
+  "environment": {
+    "browser": "headless Chrome via puppeteer-core",
+    "viewport": "390x844 CSS px, DPR 2",
+    "settle_ms": 20000,
+    "opens": 6
+  },
+  "storage_key": "simplechessv2.persist.v1",
+  "legs": [
+    {
+      "leg": 1,
+      "name": "quit/reload",
+      "open_ms": [
+        21512,
+        21027
+      ],
+      "before": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "beforeShot": {
+        "path": "screenshots/leg-1-before-close.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "after": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "afterShot": {
+        "path": "screenshots/leg-1-after-reopen.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "console_lines": 102,
+      "outcome": {
+        "result": "not-judged",
+        "reason": "no committed document existed before the open — no puzzle result could commit"
+      }
+    },
+    {
+      "leg": 2,
+      "name": "crash",
+      "open_ms": [
+        21005,
+        21023
+      ],
+      "before": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "beforeShot": {
+        "path": "screenshots/leg-2-before-crash.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "after": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "afterShot": {
+        "path": "screenshots/leg-2-after-reopen.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "console_lines": 102,
+      "outcome": {
+        "result": "not-judged",
+        "reason": "no committed document existed before the open — no puzzle result could commit"
+      }
+    },
+    {
+      "leg": 3,
+      "name": "faulted session",
+      "open_ms": [
+        21024,
+        20999
+      ],
+      "before": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "beforeShot": {
+        "path": "screenshots/leg-3-before-fault.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "during": {
+        "attempts": 0,
+        "dropped": 0,
+        "other_writes": 0,
+        "restored": false
+      },
+      "duringDoc": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "restored": {
+        "attempts": 0,
+        "dropped": 0,
+        "other_writes": 0,
+        "restored": true
+      },
+      "faultShot": {
+        "path": "screenshots/leg-3-after-fault.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "after": {
+        "key_present": false,
+        "document": null,
+        "localStorage_keys": [],
+        "body_text_length": 0,
+        "canvas_count": 1
+      },
+      "afterShot": {
+        "path": "screenshots/leg-3-after-reopen.png",
+        "bytes": 17835,
+        "md5": "7ba3b2c7a110a2219608ad9ab65c5165"
+      },
+      "console_lines": 102,
+      "outcome": {
+        "result": "not-judged",
+        "reason": "no committed document existed before the open — no puzzle result could commit"
+      }
+    }
+  ],
+  "screenshot_distinct_md5_count": 1
+}

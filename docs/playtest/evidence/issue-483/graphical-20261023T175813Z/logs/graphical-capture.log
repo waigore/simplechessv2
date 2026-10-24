@@ -1,0 +1,60 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+ERROR: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _reject (res://asset_resolver.gd:238)
+       [1] resolve (res://asset_resolver.gd:56)
+       [2] _preload (res://asset_resolver.gd:127)
+       [3] preload_ambient (res://asset_resolver.gd:38)
+       [4] start_music (res://session_router.gd:166)
+       [5] _go_mode_pick (res://session_router.gd:409)
+       [6] _on_boot_ready (res://session_router.gd:355)
+       [7] _preload (res://asset_resolver.gd:134)
+ERROR: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _reject (res://asset_resolver.gd:238)
+       [1] resolve (res://asset_resolver.gd:56)
+       [2] _preload (res://asset_resolver.gd:127)
+       [3] preload_ambient (res://asset_resolver.gd:38)
+       [4] start_music (res://session_router.gd:166)
+       [5] _go_mode_pick (res://session_router.gd:409)
+       [6] _on_boot_ready (res://session_router.gd:355)
+       [7] _preload (res://asset_resolver.gd:134)
+ERROR: Preload ambient left 2 approved IDs unresolved
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _preload (res://asset_resolver.gd:131)
+       [1] preload_ambient (res://asset_resolver.gd:38)
+       [2] start_music (res://session_router.gd:166)
+       [3] _go_mode_pick (res://session_router.gd:409)
+       [4] _on_boot_ready (res://session_router.gd:355)
+       [5] _preload (res://asset_resolver.gd:134)
+SHOT /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/01-mode-pick-en.png err=0
+OK   graphical first C4 -> zh-Hant
+OK   graphical R3 reads 繁體中文
+SHOT /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/02-mode-pick-zh-Hant.png err=0
+OK   graphical second C4 -> ja
+SHOT /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/03-mode-pick-ja.png err=0
+OK   queen reads Queen (en)
+OK   queen reads Queen (zh-Hant)
+OK   queen reads Queen (ja)
+{"TEL.1":"jump","TEL.2":1792778218268,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"shared-play","TEL.5":"pass"}
+OK   jumped to shared-play
+{"TEL.1":"shared.move","TEL.2":1792778218836,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792778219436,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792778220037,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792778220637,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792778221238,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792778221837,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792778222438,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.check","TEL.2":1792778222438,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US2","TEL.5":"shown"}
+{"TEL.1":"shared.move","TEL.2":1792778223038,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.promote","TEL.2":1792778223638,"TEL.3":"sess-1792778211038-87730-playtest","TEL.4":"UI-shared-play.US1.6","TEL.5":"choose"}
+SHOT /private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/04-shared-play-promote.png err=0
+OK   promotion chooser reachable in shared-play
+QUEEN {"en":"Queen","ja":"Queen","zh-Hant":"Queen"}
+SHOTS ["/private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/01-mode-pick-en.png","/private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/02-mode-pick-zh-Hant.png","/private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/03-mode-pick-ja.png","/private/var/folders/nj/j957smtj3jz0fn193bb2g_2c0000gn/T/opencode/acc483/scratch/game/../acc483-shots/04-shared-play-promote.png"]
+PROBE pass fails=0

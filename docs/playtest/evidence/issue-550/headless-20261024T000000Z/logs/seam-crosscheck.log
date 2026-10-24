@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"TEL.1":"puzzle.enter","TEL.2":1792788917907,"TEL.3":"sess-1792788917823-38687-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+X550 after-enter in_flight=true
+{"TEL.1":"puzzle.dealt","TEL.2":1792788917911,"TEL.3":"sess-1792788917823-38687-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+X550 flow=true stream=true client=true in_flight=false due=false peer_requests=1
+X550 seams=true dealt=true pid=probe550a elo=1040 last_failure=
+X550 seq=[[{ "from": "e7", "to": "e5", "promotion": "" }]] side=black
+{"TEL.1":"puzzle.select","TEL.2":1792788917942,"TEL.3":"sess-1792788917823-38687-playtest","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792788917946,"TEL.3":"sess-1792788917823-38687-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792788917946,"TEL.3":"sess-1792788917823-38687-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+X550 step e7e5 sel=true placed=true idx=0 outcome= wrong=false
+X550 solve outcome= elo 1000.00 -> 1011.15 ok=false
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:120)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792788917949,"TEL.3":"sess-1792788917823-38687-playtest","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+X550 next pid= elo=<null>
+X550 RESULT deal=true solve=false
+X550_PROBE pass
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

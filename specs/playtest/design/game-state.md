@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 - **Level**: Design
 - **Spec key**: `PTD-game-state`
-- **Environment**: Headless only
+- **Environment**: `ENV.1` Headless only
 - **Cites**: `GS` (selected fields + invariants from stories)
 - **Situational tools**: `SIT.3`
 
@@ -34,4 +34,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules (Headless: no screenshots).
+Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot.

@@ -23,6 +23,7 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | F-move-advice; CFG.ADVICE_TIME_MS | design | [ADR-0002](decisions/0002-stockfish-advice-backend.md), [ADR-0010](decisions/0010-advice-backend-stack.md) |
 | Loops; game-state; end conditions | design | [ADR-0006](decisions/0006-layered-client-architecture.md) |
 | PRG.P1 P2 M1; GS persist fields | design | [ADR-0003](decisions/0003-localstorage-persistence.md) |
+| DIF.Y1 Elo and pick policy | design | [ADR-0006](decisions/0006-layered-client-architecture.md) `L3` |
 | Puzzle catalog; DIF.Y1; GS.recentSolved | design | [ADR-0008](decisions/0008-puzzle-catalog-storage.md), [ADR-0013](decisions/0013-puzzle-catalog-api.md) |
 | 2D Web board view | view | [ADR-0001](decisions/0001-godot-engine.md) |
 | Playtest `ENV.1` `ENV.2` `DBG.*` `TEL.*` | playtest | [ADR-0004](decisions/0004-dual-playtest-environments.md), [ADR-0006](decisions/0006-layered-client-architecture.md) |
@@ -52,5 +53,9 @@ Authoring rules: [`.agents/specs/rules/adr/traceability.md`](../../.agents/specs
 | ADR-0013 | [SCH-puzzle-catalog](../technical/schemata/puzzle-catalog.md) | Cited |
 | ADR-0013 | [`CMP-puzzle-session`](../technical/components/puzzle-session.md) | Cited |
 | ADR-0013 | [`CMP-catalog-service`](../technical/components/catalog-service.md) | Cited |
+| ADR-0013 | [`CMP-puzzle-progression`](../technical/components/puzzle-progression.md) `R4` | Cited |
+| ADR-0006 | [`layers.md`](../technical/layers.md) `L3`, `D1`, `D2` | Cited |
+| ADR-0006 | [`CMP-puzzle-progression`](../technical/components/puzzle-progression.md) | Cited |
+| ADR-0006 | [`CTR-puzzle-progress`](../technical/contracts/puzzle-progress.md) | Cited |
 | ADR-0013 | [`CTR-puzzle-catalog-read`](../technical/contracts/puzzle-catalog-read.md) | Cited |
 | ADR-0013 | [`specs/technical/configuration.md`](../technical/configuration.md) | Cited |

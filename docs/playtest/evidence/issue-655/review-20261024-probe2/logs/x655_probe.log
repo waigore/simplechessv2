@@ -1,0 +1,5 @@
+X655 B5 endpoint=<> key_set=false is_available=false
+X655 ENTERED state=S1 has_puzzle=false pid=<> elo=1000.00 last_failure=<status>
+X655 PANEL_C5_GATE=true
+X655 C5_ACTIVATED state=S1 confirm_kind=<> confirm_shown=false
+X655_PROBE fail

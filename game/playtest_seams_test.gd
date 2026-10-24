@@ -3,9 +3,12 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	## Hold the checks one frame so the debug panel's controls enter the tree and
+	## take their rects before `#708` reads the frame they resolve against.
+	await process_frame
 	if not _check_release():
 		return
-	if not _check_playtest():
+	if not await _check_playtest():
 		return
 	quit(0)
 
@@ -25,6 +28,9 @@ func _check_release() -> bool:
 	seams.note_pointer({"kind": "touch"})
 	seams.replay_input([{"kind": "touch"}])
 	seams.emit_tel("pause", "pass", "EX.loading")
+	var release_verdict := seams.assert_telemetry(
+		[{"event": "pause", "outcome": "pass", "story_id": "EX.loading"}]
+	)
 	var problem := ""
 	if seams.playtest_build:
 		problem = "release build kept seams"
@@ -38,13 +44,54 @@ func _check_release() -> bool:
 		problem = "release jump"
 	elif not seams.dump_state().is_empty():
 		problem = "release dump"
+	elif (
+		release_verdict["verdict"] != "fail"
+		or not (release_verdict["matched"] as Array).is_empty()
+		or not (release_verdict["missing"] as Array).is_empty()
+		or int(release_verdict["event_count"]) != 0
+	):
+		problem = "release S12 assert_telemetry"
 	elif not viewport_report.is_empty():
 		problem = "S13 release viewport"
-	elif not seams.last_viewport_report().is_empty():
-		problem = "S13 release viewport report"
 	if not problem.is_empty():
 		return _fail(problem)
+	if not _check_release_measure(seams):
+		return false
 	return true
+
+
+## S11 / O10 / D3 — the release answer is the always-shaped refused report, asserted
+## here on the release-mode instance this entry point already builds. That no seam
+## node ships at all (`R3`) stays with the release-export smoke, not this test.
+func _check_release_measure(seams: PlaytestSeams) -> bool:
+	var kinds := ["frame_times", "loading_ready", "unknown"]
+	for kind in kinds:
+		var start_report := seams.start_measurement(kind)
+		var report := seams.measure(kind)
+		for one in [start_report, report]:
+			var problem := _measure_refusal(one, kind)
+			if not problem.is_empty():
+				return _fail("S11 release %s" % problem)
+	var disarmed := seams.measure("")
+	if str(disarmed.get("status", "")) != "refused":
+		return _fail("S11 release disarm")
+	if str(disarmed.get("detail", "")) != "release":
+		return _fail("S11 release disarm detail")
+	return true
+
+
+func _measure_refusal(report: Dictionary, kind: String) -> String:
+	if str(report.get("status", "")) != "refused":
+		return "%s status" % kind
+	if str(report.get("detail", "")) != "release":
+		return "%s detail" % kind
+	if not (report.get("samples", null) as Array).is_empty():
+		return "%s samples" % kind
+	if int(report.get("sample_count", -1)) != 0:
+		return "%s sample_count" % kind
+	if not is_zero_approx(float(report.get("max_ms", -1.0))):
+		return "%s max_ms" % kind
+	return ""
 
 
 func _check_playtest() -> bool:
@@ -96,66 +143,192 @@ func _check_playtest() -> bool:
 		problem = "dump beyond inspect"
 	if not problem.is_empty():
 		return _fail(problem)
+	if not _check_telemetry(seams):
+		return false
 	if not _check_debug(seams, stage):
 		return false
+	await process_frame
 	return _check_viewport(seams)
 
 
 func _check_viewport(seams: PlaytestSeams) -> bool:
-	## S13 / SIT.6 — O12 applies a viewport on ENV.2 only; the report never lies.
+	## S13 / SIT.6 — O12 applies a viewport on ENV.2 only, and the reported sizes
+	## are the ones that frame renders, never the caller's arguments (D1/D2).
 	var reports: Array = []
 	seams.viewport_changed.connect(_remember_viewport.bind(reports))
-	var phone := seams.set_viewport(
-		PlaytestSeams.VIEWPORT_PHONE_WIDTH,
-		PlaytestSeams.VIEWPORT_PHONE_HEIGHT,
-		_frame_ratio(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
-	)
-	var shown := seams.last_viewport_report()
-	var graphical := DisplayServer.get_name() != "headless"
+	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)
+	var wanted := Vector2i(PlaytestSeams.VIEWPORT_PHONE_WIDTH, PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+	var phone := seams.set_viewport(wanted.x, wanted.y, 1.0)
+	var shown: Dictionary = seams.dump_state().get("viewport", {})
+	# The unit-test binary runs this seam outside the tree, so it holds no frame
+	# yet: the report keeps its shape but no limb may claim the requested one.
+	var framed := PlaytestGate.in_frame(seams)
+	var frame := int(phone.get("frame_height_px", 0))
 	var empty := seams.set_viewport(0, 844, 1.0)
-	var reference := UiChrome.scaled_px(UiChrome.BODY_PX, _frame_ratio(640))
-	var phone_expected := UiChrome.scaled_px(
-		UiChrome.BODY_PX, _frame_ratio(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+	# UIS.T2 is a ratio to the reference height, so a taller frame sits above
+	# BODY_PX. This compares the hook's own answers at two heights; the hook is
+	# what reports, so a clamped or hardcoded size fails here.
+	var scales_with_frame := (
+		Presentation.body_text_screen_px_for_frame_height(wanted.y)
+		> Presentation.body_text_screen_px_for_frame_height(UiChrome.REFERENCE_FRAME_HEIGHT_PX)
 	)
-	# UIS.T2 is a ratio to the reference height, so a taller phone frame sits above
-	# BODY_PX; a hardcoded or clamped size at BODY_PX fails `scales_with_frame`.
-	var scales_with_frame := phone_expected > UiChrome.BODY_PX and phone_expected > reference
 	var panel_button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
 	var problem := ""
 	if reports.size() != 1 or phone.is_empty() or shown != phone:
 		problem = "S13 viewport report"
-	elif bool(phone.get("applied", false)) != graphical:
-		problem = "S13 ENV.2 boundary"
-	elif graphical and (int(phone["width"]) != 390 or int(phone["height"]) != 844):
-		problem = "S13 applied size"
-	elif not is_equal_approx(float(phone["text_scale"]), _frame_ratio(844)):
+	elif int(phone["width"]) != wanted.x or int(phone["height"]) != wanted.y:
+		problem = "S13 requested size"
+	elif not _application_matches(phone, framed, wanted.y):
+		problem = "S13 report must match the viewport the runner really applied"
+	elif not is_equal_approx(float(phone["text_scale"]), 1.0):
 		problem = "S13 applied text scale"
-	elif int(phone["body_text_px"]) != phone_expected:
+	elif frame <= 0 and int(phone["body_text_px"]) != 0:
+		problem = "S13 no frame, no body-text claim"
+	elif (
+		frame > 0
+		and (
+			int(phone["body_text_px"])
+			!= Presentation.scaled_body_px(Presentation.text_scale_for_frame_height(frame))
+		)
+	):
 		problem = "S13 body text must come from the presentation ratio"
 	elif not scales_with_frame:
 		problem = "S13 clamped text size (body text must scale with frame height)"
-	elif not _bound_report_matches(seams):
+	elif not _bound_report_matches(seams, framed):
 		problem = "S13 seam must report the bound presentation size, not its own"
+	elif not _ignores_argument_scale(seams):
+		problem = "S13 seam must not report the argument it was handed"
+	elif not _hook_tracks_the_frame():
+		problem = "S13 hook must follow the rendered frame, not a constant"
+	elif not _phone_ratio():
+		problem = "S13 phone frame must reflow the shipped layout"
 	elif not empty.is_empty():
 		problem = "S13 invalid input must not return a report"
 	elif panel_button == null:
 		problem = "S13 debug panel control"
 	if not problem.is_empty():
 		return _fail(problem)
+	if not _check_frame_height(seams):
+		return false
 	return true
 
 
-func _bound_report_matches(seams: PlaytestSeams) -> bool:
-	## The seam must echo the presentation hook, never compute a size of its own.
+## #708 — the frame a control reflows to is the running window, never the
+## control's own height. A 44 px button resolved `16 * 44 / 640` and drew at
+## 1 px, and the phone frame drew at a stale desktop ratio. The subject is the
+## debug panel's own control: a 44 px box in the frame the layout renders in.
+func _check_frame_height(seams: PlaytestSeams) -> bool:
+	var button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
+	var own_height := button.size.y
+	var frame := UiChrome.frame_height_of(button)
+	var scale := UiChrome.responsive_text_scale(button)
+	var project := float(ProjectSettings.get_setting("display/window/size/viewport_height", 0))
+	var problem := ""
+	if frame <= 0.0:
+		problem = "#708 frame height unread"
+	elif DisplayServer.get_name() == "headless" and not is_equal_approx(frame, project):
+		problem = "#708 headless frame must be the project height"
+	elif (
+		own_height > 0.0
+		and is_equal_approx(own_height, frame)
+		and not is_equal_approx(frame, project)
+	):
+		problem = "#708 frame followed the control's own height, not the window"
+	elif not is_equal_approx(scale, frame / UiChrome.REFERENCE_FRAME_HEIGHT_PX):
+		problem = "#708 ratio must come from the frame"
+	elif UiChrome.scaled_px(UiChrome.BODY_PX, scale) < UiChrome.BODY_PX:
+		problem = "#708 body text below BODY_PX at the reference frame"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
+func _application_matches(report: Dictionary, framed: bool, wanted_px: int) -> bool:
+	## `applied` names ENV.2, and only a seam inside a frame may name its height.
+	if bool(report.get("applied", false)) != PlaytestGate.has_display():
+		return false
+	if not framed or not PlaytestGate.has_display():
+		## No frame to read: the report keeps its shape but names no height.
+		return int(report.get("frame_height_px", 0)) == 0
+	return int(round(float(report.get("frame_height_px", 0)))) == wanted_px
+
+
+func _bound_report_matches(seams: PlaytestSeams, framed: bool) -> bool:
+	## The seam must echo the bound presentation hook, never compute a size of its own.
 	var sentinel := 1234.0
-	seams.bind_text_report(func() -> float: return sentinel)
+	seams.bind_text_report(func(_frame_height_px: float) -> float: return sentinel)
 	var bound := seams.set_viewport(390, 844, 1.0)
-	seams.bind_text_report(Callable())
-	return is_equal_approx(float(bound.get("body_text_px", 0.0)), sentinel)
+	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)
+	## The seam only reports the hook's answer for the frame it renders (D2); with
+	## no frame on screen the report names none and carries no body-text claim.
+	if int(bound.get("frame_height_px", 0)) <= 0:
+		return int(bound.get("body_text_px", 0)) == 0
+	if not is_equal_approx(float(bound.get("body_text_px", 0.0)), sentinel):
+		return false
+	if not framed:
+		return true
+	var named := int(bound.get("frame_height_px", 0))
+	return named == int(round(Presentation.frame_height_for_body_px(sentinel)))
 
 
-func _frame_ratio(height_px: int) -> float:
-	return Presentation.text_scale_for_frame_height(float(height_px))
+func _ignores_argument_scale(seams: PlaytestSeams) -> bool:
+	## F2 — the caller's scale argument cannot move what the seam reports.
+	var coarse := seams.set_viewport(390, 844, 0.25)
+	var fine := seams.set_viewport(390, 844, 4.0)
+	return (
+		is_equal_approx(float(coarse["body_text_px"]), float(fine["body_text_px"]))
+		and is_equal_approx(
+			float(coarse["rendered_text_scale"]), float(fine["rendered_text_scale"])
+		)
+	)
+
+
+func _hook_tracks_the_frame() -> bool:
+	## F1 — the shipped hook reads a frame height and yields UIS.T2 for it: the
+	## reference height gives BODY_PX, 844 gives BODY_PX * 844 / 640. A clamped or
+	## hardcoded size fails the second check, and the leftover comparison proves
+	## that check can fail in this run rather than pass by construction.
+	var reference := Presentation.body_text_screen_px_for_frame_height(
+		UiChrome.REFERENCE_FRAME_HEIGHT_PX
+	)
+	var phone := Presentation.body_text_screen_px_for_frame_height(
+		PlaytestSeams.VIEWPORT_PHONE_HEIGHT
+	)
+	var expected := (
+		float(UiChrome.BODY_PX)
+		* float(PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
+		/ UiChrome.REFERENCE_FRAME_HEIGHT_PX
+	)
+	var clamped_would_differ := not is_equal_approx(phone, reference)
+	return (
+		int(reference) == UiChrome.BODY_PX
+		and int(round(phone)) == int(round(expected))
+		and clamped_would_differ
+	)
+
+
+func _phone_ratio() -> bool:
+	## F1 — the panels reflow through the shipped hook from the frame they render
+	## in. Desktop only: a phone-sized desktop window truncates below the panels'
+	## minimum size, which no shipped desktop build shows; the phone-width
+	## judgement itself is `PTU-mode-pick` S6 on the Web build.
+	if DisplayServer.get_name() == "headless":
+		return true
+	var presented := Presentation.new()
+	root.add_child(presented)
+	presented.size = Vector2(390.0, 844.0)
+	presented.show_screen(Presentation.MODE_PICK, {"ui_state": "S1"})
+	var mode_pick := presented.get_node("ScreenHost/ModePick") as ModePickPanel
+	var puzzle := mode_pick.find_child("PuzzleStream", true, false) as Control
+	var frame := UiChrome.frame_height_of(mode_pick)
+	var expected := UiChrome.text_scale_for_frame_height(frame)
+	var applied := mode_pick._text_scale
+	var ok := applied > 1.0 and is_equal_approx(applied, expected) and puzzle != null
+	if ok:
+		var puzzle_px := puzzle.get_theme_font_size("font_size")
+		ok = puzzle_px >= UiChrome.scaled_px(UiChrome.BODY_PX, applied)
+	presented.queue_free()
+	return ok
 
 
 func _remember_viewport(report: Dictionary, reports: Array) -> void:
@@ -191,6 +364,10 @@ func _check_debug(seams: PlaytestSeams, stage: Dictionary) -> bool:
 	var overlay_text := overlay.text
 	var overlay_on := overlay.visible
 	var panel := "PlaytestDebug/DebugPanel/"
+	seams.emit_tel("play_move", "pass", "EX.loading")
+	seams.emit_tel("play_move", "pass", "SIT.2")
+	var assert_button := seams.get_node(panel + "AssertTelemetry") as Button
+	assert_button.pressed.emit()
 	var jump_id := seams.get_node(panel + "JumpId") as LineEdit
 	jump_id.text = "loading"
 	var jump_button := seams.get_node(panel + "Jump") as Button
@@ -227,6 +404,43 @@ func _check_debug(seams: PlaytestSeams, stage: Dictionary) -> bool:
 
 func _log_size(seams: PlaytestSeams) -> int:
 	return (seams.dump_state()["input_log"] as Array).size()
+
+
+func _check_telemetry(seams: PlaytestSeams) -> bool:
+	var wanted := [
+		{"event": "jump", "outcome": "pass", "story_id": "mode-pick"},
+		{"event": "note", "outcome": "pass", "story_id": ""},
+		{"event": "smoke_inspect", "outcome": "pass", "story_id": "EX.loading"},
+		{"event": "jump", "outcome": "fail", "story_id": ""},
+	]
+	var pass_verdict := seams.assert_telemetry(wanted)
+	var matched: Array = pass_verdict["matched"]
+	var fail_verdict := (
+		seams
+		. assert_telemetry(
+			[
+				{"event": "jump", "outcome": "pass", "story_id": "mode-pick"},
+				{"event": "play_move", "outcome": "pass", "story_id": "UI-shared-play.US1"},
+			]
+		)
+	)
+	var missing: Array = fail_verdict["missing"]
+	var problem := ""
+	if pass_verdict["verdict"] != "pass" or matched.size() != 4:
+		problem = "S12 pass verdict"
+	elif pass_verdict["session_id"] != seams.session_id or int(pass_verdict["event_count"]) < 4:
+		problem = "S12 log window"
+	elif fail_verdict["verdict"] != "fail" or missing.size() != 1:
+		problem = "S12 fail verdict"
+	elif str(missing[0]["story_id"]) != "UI-shared-play.US1":
+		problem = "S12 missing story"
+	elif not (fail_verdict["matched"] as Array).has(matched[0]):
+		problem = "S12 matched events"
+	elif seams.assert_telemetry([])["verdict"] != "pass":
+		problem = "S12 empty expectation"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
 
 
 func _provider(stage: Dictionary) -> Dictionary:

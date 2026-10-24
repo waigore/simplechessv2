@@ -76,7 +76,6 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/aesthetics/ids.md` | [aesthetics/ids.md](aesthetics/ids.md) |
 | `specs/aesthetics/traceability.md` | [aesthetics/traceability.md](aesthetics/traceability.md) |
 | `specs/aesthetics/palette.md` | [aesthetics/palette.md](aesthetics/palette.md) |
-| `specs/aesthetics/palette/` | [aesthetics/palette.md](aesthetics/palette.md) |
 | `specs/aesthetics/form.md` | [aesthetics/form.md](aesthetics/form.md) |
 | `specs/aesthetics/surface.md` | [aesthetics/surface.md](aesthetics/surface.md) |
 | `specs/aesthetics/motion.md` | [aesthetics/motion.md](aesthetics/motion.md) |
@@ -91,6 +90,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/ux/stories.md` | [ux/stories.md](ux/stories.md) |
 | `specs/ux/stories/` | [ux/story.md](ux/story.md) |
 | `specs/ux/story-coverage.md` | [ux/story-coverage.md](ux/story-coverage.md) |
+| `specs/ux/story-coverage/` | [ux/story-coverage.md](ux/story-coverage.md) |
 | `specs/ux/navigation.md` | [ux/navigation.md](ux/navigation.md) |
 | `specs/ux/exceptions.md` | [ux/exceptions.md](ux/exceptions.md) |
 | `specs/ux/controls.md` | [ux/controls.md](ux/controls.md) |
@@ -106,7 +106,9 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/playtest/glossary.md` | [playtest/glossary.md](playtest/glossary.md) |
 | `specs/playtest/ids.md` | [playtest/ids.md](playtest/ids.md) |
 | `specs/playtest/traceability.md` | [playtest/traceability.md](playtest/traceability.md) |
+| `specs/playtest/traceability/` | [playtest/traceability.md](playtest/traceability.md) |
 | `specs/playtest/coverage.md` | [playtest/coverage.md](playtest/coverage.md) |
+| `specs/playtest/story-rows.md` | [playtest/story-rows.md](playtest/story-rows.md) |
 | `specs/playtest/tools.md` | [playtest/tools.md](playtest/tools.md) |
 | `specs/playtest/tools-situational.md` | [playtest/tools.md](playtest/tools.md) |
 | `specs/playtest/procedures.md` | [playtest/procedures.md](playtest/procedures.md) |
@@ -115,6 +117,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/playtest/evidence-manifest.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/playtest/design/` | [playtest/protocol.md](playtest/protocol.md) |
 | `specs/playtest/ux/` | [playtest/protocol.md](playtest/protocol.md) |
+| `specs/playtest/filmed-seating.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/assets/assets.md` | [assets/assets.md](assets/assets.md) |
 | `specs/assets/glossary.md` | [assets/glossary.md](assets/glossary.md) |
 | `specs/assets/ids.md` | [assets/ids.md](assets/ids.md) |

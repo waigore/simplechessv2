@@ -21,14 +21,16 @@ Keep the live plan aligned with `specs/`. Anything the specs require is either a
 ## Principles
 
 - **Specs are the target.** Every layer under `specs/` counts. [`docs/requirements/`](../../../docs/requirements/README.md) notes are not authority.
-- **Three buckets.** For each obligation you examine: **catered for** (accepted or closed issue coverage, or the tree already demonstrates it in code, demos, or playtests), **planned** (an open issue owns it and, by judgement against [the issue workflow](../../../docs/issues/workflow.md), can proceed without the human owner), or **neither**. Drive neither toward planned.
+- **Three buckets.** For each obligation you examine: **catered for** (accepted issue coverage, closed work that delivered, a `status:superseded` issue whose named successor is on the default branch or in the plan, or the tree already demonstrates it in code, demos, or playtests), **planned** (an open issue owns it and, by judgement against [the issue workflow](../../../docs/issues/workflow.md), can proceed without the human owner), or **neither**. Drive neither toward planned. A `status:superseded` issue is never planned work.
 - **Read hard, write nowhere in the tree.** Inspect code, demos, playtests, and specs as far as the gap requires. Surface what you find as issues.
 - **Judgement over procedure.** You are expected to see cross-cutting dependencies and incomplete coverage. Choose scope, ordering, splits, merges, blockers, and which delegate to call. Do not wait for confirmation.
+- **Priority then judgement.** When choosing which gaps to file, expand, or restructure first, prefer higher issue priority (`priority:critical` → `priority:high` → `priority:normal` / unlabeled), then judgement within a tier — same rule as [workflow-dispatch.md](../../../docs/issues/workflow-dispatch.md). New issues from `create-project-*` stay unlabeled for priority unless a human already asked for high or critical. Do not set or change `priority:*` after create.
 - **One pass shape.** Each run is either **breadth** (many epics, only a few issues deep) or **depth** (one epic and its full issue tree). Say which you chose.
 
 ## Hard constraints
 
 - Do not edit the repository: no commits, branches, pull requests, or changes to specs, code, assets, or demos.
+- Keep your scratch outside the repository: drafts, drift and audit reports, proposed issue bodies, and any staging file go in the operator temp directory or the agent runtime's workspace — never in the working tree, ignored or not ([`references/scratch.md`](references/scratch.md)).
 - Mutations stay in the issue domain: issues, labels, milestones, sub-issues, blocked-by, and epic/task structure. Filing an issue that *requests* repo work is in bounds.
 - Do not invent product decisions. Where a spec is missing or still undecided, file work that asks for that decision.
 - At the start of every pass, invoke [`unblock-project-issues`](../unblock-project-issues/SKILL.md) for all open typed issues unless the user named a narrower set. Do not restate it.

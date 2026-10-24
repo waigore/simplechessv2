@@ -2,16 +2,16 @@
 
 Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents/specs/rules/technical/asset-access.md).
 
-- **Serves**: Load time; Instant play; Reliability; [`ACC`](../assets/access.md) G1 G2 G3
-- **Informed by**: [`specs/assets/access.md`](../assets/access.md); [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md); [ADR-0001](../adr/decisions/0001-godot-engine.md)
-- **ADRs**: [ADR-0005](../adr/decisions/0005-asset-catalog-roots.md), [ADR-0001](../adr/decisions/0001-godot-engine.md)
+- **Serves**: Load time; Instant play; Reliability; [`ACC.G1`–`G3`](../assets/access.md)
+- **Informed by**: [`specs/assets/access.md`](../assets/access.md); ADR-0005; ADR-0001
+- **ADRs**: ADR-0005, ADR-0001, [ADR-0014](../adr/decisions/0014-web-asset-root-route.md)
 
 ## Resolution
 
 | ID | Aspect | Realizes | Rule |
 |----|--------|----------|------|
 | R1 | Asset manifest | `ACC.A2` | Generated JSON from `asset_catalog/`; path `game/asset_manifest.json` (outside `asset_catalog/` and `game_assets/`); never hand-edited; regenerated when catalog entries change. |
-| R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by asset ID. Opus audio loads the Vorbis copy in O3. |
+| R2 | Resolver | `ACC.A1` | [`CMP-asset-resolver`](components/asset-resolver.md) reads the manifest by ID. A preload group leaving an approved ID unresolved settles as a surfaced failure on E4 ([`CTR-asset-resolve`](contracts/asset-resolve.md)), never an indefinite wait. On Web the read path is `res://<asset_root>/…` and the Vorbis copy `res://audio_runtime/<asset ID>.ogg`, both beside `index.html`; elsewhere repo root (ADR-0014). Opus audio loads the Vorbis copy in O3. |
 | R3 | Unresolved asset ID | `ACC.A3` | Dev/playtest: log the unresolved ID and show the playtest debug overlay when that build has one. Release: skip draw, keep session, log once. |
 
 ## Engine resources
@@ -32,9 +32,9 @@ Authoring rules: [`.agents/specs/rules/technical/asset-access.md`](../../.agents
 
 | ID | Realizes | Mechanism | Owner | Sequence |
 |----|----------|-----------|-------|----------|
-| G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: cold open → Boot IDs → ready when every ID resolves. Unload: never in a sitting (`ACC.G1`). |
-| G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: first play entry → Play IDs → ready when every ID resolves. Unload: never in a sitting (`ACC.G2`). |
-| G3 | `ACC.G3` | Load Ambient group when mode pick becomes ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: mode pick ready → Ambient IDs ([`SND.M1`](../aesthetics/sound.md)) → ready when every ID resolves. Unload: never in a sitting (`ACC.G3`). |
+| G1 | `ACC.G1` | Preload Boot group before mode pick ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: cold open → Boot IDs → ready when every ID resolves; an unresolved ID fails the group ([`CTR-asset-resolve`](contracts/asset-resolve.md) E4), never leaving it pending. Unload: never in a sitting (`ACC.G1`). |
+| G2 | `ACC.G2` | Preload Play group on first play screen | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: first play entry → Play IDs → ready when every ID resolves; an unresolved ID fails the group, never leaving it pending. Unload: never in a sitting (`ACC.G2`). |
+| G3 | `ACC.G3` | Load Ambient group when mode pick becomes ready | [`CMP-asset-resolver`](components/asset-resolver.md) | Load: mode pick ready → Ambient IDs ([`SND.M1`](../aesthetics/sound.md)) → ready when every ID resolves; an unresolved ID fails the group, never leaving it pending. Unload: never in a sitting (`ACC.G3`). |
 
 ## Diagram
 

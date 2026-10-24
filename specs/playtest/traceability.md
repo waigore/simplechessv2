@@ -4,16 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/traceability.md`](../../.agents/
 
 ## Alignment
 
-| Upstream item | Source | Served by |
-|---------------|--------|-----------|
-| Instant play | vision | [`design/move-advice.md`](design/move-advice.md), [`tools.md`](tools.md) |
-| Cafe calm | vision | UX journey protocols; [`procedures.md`](procedures.md) |
-| Clear board | vision | UX graphical evidence; out of Design protocol scope for visuals |
-| Shared two-player + puzzle stream scope | definition | [`design/shared-game.md`](design/shared-game.md), [`design/puzzle-stream.md`](design/puzzle-stream.md), UX session protocols |
-| Optional Stockfish advice | definition | [`design/move-advice.md`](design/move-advice.md) |
-| Observability quality | definition/quality | [`tools.md`](tools.md), [`evidence.md`](evidence.md) |
-| Design stories (full) | design | All [`design/`](design/) protocols; playtest set selection [`coverage.md`](coverage.md) |
-| UX journeys and screens (full) | ux | All [`ux/`](ux/) protocols; playtest set selection [`coverage.md`](coverage.md) |
+The alignment table is in [`traceability/alignment.md`](traceability/alignment.md). The story-to-protocol map is [`traceability/story-protocol.md`](traceability/story-protocol.md).
 
 ## Topic coverage
 

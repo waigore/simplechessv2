@@ -133,6 +133,15 @@ func _make_option(node_name: String, control_id: String, parent: Control) -> But
 	return button
 
 
+## SIT.6 / S13 — the frame reflowed: take the new ratio and restyle in place.
+func set_text_scale(text_scale_value: float) -> void:
+	if is_equal_approx(text_scale_value, _text_scale):
+		return
+	_text_scale = text_scale_value
+	if is_inside_tree():
+		_style_all()
+
+
 func _style_all() -> void:
 	UiChrome.style_button(_seat, false, false, _text_scale)
 	UiChrome.style_button(_clock, false, false, _text_scale)

@@ -6,7 +6,7 @@ In-repo evidence from AI-agent playtesting. Schema and requirements: [`specs/pla
 
 `issue-<n>/headless-<run-id>/` and `issue-<n>/graphical-<run-id>/` with at least:
 
-- `manifest.md` — issue, environment, build/session id, coverage mode, results table, defect numbers, paths
+- `manifest.md` — issue, environment, build/session id with the source it was read from (published URL or release export), coverage mode, results table, defect numbers, paths, and a timing report (device, browser, repeat count) when a protocol cites `SIT.4`
 - `notes.md`
 - `screenshots/` — after a graphical run of the same build; a headless-only folder may omit it when `manifest.md` marks screenshots as waiting
 - `logs/`
@@ -22,3 +22,7 @@ A failing protocol, quality row, or ADR validation row is not fixed inside the g
 Only when acceptance deliverables change playable behavior. Spec-only and docs-only issues do not need a folder here.
 
 Design protocols → Headless only. UX protocols → Headless and Graphical.
+
+## Filmed seating
+
+A recording is one more artifact a run's `manifest.md` cites — never a substitute for it. Definition, segments, shot list, and review verdict: [`specs/playtest/filmed-seating.md`](../../../specs/playtest/filmed-seating.md).

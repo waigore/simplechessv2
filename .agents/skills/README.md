@@ -23,7 +23,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`project-planner-agent`](project-planner-agent/SKILL.md) | Gap-drive specs vs demonstrated or planned work; mutate GitHub issues only (breadth or depth) |
 | [`unblock-project-issues`](unblock-project-issues/SKILL.md) | Remove blocked-by when the default branch satisfies the blocker or the edge is obsolete (acceptance is not a gate) |
 | [`create-project-defect`](create-project-defect/SKILL.md) | Create a Defect issue (`type:defect`) with related/blocked-by wiring |
-| [`enforce-task-workflow-status`](enforce-task-workflow-status/SKILL.md) | Gate or audit `status:*` labels for typed issues |
+| [`enforce-task-workflow-status`](enforce-task-workflow-status/SKILL.md) | Gate or audit `status:*` labels; hygiene for duplicate `priority:*` |
 | [`review-project-issue`](review-project-issue/SKILL.md) | Review pass / fail / clarify → next status |
 | [`refine-project-issue`](refine-project-issue/SKILL.md) | Refine issue body → pending-review |
 | [`clarify-project-issue`](clarify-project-issue/SKILL.md) | Record PO clarification → review or refinement |
@@ -36,7 +36,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`issue-workflow-implement-agent`](issue-workflow-implement-agent/SKILL.md) | Background dispatch → implement work + `implement-project-issue` |
 | [`issue-workflow-verify-agent`](issue-workflow-verify-agent/SKILL.md) | Background dispatch → `verify-project-issue` |
 | [`issue-workflow-accept-agent`](issue-workflow-accept-agent/SKILL.md) | Background dispatch → `accept-project-issue` |
-| [`babysit-pr-agent`](babysit-pr-agent/SKILL.md) | One same-repo PR: resolve conflicts, update if behind, fix in-scope CI so auto-merge can squash |
+| [`babysit-pr-agent`](babysit-pr-agent/SKILL.md) | Soft Actions check queue (~3 active), then one same-repo PR: conflicts, behind, in-scope CI for auto-merge |
 | [`author-spec`](author-spec/SKILL.md) | Write or edit a spec from `.agents/specs/rules/`; do not copy the rules into the spec |
 | [`capture-requirements`](capture-requirements/SKILL.md) | Interview for specs, high-level stage first; detail saved as notes; confirm, `author-spec`, open a spec PR |
 | [`review-spec`](review-spec/SKILL.md) | Review a spec doc or the whole set; whole-spec also runs applicability, terminology, and TBD audits; report verdict |
@@ -49,7 +49,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`audit-spec-tbd`](audit-spec-tbd/SKILL.md) | Find TBDs (undecided aspects), propose grounded answers, confirm with the user, then author-spec |
 | [`create-gameplay-demo`](create-gameplay-demo/SKILL.md) | Scope a demo aggressively, clarify blockers into specs, build it under `demos/` as a spec-traced reference artifact that expresses the aesthetics and uses only cataloged pipeline assets |
 | [`manage-asset`](manage-asset/SKILL.md) | Generate, import, update, or deprecate assets per `specs/assets/` procedures; catalog, review, PR |
-| [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs CLI / soft SFX → registry); PR |
+| [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs CLI / soft SFX or soft third-party-visual → registry); PR |
 | [`register-asset`](register-asset/SKILL.md) | Catalog a person-supplied (human-made or third-party) asset; person-granted review exemption or review-asset; PR |
 | [`review-asset`](review-asset/SKILL.md) | Review produced assets vs kind spec and `specs/aesthetics/`; Pass/Fail by element ID, read-only |
 | [`promote-gameplay-demo`](promote-gameplay-demo/SKILL.md) | Reimplement demo behavior in main code: drift check, assumptions into specs, technical design, asset approval, code review |

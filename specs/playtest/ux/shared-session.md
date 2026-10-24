@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 - **Level**: UX
 - **Spec key**: `PTU-shared-session`
-- **Environment**: Headless and Graphical
+- **Environment**: `ENV.1` Headless and `ENV.2` Graphical
 - **Cites**: `J-shared-session` (N1–N2, S1–S4, B1–B2)
 - **Situational tools**: None
 
@@ -33,4 +33,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. Graphical: screenshot each judged screen. Headless: no screenshots.
+Default evidence rules ([`evidence.md`](../evidence.md)). Graphical: screenshot each judged screen.

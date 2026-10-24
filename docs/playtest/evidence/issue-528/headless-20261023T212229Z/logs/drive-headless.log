@@ -1,0 +1,264 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ACCEPT env=headless
+ACCEPT engine=4.7.2-stable (official)
+ACCEPT seams_bound=true persist_bound=true
+ACCEPT --- case: missing key (T9/T10 unset)
+{"TEL.1":"puzzle.enter","TEL.2":1792790570002,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _enter_puzzle_play (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:661)
+         [7] _case_missing_key (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:155)
+         [8] _run (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:136)
+         [9] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+ACCEPT missing_key stage=puzzle-play state=S1 puzzle_id=none elo=1000.0 failure=status
+ACCEPT PASS puzzle-play opened
+ACCEPT PASS missing key deals nothing (puzzleId none)
+ACCEPT PASS missing key leaves playerElo 1000.0
+ACCEPT PASS missing key is a status failure
+ACCEPT missing_key leave_confirm_raised=
+{"TEL.1":"puzzle.leave","TEL.2":1792790570008,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT drop missing key stage=mode-pick
+ACCEPT PASS missing key returns to mode-pick
+ACCEPT --- case: unresponsive catalog peer
+{"TEL.1":"puzzle.enter","TEL.2":1792790570010,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+ACCEPT unresponsive due=true in_flight=true tick_ms=0.0 gesture_ms=0.0 cap_ms=3000 puzzle_id=none elo=1000.0
+ACCEPT PASS the entry read is in flight against an unresponsive peer
+ACCEPT PASS a tick over an in-flight read returns at once (0.00 ms)
+ACCEPT PASS a move over an in-flight read returns at once (0.00 ms)
+ACCEPT PASS an unresponsive peer deals nothing
+ACCEPT PASS an unresponsive peer leaves playerElo
+{"TEL.1":"puzzle.leave","TEL.2":1792790570012,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT unresponsive_leave ms=1.22 stage=mode-pick flow=false
+ACCEPT PASS leaving does not join the worker (1.22 ms)
+ACCEPT PASS leave returns to mode-pick
+ACCEPT PASS the retired read deals nothing after leave
+ACCEPT PASS leave applies no Elo penalty (K4)
+ACCEPT --- case: failed-read shapes
+{"TEL.1":"puzzle.enter","TEL.2":1792790570032,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _case_failed_read_shapes (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:255)
+         [5] _run (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:138)
+         [6] _case_unresponsive_peer (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:234)
+         [7] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792790570035,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"F-puzzle-catalog.X2","TEL.5":"status"}
+ACCEPT failed_read reason=status started=true sent=1 puzzle_id=none elo=1000.0 failure=status tel=true
+ACCEPT PASS status: one read starts
+ACCEPT PASS status: one O1 reached the peer (got 1)
+ACCEPT PASS status: deals nothing
+ACCEPT PASS status: leaves playerElo
+ACCEPT PASS status: the caller reads the O2 reason
+ACCEPT PASS status: puzzle.deal_failed telemetry
+{"TEL.1":"puzzle.leave","TEL.2":1792790570036,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT drop failed read status stage=mode-pick
+ACCEPT PASS failed read status returns to mode-pick
+{"TEL.1":"puzzle.enter","TEL.2":1792790570047,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (timeout)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _case_failed_read_shapes (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:255)
+         [5] _drop_flow (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:686)
+         [6] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792790570050,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"F-puzzle-catalog.X2","TEL.5":"timeout"}
+ACCEPT failed_read reason=timeout started=true sent=1 puzzle_id=none elo=1000.0 failure=timeout tel=true
+ACCEPT PASS timeout: one read starts
+ACCEPT PASS timeout: one O1 reached the peer (got 1)
+ACCEPT PASS timeout: deals nothing
+ACCEPT PASS timeout: leaves playerElo
+ACCEPT PASS timeout: the caller reads the O2 reason
+ACCEPT PASS timeout: puzzle.deal_failed telemetry
+{"TEL.1":"puzzle.leave","TEL.2":1792790570050,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT drop failed read timeout stage=mode-pick
+ACCEPT PASS failed read timeout returns to mode-pick
+{"TEL.1":"puzzle.enter","TEL.2":1792790570061,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _case_failed_read_shapes (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:255)
+         [5] _drop_flow (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:686)
+         [6] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792790570064,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+ACCEPT failed_read reason=error started=true sent=1 puzzle_id=none elo=1000.0 failure=error tel=true
+ACCEPT PASS error: one read starts
+ACCEPT PASS error: one O1 reached the peer (got 1)
+ACCEPT PASS error: deals nothing
+ACCEPT PASS error: leaves playerElo
+ACCEPT PASS error: the caller reads the O2 reason
+ACCEPT PASS error: puzzle.deal_failed telemetry
+{"TEL.1":"puzzle.leave","TEL.2":1792790570064,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT drop failed read error stage=mode-pick
+ACCEPT PASS failed read error returns to mode-pick
+{"TEL.1":"puzzle.enter","TEL.2":1792790570075,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _case_failed_read_shapes (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:255)
+         [5] _drop_flow (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:686)
+         [6] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792790570078,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+ACCEPT failed_read reason=malformed started=true sent=1 puzzle_id=none elo=1000.0 failure=malformed tel=true
+ACCEPT PASS malformed: one read starts
+ACCEPT PASS malformed: one O1 reached the peer (got 1)
+ACCEPT PASS malformed: deals nothing
+ACCEPT PASS malformed: leaves playerElo
+ACCEPT PASS malformed: the caller reads the O2 reason
+ACCEPT PASS malformed: puzzle.deal_failed telemetry
+{"TEL.1":"puzzle.leave","TEL.2":1792790570078,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT drop failed read malformed stage=mode-pick
+ACCEPT PASS failed read malformed returns to mode-pick
+{"TEL.1":"puzzle.enter","TEL.2":1792790570088,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (bulk)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _case_failed_read_shapes (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:255)
+         [5] _drop_flow (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:686)
+         [6] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792790570092,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"F-puzzle-catalog.X2","TEL.5":"bulk"}
+ACCEPT failed_read reason=bulk started=true sent=1 puzzle_id=none elo=1000.0 failure=bulk tel=true
+ACCEPT PASS bulk: one read starts
+ACCEPT PASS bulk: one O1 reached the peer (got 1)
+ACCEPT PASS bulk: deals nothing
+ACCEPT PASS bulk: leaves playerElo
+ACCEPT PASS bulk: the caller reads the O2 reason
+ACCEPT PASS bulk: puzzle.deal_failed telemetry
+{"TEL.1":"puzzle.leave","TEL.2":1792790570092,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT drop failed read bulk stage=mode-pick
+ACCEPT PASS failed read bulk returns to mode-pick
+ACCEPT --- case: one-record read deals exactly that record
+{"TEL.1":"puzzle.enter","TEL.2":1792790570102,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+ACCEPT PASS the O1 body validates as one F1-F13 record
+{"TEL.1":"puzzle.dealt","TEL.2":1792790570106,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+ACCEPT deal started=true requests=1 puzzle_id=pz-1 puzzle_elo=1000 solving_side=black required=[{ "from": "e7", "to": "e5", "promotion": "" }, { "from": "g1", "to": "f3", "promotion": "" }, { "from": "b8", "to": "c6", "promotion": "" }] ui_state=S1
+ACCEPT PASS a configured client starts one read
+ACCEPT PASS exactly one O1 request reached the peer (got 1)
+ACCEPT request_payload={ "api_key": "sim-key", "player_elo": 1000.0, "recent_solved": [] }
+ACCEPT PASS O1 carries the configured key (G4)
+ACCEPT PASS O1 carries GS.playerElo (G6)
+ACCEPT PASS O1 sends at most ELO_RECENT_WINDOW recent ids (G6)
+ACCEPT PASS the dealt puzzle is the returned record
+ACCEPT PASS the dealt puzzle Elo is the record's rating
+ACCEPT PASS the dealt sequence is the record's own moves; nothing was widened
+ACCEPT PASS the sequence is the record's own move order
+ACCEPT PASS a deal leaves playerElo unchanged
+ACCEPT PASS the production deal opened a puzzle
+ACCEPT --- case: wrong move resets, deals nothing
+{"TEL.1":"puzzle.move","TEL.2":1792790570110,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792790570111,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+ACCEPT wrong_move placed=true puzzle_id=pz-1 sequence_index=0 outcome=none ui_state=S1
+ACCEPT PASS a legal non-required move is accepted as a Wrong move
+ACCEPT PASS a wrong move keeps the same puzzleId
+ACCEPT PASS a wrong move is not scored as a solve
+ACCEPT PASS a wrong move deals nothing (no new O1)
+ACCEPT PASS a wrong move carries cue_wrong telemetry
+{"TEL.1":"puzzle.move","TEL.2":1792790570114,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"progress"}
+{"TEL.1":"puzzle.move","TEL.2":1792790570121,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792790570121,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"cue_failed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792790570125,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+ACCEPT after_wrong_complete cue_failed=true elo=990.0 next=pz-1b
+ACCEPT PASS a wrong move can never end as a solve (L4)
+ACCEPT PASS a wrong-completed attempt scores a loss
+ACCEPT PASS a failed attempt deals exactly one next record
+ACCEPT --- case: solve advances the stream with one next deal
+{"TEL.1":"puzzle.move","TEL.2":1792790570141,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"progress"}
+ACCEPT solve_move ["e7", "e5"] ok=true sequence_index=2
+{"TEL.1":"puzzle.move","TEL.2":1792790570149,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792790570149,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+ACCEPT solve_move ["b8", "c6"] ok=true sequence_index=0
+{"TEL.1":"puzzle.dealt","TEL.2":1792790570152,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+ACCEPT after_solve cue_seen=true elo=1000.28774368332
+ACCEPT PASS the required sequence solves (END.W1)
+ACCEPT PASS a solve raises Player Elo (DIF.Y1 direction)
+ACCEPT next_deal puzzle_id=pz-2 new_requests=1
+ACCEPT PASS exactly one next deal opens the next record
+ACCEPT PASS the next deal is one O1 request (got 1)
+ACCEPT --- case: reveal fails and deals next
+{"TEL.1":"puzzle.confirm","TEL.2":1792790570171,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"reveal_confirm"}
+ACCEPT reveal_confirm=reveal_confirm
+{"TEL.1":"puzzle.end","TEL.2":1792790570174,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792790570174,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"cue_failed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792790570178,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+ACCEPT after_reveal cue_seen=true elo=990.56721209952 next=pz-3
+ACCEPT PASS reveal fails the attempt (END.L5)
+ACCEPT PASS a reveal does not raise Player Elo
+ACCEPT PASS a failed attempt deals the next record
+ACCEPT --- case: timed move and leave confirm/cancel
+{"TEL.1":"puzzle.enter","TEL.2":1792790570182,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792790570186,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+ACCEPT open_with pz-4 ok=true
+{"TEL.1":"puzzle.move","TEL.2":1792790570393,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"progress"}
+ACCEPT PASS timed move ["e7", "e5"] is a required step
+ACCEPT timed_move repeat=1 max_frame_ms=10.33 handler_ms=16.08
+{"TEL.1":"puzzle.move","TEL.2":1792790570814,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"progress"}
+ACCEPT PASS timed move ["b8", "c6"] is a required step
+ACCEPT timed_move repeat=2 max_frame_ms=10.32 handler_ms=18.5
+{"TEL.1":"puzzle.move","TEL.2":1792790571235,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"progress"}
+ACCEPT PASS timed move ["g8", "f6"] is a required step
+ACCEPT timed_move repeat=3 max_frame_ms=10.37 handler_ms=15.55
+ACCEPT timed_move frame_worst_ms=10.37 frame_mean_ms=10.34 handler_worst_ms=18.5 budget_ms=16.67 repeats=3
+ACCEPT PASS no catalog read is in flight while a puzzle is open
+{"TEL.1":"puzzle.enter","TEL.2":1792790571447,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792790571456,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+ACCEPT open_with pz-1 ok=true
+ACCEPT judged_move ms=0.69 ok=true o1_during_moves=0
+ACCEPT PASS a required move is judged
+ACCEPT PASS the judged move path stays inside one frame (0.69 ms)
+ACCEPT PASS no O1 request is made on the move path
+{"TEL.1":"puzzle.confirm","TEL.2":1792790571465,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.cancel","TEL.2":1792790571473,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"ok"}
+ACCEPT leave_cancel stage=puzzle-play puzzle_id=pz-1
+ACCEPT PASS leave cancel stays on puzzle-play
+ACCEPT PASS leave cancel keeps the open puzzle
+{"TEL.1":"puzzle.confirm","TEL.2":1792790571481,"TEL.3":"sess-1792790569922-48146-playtest","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792790571488,"TEL.3":"sess-1792790569922-48146-playtest","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+ACCEPT leave_confirm stage=mode-pick
+ACCEPT PASS leave confirm returns to mode-pick
+ACCEPT --- case: bulk and malformed bodies
+ERROR: Parse JSON failed. Error at line 0: Expected 'true', 'false', or 'null', got 'snapshot'
+   at: parse_string (core/io/json.cpp:629)
+   GDScript backtrace (most recent call first):
+       [0] read (res://catalog_wire_reader.gd:57)
+       [1] _case_reader_rejections (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:571)
+       [2] _run (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:144)
+       [3] _case_timed_move_and_leave (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:564)
+       [4] _frames (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-528/headless-20261023T212229Z/logs/drive.gd:721)
+ACCEPT rejections bulk=bulk file=bulk missing=malformed wrong_type=malformed snapshot=malformed mark=malformed one_move=malformed
+ACCEPT PASS a list body is a bulk read
+ACCEPT PASS a file body is a bulk read
+ACCEPT PASS a missing F field is a malformed read
+ACCEPT PASS a wrong-typed F field is a malformed read
+ACCEPT PASS a foreign snapshot_id is a malformed read (I1)
+ACCEPT PASS an unmarked mate is a malformed read (I3)
+ACCEPT PASS a one-move record is a malformed read (I2)
+ACCEPT debug_panel=ENV.1 has no display; capture scope noted in the twin
+ACCEPT DRIVE PASS
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

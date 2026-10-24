@@ -43,7 +43,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 ### Kind specs
 
 - [ ] Each has the header and sections [kinds.md](rules/assets/kinds.md) requires.
-- [ ] Each kind has Style series `SS1` with state, modality, enforce, anchors, style binding when hard-active (Recraft / ElevenLabs finetune or voice) or soft for SFX, aesthetics cites, and `prompt_policy` (compose, master, negative citing visual `PAL`/`FRM` or audio `SND` IDs).
+- [ ] Each kind has Style series `SS1` with state, modality, enforce, anchors, style binding when hard-active (Recraft / ElevenLabs finetune or voice) or soft for SFX or a third-party/human-made visual kind with no style id, aesthetics cites, and `prompt_policy` (compose, master, negative citing visual `PAL`/`FRM` or audio `SND` IDs).
 - [ ] Each AI recipe states bootstrap and series prompt templates (compose with `prompt_policy`), plus source type, tool role, inputs, settings, seed policy, post-processing, and outputs. Third-party: license terms. Human-made: tool role, prompts, settings, seed N/A.
 - [ ] Every specification row and budget has a check. Style, readability (visual, when seen in play) or duration/loudness/character (audio), and series-cited concerns are covered.
 

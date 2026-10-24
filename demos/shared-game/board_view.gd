@@ -12,6 +12,11 @@ const COLOR_SELECT := Color("B8940C")  # PAL.C6, PER.R3
 const COLOR_LEGAL := Color("6EA746")   # PAL.C11, PER.R4
 const COLOR_INK := Color("2C2A28")     # PAL.C9
 const COLOR_CREAM := Color("F7F1E8")   # PAL.C10
+## PER.R7 coordinate ink: PAL.C9 ink on the light PAL.C1 coordinate band, 9.95:1
+## (defect #427 item 3; the issue and PO direction ask for black/ink coordinates
+## on a light-brown margin, which the earlier dark band could not carry at
+## 4.5:1 and so had gone cream).
+const COORD_COLOR := Color("2C2A28")   # PAL.C9
 const COLOR_ROSE := Color("C28A86")    # PAL.C8: check rim, refusal flash
 ## Empty-legal diamond half-diagonal r; ink area 2 r^2 >= 1/4 square (PER.R4).
 const LEGAL_EMPTY_R := 0.36
@@ -36,29 +41,67 @@ const PIECE_EXTENT := 0.85
 ## a frame around the 8x8 so the board reads as one carved wooden object on the
 ## cafe table. It uses the board's own outer band, so it never covers a piece
 ## square (SPC.E1) and never adds chrome inside the play area.
-const RIM_OUTER := 0.10                # wooden lip around the 0..8 square bounds
+## The lip is 0.65 units deep so the 0.50-unit coordinate band and its 0.36-unit
+## UIS.T2 line box fit in it entirely outside the 8x8, and the outer 0.15 carries
+## the lit / shadowed wood that makes the board read as one carved object. (At
+## 0.10 the earlier 0.16 band overran the 8x8 and its labels landed inside the
+## a-file / rank-1 squares — defect #592 rework; the T2 rework of #427 sizes the
+## lip for the 23 px glyph line box, and measure_typography() still requires the
+## whole bevel to stay inside the frame.) The frame stays outside the lip.
+const RIM_OUTER := 0.65                # wooden lip around the 0..8 square bounds
 const BEVEL_FRAME := 0.10              # raised frame outside the lip
 const BEVEL_LIP_COLOR := Color("8B5A3C")     # PAL.C2 grain, lit from top-left
 const BEVEL_SHADOW_COLOR := Color("43281D")  # C5 deepened, shadowed lip
 const BEVEL_FRAME_COLOR := Color("5C3A2A")   # PAL.C5 table wood, the frame
 const BEVEL_LINE := Color("2E1B13")    # darker than the bevel fill (SRF.O1)
-## The coordinate bands (left for ranks, bottom for files) are PAL.C2 grain
-## darkened to give the coordinate ink its field (PER.R7; see _build_bevel).
-const BEVEL_LIP_INK_COLOR := Color("6E4430")
-const BEVEL_LIP_INK_BAND := 0.16       # depth of each coordinate band, units
+## The coordinate bands (left for ranks, bottom for files) are a PAL.C1 light
+## wood inlay in the lip, so the PAL.C9 ink reads 9.95:1 (PER.R7; see
+## _build_bevel). The earlier build darkened the band to #6E4430 and had to use
+## cream ink: PAL.C9 reached only 1.72:1 there.
+const BEVEL_LIP_INK_COLOR := Color("E8D5B5")  # PAL.C1 light wood inlay
+const BEVEL_LIP_INK_BAND := 0.50       # depth of each coordinate band, units
 ## PER.R7: file letters and rank numbers sit on the wooden lip, never inside a
-## square, at the UIS.T2 label size. Ink is cream PAL.C10 on the coordinate
-## band: ink PAL.C9 reaches only 1.72:1 there and PAL.C10 7.38:1, over R7's
-## 4.5:1 floor (defect #427 item 3).
-const COORD_FONT_SIZE := 40            # screen px, ~0.55 unit at the demo scale
-const COORD_UNIT_PX := 72.0            # PRJ.P1: screen px per board unit here
-const COORD_COLOR := Color("F7F1E8")   # PAL.C10
-const COORD_INSET := 0.045             # label center inside the wooden lip
+## square, at >= UIS.T2 and >= 4.5:1 for every glyph pixel. Ink is PAL.C9 on the
+## PAL.C1 light wood inlay: 9.95:1, over R7's 4.5:1 floor (defect #427 item 3;
+## the issue and PO direction ask for black/ink coordinates).
+##
+## The label must fit the field it is painted on: the glyph's whole ink box has
+## to stay inside the BEVEL_LIP_INK_BAND-wide band, or the part that hangs over
+## the light PAL.C1 table margin reads at 1.28:1 (defect #592). The labels are
+## centred in the band, not in the lip.
+##
+## UIS.T2 states its floor in screen px "at the 640 px reference frame height",
+## so the reference is a screen whose short axis is 640 px and whose frame is
+## the 10-unit short axis of PRJ.P1: one board unit is 64 screen px there, and
+## 16 screen px is a quarter of a unit. The coordinate canvas therefore runs at
+## COORD_UNIT_PX per unit (= 640 / 10) and the face is T2's 16 px, scaled up by
+## the screen with the board (PRJ.X1). It used to be "clamped" to 6.5 px to fit
+## the band, and the renderer drew 3-4 px smudges: legibility and the
+## rendered-ink probe both fail on the same cause (defect #427 rework, 3rd
+## verification). The band is half a unit because of the glyph line box: ascent
+## + descent at 16 px is 23 px (1.44 px above the em), and the band is given
+## 0.8 fit headroom, so 0.50 units of the board are the coordinate band and the
+## rest of the 0.65 lip is lit wood (PRJ.P1 keeps the whole bevel inside the
+## frame's 1-unit margin around the 8x8).
+const COORD_TYPE_PX := 16.0            # UIS.T2 at the 640 px reference frame
+## UIS.T2's floor, as the spec states it. Kept apart from COORD_TYPE_PX so the
+## type check fails when the face shrinks: comparing the face to itself let a
+## 6.5 px face pass its own check (defect #427 rework).
+const UIS_T2_PX := 16.0
+## The fewest rendered ink pixels one coordinate glyph of the UIS.T2 face
+## leaves with this probe; eight glyphs make a band's floor. Measured ~40 px per
+## glyph at the demo frame, ~3 px for the whole band at the 6.5 px face.
+const MIN_GLYPH_INK_PX := 20.0
+const COORD_BAND_SHARE := 0.8          # share of the band the glyph line box may ink
+const COORD_UNIT_PX := 64.0            # 640 reference px over the 10-unit frame
+const FRAME_SIZE := Vector2(720.0, 1280.0)  # demo frame (main.gd, project.godot)
 const COORD_CANVAS_UNITS := 10.0       # canvas spans the 10-unit frame
 ## The canvas is pinned to the 0..8 board bounds, so its origin is the board's
 ## own (0, 0) in board units (defect #427 item 3: the labels used to shift by
 ## this inset on top of an inset that was already part of their positions, which
-## put the files one rank below and the ranks one file left).
+## put the files one rank below and the ranks one file left). The bands are
+## placed in the same canvas coordinates, so they run negative in x (the left
+## band) and past 8 in y (the bottom band); see CoordLabels.spots().
 const COORD_CANVAS_POSITION := Vector2.ZERO
 const TRAVEL_S := 0.15                 # PHY.M1 / MOT.T1 budget
 const RETURN_S := 0.15                 # PHY.M5 bad-drop return
@@ -91,6 +134,7 @@ var _tallest_body_px := 0.0  # the King's opaque body height, px
 var _pieces: Dictionary = {}   # square index -> Node2D
 var _drag_square := -1
 var _motion_busy := false
+var _probe_hidden := {}
 
 
 func setup(piece_ids: Dictionary, font: Font, board_bg: Texture2D) -> void:
@@ -177,11 +221,11 @@ func _build_bevel() -> void:
 	_add_band("BevelLipRight", BEVEL_SHADOW_COLOR,
 		Vector2(8.0 - RIM_OUTER, RIM_OUTER), Vector2(8.0 + RIM_OUTER, 8.0 - RIM_OUTER))
 	# Coordinate bands (defect #427 item 3, PER.R7): the letters and numbers need
-	# a 4.5:1 field. On the lit PAL.C2 lip ink reaches only 2.5:1, so the left and
-	# bottom lips — where the ranks and files are — lie in PAL.C2 grain darkened
-	# to #6E4430, and the labels are drawn in cream PAL.C10: 7.4:1 on the band
-	# (ink PAL.C9 would be 1.7:1). The bands lie on the lip, outside the 8x8, so
-	# no piece square is covered.
+	# a 4.5:1 field. On the lit PAL.C2 lip PAL.C9 ink reaches only 2.5:1, so the
+	# left and bottom lips — where the ranks and files are — take a PAL.C1 light
+	# wood inlay, and the labels are drawn in PAL.C9 ink: 9.95:1 on the band (the
+	# earlier darkened band could only carry cream). The bands lie on the lip,
+	# outside the 8x8, so no piece square is covered.
 	_add_band("BevelLipLeftInk", BEVEL_LIP_INK_COLOR,
 		Vector2(-RIM_OUTER, -RIM_OUTER),
 		Vector2(-RIM_OUTER + BEVEL_LIP_INK_BAND, 8.0 + RIM_OUTER))
@@ -232,12 +276,320 @@ func _build_coords() -> void:
 	var coords := CoordLabels.new()
 	coords.name = "Coordinates"
 	coords.font = font_resource
+	coords.font_px = coord_font_px()
 	coords.size = Vector2.ONE * (COORD_CANVAS_UNITS * COORD_UNIT_PX)
 	coords.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# A Control added under a Node2D still lays out against the viewport, so its
+	# anchors are pinned to the top-left and every layout anchor is cleared;
+	# otherwise the stretch of the demo's 720 px viewport re-derived its rect and
+	# shifted the whole canvas off the board (defect #427 rework).
+	coords.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	coords.anchor_right = 0.0
+	coords.anchor_bottom = 0.0
+	coords.offset_left = 0.0
+	coords.offset_top = 0.0
+	coords.offset_right = coords.size.x
+	coords.offset_bottom = coords.size.y
 	coords.scale = Vector2.ONE / COORD_UNIT_PX
 	coords.position = COORD_CANVAS_POSITION
 	coords.z_index = 1  # above the bevel and the squares, below the pieces
 	add_child(coords)
+
+
+## UIS.T2 label size (PER.R7): a quarter of a board unit at the 640 px reference
+## frame, so the letters and numbers grow with the board on any screen
+## (PRJ.X1). The band is cut to the glyph's line box (ascent + descent, the ink
+## box the rasterizer uses) plus a small breathing margin, and must still fit the
+## lip outside the 8x8: the autodrive check measure_typography() enforces all
+## three, so a face or band edit that breaks PER.R7 fails the run instead of
+## shrinking the type.
+func coord_font_px() -> float:
+	return COORD_TYPE_PX
+
+
+## The ink height of the shipped face at `px`: ascent + descent, as the
+## rasterizer reports them. The line box the label is fitted into.
+func coord_text_height(px: float) -> float:
+	if font_resource == null:
+		return 0.0
+	return float(font_resource.get_ascent(px) + font_resource.get_descent(px))
+
+
+## PER.R7 type and frame check for the autodrive: the face delivers UIS.T2 at the
+## 640 px reference frame, its glyph line box fits the drawn band with margin,
+## the bands are drawn, and the whole bevel stays inside the frame (PRJ.P1).
+## Geometry in canvas px, the label's own unit.
+func measure_typography() -> Array:
+	var problems: Array = []
+	if font_resource == null:
+		return ["no font for the coordinate labels"]
+	var px := coord_font_px()
+	var ink_px := coord_text_height(px)
+	var unit_ref := FRAME_SIZE.x / COORD_CANVAS_UNITS  # reference-frame px per unit
+	var t2_px := COORD_TYPE_PX * unit_ref / COORD_UNIT_PX
+	var band_px := BEVEL_LIP_INK_BAND * COORD_UNIT_PX
+	print("[demo] coordinates: UIS.T2 face %.1f px (%.1f screen px at the 640 px reference frame), line box %.1f px in a %.1f px band; %s" % [
+		px, t2_px, ink_px, band_px,
+		"OK" if t2_px >= UIS_T2_PX and ink_px <= band_px * COORD_BAND_SHARE else "FAIL",
+	])
+	if t2_px < UIS_T2_PX:
+		problems.append("coordinate face %.1f screen px is under UIS.T2 (16 px at 640)" % t2_px)
+	if ink_px > band_px * COORD_BAND_SHARE:
+		problems.append("coordinate line box %.1f px does not fit the %.1f px band" % [
+			ink_px, band_px,
+		])
+	# PRJ.P1: the carved board (lip + frame) must stay inside the demo frame.
+	# Measured through the board's own on-frame transform, since the canvas'
+	# 64 px reference unit is not the demo's 72 px board unit.
+	var xf := get_global_transform()
+	var scale_px := absf(xf.get_scale().x)
+	var board_px := (8.0 + RIM_OUTER + BEVEL_FRAME) * scale_px
+	var board_left := xf.origin.x - RIM_OUTER * scale_px
+	var board_right := xf.origin.x + board_px
+	var board_bottom := xf.origin.y + board_px
+	var lip_px := RIM_OUTER * scale_px
+	print("[demo] board bevel %.0f px wide at (%.0f..%.0f) in the %.0f x %.0f frame; lip %.0f px, band %.0f px (PRJ.P1)" % [
+		board_px, board_left, board_right, FRAME_SIZE.x, FRAME_SIZE.y, lip_px,
+		BEVEL_LIP_INK_BAND * scale_px,
+	])
+	if board_left < 0.0 or board_right > FRAME_SIZE.x or board_bottom > FRAME_SIZE.y:
+		problems.append("board bevel (%.0f..%.0f, bottom %.0f) escapes the %.0f x %.0f frame" % [
+			board_left, board_right, board_bottom, FRAME_SIZE.x, FRAME_SIZE.y,
+		])
+	var drawn := _drawn_band_rects()
+	if drawn.size() != 2:
+		problems.append("coordinate bands not drawn: %d of 2 found" % drawn.size())
+	return problems
+
+
+## PER.R7 geometric check for the autodrive: every label's ink box (the whole
+## glyph, x and y) inside the wooden coordinate band it sits on, so none of its
+## ink can land on the 1.28:1 table margin or inside the 8x8. Canvas pixels;
+## the coordinates node scales them to board units unchanged.
+##
+## The band rectangles are read back from the drawn `BevelLipLeftInk` /
+## `BevelLipBottomInk` polygons, not from `CoordLabels.spots()`: the check that
+## compared label boxes against the same geometry that placed them passed while
+## the rank numerals were painted inside the a-file (defect #592 rework).
+func measure_coord_labels() -> Array:
+	var problems: Array = []
+	if font_resource == null:
+		return ["no font for the coordinate labels"]
+	var px := coord_font_px()
+	print("[demo] coordinates %.1f px glyph ink %.1f px in a %.1f px band (PER.R7)" % [
+		px, coord_text_height(px), BEVEL_LIP_INK_BAND * COORD_UNIT_PX,
+	])
+	var drawn := _drawn_band_rects()
+	if drawn.size() != 2:
+		problems.append("coordinate bands not drawn: %d of 2 found" % drawn.size())
+	for spot in CoordLabels.spots():
+		var text: String = spot["text"]
+		var rect := CoordLabels.text_rect(font_resource, text, spot["at"] as Vector2, px)
+		var band_name: String = spot["band"]
+		if not drawn.has(band_name):
+			problems.append("%s label has no drawn band %s" % [text, band_name])
+			continue
+		var band: Rect2 = drawn[band_name]
+		print("[demo]   %s box x %.1f..%.1f y %.1f..%.1f px; band %s x %.1f..%.1f y %.1f..%.1f" % [
+			text, rect.position.x, rect.end.x, rect.position.y, rect.end.y,
+			band_name, band.position.x, band.end.x, band.position.y, band.end.y,
+		])
+		if not band.encloses(rect):
+			problems.append("%s label %s leaves its coordinate band %s" % [text, rect, band])
+	return problems
+
+
+## The coordinate bands as drawn, in canvas pixels: the axis-aligned bounds of
+## the bevel polygons that carry them. Bands must also sit entirely outside the
+## 8x8 (PER.R7 "never inside squares").
+func _drawn_band_rects() -> Dictionary:
+	var out := {}
+	var square_lo := Vector2.ZERO
+	var square_hi := Vector2.ONE * (8.0 * COORD_UNIT_PX)
+	for band_name in ["BevelLipLeftInk", "BevelLipBottomInk"]:
+		var band := get_node_or_null(NodePath(band_name)) as Polygon2D
+		if band == null or band.polygon.is_empty():
+			continue
+		var lo := band.polygon[0]
+		var hi := band.polygon[0]
+		for point in band.polygon:
+			lo = Vector2(minf(lo.x, point.x), minf(lo.y, point.y))
+			hi = Vector2(maxf(hi.x, point.x), maxf(hi.y, point.y))
+		var rect := Rect2(lo * COORD_UNIT_PX, (hi - lo) * COORD_UNIT_PX)
+		out[band_name] = rect
+		if rect.intersects(Rect2(square_lo, square_hi - square_lo)):
+			push_warning("%s overlaps the 8x8: %s" % [band_name, rect])
+			out[band_name] = Rect2()  # force every label on it to fail
+	return out
+
+
+## Hides everything except the backdrop, bevel, squares, and coordinate labels so
+## the rendered-ink probe sees only coordinate glyph pixels.
+func set_coord_probe_visibility(on: bool) -> void:
+	if on:
+		_probe_hidden.clear()
+		for child_name in ["Pieces", "Fragments", "Overlays", "PromoChoice"]:
+			var node := get_node_or_null(NodePath(child_name)) as CanvasItem
+			if node != null:
+				_probe_hidden[child_name] = node.visible
+				node.visible = false
+	else:
+		for child_name in _probe_hidden:
+			var node := get_node_or_null(NodePath(child_name)) as CanvasItem
+			if node != null:
+				node.visible = bool(_probe_hidden[child_name])
+		_probe_hidden.clear()
+
+
+## Rendered-ink check for the graphical autodrive: the only allowed home for the
+## coordinate ink is the two wooden bands, and each band must carry a legible
+## amount of it (_min_band_ink). It fails on cream PAL.C10 found inside the 8x8
+## (PER.R7 forbids the ink on any square; on a light PAL.C1 square it reads
+## 1.28:1), on the table outside the board, or anywhere on the board that is not
+## a coordinate band, and on a band whose ink is a smudge rather than eight UIS.T2
+## glyphs. This measures what the renderer drew, unlike measure_coord_labels()
+## which checks geometry; set_coord_probe_visibility() hides the piece sprites
+## first, so every cream pixel here has the coordinates as its only source.
+func coord_ink_problems(image: Image) -> Array:
+	var problems: Array = []
+	var drawn := _drawn_band_rects()
+	if drawn.size() != 2:
+		return ["coordinate bands not drawn: %d of 2" % drawn.size()]
+	var to_px := Vector2(image.get_width(), image.get_height()) / Vector2(FRAME_SIZE)
+	var xf := get_global_transform()
+	var origin := xf.origin * to_px
+	var scale_px := xf.get_scale() * to_px
+	var square := _to_image_rect(_canvas_rect(Vector2.ZERO, Vector2.ONE * 8.0), origin, scale_px)
+	var board := _to_image_rect(
+		_canvas_rect(Vector2.ONE * -RIM_OUTER, Vector2.ONE * (8.0 + RIM_OUTER)), origin, scale_px)
+	var bands := {}
+	for band_name in drawn:
+		bands[band_name] = _to_image_rect(drawn[band_name], origin, scale_px)
+	var ink := {}
+	for band_name in bands:
+		ink[band_name] = 0
+	var inside_square := 0
+	var off_band := 0
+	var unit_px := scale_px.x  # frame px per board unit, this screenshot's scale
+	var min_ink := _min_band_ink(unit_px)
+	# The band's own rendered wood color, read from the frame: sRGB blending and
+	# the renderer's color management can shift the constant, and the ink test
+	# must be judged against what the glyphs were actually painted on.
+	var wood := _band_wood(image, bands)
+	# One pass over the board and its lip: every ink pixel is counted once, in
+	# the band it sits in or in the bucket of the forbidden field it lands in.
+	for y in range(maxi(int(board.position.y), 0), mini(int(board.end.y) + 1, image.get_height())):
+		for x in range(maxi(int(board.position.x), 0), mini(int(board.end.x) + 1, image.get_width())):
+			if not _is_coord_ink(image.get_pixel(x, y), wood):
+				continue
+			var pixel := Vector2(x, y)
+			var band_hit := ""
+			for band_name in bands:
+				if (bands[band_name] as Rect2).grow(0.5).has_point(pixel):
+					band_hit = band_name
+					break
+			if band_hit != "":
+				ink[band_hit] += 1
+			elif square.has_point(pixel):
+				inside_square += 1
+			else:
+				off_band += 1
+	print("[demo] rendered coordinate ink: left band %d px, bottom band %d px (floor %d), inside 8x8 %d px, off-band %d px" % [
+		int(ink.get("BevelLipLeftInk", 0)), int(ink.get("BevelLipBottomInk", 0)),
+		min_ink, inside_square, off_band,
+	])
+	for band_name in ink:
+		if int(ink[band_name]) < min_ink:
+			problems.append("%s carries %d px of coordinate ink, under the %d px floor of eight UIS.T2 glyphs" % [
+				band_name, int(ink[band_name]), min_ink,
+			])
+	if inside_square > 0:
+		problems.append("%d rendered coordinate-ink pixels inside the 8x8" % inside_square)
+	if off_band > 0:
+		problems.append("%d rendered coordinate-ink pixels off their coordinate bands" % off_band)
+	return problems
+
+
+## The ink floor for one band: eight glyphs (a-h, or 1-8) of the coordinate face,
+## each inking at least MIN_GLYPH_INK_PX. The 16 px glyphs ink ~40 px each of
+## their box on this renderer, and the 6.5 px face that failed verification drew
+## 3 px in the whole band, so this floor passes legible type and fails type that
+## has shrunk back under UIS.T2. `unit_px` is the screenshot's own px per board
+## unit, so the floor follows any resize.
+func _min_band_ink(unit_px: float) -> int:
+	var scale := unit_px / COORD_UNIT_PX
+	return maxi(1, int(8.0 * MIN_GLYPH_INK_PX * scale * scale))
+
+
+## One rectangle in board units as canvas pixels (the unit of the coordinate canvas).
+static func _canvas_rect(lo: Vector2, hi: Vector2) -> Rect2:
+	return Rect2(lo * COORD_UNIT_PX, (hi - lo) * COORD_UNIT_PX)
+
+
+## A coordinate-canvas rectangle in frame pixels: canvas px -> board units ->
+## the board's frame placement, rescaled to the screenshot's own size.
+func _to_image_rect(canvas_rect: Rect2, origin: Vector2, scale_px: Vector2) -> Rect2:
+	var lo := origin + canvas_rect.position / COORD_UNIT_PX * scale_px
+	var hi := origin + canvas_rect.end / COORD_UNIT_PX * scale_px
+	return Rect2(lo, hi - lo)
+
+
+## The rendered band wood: the most common color inside the two coordinate
+## band rectangles. `bands` are frame-pixel rects.
+func _band_wood(image: Image, bands: Dictionary) -> Color:
+	var counts := {}
+	for band_name in bands:
+		var rect: Rect2 = bands[band_name]
+		for y in range(maxi(int(rect.position.y), 0), mini(int(rect.end.y), image.get_height())):
+			for x in range(maxi(int(rect.position.x), 0), mini(int(rect.end.x), image.get_width())):
+				var key := image.get_pixel(x, y).to_rgba32()
+				counts[key] = int(counts.get(key, 0)) + 1
+	var best := BEVEL_LIP_INK_COLOR
+	var best_count := 0
+	for key in counts:
+		if int(counts[key]) > best_count:
+			best_count = int(counts[key])
+			best = Color(int(key))
+	return best
+
+
+## True when a rendered pixel is coordinate ink: the band's PAL.C9 ink or its
+## antialiased edge over the PAL.C1 band wood. Each channel must be at least 60%
+## of the way from the band wood to the ink, and the demo's flat painted fields
+## are excluded first (_is_flat_fill) — the ink is darker than the light band, so
+## the dark PAL.C2 square and the table wood would otherwise look like ink on the
+## light field. Compared in RGB only: the frame may be read back in RGBA8, and
+## reading alpha there would reject every pixel.
+func _is_coord_ink(color: Color, wood: Color) -> bool:
+	if _is_flat_fill(color):
+		return false
+	for axis in ["r", "g", "b"]:
+		var span: float = wood[axis] - COORD_COLOR[axis]
+		if absf(span) < 0.01:
+			continue
+		if (wood[axis] - color[axis]) / span < 0.6:
+			return false
+	return true
+
+
+## True for the demo's flat painted fields (squares, table, bevel wood and line,
+## overlay marks). Every one is drawn as a flat color, so a pixel this close to a
+## palette fill is that field and not glyph ink. The ink itself (PAL.C9) is
+## deliberately absent, and so is its band: both are what the probe is looking
+## for. (Fragment and promo fills use PAL.C9 internally, but those nodes are
+## hidden for the probe.)
+func _is_flat_fill(color: Color) -> bool:
+	for fill in [
+		COLOR_LIGHT, COLOR_DARK, COLOR_TABLE,
+		BEVEL_LIP_COLOR, BEVEL_SHADOW_COLOR, BEVEL_FRAME_COLOR, BEVEL_LINE,
+		BEVEL_LIP_INK_COLOR, COLOR_SELECT, COLOR_LEGAL, COLOR_ROSE,
+	]:
+		var flat: Color = fill
+		if absf(color.r - flat.r) < 0.02 \
+			and absf(color.g - flat.g) < 0.02 \
+			and absf(color.b - flat.b) < 0.02:
+			return true
+	return false
 
 
 ## PER.R7: files a-h and ranks 1-8 in cream PAL.C10 on the coordinate bands of
@@ -246,24 +598,57 @@ func _build_coords() -> void:
 ## canvas y runs ranks (0 at rank 8), matching the board's own axes.
 class CoordLabels extends Control:
 	var font: Font
+	var font_px := 0.0    # the PER.R7 clamped size, set when the labels are built
+
+	## The file and rank label spots: centred along their column/row and centred
+	## in the band they sit on. Canvas x runs files (0 at file a) and canvas y
+	## runs ranks (0 at rank 8), matching the board's own axes; the coordinate
+	## bands lie on the lip outside the 8x8, so their rectangles run negative in
+	## x (ranks) or past 8 in y (files).
+	static func spots() -> Array:
+		var left := DemoBoardView._canvas_rect(
+			Vector2(-RIM_OUTER, -RIM_OUTER),
+			Vector2(-RIM_OUTER + BEVEL_LIP_INK_BAND, 8.0 + RIM_OUTER))
+		var bottom := DemoBoardView._canvas_rect(
+			Vector2(-RIM_OUTER, 8.0 + RIM_OUTER - BEVEL_LIP_INK_BAND),
+			Vector2(8.0 + RIM_OUTER, 8.0 + RIM_OUTER))
+		var out: Array = []
+		for file in range(8):
+			out.append({
+				"text": String.chr(97 + file),
+				"at": Vector2((float(file) + 0.5) * COORD_UNIT_PX, bottom.get_center().y),
+				"band": "BevelLipBottomInk",
+			})
+		for rank_index in range(1, 9):
+			out.append({
+				"text": str(rank_index),
+				"at": Vector2(left.get_center().x,
+					(float(8 - rank_index) + 0.5) * COORD_UNIT_PX),
+				"band": "BevelLipLeftInk",
+			})
+		return out
+
+	## The ink box of one label of font size `px` centred on `at` (canvas px). draw_string takes
+	## the glyph's baseline, not its top, so the top is one ascent above it and
+	## the ink height is ascent + descent (defect #592: the old stamp took the
+	## baseline for the top and drew every label ~0.43 unit too high).
+	## The rectangle is returned in canvas pixels, the unit of `at`.
+	static func text_rect(f: Font, text: String, at: Vector2, px: float) -> Rect2:
+		var width := f.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, px).x
+		var ascent := float(f.get_ascent(px))
+		var descent := float(f.get_descent(px))
+		return Rect2(at - Vector2(width / 2.0, (ascent + descent) / 2.0),
+			Vector2(width, ascent + descent))
 
 	func _draw() -> void:
-		# Files sit on the bottom band, under the file column they name.
-		for file in range(8):
-			var at := Vector2((float(file) + 0.5) * COORD_UNIT_PX,
-				(8.0 + COORD_INSET) * COORD_UNIT_PX)
-			_stamp(String.chr(97 + file), at)
-		# Ranks sit on the left band, beside the row they name (rank 8 at top).
-		for rank_index in range(1, 9):
-			var at := Vector2(-COORD_INSET * COORD_UNIT_PX,
-				(float(8 - rank_index) + 0.5) * COORD_UNIT_PX)
-			_stamp(str(rank_index), at)
+		for spot in spots():
+			_stamp(str(spot["text"]), spot["at"] as Vector2)
 
 	func _stamp(text: String, at: Vector2) -> void:
-		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, COORD_FONT_SIZE).x
-		var rise := float(font.get_ascent(COORD_FONT_SIZE) - font.get_descent(COORD_FONT_SIZE))
-		draw_string(font, at - Vector2(width, rise) / 2.0, text,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, COORD_FONT_SIZE, COORD_COLOR)
+		var box := text_rect(font, text, at, font_px)  # `at` is already canvas px
+		var baseline := box.end.y - float(font.get_descent(font_px))
+		draw_string(font, Vector2(box.position.x, baseline), text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, font_px, COORD_COLOR)
 
 
 func _build_squares() -> void:
