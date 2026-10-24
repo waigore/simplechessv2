@@ -28,7 +28,7 @@ An asset a person supplies with `register-asset` for the PoC needs only the cata
 
 ## Pipeline findings
 
-The README lists problems met while producing or registering assets; each is filed as a spec change or defect. "None" is valid.
+The README lists problems met while producing or registering assets; each is a material spec/task fix or (if playable/interface) a defect — never a defect for pure spec hygiene. "None" is valid.
 
 ## Verification
 

@@ -204,7 +204,20 @@ func _check_ptd_s1_s3() -> String:
 	d2._accept_draw()
 	if str(d2.play_state()["game_ended"].get("reason", "")) != SharedGameSession.END_D2:
 		return "PTD-end-conditions S3 D2"
-	return ""
+	return _stalemate_end_signal(s3)
+
+
+## END.D1 rides the same every-ply end-signal step as L1: not in check, no legal
+## move, draw copy, both clocks stopped.
+func _stalemate_end_signal(session: SharedGameSession) -> String:
+	var problem := ""
+	if session._in_check_now():
+		problem = "END.D1 stalemate must not report check"
+	elif session.result_copy_key() != SharedGameSession.RESULT_DRAW:
+		problem = "END.D1 stalemate → result_draw"
+	elif not bool(session.play_state().get("clocks_stopped", false)):
+		problem = "END.D1 clocks must stop"
+	return problem
 
 
 func _check_refuse_after_end() -> String:

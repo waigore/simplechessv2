@@ -67,7 +67,7 @@ All keys below vary by locale (`en`, `zh-Hant`, `ja`), except `queen`, `rook`, `
 | bishop | Bishop | C6 |
 | knight | Knight | C6 |
 
-Copy owner `shared-play`; keys and `en` source per [localization.md](../localization.md) L1.
+Copy owner `shared-play`; keys and `en` source per [localization.md](../localization.md) L1. Strings resolve through the locale's string table ([`CTR-localization`](../../technical/contracts/localization.md)) (A1).
 
 ## Experience intent
 
