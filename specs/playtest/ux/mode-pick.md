@@ -39,4 +39,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. Graphical: screenshot mode-pick and the S6 phone-width viewport; `SIT.4` report carries device, browser, build id, and repeat count ([`evidence-manifest.md`](../evidence-manifest.md)); one sample per open is not evidence.
+Default evidence rules. Graphical: screenshot mode-pick and the S6 phone-width viewport; the S1 timing samples (device, browser, build id, repeat count) go in `notes.md`; one sample per open is not evidence.
