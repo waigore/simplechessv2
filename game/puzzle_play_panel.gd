@@ -177,12 +177,11 @@ func _build() -> void:
 	_chrome.add_child(r2)
 	_elo = Label.new()
 	_elo.name = "PlayerElo"
-	UiChrome.style_label(_elo, true)
 	r2.add_child(_elo)
 	_cue = Label.new()
 	_cue.name = "ResultCue"
-	UiChrome.style_label(_cue, true)
 	r2.add_child(_cue)
+	_style_r2_line_labels()
 
 	# Text line for states whose copy is not a control label (S4, S5).
 	_status = Label.new()
@@ -322,9 +321,22 @@ func _build_save_failure() -> void:
 	inner.add_child(_dismiss)
 
 
+## R2 is one line each (#794): the Elo reading and every result cue are single
+## phrases, so they must not word-wrap. `UiChrome.style_label` turns word-wrap on
+## for body copy, and a wrapped label in the centred `EloAndStatus` row is offered
+## no width and wraps per character (1 px wide, 405 px tall). Kept off
+## `style_label` because every other screen relies on that wrap.
+func _style_r2_line_labels() -> void:
+	for label in [_elo, _cue]:
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+
 func _style_all() -> void:
 	UiChrome.style_label(_elo, true, _text_scale)
 	UiChrome.style_label(_cue, true, _text_scale)
+	_style_r2_line_labels()
 	UiChrome.style_label(_status, false, _text_scale)
 	for button in [_reveal, _abandon, _leave, _confirm_ok, _confirm_cancel, _dismiss]:
 		UiChrome.style_button(button as Button, false, false, _text_scale)
