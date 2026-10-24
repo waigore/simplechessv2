@@ -1,0 +1,84 @@
+$ git log --oneline -3
+161b4a9 Record the #402 quality-row re-read on the shipped release build (#854)
+5582539 Record the #655 re-run on 1cb3a5e, with coverage measured at last (#850)
+ba233a1 Record the #767 acceptance run (headless + graphical) (#851)
+
+$ git rev-list --count 5d80029..HEAD   # commits between the impl12 run and this one
+3
+
+$ git log --oneline 5d80029..HEAD
+161b4a9 Record the #402 quality-row re-read on the shipped release build (#854)
+5582539 Record the #655 re-run on 1cb3a5e, with coverage measured at last (#850)
+ba233a1 Record the #767 acceptance run (headless + graphical) (#851)
+
+$ git diff --stat 5d80029..HEAD -- game/ specs/ .github/
+(empty = nothing on this surface moved)
+
+$ git diff --name-only 5d80029..HEAD
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/builds.md
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/confirmmove.mjs
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/drive.mjs
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/locator.mjs
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/GATE-locfix.json
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/GATE-rungate-board.json
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/GATE-rungate-dur.json
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/GATE-rungate-load.json
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/GATE-rungate-perf.json
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/fallback-board-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/fallback-ymap.json
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-board-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-durability-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-load1-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-load2-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-load3-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-perf1-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-perf2-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/logs/published-recovery-events.log
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/manifest.md
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/notes.md
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/pnglib.mjs
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/readings.md
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/rungate.mjs
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/board-01-tap-visible-e2-selects-e1.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/board-02-y640-selects-rank2.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/durability-01-reload-mode-pick.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/durability-02-forced-write-failure.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/perf-01-shared-play-before-move.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/perf-02-after-move.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/published-01-mode-pick-cold-open-focused-label-invisible.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/screenshots/reliability-01-reopen-after-renderer-crash.png
+docs/playtest/evidence/issue-402/graphical-20261025T031500Z/ymap.mjs
+docs/playtest/evidence/issue-655/review-20261025-par1/gap-deploy-owner.md
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/coverage.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/criterion1-grep.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/criterion2-3-grep.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/criterion5-c5-gate.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/import.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/owner-state.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/unit-tests.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/x655-probe-stdout.log
+docs/playtest/evidence/issue-655/review-20261025-par1/logs/x655-probe.log
+docs/playtest/evidence/issue-655/review-20261025-par1/manifest.md
+docs/playtest/evidence/issue-655/review-20261025-par1/notes.md
+docs/playtest/evidence/issue-655/review-20261025-par1/probe/x655_confirm_probe.gd
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/drive_graphical.gd
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/logs/drive.log
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/manifest.md
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/notes.md
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/run_graphical.sh
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/screenshots/01-ready-not-in-check.png
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/screenshots/02-white-gives-check.png
+docs/playtest/evidence/issue-767/graphical-20261025T221000Z/screenshots/03-check-answered.png
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/drive_headless.gd
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/asset-citation.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/coverage.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/drive.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/gdformat-check.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/gdlint.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/import.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/playtest-headless.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/pocs-import-check.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/spec-lint.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/logs/unit-tests.log
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/manifest.md
+docs/playtest/evidence/issue-767/headless-20261025T221000Z/notes.md
