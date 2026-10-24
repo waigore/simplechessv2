@@ -1,6 +1,14 @@
 # Run — issue #616, acceptance run (graphical)
 
-Index: [`manifest.md`](manifest.md) · Notes: [`notes.md`](notes.md)
+Index: [`manifest.md`](manifest.md) · Notes: [`notes.md`](notes.md) · Rendering reading and checks:
+[`readings-and-checks.md`](readings-and-checks.md) · Artifact paths: [`paths.md`](paths.md).
+
+## Build under test
+
+`origin/main` `4aa6aba` — the branch tip when this run started — read in a detached worktree. Source: the
+shipped playtest tree `game/main.tscn` run in a rendered session. The published URL (ADR-0009) does not
+serve this commit (it is not yet on `main`-published Pages), so this is the local-playtest-build reading,
+and no release-export fallback was used. No `TEL.3` id: it is not a web build.
 
 ## What was run
 
@@ -36,42 +44,4 @@ Frames: 1280×720 and 1600×900 via `set_viewport` on the running window, then t
   phone frame needs 21 px for `UIS.T2` (`16 × 844 / 640`) and `O12` reports
   `{"applied":true,"frame_height_px":844,"rendered_text_scale":1.31875,"body_text_px":21}`.
 
-## Live loop
-
-`render fps=118.0 process_ms=91.46 draw_calls=28` at 390×844 with `caps-frame-3239.png` captured on that
-same frame. This is a liveness reading — the per-state captures came from a running loop, not a frozen
-first frame — and not an `O10`/`SIT.4` timing claim.
-
-## Checks
-
-| Check | Result |
-|---|---|
-| `gdscript_tests.py test` | 26 headless unit test(s) passed, exit 0 |
-| `gdscript_tests.py coverage` | 86.4% (4500/5211), threshold 80, exit 0 |
-| `gdlint game` | Success: no problems found |
-| `gdformat --check game` | 59 files would be left unchanged |
-| `spec_lint.py` | 0 errors, 1 pre-existing glossary warning |
-
-The coverage run needs `gdtoolkit`, which on this machine lives in `/Library/Frameworks/Python.framework/Versions/3.11`;
-the script's default `python3` is the repo's `agent-orc/.venv`, which does not carry it.
-
-## First attempt, and why it is in the folder
-
-`logs/graphical-drive-first-attempt.log` is the run before the drive was corrected. It read
-`RESULT fails=0` and wrote 12 screenshots that were **not evidence**: the shared result's `confirm`
-ends the session, and from then on `handle_control` ignores every control (`session_ended`), so the
-puzzle legs measured hidden dialogs (which the visibility requirement caught) and the 390×844 frame
-never applied (`set_viewport` needs a live tree). Captures were all identical because the capture
-buffer lagged the state by one frame.
-
-What the correction changed, in the drive only — no `game/` file was touched:
-
-- a fresh instance per sitting for the legs the ended session could not reach, fitted to the running
-  viewport so no resize is re-applied (that would emit `resized` and bypass the `#708` reflow path);
-- 20 frames of settle before each capture, plus `tree panel visible=` logged beside each shot;
-- every new sitting sets `force_write_failure` deliberately, and the store clears
-  it on the attempt. The drive does not reset it afterwards: doing so once left
-  the flag latched on a later sitting and failed a commit that was meant to
-  succeed, which changed that frame's state mid-pass.
-
-The corrected run is `logs/graphical-drive.log` and the 19 screenshots the manifest lists.
+The first drive attempt these numbers supersede is [`first-attempt.md`](first-attempt.md).
