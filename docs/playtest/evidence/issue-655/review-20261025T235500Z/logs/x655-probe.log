@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+X655 B5 endpoint=<> key_set=false is_available=false
+X655 ENTERED state=S1 has_puzzle=false pid=<> elo=1000.00 last_failure=<status>
+X655 PANEL_C5_GATE=true
+X655 C5_ACTIVATED state=S2 confirm_kind=<leave_confirm> confirm_shown=true
+X655 CANCEL state=S1 has_puzzle=false
+X655_PROBE pass
+X655 ROUTER booted=mode-pick entered=puzzle-play C5=S2 after_confirm=mode-pick flow_left=true
+X655 ROUTER_JOURNEY pass
+

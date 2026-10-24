@@ -723,7 +723,7 @@ func _on_pointer_down(at: Vector2, index: int) -> void:
 	if not piece.is_empty() and str(piece.get("color", "")) == side:
 		# B10 may start with nothing selected; begin drag follow from this square.
 		_drag_from = _press_square
-		var world := _board.screen_to_world(at)
+		var world := _board_world_at(at)
 		_board.update_drag("begin", {"square": _press_square, "world": world})
 		return
 	# B3: press on a destination square while a piece is already selected.
@@ -735,7 +735,7 @@ func _on_pointer_move(at: Vector2) -> void:
 	if not _dragging and _press_screen.distance_to(at) >= DRAG_THRESHOLD_PX:
 		_dragging = true
 	if _dragging:
-		_board.update_drag("move", _board.screen_to_world(at))
+		_board.update_drag("move", _board_world_at(at))
 
 
 func _on_pointer_up(at: Vector2, index: int) -> void:
@@ -751,7 +751,7 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 	# S4: tap a promotion sprite (C6) or deselect (IN.deselect drops choice).
 	if _router.play_ui_state == SharedGameSession.UI_S4:
 		_finish_drag(true)
-		var kind := _board.promotion_kind_at(_board.screen_to_world(at))
+		var kind := _board.promotion_kind_at(_board_world_at(at))
 		if not kind.is_empty():
 			_router.handle_promotion_commit(kind)
 		else:
@@ -818,10 +818,24 @@ func _finish_drag(legal_or_idle: bool) -> void:
 		_board.end_drag_illegal()
 
 
+## CMP-presentation.R2 — the one pointer→board conversion every gesture uses
+## (#845). A pointer event reaches this control in *its* local space, while
+## `BoardPresentation.screen_to_world` reads canvas space (the space
+## `_refresh_coordinates` paints from). Applying this control's canvas
+## transform is what joins the two: it is identity while the presentation owns
+## the whole canvas (today's shell), and stays correct if the presentation is
+## ever offset or scaled. Tap select, drag begin/move, promotion tap, and the
+## release square all call this, so no gesture can drift from the others.
+func _board_world_at(at: Vector2) -> Vector2:
+	if _board == null:
+		return Vector2.ZERO
+	return _board.screen_to_world(get_global_transform_with_canvas() * at)
+
+
 func _square_at_screen(at: Vector2) -> String:
 	if _board == null or not _board.visible:
 		return ""
-	return BoardGeometry.square_at(_board.screen_to_world(at))
+	return BoardGeometry.square_at(_board_world_at(at))
 
 
 func _reset_gesture() -> void:
