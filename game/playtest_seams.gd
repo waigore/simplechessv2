@@ -14,6 +14,10 @@ signal viewport_changed(report: Dictionary)
 const VIEWPORT_PHONE_WIDTH := 390
 const VIEWPORT_PHONE_HEIGHT := 844
 
+## SIT.4 `O10` — the report the seam hands back; the window lives in PlaytestMeasure.
+const MEASURE_FRAME_TIMES := PlaytestMeasure.KIND_FRAME_TIMES
+const MEASURE_LOADING_READY := PlaytestMeasure.KIND_LOADING_READY
+
 ## Headless and editor runs only. Export templates ignore this.
 var playtest_override := -1
 var playtest_build := false
@@ -23,6 +27,8 @@ var session_id := ""
 var overlay_enabled := false
 var active_story_ids: PackedStringArray = PackedStringArray()
 var input_log: Array = []
+## S11 `O10` — the window and its passive frame source (`CMP-playtest-seams` R6).
+var measurement := PlaytestMeasure.new()
 var _tel_log: Array = []
 
 var _play_keys := PackedStringArray(
@@ -47,10 +53,18 @@ var _jump_field: LineEdit
 var _overlay_label: Label
 var _text_report: Callable = Callable()
 var _viewport_report: Dictionary = {}
+var _measure_kind: LineEdit
 
 
 func _ready() -> void:
 	configure()
+
+
+## S11 observes the open window; the move path never calls this (`G3`).
+func _process(_delta: float) -> void:
+	if not playtest_build:
+		return
+	measurement.observe()
 
 
 func configure() -> void:
@@ -60,6 +74,9 @@ func configure() -> void:
 	_tel_log.clear()
 	playtest_build = _resolve_playtest()
 	session_id = _make_session_id()
+	measurement.snapshot_provider = _snapshot
+	measurement.frame_provider = _frame_source
+	measurement.tel_sink = _emit_measure_tel
 	if not playtest_build:
 		return
 	_build_debug_ui()
@@ -146,7 +163,7 @@ func _frame_report(width: int, height: int, text_scale: float) -> Dictionary:
 	}
 
 
-func last_viewport_report() -> Dictionary:
+func _last_viewport_report() -> Dictionary:
 	return _viewport_report.duplicate()
 
 
@@ -251,6 +268,8 @@ func dump_state() -> Dictionary:
 	full["story_ids"] = Array(active_story_ids)
 	full["input_log"] = input_log.duplicate(true)
 	full["session_id"] = session_id
+	full["measurement"] = measurement.last()
+	full["viewport"] = _last_viewport_report()
 	return full
 
 
@@ -293,6 +312,44 @@ func assert_telemetry(expected: Array) -> Dictionary:
 	return verdict
 
 
+## SIT.4 / O10 — arm the next window for `kind`. Refuses rather than arming on a
+## placeholder, naming the first predicate that failed (`D1`). `C2` / `G3`: it
+## reads the same `O3` snapshot as `inspect` and submits no input.
+func start_measurement(kind: String) -> Dictionary:
+	if not playtest_build:
+		return _release_refusal(kind)
+	return measurement.start(kind, session_paused)
+
+
+## SIT.4 / O10 — the report for the armed window; closes and disarms it (`D2`).
+## With an empty `kind` it is the disarm: the open window comes back `cancelled`,
+## keeping its samples and claiming no `max_ms` (`D1`).
+func measure(kind: String) -> Dictionary:
+	if not playtest_build:
+		return _release_refusal(kind)
+	if kind.is_empty():
+		return measurement.disarm()
+	return measurement.report(kind)
+
+
+## `D3` — a release build answers with the always-shaped refusal, never samples.
+func _release_refusal(kind: String) -> Dictionary:
+	return measurement.refuse_release(kind, true)
+
+
+## The passive frame source: the real frame delta, in milliseconds.
+func _frame_source() -> float:
+	return get_process_delta_time() * 1000.0
+
+
+func _emit_measure_tel(event_name: String, outcome: String, story: String) -> Dictionary:
+	var count := _tel_log.size()
+	emit_tel(event_name, outcome, story)
+	if count >= _tel_log.size():
+		return {}
+	return (_tel_log[count] as Dictionary).duplicate()
+
+
 func _resolve_playtest() -> bool:
 	return PlaytestGate.is_playtest(playtest_override)
 
@@ -331,13 +388,15 @@ func _find_event(expectation: Dictionary, claimed: Dictionary) -> int:
 	return -1
 
 
+## `TEL.3` — one id per seam instance, so repeated runs in one process differ and a
+## repeat count is expressible (`SIT.4` / #544 `D2`).
 func _make_session_id() -> String:
 	var stamp := str(int(Time.get_unix_time_from_system() * 1000.0))
 	var process := str(OS.get_process_id())
 	var kind := "release"
 	if playtest_build:
 		kind = "playtest"
-	return "sess-%s-%s-%s" % [stamp, process, kind]
+	return "sess-%s-%s-%s-%d" % [stamp, process, kind, Time.get_ticks_usec()]
 
 
 func _snapshot() -> Dictionary:
@@ -364,6 +423,11 @@ func _build_debug_ui() -> void:
 	_add_button(panel, "Overlay", _on_overlay_pressed)
 	_add_button(panel, "AssertTelemetry", _on_assert_telemetry_pressed)
 	_add_button(panel, "SetViewport", _on_set_viewport_pressed)
+	_measure_kind = LineEdit.new()
+	_measure_kind.name = "MeasureKind"
+	_measure_kind.placeholder_text = "frame_times | loading_ready"
+	panel.add_child(_measure_kind)
+	_add_button(panel, "Measure", _on_measure_pressed)
 	_overlay_label = Label.new()
 	_overlay_label.name = "StoryOverlay"
 	_overlay_label.visible = false
@@ -396,6 +460,16 @@ func _on_set_viewport_pressed() -> void:
 	## SIT.6 — phone width at the reference ratio, driven from the panel for ENV.2.
 	## The reported sizes come back from the frame that renders, not from this call.
 	set_viewport(VIEWPORT_PHONE_WIDTH, VIEWPORT_PHONE_HEIGHT, 1.0)
+
+
+func _on_measure_pressed() -> void:
+	## SIT.4 — arms the next window only. It never submits input, plays the move,
+	## or times itself (D4); the report prints when the window closes.
+	var kind := _measure_kind.text.strip_edges()
+	var armed := start_measurement(kind)
+	print(JSON.stringify(armed))
+	if str(armed.get("status", "")) == "refused":
+		push_warning("Measure refused: %s" % [armed.get("detail", "")])
 
 
 func _on_overlay_pressed() -> void:
