@@ -36,6 +36,7 @@ func _run_all() -> String:
 		_check_leave_clears_and_puzzle_never_runs,
 		_check_error_clears_and_play_continues,
 		_check_one_failure_reports_once,
+		_check_cleared_reports_story,
 		_check_stale_updates_after_cancel_dropped,
 		_check_local_move_never_waits,
 		_check_wire_reads_updates_and_cap,
@@ -259,7 +260,7 @@ func _check_offline_clears() -> String:
 		return "a backend failure must clear GS.online (X3)"
 	if state["advice_best_move"] != null:
 		return "going offline must clear advice (R9, X3)"
-	if events.is_empty() or str(events[0].get("outcome", "")) != "unavailable":
+	if not _has_outcome(events, "advice.error", "unavailable"):
 		return "FAIL.T1 must be reported for EX.error and telemetry"
 	if not session.gestures_available():
 		return "play must continue after an advice failure (FAIL.T1)"
@@ -276,8 +277,12 @@ func _check_game_end_clears() -> String:
 	var state := session.play_state()
 	if state["advice_best_move"] != null or state["advice_eval"] != null:
 		return "game end must clear advice (R8, X4)"
-	if not session.advice_control("poll").get("events", []).is_empty():
-		return "game end must not start a new stream"
+	# The end reports the clear it caused, and the poll after it reports nothing new.
+	var cleared: Array = session.advice_control("poll").get("events", [])
+	if not _has_outcome(cleared, "advice.cleared", "cleared"):
+		return "game end must report advice.cleared for TEL.4, got %s" % [cleared]
+	if cleared.size() != 1:
+		return "game end must not start or report a new stream, got %s" % [cleared]
 	return ""
 
 
@@ -328,6 +333,76 @@ func _check_one_failure_reports_once() -> String:
 			return "a parked failure was reported again on tick %d: %s" % [tick, again]
 	if not session.advice_error:
 		return "the first failure must raise EX.error"
+	return ""
+
+
+## AC 15 / TEL.4 / TEL.5 — the clear path reports `advice.cleared` with the story
+## that required it, on every rule that closes evaluation (R8, R9/X2, X3).
+func _check_cleared_reports_story() -> String:
+	var cases := [
+		["move", "F-move-advice.R8"],
+		["game_end", "F-move-advice.R8"],
+		["advice_off", "F-move-advice.R9"],
+		["leave", "F-move-advice.R9"],
+		["offline", "F-move-advice.R9"],
+		["loss", "F-move-advice.X3"],
+	]
+	for entry in cases:
+		var case_id := str(entry[0])
+		var story := str(entry[1])
+		var shared := _shared()
+		var session: SharedGameSession = shared["session"]
+		var live := _stream(session)
+		live.push_update({"best_move_uci": "e2e4", "eval_cp": 21})
+		session.advice_control("poll")
+		var cleared := ""
+		match case_id:
+			"move":
+				session.place("g1", "f3")
+				cleared = _cleared_in(session.advice_control("poll").get("events", []))
+			"game_end":
+				session.resign()
+				cleared = _cleared_in(session.advice_control("poll").get("events", []))
+			"advice_off":
+				session.handle_play_control("C3")
+				cleared = _cleared_in(session.advice_control("poll").get("events", []))
+			"leave":
+				cleared = _cleared_in(session.advice_control("leave").get("events", []))
+			"offline":
+				cleared = _cleared_in(session.advice_control("offline").get("events", []))
+			"loss":
+				# FAIL.T1 supersedes a tick's ready; the clear is still reported.
+				_stream(session).push_update({"best_move_uci": "d2d4", "eval_cp": 12})
+				session.advice_control("poll")
+				_stream(session).push_end(AdviceWireReader.REASON_ERROR)
+				cleared = _cleared_in(session.advice_control("poll").get("events", []))
+		if cleared != story:
+			return "%s must report advice.cleared for %s, got %s" % [case_id, story, cleared]
+		if session.play_state()["advice_best_move"] != null:
+			return "%s must clear the advice fields" % case_id
+	# A rule firing with nothing showing is not an outcome, so it reports nothing.
+	var idle := _shared()
+	var session: SharedGameSession = idle["session"]
+	var events: Array = session.advice_control("leave").get("events", [])
+	if not events.is_empty():
+		return "clearing with nothing showing must report no cleared event, got %s" % events
+	return ""
+
+
+## True when `events` carries `name` with `outcome` — an error now rides with a clear.
+func _has_outcome(events: Array, name: String, outcome: String) -> bool:
+	for event in events:
+		var row: Dictionary = event as Dictionary
+		if str(row.get("event", "")) == name and str(row.get("outcome", "")) == outcome:
+			return true
+	return false
+
+
+## The story of the first `advice.cleared` in `events`, or "" when absent.
+func _cleared_in(events: Array) -> String:
+	for event in events:
+		if str((event as Dictionary).get("event", "")) == "advice.cleared":
+			return str((event as Dictionary).get("story", ""))
 	return ""
 
 
