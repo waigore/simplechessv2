@@ -428,7 +428,10 @@ func _show_shared_play(state: Dictionary) -> void:
 		"reject_square": str(state.get("reject_square", "")),
 		"pending_promote_to": str(state.get("pending_promote_to", "")),
 		"side_to_move": str(state.get("side_to_move", "white")),
+		"in_check": bool(state.get("in_check", false)),
 		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
+		# E2 `marks` — the session's check mark, drawn on the board (PER.R6).
+		"check_square": str(state.get("check_square", "")),
 	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
@@ -552,6 +555,9 @@ func _show_puzzle_play(state: Dictionary) -> void:
 	_puzzle_play.configure(state, _ui_font, text_scale())
 	_puzzle_play.puzzle_open = bool(state.get("puzzle_open", false))
 	_puzzle_play.refresh()
+	# R1 starts below the strip: the shared reserve, or the puzzle strip's own when
+	# the state needs more (S4 names four options, a line taller — #795).
+	_board.offset_top = maxf(play_chrome_top_px(), _puzzle_play.reserved_px())
 	var position: Dictionary = state.get("position", {}) as Dictionary
 	var selection := str(state.get("selection", ""))
 	var legal: PackedStringArray = PackedStringArray()

@@ -1,0 +1,17 @@
+# playback-position.json — browser console / network, from the .json probe capture
+# url=http://127.0.0.1:8767/index.html
+0.055s net 200 http://127.0.0.1:8767/index.html
+0.061s net 200 http://127.0.0.1:8767/index.png
+0.063s net 200 http://127.0.0.1:8767/index.js
+1.784s net 200 http://127.0.0.1:8767/index.wasm
+1.784s net 200 http://127.0.0.1:8767/index.pck
+1.794s net 200 http://127.0.0.1:8767/index.icon.png
+3.314s net 200 blob:http://127.0.0.1:8767/2a0b8b87-7f54-4e61-bd44-70ec82d23065
+3.418s net 200 blob:http://127.0.0.1:8767/2a0b8b87-7f54-4e61-bd44-70ec82d23065
+13.298s console.log [zz_audio785] exists res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg=false bytes=0
+13.298s console.log [zz_audio785] exists res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg.import=true bytes=204
+13.299s console.log [zz_audio785] exists res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg.remap=false bytes=0
+13.299s console.log [zz_audio785] resourceload-class=AudioStreamOggVorbis path=res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg
+13.299s console.log [zz_audio785] A pos=8.94400024414062 playing=true stream_len=180.035934448242 mix_active=false
+15.300s console.log [zz_audio785] B pos=10.9440002441406 playing=true idx=0
+17.315s console.log [zz_audio785] C pos=12.960000038147 playing=true idx=0

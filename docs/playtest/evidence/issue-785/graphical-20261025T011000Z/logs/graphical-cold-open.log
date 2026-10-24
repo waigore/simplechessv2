@@ -1,0 +1,22 @@
+0.042s net 200 http://127.0.0.1:8767/index.html
+0.051s net 200 http://127.0.0.1:8767/index.png
+0.052s net 200 http://127.0.0.1:8767/index.js
+1.426s log.warning [rendering] [.WebGL-0x134000cb400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels http://127.0.0.1:8767/index.html
+1.442s net 200 http://127.0.0.1:8767/index.wasm
+1.442s net 200 http://127.0.0.1:8767/index.pck
+1.459s net 200 http://127.0.0.1:8767/index.icon.png
+2.130s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2.625s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2.780s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+500.000s DRIVER probe canvas=true frames=9 text=""
+3.353s log.warning [rendering] [.WebGL-0x134000e0400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat) http://127.0.0.1:8767/index.html
+3.542s net 200 blob:http://127.0.0.1:8767/83666cc3-e439-4bb0-8eca-f69b368a5243
+3.645s net 200 blob:http://127.0.0.1:8767/83666cc3-e439-4bb0-8eca-f69b368a5243
+1000.000s DRIVER probe canvas=true frames=17 text=""
+2000.000s DRIVER probe canvas=true frames=23 text=""
+3000.000s DRIVER probe canvas=true frames=32 text=""
+5000.000s DRIVER probe canvas=true frames=92 text=""
+10000.000s DRIVER probe canvas=true frames=392 text=""
+15000.000s DRIVER probe canvas=true frames=692 text=""
+20000.000s DRIVER probe canvas=true frames=993 text=""
+25000.000s DRIVER probe canvas=true frames=1287 text=""
