@@ -1,0 +1,349 @@
+{
+  "run_id": "graphical-20261024T204223Z",
+  "issue": 557,
+  "started_at": "2026-10-24T22:06:41.668Z",
+  "finished_at": "2026-10-24T22:12:17.990Z",
+  "build": {
+    "url": "https://waigore.github.io/simplechessv2/",
+    "commit": "c5b8189b704b8e7ebaa930c2940b0c9f27cf9d96",
+    "web_release_run": "40118381611",
+    "source": "published URL",
+    "session_id": null,
+    "session_id_reason": "the release build strips CMP-playtest-seams (ADR-0004 G2), so it reports no TEL.3 id"
+  },
+  "environment": {
+    "browser": "headless Chrome via puppeteer-core@23",
+    "viewport": "390x844 CSS px, DPR 2",
+    "settle_ms": 20000
+  },
+  "storage_key": "simplechessv2.persist.v1",
+  "legs": [
+    {
+      "leg": 1,
+      "name": "quit/reload",
+      "open_ms": [
+        21746,
+        22179
+      ],
+      "cold_open_shot": {
+        "path": "screenshots/leg-1-cold-open-mode-pick.png",
+        "bytes": 48881,
+        "md5": "777969b01c1ffde6e1644940fe047742"
+      },
+      "before": {
+        "key_present": false,
+        "document": null,
+        "player_elo": null,
+        "last_mode": null,
+        "recent_solved": null,
+        "localStorage_keys": []
+      },
+      "in_puzzle": {
+        "key_present": true,
+        "document": {
+          "last_mode": "puzzle",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "puzzle",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "dealt": false,
+      "deal_failed": [
+        "2026-10-24T22:07:04.008Z [error] WARNING: puzzle stream: deal read failed (status)"
+      ],
+      "puzzle_shot": {
+        "path": "screenshots/leg-1-puzzle-play-before-close.png",
+        "bytes": 54315,
+        "md5": "a5590188e46d0579846fd1506bba0646"
+      },
+      "landed_on_mode_pick": {
+        "ok": true,
+        "trail": [
+          "mode-pick"
+        ],
+        "bands": {
+          "board": 720,
+          "panelRow": 727,
+          "lowBand": 720
+        }
+      },
+      "screen_before_quit": "mode-pick",
+      "quit_path_screenshot_omitted": false,
+      "quit_confirm_shot": {
+        "path": "screenshots/leg-1-mode-pick-before-quit.png",
+        "bytes": 50390,
+        "md5": "74ac8b73bcf91efc868013514da8fbcc"
+      },
+      "after": {
+        "key_present": true,
+        "document": {
+          "last_mode": "puzzle",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "puzzle",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "after_shot": {
+        "path": "screenshots/leg-1-mode-pick-after-reopen.png",
+        "bytes": 50390,
+        "md5": "74ac8b73bcf91efc868013514da8fbcc"
+      },
+      "console_lines": 116,
+      "console_judged": [
+        "2026-10-24T22:06:43.559Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125",
+        "2026-10-24T22:06:43.559Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b",
+        "2026-10-24T22:06:43.560Z [error] ERROR: Preload ambient left 2 approved IDs unresolved",
+        "2026-10-24T22:07:03.943Z [error] ERROR: Preload ambient left 2 approved IDs unresolved",
+        "2026-10-24T22:07:03.970Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-710a-b767-92c9137bfd63",
+        "2026-10-24T22:07:03.971Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-759c-89c5-e1be5eecb2b2",
+        "2026-10-24T22:07:03.974Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7ae6-84af-767ba53d09f6",
+        "2026-10-24T22:07:03.974Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7e05-9921-e892e9a2e064",
+        "2026-10-24T22:07:03.976Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7fe3-b94f-e3a562395d96",
+        "2026-10-24T22:07:04.001Z [error] ERROR: Preload play left 5 approved IDs unresolved",
+        "2026-10-24T22:07:04.008Z [error] WARNING: puzzle stream: deal read failed (status)",
+        "2026-10-24T22:07:12.268Z [error] ERROR: Preload ambient left 2 approved IDs unresolved",
+        "2026-10-24T22:07:17.265Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125",
+        "2026-10-24T22:07:17.266Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b",
+        "2026-10-24T22:07:17.266Z [error] ERROR: Preload ambient left 2 approved IDs unresolved"
+      ],
+      "outcome": {
+        "result": "not-judged",
+        "reason": "no committed document before the close — no puzzle result could commit (the stream dealt nothing)"
+      }
+    },
+    {
+      "leg": 2,
+      "name": "crash",
+      "open_ms": [
+        21310,
+        21192
+      ],
+      "before": {
+        "key_present": true,
+        "document": {
+          "last_mode": "puzzle",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "puzzle",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "landed_on_mode_pick": {
+        "ok": true,
+        "trail": [
+          "mode-pick"
+        ],
+        "bands": {
+          "board": 720,
+          "panelRow": 727,
+          "lowBand": 720
+        }
+      },
+      "abandonment": {
+        "screen": "shared setup",
+        "uncommitted_action": "clock toggle pressed, never committed"
+      },
+      "crashed": true,
+      "pre_crash": {
+        "key_present": true,
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "before_shot": {
+        "path": "screenshots/leg-2-before-crash.png",
+        "bytes": 39223,
+        "md5": "38b1267fa36fafd547eb0107aaea2d98"
+      },
+      "after": {
+        "key_present": true,
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "after_shot": {
+        "path": "screenshots/leg-2-mode-pick-after-reopen.png",
+        "bytes": 48881,
+        "md5": "777969b01c1ffde6e1644940fe047742"
+      },
+      "console_lines": 35,
+      "console_judged": [
+        "2026-10-24T22:07:38.606Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125",
+        "2026-10-24T22:07:38.606Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b",
+        "2026-10-24T22:07:38.606Z [error] ERROR: Preload ambient left 2 approved IDs unresolved",
+        "2026-10-24T22:11:05.288Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125",
+        "2026-10-24T22:11:05.288Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b",
+        "2026-10-24T22:11:05.289Z [error] ERROR: Preload ambient left 2 approved IDs unresolved"
+      ],
+      "outcome": {
+        "result": "pass",
+        "reason": "renderer killed with the uncommitted clock toggle pressed, never committed; reopen at mode pick kept the last committed Last mode (shared) and Player Elo (1000)"
+      }
+    },
+    {
+      "leg": 3,
+      "name": "faulted session",
+      "open_ms": [
+        21204,
+        21327
+      ],
+      "before": {
+        "key_present": true,
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "landed_on_mode_pick": {
+        "ok": true,
+        "trail": [
+          "mode-pick"
+        ],
+        "bands": {
+          "board": 720,
+          "panelRow": 720,
+          "lowBand": 720
+        }
+      },
+      "before_shot": {
+        "path": "screenshots/leg-3-before-fault.png",
+        "bytes": 48881,
+        "md5": "777969b01c1ffde6e1644940fe047742"
+      },
+      "committed_before_fault": {
+        "key_present": true,
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "wrapper": {
+        "attempts": 1,
+        "dropped": 1,
+        "restored": false
+      },
+      "failed_write_reported": true,
+      "during": {
+        "key_present": true,
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "restored": {
+        "attempts": 1,
+        "dropped": 1,
+        "restored": true
+      },
+      "fault_shot": {
+        "path": "screenshots/leg-3-after-fault.png",
+        "bytes": 53832,
+        "md5": "0abd57d70791780451497357e94c94fe"
+      },
+      "after": {
+        "key_present": true,
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        },
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "recent_solved": [],
+        "localStorage_keys": [
+          "simplechessv2.persist.v1"
+        ]
+      },
+      "after_shot": {
+        "path": "screenshots/leg-3-mode-pick-after-reopen.png",
+        "bytes": 48881,
+        "md5": "777969b01c1ffde6e1644940fe047742"
+      },
+      "console_lines": 47,
+      "console_judged": [
+        "2026-10-24T22:11:26.601Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125",
+        "2026-10-24T22:11:26.602Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b",
+        "2026-10-24T22:11:26.602Z [error] ERROR: Preload ambient left 2 approved IDs unresolved",
+        "2026-10-24T22:11:50.333Z [error] ERROR: Preload ambient left 2 approved IDs unresolved",
+        "2026-10-24T22:11:53.340Z [error] ERROR: PersistStore: write failed; prior commit kept",
+        "2026-10-24T22:11:57.213Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125",
+        "2026-10-24T22:11:57.214Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b",
+        "2026-10-24T22:11:57.214Z [error] ERROR: Preload ambient left 2 approved IDs unresolved"
+      ],
+      "outcome": {
+        "result": "pass",
+        "reason": "1 forced write(s); the build reported \"write failed; prior commit kept\", the prior document stayed intact, and the reopen matched it"
+      }
+    }
+  ],
+  "screenshot_md5": {
+    "screenshots/leg-1-cold-open-mode-pick.png": "777969b01c1ffde6e1644940fe047742",
+    "screenshots/leg-1-puzzle-play-before-close.png": "a5590188e46d0579846fd1506bba0646",
+    "screenshots/leg-1-mode-pick-after-reopen.png": "74ac8b73bcf91efc868013514da8fbcc",
+    "screenshots/leg-2-before-crash.png": "38b1267fa36fafd547eb0107aaea2d98",
+    "screenshots/leg-2-mode-pick-after-reopen.png": "777969b01c1ffde6e1644940fe047742",
+    "screenshots/leg-3-before-fault.png": "777969b01c1ffde6e1644940fe047742",
+    "screenshots/leg-3-after-fault.png": "0abd57d70791780451497357e94c94fe",
+    "screenshots/leg-3-mode-pick-after-reopen.png": "777969b01c1ffde6e1644940fe047742"
+  }
+}
