@@ -38,7 +38,7 @@ func _after_boot() -> void:
 		_fail("router stage")
 		return
 	if mode_pick.find_child("PuzzleStream", true, false) == null:
-		_fail("mode-pick must offer UI-mode-pick.C2 Puzzle stream (Wave 2)")
+		_fail("mode-pick must offer UI-mode-pick.C2 Puzzle stream")
 		return
 	if not _exercise_pointers():
 		return

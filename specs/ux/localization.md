@@ -22,7 +22,7 @@ A key's owner is the screen whose Copy table holds it, named by that screen's fi
 
 ## Modes and keys
 
-Wave 1 is `mode-pick`, `shared-setup`, `shared-play`, and `shared-result`. Wave 2 adds `puzzle-play`, whose Copy table names all 21 of its keys, each with a value in every shipped locale. Wave 3 Advice copy reaches the player only through `shared-play` rows (`advice_on`, `advice_off`, `advice_error`) and the `shared-setup` row `advice`.
+Every screen in the release ([`definition.md`](../definition/definition.md) Scope) has its keys here. `puzzle-play`'s Copy table names all 21 of its keys, each with a value in every shipped locale, and the Advice copy the release carries reaches the player only through `shared-play` rows (`advice_on`, `advice_off`, `advice_error`) and the `shared-setup` row `advice`.
 
 ## Experience intent
 

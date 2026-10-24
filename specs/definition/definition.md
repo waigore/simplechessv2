@@ -12,6 +12,8 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 - Optional move advice when the browser is online and Advice is On.
 - Starting a new two-player session after a game ends.
 
+The release ships it in one build: the two-player screens (`mode-pick`, `shared-setup`, `shared-play`, `shared-result`) and the puzzle screens (`puzzle-play`, `puzzle-play-controls`), with their Advice copy. A screen, mode, key, schema field, or protocol ships because its owning spec defines it, never a stage number. Order across builds is [tracker detail](../../docs/issues/waves.md), not scope.
+
 ### Out of scope
 
 - A computer opponent.
