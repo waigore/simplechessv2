@@ -15,22 +15,23 @@ The row unit, the UX and design judge rules, the multi-protocol rule, and the `n
 | [UX story view](story-protocol/ux.md) | 32 | Every non-journey UX heading, its protocols, reached and unreached scenarios |
 | [Journey and actor view](story-protocol/journeys-actors.md) | 11 | The 2 journey rows, the 9 actor rows, and how a bare journey key resolves |
 | [Design story view](story-protocol/design/index.md) | 41 | Every design heading, its `Spec key`, element range, protocols |
-| [Protocol view](story-protocol/protocols.md) | 23 | Each protocol and the rows it judges, split by level |
+| [Protocol view](story-protocol/protocols.md) | 24 | Each protocol and the rows it judges, split by level |
 
 ## Split rules
 
 - **UX**: a story-ID cite reaches every file carrying that heading — `UI-mode-pick.US1` covers `screens/mode-pick.md#US1` and `screens/mode-pick-unavailable.md#US1`. No protocol cites a scenario ID today, so a scenario-level split case does not apply; one would reach only its own file.
+- **Rows out of playtest scope**: `localization.md#US2` stays `none`, judged by spec read.
 - **Design**: each `## PS<n>` heading is its own row, including the three splits continuing at `PS2` (`common-attack.md`, `puzzle-catalog-select.md`, `progression-mode.md`). Within `E-pieces`, [pieces.md](../../design/entities/pieces.md) assigns each `I` range to its owning split.
 
 ## Tally
 
 | Level | Rows | Judged | `none` |
 |-------|------|--------|--------|
-| UX | 34 (32 non-journey + 2 journey) | 19 | 15 |
+| UX | 34 (32 non-journey + 2 journey) | 33 | 1 |
 | Design | 41 | 41 | 0 |
-| **Total** | **75** | **60** | **15** |
+| **Total** | **75** | **74** | **1** |
 
-No row is `out`. Scenario-cell `none` is counted apart from row-level `none`.
+No row is `out`. Scenario-cell `none` is counted apart from row-level `none`; the one UX `none` is `localization.md#US2`, judged by spec read.
 
 ## Worked row
 
