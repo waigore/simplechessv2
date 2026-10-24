@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/ux/navigation.md`](../../.agents/specs/rules/ux/navigation.md).
 
-- **Serves**: Instant play, Cafe calm; Shared game, Puzzle stream, new session (definition); [mode-pick](../design/flows/mode-pick.md), [two-player-game](../design/loops/two-player-game.md), [puzzle-stream](../design/loops/puzzle-stream.md).
+- **Serves**: Instant play, Cafe calm; Shared game, Puzzle stream, new run (definition); [mode-pick](../design/flows/mode-pick.md), [two-player-game](../design/loops/two-player-game.md), [puzzle-stream](../design/loops/puzzle-stream.md).
 
 ## Screens
 

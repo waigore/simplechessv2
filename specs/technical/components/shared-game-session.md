@@ -49,4 +49,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-[`concurrency.md`](../concurrency.md) U2 O2; [`failures.md`](../failures.md) T1 M1; [`SEQ-shared-end-new-session`](../sequences/shared-end-new-session.md).
+[`concurrency.md`](../concurrency.md) U2 O2; [`failures.md`](../failures.md) T1 M1; [`SEQ-shared-end-new-run`](../sequences/shared-end-new-run.md).
