@@ -1,0 +1,9 @@
+## owners, live
+648 OPEN Decide whether the puzzle catalog route ships enabled: T9/T10 never reach the shipped build, so Puzzle stream deals nothing
+479 OPEN Specify how the advice base URL and API key reach the client and backend
+550 OPEN Run the wave-2 playtest sweep: puzzle-stream and puzzle-session protocols on one playtest build
+505 OPEN Record the advice backend deployment posture: operator/player-run only, no project vendor
+671 OPEN Record the served-snapshot I1 run on the catalog host (#329 AC5)
+329 CLOSED Serve the puzzle snapshot behind the secured catalog API
+## issues matching deploy/T9/T10 (open)
+505 Record the advice backend deployment posture: operator/player-run only, no project vendor

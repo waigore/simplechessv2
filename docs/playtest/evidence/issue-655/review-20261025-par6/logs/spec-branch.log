@@ -1,0 +1,26 @@
+## catalog_deal_client.is_available
+	)
+
+
+## Apply B5: `T9` and `T10` are required; a missing one fails every deal.
+func configure(p_endpoint: String, p_api_key: String) -> void:
+	endpoint = p_endpoint.strip_edges()
+	api_key = p_api_key
+
+
+func is_available() -> bool:
+	return not endpoint.is_empty() and not api_key.is_empty()
+
+
+## True while a deal read is in flight; a second request waits for this one.
+func in_flight() -> bool:
+	return _transport != null
+
+
+## O1 — ask for one puzzle for `player_elo` / `recent_solved`. Returns false when
+## the read could not even start (B5, one deal at a time, G6).
+func request(player_elo: float, recent_solved: Array) -> bool:
+## B5 introducing commits
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+## R9 introducing commits
+a94210d State that the catalog route ships enabled (#648) (#815)
