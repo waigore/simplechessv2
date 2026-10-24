@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/quality.md`](../../.agents/specs/rules/quality.md). Targets and methods: [`quality.md`](quality.md).
 
-A row that fails on the shipped build is filed as a `type:defect` against the wave epic below; it is never fixed inside the release gate that found it.
+A row that fails on the shipped build is filed as a `type:defect` against the wave epic below, which is the milestone epic that owns the behavior on the tracker ([`docs/issues/waves.md`](../../docs/issues/waves.md)) rather than a product stage; it is never fixed inside the release gate that found it.
 
 | Category | Owning epic |
 |----------|-------------|

@@ -37,7 +37,7 @@ Worked example: a protocol cites four stories; one run records three `pass` and 
 - **Headless run**: May judge and record outcomes, notes, and logs with no display. Omit `screenshots/` and mark those paths waiting in `manifest.md`; that omission is no fail and files no defect.
 - **Logs**: under `logs/`, covering the judged window for `TEL.1`–`TEL.5`.
 - **Notes**: `notes.md` — what was judged, blockers, and non-blocking marks only where allowed.
-- **Defects**: A protocol that fails for a game or interface reason is filed as a `type:defect` against the wave that owns the behavior; its number goes in that protocol's results row and on a `Defects` line in `manifest.md`.
+- **Defects**: A protocol that fails for a game or interface reason is filed as a `type:defect` against the wave epic that owns the behavior on the tracker ([`quality-regression-owners.md`](../definition/quality-regression-owners.md) for quality rows); its number goes in that protocol's results row and on a `Defects` line in `manifest.md`.
 
 ## Retention
 
