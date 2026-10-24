@@ -1,0 +1,7 @@
+$ git status --porcelain  # tree at origin/main ff87566, probe removed
+
+$ gdformat --check game
+62 files would be left unchanged
+
+$ gdlint game
+Success: no problems found

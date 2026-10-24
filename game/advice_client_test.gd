@@ -268,7 +268,9 @@ func _check_offline_clears() -> String:
 		return "going offline must clear both advice fields (R9, X3)"
 	var reported := _has_outcome(events, "advice.error", "unavailable")
 	var stopped := _stopped_after_failure(session)
-	if not (reported and session.gestures_available() and stopped):
+	if not reported:
+		return "FAIL.T1 must be reported for EX.error and telemetry"
+	if not (session.gestures_available() and stopped):
 		var detail := "%s: the failure must be reported, play must continue" % FAIL_T1_STOPPED
 		return "%s after it: %s" % [detail, events]
 	return ""

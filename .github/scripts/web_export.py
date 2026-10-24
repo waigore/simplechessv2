@@ -66,12 +66,15 @@ LOADABLE_SUFFIXES = {".svg", ".png", ".woff2", ".ttf", ".otf", ".ogg"}
 # anchored so app vocabulary is not read as an engine: the engine's own name
 # ("stockfishing"), the move format (`best_move_uci`), a GDScript identifier or
 # comment word (`uci`), and the backend's HTTP route (`advice_endpoint`) all
-# pass, while a UCI engine peer (`uci://…`, `option name`, `engine_name`) and a
-# `.wasm` / `.nnue` sibling are refused.
-# Godot's build entry points (`index.*`) are the app itself, never an engine.
+# pass, while a UCI engine peer (`uci://…`, `uci_engine`, `option name`,
+# `engine_name`) and a `.wasm` / `.nnue` sibling are refused. `uci_engine` stays
+# a refusal (#696): a GDScript identifier is a bare `uci`, while `uci_engine`
+# names an engine peer. Godot's build entry points (`index.*`) are the app
+# itself, never an engine.
 ENGINE_BUNDLE_NAMES = re.compile(r"(?<![a-z0-9])(?:stockfish|sf_1[0-9])(?![a-z0-9])", re.IGNORECASE)
 ENGINE_ENDPOINT_MARKERS = re.compile(
-    r'(?i)(?:uci://|(?<![(\w-])uci:(?![\w-])|"uci:[^"\s]*|option name|engine_name)'
+    r'(?i)(?:uci://|(?<![(\w-])uci:(?![\w-])|"uci:[^"\s]*|(?<![a-z0-9_])uci_engine(?![a-z0-9])'
+    r"|option name|engine_name)"
 )
 ENGINE_BUNDLE_SUFFIXES = {".wasm", ".nnue"}
 APP_ENTRY_POINTS = {"index.wasm", "index.pck", "index.html"}
@@ -404,7 +407,7 @@ def ensure_no_client_engine(shipped: Path) -> None:
 
     ADR-0002 §Validation "No client Stockfish endpoint" and CTR-advice-stream G3:
     the client talks only to the advice backend, so an export that names the
-    engine, ships an engine file kind, or carries a `uci` endpoint must not
+    engine, ships an engine file kind, or carries a UCI engine endpoint must not
     publish. The PCK is where the tree's client code lives, so it is read as text
     beside `index.html`; every other file is read by its kind. One function
     produces every verdict: the passing one on a real export and the
