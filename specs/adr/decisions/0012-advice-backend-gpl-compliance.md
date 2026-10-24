@@ -10,13 +10,13 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 ## Context
 
-ADR-0002 records "Stockfish GPL; comply when shipping binary" and leaves host and deploy open. ADR-0010 and ADR-0011 fix one Python server that invokes Stockfish over local UCI, and put GPL compliance out of scope: ADR-0010's licensing row says "out of scope", ADR-0011's says it sets "no GPL procedure", and their Purpose and validation rows carry the same exclusion. No spec states whether a Stockfish binary is ever conveyed.
+ADR-0002 records "Stockfish GPL; comply when shipping binary" and leaves the host open; [ADR-0015](0015-advice-backend-operator-deployments.md) later makes every backend operator-run. ADR-0010 and ADR-0011 fix one Python server that invokes Stockfish over local UCI, and put GPL compliance out of scope: ADR-0010's licensing row says "out of scope", ADR-0011's says it sets "no GPL procedure", and their Purpose and validation rows carry the same exclusion. No spec states whether a Stockfish binary is ever conveyed.
 
 ## Purpose
 
 How does the project meet the GPL that Stockfish carries?
 
-In scope: who conveys Stockfish, the source offer, license texts, attribution, and the checks that keep it true. Out of scope: host vendor, deploy path, cost, and the engine choice (ADR-0002, ADR-0010).
+In scope: who conveys Stockfish, the source offer, license texts, attribution, and the checks that keep it true. Out of scope: host vendor and deploy path ([ADR-0015](0015-advice-backend-operator-deployments.md)), cost, and the engine choice (ADR-0002, ADR-0010).
 
 ## Decision
 
@@ -31,7 +31,7 @@ In scope: who conveys Stockfish, the source offer, license texts, attribution, a
 
 1. A separate program satisfies the GPL's aggregate rule for the Python server (ADR-0002, ADR-0011) with no combined-work analysis.
 2. No bundled binary means no distributable artifact at build time (Instant play).
-3. The duty lands on the party that conveys (ADR-0010 leaves the host open).
+3. The duty lands on the party that conveys; ADR-0015 makes that party the operator too.
 
 Costs: the operator follows the licensing constraint; the project keeps the version and source-URL record current.
 

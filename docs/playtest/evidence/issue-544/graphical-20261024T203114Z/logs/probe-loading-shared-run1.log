@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+PROBE stage_at_arm=loading
+{"TEL.1":"measure.start","TEL.2":1792873748344,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"PTU-mode-pick","TEL.5":"pass"}
+PROBE loading_arm={"detail":"","kind":"loading_ready","mode":"","solver":"","status":"ok"}
+PROBE loading_frames_observed=1 stage=mode-pick
+{"TEL.1":"measure.end","TEL.2":1792873748415,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"PTU-mode-pick","TEL.5":"pass"}
+PROBE loading_report={"detail":"","events":{"end":{},"start":{"TEL.1":"measure.start","TEL.2":1792873748344,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"PTU-mode-pick","TEL.5":"pass"}},"kind":"loading_ready","max_ms":0.0,"mode":"","sample_count":0,"samples_first":[],"samples_total":0,"solver":"","status":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792873748459,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+PROBE shared_stage=shared-play
+{"TEL.1":"measure.start","TEL.2":1792873748481,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+PROBE shared_arm={"detail":"","kind":"frame_times","mode":"shared-play","solver":"white","status":"ok"}
+PROBE shared_frame0 armed=true fields={"mode":"shared","pieces":32,"side_to_move":"white","stage":"shared-play"}
+PROBE shared_frame1 armed=true fields={"mode":"shared","pieces":32,"side_to_move":"white","stage":"shared-play"}
+PROBE shared_frame2 armed=true fields={"mode":"shared","pieces":32,"side_to_move":"white","stage":"shared-play"}
+PROBE shared_frame3 armed=true fields={"mode":"shared","pieces":32,"side_to_move":"white","stage":"shared-play"}
+PROBE shared_frame4 armed=true fields={"mode":"shared","pieces":32,"side_to_move":"white","stage":"shared-play"}
+PROBE shared_frame5 armed=true fields={"mode":"shared","pieces":32,"side_to_move":"white","stage":"shared-play"}
+PROBE shared_move=a2a3
+{"TEL.1":"shared.move","TEL.2":1792873748491,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+PROBE shared_committed=true after={"mode":"shared","pieces":32,"side_to_move":"black","stage":"shared-play"}
+{"TEL.1":"measure.end","TEL.2":1792873748495,"TEL.3":"sess-1792873748328-5923-playtest-402179","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+PROBE shared_report={"detail":"no window","events":{"end":{},"start":{}},"kind":"","max_ms":0.0,"mode":"","sample_count":0,"samples_first":[],"samples_total":0,"solver":"","status":"refused"}
+ACCEPT544_PROBE fail: loading_ready closed with no samples
+ACCEPT544_PROBE fail: loading_ready closed with max_ms 0.0
+ACCEPT544_PROBE fail: frame_times/shared did not close: status=refused detail=no window
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

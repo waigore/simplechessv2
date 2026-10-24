@@ -1,0 +1,43 @@
+$ git rev-parse HEAD
+8af7f8f12265e0c936a58ddae23ed3648678865e
+
+$ godot --version
+4.7.2.stable.official.ed1daf0bf
+
+$ git log --oneline -1 HEAD
+8af7f8f Settle #506's SIT.5 seam (S12) and #402 edge direction (#832)
+
+$ git grep -n -i "ships enabled|deployment fault" -- specs/
+specs/technical/components/catalog-service.md:56:Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on that server's deploy path, which the operator owns (ADR-0015).
+specs/technical/configuration.md:43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+
+$ git log --oneline -1 a94210d
+a94210d State that the catalog route ships enabled (#648) (#815)
+$ git merge-base --is-ancestor a94210d HEAD
+exit 0 — ancestor
+
+$ git blame -L 43 specs/technical/configuration.md
+a9192a07 (waigore  2026-10-25 03:14:59 +0800 43) | B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships e
+58517602 (K Junior 2026-10-18 12:50:20 +0800 44) 
+58517602 (K Junior 2026-10-18 12:50:20 +0800 45) ## Diagram
+58517602 (K Junior 2026-10-18 12:50:20 +0800 46) 
+58517602 (K Junior 2026-10-18 12:50:20 +0800 47) None — flat constant bind.
+
+$ git grep -n "advice_endpoint|advice_api_key" -- game/
+game/advice_ui_test.gd:40:	_router.advice_endpoint = "http://advice.test/advice"
+game/advice_ui_test.gd:41:	_router.advice_api_key = "test-key"
+game/session_router.gd:33:var advice_endpoint := ""
+game/session_router.gd:34:var advice_api_key := ""
+game/session_router.gd:483:	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
+game/session_router.gd:552:	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+game/session_router.gd:756:	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+
+$ sed -n 28,35p game/session_router.gd
+var clock := "untimed"
+var increment := 3
+var advice_on := true
+## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
+## empty endpoint or key makes Advice unavailable (FAIL.T1).
+var advice_endpoint := ""
+var advice_api_key := ""
+var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS

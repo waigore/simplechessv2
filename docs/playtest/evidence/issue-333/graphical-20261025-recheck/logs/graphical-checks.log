@@ -1,0 +1,128 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+display=macOS
+playtest_build=true
+session_id=sess-1792872307807-94680-playtest-395158
+main_size=(1280, 720)
+CHECK PASS mode-pick S1 has C2 Puzzle stream 
+CHECK PASS C2 label is the mode-pick puzzle key Puzzle stream
+CHECK PASS C2 is a 44px-class target (272.0, 49.0)
+screenshot=mode-pick-s1 size=(1280, 720)
+WARNING: puzzle stream: deal read failed (status)
+CHECK PASS NAV.T2 C2 enters puzzle-play puzzle-play
+CHECK PASS puzzle-play panel visible after C2 
+CHECK PASS R2 shows playerElo (DIF.C1: no hand-set control) Elo 1000
+r2_elo_rect=[P: (568.0, 12.0), S: (127.0, 48.0)] text=Elo 1000
+CHECK PASS #794 R2 Elo is one line, not a per-letter column (127.0, 48.0)
+CHECK PASS #794 R2 Elo text fits its box (127.0, 48.0)
+CHECK PASS S1 play state on deal S1
+solving_side=white side_to_move=white
+CHECK PASS R2 result cue node exists 
+screenshot=puzzle-play-s1 size=(1280, 720)
+WARNING: puzzle stream: deal read failed (status)
+CHECK PASS solved puzzle shows cue_solved cue_solved
+r2_cue_rect=[P: (662.0, 12.0), S: (99.0, 48.0)] text=Solved
+CHECK PASS #794 result cue carries the owner copy Solved
+CHECK PASS #794 result cue is one line (99.0, 48.0)
+screenshot=puzzle-play-solved size=(1280, 720)
+WARNING: puzzle stream: deal read failed (status)
+time_repeat=1 status=ok samples=5 max_ms=5.654
+CHECK PASS SIT.4 frame-time report 1 closed with samples {"n":5,"status":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+WARNING: puzzle stream: deal read failed (status)
+time_repeat=2 status=ok samples=5 max_ms=1.85185185185185
+CHECK PASS SIT.4 frame-time report 2 closed with samples {"n":5,"status":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+WARNING: puzzle stream: deal read failed (status)
+time_repeat=3 status=ok samples=5 max_ms=2.31481481481482
+CHECK PASS SIT.4 frame-time report 3 closed with samples {"n":5,"status":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+CHECK PASS S2 confirm node exists 
+confirm_box_rect=[P: (500.0, 220.0), S: (280.0, 140.0)]
+CHECK PASS C5 Leave asks confirm (S2) S2
+stream_confirm_text=Leave the puzzle stream?
+CHECK PASS S2 raises the named leave_confirm copy Leave the puzzle stream?
+screenshot=puzzle-play-s2-leave-confirm size=(1280, 720)
+confirm_diff_px=37963 unique_colours_closed=121 unique_colours_open=633
+CHECK PASS #793 the S2 confirm paints over the board 37963
+CHECK PASS #793 the S2 confirm draws text and a panel 633
+CHECK PASS S2 cancel stays on puzzle-play puzzle-play
+CHECK PASS S2 cancel returns to S1 
+CHECK PASS S2 cancel keeps the puzzle open 
+CHECK PASS S2 cancel does not score the open puzzle 
+screenshot=puzzle-play-s2-cancelled size=(1280, 720)
+CHECK PASS leave confirm → mode-pick mode-pick
+screenshot=mode-pick-after-leave size=(1280, 720)
+WARNING: puzzle stream: deal read failed (status)
+CHECK PASS C2 re-enters the stream 
+CHECK PASS last-rank place enters S4 S4
+screenshot=puzzle-play-s4-promotion size=(1280, 720)
+promote_name_in_rect=queen rect=[P: (491.0, 103.0), S: (57.0, 27.0)] diff_px=374 unique=83
+CHECK PASS #795 the S4 queen label paints 374
+promote_name_in_rect=rook rect=[P: (576.0, 103.0), S: (43.0, 27.0)] diff_px=306 unique=75
+CHECK PASS #795 the S4 rook label paints 306
+promote_name_in_rect=bishop rect=[P: (647.0, 103.0), S: (58.0, 27.0)] diff_px=427 unique=97
+CHECK PASS #795 the S4 bishop label paints 427
+promote_name_in_rect=knight rect=[P: (733.0, 103.0), S: (56.0, 27.0)] diff_px=415 unique=89
+CHECK PASS #795 the S4 knight label paints 415
+CHECK PASS #795 queen name label exists 
+promote_name=queen rect=[P: (491.0, 103.0), S: (57.0, 27.0)] text=Queen
+CHECK PASS #795 queen name is visible copy Queen
+CHECK PASS #795 queen name is not clipped (57.0, 27.0)
+CHECK PASS #795 rook name label exists 
+promote_name=rook rect=[P: (576.0, 103.0), S: (43.0, 27.0)] text=Rook
+CHECK PASS #795 rook name is visible copy Rook
+CHECK PASS #795 rook name is not clipped (43.0, 27.0)
+CHECK PASS #795 bishop name label exists 
+promote_name=bishop rect=[P: (647.0, 103.0), S: (58.0, 27.0)] text=Bishop
+CHECK PASS #795 bishop name is visible copy Bishop
+CHECK PASS #795 bishop name is not clipped (58.0, 27.0)
+CHECK PASS #795 knight name label exists 
+promote_name=knight rect=[P: (733.0, 103.0), S: (56.0, 27.0)] text=Knight
+CHECK PASS #795 knight name is visible copy Knight
+CHECK PASS #795 knight name is not clipped (56.0, 27.0)
+WARNING: puzzle stream: deal read failed (status)
+CHECK PASS C6 queen commit succeeds 
+screenshot=puzzle-play-after-promotion size=(1280, 720)
+refused_ui_state=S5 cue=
+CHECK PASS a refused place enters S5 S5
+CHECK PASS a refused place is not a wrong move 
+s5_status_text=Refused place rect=[P: (16.0, 68.0), S: (1248.0, 27.0)]
+screenshot=puzzle-play-s5-refused size=(1280, 720)
+abandon_confirm_kind=abandon_confirm
+screenshot=puzzle-play-s2-abandon-confirm size=(1280, 720)
+CHECK PASS #793 the Abandon confirm paints too 37964
+WARNING: puzzle stream: deal read failed (status)
+WARNING: puzzle stream: deal read failed (status)
+abandon_ui_state=S1 cue=cue_abandon
+CHECK PASS confirming Abandon shows cue_abandon cue_abandon
+screenshot=puzzle-play-abandoned size=(1280, 720)
+save_box_rect=[P: (500.0, 220.0), S: (280.0, 120.0)]
+ERROR: PersistStore: forced write failure
+save_failure_visible=true ui_state=S3
+CHECK PASS the store's write failure raises S3 
+screenshot=puzzle-play-s3-save-failure size=(1280, 720)
+save_diff_px=33542 unique_colours_open=338
+CHECK PASS #793 the S3 save-failure prompt paints 33542
+CHECK PASS C5 stays usable in S3 
+WARNING: puzzle stream: deal read failed (status)
+screenshot=puzzle-play-after-dismiss size=(1280, 720)
+touch_target=Reveal size=(408.0, 49.0)
+touch_target=Abandon size=(408.0, 49.0)
+touch_target=LeaveStream size=(408.0, 49.0)
+touch_target=ConfirmStream size=(109.0, 49.0)
+touch_target=CancelStream size=(96.0, 49.0)
+touch_target=DismissSave size=(232.0, 49.0)
+CHECK PASS C3 is a 44px-class target (408.0, 49.0)
+CHECK PASS C4 is a 44px-class target (408.0, 49.0)
+CHECK PASS C5 is a 44px-class target (408.0, 49.0)
+WARNING: puzzle stream: deal read failed (status)
+orientation_leg=white solving_side=white white_seat=bottom
+CHECK PASS R1 solving side is white (mate fixture) white
+CHECK PASS R1 board faces the solving side (white) bottom
+screenshot=puzzle-play-orientation-white size=(1280, 720)
+TIME_REPORTS=[{"detail":"","events":{"end":{},"start":{"TEL.1":"measure.start","TEL.2":1792872308027,"TEL.3":"sess-1792872307807-94680-playtest-395158","TEL.4":"PTU-puzzle-play","TEL.5":"pass"}},"kind":"frame_times","max_ms":5.654,"mode":"puzzle-play","repeat":1,"sample_count":5,"samples":[2.72,5.224,5.654,1.229,1.189],"solver":"white","status":"ok"},{"detail":"","events":{"end":{},"start":{"TEL.1":"measure.start","TEL.2":1792872308072,"TEL.3":"sess-1792872307807-94680-playtest-395158","TEL.4":"PTU-puzzle-play","TEL.5":"pass"}},"kind":"frame_times","max_ms":1.85185185185185,"mode":"puzzle-play","repeat":2,"sample_count":5,"samples":[0.892,1.85185185185185,1.85185185185185,1.85185185185185,1.85185185185185],"solver":"white","status":"ok"},{"detail":"","events":{"end":{},"start":{"TEL.1":"measure.start","TEL.2":1792872308124,"TEL.3":"sess-1792872307807-94680-playtest-395158","TEL.4":"PTU-puzzle-play","TEL.5":"pass"}},"kind":"frame_times","max_ms":2.31481481481482,"mode":"puzzle-play","repeat":3,"sample_count":5,"samples":[2.08333333333333,2.08333333333333,2.08333333333333,2.31481481481482,2.08333333333333],"solver":"white","status":"ok"}]
+FAILURES=[]
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+EXIT=0

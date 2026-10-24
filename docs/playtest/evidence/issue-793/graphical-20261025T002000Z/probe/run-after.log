@@ -1,0 +1,83 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+ENV build=Simple Chess godot=4.7.2-stable (official)
+ENV display=macOS frame=(1280.0, 720.0)
+{"TEL.1":"puzzle.enter","TEL.2":1792865004990,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _run (res://zz_probe793_prompts.gd:47)
+         [7] _settle (res://zz_probe793_prompts.gd:88)
+SHOT /tmp/shots793h/after-01-mode-pick.png
+{"TEL.1":"puzzle.confirm","TEL.2":1792865005084,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.5":"leave_confirm"}
+SHOT /tmp/shots793h/after-02-puzzle-s1.png
+DBG state after C5=S2
+DBG present flow state=S2
+{"TEL.1":"puzzle.cancel","TEL.2":1792865005176,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.5":"ok"}
+SHOT /tmp/shots793h/after-03-puzzle-s2-leave-confirm.png
+RECT StreamConfirm visible_in_tree=false rect=[P: (500.0, 220.0), S: (280.0, 140.0)]
+  PROBE centre (640, 290) (0.9098, 0.8353, 0.7098, 1.0)
+  PROBE corner (505, 225) (0.9098, 0.8353, 0.7098, 1.0)
+  PROBE copy_line (640, 257) (0.9098, 0.8353, 0.7098, 1.0)
+  PROBE control (585, 307) (0.5451, 0.3529, 0.2353, 1.0)
+DBG present flow state=S1
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _run (res://zz_probe793_prompts.gd:64)
+       [9] _present (res://zz_probe793_prompts.gd:98)
+       [10] _settle (res://zz_probe793_prompts.gd:88)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792865005269,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792865005273,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792865005273,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+SHOT /tmp/shots793h/after-04-puzzle-s2-cancelled.png
+DBG present flow state=S3
+{"TEL.1":"puzzle.dismiss","TEL.2":1792865005366,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] control (res://puzzle_play_flow.gd:183)
+         [6] _on_puzzle_play_control (res://session_router.gd:781)
+         [7] handle_control (res://session_router.gd:202)
+         [8] _run (res://zz_probe793_prompts.gd:70)
+         [9] _present (res://zz_probe793_prompts.gd:98)
+         [10] _settle (res://zz_probe793_prompts.gd:88)
+SHOT /tmp/shots793h/after-05-puzzle-s3-save-failure.png
+RECT SaveFailure visible_in_tree=false rect=[P: (500.0, 220.0), S: (280.0, 136.0)]
+  PROBE centre (640, 288) (0.9098, 0.8353, 0.7098, 1.0)
+  PROBE corner (505, 225) (0.9098, 0.8353, 0.7098, 1.0)
+  PROBE copy_line (640, 257) (0.9098, 0.8353, 0.7098, 1.0)
+  PROBE control (640, 307) (0.5451, 0.3529, 0.2353, 1.0)
+{"TEL.1":"shared.start","TEL.2":1792865005461,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792865005503,"TEL.3":"sess-1792865004754-41016-playtest-384644","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+SHOT /tmp/shots793h/after-06-shared-play-resign-control.png
+ERROR: Node not found: "ScreenHost/PuzzlePlay/ResignConfirm" (relative to "/root/Presentation").
+   at: get_node (scene/main/node.cpp:1976)
+   GDScript backtrace (most recent call first):
+       [0] _shot (res://zz_probe793_prompts.gd:111)
+SCRIPT ERROR: Cannot call method 'is_visible_in_tree' on a null value.
+          at: _shot (res://zz_probe793_prompts.gd:112)
+          GDScript backtrace (most recent call first):
+              [0] _shot (res://zz_probe793_prompts.gd:112)
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

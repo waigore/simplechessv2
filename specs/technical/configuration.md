@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 | S1 | Design tunables table | Compile-time / data constants mirroring `CFG.*` | Client boot | Session / Domain consumers |
 | S2 | Persist document | JSON via [`CTR-persist-document`](contracts/persist-document.md) | Cold open | [`CMP-persist-store`](components/persist-store.md) |
 | S3 | Runtime options | In-memory `GS.*` configuration fields | Mode setup / play | Shared / puzzle sessions |
-| S4 | String tables | Compile-time copy keyed by `GS.locale` (`en`, `zh-Hant`, `ja`). Shape, key naming, completeness, and the `en` source per [`SCH-string-table`](schemata/string-table.md) and [`CTR-localization`](contracts/localization.md). Not a persist field ([`fields-persist`](../design/game-state/fields-persist.md)). Initial value is the browser locale when shipped, else `en` ([`experience.md`](../design/experience.md)). | Boot, and again when locale changes | [`CMP-session-router`](components/session-router.md) owns `GS.locale` |
+| S4 | String tables | Compile-time copy keyed by `GS.locale` (`en`, `zh-Hant`, `ja`). Shape, key naming, completeness, and the `en` source per [`SCH-string-table`](schemata/string-table.md) and [`CTR-localization`](contracts/localization.md). Not a persist field ([`fields-persist`](../design/game-state/fields-persist.md)). Initial value is the browser locale when shipped, else `en` ([`experience.md`](../design/experience.md)). | Boot; again when locale changes | [`CMP-session-router`](components/session-router.md) owns `GS.locale` |
 
 ## Tables and tunables
 
@@ -28,19 +28,19 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 | T6 | advice_time_ms | `CFG.ADVICE_TIME_MS` | int ms | 2000 |
 | T7 | elo_recent_window | `CFG.ELO_RECENT_WINDOW` | int puzzles | 20 |
 | T8 | elo_band_widen | `CFG.ELO_BAND_WIDEN` | int Elo | 50 |
-| T9 | advice_endpoint | — (integration value, not a design param; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default |
-| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; T9 and T10 serve the catalog route too |
+| T9 | advice_endpoint | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default; ships set (`B5`) |
+| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; ships set; serves the catalog route too (`B5`) |
 | T11 | catalog_rate_limit | — (integration value; [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | int requests per key per minute | 30 |
 
 ## Binding
 
 | ID | Consumer | Reads | Fail if missing |
 |----|----------|-------|-----------------|
-| B1 | [`CMP-shared-game-session`](components/shared-game-session.md) | T1 T2; S3 clock options | Use design defaults; log |
-| B2 | [`CMP-puzzle-progression`](components/puzzle-progression.md) | T3 T4 T5 T7 T8; S2 Elo | [`FAIL.T3`](failures.md) persist read fail: use T5 |
-| B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: send 2000 as the O1 `time_ms` (the design default; the search stop stays [`CMP-advice-backend`](components/advice-backend.md) R3). T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
-| B4 | [`CMP-presentation`](components/presentation.md) | S4 table for the current `GS.locale`, through [`CTR-localization`](contracts/localization.md) O1 | Unshipped locale reads `en`; a key missing in a locale reads `en` and logs ([`FAIL.T13`](failures.md)); a switch applies immediately ([`experience.md`](../design/experience.md)) |
-| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | T9 or T10 missing: every deal fails ([`FAIL.T14`](failures.md)); Elo kept; log |
+| B1 | [`CMP-shared-game-session`](components/shared-game-session.md) | T1 T2; S3 clock options | Design defaults; log |
+| B2 | [`CMP-puzzle-progression`](components/puzzle-progression.md) | T3 T4 T5 T7 T8; S2 Elo | [`FAIL.T3`](failures.md) read fail: use T5 |
+| B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: send 2000 as the O1 `time_ms` (design default; the search stop stays [`CMP-advice-backend`](components/advice-backend.md) R3). T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
+| B4 | [`CMP-presentation`](components/presentation.md) | S4 table for `GS.locale`, via [`CTR-localization`](contracts/localization.md) O1 | Unshipped locale or missing key reads `en` ([`FAIL.T13`](failures.md)); a switch applies immediately ([`experience.md`](../design/experience.md)) |
+| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
 
 ## Diagram
 

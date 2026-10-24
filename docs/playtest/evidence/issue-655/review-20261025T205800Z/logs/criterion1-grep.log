@@ -1,0 +1,13 @@
+## Build identity (verify pass, unattended, 2026-10-25, parallel id 1)
+commit: 906b8b374abf24d28b71f31ca01f23a4b0ad12e7 Record the #655 re-run on 6a969ee (#655 impl11, held spent) (#841)
+godot: 4.7.2.stable.official.ed1daf0bf
+
+## Criterion 1 — specs sentence (catalog ships enabled in the release)
+specs/technical/components/catalog-service.md:56:Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on that server's deploy path, which the operator owns (ADR-0015). Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
+specs/technical/configuration.md:43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+
+landing commits:
+a94210d State that the catalog route ships enabled (#648) (#815)
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+a94210d ancestor: yes
+a9192a0 ancestor: yes
