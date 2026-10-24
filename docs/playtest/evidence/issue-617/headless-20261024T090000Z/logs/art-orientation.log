@@ -1,0 +1,41 @@
+engine=4.7.2-stable (official)
+build=origin/main@3f81b59
+session_id=probe-617-1792798784
+catalog_textures_loaded=13/13
+FAIL bottom piece_e1 art top lands right-above, want left-above
+bottom e1 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=0.0000 art_top_corner=right-above FAIL
+FAIL bottom piece_e8 art top lands right-above, want left-above
+bottom e8 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=0.0000 art_top_corner=right-above FAIL
+FAIL bottom piece_a1 art top lands right-above, want left-above
+bottom a1 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=0.0000 art_top_corner=right-above FAIL
+FAIL bottom piece_h8 art top lands right-above, want left-above
+bottom h8 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=0.0000 art_top_corner=right-above FAIL
+FAIL bottom piece_d1 art top lands right-above, want left-above
+bottom d1 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=0.0000 art_top_corner=right-above FAIL
+FAIL bottom piece_d8 art top lands right-above, want left-above
+bottom d8 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=0.0000 art_top_corner=right-above FAIL
+bottom pieces_checked=6
+top e1 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=3.1416 art_top_corner=right-below PASS
+top e8 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=3.1416 art_top_corner=right-below PASS
+top a1 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=3.1416 art_top_corner=right-below PASS
+top h8 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=3.1416 art_top_corner=right-below PASS
+top d1 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=3.1416 art_top_corner=right-below PASS
+top d8 local_scale=(0.00166,-0.00166) global_det=+0.014 global_rot=3.1416 art_top_corner=right-below PASS
+top pieces_checked=6
+art white|pawn 512x512 widest_ink_row=370 (0.72 of height) widest_run=94 middle_run=25 -> upright-as-stored (widest row = base, in the lower half)
+FAIL art white|knight stores its base at the top of the PNG
+art white|knight 512x512 widest_ink_row=215 (0.42 of height) widest_run=121 middle_run=85 -> VERTICALLY MIRRORED artwork (widest row = base at the top)
+art white|bishop 512x512 widest_ink_row=405 (0.79 of height) widest_run=97 middle_run=53 -> upright-as-stored (widest row = base, in the lower half)
+art white|rook 512x512 widest_ink_row=387 (0.76 of height) widest_run=100 middle_run=52 -> upright-as-stored (widest row = base, in the lower half)
+art white|queen 512x512 widest_ink_row=414 (0.81 of height) widest_run=100 middle_run=34 -> upright-as-stored (widest row = base, in the lower half)
+art white|king 512x512 widest_ink_row=458 (0.89 of height) widest_run=100 middle_run=32 -> upright-as-stored (widest row = base, in the lower half)
+art black|pawn 512x512 widest_ink_row=378 (0.74 of height) widest_run=92 middle_run=26 -> upright-as-stored (widest row = base, in the lower half)
+FAIL art black|knight stores its base at the top of the PNG
+art black|knight 512x512 widest_ink_row=196 (0.38 of height) widest_run=119 middle_run=86 -> VERTICALLY MIRRORED artwork (widest row = base at the top)
+art black|bishop 512x512 widest_ink_row=405 (0.79 of height) widest_run=94 middle_run=51 -> upright-as-stored (widest row = base, in the lower half)
+art black|rook 512x512 widest_ink_row=383 (0.75 of height) widest_run=98 middle_run=54 -> upright-as-stored (widest row = base, in the lower half)
+art black|queen 512x512 widest_ink_row=424 (0.83 of height) widest_run=100 middle_run=35 -> upright-as-stored (widest row = base, in the lower half)
+art black|king 512x512 widest_ink_row=431 (0.84 of height) widest_run=99 middle_run=31 -> upright-as-stored (widest row = base, in the lower half)
+playtest_build=true
+telemetry_verdict=pass
+RESULT fails=8 FAIL

@@ -1,9 +1,15 @@
 class_name ChromePlacementTest
 extends SceneTree
-## #616 — every chrome panel is horizontally centered in its parent at a fixed
-## vertical top, at the 1280×720 reference frame and at a second frame size.
-## A fixed x offset fails the second frame, so the guard cannot be satisfied by
-## editing a constant (D5).
+## #616 — every chrome panel draws horizontally centered in its parent at a
+## fixed vertical top, at the 1280×720 reference frame and at two other frame
+## sizes. A fixed x offset fails the second frame, so the guard cannot be
+## satisfied by editing a constant (D5).
+##
+## Each panel is measured on its **drawn** rect (`get_global_rect()`) after the
+## layout has settled: `Control.size` and `position` can agree with each other
+## while the drawn box has grown to one side of the anchor. The copy case grows
+## a panel's content past its `custom_minimum_size` — what localized copy does —
+## which is the shape that drifts when `grow_horizontal` is left at `FILL`.
 
 const TOLERANCE_PX := 1.0
 ## Panel path → the vertical top it lands at (the mockup's centered column).
@@ -13,7 +19,10 @@ const SCREEN_PANELS := {
 	"ScreenHost/SharedResult": 120.0,
 }
 const DIALOGS := {"ResignConfirm": 200.0, "StreamConfirm": 220.0, "SaveFailure": 220.0}
-const FRAME_SIZES := [Vector2(1280, 720), Vector2(1600, 720)]
+const FRAME_SIZES := [Vector2(1280, 720), Vector2(1600, 900), Vector2(390, 844)]
+## Longer than any shipped string, and unwrapped, so the label's own min width
+## forces its containing box past the width it was placed at.
+const WIDENING_COPY := "Résignez la partie et retournez au choix du mode, s'il vous plaît"
 
 var _presentation: Presentation
 var _router: SessionRouter
@@ -51,19 +60,43 @@ func _run() -> void:
 
 ## Every screen panel is a direct child of the full-rect ScreenHost; every
 ## dialog is a child of a full-rect play panel, so its containing rect is the
-## frame. Each is driven open through the router, not by forcing visibility.
+## frame. Each is driven open through the router, never by forcing visibility.
 func _check_frame(frame: Vector2) -> String:
 	_presentation.size = frame
 	await _settle()
 	_router._go_mode_pick("S1")
 	await _settle()
+	var problem := await _sweep_screens(frame)
+	if not problem.is_empty():
+		return problem
+	problem = await _sweep_shared_dialogs(frame)
+	if not problem.is_empty():
+		return problem
+	return await _sweep_puzzle_dialogs(frame)
+
+
+func _sweep_screens(frame: Vector2) -> String:
+	var problem := _sweep(SCREEN_PANELS, frame)
+	if not problem.is_empty():
+		return problem
+	_widen_copy(_presentation.get_node("ScreenHost/ModePick"))
+	await _settle()
+	return _sweep(SCREEN_PANELS, frame)
+
+
+func _sweep_shared_dialogs(frame: Vector2) -> String:
 	_router.handle_control("mode-pick", "C1")
 	_router.clock = "untimed"
 	_router.handle_control("shared-setup", "C5")
 	await _settle()
 	_router.handle_control("shared-play", "C4")
 	await _settle()
-	var problem := _sweep(SCREEN_PANELS, frame, "")
+	var problem := _centered(_child("SharedPlay", "ResignConfirm"), DIALOGS["ResignConfirm"], frame)
+	if not problem.is_empty():
+		return problem
+	_widen_copy(_child("SharedPlay", "ResignConfirm"))
+	await _settle()
+	problem = _centered(_child("SharedPlay", "ResignConfirm"), DIALOGS["ResignConfirm"], frame)
 	if not problem.is_empty():
 		return problem
 	_router.handle_control("shared-play", "cancel")
@@ -71,13 +104,31 @@ func _check_frame(frame: Vector2) -> String:
 	_router.handle_control("shared-play", "C4")
 	_router.handle_control("shared-play", "confirm")
 	await _settle()
-	problem = _sweep(SCREEN_PANELS, frame, "")
-	if not problem.is_empty():
-		return problem
-	return await _sweep_dialogs(frame)
+	return _sweep(SCREEN_PANELS, frame)
 
 
-func _sweep(panels: Dictionary, frame: Vector2, _unused: String) -> String:
+func _sweep_puzzle_dialogs(frame: Vector2) -> String:
+	_router._go_mode_pick("S1")
+	await _settle()
+	_router.handle_control("mode-pick", "C2")
+	await _settle()
+	_deal_fixture()
+	await _settle()
+	_router.handle_control("puzzle-play", "C5")
+	await _settle()
+	for node_name: String in ["StreamConfirm", "SaveFailure"]:
+		var problem := _centered(_child("PuzzlePlay", node_name), DIALOGS[node_name], frame)
+		if not problem.is_empty():
+			return problem
+		_widen_copy(_child("PuzzlePlay", node_name))
+		await _settle()
+		problem = _centered(_child("PuzzlePlay", node_name), DIALOGS[node_name], frame)
+		if not problem.is_empty():
+			return problem
+	return ""
+
+
+func _sweep(panels: Dictionary, frame: Vector2) -> String:
 	for path: String in panels:
 		var panel := _presentation.get_node(path) as Control
 		var problem := _centered(panel, panels[path], frame)
@@ -86,39 +137,16 @@ func _sweep(panels: Dictionary, frame: Vector2, _unused: String) -> String:
 	return ""
 
 
-func _sweep_dialogs(frame: Vector2) -> String:
-	_router._go_mode_pick("S1")
-	await _settle()
-	_router.handle_control("mode-pick", "C1")
-	_router.clock = "untimed"
-	_router.handle_control("shared-setup", "C5")
-	_router.handle_control("shared-play", "C4")
-	await _settle()
-	var problem := _centered(_child("SharedPlay", "ResignConfirm"), DIALOGS["ResignConfirm"], frame)
-	if not problem.is_empty():
-		return problem
-	_router.handle_control("shared-play", "cancel")
-	_router._go_mode_pick("S1")
-	await _settle()
-	var puzzle_btn := (
-		(_presentation.get_node("ScreenHost/ModePick") as Control).find_child(
-			"PuzzleStream", true, false
-		)
-		as Button
-	)
-	if puzzle_btn == null:
-		return "mode pick has no Puzzle stream control"
-	puzzle_btn.pressed.emit()
-	await _settle()
-	_deal_fixture()
-	await _settle()
-	_router.handle_control("puzzle-play", "C5")
-	await _settle()
-	for node_name: String in ["StreamConfirm", "SaveFailure"]:
-		problem = _centered(_child("PuzzlePlay", node_name), DIALOGS[node_name], frame)
-		if not problem.is_empty():
-			return problem
-	return ""
+## #616 — what a translation does to a panel: a label that cannot wrap grows the
+## box past the width it was placed at, so the drawn centre can drift off the
+## anchor while `position.x` still reads centered.
+func _widen_copy(box: Control) -> void:
+	if box == null:
+		return
+	for node: Node in box.find_children("*", "Label", true, false):
+		var label := node as Label
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		label.text = WIDENING_COPY
 
 
 ## The read path needs a catalog; C5 only needs an open puzzle, so seed one
@@ -158,8 +186,8 @@ func _child(panel_name: String, node_name: String) -> Control:
 
 
 func _settle() -> void:
-	await process_frame
-	await process_frame
+	for _i in 4:
+		await process_frame
 
 
 func _centered(panel: Control, top_px: float, frame: Vector2) -> String:
@@ -169,7 +197,10 @@ func _centered(panel: Control, top_px: float, frame: Vector2) -> String:
 	var rect := panel.get_global_rect()
 	var dx := absf(rect.get_center().x - parent_rect.get_center().x)
 	if dx > TOLERANCE_PX:
-		return "%s centre x off by %s px at %s (left=%s)" % [panel.name, dx, frame, rect.position.x]
+		return (
+			"%s drawn centre x off by %s px at %s (drawn width=%s, placed width=%s)"
+			% [panel.name, dx, frame, rect.size.x, panel.custom_minimum_size.x]
+		)
 	var dy := absf(rect.position.y - parent_rect.position.y - top_px)
 	if dy > TOLERANCE_PX:
 		return "%s top off by %s px at %s (top=%s)" % [panel.name, dy, frame, rect.position.y]
