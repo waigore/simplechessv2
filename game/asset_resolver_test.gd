@@ -80,7 +80,11 @@ func _after_boot() -> void:
 	if not problem.is_empty():
 		_fail(problem)
 		return
-	if not _check_unresolved() or not await _check_preload_gap() or not _check_vorbis_copy(music_id):
+	if (
+		not _check_unresolved()
+		or not await _check_preload_gap()
+		or not _check_vorbis_copy(music_id)
+	):
 		return
 	if not _check_cjk_font_faces():
 		return
@@ -159,12 +163,19 @@ func _check_boot_failure_surfaced() -> bool:
 	var probe := AssetResolver.new()
 	probe.playtest_override = 1
 	root.add_child(probe)
-	probe.apply_manifest(
-		{
-			"asset_root": str(_manifest.get("asset_root", "")),
-			"groups": {"boot": ["missing-boot"], "play": [], "ambient": []},
-			"assets": {"missing-boot": {"state": "approved", "kind": "icons", "files": ["icons/none.svg"]}},
-		}
+	(
+		probe
+		. apply_manifest(
+			{
+				"asset_root": str(_manifest.get("asset_root", "")),
+				"groups": {"boot": ["missing-boot"], "play": [], "ambient": []},
+				"assets":
+				{
+					"missing-boot":
+					{"state": "approved", "kind": "icons", "files": ["icons/none.svg"]}
+				},
+			}
+		)
 	)
 	var ready: Array[bool] = [false]
 	var failed: Array[int] = [-1]
