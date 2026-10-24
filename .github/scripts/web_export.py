@@ -58,9 +58,11 @@ LOADABLE_SUFFIXES = {".svg", ".png", ".woff2", ".ttf", ".otf", ".ogg"}
 # arrives in the PCK, so those bytes are what the engine-boundary check reads
 # there; the loose scene artifacts are read the same way. Each engine name is
 # anchored so a word the app happens to write ("stockfishing") does not redden a
-# build, and the engine's file kinds are refused loose or packed.
+# build. The engine's own weight in a browser is a `.wasm` peer; Godot's build
+# entry points (`index.*`) are the app itself, never an engine file.
 ENGINE_BUNDLE_NAMES = re.compile(r"(?<![a-z0-9])(?:stockfish|sf_1[0-9])(?![a-z0-9])", re.IGNORECASE)
 ENGINE_BUNDLE_SUFFIXES = {".wasm", ".nnue"}
+APP_ENTRY_POINTS = {"index.wasm", "index.pck", "index.html"}
 ENGINE_TEXT_ARTIFACTS = ("index.pck", "index.html")
 INJECTED_ENGINE_NAME = "stockfish"
 INJECTED_ENGINE_ENDPOINT = "uci://stockfish.local:7700"
@@ -298,10 +300,11 @@ def ensure_no_client_engine(shipped: Path) -> None:
     contra-positive ones on a synthetic directory the check writes itself.
     """
     for path in _data_files(shipped):
+        relative = _relative(path, shipped)
+        if relative in APP_ENTRY_POINTS:
+            continue
         if path.suffix.lower() in ENGINE_BUNDLE_SUFFIXES or ENGINE_BUNDLE_NAMES.search(path.name):
-            raise BundleError(
-                f"the shipped tree carries an engine file: {_relative(path, shipped)}"
-            )
+            raise BundleError(f"the shipped tree carries an engine file: {relative}")
     for name in ENGINE_TEXT_ARTIFACTS:
         artifact = shipped / name
         if not artifact.is_file():

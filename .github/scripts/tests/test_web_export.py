@@ -338,7 +338,9 @@ class WebExportTest(unittest.TestCase):
         return shipped
 
     def test_engine_check_passes_a_tree_with_no_engine(self) -> None:
-        web_export.ensure_no_client_engine(self._clean_tree())
+        shipped = self._clean_tree()
+        (shipped / "index.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00")
+        web_export.ensure_no_client_engine(shipped)
 
     def test_engine_check_refuses_an_engine_name_in_the_pack(self) -> None:
         shipped = self._clean_tree()

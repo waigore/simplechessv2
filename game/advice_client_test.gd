@@ -272,7 +272,10 @@ func _check_offline_clears() -> String:
 		var later: Array = session.advice_control("poll").get("events", [])
 		if not later.is_empty():
 			return "a failed stream must stop, no further delivery (FAIL.T1): %s" % [later]
-	if session.play_state()["advice_best_move"] != null or session.play_state()["advice_eval"] != null:
+	if (
+		session.play_state()["advice_best_move"] != null
+		or session.play_state()["advice_eval"] != null
+	):
 		return "nothing may be delivered after the failure (FAIL.T1)"
 	return ""
 
