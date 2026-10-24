@@ -9,7 +9,7 @@ At `status:pending-acceptance` (`accept-project-issue`) when the issue's deliver
 ## Select scope
 
 1. Read coverage **Mode** from the hub and the set from [`coverage.md`](coverage.md).
-2. Map the issue to design story IDs and UX journey or story IDs it can affect.
+2. Map the issue to the story rows it can affect, taking rows and their judging protocols from [`story-rows.md`](story-rows.md).
 3. Intersect (1) and (2). Never include view stories.
 4. For each selected **Design** protocol, schedule a **Headless** run only.
 5. For each selected **UX** protocol, schedule **Headless and Graphical** runs.
@@ -26,7 +26,7 @@ At `status:pending-acceptance` (`accept-project-issue`) when the issue's deliver
 1. Enter the start position (use `DBG.3` when the protocol is not reachable from the default start).
 2. Drive with player-facing controls and debug commands as the protocol requires.
 3. Observe via `DBG.2`, `DBG.4`, and telemetry (`TEL.*`). On Graphical, also observe rendered UI.
-4. Judge each cited story as pass, fail, or not-judged — per [`evidence.md`](evidence.md), against its design story (game outcome) or UX story/journey (interface operation).
+4. Judge each selected row as pass, fail, or not-judged, taking the row and its judging protocol from [`story-rows.md`](story-rows.md) and the outcome wording from [`evidence.md`](evidence.md); judge a design row against its game outcome and a UX row against its interface operation.
 5. Derive the protocol verdict, then write notes, logs, and `manifest.md` per [`evidence.md`](evidence.md). Write screenshots when the run has a display.
 
 A protocol is `pass` only when every cited story is `pass`. It is never `pass` while a contained story is `fail`, and it is `not-judged` when any cited story is `not-judged`. Outcomes are defined only in [`evidence.md`](evidence.md).
