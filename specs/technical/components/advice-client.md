@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Apply streamed best-move/eval onto play-state advice fields |
 | R4 | Cancel and clear on move, end, Off, offline, or leave Shared |
 | R5 | Never block local move apply |
-| R6 | Send advice traffic only to the configured endpoint, with the configured API key ([ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)) |
+| R6 | Send advice traffic only to the configured endpoint `T9`, with the configured API key `T10` ([`CFG`](../configuration.md) B3, [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)). Either value missing: Advice unavailable as [`FAIL.T1`](../failures.md) → `EX.error`, per `B3` and [`failures.md`](../failures.md) T1 |
 | R7 | Read `T6 advice_time_ms` ([`CFG`](../configuration.md) B3, default 2000) and send it as the `time_ms` of the [`CTR-advice-stream`](../contracts/advice-stream.md) O1 request; the search stop itself is [`CMP-advice-backend`](advice-backend.md) R3 |
 
 ## Communication
