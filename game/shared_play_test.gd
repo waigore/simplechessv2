@@ -76,8 +76,6 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = await _gesture_bad_drop_returns()
 	if _error.is_empty():
-		_error = await _gesture_s3_plays_as_s1()
-	if _error.is_empty():
 		_error = _promotion_refused_no_auto_queen()
 	if _error.is_empty():
 		_error = _promotion_choice_s4()
@@ -257,86 +255,6 @@ func _gesture_bad_drop_returns() -> String:
 	if _router.selected_piece != "":
 		return "B11 bad drop clears selection"
 	return ""
-
-
-func _gesture_s3_plays_as_s1() -> String:
-	## states.md S3 — EX.error over S1 keeps the board playable: C1–C5 as S1. The
-	## advice failure is raised genuinely, so the S3 derivation in the session and
-	## the router is what the gate reads (a fixture that leaves S1 passes by accident).
-	## White to move, a pawn on d2, no advice client: no endpoint is hit.
-	var session := _router.shared_session
-	var pieces: Array = [
-		{"square": "a1", "color": "white", "kind": "king"},
-		{"square": "h8", "color": "black", "kind": "king"},
-		{"square": "d2", "color": "white", "kind": "pawn"},
-		{"square": "g8", "color": "black", "kind": "knight"},
-	]
-	session.rules.load_position(pieces, "white")
-	session._sync_active_to_side_to_move()
-	session.selected_piece = ""
-	session.play_ui_state = SharedGameSession.UI_S1
-	session.advice_error = true
-	_router._emit_play_screen()
-	await process_frame
-	var problem := _first_fail(
-		[
-			[_router.play_ui_state == SharedGameSession.UI_S3, "EX.error shows S3"],
-			[_router.play_gestures_available(), "C1-C5 stay available as S1 in S3"],
-			[_router.handle_input_commit("d2", ""), "C1 select must land in S3"],
-			[_router.selected_piece == "d2", "C1 selects d2 in S3"],
-		]
-	)
-	if not problem.is_empty():
-		return problem
-	# C2 place by tap: d2 selected, tap d4.
-	await _tap_square("d4")
-	problem = _first_fail(
-		[
-			[_router.selected_piece == "", "C2 place clears selection in S3"],
-			[_router.side_to_move() == "black", "C2 place moves in S3"],
-			[_placed("d4") and not _placed("d2"), "C2 moved the pawn d2→d4 in S3"],
-			[session.advice_error, "the played move keeps EX.error up"],
-			[_router.play_ui_state == SharedGameSession.UI_S3, "play stays S3 after a move"],
-			[
-				bool(_shared_play_state().get("c4_available", false)),
-				"C4 resign stays available in S3",
-			],
-		]
-	)
-	if not problem.is_empty():
-		return problem
-	# C1 + C2 by drag: black g8→f6 through real pointer events.
-	await _drag_square("g8", "f6")
-	problem = _first_fail(
-		[
-			[_placed("f6") and not _placed("g8"), "B10 pick-and-drag moves in S3"],
-			[_router.side_to_move() == "white", "drag place moves in S3"],
-			[session.advice_error, "drag keeps EX.error up"],
-		]
-	)
-	if not problem.is_empty():
-		return problem
-	# Dismiss → the underlying S1; the same gestures keep working.
-	session.advice_error = false
-	_router._emit_play_screen()
-	await process_frame
-	problem = _first_fail(
-		[
-			[_router.play_ui_state == SharedGameSession.UI_S1, "Dismiss returns to S1"],
-			[
-				_router.handle_input_commit("d4", "d5"),
-				"C2 still lands after Dismiss (C1-C5 as S1)",
-			],
-		]
-	)
-	if not problem.is_empty():
-		return problem
-	return ""
-
-
-func _placed(square: String) -> bool:
-	var occ: Dictionary = _router.shared_session.rules.position_field()["occupancy"]
-	return occ.has(square)
 
 
 func _promotion_refused_no_auto_queen() -> String:

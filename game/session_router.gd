@@ -60,9 +60,10 @@ var play_ui_state: String:
 			return puzzle_flow.ui_state()
 		if shared_session == null:
 			return SharedGameSession.UI_S1
-		# One derivation (states.md S3): an advice failure is S3 over the session's
-		# own play state, so the gate and the screen read the same source.
-		return shared_session.ui_state()
+		# Have the session tell us the state it shows (states.md S3): the advice
+		# failure is S3 over its own play state, so the gate and the screen read
+		# the same source instead of a second copy of that rule.
+		return str(shared_session.play_state().get("ui_state", SharedGameSession.UI_S1))
 	set(value):
 		if puzzle_flow != null and stage == STAGE_PUZZLE_PLAY:
 			puzzle_flow.session.play_ui_state = value
