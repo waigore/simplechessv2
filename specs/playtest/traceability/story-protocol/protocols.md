@@ -10,7 +10,7 @@ Level and **Cites** are quoted from each protocol file, which remains the author
 
 | Level | Protocols | Rows judged | Notes |
 |-------|-----------|-------------|-------|
-| Design | 12 | 37 of 41 story rows | 4 row-level `none` ([#702](https://github.com/waigore/simplechessv2/issues/702), [#703](https://github.com/waigore/simplechessv2/issues/703)) |
+| Design | 12 | 40 of 41 story rows | 1 row-level `none` ([#703](https://github.com/waigore/simplechessv2/issues/703)) |
 | UX | 11 | 19 of 34 story rows | 15 row-level `none` ([#701](https://github.com/waigore/simplechessv2/issues/701)) |
 
 ## How to read a row
