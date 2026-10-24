@@ -19,3 +19,5 @@ Each topic in the table is covered, or marked N/A. Fill Applicability with "Appl
 ## Splitting
 
 If the file passes 500 words, move the alignment table to `traceability/alignment.md`. Leave a summary and a link, and update `playtest.md`.
+
+A story-to-protocol map may sit alongside it as a `traceability/story-protocol/` set: the index `traceability/story-protocol.md` plus per-view files under `traceability/story-protocol/`. Each file in the set states the judging rule only by citing the playtest spec that owns it; the set defines no rule of its own. Keep every file in the set under 500 words and link the index from `playtest.md`.
