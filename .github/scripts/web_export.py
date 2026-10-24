@@ -92,6 +92,10 @@ ENGINE_ENDPOINT_MARKERS = re.compile(
 )
 ENGINE_BUNDLE_SUFFIXES = {".wasm", ".nnue"}
 APP_ENTRY_POINTS = {"index.wasm", "index.pck", "index.html"}
+## The three entry points the bundle check reads. `index.wasm` is read too: the
+## engine boundary is not the PCK's alone (#560).
+ENGINE_READ_ARTIFACTS = ("index.pck", "index.wasm", "index.html")
+## The ones whose bytes are read as text.
 ENGINE_TEXT_ARTIFACTS = ("index.pck", "index.html")
 INJECTED_ENGINE_NAME = "stockfish"
 INJECTED_ENGINE_ENDPOINT = "uci://stockfish.local:7700"
@@ -551,7 +555,8 @@ def ensure_no_client_engine(shipped: Path) -> None:
     the client talks only to the advice backend, so an export that names the
     engine, ships an engine file kind, or carries a UCI engine endpoint must not
     publish. The PCK is where the tree's client code lives, so it is read as text
-    beside `index.html`; every other file is read by its kind. One function
+    beside `index.html`; every other file is read by its kind, and a tree missing
+    any of the three entry points is refused rather than passed unread (#560). One function
     produces every verdict: the passing one on a real export and the
     contra-positive ones on a synthetic directory the check writes itself.
     """
@@ -561,11 +566,22 @@ def ensure_no_client_engine(shipped: Path) -> None:
             continue
         if path.suffix.lower() in ENGINE_BUNDLE_SUFFIXES or ENGINE_BUNDLE_NAMES.search(path.name):
             raise BundleError(f"the shipped tree carries an engine file: {relative}")
-    for name in ENGINE_TEXT_ARTIFACTS:
+    # Every read is required, `index.wasm` included: a tree whose reads cannot
+    # all run is a tree the check did not clear (#560, ADR-0002 row "No client
+    # Stockfish endpoint").
+    for name in ENGINE_READ_ARTIFACTS:
         artifact = shipped / name
         if not artifact.is_file():
             raise BundleError(f"the check reads {name}, but the shipped tree has none")
-        text = artifact.read_bytes()
+    # The WASM read is deliberately not textual: Godot's glue is a binary with
+    # the virtual paths it loads, so it is searched for the engine's file name
+    # only. Its own name is an app entry point and passes above.
+    wasm = (shipped / "index.wasm").read_bytes()
+    found = ENGINE_BUNDLE_NAMES.search(wasm.decode("utf-8", "replace"))
+    if found is not None:
+        raise BundleError(f"index.wasm names the engine ({found.group(0)})")
+    for name in ENGINE_TEXT_ARTIFACTS:
+        text = (shipped / name).read_bytes()
         found = ENGINE_BUNDLE_NAMES.search(text.decode("utf-8", "replace"))
         if found is not None:
             raise BundleError(f"{name} names the engine ({found.group(0)})")

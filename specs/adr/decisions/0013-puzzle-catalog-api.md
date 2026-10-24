@@ -19,7 +19,7 @@ Where is the puzzle catalog served from, and how may the browser read it? In sco
 ## Decision
 
 - The catalog API is a **second route on the advice Python server** ([ADR-0010](0010-advice-backend-stack.md)): same host, endpoint, **API key**, deploy path, cost. No new vendor.
-- The server stores the ADR-0008 snapshot and **selects one puzzle** per request by [DIF.Y1](../../design/difficulty.md): Rating within ±`CFG.ELO_MATCH_RANGE` of the sent Elo, preferring an id outside the sent recent ids, widening by `CFG.ELO_BAND_WIDEN` and/or allowing a recent id until one fits.
+- The server stores the ADR-0008 snapshot and **selects one puzzle** per request by [DIF.Y1](../../design/difficulty.md): Rating within ±`CFG.ELO_MATCH_RANGE` of the sent Elo, preferring an id outside the sent recent ids, then the `DIF.Y1` relax ladder until one fits.
 - A request carries **`GS.playerElo`**, recent solved ids, and the key; success returns **exactly one** `SCH-puzzle-catalog` F1–F13 record.
 - **No list, page, or file operation.** The raw export is never a public static file or client bytes. The snapshot is immutable once served; PuzzleIds stay its own.
 - A missing or wrong key, a refused rapid-fire request, or any other read failure returns **no record**: nothing is dealt and `GS.playerElo` is unchanged (`F-puzzle-catalog` X2).

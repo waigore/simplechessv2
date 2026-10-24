@@ -248,41 +248,76 @@ func _check_advice_off_clears_and_stops() -> String:
 	return ""
 
 
+## ADR-0002 §Validation "Backend failure clears advice" — FAIL.T1 and its
+## recovery R1 ("Stop eval; clear marks; retry when On+online", "No busy-loop")
+## plus F-move-advice R9. The stream fails **mid-flight**, after a successful E1
+## landed: the failure clears both marks, retires the peer, and the peer's late
+## delivery changes nothing. A local move never waiting is #559's measurement
+## (CTR-local-move G1, F-move-advice R6); here the move is asserted only as
+## "play continues" (FAIL.T1: the Shared game continues).
 func _check_offline_clears() -> String:
 	var shared := _shared()
 	var session: SharedGameSession = shared["session"]
-	var fake: FakeAdviceTransport = shared["fake"]
 	var live := _stream(session)
 	live.push_update({"best_move_uci": "d2d4", "eval_cp": 12})
 	session.advice_control("poll")
-	if session.play_state()["advice_eval"] != 12:
-		return "the update must show an eval before the failure"
+	var shown := session.play_state()
+	if shown["advice_eval"] != 12 or shown["advice_best_move"] == null:
+		return "the update must show a best move and an eval before the failure"
 	live.push_end(AdviceWireReader.REASON_ERROR)
 	var events: Array = session.advice_control("poll").get("events", [])
-	var state := session.play_state()
-	if bool(state["online"]):
-		return "a backend failure must clear GS.online (X3)"
-	# R9 / X3 clear both fields: a failed search leaves no mark and no number.
-	var cleared := state["advice_best_move"] == null and state["advice_eval"] == null
-	if not cleared:
-		return "going offline must clear both advice fields (R9, X3)"
-	var reported := _has_outcome(events, "advice.error", "unavailable")
-	var stopped := _stopped_after_failure(session)
-	if not reported:
-		return "FAIL.T1 must be reported for EX.error and telemetry"
-	if not (session.gestures_available() and stopped):
-		var detail := "%s: the failure must be reported, play must continue" % FAIL_T1_STOPPED
-		return "%s after it: %s" % [detail, events]
+	var cleared := _failure_cleared(session, events)
+	if not cleared.is_empty():
+		return cleared
+	# R1 "Stop eval": the client retired the peer it failed on (O2). The test's
+	# seam is the simulated peer's own liveness; the one-poll budget in
+	# _stopped_after_failure is what keeps this from re-proving
+	# _check_one_failure_reports_once.
+	if live.is_live():
+		return "a failed stream must be stopped, not left live (FAIL.T1 recovery R1)"
+	var stopped := _stopped_after_failure(session, live)
+	if not stopped.is_empty():
+		return stopped
+	# "Play continues": a legal local move still applies after the failure.
+	if not session.place("e2", "e4").get("ok", false):
+		return "a legal local move must still apply after the failure (FAIL.T1)"
 	return ""
 
 
-## FAIL.T1 "Stop eval": once a stream has failed, it delivers nothing further.
-func _stopped_after_failure(session: SharedGameSession) -> bool:
-	for _tick in range(5):
-		if not session.advice_control("poll").get("events", []).is_empty():
-			return false
+## FAIL.T1: the failure's own tick — online off (X3), both marks cleared
+## (recovery R1 "clear marks"; R9), the failure reported, EX.error raised.
+func _failure_cleared(session: SharedGameSession, events: Array) -> String:
 	var state := session.play_state()
-	return state["advice_best_move"] == null and state["advice_eval"] == null
+	if bool(state["online"]):
+		return "a backend failure must clear GS.online (X3)"
+	if state["advice_best_move"] != null or state["advice_eval"] != null:
+		return "a failed stream must clear both advice fields (FAIL.T1 recovery R1, R9)"
+	if not _has_outcome(events, "advice.error", "unavailable"):
+		return "FAIL.T1 must be reported for EX.error and telemetry"
+	if not session.advice_error:
+		return "FAIL.T1 must raise EX.error (advice_error is where the state is read)"
+	if not session.gestures_available():
+		return "%s: play must continue after it" % FAIL_T1_STOPPED
+	return ""
+
+
+## FAIL.T1 R1 "No busy-loop": the retired peer's late E1 / E2 change nothing on
+## the single poll after the failure, and start no stream. Returns "" when
+## stopped; the one-report-over-five-ticks half stays in
+## _check_one_failure_reports_once.
+func _stopped_after_failure(session: SharedGameSession, retired: FakeAdviceTransport) -> String:
+	retired.push_update({"best_move_uci": "a2a4", "eval_cp": 900})
+	retired.push_end(AdviceWireReader.REASON_CAP)
+	var requests := FakeAdviceTransport.all_requests.size()
+	var events: Array = session.advice_control("poll").get("events", [])
+	var state := session.play_state()
+	if not events.is_empty():
+		return "a retired stream's late delivery must report nothing, got %s" % [events]
+	if state["advice_best_move"] != null or state["advice_eval"] != null:
+		return "a retired stream's late delivery must not refill advice (FAIL.T1 recovery R1)"
+	if FakeAdviceTransport.all_requests.size() != requests:
+		return "a failed stream must not retry on its own (FAIL.T1 recovery R1, No busy-loop)"
+	return ""
 
 
 func _check_game_end_clears() -> String:

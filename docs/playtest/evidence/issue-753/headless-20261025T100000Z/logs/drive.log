@@ -1,0 +1,154 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+STEP booted frame=(1280.0, 1280.0) godot=4.7.2-stable (official) display=headless playtest_build=true
+STEP ok: Advice defaults On in shared-setup
+STEP click SharedGame at (640.0, 322.0)
+{"TEL.1":"shared.start","TEL.2":1792867043908,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+STEP click Start at (528.0, 634.0)
+STEP stage=shared-play white_seat=bottom ui_state=S1 advice_on=true
+STEP ok: entered shared-play
+STEP ok: starts in S1
+STEP ok: advice client configured for the game
+{"TEL.1":"shared.select","TEL.2":1792867044510,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap e2 (S1-baseline)
+STEP S1-baseline after_select selection='e2'
+{"TEL.1":"shared.move","TEL.2":1792867044546,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture tap e4 (S1-baseline)
+STEP S1-baseline tap_move e2e4 landed=true detail={"e2":"","e4":"white","select_count":null,"selected":"e2","side":"black","ui_state":"S1"}
+{"TEL.1":"shared.move","TEL.2":1792867044650,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture drag b8→c6 (S1-baseline)
+STEP S1-baseline drag_move b8c6 landed=true side_to_move=white
+{"TEL.1":"shared.select","TEL.2":1792867044726,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap g1 (S1-baseline)
+{"TEL.1":"shared.deselect","TEL.2":1792867044787,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture drag g1→g2 (S1-baseline)
+STEP S1-baseline illegal_drop g1g2 refused=true detail={"g1":"white","g2":{"color":"white","kind":"pawn"},"picked":true,"selection":""}
+{"TEL.1":"shared.select","TEL.2":1792867044905,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap a2 (S1-baseline)
+STEP S1-baseline deselect_probe selection='a2' picked=true
+{"TEL.1":"shared.deselect","TEL.2":1792867044939,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture tap a2 (S1-baseline)
+STEP S1-baseline deselect_by_tap picked=true cleared=true
+STEP S1-baseline RESULT {"deselect":true,"deselect_detail":{"after":"white","picked":true,"selection":""},"drag":true,"illegal":true,"illegal_detail":{"g1":"white","g2":{"color":"white","kind":"pawn"},"picked":true,"selection":""},"stayed":true,"tap":true,"tap_detail":{"e2":"","e4":"white","select_count":null,"selected":"e2","side":"black","ui_state":"S1"}}
+STEP ok: [S1-baseline] C1+B2/B3 tap-select then tap-place moves
+STEP ok: [S1-baseline] C1+B10 drag-to-move moves
+STEP ok: [S1-baseline] B11 illegal drop places nothing and clears
+STEP ok: [S1-baseline] S2 tap the selected piece clears it
+STEP ok: [S1-baseline] the tap move hands the turn to Black
+STEP advice_peer=FakeAdviceTransport endpoint=http://advice.test/advice online=true
+WARNING: advice: error after 344 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:832)
+         [3] advice_control (res://shared_game_session.gd:812)
+         [4] _drive_advice (res://session_router.gd:510)
+         [5] _poll_advice (res://session_router.gd:501)
+         [6] _process (res://session_router.gd:133)
+{"TEL.1":"advice.error","TEL.2":1792867044994,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"F-move-advice.R2","TEL.5":"unavailable"}
+{"TEL.1":"shared.advice.error","TEL.2":1792867044994,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"EX.error","TEL.5":"shown"}
+STEP advice_failure advice_error=true ui_state=S3 online=false
+STEP ok: advice_error raised by a failed fetch
+STEP ok: play_ui_state is S3 (got S3)
+STEP ok: FAIL.T1 keeps the advice service offline
+STEP ok: EX.error panel is up
+STEP ok: Dismiss control present
+STEP EX.US1.5 shown ui_state=S3 panel_visible=true dismiss_text=Dismiss advice_failed=true
+STEP ok: [S3] the session is in S3 before the drive (advice_error=true ui_state=S3)
+{"TEL.1":"shared.select","TEL.2":1792867045101,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap e2 (S3)
+STEP S3 after_select selection='e2'
+{"TEL.1":"shared.move","TEL.2":1792867045136,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture tap e4 (S3)
+STEP S3 tap_move e2e4 landed=true detail={"e2":"","e4":"white","select_count":null,"selected":"e2","side":"black","ui_state":"S3"}
+{"TEL.1":"shared.move","TEL.2":1792867045242,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture drag b8→c6 (S3)
+STEP S3 drag_move b8c6 landed=true side_to_move=white
+{"TEL.1":"shared.select","TEL.2":1792867045316,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap g1 (S3)
+{"TEL.1":"shared.deselect","TEL.2":1792867045377,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture drag g1→g2 (S3)
+STEP S3 illegal_drop g1g2 refused=true detail={"g1":"white","g2":{"color":"white","kind":"pawn"},"picked":true,"selection":""}
+{"TEL.1":"shared.select","TEL.2":1792867045496,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap a2 (S3)
+STEP S3 deselect_probe selection='a2' picked=true
+{"TEL.1":"shared.deselect","TEL.2":1792867045529,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture tap a2 (S3)
+STEP S3 deselect_by_tap picked=true cleared=true
+STEP S3 RESULT {"deselect":true,"deselect_detail":{"after":"white","picked":true,"selection":""},"drag":true,"illegal":true,"illegal_detail":{"g1":"white","g2":{"color":"white","kind":"pawn"},"picked":true,"selection":""},"stayed":true,"tap":true,"tap_detail":{"e2":"","e4":"white","select_count":null,"selected":"e2","side":"black","ui_state":"S3"}}
+STEP ok: [S3] C1+B2/B3 tap-select then tap-place moves
+STEP ok: [S3] C1+B10 drag-to-move moves
+STEP ok: [S3] B11 illegal drop places nothing and clears
+STEP ok: [S3] S2 tap the selected piece clears it
+STEP ok: [S3] the tap move hands the turn to Black
+STEP ok: EX.error still up after the S3 drives
+{"TEL.1":"shared.select","TEL.2":1792867045592,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap e2 (S3)
+STEP ok: C1 tap-select e2 in S3 (got 'e2')
+{"TEL.1":"shared.deselect","TEL.2":1792867045652,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture tap e2 (S3)
+STEP ok: S2 tap the selected piece clears it in S3 (got '')
+{"TEL.1":"shared.advice.dismiss","TEL.2":1792867045709,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.S3","TEL.5":"ok"}
+STEP click AdviceErrorDismiss at (639.5, 247.5)
+STEP ok: Dismiss returns S1 (got S1)
+STEP ok: Dismiss clears advice_error
+{"TEL.1":"shared.move","TEL.2":1792867046020,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture drag d2→d4 (after-dismiss)
+STEP ok: a drag move lands after Dismiss as S1
+STEP advice_peer=FakeAdviceTransport endpoint=http://advice.test/advice online=true
+WARNING: advice: error after 0 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:832)
+         [3] advice_control (res://shared_game_session.gd:812)
+         [4] _drive_advice (res://session_router.gd:510)
+         [5] _poll_advice (res://session_router.gd:501)
+         [6] _process (res://session_router.gd:133)
+{"TEL.1":"advice.error","TEL.2":1792867046159,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"F-move-advice.R2","TEL.5":"unavailable"}
+{"TEL.1":"shared.advice.error","TEL.2":1792867046159,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"EX.error","TEL.5":"shown"}
+STEP advice_failure advice_error=true ui_state=S3 online=false
+STEP ok: a second advice failure reaches S3 (got S3)
+STEP ok: [S3-second] the session is in S3 before the drive (advice_error=true ui_state=S3)
+{"TEL.1":"shared.select","TEL.2":1792867046267,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap e2 (S3-second)
+STEP S3-second after_select selection='e2'
+{"TEL.1":"shared.move","TEL.2":1792867046305,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture tap e4 (S3-second)
+STEP S3-second tap_move e2e4 landed=true detail={"e2":"","e4":"white","select_count":null,"selected":"e2","side":"black","ui_state":"S3"}
+{"TEL.1":"shared.move","TEL.2":1792867046409,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP gesture drag b8→c6 (S3-second)
+STEP S3-second drag_move b8c6 landed=true side_to_move=white
+{"TEL.1":"shared.select","TEL.2":1792867046482,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap g1 (S3-second)
+{"TEL.1":"shared.deselect","TEL.2":1792867046545,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture drag g1→g2 (S3-second)
+STEP S3-second illegal_drop g1g2 refused=true detail={"g1":"white","g2":{"color":"white","kind":"pawn"},"picked":true,"selection":""}
+{"TEL.1":"shared.select","TEL.2":1792867046663,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+STEP gesture tap a2 (S3-second)
+STEP S3-second deselect_probe selection='a2' picked=true
+{"TEL.1":"shared.deselect","TEL.2":1792867046698,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+STEP gesture tap a2 (S3-second)
+STEP S3-second deselect_by_tap picked=true cleared=true
+STEP S3-second RESULT {"deselect":true,"deselect_detail":{"after":"white","picked":true,"selection":""},"drag":true,"illegal":true,"illegal_detail":{"g1":"white","g2":{"color":"white","kind":"pawn"},"picked":true,"selection":""},"stayed":true,"tap":true,"tap_detail":{"e2":"","e4":"white","select_count":null,"selected":"e2","side":"black","ui_state":"S3"}}
+STEP ok: [S3-second] C1+B2/B3 tap-select then tap-place moves
+STEP ok: [S3-second] C1+B10 drag-to-move moves
+STEP ok: [S3-second] B11 illegal drop places nothing and clears
+STEP ok: [S3-second] S2 tap the selected piece clears it
+STEP ok: [S3-second] the tap move hands the turn to Black
+STEP ok: IN.US3 pointer over Dismiss fires IN.point (got advice_dismiss)
+STEP ok: IN.US3 the pointer fires no other action
+STEP ok: IN.US3 no move from the pointer
+STEP IN.US3 focus_chain_from_dismiss=["AdviceToggle","Resign","OfferDraw","SelectFocus","ClearFocus","PlaceFocus","AdviceToggle","Resign"] play_controls=["AdviceToggle","AdviceEval","AdviceErrorDismiss","Resign","ResignConfirm","ResignCancel"]
+STEP ok: IN.US3 Tab moves focus off the first control (F1)
+STEP TEL verdict=pass
+STEP TEL {"TEL.1":"shared.advice.error","TEL.2":1792867044994,"TEL.3":"sess-1792867042715-55280-playtest-196988","TEL.4":"EX.error","TEL.5":"shown"}
+STEP ok: TEL correlates shared.advice.error shown → EX.error
+STEP final ui_state=S3 side_to_move=white advice_error=true online=false
+STEP FAILURES []
+STEP DONE failures=0
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+exit=0

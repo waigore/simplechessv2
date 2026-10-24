@@ -13,20 +13,20 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | ID | Responsibility |
 |----|----------------|
 | R1 | Store the ADR-0008 snapshot `2026-10-05` host-side and serve records from it only |
-| R2 | Run [DIF.Y1](../../design/difficulty.md) selection on the server: match window, recent-id preference, widen, until one puzzle fits |
+| R2 | Hold the [DIF.Y1](../../design/difficulty.md) candidate policy the client also holds, so the server and [`CMP-puzzle-progression`](puzzle-progression.md) R4 agree on the relax order; it is the same policy table, not a second one |
 | R3 | Return exactly one [`SCH-puzzle-catalog`](../schemata/puzzle-catalog.md) F1–F13 record per accepted deal |
 | R4 | Accept a deal only when the request key matches the configured advice key (`configuration.md` T10) |
 | R5 | Refuse more than 30 deal requests per key per minute ([ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)) |
 | R6 | Expose no list, page, file, edit, or export operation, and the raw export as no public static file |
 | R7 | Keep records and snapshot_id immutable once served (L2–L3); a new snapshot is a new ADR-0008 decision |
 | R8 | Be a route on the advice Python server, on that server's host and deploy path, which are the operator's ([ADR-0015](../../adr/decisions/0015-advice-backend-operator-deployments.md)) |
-| R9 | Ship enabled in the published release: the client carries a real T9/T10 pair, and Puzzle stream releases only on a real deal at the published URL, never a seam build standing in. Value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
+| R9 | Ship enabled in the published release: the client carries a real T9/T10 pair, and Puzzle stream releases only on a real deal at the published URL, never a seam build standing in. Release status and the missing-value path are [`configuration.md`](../configuration.md) `T9` T10 `B5`; value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
 
 ## Communication
 
 | ID | Peer | Direction | Via contract | Notes |
 |----|------|-----------|--------------|-------|
-| C1 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | Network; provider of the deal. The session offers each record to [`CMP-puzzle-progression`](puzzle-progression.md) O2, which selects per `DIF.Y1` `Y1` or refuses |
+| C1 | [`CMP-puzzle-session`](puzzle-session.md) | both | [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) | Network; provider of the deal. The session offers each record to [`CMP-puzzle-progression`](puzzle-progression.md) R4, which selects per `DIF.Y1` `Y1` or refuses (`CTR-puzzle-progress` O2) |
 | C2 | Advice route on the same server | listens | internal | Same endpoint, key config, and rate accounting scope |
 
 ## Owns / mutates

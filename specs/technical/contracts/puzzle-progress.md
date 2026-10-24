@@ -29,7 +29,7 @@ None — request and response.
 |----|-----------|
 | G1 | `GS.playerElo` changes only through O1, only on a scored ending of the open attempt, never on a Shared-game ending or on leaving the stream ([`DIF.C1`](../../design/difficulty.md), [`PRG.P1`](../../design/progression.md)) |
 | G2 | O1 and O2 are synchronous and on-device ([`LAY.L3`](../layers.md)); no I/O, no await |
-| G3 | O2 selects per `DIF.Y1` `Y1` (band, recent window, then widen and/or allow-recent) against the values O1 last produced, or refuses; it never mutates a catalog F1–F13 record |
+| G3 | O2 selects per `DIF.Y1` `Y1` (band and recent window, then the band widened before a recent id is allowed, then widened again) against the values O1 last produced, or refuses; it never mutates a catalog F1–F13 record |
 | G4 | O3 reads only the attempt's required sequence and prefix; it never mutates position ([`SCH-play-state.I1`](../schemata/play-state.md)) |
 
 ## Errors

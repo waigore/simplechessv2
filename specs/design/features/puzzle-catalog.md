@@ -35,7 +35,7 @@ Deal each [Puzzle](../glossary.md) from one host-held catalog at the player's le
 
 ## Interactions with other features
 
-- **I1**: [DIF.Y1](../difficulty.md) selects from this catalog by Rating and PuzzleId: inside ±`CFG.ELO_MATCH_RANGE` of `GS.playerElo`, preferring ids outside the last `CFG.ELO_RECENT_WINDOW` of `GS.recentSolved`, then widening and/or allowing a recent id until one is found. The Elo formula stays as specified there.
+- **I1**: [DIF.Y1](../difficulty.md) selects from this catalog by Rating and PuzzleId: inside ±`CFG.ELO_MATCH_RANGE` of `GS.playerElo`, preferring ids outside the last `CFG.ELO_RECENT_WINDOW` of `GS.recentSolved`, then the `DIF.Y1` relax ladder, until one is found. The Elo formula stays as specified there.
 - **I2**: [L-puzzle-stream](../loops/puzzle-stream.md) K2 plays even steps as required replies.
 - **I3**: After [END.W1](../end-conditions/conditions.md), `GS.recentSolved` appends that PuzzleId. Ids name snapshot 2026-10-05 only.
 
