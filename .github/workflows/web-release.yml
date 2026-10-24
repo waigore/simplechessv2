@@ -77,6 +77,18 @@ jobs:
           test -s build/web/index.wasm
           test -s build/web/index.pck
 
+      # The engine-boundary verdict (#696, ADR-0002 §Validation "No client
+      # Stockfish endpoint", CTR-advice-stream G3). `Web playtest` produces the
+      # gating verdict on every pull request with the same function, so this call
+      # is defence-in-depth on the tree before it publishes. Both directions run:
+      # the contra-positive trees are written here, and the real release export
+      # must pass.
+      - name: Check the shipped tree carries no client engine
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/web_export.py --synthetic-engine-verdicts
+          python3 .github/scripts/web_export.py --check-engine build/web
+
       # A tree with no cataloged asset file loads and then never leaves the
       # loading screen (#630), so the release fails here instead of publishing.
       - name: Check the shipped tree carries the asset root
