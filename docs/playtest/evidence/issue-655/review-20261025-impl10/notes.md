@@ -1,8 +1,8 @@
 # Notes — #655 implementation re-run #10 on `5c15e80`
 
 Detail for [`manifest.md`](manifest.md). Every line below is measured on a clean detached
-worktree of `origin/main` `5c15e80`; nothing is inherited from an earlier folder except the
-probe script, which is copied unchanged from `review-20261025-impl9`.
+worktree of `origin/main` `5c15e80`; only the probe script is carried over, unchanged, from
+`review-20261025-impl9`.
 
 ## What moved since the verify fail on `4f133e8`
 
@@ -50,7 +50,7 @@ None touches the deal path.
 
 Item 4 is the only `game/` change this defect may own, and it measures conforming for the
 sixth time (repaired in #694, merge `2e389b5`). Criteria 2, 3 and 6 need a published client
-carrying a real `T9`/`T10` pair, which is the deploy path:
+carrying a real `T9`/`T10` pair — the deploy path:
 
 - #479 (`status:pending-acceptance`) records client delivery as the **deploy path** and
   names no mechanism in `specs/`; its PR #806 is **open**.
