@@ -1,0 +1,133 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+display=macOS
+viewport=(1280, 720) playtest_build=true
+session_id=sess-1792862689938-27441-playtest-386259
+build_fix_present=true
+{"TEL.1":"puzzle.enter","TEL.2":1792862690040,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _run (res://zz_accept794_probe.gd:43)
+state=on-deal text="Elo 1000" cue=""
+  PlayerElo (on deal) text="Elo 1000" rect=[P: (568.0, 12.0), S: (127.0, 48.0)] min=(127.0, 48.0) autowrap=0 align=1 text_need=(127.0, 45.0) one_line=true wide_enough=true
+  ResultCue (on deal) text="" rect=[P: (711.0, 12.0), S: (1.0, 48.0)] min=(1.0, 48.0) autowrap=0 align=1 text_need=(0.0, 0.0) one_line=true wide_enough=true
+{"TEL.1":"puzzle.move","TEL.2":1792862690081,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792862690081,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] gesture (res://puzzle_play_flow.gd:126)
+         [7] handle_input_commit (res://session_router.gd:208)
+         [8] _run (res://zz_accept794_probe.gd:56)
+         [9] _shoot (res://zz_accept794_probe.gd:175)
+state=solved text="Elo 1010" cue="Solved"
+  cue_solved text="Solved" rect=[P: (662.0, 12.0), S: (99.0, 48.0)] min=(99.0, 48.0) autowrap=0 align=1 text_need=(99.0, 45.0) one_line=true wide_enough=true
+{"TEL.1":"puzzle.move","TEL.2":1792862690119,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792862690119,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+state=wrong text="Elo 1010" cue="Wrong move"
+  cue_wrong text="Wrong move" rect=[P: (615.0, 12.0), S: (192.0, 48.0)] min=(192.0, 48.0) autowrap=0 align=1 text_need=(192.0, 45.0) one_line=true wide_enough=true
+{"TEL.1":"puzzle.confirm","TEL.2":1792862690155,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.5":"reveal_confirm"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _end_and_deal (res://puzzle_session.gd:521)
+         [5] reveal (res://puzzle_session.gd:502)
+         [6] confirm (res://puzzle_session.gd:573)
+         [7] _run_confirm (res://puzzle_play_flow.gd:237)
+         [8] control (res://puzzle_play_flow.gd:171)
+         [9] _on_puzzle_play_control (res://session_router.gd:781)
+         [10] handle_control (res://session_router.gd:202)
+         [11] _run (res://zz_accept794_probe.gd:76)
+         [12] _pump (res://zz_accept794_probe.gd:180)
+{"TEL.1":"puzzle.end","TEL.2":1792862690161,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792862690161,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"cue_failed"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] _run_confirm (res://puzzle_play_flow.gd:237)
+         [7] control (res://puzzle_play_flow.gd:171)
+         [8] _on_puzzle_play_control (res://session_router.gd:781)
+         [9] handle_control (res://session_router.gd:202)
+         [10] _run (res://zz_accept794_probe.gd:76)
+         [11] _pump (res://zz_accept794_probe.gd:180)
+state=failed text="Elo 1000" cue="Failed"
+  cue_failed text="Failed" rect=[P: (667.0, 12.0), S: (89.0, 48.0)] min=(89.0, 48.0) autowrap=0 align=1 text_need=(89.0, 45.0) one_line=true wide_enough=true
+{"TEL.1":"puzzle.confirm","TEL.2":1792862690199,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.5":"abandon_confirm"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _end_and_deal (res://puzzle_session.gd:521)
+         [5] abandon (res://puzzle_session.gd:510)
+         [6] confirm (res://puzzle_session.gd:575)
+         [7] _run_confirm (res://puzzle_play_flow.gd:237)
+         [8] control (res://puzzle_play_flow.gd:171)
+         [9] _on_puzzle_play_control (res://session_router.gd:781)
+         [10] handle_control (res://session_router.gd:202)
+         [11] _run (res://zz_accept794_probe.gd:87)
+         [12] _pump (res://zz_accept794_probe.gd:180)
+{"TEL.1":"puzzle.end","TEL.2":1792862690208,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792862690208,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] _run_confirm (res://puzzle_play_flow.gd:237)
+         [7] control (res://puzzle_play_flow.gd:171)
+         [8] _on_puzzle_play_control (res://session_router.gd:781)
+         [9] handle_control (res://session_router.gd:202)
+         [10] _run (res://zz_accept794_probe.gd:87)
+         [11] _pump (res://zz_accept794_probe.gd:180)
+state=abandon text="Elo 990" cue="Abandoned"
+  cue_abandon text="Abandoned" rect=[P: (615.0, 12.0), S: (174.0, 48.0)] min=(174.0, 48.0) autowrap=0 align=1 text_need=(174.0, 45.0) one_line=true wide_enough=true
+{"TEL.1":"puzzle.confirm","TEL.2":1792862690245,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792862690254,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+state=leave-returned_to_mode_pick=true
+{"TEL.1":"puzzle.enter","TEL.2":1792862690260,"TEL.3":"sess-1792862689938-27441-playtest-386259","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _run (res://zz_accept794_probe.gd:104)
+         [7] _pump (res://zz_accept794_probe.gd:180)
+strip=[P: (16.0, 12.0), S: (1248.0, 144.0)] board=[P: (0.0, 189.0), S: (1280.0, 531.0)]
+  PlayerElo (after _style_all reflow) text="Elo 990" rect=[P: (577.0, 12.0), S: (108.0, 48.0)] min=(108.0, 48.0) autowrap=0 align=1 text_need=(108.0, 45.0) one_line=true wide_enough=true
+PROBLEMS=0
+VERDICT=pass
