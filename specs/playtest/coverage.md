@@ -8,12 +8,12 @@ Declared on [`playtest.md`](playtest.md): **`full`**.
 
 | Mode | Playtest set |
 |------|----------------|
-| `full` | Every design story and every UX journey (then intersected with issue scope in [`procedures.md`](procedures.md)) |
+| `full` | Every design row and every UX row, journey rows included ([`story-rows.md`](story-rows.md)), then intersected with issue scope in [`procedures.md`](procedures.md) |
 | `critical-only` | Only the Critical IDs table below (then intersected with issue scope) |
 
 View stories are never in the set. Environment rules (Design → Headless; UX → Headless and Graphical) are on the hub, not here.
 
-The mode-`full` reading against the story rows is owned by [#660](https://github.com/waigore/simplechessv2/issues/660) and applied, not restated, here. Which rows exist and which protocol judges each is recorded in the [story-to-protocol map](traceability/story-protocol.md), which changes the set's membership but not this table.
+The `full` row follows the row unit in [`story-rows.md`](story-rows.md). Which rows exist and which protocol judges each is recorded in the [story-to-protocol map](traceability/story-protocol.md), which changes the set's membership but not this table.
 
 ## Critical IDs
 

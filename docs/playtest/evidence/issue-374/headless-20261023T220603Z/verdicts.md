@@ -27,4 +27,4 @@ Outcome vocabulary: [`specs/playtest/evidence.md`](../../../../../specs/playtest
 | `Code lint` | pass — `gdlint`, `gdformat --check` clean |
 | `Spec lint` | pass — 0 errors, 1 pre-existing warning |
 | Shipped bundle contains no Stockfish endpoint | pass — 0 matches for `stockfish` / `bestmove` / `uci` in the release PCK |
-| `TEL.4` / `TEL.5` on advice events | not captured (release graph has no seam); carried by the #375 recorder run |
+| `TEL.4` / `TEL.5` on advice events | not captured (release graph has no seam; the cleared event landed in #711 after this run); carried by `game/advice_client_test.gd` and the #375 recorder run |

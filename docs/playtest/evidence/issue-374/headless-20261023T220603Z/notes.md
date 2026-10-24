@@ -22,7 +22,7 @@ Import, `Web Release` export, then `logs/run_checks.py` — a fresh loopback pee
 
 ## Limits of this run
 
-- **Telemetry (AC 15) is not captured here.** The released graph has no seam node, so `TEL.*` has nowhere to land; the emission code is the same one #375 captured through a recorder stand-in. Flagged, not claimed.
+- **Telemetry (AC 15) is not captured in this run's logs.** The released graph has no seam node, so `TEL.*` has nowhere to land. This run predates the `advice.cleared` event (#711): at the time it was recorded only `advice.ready` and `advice.error` had constructors, so a clear was silent at the telemetry layer. AC 15 is now carried by `game/advice_client_test.gd` (`_check_cleared_reports_story`, six rules plus the silent case), not by this folder.
 - **AC 13's bundle check here is this run's own string probe of the exported `index.pck`**, not #560's dedicated assertion (still pending).
 - The peer is a scripted stand-in, not Stockfish — what ADR-0002 Testability asks of a hermetic headless run; the transport under it is the shipped one.
 

@@ -779,7 +779,7 @@ func _finish(reason: String) -> void:
 	draw_offer = ""
 	_clocks_stopped = true
 	_active_side = ""
-	_stop_advice()
+	_stop_advice("F-move-advice.R8")
 
 
 ## R4 — Advice runs only in a Shared game, when On and online (F-move-advice
@@ -805,9 +805,9 @@ func advice_control(control_id: String) -> Dictionary:
 			in_shared_game = false
 			online = true
 			advice_error = false
-			_stop_advice()
+			_stop_advice("F-move-advice.R9")
 		"offline":
-			_mark_offline()
+			_mark_offline("F-move-advice.R9")
 		"dismiss":
 			# S3 Dismiss → S1; FAIL.T1 keeps the service offline, so no re-request.
 			advice_error = false
@@ -831,7 +831,7 @@ func _poll_advice() -> void:
 		# `failed()` true, so only the transition into offline is reported
 		# (R1: no busy-loop, no log flood).
 		var was_offline := not online
-		_mark_offline()
+		_mark_offline("F-move-advice.X3")
 		advice_client.fail_until_reconnect()
 		if not was_offline:
 			advice_error = true
@@ -847,10 +847,11 @@ func _unavailable_event() -> Dictionary:
 	return {"event": "advice.error", "outcome": "unavailable", "story": "F-move-advice.R2"}
 
 
-## X3 — the advice service answered with an error or timeout (FAIL.T1).
-func _mark_offline() -> void:
+## X3 — the advice service answered with an error or timeout (FAIL.T1). A clear
+## this causes is reported before the error, so the log keeps the order.
+func _mark_offline(story: String = "F-move-advice.X3") -> void:
 	online = false
-	_stop_advice()
+	_stop_advice(story)
 
 
 ## Start, restart, or stop the stream so it matches F-move-advice.R2 / R9.
@@ -860,25 +861,42 @@ func _sync_advice() -> void:
 	if advice_client == null:
 		return
 	if not _advice_allowed() or not advice_client.is_available():
-		_stop_advice()
+		_stop_advice(_advice_stop_story())
 		return
 	advice_client.start(rules.position_field(), rules.castling_ep())
 
 
+## The rule that closed evaluation, for the `advice.cleared` story (`TEL.4`):
+## Advice Off is R9 / X2, an unavailable backend is R2.
+func _advice_stop_story() -> String:
+	if not advice_on:
+		return "F-move-advice.R9"
+	return "F-move-advice.R2"
+
+
 ## R8 / X1 — a completed move clears advice, then the new position if R2 holds.
+## The clear is reported (`TEL.4` / `TEL.5`) with the story it answers.
 func _on_advice_move_complete() -> void:
-	if advice_client != null:
-		advice_client.cancel(_advice_state())
-		_advice_best_move = null
-		_advice_eval = null
+	_clear_showing_advice("F-move-advice.R8")
 	_sync_advice()
 
 
-func _stop_advice() -> void:
+## Stop the stream and clear the advice fields (O2/O3). Reports `advice.cleared`
+## with `story` for the rule that required the clear (`TEL.4` / `TEL.5`).
+func _stop_advice(story: String = "") -> void:
 	if advice_client != null:
 		advice_client.cancel(_advice_state())
+	_clear_showing_advice(story)
+
+
+## Clear the fields the display reads and report the clear when there was
+## advice to clear — a rule firing with nothing showing is not an outcome.
+func _clear_showing_advice(story: String) -> void:
+	var showing := _advice_best_move != null or _advice_eval != null
 	_advice_best_move = null
 	_advice_eval = null
+	if showing and not story.is_empty():
+		_advice_events.append({"event": "advice.cleared", "outcome": "cleared", "story": story})
 
 
 func _advice_state() -> Dictionary:
