@@ -61,6 +61,16 @@ Non-blocking gaps filled for the demo only (tuning, copy, layout details; never 
 |----|------------|------------------|--------------------|
 | A1 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
 
+## Promotion act
+
+Filled by `require-demo-promotion`. Incomplete until every included element is keep or drop and any conflict spec PR has merged.
+
+| Element | Choice | Note |
+|---------|--------|------|
+| <!-- fill in: qualified ID --> | <!-- fill in: keep or drop --> | <!-- fill in: conflict choice, or none --> |
+
+Act: <!-- fill in: incomplete, or complete -->
+
 ## Run
 
 <!-- fill in: setup, launch command, controls -->

@@ -55,7 +55,7 @@ Inputs: one or more issue numbers, or “all open typed issues”.
 
 ## Rules
 
-- Never close an issue when setting `status:accepted`. Applying `status:superseded` is a label swap only; closing after it is never done here ([terminal-states.md](../../../docs/issues/terminal-states.md)).
+- Never close an issue when setting `status:accepted` or `status:superseded` (closure is planner-only; see [`project-planner-agent`](../project-planner-agent/SKILL.md) and [terminal-states.md](../../../docs/issues/terminal-states.md)).
 - Do not invent statuses outside the catalog.
 - Prefer report + ask over guessing mid-pipeline state.
 - Type labels (`type:*`) are never removed by this skill.

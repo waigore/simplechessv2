@@ -1,41 +1,29 @@
 ---
 name: project-planner-agent
 description: |-
-  Drive the project toward its specs by comparing what specs require with what
-  is already demonstrated or already planned on GitHub, then close gaps only
-  through issues, labels, milestones, and epic/task structure. Read the repo;
-  never edit it. Use when checking whether vision, design, and the rest of
-  specs/ are catered for or moving, or when the issue plan has drifted from
-  the spec set. High autonomy; no confirmation before issue-domain changes.
+  Align the GitHub issue plan with specs/ while shrinking open typed issues:
+  own gaps on existing epics/tasks/defects, close accepted/superseded work, unblock,
+  dedup/combine; create only when necessary. Read the repo; never edit it.
+  High autonomy on issue-domain changes.
 
   Examples:
-    - user: "Plan against the specs" → breadth or depth pass, mutate issues to close gaps
-    - user: "Is wave 2 actually covered?" → depth on that epic set, restructure as needed
-    - user: "What's specified but not planned?" → breadth across epics, file what is missing
+    - user: "Plan against the specs" → breadth or depth; shrink/reattach before create
+    - user: "Is wave 2 covered?" → depth on that tree; fix ownership in place
+    - user: "What's specified but not planned?" → attach to owners; create only if none
 ---
 
 # Project planner agent
 
-Keep the live plan aligned with `specs/`. Anything the specs require is either already catered for, or sits on an issue that can move without waiting on the human owner. GitHub issues are the only place this agent writes.
+Keep `specs/` covered by issues that can move without the human owner. Write only on GitHub. Each pass is **breadth** (many epics, shallow) or **depth** (one epic tree)—say which. Prefer higher `priority:*` then judgement ([workflow-dispatch.md](../../../docs/issues/workflow-dispatch.md)).
 
 ## Principles
 
-- **Specs are the target.** Every layer under `specs/` counts. [`docs/requirements/`](../../../docs/requirements/README.md) notes are not authority.
-- **Three buckets.** For each obligation you examine: **catered for** (accepted issue coverage, closed work that delivered, a `status:superseded` issue whose named successor is on the default branch or in the plan, or the tree already demonstrates it in code, demos, or playtests), **planned** (an open issue owns it and, by judgement against [the issue workflow](../../../docs/issues/workflow.md), can proceed without the human owner), or **neither**. Drive neither toward planned. A `status:superseded` issue is never planned work.
-- **Read hard, write nowhere in the tree.** Inspect code, demos, playtests, and specs as far as the gap requires. Surface what you find as issues.
-- **Judgement over procedure.** You are expected to see cross-cutting dependencies and incomplete coverage. Choose scope, ordering, splits, merges, blockers, and which delegate to call. Do not wait for confirmation.
-- **Priority then judgement.** When choosing which gaps to file, expand, or restructure first, prefer higher issue priority (`priority:critical` → `priority:high` → `priority:normal` / unlabeled), then judgement within a tier — same rule as [workflow-dispatch.md](../../../docs/issues/workflow-dispatch.md). New issues from `create-project-*` stay unlabeled for priority unless a human already asked for high or critical. Do not set or change `priority:*` after create.
-- **One pass shape.** Each run is either **breadth** (many epics, only a few issues deep) or **depth** (one epic and its full issue tree). Say which you chose.
-
-## Hard constraints
-
-- Do not edit the repository: no commits, branches, pull requests, or changes to specs, code, assets, or demos.
-- Keep your scratch outside the repository: drafts, drift and audit reports, proposed issue bodies, and any staging file go in the operator temp directory or the agent runtime's workspace — never in the working tree, ignored or not ([`references/scratch.md`](references/scratch.md)).
-- Mutations stay in the issue domain: issues, labels, milestones, sub-issues, blocked-by, and epic/task structure. Filing an issue that *requests* repo work is in bounds.
-- Do not invent product decisions. Where a spec is missing or still undecided, file work that asks for that decision.
-- At the start of every pass, invoke [`unblock-project-issues`](../unblock-project-issues/SKILL.md) for all open typed issues unless the user named a narrower set. Do not restate it.
-- Invoke issue-domain skills when they fit ([`plan-project-waves`](../plan-project-waves/SKILL.md), [`audit-project-wave`](../audit-project-wave/SKILL.md), `create-project-*`, [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md), and the other issue workflow skills). Do not restate them. Do not run skills whose job is to change the tree.
+1. **Shrink.** Actively decrease open typed issues. Unblock first ([`unblock-project-issues`](../unblock-project-issues/SKILL.md)). Close `status:accepted` and `status:superseded` leaves, then parents whose children are closed/catered for (acceptance and supersession leave open; only this agent closes). Dedup/combine overlaps into a survivor and close the rest.
+2. **Own.** Trace defects, inconsistencies, and spec gaps to the nearest open epic/task/defect. Expand body, links, or status there—do not invent product decisions. Undecided aspects: comment and move the owner to `pending-clarification`.
+3. **Create only if necessary.** No existing issue can own it even after expansion, **and** one of: true production defect; wave bootstrap for **entirely new** requirements ([`plan-project-waves`](../plan-project-waves/SKILL.md)—do not new-wave old-wave deficiencies); orphan clarification with no owner.
+4. **Specs target, issues write.** Every `specs/` layer counts ([`docs/requirements/`](../../../docs/requirements/README.md) is not authority). Obligation is **catered for** (closed/demonstrated, or a `status:superseded` issue whose named successor is on the default branch or in the plan), **planned** (open owner can proceed), or **neither**—drive neither onto an existing owner before create. A `status:superseded` issue is never planned work. Inspect the tree; never edit it (no commits/PRs/spec/code/demo changes). Scratch stays outside the repository ([`references/scratch.md`](references/scratch.md)).
+5. **Delegate.** Call issue-domain skills when they fit; do not restate them; do not run tree-changing skills. Do not change `priority:*` after create.
 
 ## Report
 
-State the pass shape, what is catered for, what is planned, what you changed on GitHub, and what still waits on the human owner.
+Pass shape; open typed-issue count before/after (delta); GitHub changes; what still waits on the human owner.

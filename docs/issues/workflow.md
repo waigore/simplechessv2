@@ -14,8 +14,8 @@ Exactly **one** `status:*` label per typed issue. Skills swap via `enforce-task-
 | `status:pending-implementation` | Passed review; ready or in progress |
 | `status:pending-verification` | Implemented; awaiting verification |
 | `status:pending-acceptance` | Verified; awaiting acceptance testing |
-| `status:accepted` | Accepted; **leave open** (do not close) |
-| `status:superseded` | Closed without delivering; name the successor ([terminal-states.md](terminal-states.md)) |
+| `status:accepted` | Accepted; leave open until planner closes ([terminal-states.md](terminal-states.md)) |
+| `status:superseded` | Superseded; leave open until planner closes; name the successor ([terminal-states.md](terminal-states.md)) |
 
 Catalog and priority: [`docs/labels.md`](../labels.md) (unlabeled = normal; create skips `priority:normal`). Discovery: [workflow-dispatch.md](workflow-dispatch.md).
 
@@ -35,7 +35,7 @@ Every write follows [body-writes.md](body-writes.md): compose to a file, write t
 | pending-implementation | Comment summarizing deliverables (PRs/commits) | pending-verification |
 | pending-verification | Independent pass: every deliverable checked; standards followed; tests adequate | pending-acceptance |
 | pending-verification | Fail: detail issues | pending-implementation |
-| pending-acceptance | Accept: repo-locatable test evidence per AC; related PRs | accepted (keep open) |
+| pending-acceptance | Accept: repo-locatable test evidence per AC; related PRs | accepted |
 | pending-acceptance | Fail: link created defect | pending-implementation |
 | pending-acceptance | Cannot test without PO input | pending-clarification |
 | pending-review, pending-refinement, pending-clarification, pending-implementation, pending-verification, pending-acceptance | Supersession comment naming the successor; see [terminal-states.md](terminal-states.md) | superseded |

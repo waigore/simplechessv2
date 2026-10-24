@@ -30,7 +30,7 @@ High-level audit of a **filed** wave: milestone description (expected deliverabl
    - **Fit**: Does each epic clearly contribute to the milestone description? Misplaced → propose **move** to another milestone (or out of this wave).
    - **Overlap / contradiction**: Double-claimed IDs or conflicting in/out-of-scope across epics → propose scope split or Notes/scope edits (set-level only).
    - **Foundation (wave 1)**: Bootstrap + asset pipeline (+ substrate verticals need) present and thin; play not buried in a catch-all systems epic.
-   - **Vertical packaging**: Each vertical has demo-ready ID set in Notes and a demo follow-on *task* exists or is noted as missing (existence only). Foundation epics must not carry a player demo task.
+   - **Demo before main code**: At least one demo task blocks the promotion-act task, and that act blocks implementation leaves, or the missing blocker is noted. A vertical need not have its own demo. Foundation epics must not carry the demo task.
    - **Anti-patterns**: Horizontal catch-alls; out-of-scope that does not name a sibling/other wave when known; cross-wave hard deps that break this wave’s stated deliverable.
 5. **Propose package**: Verdict (**Pass** / **Fail** / **Clarify**), findings, and mutations (description text, new epic Goal/Scope/Notes drafts, milestone moves, set-level scope/Notes edits). **Confirm before any mutation.** If `--no-create` / “draft only”: print and stop.
 6. **Apply** (after confirm only): update milestone description; create epics via `create-project-epic` and assign to the milestone; move epics with `gh`; apply agreed set-level body edits. Do not file leaf tasks or demo builds here.

@@ -26,7 +26,7 @@ Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 | pending-acceptance | pending-clarification | Needs PO clarification |
 | pending-review, pending-refinement, pending-clarification, pending-implementation, pending-verification, pending-acceptance | superseded | Supersession comment naming the successor |
 
-`accepted` and `superseded` are terminal: no transition leaves either. Closing is the owner's act and only for `status:superseded` ([terminal-states.md](../../../../docs/issues/terminal-states.md)); this gate never closes an issue.
+`accepted` and `superseded` are terminal: no transition leaves either. Closure is planner-only for both ([terminal-states.md](../../../../docs/issues/terminal-states.md)); this gate never closes an issue.
 
 ## Label swap (`gh`)
 
@@ -35,7 +35,7 @@ Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 3. Remove them: `gh issue edit <n> --remove-label "status:…" …` (all current status labels).
 4. Add target: `gh issue edit <n> --add-label "status:<target>"`.
 
-Never close the issue when applying `status:accepted`.
+Never close the issue when applying `status:accepted` or `status:superseded` (closure is planner-only).
 
 Label swaps change labels only; body and comment writes follow [`docs/issues/body-writes.md`](../../../../docs/issues/body-writes.md).
 
