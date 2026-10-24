@@ -14,7 +14,7 @@ One row per UX story heading, per the [map index](../story-protocol.md). 34 rows
 | [`exceptions.md#US1`](../../../ux/stories/exceptions.md) | `PTU-exceptions` | US1.2, US1.5, US1.7 | US1.1, US1.3, US1.4, US1.6, US1.14, US1.15, US1.16 |
 | [`exceptions-play.md#US1`](../../../ux/stories/exceptions-play.md) | `PTU-exceptions` | — | US1.8–US1.13, US1.17–US1.19 |
 | [`localization.md#US1`](../../../ux/stories/localization.md) | `PTU-localization` | US1.2, US1.3 | US1.1 (not build-observable) |
-| [`localization.md#US2`](../../../ux/stories/localization.md) | `none — LOC.US2 is out of playtest scope; judged by spec read` ([record](../story-out-of-scope.md)) | — | all | [#701](https://github.com/waigore/simplechessv2/issues/701) |
+| [`localization.md#US2`](../../../ux/stories/localization.md) | `none — LOC.US2 is out of playtest scope; judged by spec read` ([record](../story-out-of-scope.md)) | — | all | [#788](https://github.com/waigore/simplechessv2/issues/788) |
 | [`navigation.md#US1`](../../../ux/stories/navigation.md) | `PTU-navigation` | story-level | — |
 | [`navigation-conditions.md#US2`](../../../ux/stories/navigation-conditions.md) | `PTU-navigation` | story-level | — |
 | [`screens/mode-pick.md#US1`](../../../ux/stories/screens/mode-pick.md) | `PTU-mode-pick`, `PTU-localization` | mode-pick: US1.1, US1.3, US1.4, US1.6; localization: US1.9 | localization: US1.1, US1.5, US1.7, US1.8 (no `US1.2`) |
