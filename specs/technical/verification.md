@@ -21,7 +21,7 @@ Authoring rules: [`.agents/specs/rules/technical/verification.md`](../../.agents
 | S9 | Input record / replay | `SIT.2` recorded input on `ENV.1` and `ENV.2` | O7 record and O8 replay |
 | S10 | Full state dump | `SIT.3` snapshot beyond `DBG.2` on `ENV.1` and `ENV.2` | O9 |
 | S11 | Frame-time / latency capture | `SIT.4` frame times over one move, and `EX.loading` start to ready | O10 |
-| S12 | Telemetry read assertion | `SIT.5` assert the run's own `TEL.1`–`TEL.5` events and their story IDs | O11 over the E1 sink |
+| S12 | Telemetry read assertion | `SIT.5` assert the run's own `TEL.1`–`TEL.5` and story IDs | O11 over the `S7`-fed E1 sink |
 | S13 | Phone-width viewport at smallest text size | `SIT.6` legibility at [`UIS.T2`](../aesthetics/ui-style.md) | O12 |
 
 ## Invariants to assert
@@ -33,7 +33,7 @@ Authoring rules: [`.agents/specs/rules/technical/verification.md`](../../.agents
 | I3 | Debug UI and story-ID overlay, plus S3–S13 drive ops, absent from the release Web export ([`CTR-playtest-drive.G2`](contracts/playtest-drive.md)) | Smoke | Release export review |
 | I4 | Headless and Graphical both expose S3–S7 ([`CTR-playtest-drive.G1`](contracts/playtest-drive.md)) | Integration | Playtest protocol smoke |
 | I5 | Headless and Graphical both expose S8–S10 (`SIT.1`–`SIT.3`) | Integration | Playtest builds (`ENV.1`, `ENV.2`) |
-| I6 | Headless and Graphical both expose S11–S13 (`SIT.4`–`SIT.6`); each timing report carries device, browser, build id, and repeat count ([`evidence-manifest.md`](../playtest/evidence-manifest.md)) | Integration | `PTU-shared-play`, `PTU-puzzle-play`, `PTU-mode-pick` |
+| I6 | Headless and Graphical both expose S11–S13 (`SIT.4`–`SIT.6`); each timing report carries device, browser, build id, and repeat count ([`evidence-manifest.md`](../playtest/evidence-manifest.md)) | Integration | `PTU-shared-play`, `PTU-puzzle-play`, `PTU-mode-pick` ([steps](../playtest/tools-situational.md)) |
 
 ## Harness expectations
 

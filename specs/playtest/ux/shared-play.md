@@ -46,4 +46,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. Graphical: screenshot play, resign confirm, the draw offer, and one unavailable control. `SIT.4` reports carry device, browser, build id, and repeat count ([`evidence-manifest.md`](../evidence-manifest.md)); one move sample is not evidence. `SIT.5` cites the log window it read.
+Default evidence rules. Graphical: screenshot play, resign confirm, the draw offer, and one unavailable control. `SIT.4` timing samples (device, browser, build id, repeat count) go in `notes.md`; one move sample is not evidence. `SIT.5` cites the log window it read.
