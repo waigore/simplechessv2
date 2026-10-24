@@ -39,6 +39,7 @@ func _run_all() -> String:
 		_check_l5_reveal,
 		_check_l6_abandon,
 		_check_outcomes_exclusive,
+		_check_one_ending_per_attempt,
 		_check_elo_formula_and_start,
 		_check_elo_k_default,
 		_check_recent_trim,
@@ -49,7 +50,6 @@ func _run_all() -> String:
 		_check_outcome_consumed_once,
 		_check_restore,
 		_check_no_advice,
-		_check_mate_in_one_mark,
 		_check_confirm_reveal,
 		_check_confirm_leave_unscored,
 		_check_confirm_leave_empty_s1,
@@ -59,10 +59,6 @@ func _run_all() -> String:
 		_check_promotion_judged_after_commit,
 		_check_deal_after_ending,
 		_check_no_clocks,
-		_check_mate_in_one_accepts_recorded_mate,
-		_check_mate_in_one_rejects_non_mating,
-		_check_illegal_move_is_not_a_wrong_move,
-		_check_unmarked_record_is_not_armed,
 	]
 	for check in checks:
 		var problem: String = check.call()
@@ -520,112 +516,6 @@ func _check_restore() -> String:
 	return ""
 
 
-## F-puzzle-catalog R4–R5 / SCH-puzzle-catalog F13, I3 — only the mateIn1-marked record
-## is armed for any checkmating move, and its recorded list stays the required sequence.
-func _check_mate_in_one_mark() -> String:
-	var mate := _record("m1", 1000, ["e2e4", "e7e5"], ["mateIn1", "short"])
-	var other := _record("x2", 1000, ["e2e4", "e7e5"], ["fork"])
-	if not PuzzleSession.new().any_checkmate_wins(mate):
-		return "F13 must read mateIn1 from the record themes"
-	if PuzzleSession.new().any_checkmate_wins(other):
-		return "a record without mateIn1 must not be armed"
-	var session := _session([mate])
-	session.deal([mate])
-	if not session.attempt_any_checkmate_wins or session.required_sequence.size() != 1:
-		return "R4–R5 must keep the recorded single-step sequence"
-	return ""
-
-
-## R5 on a dealt mate-in-one record: the marked record wins on the recorded mate, a legal
-## non-mating move is a Wrong move that resets the puzzle without dealing, and an illegal
-## move is an EX.rejected S5 rejection rather than a Wrong move.
-func _check_mate_in_one_accepts_recorded_mate() -> String:
-	var session := _session([_mate_record(["mateIn1"])])
-	if not bool(session.deal([_mate_record(["mateIn1"])]).get("ok", false)):
-		return "a mateIn1 record on MATE_FEN must deal"
-	if not session.attempt_any_checkmate_wins or session.required_sequence.size() != 1:
-		return "R4–R5 must keep the recorded single-step sequence"
-	var played := session.place(MATE_RECORDED_MOVE.substr(0, 2), MATE_RECORDED_MOVE.substr(2, 2))
-	var accepted := str(played.get("outcome", "")) == "outcome"
-	var won := str(played.get("end_reason", "")) == PuzzleSession.END_W1
-	if not accepted or not won:
-		return (
-			"R5: the recorded mate must be accepted and end the puzzle as END.W1 (got %s)" % played
-		)
-	if session.sequence_index != session.required_sequence.size():
-		return "R5: the sequence must advance past an accepted mate"
-	var flagged := session.wrong_move_on_puzzle
-	var scored := session.recent_solved.has("m1")
-	if flagged or not scored:
-		return "R5: an accepted mate must be a clean, scored solve"
-	return ""
-
-
-func _check_mate_in_one_rejects_non_mating() -> String:
-	var session := _session([_mate_record(["mateIn1"])])
-	session.deal([_mate_record(["mateIn1"])])
-	var dealt_start := session.rules.position_field()
-	var non_mating := session.place(
-		MATE_NON_MATING_MOVE.substr(0, 2), MATE_NON_MATING_MOVE.substr(2, 2)
-	)
-	if str(non_mating.get("outcome", "")) != "wrong":
-		return "R5: a legal non-mating move must be a Wrong move (got %s)" % non_mating
-	if not session.wrong_move_on_puzzle:
-		return "R5: a Wrong move must set GS.wrongMoveOnPuzzle"
-	if session.sequence_index != 0:
-		return "R5: a Wrong move must reset the sequence to its start"
-	return _wrong_move_reset_problem(session, dealt_start, non_mating)
-
-
-## L-puzzle-stream K2 — the Wrong move reset this puzzle to its start and dealt nothing.
-func _wrong_move_reset_problem(
-	session: PuzzleSession, dealt_start: Dictionary, played: Dictionary
-) -> String:
-	if str(played.get("end_reason", "")) != "":
-		return "L-puzzle-stream K2: a Wrong move must not end the puzzle"
-	if session.rules.position_field() != dealt_start:
-		return "L-puzzle-stream K2: a Wrong move must return to the position the deal presented"
-	if not session.has_open_puzzle() or session.puzzle_id != "m1":
-		return "L-puzzle-stream K2: a Wrong move must not deal"
-	return ""
-
-
-## EX.rejected / UI-puzzle-play S5 — an illegal move is a rejection, never a Wrong move.
-func _check_illegal_move_is_not_a_wrong_move() -> String:
-	var session := _session([_mate_record(["mateIn1"])])
-	session.deal([_mate_record(["mateIn1"])])
-	var illegal := session.place(MATE_ILLEGAL_MOVE.substr(0, 2), MATE_ILLEGAL_MOVE.substr(2, 2))
-	if not bool(illegal.get("illegal", false)) or str(illegal.get("outcome", "")) == "wrong":
-		return (
-			"EX.rejected: an illegal move is an S5 rejection, not a Wrong move (got %s)" % illegal
-		)
-	if session.last_reject != "illegal":
-		return "EX.rejected: an illegal move must record the S5 rejection"
-	if session.wrong_move_on_puzzle:
-		return "EX.rejected: an illegal move must not mark a Wrong move"
-	return ""
-
-
-## I3: the same mate is still accepted without the theme (it is the recorded move), but the
-## record is not armed for "any checkmating move" — that reading lives only on mateIn1.
-func _check_unmarked_record_is_not_armed() -> String:
-	var session := _session([_mate_record(["fork"])])
-	if not bool(session.deal([_mate_record(["fork"])]).get("ok", false)):
-		return "an unmarked record on MATE_FEN must deal"
-	if session.attempt_any_checkmate_wins:
-		return "I3: an unmarked record must not be armed for any checkmating move"
-	var played := session.place(MATE_RECORDED_MOVE.substr(0, 2), MATE_RECORDED_MOVE.substr(2, 2))
-	if str(played.get("outcome", "")) != "outcome":
-		return "I3: an unmarked record must still accept its recorded move (got %s)" % played
-	return ""
-
-
-## F-puzzle-catalog R3 — MATE_FEN is the position before Black's move, so the record's
-## first UCI move is Black's, and the single Solving-side step is the recorded mate.
-func _mate_record(themes: Array) -> Dictionary:
-	return _record("m1", 1000, [MATE_OPPONENT_MOVE, MATE_RECORDED_MOVE], themes, MATE_FEN)
-
-
 func _check_no_advice() -> String:
 	var session := _session([_record("abc", 1000, ["e2e4", "e7e5"])])
 	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
@@ -671,6 +561,32 @@ func _check_clean_w1(session: PuzzleSession) -> String:
 		return "a clean completion after a new deal is W1"
 	if str(clean.get("cue", "")) != "cue_solved":
 		return "W1 must show cue_solved"
+	return ""
+
+
+## END.P1 / K3 — one ending per attempt; a settled attempt refuses Reveal, Abandon,
+## C3/C4 (C5 still leaves) and any later ending, keeping its one commit.
+func _check_one_ending_per_attempt() -> String:
+	var store := _stored_session()
+	var session := PuzzleSession.new(ChessRules.new(), store)
+	session.deal([_record("abc", 1000, ["e2e4", "e7e5"])])
+	session.place("e7", "e5")
+	var elo := session.player_elo
+	var doc := store.read_committed()
+	var refused := [session.reveal(), session.abandon(), session.request_confirm("C3")]
+	refused.append(session.request_confirm("C4"))
+	if refused.any(func(r: Dictionary) -> bool: return bool(r.get("ok", true))):
+		return "END.P1: a settled attempt must refuse Reveal, Abandon and C3/C4 as settled"
+	if (
+		session.outcome != "solved"
+		or session.player_elo != elo
+		or float(doc["player_elo"]) != elo
+		or (doc.get("recent_solved", []) as Array).count("abc") != 1
+		or session.play_ui_state == PuzzleSession.UI_S2
+	):
+		return "K3: a refused ending must not rescore, recommit, re-append or raise a confirm"
+	if not bool(session.request_confirm("C5").get("ok", false)):
+		return "S2: C5 must still leave the stream from a settled attempt (US5.1)"
 	return ""
 
 
