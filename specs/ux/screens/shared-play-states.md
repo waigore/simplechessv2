@@ -33,6 +33,10 @@ N/A — [`shared-play-controls.md`](shared-play-controls.md).
 
 N/A — [`shared-play.md`](shared-play.md).
 
+## Notes
+
+S4 fixes the chooser's placement and order — the four sprites sit at the promotion square, Queen, rook, bishop, knight — so promotion layout needs no separate design decision (assumption A3, PO-confirmed on #767).
+
 ## Experience intent
 
 N/A — [`shared-play.md`](shared-play.md).

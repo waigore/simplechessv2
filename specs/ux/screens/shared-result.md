@@ -7,6 +7,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 - **Serves**: Cafe calm, Accessibility; [two-player-game K3](../../design/loops/two-player-game.md)
 - **Mockup**: [`../mockups/screens/shared-result.html`](../mockups/screens/shared-result.html)
 - **Glossary terms**: [Shared game](../../design/glossary.md)
+- **Promoted from**: `pocs/shared-game/` (assumption A1, PO-confirmed on #767)
 
 ## Shows
 
@@ -48,7 +49,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 Varying by locale: title, shared_game, result_white, result_black, result_draw, play_again, stop.
 
-Copy owner `shared-result`; keys and `en` source per [localization.md](../localization.md) L1.
+Copy owner `shared-result`; keys and `en` source per [localization.md](../localization.md) L1. Result wording (including "Stalemate — draw") is resolved through the current locale's string table ([`CTR-localization`](../../technical/contracts/localization.md) O1, [`SCH-string-table`](../../technical/schemata/string-table.md)), never screen-authored English (assumption A1, PO-confirmed on #767).
 
 ## Experience intent
 

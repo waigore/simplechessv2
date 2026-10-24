@@ -198,6 +198,13 @@ func _check_ptd_s1_s3() -> String:
 	s3.try_move("b6", "c7")
 	if str(s3.play_state()["game_ended"].get("reason", "")) != ChessRules.END_D1:
 		return "PTD-end-conditions S3 D1"
+	# D1 rides the same end-signal step as L1: not in check, no legal move.
+	if s3._in_check_now():
+		return "END.D1 stalemate must not report check"
+	if s3.result_copy_key() != SharedGameSession.RESULT_DRAW:
+		return "END.D1 stalemate → result_draw"
+	if not bool(s3.play_state().get("clocks_stopped", false)):
+		return "END.D1 clocks must stop"
 	var d2 := SharedGameSession.new()
 	d2._start_opening()
 	d2._offer_draw()

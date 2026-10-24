@@ -21,4 +21,6 @@ Split from [end-conditions.md](../end-conditions.md). Shared-game endings stop b
 
 **Can checkmate** (L3/D5): some legal-move series from here leads to checkmate, even if play is not best ([pieces.md](../entities/pieces.md)). D5 is its negation.
 
+D1 is decided by the every-ply end-signal step that also decides L1 ([`CTR-local-move`](../../technical/contracts/local-move.md) O3; A4).
+
 A [Wrong move](../glossary.md) is a [Solving side](../glossary.md) move that misses the next step. On a mate-in-one puzzle, any checkmating move is that step ([F-puzzle-catalog](../features/puzzle-catalog.md) R5). It blocks W1, resets the puzzle, and does not deal the next. The player may try again until L4, L5, or L6.

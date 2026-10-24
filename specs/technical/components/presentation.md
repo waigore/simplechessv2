@@ -18,6 +18,11 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R4 | Show Advice highlights/arrow/eval when session supplies them |
 | R5 | Never await network before completing piece motion |
 | R6 | Resolve player-facing copy through [`CTR-localization`](../contracts/localization.md) O1 for the current `GS.locale`, per [`SCH-string-table`](../schemata/string-table.md) |
+| R7 | Keep board state cues non-audio: the checked King carries a [PAL.C8](../../aesthetics/palette.md) rose treatment and side to move stays visible ([PER.R6](../../view/perception.md)), alongside any localized copy |
+
+## Audio architecture
+
+One shared player per category: a single cafe-bed player and a single cue player, each at the mastered unity gain of its category ([SND.L1](../../aesthetics/sound.md) music under SFX, [SND.L2](../../aesthetics/sound.md) sound effects above the bed, no ducking of moves). Beds hand off M1 → M2 → M1 as a hard playlist join with no crossfade ([SND.M1](../../aesthetics/sound.md)–[SND.M2](../../aesthetics/sound.md)), so a bed change never opens a second music path (assumption A2, PO-confirmed on #767).
 
 ## Communication
 
