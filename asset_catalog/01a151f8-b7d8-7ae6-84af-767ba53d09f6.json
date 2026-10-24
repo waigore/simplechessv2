@@ -10,7 +10,7 @@
     "Cafe calm"
   ],
   "state": "approved",
-  "version": 1,
+  "version": 2,
   "files": [
     "sound-effects/touch-select.ogg"
   ],
@@ -21,22 +21,25 @@
   },
   "recipe": "AK-sound-effects.R1",
   "generation": {
-    "prompt": "Extremely soft barely-there wooden fingertip caress on a chess piece; muted felt-soft wood brush; quiet cafe; whisper-level tactile select. soft wood cafe SFX; short; feather-light",
-    "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang; sharp click; hard knock; loud snap; percussive hit; bright transient",
+    "prompt": "Soft wooden chess piece lifted from a board square; fingertip grip, one gentle wood tap with a short muffled contact; same family as a piece settling on the board; unhurried cafe table. soft wood cafe SFX; short; never bright",
+    "negative_prompt": "stadium crowd; synth laser; gore impact; loud alarm; voice; electronic beeps; metal clang; sharp click; hard knock; loud snap; percussive hit; bright transient; high-pitched tick; plastic tap",
     "tool": "ElevenLabs CLI",
     "operation": "text-to-sound-effects.convert",
     "settings": {
       "model_id": "eleven_text_to_sound_v2",
       "duration_seconds": 0.5,
-      "prompt_influence": 0.85,
+      "prompt_influence": 0.55,
       "output_format": "mp3_44100_128",
-      "post": "silence trim; lowpass 3.5k; fade-in; loudnorm I=-20; volume 0.75; atrim\u22640.14s; libopus OGG"
+      "post": "silence trim; lowpass 2.8k; afade 0.090–0.105 s; atrim≤0.12s; loudnorm I=-20; libopus OGG mono 64 kb/s"
     },
     "seed": "n/a",
     "inputs": {
-      "style_anchors": [],
+      "style_anchors": [
+        "01a151f8-b7d8-710a-b767-92c9137bfd63"
+      ],
       "refs": [
         "SND.X1",
+        "SND.X2",
         "SND.L2"
       ],
       "base_assets": []
@@ -47,6 +50,12 @@
         "tool": "ElevenLabs CLI",
         "date": "2026-10-19",
         "notes": "SS1 soft anchor X1; PO kept feather-light regen"
+      },
+      {
+        "operation": "text-to-sound-effects.convert",
+        "tool": "ElevenLabs CLI",
+        "date": "2026-10-24",
+        "notes": "v2 for #570 item 2 of #427: v1 read bright against sound-effects/move-settle (v2). Anchored on the settle knock, same family, only slightly different; darker lowpass and longer fade so the master itself is wood rather than a bright tick, instead of a mix-level dip."
       }
     ],
     "series": {
@@ -61,9 +70,9 @@
   },
   "review": {
     "verdict": "Pass",
-    "date": "2026-10-19",
+    "date": "2026-10-24",
     "reviewer": "agent",
-    "report": "Pass. PO confirmed as soft SS1 anchor. Measured: duration 0.14s within X1 S1; size ~1.9KB under B1; OGG/Opus (S4/K5). Character K3: PO kept feather-light touch. Loudness toward L2 for short cue (post I=-20 quieter than settle peers by design)."
+    "report": "Pass. v2 addresses #570 (item 2 of #427): X1 now reads as the same soft wood family as X2 move-settle v2 (settle used as style anchor; ~0.10 s within the 0.05–0.15 s X1 window; darkened lowpass 2.8k and longer fade remove the bright transient the v1 master carried). OGG/Opus mono, libopus OGG; loudnorm I=-20 toward L2 for a short cue. Catalog version bumped 1→2 in the same PR."
   },
-  "guidance": "SS1 soft style anchor for X1 (feather-light). Exemplar for soft enforce; not a hard binding id."
+  "guidance": "SS1 soft cafe SFX anchor for X1: soft wood/tactile tap, sibling of X2 move-settle, never a bright click. Exemplar for soft enforce; not a hard binding id."
 }
