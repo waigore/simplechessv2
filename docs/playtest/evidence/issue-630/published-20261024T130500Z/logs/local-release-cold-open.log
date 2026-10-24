@@ -1,0 +1,24 @@
+[meta] url=http://127.0.0.1:8791/ viewport=390x844 dsf=2 mobile touch settle=20000ms
+[5.52s] [warn] [.WebGL-0x10408acd200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[meta] status=200 domcontentloaded at 5.93s
+[6.29s] [log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+[6.46s] [log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+[6.64s] [log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+[6.90s] [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+[6.90s] [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.90s] [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+[6.90s] [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+[6.90s] [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+[6.90s] [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.90s] [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+[6.90s] [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.90s] [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+[6.90s] [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+[6.90s] [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+[6.90s] [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.90s] [error] ERROR: Preload ambient left 2 approved IDs unresolved
+[6.90s] [error]    at: push_error (core/variant/variant_utility.cpp:1023)
+[6.92s] [warn] [.WebGL-0x10408adda00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[6.92s] [warn] [.WebGL-0x10408ae0a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+[meta] screenshot written at 26.03s from page load
+[meta] page-state {"canvas":{"w":780,"h":1688},"bodyText":""}
