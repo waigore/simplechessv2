@@ -1,0 +1,116 @@
+2026-10-24T22:06:42.950Z [log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-24T22:06:43.064Z [log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-24T22:06:43.251Z [log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-24T22:06:43.558Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:06:43.558Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:06:43.558Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:06:43.558Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:06:43.559Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+2026-10-24T22:06:43.559Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:06:43.559Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:06:43.559Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:06:43.559Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:06:43.559Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:06:43.559Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+2026-10-24T22:06:43.560Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:06:43.560Z [error] ERROR: Preload ambient left 2 approved IDs unresolved
+2026-10-24T22:06:43.560Z [error]    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-24T22:07:03.860Z [warn] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+2026-10-24T22:07:03.940Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:07:03.940Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.941Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:07:03.943Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.943Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:07:03.943Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.943Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:07:03.943Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.943Z [error] ERROR: Preload ambient left 2 approved IDs unresolved
+2026-10-24T22:07:03.943Z [error]    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-24T22:07:03.967Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/move-settle.ogg'.
+2026-10-24T22:07:03.967Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.970Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/move-settle.ogg'.
+2026-10-24T22:07:03.970Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.970Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-710a-b767-92c9137bfd63
+2026-10-24T22:07:03.970Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:03.971Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+2026-10-24T22:07:03.971Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.971Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+2026-10-24T22:07:03.971Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.971Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-759c-89c5-e1be5eecb2b2
+2026-10-24T22:07:03.971Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:03.971Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/touch-select.ogg'.
+2026-10-24T22:07:03.971Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.972Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/touch-select.ogg'.
+2026-10-24T22:07:03.974Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.974Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7ae6-84af-767ba53d09f6
+2026-10-24T22:07:03.974Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:03.974Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/check.ogg'.
+2026-10-24T22:07:03.974Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.974Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/check.ogg'.
+2026-10-24T22:07:03.974Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.974Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7e05-9921-e892e9a2e064
+2026-10-24T22:07:03.974Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:03.975Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/end-resolve.ogg'.
+2026-10-24T22:07:03.976Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:03.976Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/end-resolve.ogg'.
+2026-10-24T22:07:03.976Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:03.976Z [error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7fe3-b94f-e3a562395d96
+2026-10-24T22:07:03.976Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:04.001Z [error] ERROR: Preload play left 5 approved IDs unresolved
+2026-10-24T22:07:04.001Z [error]    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-24T22:07:04.002Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/move-settle.ogg'.
+2026-10-24T22:07:04.002Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:04.002Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/move-settle.ogg'.
+2026-10-24T22:07:04.002Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:04.003Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+2026-10-24T22:07:04.003Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:04.003Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+2026-10-24T22:07:04.004Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:04.006Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/touch-select.ogg'.
+2026-10-24T22:07:04.006Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:04.006Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/touch-select.ogg'.
+2026-10-24T22:07:04.006Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:04.006Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/check.ogg'.
+2026-10-24T22:07:04.006Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:04.006Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/check.ogg'.
+2026-10-24T22:07:04.006Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:04.007Z [error] ERROR: Can't open file from path 'res://game_assets/sound-effects/end-resolve.ogg'.
+2026-10-24T22:07:04.007Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:04.007Z [error] ERROR: Cannot open file 'res://game_assets/sound-effects/end-resolve.ogg'.
+2026-10-24T22:07:04.007Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:04.008Z [error] WARNING: puzzle stream: deal read failed (status)
+2026-10-24T22:07:04.008Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:09.158Z [warn] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+2026-10-24T22:07:09.179Z [warn] WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+2026-10-24T22:07:09.179Z [warn] WebGL: INVALID_OPERATION: bufferSubData: no buffer
+2026-10-24T22:07:12.256Z [warn] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+2026-10-24T22:07:12.266Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:07:12.266Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:12.266Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:07:12.266Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:12.267Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:07:12.268Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:12.268Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:07:12.268Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:12.268Z [error] ERROR: Preload ambient left 2 approved IDs unresolved
+2026-10-24T22:07:12.269Z [error]    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-24T22:07:15.335Z [warn] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+2026-10-24T22:07:15.399Z [warn] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+2026-10-24T22:07:15.466Z [warn] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+2026-10-24T22:07:16.708Z [log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-24T22:07:16.816Z [log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-24T22:07:16.928Z [log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-24T22:07:17.265Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:07:17.265Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:17.265Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T22:07:17.265Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:17.265Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+2026-10-24T22:07:17.265Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:17.265Z [error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:07:17.265Z [error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T22:07:17.265Z [error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T22:07:17.266Z [error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T22:07:17.266Z [error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+2026-10-24T22:07:17.266Z [error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T22:07:17.266Z [error] ERROR: Preload ambient left 2 approved IDs unresolved
+2026-10-24T22:07:17.266Z [error]    at: push_error (core/variant/variant_utility.cpp:1023)
