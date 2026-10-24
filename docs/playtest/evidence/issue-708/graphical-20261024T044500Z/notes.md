@@ -3,8 +3,8 @@
 ## What this run is
 
 Acceptance test for **#708** — `O12`/`S13` phone-width reflow does not size the rendered text to
-`UIS.T2`. The defect was found during acceptance of #546 at `origin/main` `d707b7e`; this run
-re-judges the same `PTU-mode-pick` S6 step on a build that carries the fix.
+`UIS.T2`. It was found during acceptance of #546 at `origin/main` `d707b7e`; this run re-judges
+the same `PTU-mode-pick` S6 step on a build carrying the fix.
 
 ## Environment
 
@@ -48,16 +48,14 @@ filed in #708 are gone on this build:
 2. `mode_pick._text_scale` is now `1.31875` = `844/640`, i.e. the frame the screen renders into, not
    the desktop ratio.
 
-The seam report still claims 21 px, and now the render delivers exactly 21 px — the report and the
-render agree, which is the property `S13` exists to guarantee.
+The seam report and the render now agree on 21 px, which is the property `S13` exists to guarantee.
 
 ## Limits
 
 - This is a Godot graphical session under `Xvfb`, **not** a Web export. `ENV.2` is the required
   environment and the layout path exercised is the same `canvas_items`/`expand` code. The fix turned
-  content scaling off for the `O12` frame (`content_scale_size = (0, 0)` in this run), which is what
-  removed the export-dependent elastic scaling. A Web confirmation remains a reasonable follow-up on
-  #402's release sweep, but it is not a gate for this defect.
+  content scaling off for the `O12` frame (`content_scale_size = (0, 0)`), which removed the
+  export-dependent elastic scaling. A Web confirmation belongs with #402's release sweep, not here.
 - S1–S5 of `PTU-mode-pick` were not driven here (recorded `not-judged`); they belong to #400.
 - `probe/zz_accept708_probe.gd` is a throwaway harness. It is archived with this evidence and was
   never committed to `game/`.
