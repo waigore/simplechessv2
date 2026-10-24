@@ -156,6 +156,15 @@ func has_open_puzzle() -> bool:
 	return not puzzle_id.is_empty()
 
 
+## CTR-puzzle-progress Errors / END.P1 — "O1 after the attempt already scored: no O1;
+## repeated scoring is refused". A settled attempt keeps its ending, and F5's outcome is
+## kept while the result is on screen, so this stays true until the next deal drops it.
+## The one guard every ending path (K2 Move, Reveal, Abandon, and the Confirm that runs
+## them) asks before it scores.
+func _is_settled() -> bool:
+	return has_open_puzzle() and not outcome.is_empty()
+
+
 ## UI-puzzle-play S1 / S2 / S4 gate the board; S3 and S5 keep it usable.
 func gestures_available() -> bool:
 	return has_open_puzzle() and GESTURE_STATES.has(play_ui_state)
@@ -485,18 +494,25 @@ func leave() -> Dictionary:
 	}
 
 
-## K2 — END.L5 reveal the solution (failed, S = 0), then the next deal per K3.
+## K2 — END.L5 reveal the solution (failed, S = 0), then the next deal per K3. Refused
+## once the attempt has an ending, so no second score, cue or commit lands.
 func reveal() -> Dictionary:
-	if not has_open_puzzle():
-		return {"ok": false}
+	if not has_open_puzzle() or _is_settled():
+		return {"ok": false, "reason": _end_refusal()}
 	return _end_and_deal(END_L5, "UI-puzzle-play.US1.3")
 
 
 ## K2 — END.L6 abandon this puzzle (failed, S = 0), then the next deal after the update.
+## Refused once the attempt has an ending (see `reveal`).
 func abandon() -> Dictionary:
-	if not has_open_puzzle():
-		return {"ok": false}
+	if not has_open_puzzle() or _is_settled():
+		return {"ok": false, "reason": _end_refusal()}
 	return _end_and_deal(END_L6, "UI-puzzle-play.US2.8")
+
+
+## Why an ending was refused: no puzzle open, or this attempt already scored.
+func _end_refusal() -> String:
+	return "settled" if _is_settled() else "no_puzzle"
 
 
 ## K3 — the ending scores, commits, and the next puzzle deals once, at the updated Elo.
@@ -520,14 +536,19 @@ func _end(ending: String, story: String) -> Dictionary:
 ## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
 ## controls: C3 and C4 name an open puzzle; C5 does not — leave stream is available on
 ## every S1 the stream can land in, including S1 with no puzzle dealt (US5.1).
+## C3 and C4 are refused on a settled attempt: they would raise a confirm whose one
+## action is refused (END.P1, one ending per attempt); C5 still leaves.
 func request_confirm(control_id: String) -> Dictionary:
 	var kind := ""
 	var needs_puzzle := true
+	var ends_attempt := false
 	match control_id:
 		"C3":
 			kind = CONFIRM_REVEAL
+			ends_attempt = true
 		"C4":
 			kind = CONFIRM_ABANDON
+			ends_attempt = true
 		"C5":
 			kind = CONFIRM_LEAVE
 			needs_puzzle = false
@@ -535,6 +556,8 @@ func request_confirm(control_id: String) -> Dictionary:
 			return {"ok": false}
 	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
 		return {"ok": false}
+	if ends_attempt and _is_settled():
+		return {"ok": false, "reason": "settled"}
 	play_ui_state = UI_S2
 	confirm_kind = kind
 	selected_piece = ""

@@ -104,6 +104,8 @@ func snapshot(base: Dictionary) -> void:
 	base["play_ui_state"] = str(live.get("ui_state", PuzzleSession.UI_S1))
 	base["player_elo"] = float(live.get("player_elo", 0.0))
 	base["puzzle_id"] = str(live.get("puzzle_id", "none"))
+	## SIT.4 `O10` window for puzzle play closes on this field (C2 observe play state).
+	base["sequence_index"] = int(live.get("sequence_index", 0))
 
 
 ## R1 C1 / C2 / C6 — the board gesture path (the B2/B3/B10 reuse from #94). A select

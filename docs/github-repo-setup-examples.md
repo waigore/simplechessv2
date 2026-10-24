@@ -79,6 +79,36 @@ gh api "repos/$REPO" --jq '{allow_squash_merge, allow_merge_commit, allow_rebase
   squash_merge_commit_title, squash_merge_commit_message}'
 ```
 
+## Issue and pull request creation
+
+UI: Settings → General → Features → Issues / Pull requests → Creation allowed by: **Collaborators only**. Collaborator = anyone invited (personal repo) or triage/write/maintain/admin (org). Commenting on existing issues is unaffected.
+
+GraphQL: read and set `issueCreationPolicy` / `pullRequestCreationPolicy` (`ALL` or `COLLABORATORS_ONLY`). Expect both `COLLABORATORS_ONLY`.
+
+```bash
+OWNER=$(gh repo view --json owner -q .owner.login)
+NAME=$(gh repo view --json name -q .name)
+gh api graphql -f query="
+query {
+  repository(owner: \"$OWNER\", name: \"$NAME\") {
+    id issueCreationPolicy pullRequestCreationPolicy
+  }
+}"
+
+# Apply (replace RID with repository id from the query above):
+# RID=...
+# gh api graphql -f query='
+# mutation($id: ID!) {
+#   updateRepository(input: {
+#     repositoryId: $id
+#     issueCreationPolicy: COLLABORATORS_ONLY
+#     pullRequestCreationPolicy: COLLABORATORS_ONLY
+#   }) {
+#     repository { issueCreationPolicy pullRequestCreationPolicy }
+#   }
+# }' -f id="$RID"
+```
+
 ## Labels
 
 Prints configured labels missing on GitHub; expect no output:

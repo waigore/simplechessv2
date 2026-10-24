@@ -25,9 +25,17 @@ class IssueOwnership:
         self._lock = asyncio.Lock()
 
     async def claim(self, owner: str, candidates: list[int]) -> int | None:
-        """Assign the lowest candidate that no slot owns. None if all are taken."""
+        """Assign the first free candidate in list order. None if all are taken.
+
+        Callers pass candidates already ordered (e.g. priority then number).
+        Duplicates in the list are skipped after the first occurrence.
+        """
         async with self._lock:
-            for number in sorted(set(candidates)):
+            seen: set[int] = set()
+            for number in candidates:
+                if number in seen:
+                    continue
+                seen.add(number)
                 if number not in self._owners:
                     self._owners[number] = owner
                     logger.info("claimed issue %s for %s", number, owner)

@@ -43,8 +43,15 @@ bash .github/scripts/sync-labels.sh
 | `status:accepted` | `5319E7` | Accepted; leave open |
 | `status:superseded` | `8250DF` | Closed without delivering; name the successor |
 | `no-automerge` | `B60205` | PR: opt out of automatic squash-merge (user-requested only) |
+| `priority:critical` | `B60205` | Handle before high and normal |
+| `priority:high` | `D93F0B` | Handle before normal; after critical |
+| `priority:normal` | `C5DEF5` | Explicit normal (optional; unlabeled already means normal) |
 
-Status transitions: [`docs/issues/workflow.md`](issues/workflow.md). Auto-merge and `no-automerge` behavior: [`.github/workflows/automerge.yml`](../.github/workflows/automerge.yml) and [`pull-requests.md`](pull-requests.md).
+Status transitions: [`docs/issues/workflow.md`](issues/workflow.md). Priority selection: [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md). Auto-merge and `no-automerge` behavior: [`.github/workflows/automerge.yml`](../.github/workflows/automerge.yml) and [`pull-requests.md`](pull-requests.md).
+
+### Priority
+
+At most **one** `priority:*` label on typed issues. Unlabeled means normal — create forms and `create-project-*` skills do **not** apply `priority:normal`. Apply `priority:high` or `priority:critical` only when a human requests it. Effective priority if more than one is present: critical > high > normal; hygiene keeps only the highest and never adds `priority:normal` to unlabeled issues. **Humans only** set or change priority; agents must not add, remove, or swap `priority:*` except that hygiene (drop lower duplicates).
 
 ## Adding a label
 
