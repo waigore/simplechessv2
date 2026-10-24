@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 Which runtime runs the advice backend, and how does the client reach and authenticate to it?
 
-In scope: server separation and runtime, the configured endpoint, and simple API-key auth. Out of scope: host vendor, deploy path and reproducibility, cost envelope, GPL, and the server implementation.
+In scope: server separation and runtime, the configured endpoint, and simple API-key auth. Out of scope: host vendor and deploy path ([ADR-0015](0015-advice-backend-operator-deployments.md)), cost envelope, GPL ([ADR-0012](0012-advice-backend-gpl-compliance.md)), and the server.
 
 ## Decision
 
@@ -25,7 +25,7 @@ In scope: server separation and runtime, the configured endpoint, and simple API
 - Every advice request carries the **configured API key**. A missing or wrong key is an advice failure ([`FAIL.T1`](../../technical/failures.md)) that clears advice without blocking a local move.
 - No host vendor or deploy path is chosen; the endpoint is configuration.
 - **Client-side delivery of the configured endpoint and key is the deploy path**, so it stays out of this decision and out of `specs/`: no delivery mechanism is named there, and none is required. A key that a published bundle makes readable is accepted as an **abuse throttle**, not a secrecy boundary.
-- The backend reads its key from its own **environment variable**; a request whose `api_key` does not match is rejected, and an unset variable is treated as auth failure ([`FAIL.T1`](../../technical/failures.md)), never as an open door.
+- The backend reads its key from its own **environment variable**; a request whose `api_key` does not match is rejected as [`FAIL.T1`](../../technical/failures.md), and an unset variable is treated the same way — never as an open door.
 
 ## Reasoning
 

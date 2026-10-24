@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+viewport=(1280, 720) content_scale=(1280, 720)
+{"TEL.1":"puzzle.enter","TEL.2":1792853946142,"TEL.3":"sess-1792853945972-57633-playtest-404147","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _run (res://zz_rect333_probe.gd:23)
+EloAndStatus rect=[P: (16.0, 12.0), S: (1248.0, 405.0)] min=(18.0, 405.0) visible=true
+PlayerElo rect=[P: (631.0, 12.0), S: (1.0, 405.0)] min=(1.0, 405.0) visible=true
+ResultCue rect=[P: (648.0, 190.0), S: (1.0, 48.0)] min=(1.0, 48.0) visible=true
+PuzzleChrome rect=[P: (16.0, 12.0), S: (1248.0, 462.0)] min=(389.0, 462.0) visible=true
+StreamActions rect=[P: (16.0, 425.0), S: (1248.0, 49.0)] min=(389.0, 49.0) visible=true
+Reveal rect=[P: (16.0, 425.0), S: (408.0, 49.0)] min=(95.0, 49.0) visible=true
+{"TEL.1":"puzzle.confirm","TEL.2":1792853946218,"TEL.3":"sess-1792853945972-57633-playtest-404147","TEL.5":"leave_confirm"}
+StreamConfirm rect=[P: (500.0, 220.0), S: (280.0, 140.0)] visible=true
+StreamConfirmMsg rect=[P: (524.0, 244.0), S: (232.0, 27.0)] text=Leave the puzzle stream?
+ConfirmStream rect=[P: (531.0, 283.0), S: (109.0, 49.0)] visible=true
+panel_index=5 z_as_relative=true z=0
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

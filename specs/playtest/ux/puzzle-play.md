@@ -41,4 +41,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules. Graphical: screenshot puzzle-play, leave confirm, and the promotion choice. `SIT.4` reports carry device, browser, build id, and repeat count ([`evidence-manifest.md`](../evidence-manifest.md)); one move sample is not evidence.
+Default evidence rules. Graphical: screenshot puzzle-play, leave confirm, and the promotion choice. `SIT.4` timing samples (device, browser, build id, repeat count) go in `notes.md`; one move sample is not evidence.

@@ -40,7 +40,7 @@ N/A — see [`non-functional.md`](non-functional.md).
 |-----------------|------------|
 | [`specs/technical/configuration.md`](../../../technical/configuration.md) | Advice endpoint and API key are client configuration values consumed by the advice client |
 | [`CMP-advice-client`](../../../technical/components/advice-client.md) | Sends advice traffic only to the configured endpoint, with the configured key |
-| [`CMP-advice-backend`](../../../technical/components/advice-backend.md) | Reads its key from its own environment variable; a mismatch is rejected and an unset variable is auth failure, not an open door |
+| [`CMP-advice-backend`](../../../technical/components/advice-backend.md) | Reads its key from its own environment variable; a mismatch is rejected and an unset variable is `FAIL.T1`, not an open door |
 | [`CTR-advice-stream`](../../../technical/contracts/advice-stream.md) | Requests carry the key; a mismatch is an advice failure that never blocks a local move |
 
 ## Validation
