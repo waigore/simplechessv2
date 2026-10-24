@@ -16,23 +16,17 @@ Design protocols cite element IDs and keys, never `PS` IDs, so a row is judged w
 | [mode-and-config.md](mode-and-config.md) | 3 | `PTD-mode-and-config` |
 | [end-conditions.md](end-conditions.md) | 5 | `PTD-end-conditions` |
 | [game-state.md](game-state.md) | 9 | `PTD-game-state` |
-| [pieces-common.md](pieces-common.md) | 3 | `PTD-pieces-common` |
+| [pieces-common.md](pieces-common.md) | 4 | `PTD-pieces-common` |
 | [pieces-king.md](pieces-king.md) | 2 | `PTD-pieces-king` |
 | [pieces-officers.md](pieces-officers.md) | 1 | `PTD-pieces-officers` |
 | [pieces-pawn.md](pieces-pawn.md) | 1 | `PTD-pieces-pawn` |
 | [difficulty.md](difficulty.md) | 3 | `PTD-difficulty`, `PTD-mode-and-config` |
 | [progression.md](progression.md) | 2 | `PTD-progression` |
 
-## Row-level `none` — 1
+## Row-level `none` — 0
 
-No design protocol's **Cites** covers these rows' `Proves` elements. Each carries a linked `type:defect`.
-
-| Story row | `Spec key` | Reason | Defect |
-|-----------|-----------|--------|--------|
-| [`entities/pieces.md#PS1`](../../../../design/stories/entities/pieces.md) | `E-pieces` | `none — proves P1–P4, S1–S3, Placement; no E-pieces cite names them` | [#703](https://github.com/waigore/simplechessv2/issues/703) |
-
-`entities/pieces.md#PS1` is the piece **identity and lifecycle** story ([`entities/pieces.md`](../../../../design/entities/pieces.md) `P1`–`P4`, `S1`–`S3`, `Placement`). The four `PTD-pieces-*` protocols cite *move* ranges only — I1–I11, I12–I22, I23–I27, I28–I34 — so nothing covers it. The two `F-puzzle-catalog` rows and the `SC-puzzle-stream-visit` row are judged by `PTD-puzzle-stream`, whose **Cites** now names both keys ([#702](https://github.com/waigore/simplechessv2/issues/702)). There is no `puzzle-catalog-select.md#PS1`: the file carries only `PS2`.
+Every design row's `Spec key`, element range, or `Proves` entry is covered by a protocol's **Cites**, so no row carries a linked `type:defect`. `entities/pieces.md#PS1` is judged by `PTD-pieces-common`, which cites `P1`–`P4`, `S1`–`S3`, and `Placement`. The two `F-puzzle-catalog` rows and the `SC-puzzle-stream-visit` row are judged by `PTD-puzzle-stream`, whose **Cites** names both keys ([#702](https://github.com/waigore/simplechessv2/issues/702)). There is no `puzzle-catalog-select.md#PS1`: the file carries only `PS2`.
 
 ## Tally
 
-41 rows = **40 judged + 1 `none`**. Splits numbered `PS2` (`common-attack.md`, `puzzle-catalog-select.md`, `progression-mode.md`) are rows in their own right, not additions to a base heading.
+41 rows = **41 judged + 0 `none`**. Splits numbered `PS2` (`common-attack.md`, `puzzle-catalog-select.md`, `progression-mode.md`) are rows in their own right, not additions to a base heading.
