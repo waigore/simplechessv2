@@ -49,4 +49,4 @@ In [`string-table-gate.md`](string-table-gate.md) §Owner-addition rule; the `ex
 
 ## Same in every locale
 
-A marked row renders its `en` value in all three locales. The marked set is exactly [Localization copy](../../ux/localization.md) L3's rows, and L3 stays its source of truth. The screens mark those rows as a sentence in their Copy table, so the marker is prose: no Copy-table field, no schema change, and no third exception exists.
+A marked row renders its `en` value in all three locales. The marked set is exactly [Localization copy](../../ux/localization.md) L3's rows, and L3 stays its source of truth. The screens mark those rows as a sentence in their Copy table, so the marker is prose: no Copy-table field, no schema change, and no third exception exists. As a constant the gate holds it per [`string-table-gate.md`](string-table-gate.md) §Marked-set constant rule.
