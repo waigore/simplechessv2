@@ -23,15 +23,16 @@ Wave 1 always includes **bootstrap** and the **asset pipeline** in full, plus an
 
 Prefer self-contained vertical slices (design + UX + tech + assets for one outcome). No horizontal catch-alls (“all screens”, “all features”). Out-of-scope names sibling epics. Depth stays at most epic → task → task ([hierarchy.md](hierarchy.md)).
 
-## Demo follow-on
+## Demo before main code
 
-Each **vertical** epic carries a **demo-ready ID set** in Notes (qualified spec IDs sufficient for [`create-gameplay-demo`](../../.agents/skills/create-gameplay-demo/SKILL.md) without new product decisions). Demo is a **follow-on** `type:task`, blocked by that epic’s implementation leaves — not built inside the epic. Foundation epics have no player demo task.
+At least one demo exists before foundation or vertical implementation leaves start. Its scope may be as small as the owner chooses. Every demo under `demos/` must pass the [promotion act](../demo-promotion.md) first. File the demo task, then the promotion-act task blocked by it, then implementation leaves blocked by that act. A later demo blocks further main-code work until its act is done. A vertical does not need its own demo. Do not file a demo as a follow-on of implementation. The demo task is not a child of a foundation epic.
 
 ## Filing
 
-- Confirm the wave map with the user before creating milestones or issues (`--no-create` / draft-only allowed).
+- Confirm the wave map with the user before creating milestones or issues (`--no-create` / draft-only allowed), except when [`project-planner-agent`](../../.agents/skills/project-planner-agent/SKILL.md) bootstraps **entirely new requirements** (not deficiencies in already-filed waves).
 - Create milestones for every planned wave (title + **expected-deliverable description**); file epics for those waves.
 - File **leaf tasks only for the wave being expanded** (first run: wave 1). Later waves keep epic stubs until a later `plan-project-waves` run expands them.
+- Do not cut new waves to cover gaps in old ones—expand existing epics/tasks instead.
 - Issue bodies use [body-shapes.md](body-shapes.md) only; wave metadata lives in Notes / AC / Dependencies.
 
 ## Auditing a filed wave

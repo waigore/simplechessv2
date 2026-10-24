@@ -1,13 +1,15 @@
 # Demo style and assets
 
-Every [gameplay demo](demos.md), engine or gameplay type, is a proof of concept for the game's style and its asset pipeline. It expresses the style in [`specs/aesthetics/`](../specs/aesthetics/aesthetics.md), and every asset it shows or plays is cataloged per [`specs/assets/`](../specs/assets/assets.md). Assets may be agent-made or human-made; agent generation is optional.
+Style and asset rules apply when a [gameplay demo](demos.md) must show or play them. Otherwise those specs may stay TBD, this page does not gate the demo, and the demo does not stand in for them.
+
+When they apply, the demo expresses the style in [`specs/aesthetics/`](../specs/aesthetics/aesthetics.md), and every asset it shows or plays is cataloged per [`specs/assets/`](../specs/assets/assets.md). Assets may be agent-made or human-made; agent generation is optional.
 
 ## Before building
 
-Always:
+Skip this section when the demo shows or plays neither. When it does:
 
-- The aesthetics hub and every style element in scope hold no TBD.
-- The asset hub names its catalog root, asset root, and approval rule.
+- Every style element it must show or play holds no TBD.
+- When it shows or plays an asset, the asset hub names its catalog root, asset root, and approval rule.
 
 For each asset an agent makes or imports with `manage-asset`:
 
@@ -34,4 +36,4 @@ The README lists every problem met while producing or registering its assets: a 
 
 ## Verification
 
-`verify-project-issue` runs `review-asset` on every non-exempt asset the demo uses, checks each exemption is valid, and checks the README's style and asset tables against the demo. A review Fail, an invalid exemption, an included style element not shown, or an asset not in the catalog fails verification.
+When the demo includes style or assets, `verify-project-issue` runs `review-asset` on every non-exempt asset it uses, checks each exemption is valid, and checks the README's style and asset tables against the demo. A review Fail, an invalid exemption, an included style element not shown, or an asset not in the catalog fails verification. Skip this when the demo includes neither.

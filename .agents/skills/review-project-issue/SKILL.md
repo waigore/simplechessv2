@@ -34,7 +34,7 @@ Review a typed issue currently in `status:pending-review`.
      - Goal is an observable outcome, not a task list; Scope has explicit in/out; out-of-scope names sibling epics or other waves when known
      - In-scope qualified IDs (from Notes/Scope) are owned by child tasks when children exist (coverage/ownership — not path-level AC polish)
      - Not a horizontal catch-all; foundation stays substrate-only
-     - Vertical: demo-ready ID set in Notes looks sufficient for `create-gameplay-demo` without new product decisions; a demo follow-on task exists or its absence is called out. Foundation: no player demo task
+     - Main-code epic: blocked by the promotion act, or the missing blocker is called out. A vertical need not have its own demo. Foundation: no player demo task
    - **Technical elements**: When the title or body names a specific layer, module, component, contract, schema, or sequence, it cites a qualified ID or a `specs/technical/` path that already exists. A cited element ID (such as `CMP-input.R2`) exists in that spec. A file that still contains `<!-- fill in -->` counts. Keys: [`ids.md`](../../specs/rules/technical/ids.md) (`LAY`, `MOD`, `CMP-<name>`, `CTR-<name>`, `SCH-<name>`, `SEQ-<name>`). An issue that never names one of these is unaffected.
      - No such ID or file → **Fail**. Refinement: cite the real ID or path, or make the deliverable authoring that element and drop any implementation of it.
      - Spec-authoring exception: the issue may name an element that does not exist yet when the deliverable is creating it (a new file under `components/`, `contracts/`, `schemata/`, or `sequences/`, or a new ID in `layers.md` or `modules.md`). It must not treat that name as an existing ID, and it must not ask to implement it.
@@ -47,7 +47,7 @@ Review a typed issue currently in `status:pending-review`.
 ## Rules
 
 - Do not redefine the state machine; link the workflow doc.
-- A superseded, duplicate, or retired issue is neither passed nor failed into implementation: state it in the review and gate it to `status:superseded`, naming the successor (an issue or an Accepted ADR) in the comment. Do not close it.
+- A superseded, duplicate, or retired issue is neither passed nor failed into implementation: state it in the review and gate it to `status:superseded`, naming the successor (an issue or an Accepted ADR) in the comment. **Do not close** the issue (only [`project-planner-agent`](../project-planner-agent/SKILL.md) closes superseded work).
 - Fail cascade only for issues **named** in the fail comment.
 - Evidence is freeform; intent must be clear.
 - Call `enforce-task-workflow-status` for every label change.

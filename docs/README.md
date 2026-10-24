@@ -14,7 +14,8 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 | [mcp.md](mcp.md) | Project MCP wiring for Cursor / OpenCode / Grok; auth rules; declared servers; smoke test |
 | [coding-conventions.md](coding-conventions.md) | Project-owned coding conventions and lint/format/unit-test/coverage tooling; extends `solid.md` |
 | [demos.md](demos.md) | Gameplay demos under `demos/`: scope, what is relaxed, traceability, promotion |
-| [demo-style-assets.md](demo-style-assets.md) | Demos as style and asset-pipeline proofs of concept: gate, assets, findings, verification |
+| [demo-promotion.md](demo-promotion.md) | Required promotion act before main-code work; keep or drop; conflicts; reimplementation |
+| [demo-style-assets.md](demo-style-assets.md) | Style and asset gate when a demo must show or play them: assets, findings, verification |
 | [dev-env-setup.md](dev-env-setup.md) | Local game-stack and asset-tool install/verify; then `setup-unit-test-ci` |
 | [open-design-skill-setup.md](open-design-skill-setup.md) | User-local Open Design skill + content under `~/.open-design-skill/`; optional agent wiring |
 | [github-repo-setup.md](github-repo-setup.md) | First-time GitHub settings to apply and verify (remotes, Actions, `main` ruleset, squash, auto-merge, labels) |

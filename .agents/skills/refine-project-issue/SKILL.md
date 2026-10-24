@@ -32,6 +32,6 @@ Apply refinements to a typed issue in `status:pending-refinement`.
 ## Rules
 
 - Refinements belong in the body proper.
-- A refinement that establishes an issue is superseded, duplicate, or retired gates `pending-refinement → superseded`, naming the successor; the body still records it. Do not close it.
+- A refinement that establishes an issue is superseded, duplicate, or retired gates `pending-refinement → superseded`, naming the successor; the body still records it. **Do not close** the issue (only [`project-planner-agent`](../project-planner-agent/SKILL.md) closes superseded work).
 - Keep body shapes from `docs/issues/body-shapes.md`.
 - Call `enforce-task-workflow-status` for the label change.

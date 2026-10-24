@@ -30,10 +30,10 @@
   description: "Verified; awaiting acceptance testing"
 - name: status:accepted
   color: "5319E7"
-  description: "Accepted; leave open"
+  description: "Accepted; leave open until planner closes"
 - name: status:superseded
   color: "8250DF"
-  description: "Closed without delivering; name the successor"
+  description: "Superseded; leave open until planner closes; name the successor"
 - name: no-automerge
   color: "B60205"
   description: "PR: opt out of automatic squash-merge (user-requested only)"

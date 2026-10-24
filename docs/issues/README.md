@@ -12,7 +12,7 @@ Agents use the matching `create-project-*` skill so labels, sub-issues, and bloc
 | [workflow.md](workflow.md) | Status labels, transitions, evidence |
 | [body-writes.md](body-writes.md) | Safe `gh issue` body/comment writes, the guard, and the read-back |
 | [workflow-dispatch.md](workflow-dispatch.md) | Background dispatch agents (one issue per run) |
-| [waves.md](waves.md) | Milestones as waves; description = expected deliverable; foundation; vertical epics; demo follow-on; wave audit |
+| [waves.md](waves.md) | Milestones as waves; description = expected deliverable; foundation; vertical epics; demo before main code; wave audit |
 
 ## Types and labels
 
