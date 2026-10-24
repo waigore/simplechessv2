@@ -16,7 +16,7 @@ At `status:pending-acceptance` (`accept-project-issue`) when the issue's deliver
 
 ## Prep
 
-- Build under test is the one under acceptance.
+- Build under test is the one under acceptance, named by commit and by the source it was read from. The published URL (ADR-0009) is preferred whenever it serves that commit; a release export of the same preset into `build/web/` (ADR-0007) is the only fallback, used while the commit is unpublished, and the manifest records the source and why. The fallback never stands in for a published reading.
 - Must tools from [`tools.md`](tools.md) are available (`ENV.*`, `DBG.*`, `TEL.*`, both drive paths); `ENV.*` is the environment class from [`ids.md`](ids.md), not a second tool set. The Must environments are `ENV.1` (Headless) and `ENV.2` (Graphical).
 - Any Situational tool a selected protocol cites is available.
 - Evidence folders exist under [`docs/playtest/evidence/`](../../docs/playtest/evidence/) for each required environment run.
@@ -37,7 +37,7 @@ Use `DBG.1` when pausing aids a reliable observation. Use `SIT.*` only when the 
 
 A headless run (no display) may enter, drive, observe, and judge. It writes notes, logs, and `manifest.md`, and marks screenshots as waiting on a graphical run. Missing screenshots are not a fail and do not file a defect.
 
-Before acceptance, a graphical run re-runs the protocols on the same build and writes the screenshots into its own run folder. It does not only attach images to the headless log. Its manifest names that same build id.
+Before acceptance, a graphical run re-runs the protocols on the same build and writes the screenshots into its own run folder. It does not only attach images to the headless log. The graphical manifest names that same build.
 
 A protocol that says no screenshot may be accepted from the headless run alone.
 
