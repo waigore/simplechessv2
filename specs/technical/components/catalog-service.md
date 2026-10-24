@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 - **Module**: M2 `advice-backend`
 - **Serves**: Puzzle stream; [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md) I1 X2; Performance; Reliability
 - **Informed by**: [`F-puzzle-catalog`](../../design/features/puzzle-catalog.md); [DIF.Y1](../../design/difficulty.md); [`SCH-puzzle-catalog`](../schemata/puzzle-catalog.md); [configuration](../../design/configuration.md) tunables `CFG.ELO_MATCH_RANGE`, `CFG.ELO_RECENT_WINDOW`, `CFG.ELO_BAND_WIDEN`
-- **ADRs**: [ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)
+- **ADRs**: [ADR-0008](../../adr/decisions/0008-puzzle-catalog-storage.md), [ADR-0010](../../adr/decisions/0010-advice-backend-stack.md), [ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md), [ADR-0015](../../adr/decisions/0015-advice-backend-operator-deployments.md)
 
 ## Responsibilities
 
@@ -19,7 +19,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R5 | Refuse more than 30 deal requests per key per minute ([ADR-0013](../../adr/decisions/0013-puzzle-catalog-api.md)) |
 | R6 | Expose no list, page, file, edit, or export operation, and the raw export as no public static file |
 | R7 | Keep records and snapshot_id immutable once served (L2–L3); a new snapshot is a new ADR-0008 decision |
-| R8 | Be a route on the advice Python server, on its host and deploy path |
+| R8 | Be a route on the advice Python server, on that server's host and deploy path, which are the operator's ([ADR-0015](../../adr/decisions/0015-advice-backend-operator-deployments.md)) |
 | R9 | Ship enabled in the published release: the client carries a real T9/T10 pair, and Puzzle stream releases only on a real deal at the published URL, never a seam build standing in. Value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
 
 ## Communication
@@ -53,4 +53,4 @@ flowchart LR
 
 ## Failure / concurrency / persistence
 
-Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on the advice server's deploy path. Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
+Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on that server's deploy path, which the operator owns (ADR-0015). Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.

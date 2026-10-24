@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 ## Purpose
 
-Where is the puzzle catalog served from, and how may the browser read it? In scope: service, route, key, response shape, selection, rapid-fire limit. Out of scope: the snapshot, the Elo formula, session play, a new vendor.
+Where is the puzzle catalog served from, and how may the browser read it? In scope: service, route, key, response shape, selection, rapid-fire limit. Out of scope: the snapshot, the Elo formula, session play, a new vendor, its host ([ADR-0015](0015-advice-backend-operator-deployments.md)).
 
 ## Decision
 
@@ -27,7 +27,7 @@ Where is the puzzle catalog served from, and how may the browser read it? In sco
 
 ## Reasoning
 
-In driver order: cafe calm and Instant play favor one server (one fewer host; endpoint and key already exist); load time and Performance ([ADR-0008](0008-puzzle-catalog-storage.md)) require a host-side snapshot and one record per deal; Reliability requires a failed read to cost only the deal, so no play path waits.
+In driver order: cafe calm and Instant play favor one server (endpoint and key already exist); load time and Performance ([ADR-0008](0008-puzzle-catalog-storage.md)) require a host-side snapshot and one record per deal; Reliability requires a failed read to cost only the deal. The host is the operator's ([ADR-0015](0015-advice-backend-operator-deployments.md)).
 
 Cost: each deal waits on the host; a dead server means no deals.
 
