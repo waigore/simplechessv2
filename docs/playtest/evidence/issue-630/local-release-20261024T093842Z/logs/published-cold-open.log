@@ -1,0 +1,61 @@
+[meta] url=https://waigore.github.io/simplechessv2/ viewport=390x844 dsf=2 mobile touch poll=40000ms settle=10000ms
+[meta] probe status=200
+[1.06s] [console.warn] []Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[meta] domcontentloaded at 1.06s
+[2.61s] [console.log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+[3.49s] [console.log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+[4.51s] [console.log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+[6.70s] [console.error] ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+[6.71s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.71s] [console.error] WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+[6.72s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.73s] [console.error] ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+[6.73s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.74s] [console.error] WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+[6.75s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.76s] [console.error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+[6.76s] [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.77s] [console.error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+[6.77s] [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.77s] [console.error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+[6.78s] [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.78s] [console.error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+[6.80s] [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.80s] [console.error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+[6.80s] [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[6.80s] [console.error] ERROR: Error opening file 'game_assets/icons/quit.svg'.
+[6.81s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.83s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+[6.84s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.84s] [console.error] ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+[6.84s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.84s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+[6.84s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.84s] [console.error] ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+[6.84s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.84s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+[6.84s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.84s] [console.error] ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+[6.84s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.84s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+[6.84s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.84s] [console.error] ERROR: Error opening file 'game_assets/icons/advice.svg'.
+[6.86s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.86s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+[6.87s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.87s] [console.error] ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+[6.87s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.87s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+[6.87s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.87s] [console.error] ERROR: Error opening file 'game_assets/icons/back.svg'.
+[6.87s] [console.error]    at: load_image (core/io/image_loader.cpp:91)
+[6.87s] [console.error] WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+[6.87s] [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[6.87s] [console.error] ERROR: Preload boot left 9 approved IDs unresolved
+[6.88s] [console.error]    at: push_error (core/variant/variant_utility.cpp:1023)
+[meta] poll-result=MATCHED at 6.91s
+[meta] settling 10000ms
+[8.01s] [console.warn] []Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[8.01s] [console.warn] []Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[meta] screenshot written at 17.71s from page load
+[meta] page-state {"canvas":{"w":780,"h":1688},"bodyText":""}
