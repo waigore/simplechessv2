@@ -171,6 +171,12 @@ func _in_check_now() -> bool:
 	return rules.in_check(side_to_move())
 
 
+## PER.R6 — the checked king's square for the board mark, or "" when the side to
+## move is not in check, so the mark never outlives the check.
+func _check_square() -> String:
+	return rules._king_square(side_to_move()) if _in_check_now() else ""
+
+
 func game_ended() -> bool:
 	return bool(rules.game_ended_field().get("ended", false))
 
@@ -550,6 +556,7 @@ func chrome_state(locale: String, white_seat: String) -> Dictionary:
 		"legal": legal,
 		"side_to_move": side_to_move(),
 		"in_check": _in_check_now(),
+		"check_square": _check_square(),
 		"white_clock_ms": white_clock_ms,
 		"black_clock_ms": black_clock_ms,
 		"game_ended": ended,

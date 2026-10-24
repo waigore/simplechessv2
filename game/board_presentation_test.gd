@@ -23,6 +23,10 @@ func _run() -> void:
 			err = await _check_orientation(board)
 		if err.is_empty():
 			err = await _check_motion(board)
+		if err.is_empty():
+			err = _check_mark_contrast()
+		if err.is_empty():
+			err = await _check_check_mark(board)
 	if not err.is_empty():
 		_fail(err)
 		return
@@ -646,6 +650,111 @@ func _motion_marks(board: BoardPresentation, rules: ChessRules) -> String:
 	var r := BoardPresentation.LEGAL_EMPTY_R
 	if 2.0 * r * r < 0.25 - 0.0001:
 		return "PER.R4 empty mark under 1/4 square"
+	return ""
+
+
+## WCAG relative luminance of an sRGB hex colour (the method PAL ratios use).
+func _relative_luminance(hex: String) -> float:
+	var weights := [0.2126, 0.7152, 0.0722]
+	var out := 0.0
+	for i in range(3):
+		var channel := float(_hex_byte(hex.substr(i * 2, 2))) / 255.0
+		var linear := channel / 12.92 if channel <= 0.03928 else pow((channel + 0.055) / 1.055, 2.4)
+		out += float(weights[i]) * linear
+	return out
+
+
+## Two hex digits to 0-255. float("0x1c") is invalid GDScript (the digits are
+## read as base 16 of a decimal string), so the nibbles are decoded explicitly.
+func _hex_byte(pair: String) -> int:
+	const DIGITS := "0123456789abcdef"
+	var value := 0
+	var low := pair.to_lower()
+	for i in range(low.length()):
+		value = value * 16 + DIGITS.find(low[i])
+	return value
+
+
+func _contrast_ratio(a: String, b: String) -> float:
+	var la := _relative_luminance(a)
+	var lb := _relative_luminance(b)
+	return (maxf(la, lb) + 0.05) / (minf(la, lb) + 0.05)
+
+
+## PER.R6 — the check cue is non-audio and never hue alone: the C8 form carries
+## C9 ink at ≥ 4.5:1 (PAL.K4) and the C10 mark foreground separates it (PAL.K9).
+func _check_mark_contrast() -> String:
+	var ink := BoardPresentation.COLOR_INK.to_html(false).to_upper()
+	var rose := CheckMark.COLOR_CHECK.to_html(false).to_upper()
+	var surface := CheckMark.COLOR_SURFACE.to_html(false).to_upper()
+	var checks: Array = [
+		[_contrast_ratio(ink, rose) >= 4.5, "PER.R6 check ink on rose ≥ 4.5:1"],
+		[_contrast_ratio(ink, surface) >= 4.5, "PAL.K9 keyline ink on mark surface"],
+		[
+			_contrast_ratio(rose, surface) <= _contrast_ratio(ink, surface),
+			"PAL.K9 surface must be the separating layer, not the rose",
+		],
+		[CheckMark.ROSE_OPACITY < 1.0, "PAL.K9 mark-surface strength"],
+		[
+			is_equal_approx(CheckMark.INK_ON_ROSE, snappedf(_contrast_ratio(ink, rose), 0.01)),
+			"PAL.K9 ink-on-rose recorded",
+		],
+		[
+			is_equal_approx(
+				CheckMark.KEYLINE_ON_SURFACE, snappedf(_contrast_ratio(ink, surface), 0.01)
+			),
+			"PAL.K9 keyline-on-surface recorded",
+		],
+	]
+	return _first_fail(checks)
+
+
+## PER.R6 — the mark sits only on the requested king square, in the four K9
+## corner L-frames (off the diagonals), and clears for any other value.
+func _check_check_mark(board: BoardPresentation) -> String:
+	var rules := ChessRules.new()
+	rules.reset_opening()
+	board.provide_assets(_synthetic_assets())
+	for seat in [BoardGeometry.SEAT_BOTTOM, BoardGeometry.SEAT_TOP]:
+		board.render_position(
+			rules.position_field(),
+			"",
+			PackedStringArray(),
+			{"white_seat": seat, "check_square": "e1"}
+		)
+		await process_frame
+		var err := _check_mark_geometry(board, seat)
+		if not err.is_empty():
+			return err
+		board.render_position(rules.position_field(), "", PackedStringArray(), {})
+		await process_frame
+		if CheckMark.under(board).visible:
+			return "PER.R6 mark must clear when the state omits it (seat %s)" % seat
+	return ""
+
+
+## Geometry of the four L-frames while the mark shows; [] when it holds.
+func _check_mark_geometry(board: BoardPresentation, seat: String) -> String:
+	var center := BoardGeometry.square_center("e1")
+	var mark := CheckMark.under(board)
+	if mark == null or not mark.visible or mark.square != "e1":
+		return "PER.R6 mark missing or off e1 at seat %s" % seat
+	# Four corners × (C10 foreground + rose inside it) = 8 strokes.
+	var children := mark.get_children()
+	if children.size() != 8:
+		return "PER.R6 mark has %d strokes, want 8 (4 L-frames)" % children.size()
+	var rose := 0
+	for child in children:
+		var shape := CheckMark.shape_problem(child as Line2D, center)
+		if not shape.is_empty():
+			return "PER.R6 %s" % shape
+		if (child as Line2D).default_color.a < 1.0:
+			rose += 1
+	if rose != 4:
+		return "PER.R6 want 4 rose strokes at mark-surface strength, got %d" % rose
+	# The mark follows CAM-board.M2 with the board, like every other overlay.
+	if mark.to_global(center).distance_to(board.world_to_screen(center)) > 0.5:
+		return "PER.R6 mark must rotate with the seat (seat %s)" % seat
 	return ""
 
 
