@@ -1,0 +1,111 @@
+## leg 3 faulted session (Storage.prototype.setItem wrapper) — https://waigore.github.io/simplechessv2/
+wrapper installed; persist writes observed: 0
+[]
+save-failure surface shown: false
+[log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+[log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+[log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+[error] ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Error opening file 'game_assets/icons/quit.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/advice.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/back.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Preload boot left 9 approved IDs unresolved
+[error]    at: push_error (core/variant/variant_utility.cpp:1023)
+
+--- failed requests ---
+
+
+--- reopen console ---
+[log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+[log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+[log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+[error] ERROR: Error opening file 'game_assets/icons/style-anchor-sheet.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/interface-art/style-anchor-sheet.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-tc-400.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-jp-400.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-400.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-500.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Can't open file from path 'game_assets/fonts/noto-sans-latin-600.woff2'.
+[error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+[error] ERROR: Error opening file 'game_assets/icons/quit.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/mode-puzzle.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/mode-shared.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/interface-art/panel-surface.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/advice.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/interface-art/chip-surface.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Error opening file 'game_assets/icons/back.svg'.
+[error]    at: load_image (core/io/image_loader.cpp:91)
+[error] WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+[error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+[error] ERROR: Preload boot left 9 approved IDs unresolved
+[error]    at: push_error (core/variant/variant_utility.cpp:1023)
