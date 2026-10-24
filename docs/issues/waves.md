@@ -1,6 +1,6 @@
 # Implementation waves
 
-How agents slice a defined spec set into shippable waves. Skills: [`plan-project-waves`](../../.agents/skills/plan-project-waves/SKILL.md) (cut and file), [`audit-project-wave`](../../.agents/skills/audit-project-wave/SKILL.md) (audit filed epic set). Index: [README.md](README.md).
+How agents slice a defined spec set into shippable waves. Skills: [`plan-project-waves`](../../.agents/skills/plan-project-waves/SKILL.md) (cut and file), [`audit-project-wave`](../../.agents/skills/audit-project-wave/SKILL.md) (audit filed wave). Index: [README.md](README.md).
 
 ## Wave vs epic
 
@@ -13,7 +13,7 @@ A wave is not an issue type. Milestone title: `Wave N — <coherent outcome>`.
 
 ## Milestone description
 
-Every wave milestone **must** have a description that states the wave’s **expected deliverable** — what “this wave ships” means in one short summary. That text is the authority for whether the epic set fits and suffices. `plan-project-waves` writes it when creating milestones; `audit-project-wave` fails or clarifies when it is missing or too vague to judge.
+Every wave milestone **must** have a description that states the wave’s **expected deliverable** — what “this wave ships” means in one short summary. That text is the authority for whether the epic set fits and suffices. `plan-project-waves` writes it when creating milestones; `audit-project-wave` flags a missing or vague description and proposes a fix before judging the rest.
 
 ## Foundation
 
@@ -37,4 +37,4 @@ At least one demo exists before foundation or vertical implementation leaves sta
 
 ## Auditing a filed wave
 
-Use [`audit-project-wave`](../../.agents/skills/audit-project-wave/SKILL.md) against the milestone description and its epics (epic-set level only). Confirm before filing new epics, moving epics across milestones, or set-level restructure. Per-epic body/child quality: [`review-project-issue`](../../.agents/skills/review-project-issue/SKILL.md).
+Use [`audit-project-wave`](../../.agents/skills/audit-project-wave/SKILL.md) against the milestone description, its epics, and defined tasks. Confirm before mutating. Prefer split/move over stuffing the wave. Per-issue body polish: [`review-project-issue`](../../.agents/skills/review-project-issue/SKILL.md).
