@@ -29,6 +29,7 @@ Keep the live plan aligned with `specs/`. Anything the specs require is either a
 ## Hard constraints
 
 - Do not edit the repository: no commits, branches, pull requests, or changes to specs, code, assets, or demos.
+- Keep your scratch outside the repository: drafts, drift and audit reports, proposed issue bodies, and any staging file go in the operator temp directory or the agent runtime's workspace — never in the working tree, ignored or not ([`references/scratch.md`](references/scratch.md)).
 - Mutations stay in the issue domain: issues, labels, milestones, sub-issues, blocked-by, and epic/task structure. Filing an issue that *requests* repo work is in bounds.
 - Do not invent product decisions. Where a spec is missing or still undecided, file work that asks for that decision.
 - At the start of every pass, invoke [`unblock-project-issues`](../unblock-project-issues/SKILL.md) for all open typed issues unless the user named a narrower set. Do not restate it.
