@@ -20,6 +20,8 @@ const LINE := {
 	"b|2": {"move": "b8c6", "eval": 15},   # ply 4
 	"w|3": {"move": "f1b5", "eval": 35},   # ply 5
 }
+## `LINE` keys in ply order (Dictionary order is not the ply order).
+const LINE_ORDER := ["w|1", "b|1", "w|2", "b|2", "w|3"]
 const FALLBACK := {"move": "e2e4", "eval": 30}
 ## The stream's three ticks, as a share of the cap: a coarse first tick (depth
 ## 6), a deepening tick (depth 12), and the final tick near the cap (depth 18).
@@ -33,9 +35,10 @@ const TICKS := [
 
 
 ## The peer's answer for a FEN: `{"move": uci, "eval": cp}` (White's view).
-## The scripted line's position is recognised by its own moves rather than by a
-## parsed move number: each entry's move must have left `from` empty and put the
-## mover's piece on `to`, with the other side to move.
+## The ply is recognised by replaying the line in order: the first move that
+## is not yet on the board is the one being answered. A position off the line
+## gets `FALLBACK`. Nothing is read by board index, so the answer follows the
+## `fen` value whatever convention wrote it.
 static func answer_for(fen: String) -> Dictionary:
 	var fields := fen.split(" ")
 	if fields.size() < 2:
@@ -44,27 +47,56 @@ static func answer_for(fen: String) -> Dictionary:
 	if placement.size() != 8:
 		return FALLBACK
 	var side := "w" if str(fields[1]) == "w" else "b"
-	for key in LINE:
-		var parts := str(key).split("|")
-		if str(parts[0]) != side:
-			continue
-		var uci := str((LINE[key] as Dictionary)["move"])
-		var from_file := "abcdefgh".find(uci.substr(0, 1))
-		var from_rank := uci.substr(1, 1).to_int()
-		var to_file := "abcdefgh".find(uci.substr(2, 1))
-		var to_rank := uci.substr(3, 1).to_int()
-		# FEN rows run rank 8 first; a square on rank r is row 8 - r.
-		if _piece_at(placement, from_file, from_rank) != ".":
-			continue
-		if _piece_at(placement, to_file, to_rank) == ".":
-			continue
+	var key := line_ply(placement)
+	if key != "" and str(key).substr(0, 1) == side:
 		return LINE[key]
 	return FALLBACK
 
 
+## True when `placement` is what `uci` leaves behind for that side. Every entry
+## of the line is a quiet move, so `from` is empty and `to` holds the mover's
+## own piece, cased by colour.
+static func _move_applied(placement: PackedStringArray, uci: String, side: String) -> bool:
+	if uci.length() != 4:
+		return false
+	var from_file := "abcdefgh".find(uci.substr(0, 1))
+	var from_rank := uci.substr(1, 1).to_int()
+	var to_file := "abcdefgh".find(uci.substr(2, 1))
+	var to_rank := uci.substr(3, 1).to_int()
+	if from_file < 0 or to_file < 0 or from_rank < 1 or from_rank > 8 \
+			or to_rank < 1 or to_rank > 8:
+		return false
+	if _piece_at(placement, from_file, from_rank) != ".":
+		return false
+	var arrived := _piece_at(placement, to_file, to_rank)
+	if arrived == ".":
+		return false
+	if side == "w":
+		return arrived == arrived.to_upper()
+	return arrived == arrived.to_lower()
+
+
+## The line's moves in ply order: the peer recognises the ply by replaying them
+## in order, so `w|2` cannot match a placement that `b|1` has not reached.
+static func line_ply(placement: PackedStringArray) -> String:
+	for key in LINE_ORDER:
+		var uci := str((LINE[key] as Dictionary)["move"])
+		if not _move_applied(placement, uci, str(key).substr(0, 1)):
+			return key
+	return ""
+
+
+## FEN rows run rank 8 first, so rank r is row `8 - r`.
 static func _piece_at(placement: PackedStringArray, file: int, rank: int) -> String:
-	if file < 0 or rank < 1 or rank > 8:
+	var squares := _squares(placement)
+	var index := (8 - rank) * 8 + file
+	if index < 0 or index >= squares.size():
 		return "."
+	return str(squares[index])
+
+
+## The placement expanded to one character per square, rank 8 first.
+static func _squares(placement: PackedStringArray) -> Array:
 	var squares: Array = []
 	for row in placement:
 		for symbol in str(row):
@@ -73,10 +105,7 @@ static func _piece_at(placement: PackedStringArray, file: int, rank: int) -> Str
 					squares.append(".")
 			else:
 				squares.append(symbol)
-	var index := (8 - rank) * 8 + file
-	if index < 0 or index >= squares.size():
-		return "."
-	return str(squares[index])
+	return squares
 
 
 ## Update schedule for a cap: `[{"at_ms": int, "update": Dictionary}]`, each

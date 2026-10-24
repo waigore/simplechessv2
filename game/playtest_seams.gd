@@ -14,6 +14,13 @@ signal viewport_changed(report: Dictionary)
 const VIEWPORT_PHONE_WIDTH := 390
 const VIEWPORT_PHONE_HEIGHT := 844
 
+## #837 — `I3` debug UI. One panel with two states: expanded draws `Hide seams`
+## and the controls, collapsed draws only `Show seams`. Both stay in the tree, so
+## a runner's `PlaytestDebug/DebugPanel/<control>` address survives either state.
+const CONTROLS_NODE := "Controls"
+const HIDE_SEAMS := "HideSeams"
+const SHOW_SEAMS := "ShowSeams"
+
 ## SIT.4 `O10` — the report the seam hands back; the window lives in PlaytestMeasure.
 const MEASURE_FRAME_TIMES := PlaytestMeasure.KIND_FRAME_TIMES
 const MEASURE_LOADING_READY := PlaytestMeasure.KIND_LOADING_READY
@@ -54,6 +61,11 @@ var _overlay_label: Label
 var _text_report: Callable = Callable()
 var _viewport_report: Dictionary = {}
 var _measure_kind: LineEdit
+var _debug_panel: VBoxContainer
+var _debug_controls: VBoxContainer
+var _hide_seams: Button
+var _show_seams: Button
+var _debug_collapsed := true
 
 
 func _ready() -> void:
@@ -99,6 +111,9 @@ func bind_text_report(provider: Callable) -> void:
 ## Viewport work needs `ENV.2`; where no display resizes the window the frame
 ## stays as it is and the report says so (I6 boundary). The reported sizes are
 ## the ones the layout renders, never the arguments (S13 / D2).
+## #837 — this run's debug chrome leaves the frame before the frame is judged, so
+## the `S6` render carries no panel over the strings `S13` reports on; the report
+## says whether any chrome still stands on the screen it measured.
 func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	## G2 / I3 — a release build has no O12.
 	if not playtest_build:
@@ -106,6 +121,7 @@ func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	if width <= 0 or height <= 0 or text_scale <= 0.0:
 		emit_tel("set_viewport", "fail")
 		return {}
+	_collapse_debug_panel()
 	var window := get_window()
 	var graphical := PlaytestGate.has_display() and window != null
 	if graphical and window.size != Vector2i(width, height):
@@ -114,10 +130,35 @@ func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 		_resize_to_frame(window)
 		_reflow_layout()
 	var report := _frame_report(width, height, text_scale)
+	report["debug_panel_visible"] = _debug_panel_on_screen()
 	_viewport_report = report.duplicate()
 	viewport_changed.emit(report)
 	emit_tel("set_viewport", "pass" if graphical else "skip", "SIT.6")
 	return report
+
+
+## #837 — playtest chrome never paints over the screen `S13` reports on.
+## Collapsed keeps one header control, so a runner still reaches the seams it
+## drives without the panel covering the mode-pick copy.
+func _collapse_debug_panel() -> void:
+	_debug_collapsed = true
+	_apply_panel_state()
+
+
+func _expand_debug_panel() -> void:
+	_debug_collapsed = false
+	_apply_panel_state()
+
+
+## Whether the run's debug chrome is on screen, so a judge can tell a clean
+## `S6` render from a covered one without reading pixels.
+func _debug_panel_on_screen() -> bool:
+	return (
+		is_instance_valid(_debug_panel)
+		and _debug_panel.is_inside_tree()
+		and _debug_controls != null
+		and _debug_controls.is_visible_in_tree()
+	)
 
 
 ## #708 — the applied frame is the drawable, not an elastic scale of the
@@ -405,41 +446,70 @@ func _snapshot() -> Dictionary:
 	return {}
 
 
+## #837 — collapsed is the shipped playtest state, so the screens a runner reads
+## and judges are clear of this run's chrome until the runner asks for the seams.
 func _build_debug_ui() -> void:
 	var layer := CanvasLayer.new()
 	layer.name = "PlaytestDebug"
 	add_child(layer)
-	var panel := VBoxContainer.new()
-	panel.name = "DebugPanel"
-	layer.add_child(panel)
-	_add_button(panel, "Pause", pause)
-	_add_button(panel, "Resume", resume)
-	_add_button(panel, "Inspect", _on_inspect_pressed)
-	_jump_field = LineEdit.new()
-	_jump_field.name = "JumpId"
-	_jump_field.placeholder_text = "stage id"
-	panel.add_child(_jump_field)
-	_add_button(panel, "Jump", _on_debug_jump)
-	_add_button(panel, "Overlay", _on_overlay_pressed)
-	_add_button(panel, "AssertTelemetry", _on_assert_telemetry_pressed)
-	_add_button(panel, "SetViewport", _on_set_viewport_pressed)
-	_measure_kind = LineEdit.new()
-	_measure_kind.name = "MeasureKind"
-	_measure_kind.placeholder_text = "frame_times | loading_ready"
-	panel.add_child(_measure_kind)
-	_add_button(panel, "Measure", _on_measure_pressed)
+	_debug_panel = VBoxContainer.new()
+	_debug_panel.name = "DebugPanel"
+	layer.add_child(_debug_panel)
+	_hide_seams = _add_button(_debug_panel, HIDE_SEAMS, "Hide seams", _collapse_debug_panel)
+	_debug_controls = VBoxContainer.new()
+	_debug_controls.name = CONTROLS_NODE
+	_debug_panel.add_child(_debug_controls)
+	_build_debug_controls(_debug_controls)
+	_show_seams = _add_button(_debug_panel, SHOW_SEAMS, "Show seams", _expand_debug_panel)
+	_apply_panel_state()
 	_overlay_label = Label.new()
 	_overlay_label.name = "StoryOverlay"
 	_overlay_label.visible = false
 	layer.add_child(_overlay_label)
 
 
-func _add_button(panel: VBoxContainer, label: String, handler: Callable) -> void:
+func _build_debug_controls(panel: VBoxContainer) -> void:
+	_add_button(panel, "Pause", "Pause", pause)
+	_add_button(panel, "Resume", "Resume", resume)
+	_add_button(panel, "Inspect", "Inspect", _on_inspect_pressed)
+	_jump_field = LineEdit.new()
+	_jump_field.name = "JumpId"
+	_jump_field.placeholder_text = "stage id"
+	panel.add_child(_jump_field)
+	_add_button(panel, "Jump", "Jump", _on_debug_jump)
+	_add_button(panel, "Overlay", "Overlay", _on_overlay_pressed)
+	_add_button(panel, "AssertTelemetry", "AssertTelemetry", _on_assert_telemetry_pressed)
+	_add_button(panel, "SetViewport", "SetViewport", _on_set_viewport_pressed)
+	_measure_kind = LineEdit.new()
+	_measure_kind.name = "MeasureKind"
+	_measure_kind.placeholder_text = "frame_times | loading_ready"
+	panel.add_child(_measure_kind)
+	_add_button(panel, "Measure", "Measure", _on_measure_pressed)
+
+
+## #837 / `I3` — one panel, two states. Collapsed leaves a single header, so the
+## judging region of a phone-width `S6` render is clear; the controls stay in the
+## tree with their names, so an address never depends on which state is shown.
+func _apply_panel_state() -> void:
+	if not is_instance_valid(_debug_panel):
+		return
+	var collapsed := _debug_collapsed
+	_debug_controls.visible = not collapsed
+	_hide_seams.visible = not collapsed
+	_show_seams.visible = collapsed
+	if collapsed:
+		_debug_panel.move_child(_show_seams, 0)
+
+
+func _add_button(
+	panel: VBoxContainer, node_name: String, label: String, handler: Callable
+) -> Button:
 	var button := Button.new()
-	button.name = label
+	button.name = node_name
 	button.text = label
 	button.pressed.connect(handler)
 	panel.add_child(button)
+	return button
 
 
 func _apply_overlay_label() -> void:

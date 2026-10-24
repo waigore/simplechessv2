@@ -1,0 +1,16 @@
+$ curl -sI https://waigore.github.io/simplechessv2/index.pck
+HTTP/2 200 
+last-modified: Sat, 24 Oct 2026 17:57:05 GMT
+etag: "6adcf171-91ff1c"
+content-length: 9568028
+
+# R9 as shipped in configuration.md (B5 release-status line):
+specs/technical/configuration.md:31:| T9 | advice_endpoint | — (integration value, not a design param; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default |
+specs/technical/configuration.md:32:| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; T9 and T10 serve the catalog route too |
+specs/technical/configuration.md:41:| B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: send 2000 as the O1 `time_ms` (the design default; the search stop stays [`CMP-advice-backend`](components/advice-backend.md) R3). T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
+specs/technical/configuration.md:43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | T9 or T10 missing: every deal fails ([`FAIL.T14`](failures.md)); Elo kept; log |
+
+# #550 manifest Defects line:
+docs/playtest/evidence/issue-550/headless-20261024T000000Z/manifest.md:8:- **Defects**: #655 — Puzzle stream deals nothing on the shipped path (`T9`/`T10` unset).
+docs/playtest/evidence/issue-550/headless-20261024T000000Z/manifest.md:16:| `PTD-puzzle-stream` S1/P1 — deal yields a puzzle (K1) | **fail** — `dealt=false`, read refuses (`status`); `T9`/`T10` empty (#655) |
+docs/playtest/evidence/issue-550/headless-20261024T000000Z/manifest.md:60:- #655 — `T9`/`T10` unset at `session_router.gd:729`, so every catalog read refuses (`B5`, `F-puzzle-catalog.X2`). Delivery decision: #648, blocked by #479.

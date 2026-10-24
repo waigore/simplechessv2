@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Stop search by `CFG.ADVICE_TIME_MS` (2000) or on client cancel |
 | R4 | Never expose Stockfish or UCI endpoints to the browser |
 | R5 | Are a separate Python server from the frontend ([ADR-0010](../../adr/decisions/0010-advice-backend-stack.md)) |
-| R6 | Accept a request only when its API key matches the configured key |
+| R6 | Read its key from its own environment variable and accept a request only when its `api_key` matches it ([`CTR-advice-stream`](../contracts/advice-stream.md) G4). An unset variable is auth failure: reject the request, and the client follows [`SEQ-advice-stream`](../sequences/advice-stream.md) B1 — the contract's O3 clear and [`FAIL.T1`](../failures.md) — with local play unblocked |
 | R7 | Invoke Stockfish locally on this same Python server. That UCI link is not a network connection ([ADR-0011](../../adr/decisions/0011-local-stockfish-invocation.md)) |
 | R8 | Ship no Stockfish binary: the operator installs and runs Stockfish as a separate program. Record Stockfish's GPL text, credits, exact version, and source URL beside the server, and keep its notices intact ([ADR-0012](../../adr/decisions/0012-advice-backend-gpl-compliance.md)) |
 | R9 | Serve no player-facing copy and persist no player state, so Localization and Save durability impose nothing on it |

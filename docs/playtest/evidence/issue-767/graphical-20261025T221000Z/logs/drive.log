@@ -1,0 +1,51 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+{"TEL.1":"set_viewport","TEL.2":1792876239854,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"SIT.6","TEL.5":"pass"}
+STEP frame applied=true frame_h=1280.0 viewport=(720.0, 1280.0) window=(720, 1280)
+STEP boot godot=4.7.2-stable (official) display=macOS playtest_build=true session=sess-1792876239636-27084-playtest-470553
+{"TEL.1":"shared.start","TEL.2":1792876239924,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+STEP ok: entered shared-play (stage=shared-play)
+STEP shot 01-ready-not-in-check size=(720, 1280) err=0
+STEP ok: VS2.4b chip hidden when not in check
+STEP ok: VS2.4b no board mark when not in check
+STEP ok: R2 status label present
+STEP status text='White to move' rect=[P: (16.0, 12.0), S: (688.0, 82.0)] frame_h=1280 floor=106.7
+STEP ok: VS2.4b side-to-move indicator inside the frame
+STEP FAIL: VS2.4b indicator >= 1/12 frame height (82.0 >= 106.7)
+{"TEL.1":"shared.move","TEL.2":1792876240062,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP ok: move e2-e4 accepted
+{"TEL.1":"shared.move","TEL.2":1792876240082,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP ok: move e7-e5 accepted
+{"TEL.1":"shared.move","TEL.2":1792876240101,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP ok: move d1-h5 accepted
+{"TEL.1":"shared.move","TEL.2":1792876240119,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP ok: move b8-c6 accepted
+{"TEL.1":"shared.move","TEL.2":1792876240142,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.check","TEL.2":1792876240143,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US2","TEL.5":"shown"}
+STEP shot 02-white-gives-check size=(720, 1280) err=0
+STEP ok: 3.Qxf7+ accepted
+STEP ok: Black is side to move after the check
+STEP ok: US2.7 R2 shows the check cue while in check
+STEP rendered chip rect=[P: (294.0, 102.0), S: (131.0, 52.0)] label rect=[P: (314.0, 104.0), S: (91.0, 48.0)] text='Check' lines=1 bg=f7f1e8 border=c28a86 ratio=6.39 frame_h=1280
+STEP ok: US2.7 the check cue is inside the frame
+STEP ok: US2.7 the word draws on one rendered line
+STEP ok: US2.7 the chip fits the word
+STEP ok: PER.R6 check word >= 4.5:1
+STEP board mark square='e8' strokes=2
+STEP ok: PER.R6 the mark renders on the checked King (e8)
+STEP ok: PER.R6 exactly one mark (2 L-frames)
+STEP king_square_px=(396.0, 556.0) mark_node_px=(72.0, 1096.0) frame=[P: (0.0, 0.0), S: (720.0, 1280.0)]
+STEP TEL verdict=pass matched=[{"TEL.1":"shared.check","TEL.2":1792876240143,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US2","TEL.5":"shown"}]
+STEP ok: TEL correlates shared.check shown -> UI-shared-play.US2
+{"TEL.1":"shared.move","TEL.2":1792876240224,"TEL.3":"sess-1792876239636-27084-playtest-470553","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP shot 03-check-answered size=(720, 1280) err=0
+STEP ok: 4.Kxf7 accepted
+STEP ok: US2.7 the cue clears when the check ends
+STEP ok: PER.R6 the board mark clears when the check ends
+STEP SHOTS ["01-ready-not-in-check","02-white-gives-check","03-check-answered"]
+STEP FAILURES ["VS2.4b indicator >= 1/12 frame height (82.0 >= 106.7)"]
+STEP DONE failures=1
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+exit=1

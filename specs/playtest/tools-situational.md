@@ -10,11 +10,15 @@ Summary and the Must rows: [`tools.md`](tools.md). A protocol cites a row here o
 | `SIT.2` | Input replay | Protocol needs recorded input playback | `S9` |
 | `SIT.3` | State dump | Protocol needs a full state snapshot beyond `DBG.2` | `S10` |
 | `SIT.4` | Frame-time / latency capture | Protocol times a move for frame time, or times `EX.loading` clearing ([quality.md](../definition/quality.md) Performance, Load time) | `S11` |
-| `SIT.5` | Telemetry read assertion | Protocol asserts its own steps emitted `TEL.1`–`TEL.5` with the cited story IDs (Observability) | `S12` |
+| `SIT.5` | Telemetry read assertion | Protocol asserts its own steps emitted `TEL.1`–`TEL.5` with the cited story IDs (Observability) | `S12` over `S7`'s `E1` sink — `S12` is new; `S7` emits and stays the only emit path |
 | `SIT.6` | Phone-width viewport at smallest text size | Protocol judges text legibility on a phone-width layout ([UIS.T2](../aesthetics/ui-style.md), Accessibility) | `S13` |
 | `SIT.7` | Screen-and-audio recording of a Graphical session | A [filmed seating](filmed-seating.md) records the release build once, end to end, for its `SRF.*`, `SND.*`, and `MOT.*` review | TBD — no seam named: is a recording a seam-free capture of the shipped page, or does technical design give it one? |
 
 `SIT.4` and `SIT.5` evidence records device, browser, build id, and repeat count in the [manifest](evidence-manifest.md); one sample is not evidence.
+
+**Seam registration.** `SIT.4` → `S11`, `SIT.5` → `S12`, `SIT.6` → `S13`, registered in that order in [`verification.md`](../technical/verification.md). No two rows share a seam. `SIT.5` is `S12`, a read verdict over `S7`'s sink; `S7` emits and stays the only emit path.
+
+**Runs behind `I6`.** `S11` is read by `PTU-shared-play` S5, `PTU-puzzle-play` S4 and `PTU-mode-pick` S1; `S12` by `PTU-shared-play` S6; `S13` by `PTU-mode-pick` S6. Timing is sampled on Graphical, where a browser renders.
 
 **One legibility citer.** `SIT.6` is cited only by `PTU-mode-pick` S6, where the Accessibility legibility claim is judged once at phone width. `PTU-localization` checks its copy for clipping at native length only, so it cites no `SIT.*` and runs no phone-width viewport.
 
