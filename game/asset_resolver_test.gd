@@ -221,6 +221,29 @@ func _check_vorbis_copy(music_id: String) -> bool:
 	)
 	if probe.resolve(music_id) == null:
 		return _fail("vorbis copy did not resolve")
+	return _check_catalogued_audio_route()
+
+
+## #785: an Opus catalogued under the real asset root (`music/…`) must play from its
+## `audio_runtime/<asset ID>.ogg` copy. The check above cannot see this — it moves the
+## catalogued path *onto* `audio_runtime/`, so it passed while the shipped read failed.
+func _check_catalogued_audio_route() -> bool:
+	var music_id := _first_kind("music")
+	var source := _first_file("music")
+	if music_id.is_empty() or source.is_empty():
+		return _fail("no catalogued music to route")
+	var probe := AssetResolver.new()
+	probe.playtest_override = 1
+	root.add_child(probe)
+	probe.apply_manifest(_manifest)
+	var catalogued := probe.resolve_absolute_path(source)
+	if catalogued.begins_with(probe._runtime_audio_path(music_id)):
+		return _fail("catalogued music sits on the runtime route; the test can prove nothing")
+	if not probe._header_contains(catalogued, "OpusHead"):
+		return _fail("catalogued music is not Opus, so O3 does not route it")
+	var stream := probe.resolve(music_id) as AudioStreamOggVorbis
+	if stream == null or stream.get_length() <= 0.0:
+		return _fail("catalogued Opus did not play from its Vorbis copy")
 	return true
 
 

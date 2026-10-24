@@ -2,28 +2,20 @@ class_name AdviceMarks
 extends Node2D
 ## PER.R5 — E4 `show_advice` marks on the board. From/to squares and an arrow in
 ## PAL.C7, drawn over the piece body, sized so a piece silhouette stays readable
-## (PER.R1) and nothing is conveyed by color alone (the arrow shows the move).
+## (PER.R1) and nothing is conveyed by colour alone (the arrow shows the move).
+##
+## The square mark is the **edge-bracket** form PAL.K9 gives Advice: one stroke per
+## edge midpoint, corners open — never the capture mark's corner pairs. Nothing on
+## the board sits behind it, so a keyline would change the form; the stroke alone
+## carries it, at the palette rules' bracket stroke.
 
 ## PAL.C7 advice teal.
 const COLOR_ADVICE := Color("53A2BE")
-## Square marks are corner brackets in the square's outer margin: a rim of
-## ADVICE_STROKE over the square, so the ink stays on the mark and never widens
-## the piece's silhouette.
-##
-## PER.R5 bounds the marks and arrow at ≤ 10% of a piece body, and FRM.P1 defines
-## that body as the opaque body inside the 0.85 × 0.85 SPC.E1 box — not the square
-## and not the transparent canvas. Two bounds follow, and the constants below
-## hold both:
-## - the brackets stay in the square's corner margin: the bracket ring starts at
-##   0.5 − ADVICE_STROKE / 2 − ADVICE_ARM = 0.335 from the square centre, beyond
-##   the widest body half-width (knight, 0.20), so a bracket never touches a
-##   silhouette;
-## - the arrow is the only mark that can reach one; it leaves the from-piece at
-##   ARROW_TAIL and stops ARROW_TIP_GAP short of the to-piece, and
-##   `body_coverage()` holds the residual at ≈ 1.3% of the tall King silhouette.
-const ADVICE_STROKE := 0.05
-## Bracket arm length, leaving the square centre open where the piece sits.
-const ADVICE_ARM := 0.14
+## The palette rules' bracket stroke: 0.10 units = 3.6 px at 360 px over 10 units
+## (PRJ.P1), above the UIS.I1 1.5 screen px floor.
+const ADVICE_STROKE := 0.10
+## Bracket arm length; the four corners stay open.
+const ADVICE_ARM := 0.20
 const ARROW_SHAFT := 0.04
 const ARROW_HEAD := 0.14
 ## The arrow runs between the two bodies: it leaves the from-piece's edge and
@@ -38,6 +30,8 @@ const BODY_BOX := 0.85
 const KING_BODY_AREA := 0.1274
 ## Marks fade in with the calm feedback the experience intent asks for (UIS.M2).
 const SHOW_S := UiChrome.M2_S
+## The four edge midpoints, in square units from the square's centre.
+const EDGES := [Vector2(0.0, -1.0), Vector2(1.0, 0.0), Vector2(0.0, 1.0), Vector2(-1.0, 0.0)]
 
 ## The from/to squares currently marked; empty when advice shows nothing.
 var last_from := ""
@@ -49,8 +43,8 @@ func _ready() -> void:
 	z_index = 5
 
 
-## The innermost point of a corner bracket, in square units from the square's
-## centre. Must stay outside every body half-width (FRM.P1 / PER.R5).
+## The innermost point of an edge bracket, along its edge, in square units from
+## the square's centre. Must stay outside every body half-width (FRM.P1 / PER.R5).
 static func bracket_inner_edge() -> float:
 	return 0.5 - ADVICE_STROKE * 0.5 - ADVICE_ARM
 
@@ -92,16 +86,16 @@ func _clear_nodes() -> void:
 		child.queue_free()
 
 
+## Edge brackets, one stroke per edge midpoint, corners open (palette rules).
 func _add_square_marks(square: String) -> void:
 	var c := BoardGeometry.square_center(square)
 	var outer := 0.5 - ADVICE_STROKE * 0.5
-	var inner := outer - ADVICE_ARM
-	for sx in [-1.0, 1.0]:
-		for sy in [-1.0, 1.0]:
-			var corner: Vector2 = c + Vector2(sx * outer, sy * outer)
-			var inner_x: Vector2 = c + Vector2(sx * inner, sy * outer)
-			var inner_y: Vector2 = c + Vector2(sx * outer, sy * inner)
-			add_child(_line(PackedVector2Array([inner_x, corner, inner_y]), ADVICE_STROKE))
+	for edge in EDGES:
+		var unit: Vector2 = edge
+		var out: Vector2 = c + unit * outer
+		var along := Vector2(-unit.y, unit.x)
+		var points := PackedVector2Array([out - along * ADVICE_ARM, out, out + along * ADVICE_ARM])
+		add_child(_line(points, ADVICE_STROKE))
 
 
 func _add_arrow(from_square: String, to_square: String) -> void:
