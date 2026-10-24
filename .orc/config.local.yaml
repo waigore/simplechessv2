@@ -22,7 +22,7 @@ agents:
 
   issue-workflow-review-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
-    parallel_run: 3
+    parallel_run: 1
     issues:
       command:
         - env
@@ -38,7 +38,7 @@ agents:
 
   issue-workflow-refine-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
-    parallel_run: 3
+    parallel_run: 1
     issues:
       command:
         - env
@@ -54,7 +54,7 @@ agents:
 
   issue-workflow-implement-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
-    parallel_run: 3
+    parallel_run: 6
     issues:
       command:
         - env
@@ -70,7 +70,7 @@ agents:
 
   issue-workflow-verify-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
-    parallel_run: 3
+    parallel_run: 1
     issues:
       command:
         - env
