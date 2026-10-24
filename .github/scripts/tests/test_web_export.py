@@ -588,21 +588,26 @@ class WebExportTest(unittest.TestCase):
         self._export_fails(repo, godot, web_export.PLAYTEST_PRESET)
 
     def _clean_tree(self) -> Path:
-        """A shipped tree shaped like an export that carries no engine."""
+        """A shipped tree shaped like an export that carries no engine.
+
+        All three reads exist — `index.pck`, `index.wasm`, `index.html` — because
+        a tree missing one is refused rather than passed unread (#560).
+        """
         shipped = self.tmp_path / "build" / "web"
         shipped.mkdir(parents=True, exist_ok=True)
         (shipped / "index.html").write_text("<html>Simple Chess</html>", encoding="utf-8")
         (shipped / "index.pck").write_text("res://main.tscn", encoding="utf-8")
+        (shipped / "index.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00")
         return shipped
 
     def test_engine_check_passes_a_tree_with_no_engine(self) -> None:
-        shipped = self._clean_tree()
-        (shipped / "index.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00")
-        web_export.ensure_no_client_engine(shipped)
+        web_export.ensure_no_client_engine(self._clean_tree())
 
     def test_engine_check_refuses_an_engine_name_in_the_pack(self) -> None:
         shipped = self._clean_tree()
-        (shipped / web_export.PACK).write_text("res://bin/stockfish", encoding="utf-8")
+        (shipped / web_export.PACK).write_bytes(
+            b"\x00res://bin/stockfish\x00res://bin/stockfish.nnue\x00"
+        )
         with self.assertRaisesRegex(web_export.BundleError, "names the engine"):
             web_export.ensure_no_client_engine(shipped)
 
@@ -650,6 +655,46 @@ class WebExportTest(unittest.TestCase):
         shipped = self._clean_tree()
         (shipped / web_export.PACK).write_text("res://stockfishing_story.gd", encoding="utf-8")
         web_export.ensure_no_client_engine(shipped)
+
+    # One case per file the check reads (ADR-0002 row "No client Stockfish
+    # endpoint"; CMP-advice-client R1; CTR-advice-stream G3; module M1). Each
+    # read is reached by a named case below, so a read no case exercises fails
+    # review (#560).
+
+    def test_engine_check_reads_the_wasm_beside_the_pack(self) -> None:
+        """The `index.wasm` read: engine bytes in the glue WASM, not the PCK."""
+        shipped = self._clean_tree()
+        (shipped / "index.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00\x00res://bin/stockfish/")
+        with self.assertRaisesRegex(web_export.BundleError, "index.wasm names the engine"):
+            web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_reads_the_html_before_the_pack(self) -> None:
+        """The `index.html` read: an endpoint in the JS glue, with a clean PCK."""
+        shipped = self._clean_tree()
+        (shipped / "index.html").write_text(
+            "<script>fetch('uci://127.0.0.1:7700')</script>", encoding="utf-8"
+        )
+        with self.assertRaisesRegex(web_export.BundleError, "index.html carries a UCI engine marker"):
+            web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_reads_engine_data_inside_the_pack(self) -> None:
+        """The `index.pck` text read: engine data that is not a `.wasm` is still engine."""
+        shipped = self._clean_tree()
+        (shipped / web_export.PACK).write_text(
+            "\x00" + "res://bin/stockfish" + "\x00" + "res://bin/stockfish.nnue" + "\x00",
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(web_export.BundleError, r"index\.pck"):
+            web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_requires_all_three_reads_to_exist(self) -> None:
+        """A tree the reads cannot all reach is refused, naming the missing file."""
+        for name in ("index.wasm", "index.html", "index.pck"):
+            with self.subTest(missing=name):
+                shipped = self._clean_tree()
+                (shipped / name).unlink()
+                with self.assertRaisesRegex(web_export.BundleError, name):
+                    web_export.ensure_no_client_engine(shipped)
 
     def test_engine_check_names_a_tree_it_cannot_read(self) -> None:
         with self.assertRaisesRegex(web_export.BundleError, "index.pck"):
