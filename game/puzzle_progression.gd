@@ -32,15 +32,19 @@ static func score(
 ## DIF.Y1 — one result's Elo delta: `CFG.ELO_K × (S − E)` with
 ## `E = 1 / (1 + 10^((puzzleElo − playerElo) / 400))`; no cap.
 static func elo_step(player_elo: float, puzzle_elo: float, points: float, elo_k: float) -> float:
-	var expected := 1.0 / (1.0 + pow(10.0, (puzzle_elo - player_elo) / 400.0))
-	return elo_k * (points - expected)
+	return elo_k * (points - expected_score(player_elo, puzzle_elo))
+
+
+## DIF.Y1 — the expected score `E` for `player_elo` against `puzzleElo`; no cap.
+static func expected_score(player_elo: float, puzzle_elo: float) -> float:
+	return 1.0 / (1.0 + pow(10.0, (puzzle_elo - player_elo) / 400.0))
 
 
 ## DIF.Y1 / F-puzzle-catalog I1 / GS.Q1 — the candidate set's first non-empty rung.
-## Widen the ± `match_range` by `band_widen` with the recent rule still on, then allow
-## recently solved ids and widen again. Returns the rung's members, or `[]` when no
-## puzzle fits at any rung. Order inside a rung is the input order, so any member may
-## be dealt and two deals need not agree.
+## Widen the ± `match_range` by `band_widen` with the recent rule still on until the band
+## reaches the widest offered puzzle, then allow recently solved ids and widen again.
+## A recently solved id is therefore never allowed while any unsolved puzzle exists.
+## Returns the rung's members (lowest Puzzle Elo first), or `[]` when no puzzle fits.
 static func candidate_set(
 	records: Array,
 	player_elo: float,
@@ -92,6 +96,12 @@ static func rung(
 		if not allow_recent and recent_solved.has(str(record.get(id_field, ""))):
 			continue
 		out.append(record)
+	# DIF.Y1 — lowest Puzzle Elo first, so the first member of a rung is the calm one;
+	# GS.Q1 still lets the session deal any member of the rung.
+	out.sort_custom(
+		func(left: Variant, right: Variant) -> bool:
+			return int(left.get(rating_field, 0)) < int(right.get(rating_field, 0))
+	)
 	return out
 
 

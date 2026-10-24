@@ -20,7 +20,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R6 | Expose no list, page, file, edit, or export operation, and the raw export as no public static file |
 | R7 | Keep records and snapshot_id immutable once served (L2–L3); a new snapshot is a new ADR-0008 decision |
 | R8 | Be a route on the advice Python server, on that server's host and deploy path, which are the operator's ([ADR-0015](../../adr/decisions/0015-advice-backend-operator-deployments.md)) |
-| R9 | Ship enabled in the published release: the client carries a real T9/T10 pair, and Puzzle stream releases only on a real deal at the published URL, never a seam build standing in. Release status and the missing-value path are [`configuration.md`](../configuration.md) `T9` T10 `B5`; value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
+| R9 | Ship enabled in the published release: require the client to carry a real T9/T10 pair, and release Puzzle stream only on a real deal at the published URL, never a seam build standing in. The release status and missing-value path are stated once in [`configuration.md`](../configuration.md) `T9` T10 `B5`; value delivery is [#479](https://github.com/waigore/simplechessv2/issues/479) |
 
 ## Communication
 

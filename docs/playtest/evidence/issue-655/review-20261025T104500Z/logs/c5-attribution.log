@@ -1,0 +1,13 @@
+$ git blame -L 550,558 origin/main -- game/puzzle_session.gd
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 550) 			kind = CONFIRM_ABANDON
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 551) 			ends_attempt = true
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 552) 		"C5":
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 553) 			kind = CONFIRM_LEAVE
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 554) 			needs_puzzle = false
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 555) 		_:
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 556) 			return {"ok": false}
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 557) 	if (needs_puzzle and not has_
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 558) 		return {"ok": false}
+
+$ git log -S "needs_puzzle" --format="%h %s" -- game/puzzle_session.gd
+2e389b5 Make C5 raise the leave confirm on S1 with no puzzle open (#655) (#694)
