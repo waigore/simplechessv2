@@ -23,9 +23,11 @@ Wave 1 always includes **bootstrap** and the **asset pipeline** in full, plus an
 
 Prefer self-contained vertical slices (design + UX + tech + assets for one outcome). No horizontal catch-alls (“all screens”, “all features”). Out-of-scope names sibling epics. Depth stays at most epic → task → task ([hierarchy.md](hierarchy.md)).
 
-## Demo before main code
+## PoCs and demo mode
 
-At least one demo exists before foundation or vertical implementation leaves start. Its scope may be as small as the owner chooses. Every demo under `demos/` must pass the [promotion act](../demo-promotion.md) first. File the demo task, then the promotion-act task blocked by it, then implementation leaves blocked by that act. A later demo blocks further main-code work until its act is done. A vertical does not need its own demo. Do not file a demo as a follow-on of implementation. The demo task is not a child of a foundation epic.
+There is **no** global “PoC before main code” gate. Open requests in [`docs/requirements/poc-requests.md`](../requirements/poc-requests.md) are planner debt to surface; file as tasks/epics when useful. Use native **blocked-by** only when a dependent claim must wait on that PoC. Optional reconcile: [`poc-promotion.md`](../poc-promotion.md).
+
+Product **demo mode** (when [`specs/design/demo.md`](../../specs/design/demo.md) Offering is offered) is ordinary main-tree work, not a `pocs/` folder and not a wave-start blocker by itself.
 
 ## Filing
 

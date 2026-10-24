@@ -28,6 +28,7 @@ Authoring rules: [`.agents/specs/rules/design/traceability.md`](../../.agents/sp
 | Stages and scenes | [`stages/`](stages/) | N/A — no stages; board play only |
 | Game state | [`game-state.md`](game-state.md) | Applies |
 | Configuration | [`configuration.md`](configuration.md) | Applies |
+| Demo mode | [`demo.md`](demo.md) | TBD — Offering undecided |
 | Difficulty settings | [`difficulty.md`](difficulty.md) | Applies — puzzle Elo only |
 | Scenarios | [`scenarios/puzzle-stream-visit.md`](scenarios/puzzle-stream-visit.md) | Applies |
 | Progress management | [`progression.md`](progression.md) | Applies |

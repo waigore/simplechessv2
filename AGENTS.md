@@ -50,13 +50,13 @@ Open Design (user-local, not in this repo): install/verify with `ensure-open-des
 - [`.github/`](.github/) — ([README](.github/README.md))
 - [`docs/`](docs/) — ([README](docs/README.md))
 - [`specs/`](specs/) — ([README](specs/README.md))
-- [`demos/`](demos/) — gameplay demos, kept apart from main code ([README](demos/README.md))
+- [`pocs/`](pocs/) — proofs of concept, kept apart from main code ([README](pocs/README.md)); product demo mode is main-tree + [`specs/design/demo.md`](specs/design/demo.md)
 - [`agent-orc/`](agent-orc/) — skill-agent orchestrator daemon ([README](agent-orc/README.md)); config under [`.orc/`](.orc/)
 - `asset_catalog/` / `game_assets/` — catalog entries and asset files ([ADR-0005](specs/adr/decisions/0005-asset-catalog-roots.md)); Godot project root `game/`
 
 ## Rules to live by
 
-**Before any work, read [`.agents/rules.md`](.agents/rules.md)**: secondary rules for spec authoring, depth, and review; ADRs; playtesting; aesthetics and assets; technical design; concise docs; and demos.
+**Before any work, read [`.agents/rules.md`](.agents/rules.md)**: secondary rules for spec authoring, depth, and review; ADRs; playtesting; aesthetics and assets; technical design; concise docs; demo mode; and PoCs.
 
 - **Template setup and updates**: in a new repo from this template, run `ensure-project-setup` before any other work or PR ([`docs/github-repo-setup.md`](docs/github-repo-setup.md)). Pull upstream template changes with `sync-upstream-template`; never merge upstream by hand.
 - **High-level requirements first**: `capture-requirements` locks in vision, definition, and quality before any downstream spec is captured; earlier design-level detail waits in [`docs/requirements/`](docs/requirements/README.md) (notes, not specs).

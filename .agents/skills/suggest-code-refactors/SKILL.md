@@ -9,7 +9,7 @@ description: |-
   technical-debt pass over the implementation tree or a named portion.
 
   Examples:
-    - user: "Where should we refactor?" → whole tree except demos/, file the cut
+    - user: "Where should we refactor?" → whole tree except pocs/, file the cut
     - user: "Suggest refactors in src/combat" → that portion, file the cut
     - user: "Audit structure, don't file" → audit-code-structure only
 ---

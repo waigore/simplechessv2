@@ -23,13 +23,13 @@ Cut shippable **waves** from `specs/` and file issues. Contract: [`docs/issues/w
 - **Waves = appreciable chunks** of game features from the specs — coherent, testable, and understandable. Soft target: **≤2–3 epics per wave**, **~10 implementation tasks per epic**. Prefer smaller waves over large scopes that hide complexity.
 - **Foundations before detailed mechanics**; then **vertical slices** (player outcomes). No horizontal catch-alls.
 - **Pick one slice axis** for the run (loop, journey, mode, content pack, system+scenario, or similar) so waves extend along a clear spine. Confirm with the user.
-- **Demo before main code** — at least one demo task, then its promotion-act task, then foundation/vertical leaves blocked by that act. Details: [Demo before main code](../../../docs/issues/waves.md#demo-before-main-code).
+- **PoCs optional** — surface open [`poc-requests.md`](../../../docs/requirements/poc-requests.md) entries; file tasks/epics when useful; use **blocked-by** only where a claim must wait on proof. No mandatory PoC-before-foundation pattern. Details: [PoCs and demo mode](../../../docs/issues/waves.md#pocs-and-demo-mode).
 
 ## Workflow
 
 1. **Setup / gate** — [`ensure-project-setup`](../ensure-project-setup/SKILL.md) unless already passed this session. High-level requirements locked; Engine ADR Accepted; enough specs to inventory. Blocking TBDs on IDs you would include → stop.
-2. **Inventory** — Stable IDs and rough dependencies only (not task lists).
-3. **Propose** — Full wave map (milestones + epic stubs for every wave) unless the user asked for a **specific wave**. Expand **leaf tasks only** for the wave being expanded (first run: wave 1). Soft-size the epics/tasks. Include demo + promotion-act blockers for that wave. `--no-create` / draft-only: print and stop.
+2. **Inventory** — Stable IDs and rough dependencies only (not task lists). Note open PoC requests.
+3. **Propose** — Full wave map (milestones + epic stubs for every wave) unless the user asked for a **specific wave**. Expand **leaf tasks only** for the wave being expanded (first run: wave 1). Soft-size the epics/tasks. Include PoC tasks and local blocked-by only when needed. `--no-create` / draft-only: print and stop.
 4. **Confirm** with the user, then **file** — milestones for all planned waves; epics for all waves; leaves only for the expanded wave. Wire milestones, sub-issues, blocked-by.
 5. **Report** — URLs and dependency summary.
 
@@ -40,4 +40,4 @@ Cut shippable **waves** from `specs/` and file issues. Contract: [`docs/issues/w
 ## Rules
 
 - Confirm before filing (except planner bootstrap above). Do not invent scope the user rejected.
-- Do not build demos or game code in this skill.
+- Do not build PoCs or game code in this skill.

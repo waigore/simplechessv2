@@ -21,4 +21,4 @@ description: |-
 
 Canonical instructions: [`.agents/skills/register-asset/SKILL.md`](../../../.agents/skills/register-asset/SKILL.md).
 
-Read that file, then run the workflow there. Do not invent a parallel process.
+Read that file and its `references/` as needed, then run the workflow there. Do not invent a parallel process.

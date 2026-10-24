@@ -11,6 +11,6 @@ Two people share one browser for untimed or timed (blitz / rapid) chess, or a so
 - [`specs/`](specs/)
 - [`docs/`](docs/)
 - [`.agents/`](.agents/)
-- [`demos/`](demos/)
+- [`pocs/`](pocs/)
 
 Agent orientation: [`AGENTS.md`](AGENTS.md).

@@ -16,7 +16,7 @@ Higher wins. Extend `solid.md`; never contradict it (e.g. no central type switch
 
 ADRs ([`specs/adr/`](../specs/adr/adr.md)) and technical design ([`specs/technical/`](../specs/technical/technical.md)) decide tech; cite them, do not choose them here.
 
-Conventions do not apply under `demos/` ([demos](demos.md#what-is-relaxed)).
+Conventions do not apply under `pocs/` ([pocs](pocs.md#what-is-relaxed)).
 
 ## Rules
 
@@ -33,7 +33,7 @@ Each rule has a permanent ID `CC-<n>` (never reused) and a level:
 | CC-4 | should | File layout. One `class_name` per file; the stem is that name in snake_case. |
 | CC-5 | must | Errors. Check Godot `Error` returns. Signal failure with `push_error` or a handled value, not `print` alone. |
 | CC-6 | should | Logging. `push_warning` for recoverable problems, `push_error` for failures, `print` only for non-failure traces. |
-| CC-7 | must | Tests. `game/**/*_test.gd` extends `SceneTree` and `quit`s non-zero on failure. Not under `demos/` or `.github/scripts`. |
+| CC-7 | must | Tests. `game/**/*_test.gd` extends `SceneTree` and `quit`s non-zero on failure. Not under `pocs/` or `.github/scripts`. |
 | CC-8 | must | Tests. Coverage fails when main-code statement-line coverage is under 80. |
 
 Past 500 words, split under `docs/coding-conventions/` and link.
@@ -49,7 +49,7 @@ Each command is one step in [`code-lint.yml`](../.github/workflows/code-lint.yml
 
 ## Unit tests
 
-One step in the `Unit tests` job of [`unit-tests.yml`](../.github/workflows/unit-tests.yml). Main code under `game/` (M1), not `demos/` or `.github/scripts`. Not `None`. While `game/` has no `*_test.gd`, the command exits 0 and does not invoke Godot.
+One step in the `Unit tests` job of [`unit-tests.yml`](../.github/workflows/unit-tests.yml). Main code under `game/` (M1), not `pocs/` or `.github/scripts`. Not `None`. While `game/` has no `*_test.gd`, the command exits 0 and does not invoke Godot.
 
 | Tool | Command | Scope |
 |------|---------|-------|

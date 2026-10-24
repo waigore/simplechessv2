@@ -28,7 +28,7 @@ Assets an agent generates or sources go through [`manage-asset`](../manage-asset
 1. **Gate**. Stop, say what is missing, and offer `capture-requirements`, `author-spec`, or `audit-spec-tbd` when any of these fails:
    - The asset hub's **Catalog** names a catalog root and asset root (no TBD), and the hub's Sources table marks the asset's source type as Applies.
    - The hub's Asset kinds table names the kind spec the asset belongs to, written or planned. Its name is the handle prefix.
-   - For main code: that kind spec is written and one of its coverage rules requires the asset. An asset used only by a demo needs only the hub-named kind spec ([`docs/demo-style-assets.md`](../../../docs/demo-style-assets.md)).
+   - For main code: that kind spec is written and one of its coverage rules requires the asset. An asset used only by a PoC needs only the hub-named kind spec ([`docs/poc-style-assets.md`](../../../docs/poc-style-assets.md)).
 2. **Confirm provenance** with the user: who made or supplied the asset, and how it was made. Set the source type from the answer: AI generation if any AI tool produced or edited any part of it, procedural generation if a procedural tool did, otherwise human-made or third-party.
 3. **Confirm rights**:
    - **Human-made**: the author and the rights they grant the project.

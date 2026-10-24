@@ -51,7 +51,7 @@ Keep the three states: draft, approved, and deprecated.
 
 - **Approval**: what moves a draft to approved: a `review-asset` Pass alone, or a Pass plus product-owner sign-off on the PR. A kind spec may require more, never less. A review-exempt asset is approved when its catalog entry merges.
 - **Review exemption**: keep this rule as written. A person (the author or the product owner) may exempt one asset of any source type from `review-asset`. Only a person marks an exemption; an agent never grants, infers, or defaults to one. The catalog records who, when, and why. `review-asset` runs on an exempt asset only on request, and its verdict is advisory.
-- **Use**: main code uses only approved assets. A gameplay demo uses only cataloged assets with a `review-asset` Pass or a review exemption, draft or approved, per `docs/demo-style-assets.md`.
+- **Use**: main code uses only approved assets. A PoC uses only cataloged assets with a `review-asset` Pass or a review exemption, draft or approved, per `docs/poc-style-assets.md`.
 
 ## Index
 

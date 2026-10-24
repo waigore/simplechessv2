@@ -10,6 +10,8 @@ Everything that varies the game's rules without changing the design: modes and o
 
 Columns: mode, description, how it differs from the standard rules (or "Baseline"), and a link to the flow. Reference a mode by name, such as `CFG.permadeath`.
 
+When [`demo.md`](demo.md) Offering is **offered**, include a demo mode (or options/tunables) whose differences cite `DEMO.L*` limitations. Do not invent demo caps only here—`demo.md` owns the product meaning.
+
 ## Game options
 
 Rule variants and assists the player or host may choose. Difficulty levels live in `difficulty.md`, not here.

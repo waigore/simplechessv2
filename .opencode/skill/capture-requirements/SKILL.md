@@ -16,6 +16,7 @@ description: |-
     - user: "Help me fill definition by asking questions" → specs/definition/definition.md only
     - user: "Interview me for the movement feature" → only once the high-level stage is locked in; uses saved notes
     - user: "Capture requirements for design and view" → ask which one path this session
+    - unclear rendering approach during technical capture → propose PoC; log purpose/scope/outcome; offer task
 ---
 
 # Capture requirements (facade)

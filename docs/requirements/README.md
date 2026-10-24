@@ -10,7 +10,9 @@ One file per downstream layer, created when first needed: `design.md`, `view.md`
 
 Current notes: none.
 
-## Entry format
+**PoC requests** use a separate file: [`poc-requests.md`](poc-requests.md) (purpose, scope, desired outcome). They are not layer notes; the filed GitHub issue is the build authority.
+
+## Entry format (layer notes)
 
 ```markdown
 - <detail, in the user's words> — target: `<spec path or folder>`
@@ -25,3 +27,5 @@ Current notes: none.
 1. **Save**: during capture, a downstream detail is listed in the confirmation summary and saved here in the same spec PR.
 2. **Consume**: when a capture run targets a spec, it reads the notes for that target and offers them as proposed answers.
 3. **Prune**: once the user confirms a note into a spec, or rejects it, the run deletes the entry in that spec PR. Delete a file once it is empty.
+
+PoC requests: save on confirm → file task/epic → set Status/Issue → prune when the PoC issue is accepted or the request is dropped.

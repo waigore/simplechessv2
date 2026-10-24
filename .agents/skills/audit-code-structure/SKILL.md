@@ -9,7 +9,7 @@ description: |-
   findings without filing issues, or when suggest-code-refactors asks for the audit.
 
   Examples:
-    - user: "Audit structure, don't file issues" → whole tree except demos/
+    - user: "Audit structure, don't file issues" → whole tree except pocs/
     - user: "Audit src/combat" → that portion
     - suggest-code-refactors: pass the request scope, return this report
 ---
@@ -27,7 +27,7 @@ Use the first match:
 
 **Implementation code:** source, tests, and build or config that shapes runtime.
 
-Always exclude `demos/` unless the user explicitly includes a path under `demos/`. Exclude docs, specs, agent skills and rules, and other non-implementation paths. If a named path is not implementation code, skip it and say so. If nothing remains, report no findings and stop.
+Always exclude `pocs/` unless the user explicitly includes a path under `pocs/`. Exclude docs, specs, agent skills and rules, and other non-implementation paths. If a named path is not implementation code, skip it and say so. If nothing remains, report no findings and stop.
 
 When the scope is a portion, read surrounding callers and siblings far enough to judge continuity and seams.
 
@@ -72,7 +72,7 @@ For the resolved scope:
 ## Code structure audit
 
 **Scope:** whole implementation tree | <paths>
-**Excluded:** demos/ | <skipped paths>
+**Excluded:** pocs/ | <skipped paths>
 
 ### Findings
 - `F1` `[TAG]` — paths — evidence — proposed target

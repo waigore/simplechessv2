@@ -33,6 +33,7 @@ Stable IDs let player stories, issues, and other specs name a behavior exactly.
 | `sub-games/` | `SG-<name>` | Entry and exit `N`, Rules `R`, End conditions and rewards `O` |
 | `game-state.md` | `GS` | Fields by name, such as `GS.health`; Global invariants `V`; Hidden and visible state `H`; Randomness and determinism `Q` |
 | `configuration.md` | `CFG` | Modes, game options, and designer tunables by name, such as `CFG.permadeath`; Dependencies and restrictions `K` |
+| `demo.md` | `DEMO` | Limitations `L`, Entry and exit `N` |
 | `difficulty.md` | `DIF` | Rule adjustments `R`, Dynamic adjustment `Y`, Changing difficulty `C` |
 | `progression.md` | `PRG` | Progression axes `A`, Unlocks `U`, Persistence `P`, Committing progress `M`, Failure consequences `F`, Completion `Z` |
 | `end-conditions.md` | `END` | Conditions by their ID, such as `END.L1`; Precedence `P` |
