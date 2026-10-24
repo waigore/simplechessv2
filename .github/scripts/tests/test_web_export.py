@@ -291,6 +291,74 @@ class WebExportTest(unittest.TestCase):
         self._stage_assets(shipped)
         assert web_export.main(check) == 0
 
+    def _write_boot_manifest(self, files: list[str]) -> None:
+        """A committed manifest with one approved `boot` entry listing `files`."""
+        entry = {"state": "approved", "kind": "icons", "files": files}
+        (self.repo / "game" / "asset_manifest.json").write_text(
+            json.dumps(
+                {
+                    "asset_root": web_export.ASSET_ROOT,
+                    "assets": {"a": entry},
+                    "groups": {"boot": ["a"]},
+                }
+            ),
+            encoding="utf-8",
+        )
+
+    def test_boot_check_passes_when_the_tree_serves_every_boot_asset(self) -> None:
+        self._write_boot_manifest(["icons/quit.svg"])
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped)
+        web_export.ensure_boot_assets_resolve(shipped, self.repo)
+        assert web_export.missing_boot_files(shipped, self.repo) == []
+
+    def test_boot_check_fails_naming_the_absent_ids_and_the_missing_root(self) -> None:
+        self._write_boot_manifest(["icons/quit.svg"])
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        with self.assertRaises(web_export.ExportError) as raised:
+            web_export.ensure_boot_assets_resolve(shipped, self.repo)
+        assert "0 of 1 boot asset file(s) resolved" in str(raised.exception)
+        assert f"{web_export.ASSET_ROOT}/ absent" in str(raised.exception)
+        assert "a (icons/quit.svg)" in str(raised.exception)
+
+    def test_boot_check_fails_when_the_assets_are_packed_but_no_route_serves_them(self) -> None:
+        """#715's failure mode: the pack carries sidecars, the source route resolves nothing."""
+        self._write_boot_manifest(["icons/quit.svg"])
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        _fake_pack(shipped / web_export.PACK, [f"res://{web_export.ASSET_ROOT}/icons/quit.svg.import"])
+        assert web_export.asset_root_present(shipped, self.repo)
+        with self.assertRaises(web_export.ExportError) as raised:
+            web_export.ensure_boot_assets_resolve(shipped, self.repo)
+        assert "0 of 1 boot asset file(s) resolved — no route serves" in str(raised.exception)
+        assert "a (icons/quit.svg)" in str(raised.exception)
+
+    def test_boot_check_passes_when_the_pack_carries_the_boot_route_loose_absent(self) -> None:
+        self._write_boot_manifest(["icons/quit.svg"])
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        _fake_pack(shipped / web_export.PACK, [f"res://{web_export.ASSET_ROOT}/icons/quit.svg"])
+        assert web_export.missing_boot_files(shipped, self.repo) == []
+
+    def test_boot_check_reports_the_partial_count(self) -> None:
+        self._write_boot_manifest(["icons/quit.svg", "icons/back.svg"])
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False)
+        (shipped / web_export.ASSET_ROOT / "icons" / "back.svg").write_text("<svg/>", encoding="utf-8")
+        with self.assertRaises(web_export.ExportError) as raised:
+            web_export.ensure_boot_assets_resolve(shipped, self.repo)
+        assert "1 of 2 boot asset file(s) resolved — no route serves" in str(raised.exception)
+
+    def test_boot_check_cli_is_red_then_green(self) -> None:
+        self._write_boot_manifest(["icons/quit.svg"])
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        check = ["--check-boot", "--repo", str(self.repo), "--preset", web_export.RELEASE_PRESET]
+        assert web_export.main(check) == 1
+        self._stage_assets(shipped)
+        assert web_export.main(check) == 0
+
     def test_export_stages_the_repo_asset_root_and_discards_it_after(self) -> None:
         repo = self._write_repo()
         for name in (web_export.ASSET_ROOT, web_export.AUDIO_RUNTIME):
@@ -322,7 +390,11 @@ class WebExportTest(unittest.TestCase):
         web_export.export(repo, web_export.RELEASE_PRESET, godot, shipped / "index.html")
         assert not (repo / "game" / web_export.ASSET_ROOT).exists()
         assert not (repo / "game" / web_export.AUDIO_RUNTIME).exists()
-        assert [path.name for path in web_export.staged_asset_files(shipped)] == ["quit.svg"]
+        # Staged copies are served loose beside index.html, so the shipped tree
+        # keeps the sample the resolver would read at `res://game_assets/…`.
+        served = sorted(path.name for path in (shipped / web_export.ASSET_ROOT / "sample").iterdir())
+        assert served == ["file.txt"]
+        assert (shipped / web_export.AUDIO_RUNTIME / "sample" / "file.txt").is_file()
 
     def test_export_fails_when_the_shipped_tree_has_no_asset_file(self) -> None:
         repo = self._write_repo()
