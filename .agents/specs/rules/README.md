@@ -90,6 +90,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/ux/stories.md` | [ux/stories.md](ux/stories.md) |
 | `specs/ux/stories/` | [ux/story.md](ux/story.md) |
 | `specs/ux/story-coverage.md` | [ux/story-coverage.md](ux/story-coverage.md) |
+| `specs/ux/story-coverage/` | [ux/story-coverage.md](ux/story-coverage.md) |
 | `specs/ux/navigation.md` | [ux/navigation.md](ux/navigation.md) |
 | `specs/ux/exceptions.md` | [ux/exceptions.md](ux/exceptions.md) |
 | `specs/ux/controls.md` | [ux/controls.md](ux/controls.md) |

@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/ux/ux.md`](../../.agents/specs/rules/ux/u
 
 ## Index
 
-Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md), [`ids.md`](ids.md), [`navigation.md`](navigation.md), [`exceptions.md`](exceptions.md), [`controls.md`](controls.md), [`stories.md`](stories.md), [`story-coverage.md`](story-coverage.md), [`presentation.md`](presentation.md), [`localization.md`](localization.md).
+Global specs: [`glossary.md`](glossary.md), [`traceability.md`](traceability.md), [`ids.md`](ids.md), [`navigation.md`](navigation.md), [`exceptions.md`](exceptions.md), [`controls.md`](controls.md), [`stories.md`](stories.md), [`story-coverage.md`](story-coverage.md), [`story-coverage/specs.md`](story-coverage/specs.md), [`story-coverage/exceptions.md`](story-coverage/exceptions.md), [`story-coverage/controls.md`](story-coverage/controls.md), [`presentation.md`](presentation.md), [`localization.md`](localization.md).
 
 - **Actors**: [`bottom-player.md`](actors/bottom-player.md), [`top-player.md`](actors/top-player.md)
 - **Screens**: [`mode-pick.md`](screens/mode-pick.md), [`shared-setup.md`](screens/shared-setup.md), [`shared-play.md`](screens/shared-play.md), [`shared-result.md`](screens/shared-result.md), [`puzzle-play.md`](screens/puzzle-play.md)
