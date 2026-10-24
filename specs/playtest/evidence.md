@@ -13,9 +13,9 @@ Authoring rules: [`.agents/specs/rules/playtest/evidence.md`](../../.agents/spec
 
 This file owns the outcome vocabulary. Story rows are judged individually ([`story-rows.md`](story-rows.md)); the **protocol** is the acceptance unit ([`playtest.md`](playtest.md)).
 
-- **Story outcome**: per selected story row, `pass`, `fail`, `not-judged`, or `none`.
-- **`none`**: a row no protocol judges. It is recorded once with the row list, as `none — <reason>` plus a linked `type:defect` number, never as a run result. A scenario cell no step reaches is a scenario-cell `none` listed in its row's cell, with no defect. `none` is never `out` or `not-judged`.
-- **Protocol verdict**: `pass` only when every cited story is `pass` in that environment. Any cited story `fail` makes the protocol `fail`; a protocol is never `pass` beside a failed story. A `not-judged` story makes the protocol `not-judged` there, never `pass`.
+- **Story outcome**: per selected row, `pass`, `fail`, `not-judged`, or `none`.
+- **`none`**: a row no protocol judges, recorded once with the row list as `none — <reason>` plus a linked `type:defect` number, never as a run result. A scenario cell no step reaches is a scenario-cell `none` listed in its row's cell, with no defect. Never `out` or `not-judged`.
+- **Protocol verdict**: `pass` only when every cited story is `pass` in that environment; any cited story `fail` makes it `fail`, and a `not-judged` story makes it `not-judged` there. A protocol is never `pass` beside a failed story.
 - **`not-judged`**: the run could not judge the row (such as a display the run lacks). It never counts as `pass`. The issue stays `status:pending-acceptance` until another run judges it.
 - **`Waiting`**: folder-level only ([`procedures.md`](procedures.md)); never a story outcome or protocol verdict.
 
@@ -32,7 +32,7 @@ This file owns the outcome vocabulary. Story rows are judged individually ([`sto
 
 ## Screenshots, logs, notes
 
-- **Screenshots**: Required before acceptance unless the protocol says none: ≥1 image of each failed protocol and of each `pass` judged state, captured by a graphical run of the same build under `screenshots/`.
+- **Screenshots**: Required before acceptance unless the protocol says none: ≥1 image of each failed protocol and of each `pass` judged state, from a graphical run of the same build, under `screenshots/`.
 - **Headless run**: May judge and record outcomes, notes, and logs with no display. Omit `screenshots/` and mark those paths waiting in `manifest.md`; that omission is no fail.
 - **Logs**: under `logs/`, covering the judged window for `TEL.1`–`TEL.5`.
 - **Notes**: `notes.md` — what was judged, blockers, and non-blocking marks only where allowed.
