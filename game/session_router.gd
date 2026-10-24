@@ -35,6 +35,10 @@ var advice_api_key := ""
 var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
 var options_locked := false
 var session_ended := false
+## UI-mode-pick states S1 / S3 / S4. The router owns it because the input rail
+## delivers control ids even when their buttons are hidden (#846): S3 must
+## refuse C1–C4 and S4 must offer them as S1, regardless of what is on screen.
+var mode_pick_ui_state := "S1"
 ## CTR-asset-resolve E4 — Boot's unresolved count when the Boot preload failed, else 0.
 var boot_failure_count := 0
 ## EX.error / S3 — an advice fetch failed while On; cleared by Dismiss (states.md).
@@ -282,8 +286,7 @@ func finish_reject_flash() -> void:
 
 func show_save_failure() -> void:
 	## EX.save-failure (UI-mode-pick.S4); prior committed Last mode stays.
-	if stage != STAGE_MODE_PICK and stage != STAGE_READY_ALIAS:
-		stage = STAGE_MODE_PICK
+	stage = STAGE_MODE_PICK
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S4"))
 
 
@@ -467,6 +470,7 @@ func _load_persist() -> void:
 
 func _go_mode_pick(ui_state: String = "S1") -> void:
 	stage = STAGE_MODE_PICK
+	mode_pick_ui_state = ui_state
 	options_locked = false
 	_leave_advice()
 	shared_session = null
@@ -553,6 +557,7 @@ func _advice_available() -> bool:
 
 
 func _mode_pick_state(ui_state: String) -> Dictionary:
+	mode_pick_ui_state = ui_state
 	return {
 		"ui_state": ui_state,
 		"locale": locale,
@@ -608,8 +613,13 @@ func _emit_play_screen(move: Dictionary = {}) -> void:
 
 
 func _on_mode_pick_control(control_id: String) -> void:
+	# UI-mode-pick Control table: C1–C4 are available when S1 or S4; S3 offers
+	# only Confirm and Cancel (#846). The input rail still delivers hidden ids,
+	# so the gate lives here rather than in the panel.
 	match control_id:
 		"C1":
+			if not _mode_pick_choice_available():
+				return
 			if not _commit_last_mode(MODE_SHARED):
 				return
 			last_mode = MODE_SHARED
@@ -617,21 +627,38 @@ func _on_mode_pick_control(control_id: String) -> void:
 			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
 		"C2":
 			# UI-mode-pick.C2 / NAV.T2 / J-puzzle-session.S1 — enter the puzzle stream.
+			if not _mode_pick_choice_available():
+				return
 			if not _commit_last_mode(MODE_PUZZLE):
 				return
 			last_mode = MODE_PUZZLE
 			_enter_puzzle_play()
 		"C3":
+			if not _mode_pick_choice_available():
+				return
 			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S3"))
 		"C4":
+			if not _mode_pick_choice_available():
+				return
 			locale = StringTable.next_locale(locale)
 			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S1"))
 		"confirm":
+			if mode_pick_ui_state != "S3":
+				return
 			_end_session()
 		"cancel":
+			if mode_pick_ui_state != "S3":
+				return
 			_go_mode_pick("S1")
 		"dismiss":
+			if mode_pick_ui_state != "S4":
+				return
 			_go_mode_pick("S1")
+
+
+## C1–C4 as S1 (S1 and S4 both offer them; S3 does not).
+func _mode_pick_choice_available() -> bool:
+	return mode_pick_ui_state != "S3"
 
 
 func _commit_last_mode(mode: String) -> bool:

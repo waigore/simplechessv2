@@ -251,6 +251,10 @@ func _show_state(state_id: String) -> void:
 	ui_state = state_id
 	_confirm_box.visible = false
 	_save_box.visible = false
+	# UI-mode-pick S3 offers only Confirm and Cancel: C1–C4 leave the input rail
+	# (focusable_controls) and must not emit control_activated while hidden (#846).
+	for button in [_shared, _puzzle, _quit, _locale_btn]:
+		button.disabled = state_id == "S3"
 	_style_all()
 	# Animate sub-panels only when this screen is already up (avoid nested M1 fade).
 	var animate := visible and modulate.a > 0.5

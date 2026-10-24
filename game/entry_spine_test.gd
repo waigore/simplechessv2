@@ -38,6 +38,8 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _quit_confirm_cancel()
 	if _error.is_empty():
+		_error = _quit_confirm_unavailable()
+	if _error.is_empty():
 		_error = _shared_path()
 	if _error.is_empty():
 		_error = _string_table()
@@ -140,6 +142,52 @@ func _quit_confirm_cancel() -> String:
 	_router.handle_control("mode-pick", "confirm")
 	if _router.stage != "session-ended" or not _router.session_ended:
 		return "confirm did not end sitting"
+	return ""
+
+
+## #846 / mode-pick-unavailable US1.10–US1.13 — S3 locks out C1–C4.
+func _quit_confirm_unavailable() -> String:
+	var seams := _presentation.get_node("PlaytestSeams") as PlaytestSeams
+	seams.jump("mode-pick")
+	_router.handle_control("mode-pick", "C3")
+	var mode_pick := _mode_pick()
+	var err := _s3_refuses("C1", "shared-setup")
+	if not err.is_empty():
+		return err
+	err = _s3_refuses("C2", "puzzle-play")
+	if not err.is_empty():
+		return err
+	var before_last := _router.last_mode
+	err = _s3_refuses("C4", "mode-pick")
+	if not err.is_empty():
+		return err
+	if _router.locale != "en":
+		return "C4 in S3 switched locale"
+	if _router.last_mode != before_last:
+		return "C1/C2 in S3 committed Last mode"
+	err = _s3_refuses("C3", "mode-pick")
+	if not err.is_empty():
+		return err
+	if mode_pick.ui_state != "S3":
+		return "S3 did not stay up"
+	var locale_btn := mode_pick.find_child("SwitchLocale", true, false) as Button
+	if locale_btn == null or not locale_btn.disabled:
+		return "C4 reachable in S3"
+	_router.handle_control("mode-pick", "cancel")
+	locale_btn = mode_pick.find_child("SwitchLocale", true, false) as Button
+	if locale_btn == null or locale_btn.disabled:
+		return "C4 disabled after leaving S3"
+	if _router.stage != "mode-pick":
+		return "cancel from S3 did not stay on mode-pick"
+	return ""
+
+
+func _s3_refuses(control_id: String, expected_stage: String) -> String:
+	_router.handle_control("mode-pick", control_id)
+	if _router.stage != expected_stage:
+		return "%s in S3 moved to %s" % [control_id, _router.stage]
+	if _mode_pick().ui_state != "S3":
+		return "%s in S3 dropped the quit confirm" % control_id
 	return ""
 
 
