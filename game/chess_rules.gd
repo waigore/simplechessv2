@@ -394,10 +394,10 @@ func is_dark_square(square: String) -> bool:
 
 
 func in_check(side: String) -> bool:
-	var king_square := _king_square(side)
-	if king_square.is_empty():
+	var king_at := _king_square(side)
+	if king_at.is_empty():
 		return false
-	return attacks(_opponent(side), king_square)
+	return attacks(_opponent(side), king_at)
 
 
 func attacks(attacker_side: String, square: String) -> bool:
@@ -516,8 +516,8 @@ func _king_safe_after(from_square: String, to_square: String, color: String) -> 
 		_move_castle_rook(from_square, to_square)
 	_occupancy[to_square] = piece
 	_occupancy.erase(from_square)
-	var king_square := _king_square(color)
-	var safe := king_square.is_empty() or not attacks(_opponent(color), king_square)
+	var king_at := _king_square(color)
+	var safe := king_at.is_empty() or not attacks(_opponent(color), king_at)
 	_occupancy = saved_occ
 	_en_passant = saved_ep
 	return safe
@@ -716,10 +716,11 @@ func _promotes(rank: int, color: String) -> bool:
 	return rank == 1
 
 
-func _king_square(side: String) -> String:
+## PER.R6 — the side's king square, or "" when it has none on the board.
+func _king_square(side_color: String) -> String:
 	for square in _occupancy.keys():
 		var piece: Dictionary = _occupancy[square]
-		if str(piece["color"]) == side and str(piece["kind"]) == KIND_KING:
+		if str(piece["color"]) == side_color and str(piece["kind"]) == KIND_KING:
 			return str(square)
 	return ""
 
