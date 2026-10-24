@@ -210,7 +210,7 @@ func _build() -> void:
 	_check = Label.new()
 	_check.name = "CheckCue"
 	_check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	UiChrome.style_label(_check)
+	_style_check_label()
 	_check.add_theme_color_override("font_color", UiChrome.COLOR_INK)
 	_check_chip.add_child(_check)
 	_chrome.add_child(_check_chip)
@@ -447,8 +447,8 @@ func _link_focus_chain(controls: Array[Control]) -> void:
 
 func _style_all() -> void:
 	UiChrome.style_label(_status, true, _text_scale)
-	UiChrome.style_label(_check, false, _text_scale)
 	_check_chip.add_theme_stylebox_override("panel", _check_chip_style())
+	_style_check_label()
 	UiChrome.style_label(_clocks, false, _text_scale)
 	UiChrome.style_label(_advice_eval, false, _text_scale)
 	UiChrome.style_label(_confirm_msg, false, _text_scale)
@@ -501,6 +501,14 @@ func _apply_font() -> void:
 		nodes.append(_promote_btns[kind])
 	for node in nodes:
 		UiChrome.apply_font(node, _ui_font)
+
+
+## PER.R6 — an autowrapping Label reports ~1 px of minimum width, so a shrinking
+## chip collapses to its padding and wraps the word letter by letter. The cue is
+## one short word in every locale: keep it on one line and size the chip to it.
+func _style_check_label() -> void:
+	UiChrome.style_label(_check, false, _text_scale)
+	_check.autowrap_mode = TextServer.AUTOWRAP_OFF
 
 
 func _apply_copy() -> void:
