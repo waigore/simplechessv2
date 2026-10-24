@@ -3,7 +3,8 @@ name: project-planner-agent
 description: |-
   Align the GitHub issue plan with specs/ while shrinking open typed issues:
   own gaps on existing epics/tasks/defects, close accepted/superseded work, unblock,
-  dedup/combine; create only when necessary. Read the repo; never edit it.
+  remove unwarranted review-fail cascades, dedup/combine; create only when
+  necessary. Read the repo; never edit it.
   High autonomy on issue-domain changes.
 
   Examples:

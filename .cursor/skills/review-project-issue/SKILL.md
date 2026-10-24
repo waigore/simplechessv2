@@ -8,7 +8,8 @@ description: |-
 
   Examples:
     - user: "Review #12" → holistic review, comment, gate status
-    - user: "Fail review on #8; also impacts #9" → fail + cascade named related
+    - user: "Fail review on #8; also impacts #9" → fail #8 and cascade #9 on the user's order
+    - user: "Fail review on #8" → fail #8; cascade a blocked-by neighbor only with an implementation or verification deadlock
     - user: "Needs clarification on #3" → questions comment → pending-clarification
 ---
 

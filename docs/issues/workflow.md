@@ -27,9 +27,9 @@ Every write follows [body-writes.md](body-writes.md): compose to a file, write t
 
 | From | Action / evidence | To |
 |------|-------------------|-----|
-| pending-review | Pass review (latest comment); body consistent; deliverables/AC align with parent or vision; note new requirements | pending-implementation |
-| pending-review | Fail review: problems + refinement direction; name impacted related issues | pending-refinement (self + named related) |
-| pending-review | Gaps not inferable from project scope: clarification questions | pending-clarification |
+| pending-review | Pass review (latest comment); body consistent; deliverables/AC align with parent or project vision; note new requirements | pending-implementation |
+| pending-review | Fail review: problems + refinement direction. Cascade another issue only when [workflow-cascade.md](workflow-cascade.md) authorizes it | pending-refinement (self; others only when cascade is authorized) |
+| pending-review | Gaps that cannot be inferred from project scope: clarification questions | pending-clarification |
 | pending-refinement | Refined issue body + summary comment | pending-review |
 | pending-clarification | PO clarification comment | pending-review, or pending-refinement if refine still needed |
 | pending-implementation | Comment summarizing deliverables (PRs/commits) | pending-verification |
@@ -44,9 +44,7 @@ Reviews are holistic against the whole issue and its parent/sibling relationship
 
 No row leaves `accepted` or `superseded`: both are terminal ([terminal-states.md](terminal-states.md)).
 
-## Cascade (fail review)
-
-Move only the reviewed issue plus issues the fail comment **explicitly names**. Do not auto-cascade the tree.
+Fail-review cascades: [workflow-cascade.md](workflow-cascade.md).
 
 ## Skills
 
