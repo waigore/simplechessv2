@@ -1,6 +1,8 @@
 class_name PersistStoreTest
 extends SceneTree
-## Headless checks for CMP-persist-store / CTR-persist-document (#61).
+## Headless checks for CMP-persist-store / CTR-persist-document. The `player_elo` and
+## `recent_solved` slots this file asserts are `SCH-persist-doc.F2` and `.F4`, committed
+## per `PRG.M1` and promised by `persistence.md` M2 / M4 / G1.
 
 
 func _initialize() -> void:
@@ -54,10 +56,10 @@ func _successful_commit_and_reload() -> String:
 	if str(committed.get("last_mode", "")) != PersistStore.MODE_SHARED:
 		return "read_committed after write"
 	if float(committed.get("player_elo", -1)) != float(PersistStore.ELO_START):
-		return "Wave-2 player_elo slot preserved on Last mode commit"
+		return "SCH-persist-doc.F2 player_elo slot preserved on Last mode commit"
 	var recent: Array = committed.get("recent_solved", [])
 	if recent.size() != 0:
-		return "Wave-2 recent_solved slot preserved"
+		return "SCH-persist-doc.F4 recent_solved slot preserved"
 	store.free()
 
 	var reloaded := PersistStore.new()
