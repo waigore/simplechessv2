@@ -38,5 +38,3 @@ Cite the design ID and the concrete value. Write "Then region R1 shows health 3"
 Sections without IDs (job, goals, experience intent, copy, and similar) are judged during review and acceptance. Copy strings are checked on the mockup.
 
 If the file passes 500 words, keep this file as the overview and split by part: the per-spec kind table to `story-coverage/specs.md`, the `EX.*` proof to `story-coverage/exceptions.md`, and the `IN.*` proof to `story-coverage/controls.md`. Leave a summary and links here, and list the split files in `ux.md`.
-
-If the file passes 500 words, keep this file as the overview and split by part: the per-spec kind table to `story-coverage/specs.md`, the `EX.*` proof to `story-coverage/exceptions.md`, and the `IN.*` proof to `story-coverage/controls.md`. Leave a summary and links here, and list the split files in `ux.md`.
