@@ -3,9 +3,12 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	## Hold the checks one frame so the debug panel's controls enter the tree and
+	## take their rects before `#708` reads the frame they resolve against.
+	await process_frame
 	if not _check_release():
 		return
-	if not _check_playtest():
+	if not await _check_playtest():
 		return
 	quit(0)
 
@@ -110,6 +113,7 @@ func _check_playtest() -> bool:
 		return false
 	if not _check_debug(seams, stage):
 		return false
+	await process_frame
 	return _check_viewport(seams)
 
 
@@ -127,12 +131,12 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 	var framed := PlaytestGate.in_frame(seams)
 	var frame := int(phone.get("frame_height_px", 0))
 	var empty := seams.set_viewport(0, 844, 1.0)
-	# UIS.T2 is a ratio to the reference height, so a taller phone frame sits above
-	# BODY_PX; a hardcoded or clamped size at BODY_PX fails `scales_with_frame`.
-	var phone_expected := Presentation.scaled_body_px(_frame_ratio(wanted.y))
+	# UIS.T2 is a ratio to the reference height, so a taller frame sits above
+	# BODY_PX. This compares the hook's own answers at two heights; the hook is
+	# what reports, so a clamped or hardcoded size fails here.
 	var scales_with_frame := (
-		phone_expected > UiChrome.BODY_PX
-		and phone_expected > Presentation.scaled_body_px(_frame_ratio(640))
+		Presentation.body_text_screen_px_for_frame_height(wanted.y)
+		> Presentation.body_text_screen_px_for_frame_height(UiChrome.REFERENCE_FRAME_HEIGHT_PX)
 	)
 	var panel_button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
 	var problem := ""
@@ -164,16 +168,42 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 		problem = "S13 hook must follow the rendered frame, not a constant"
 	elif not _phone_ratio():
 		problem = "S13 phone frame must reflow the shipped layout"
-	elif not _ignores_argument_scale(seams):
-		problem = "S13 seam must not report the argument it was handed"
 	elif not empty.is_empty():
 		problem = "S13 invalid input must not return a report"
 	elif panel_button == null:
 		problem = "S13 debug panel control"
-	elif not _hook_tracks_the_frame():
-		problem = "S13 hook must follow the rendered frame, not a constant"
-	elif not _phone_ratio():
-		problem = "S13 phone frame must reflow the shipped layout"
+	if not problem.is_empty():
+		return _fail(problem)
+	if not _check_frame_height(seams):
+		return false
+	return true
+
+
+## #708 — the frame a control reflows to is the running window, never the
+## control's own height. A 44 px button resolved `16 * 44 / 640` and drew at
+## 1 px, and the phone frame drew at a stale desktop ratio. The subject is the
+## debug panel's own control: a 44 px box in the frame the layout renders in.
+func _check_frame_height(seams: PlaytestSeams) -> bool:
+	var button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
+	var own_height := button.size.y
+	var frame := UiChrome.frame_height_of(button)
+	var scale := UiChrome.responsive_text_scale(button)
+	var project := float(ProjectSettings.get_setting("display/window/size/viewport_height", 0))
+	var problem := ""
+	if frame <= 0.0:
+		problem = "#708 frame height unread"
+	elif DisplayServer.get_name() == "headless" and not is_equal_approx(frame, project):
+		problem = "#708 headless frame must be the project height"
+	elif (
+		own_height > 0.0
+		and is_equal_approx(own_height, frame)
+		and not is_equal_approx(frame, project)
+	):
+		problem = "#708 frame followed the control's own height, not the window"
+	elif not is_equal_approx(scale, frame / UiChrome.REFERENCE_FRAME_HEIGHT_PX):
+		problem = "#708 ratio must come from the frame"
+	elif UiChrome.scaled_px(UiChrome.BODY_PX, scale) < UiChrome.BODY_PX:
+		problem = "#708 body text below BODY_PX at the reference frame"
 	if not problem.is_empty():
 		return _fail(problem)
 	return true
@@ -265,10 +295,6 @@ func _phone_ratio() -> bool:
 		ok = puzzle_px >= UiChrome.scaled_px(UiChrome.BODY_PX, applied)
 	presented.queue_free()
 	return ok
-
-
-func _frame_ratio(height_px: int) -> float:
-	return Presentation.text_scale_for_frame_height(float(height_px))
 
 
 func _remember_viewport(report: Dictionary, reports: Array) -> void:

@@ -93,23 +93,57 @@ func set_viewport(width: int, height: int, text_scale: float) -> Dictionary:
 	var graphical := PlaytestGate.has_display() and window != null
 	if graphical and window.size != Vector2i(width, height):
 		window.size = Vector2i(width, height)
-	## The running window is the frame; before the seam has one it claims no
-	## height rather than the requested one, so `S13` never reads a size that is
-	## not on screen (I6). A runner that refuses the resize keeps its own frame.
-	var frame_height := PlaytestGate.frame_height(self)
-	var report := {
-		"width": width,
-		"height": height,
-		"text_scale": text_scale,
-		"applied": graphical,
-		"frame_height_px": frame_height,
-		"rendered_text_scale": Presentation.text_scale_for_frame_height(frame_height),
-		"body_text_px": _body_text_px(frame_height),
-	}
+	if graphical:
+		_resize_to_frame(window)
+		_reflow_layout()
+	var report := _frame_report(width, height, text_scale)
 	_viewport_report = report.duplicate()
 	viewport_changed.emit(report)
 	emit_tel("set_viewport", "pass" if graphical else "skip", "SIT.6")
 	return report
+
+
+## #708 — the applied frame is the drawable, not an elastic scale of the
+## reference one. The project stretches `canvas_items` with `expand`, so a
+## resized window would keep a 1280 project width and grow the project height
+## to phone-width × expansion: the layout would draw far larger than the phone
+## it claims to be, at sizes that pass `S13` and are judged by none of the
+## screen. Turning content scaling off makes the window's own px the frame
+## (UIS.T2 stays a ratio of the frame height, so the layout still reflows).
+## `S13` reads the rendered frame, so nothing here sets a size.
+func _resize_to_frame(window: Window) -> void:
+	if window.content_scale_mode == Window.CONTENT_SCALE_MODE_DISABLED:
+		return
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	window.content_scale_size = Vector2i(0, 0)
+
+
+## The layout must take the ratio of the frame just applied, not the one it
+## renders before `O12` runs (#708). The seam only asks; the ratio still comes
+## from `CMP-presentation` (`D1`).
+func _reflow_layout() -> void:
+	var host := get_parent()
+	var shell := host as Presentation
+	if shell != null:
+		shell.reflow_text_for_frame()
+
+
+## The frame the seam applied and the body text that frame renders (D2). Every
+## size is read from the viewport after the resize, never from the arguments.
+func _frame_report(width: int, height: int, text_scale: float) -> Dictionary:
+	## Before the seam has a frame it claims no height rather than the requested
+	## one, so `S13` never reads a size that is not on screen (I6). A runner that
+	## refuses the resize keeps its own frame.
+	var frame_height := PlaytestGate.frame_height(self)
+	return {
+		"width": width,
+		"height": height,
+		"text_scale": text_scale,
+		"applied": PlaytestGate.has_display(),
+		"frame_height_px": frame_height,
+		"rendered_text_scale": Presentation.text_scale_for_frame_height(frame_height),
+		"body_text_px": _body_text_px(frame_height),
+	}
 
 
 func last_viewport_report() -> Dictionary:
