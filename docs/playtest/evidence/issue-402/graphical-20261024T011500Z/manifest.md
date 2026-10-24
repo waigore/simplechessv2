@@ -2,7 +2,7 @@
 
 - **Issue**: #402 — Verify every `quality.md` row on the shipped release build
 - **Environment**: `graphical` — Chrome 155 headless via `puppeteer-core`, 390×844 CSS px, DPR 2, WebGL 2.0; no seam, no playtest build
-- **Build**: published release `https://waigore.github.io/simplechessv2/`, commit `98d3473c5edf686ac35d5e65d47aaa57c9d0d7fe`, `Web release` run `39991174434`. Control: `Web Release` export of the same commit served from `build/web/`. No `TEL.3` session id — the release export emits no telemetry
+- **Build**: published release `https://waigore.github.io/simplechessv2/`, commit `98d3473c5edf686ac35d5e65d47aaa57c9d0d7fe`, `Web release` run `39991174434`. Control: `Web Release` export of the same commit served from `build/web/`. No `TEL.3` session id — the release export emits no telemetry, which is specified for a release build (`CTR-playtest-drive` G2, `CMP-playtest-seams` R3; #729)
 - **Coverage mode**: `critical-only` — the sweep stopped at the first blocking failure
 - **Repeat count**: 4 cold opens of the published URL, 1 local export; identical result
 
@@ -15,14 +15,15 @@
 | Load time — advice ready ≤ 2000 ms | timed advice readiness while moving | not-judged — Advice Off, no board |
 | Reliability — 15–40 min sitting | sitting soak | not-judged — no screen reachable |
 | Reliability — reopen at mode pick | fault mid-session, reopen | not-judged — no puzzle result committable |
-| Observability | protocol run, story IDs in logs | **fail** — release export emits no `TEL.*` lines |
+| Observability | protocol run, story IDs in logs | not-judged — row judges the playtest-certified build (`SIT.5` over `E1`); a release build emits no `TEL.*` by specification (`CTR-playtest-drive` G2, `verification.md` H1/I3, `CMP-playtest-seams` R3) |
 | Save durability | quit/reload after a puzzle result; forced failed write | not-judged — no commit path |
 | Accessibility — shape / no color-only | `PER.R1`, `PAL.K1` `PAL.K2` review | not-judged on this build — no piece rendered |
 | Accessibility — smallest text | `SIT.6` phone-width read | not-judged — only `Loading…` renders |
 | Localization — three locales | locale switch, four screens | not-judged — no screen past loading |
 
-The two failing rows and all eight `not-judged` rows share one cause: the build never leaves the
-loading screen. See [`notes.md`](notes.md).
+One row `fail`s: Load time — board playable. Of the nine `not-judged` rows, eight share one cause — the build
+never leaves the loading screen. Observability is `not-judged` for a different reason: it judges the
+playtest-certified build, which this reading is not (#729). See [`notes.md`](notes.md).
 
 ## Paths
 
