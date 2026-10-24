@@ -1,70 +1,40 @@
 ---
 name: audit-project-wave
 description: |-
-  Audit a filed implementation wave (GitHub milestone) against its milestone
-  description and its type:epic issues: find gaps, overlaps, contradictions, or
-  mis-membership that jeopardize deliverable completeness or quality. Propose
-  fixes (new epics, milestone moves, set-level restructure); confirm with the
-  user before mutating. Use after plan-project-waves filing, when a wave looks
-  incomplete, or before expanding leaf tasks.
+  Audit a filed wave (milestone) against the waves contract: epics and defined
+  tasks for coherence, focus, completeness, and quality. Propose changes;
+  confirm before mutating. Use after plan-project-waves, when a wave looks
+  bloated or incomplete, or before expanding leaves.
 
   Examples:
-    - user: "Audit wave 1" → load milestone + epics, report, propose package, wait
-    - user: "Draft wave audit only" → --no-create, print findings + proposed package
-    - user: "Fix the wave 2 epic set" → confirm then file/move/restructure
+    - user: "Audit wave 1" → load wave, findings + proposed changes, wait
+    - user: "Draft wave audit only" → --no-create, print package
+    - user: "Apply the wave 2 fixes" → confirm then mutate
 ---
 
 # Audit project wave
 
-High-level audit of a **filed** wave: milestone description (expected deliverable) vs its epics. Contract: [`docs/issues/waves.md`](../../../docs/issues/waves.md). Issue shapes: [`docs/issues/`](../../../docs/issues/). Do not redefine body headings.
+Judge a **filed** wave against the contract in [`docs/issues/waves.md`](../../../docs/issues/waves.md). Bodies: [`docs/issues/`](../../../docs/issues/). Do not redefine headings or restate the contract here.
 
-**Delegates (after confirm):** [`create-project-epic`](../create-project-epic/SKILL.md) for new epics; `gh` for milestone description edits and issue ↔ milestone assignment. Leaf tasks and per-epic review stay with [`plan-project-waves`](../plan-project-waves/SKILL.md) and [`review-project-issue`](../review-project-issue/SKILL.md).
+**Delegates (after confirm):** [`create-project-epic`](../create-project-epic/SKILL.md), [`create-project-task`](../create-project-task/SKILL.md) when new issues are needed; `gh` for milestone description, assignment, and moves. Per-issue body polish: [`review-project-issue`](../review-project-issue/SKILL.md).
 
-## Steps
+## Principles
 
-1. **Resolve the wave**: milestone title or number (default: ask). Load milestone title + **description**, and every open/closed `type:epic` assigned to it (`gh`).
-2. **Gate — milestone description**: It must state the wave’s **expected deliverable** (one coherent outcome). If missing or too vague to judge fit → **Clarify** (propose a description from epic goals + specs; do not invent product scope). Stop mutations until the user confirms a description; then set it on the milestone before continuing, or abort if they want draft-only.
-3. **Inventory (light)**: From `specs/`, list stable IDs that the milestone description implies (loops, `F-*`, `FL-*`, journeys/screens, foundation needs, Accepted ADRs as needed). Skip `specs/adr/archive/`. Blocking TBDs on IDs the deliverable needs → note and offer [`audit-spec-tbd`](../audit-spec-tbd/SKILL.md); do not invent decisions.
-4. **Audit epic set** (epics as units only — do not open leaf AC quality):
-   - **Completeness**: Does the union of epic goals/in-scope cover the milestone description? Missing capability that fits no existing epic → propose a **new epic**. A `status:superseded` issue counts as catered for when its named successor is on the default branch or in the plan, so a retirement never reads as a coverage gap.
-   - **Fit**: Does each epic clearly contribute to the milestone description? Misplaced → propose **move** to another milestone (or out of this wave).
-   - **Overlap / contradiction**: Double-claimed IDs or conflicting in/out-of-scope across epics → propose scope split or Notes/scope edits (set-level only).
-   - **Foundation (wave 1)**: Bootstrap + asset pipeline (+ substrate verticals need) present and thin; play not buried in a catch-all systems epic.
-   - **Demo before main code**: At least one demo task blocks the promotion-act task, and that act blocks implementation leaves, or the missing blocker is noted. A vertical need not have its own demo. Foundation epics must not carry the demo task.
-   - **Anti-patterns**: Horizontal catch-alls; out-of-scope that does not name a sibling/other wave when known; cross-wave hard deps that break this wave’s stated deliverable.
-5. **Propose package**: Verdict (**Pass** / **Fail** / **Clarify**), findings, and mutations (description text, new epic Goal/Scope/Notes drafts, milestone moves, set-level scope/Notes edits). **Confirm before any mutation.** If `--no-create` / “draft only”: print and stop.
-6. **Apply** (after confirm only): update milestone description; create epics via `create-project-epic` and assign to the milestone; move epics with `gh`; apply agreed set-level body edits. Do not file leaf tasks or demo builds here.
-7. **Report**: milestone URL, verdict, what changed, remaining risks, and whether [`review-project-issue`](../review-project-issue/SKILL.md) should run on new/changed epics.
+- **Contract bar** — Expected deliverable (milestone description), foundation-before-verticals, vertical slices, demo-before-main-code: as in `docs/issues/waves.md`. Soft size: **≤2–3 epics / wave**, **~10 implementation tasks / epic**. Prefer smaller focused waves over large scopes that hide complexity.
+- **Coherent and consistent** — Epics (and tasks where filed) clearly serve the milestone deliverable; no overlaps, contradictions, or mis-membership.
+- **Focused implementation** — No work that enlarges effort without benefit to this wave’s deliverable. Drop, defer, or move noise elsewhere.
+- **In / out of scope** — The wave must state what is in, what is out, and what is deferred or assigned to other waves. Prefer **split or move** over stuffing this wave when completeness would bloat it.
+- **Quality and completeness** — The epic+task set must be enough to ship the stated deliverable without gaps that fit no owner. A `status:superseded` issue counts as catered for when its named successor is on the default branch or in the plan, so a retirement never reads as a coverage gap.
 
-## Report shape
+## Workflow
 
-```markdown
-**Wave audit: <milestone title> — <Pass | Fail | Clarify>**
-
-Expected deliverable (milestone description): <summary or "MISSING">
-
-Findings:
-- <gap | overlap | contradiction | mis-membership | packaging | foundation> — <epic #n or set> — <why it jeopardizes the deliverable>
-
-Proposed package (confirm before apply):
-- Milestone description: <edit or none>
-- New epics: <titles / goals or none>
-- Moves: <#n → milestone or none>
-- Set-level epic edits: <#n — what or none>
-
-Out of scope this skill: <leaf tasks / AC polish / code>
-```
+1. **Resolve** — Milestone (ask if unclear). Load description + `type:epic` issues on it, and their child tasks where defined.
+2. **Judge** — Against the principles above and the waves contract. Vague/missing milestone description → propose one from epic goals + specs (do not invent product scope); do not mutate until confirmed.
+3. **Propose** — Findings and proposed changes (description edit, new/moved epics, task add/drop/defer, set-level scope/Notes). `--no-create` / draft-only: print and stop.
+4. **Confirm**, then **apply** agreed mutations only. Do not build demos or game code here.
+5. **Report** — Milestone URL, what changed, remaining risks.
 
 ## Rules
 
-- Confirm before every mutation. Do not invent goal/scope the user rejected.
-- Stay at epic-set level; do not rewrite task deliverables or AC.
-- Prefer vertical outcomes; foundation only for shared substrate.
-- Bodies stay within [body-shapes.md](../../../docs/issues/body-shapes.md).
+- Confirm before every mutation. Do not invent scope the user rejected.
 - Requirement notes under `docs/requirements/` are not authority.
-
-## Related
-
-- Contract: `docs/issues/waves.md`
-- Plan: `plan-project-waves`
-- Epic review: `review-project-issue`

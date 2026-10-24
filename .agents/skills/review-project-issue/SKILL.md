@@ -31,7 +31,7 @@ Review a typed issue currently in `status:pending-review`.
    - Body internally consistent; no major gaps/ambiguities/underspecifications
    - Deliverables and acceptance criteria align with parent goal/scope, or project vision if root-level
    - Acknowledge when the issue is a **new requirement**
-   - **If `type:epic`** (addendum — epic granularity; wave-set coherence is [`audit-project-wave`](../audit-project-wave/SKILL.md)):
+   - **If `type:epic`** (addendum — epic granularity; wave coherence is [`audit-project-wave`](../audit-project-wave/SKILL.md)):
      - Goal is an observable outcome, not a task list; Scope has explicit in/out; out-of-scope names sibling epics or other waves when known
      - In-scope qualified IDs (from Notes/Scope) are owned by child tasks when children exist (coverage/ownership — not path-level AC polish)
      - Not a horizontal catch-all; foundation stays substrate-only
