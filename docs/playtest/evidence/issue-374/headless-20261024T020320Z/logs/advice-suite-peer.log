@@ -1,0 +1,68 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+advice: ready after 0 ms
+advice: ready after 1 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+WARNING: advice: error after 0 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _check_offline_clears (res://advice_client_test.gd:257)
+         [5] _run_all (res://advice_client_test.gd:52)
+         [6] _start (res://advice_client_test.gd:14)
+advice: ready after 0 ms
+advice: ready after 0 ms
+WARNING: advice: timeout after 0 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _check_error_clears_and_play_continues (res://advice_client_test.gd:311)
+         [5] _run_all (res://advice_client_test.gd:52)
+         [6] _start (res://advice_client_test.gd:14)
+WARNING: advice: error after 0 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _check_one_failure_reports_once (res://advice_client_test.gd:327)
+         [5] _run_all (res://advice_client_test.gd:52)
+         [6] _start (res://advice_client_test.gd:14)
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+advice: ready after 0 ms
+WARNING: advice: error after 0 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _check_cleared_reports_story (res://advice_client_test.gd:378)
+         [5] _run_all (res://advice_client_test.gd:52)
+         [6] _start (res://advice_client_test.gd:14)
+advice: ready after 0 ms
+advice: ready after 0 ms
+ERROR: Parse JSON failed. Error at line 0: Expected 'true', 'false', or 'null', got 'not'
+   at: parse_string (core/io/json.cpp:629)
+   GDScript backtrace (most recent call first):
+       [0] _read_line (res://advice_wire_reader.gd:91)
+       [1] feed (res://advice_wire_reader.gd:44)
+       [2] _check_wire_handles_partial_and_junk (res://advice_client_test.gd:472)
+       [3] _run_all (res://advice_client_test.gd:52)
+       [4] _start (res://advice_client_test.gd:14)

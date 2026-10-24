@@ -52,6 +52,7 @@ func _run_all() -> String:
 		_check_mate_in_one_mark,
 		_check_confirm_reveal,
 		_check_confirm_leave_unscored,
+		_check_confirm_leave_empty_s1,
 		_check_confirm_blocks_board,
 		_check_save_failure_state,
 		_check_selection_and_flash,
@@ -468,7 +469,7 @@ func _check_outcome_consumed_once() -> String:
 
 
 ## PRG.M1 / persistence.md G1 M2 M4 — the committed document keeps version 1 with the
-## wave-2 slots F2 and F4, and only snapshot-2026-10-05 PuzzleIds are ever saved.
+## slots F2 and F4, and only snapshot-2026-10-05 PuzzleIds are ever saved.
 func _check_committed_document_shape() -> String:
 	var store := _stored_session()
 	var session := PuzzleSession.new(ChessRules.new(), store)
@@ -744,6 +745,47 @@ func _check_confirm_leave_unscored() -> String:
 		return "leaving must not score the open puzzle as abandon (K4/E1)"
 	if session.play_ui_state != PuzzleSession.UI_S1:
 		return "leaving must drop the confirm state"
+	return ""
+
+
+## US5.1 / US5.3 — C5 leaves the stream from S1 whether or not a puzzle is open: a
+## stream whose catalog read failed deals nothing and still shows S1 (#655).
+func _check_confirm_leave_empty_s1() -> String:
+	var session := _session()
+	if session.play_ui_state != PuzzleSession.UI_S1 or session.has_open_puzzle():
+		return "the fixture must be S1 with no puzzle open"
+	var raised := _empty_s1_raises_confirm(session)
+	if not raised.is_empty():
+		return raised
+	return _empty_s1_cancel_and_leave(session)
+
+
+## US5.1 — C5 is available on the empty S1 and raises the named leave confirm.
+func _empty_s1_raises_confirm(session: PuzzleSession) -> String:
+	if not bool(session.request_confirm("C5").get("ok", false)):
+		return "US5.1: C5 must raise EX.confirm on S1 with no puzzle open"
+	if session.confirm_kind != PuzzleSession.CONFIRM_LEAVE:
+		return "US5.1: C5 must raise the named leave_confirm"
+	if session.play_ui_state != PuzzleSession.UI_S2:
+		return "US5.1: C5 must enter S2"
+	return ""
+
+
+## US5.3 / US5.2 / K4 — Cancel returns the empty S1 unchanged, the control works again,
+## and the leave it then confirms scores nothing.
+func _empty_s1_cancel_and_leave(session: PuzzleSession) -> String:
+	var cancelled := session.cancel_confirm()
+	if not bool(cancelled.get("ok", false)) or session.play_ui_state != PuzzleSession.UI_S1:
+		return "US5.3: Cancel must return the empty S1 unchanged"
+	if session.has_open_puzzle() or not session.confirm_kind.is_empty():
+		return "US5.3: Cancel must not deal or leave a pending confirm"
+	if not bool(session.request_confirm("C5").get("ok", false)):
+		return "US5.1: C5 must be usable again after Cancel"
+	var left := session.confirm()
+	if not bool(left.get("ok", false)) or not session.confirm_kind.is_empty():
+		return "US5.2: Confirm on leave_confirm must clear the confirm"
+	if session.player_elo != PuzzleSession.ELO_START:
+		return "K4: leaving with no puzzle must not change Player Elo"
 	return ""
 
 

@@ -1,0 +1,67 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+STEP booted window=(720, 1280) frame=(1280.0, 2275.0) godot=4.7.2-stable (official) seams=true
+STEP click mode_pick/C1 at (779.0, 466.0)
+STEP stage_after_mode_pick=shared-setup
+{"TEL.1":"shared.start","TEL.2":1792801066713,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+STEP click shared_setup/C5 at (588.0, 922.0)
+STEP seat_bottom_ready stage=shared-play white_seat=bottom
+STEP shot 01-seat-bottom-start size=(720, 1280) err=0
+{"TEL.1":"shared.select","TEL.2":1792801066889,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792801066899,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP S1 bottom_move e2e4 done side_to_move=black
+STEP S1 after occupancy_e4={ "color": "white", "kind": "pawn" } side_to_move=black
+STEP shot 02-seat-bottom-after-bottom-move size=(720, 1280) err=0
+{"TEL.1":"shared.select","TEL.2":1792801066979,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792801066987,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP S2 top_move e7e5 occupancy_e5={ "color": "black", "kind": "pawn" } side_to_move=white
+STEP shot 03-seat-bottom-after-both-moves size=(720, 1280) err=0
+{"TEL.1":"shared.resign","TEL.2":1792801067064,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+STEP click shared_play/C4 at (640.0, 66.0)
+STEP S3 resign_ui_state=S2
+STEP shot 04-resign-confirm size=(720, 1280) err=0
+STEP click shared_play/cancel at (901.5, 373.0)
+STEP S3 resign_cancel_ui_state=S1
+STEP promotion_fen_loaded occupancy_b7={ "color": "white", "kind": "pawn" } side_to_move=white
+{"TEL.1":"shared.select","TEL.2":1792801067274,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.promote","TEL.2":1792801067280,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.6","TEL.5":"choose"}
+STEP promotion_move b7b8 done
+STEP S4 chooser_ui_state=S4
+STEP shot 05-promotion-chooser-bottom size=(720, 1280) err=0
+STEP click shared_play/cancel FAILED no control
+STEP S4 after_cancel_ui_state=S4
+{"TEL.1":"shared.deselect","TEL.2":1792801067399,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.5","TEL.5":"promote_cancel"}
+STEP SIT.4 frame_samples_ms=[1.28,1.29,1.25,1.28,1.28,1.26,1.29,1.28,1.34,1.36,1.39,1.35,1.37,1.35,1.17,1.16,4.18,1.18,1.15,1.16,4.11,1.17,1.16,1.19,1.17,1.17,1.17,1.15,1.18,1.16,1.17,1.15] worst_frame_ms=4.18 budget_ms=16.67
+STEP SIT.4 c2c4 occupancy_c4={  }
+{"TEL.1":"shared.resign","TEL.2":1792801067462,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+STEP click shared_play/C4 at (640.0, 66.0)
+{"TEL.1":"shared.resign","TEL.2":1792801067515,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792801067516,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+STEP click shared_play/confirm at (652.5, 373.0)
+STEP resign_accepted stage=shared-result
+STEP shot 06-resign-result size=(720, 1280) err=0
+{"TEL.1":"shared.again","TEL.2":1792801067597,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"NAV.T7","TEL.5":"ok"}
+STEP click shared_result/C1 at (661.0, 990.0)
+STEP after_play_again stage=shared-setup
+STEP click shared_setup/C1 at (788.0, 446.0)
+STEP white_seat_toggled=top
+STEP shot 07-seat-top-setup size=(720, 1280) err=0
+{"TEL.1":"shared.start","TEL.2":1792801067717,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+STEP click shared_setup/C5 at (527.5, 370.0)
+STEP seat_top_ready stage=shared-play white_seat=top
+STEP shot 08-seat-top-start size=(720, 1280) err=0
+STEP S1b seat_top_move d2d4 occupancy_d4={  } side_to_move=white
+{"TEL.1":"shared.select","TEL.2":1792801067958,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792801067966,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP S2b seat_top_black d7d5 occupancy_d5={  } side_to_move=black
+STEP shot 09-seat-top-after-moves size=(720, 1280) err=0
+STEP S6 TEL_VERDICT=pass
+STEP S6 TEL {"TEL.1":"shared.start","TEL.2":1792801066713,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+STEP S6 TEL {"TEL.1":"shared.move","TEL.2":1792801066899,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+STEP S6 TEL {"TEL.1":"shared.resign","TEL.2":1792801067064,"TEL.3":"sess-1792801066489-87738-playtest","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+STEP SHOTS ["01-seat-bottom-start","02-seat-bottom-after-bottom-move","03-seat-bottom-after-both-moves","04-resign-confirm","05-promotion-chooser-bottom","06-resign-result","07-seat-top-setup","08-seat-top-start","09-seat-top-after-moves"]
+STEP DONE
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+exit=0

@@ -1,8 +1,9 @@
 # Issue #329 — served-slice probes (2026-10-24)
 
 Index and input notes: [acceptance.md](acceptance.md). This file covers the
-deploy path, the wire contract, the release bundle, the client failure path,
-and the clean-tree checks.
+deploy path, the wire contract, and the release bundle. The client failure
+path and the clean-tree checks are in
+[acceptance-checks.md](acceptance-checks.md).
 
 ## 1. Deploy path from a clean checkout (`git archive origin/main`)
 
