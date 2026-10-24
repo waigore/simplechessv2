@@ -1,0 +1,19 @@
+## commit: 6e9cb7e8f7ebe482639bc362f0132651a56f8b5e
+## surface drift 161b4a9..HEAD for game/ specs/ .github/
+ game/board_presentation.gd          |   7 ++
+ game/board_presentation_test.gd     |  92 +++++++++++++++++++++++++
+ game/playtest_measure.gd            | 100 +++++++++++++++++++++------
+ game/playtest_seams.gd              |   8 ++-
+ game/playtest_seams_measure_test.gd | 134 ++++++++++++++++++++++++++++++++++--
+ game/presentation.gd                |  22 ++++--
+ game/presentation_test.gd           |  71 +++++++++++++++++++
+ 7 files changed, 402 insertions(+), 32 deletions(-)
+
+## files changed by that interval, full
+6e9cb7e Fix the S11 measure seam against the #544 acceptance findings (#869)
+aa16e09 Prove and pin the #845 board tap→square mapping (#864)
+491554e Record the #546 verification run (S13 phone viewport, pass) (#861)
+3cd0e2e Record the #557 durability legs on the published release build (#859)
+30faab7 Record the #655 re-run on 161b4a9, with the posture conflict named (#860)
+bc09459 Record the #403 Every-release ADR rows on the shipped release (#855)
+18a6c3d Record the #400 full-coverage playtest sweep at wave 4 (#857)
