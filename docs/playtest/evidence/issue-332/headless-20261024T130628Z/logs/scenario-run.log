@@ -1,0 +1,37 @@
+
+S2 step outcome=outcome advance=<null> reply=<null> end=END.W1 elo=1010.0
+pass S2 END.W1 follows the completed sequence 
+pass S2 Elo rises on a solve 
+pass S2 net castling reply plays for the other side 
+pass S2 exactly one next deal after the cue 
+S7 wrong { "ok": true, "illegal": false, "event": "puzzle.move", "outcome": "wrong", "wrong_move_seen": true, "cue": "cue_wrong", "story": "UI-puzzle-play.US2.5" }
+pass S7 wrong move flagged 
+pass S7 same puzzle stays open 
+pass S7 index reset to the deal start 
+pass S7 no next deal 
+pass S7 a second wrong move is retryable 
+S10 { "ok": true, "illegal": false, "event": "puzzle.move", "outcome": "outcome", "end_reason": "END.L4", "elo": { "player_elo": 990.0, "score": 0.0, "committed": true }, "cue": "cue_failed", "story": "UI-puzzle-play.US2.5" } elo 1000.0 -> 990.0
+pass S10 END.L4 after the wrong move 
+pass S10 S=0 drops Elo 
+pass S10 no recentSolved entry on a failure 
+S8 reveal { "ok": true, "event": "puzzle.end", "end_reason": "END.L5", "elo": { "player_elo": 990.0, "score": 0.0, "committed": true }, "cue": "cue_failed", "story": "UI-puzzle-play.US1.3", "next": { "ok": false, "reason": "no_record" } }
+pass S8 reveal reports END.L5 
+pass S8 reveal scores S=0 
+S8 abandon { "ok": true, "event": "puzzle.end", "end_reason": "END.L6", "elo": { "player_elo": 980.28774368332, "score": 0.0, "committed": true }, "cue": "cue_abandon", "story": "UI-puzzle-play.US2.8", "next": { "ok": false, "reason": "no_record" } }
+pass S8 abandon reports END.L6 
+pass S8 abandon scores S=0 
+S9 leave { "ok": true, "event": "puzzle.leave", "player_elo": 1000.0, "committed_elo": 1000.0, "last_mode": "none" }
+pass S9 leave reports the mode and keeps Elo 
+pass S9 open puzzle unscored 
+pass DIF S1 solve raises Elo 
+pass DIF S2 fail lowers Elo 
+PRG S1/S2 elo=1172.08684477074 recent=["p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p16", "p17", "p18", "p19", "p20", "p21", "p22"] len=20
+pass PRG S1 Elo committed 
+pass PRG S1 last mode committed 
+pass PRG S2 window trimmed to 20 
+pass PRG S2 newest kept, oldest dropped 
+pass PRG S1 reopen restores Elo 
+pass PRG S1 reopen restores recentSolved 
+pass PRG S3 failure does not end the stream 
+pass PRG S3 stream continues after a failure 
+PROBE failures=0
