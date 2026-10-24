@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R374 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R374 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R374 {"check":"router_present","detail":"","ok":true}
+R374 {"check":"presentation_present","detail":"","ok":true}
+advice: ready after 29 ms
+R374 {"check":"play_reached","detail":"shared-play","ok":true}
+R374 {"check":"client_is_shipped_transport","detail":"","ok":true}
+advice: ready after 130 ms
+advice: ready after 330 ms
+R374 {"check":"advice_stream_reached_cap","detail":"first_update_ms=120","ok":true}
+R374 {"advice":{"advice":true,"best_move":{"from":"e2","to":"e4"},"eval":41,"first_update_ms":120,"online":true,"updates_seen":["e2->e4/19","e2->e4/28","e2->e4/41"]}}
+R374 {"check":"advice_arrived_without_asking","detail":"first_update_ms=120","ok":true}
+R374 {"check":"updates_deepened","detail":"updates=[\"e2->e4/19\", \"e2->e4/28\", \"e2->e4/41\"]","ok":true}
+R374 {"check":"final_eval_at_cap","detail":"41","ok":true}
+R374 {"check":"best_move_for_side_to_move","detail":"{ \"from\": \"e2\", \"to\": \"e4\" }","ok":true}
+R374 {"check":"advice_on","detail":"true","ok":true}
+R374 {"check":"online_after_stream","detail":"true","ok":true}
+R374 {"check":"no_principal_line","detail":"[\"position\", \"castling_ep\", \"clocks\", \"game_ended\", \"mode\", \"repetition_history\", \"fifty_move_count\", \"draw_offer\", \"result_copy\", \"clocks_stopped\", \"clock\", \"increment_ms\", \"active_clock\", \"options_locked\", \"selected_piece\", \"play_ui_state\", \"advice\", \"online\", \"advice_best_move\", \"advice_eval\", \"last_reject\", \"reject_square\", \"confirm_kind\", \"pending_promote_from\", \"pending_promote_to\"]","ok":true}
+R374 {"check":"first_update_before_cap","detail":"first_update_ms=120","ok":true}
+R374 {"check":"eval_rendered","detail":"+0.41","ok":true}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R374 {"summary":{"checks":16,"failed":0}}

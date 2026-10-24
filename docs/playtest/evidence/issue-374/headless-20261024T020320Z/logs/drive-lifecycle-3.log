@@ -1,0 +1,61 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R374 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R374 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R374 {"check":"router_present","detail":"","ok":true}
+R374 {"check":"presentation_present","detail":"","ok":true}
+R374 {"board":{"e2":[687.200012207031,1044.0],"e4":[687.200012207031,855.199951171875],"seat":"bottom","size":[1280.0,944.0]}}
+R374 {"check":"board_transform_found","detail":"{ \"board\": BoardPresentation:<Control#44056970868> }","ok":true}
+advice: ready after 63 ms
+R374 {"check":"play_reached","detail":"shared-play","ok":true}
+R374 {"check":"advice_shown_before_move","detail":"side=white best={ \"from\": \"e2\", \"to\": \"e4\" } eval=19 online=true advice=true stage=S1","ok":true}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R374 {"hud":{"detail":"side=black best=<null> eval=<null> online=true advice=true stage=S1","waited_ms":24}}
+R374 {"check":"hud_move_not_delayed","detail":"waited_ms=24 detail=side=black best=<null> eval=<null> online=true advice=true stage=S1","ok":true}
+R374 {"check":"hud_move_cleared_advice","detail":"side=black best=<null> eval=<null> online=true advice=true stage=S1","ok":true}
+advice: ready after 13 ms
+advice: ready after 118 ms
+R374 {"re_evaluated":{"best_move":{"from":"e7","to":"e5"},"eval":-14,"streams_started":4}}
+R374 {"check":"black_position_evaluated","detail":"side=black best={ \"from\": \"e7\", \"to\": \"e5\" } eval=-14 online=true advice=true stage=S1","ok":true}
+R374 {"check":"re_evaluated_after_move","detail":"4","ok":true}
+R374 {"check":"re_evaluation_asks_black","detail":"","ok":true}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R374 {"drag":{"detail":"side=white best=<null> eval=<null> online=true advice=true stage=S1","waited_ms":16}}
+R374 {"check":"drag_move_applied","detail":"side=white best=<null> eval=<null> online=true advice=true stage=S1","ok":true}
+R374 {"check":"drag_move_not_delayed","detail":"side=white best=<null> eval=<null> online=true advice=true stage=S1","ok":true}
+advice: ready after 15 ms
+R374 {"check":"white_position_re_evaluated","detail":"side=white best={ \"from\": \"e2\", \"to\": \"e4\" } eval=19 online=true advice=true stage=S1","ok":true}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R374 {"check":"c3_advice_off","detail":"false","ok":true}
+R374 {"check":"c3_clears_advice","detail":"side=white best=<null> eval=<null> online=true advice=false stage=S1","ok":true}
+R374 {"check":"c3_stops_evaluation","detail":"7","ok":true}
+advice: ready after 14 ms
+R374 {"check":"c3_on_restarts","detail":"side=white best={ \"from\": \"e2\", \"to\": \"e4\" } eval=19 online=true advice=true stage=S1","ok":true}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R374 {"check":"resign_reached_result","detail":"shared-result","ok":true}
+R374 {"check":"game_end_cleared_advice","detail":"side=white best=<null> eval=<null> online=true advice=true stage=S1","ok":true}
+R374 {"check":"game_end_stopped_evaluation","detail":"4","ok":true}
+R374 {"check":"left_shared_game","detail":"mode-pick","ok":true}
+R374 {"puzzle":{"advice":true,"advice_available":false,"advice_best_move":null,"advice_eval":null,"castling_ep":null,"clock":"untimed","clocks":null,"game_ended":{"ended":false,"reason":""},"increment":3,"last_mode":"puzzle","locale":"en","mode":"puzzle","online":true,"options_locked":false,"play_ui_state":"S1","player_elo":1000.0,"position":{"occupancy":{"a1":{"color":"white","kind":"rook"},"a2":{"color":"white","kind":"pawn"},"a7":{"color":"black","kind":"pawn"},"a8":{"color":"black","kind":"rook"},"b1":{"color":"white","kind":"knight"},"b2":{"color":"white","kind":"pawn"},"b7":{"color":"black","kind":"pawn"},"b8":{"color":"black","kind":"knight"},"c1":{"color":"white","kind":"bishop"},"c2":{"color":"white","kind":"pawn"},"c7":{"color":"black","kind":"pawn"},"c8":{"color":"black","kind":"bishop"},"d1":{"color":"white","kind":"queen"},"d2":{"color":"white","kind":"pawn"},"d7":{"color":"black","kind":"pawn"},"d8":{"color":"black","kind":"queen"},"e1":{"color":"white","kind":"king"},"e2":{"color":"white","kind":"pawn"},"e7":{"color":"black","kind":"pawn"},"e8":{"color":"black","kind":"king"},"f1":{"color":"white","kind":"bishop"},"f2":{"color":"white","kind":"pawn"},"f7":{"color":"black","kind":"pawn"},"f8":{"color":"black","kind":"bishop"},"g1":{"color":"white","kind":"knight"},"g2":{"color":"white","kind":"pawn"},"g7":{"color":"black","kind":"pawn"},"g8":{"color":"black","kind":"knight"},"h1":{"color":"white","kind":"rook"},"h2":{"color":"white","kind":"pawn"},"h7":{"color":"black","kind":"pawn"},"h8":{"color":"black","kind":"rook"}},"side_to_move":"white"},"puzzle_id":"none","seed":0,"selected_piece":"","stage":"puzzle-play","white_seat":"bottom"}}
+R374 {"check":"puzzle_reached","detail":"puzzle-play","ok":true}
+R374 {"check":"puzzle_screen_mode","detail":"puzzle","ok":true}
+R374 {"check":"puzzle_no_advice_request","detail":"false","ok":true}
+R374 {"check":"puzzle_no_advice_fields","detail":"best=<null> eval=<null>","ok":true}
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:120)
+R374 {"check":"puzzle_advice_still_none","detail":"best=<null>","ok":true}
+R374 {"summary":{"checks":28,"failed":0}}
