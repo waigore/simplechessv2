@@ -91,12 +91,16 @@ jobs:
 
       # A tree that carries no asset file, or carries one at no route the
       # shipped resolver reads, loads and then never leaves the loading screen
-      # (#630, #715), so the release fails here instead of publishing.
+      # (#630, #715), so the release fails here instead of publishing. Every
+      # preload group is read at its own route (#812): a builder whose import
+      # cache never took the playback copies ships a silent `ambient` group
+      # while the loose-file and catalog checks stay green.
       - name: Check the shipped tree serves the asset root
         run: |
           set -euo pipefail
           python3 .github/scripts/web_export.py --preset "Web Release" --check-assets
           python3 .github/scripts/web_export.py --preset "Web Release" --check-boot
+          python3 .github/scripts/web_export.py --preset "Web Release" --check-groups
 
       - name: Check the release target and that the checkout was restored
         run: |
