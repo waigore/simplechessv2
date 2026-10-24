@@ -3,6 +3,8 @@ extends RefCounted
 ## CMP-puzzle-session (L2). R1 deal, R2 sequence judging, R3 Elo / recentSolved, R4 never Advice.
 ## Design: DIF.Y1, END.W1/L4/L5/L6 with END.P1, L-puzzle-stream K1–K4 / E1,
 ## F-puzzle-catalog R3–R5 / X1–X2. Persistence: PRG.M1, SEQ-puzzle-result-commit S1–S4.
+## R1 / R3 — the pick and the Elo arithmetic are CMP-puzzle-progression's (CTR-puzzle-progress
+## O1 O2 O3); this session commits what those return and never computes them itself (LAY.D2).
 
 ## Raised for UI-puzzle-play S3 when the result commit fails (EX.save-failure).
 signal save_failed
@@ -171,8 +173,9 @@ func gestures_available() -> bool:
 
 
 ## R1 / DIF.Y1 / F-puzzle-catalog R3 — deal the next puzzle at the player's level.
-## The record is the one CTR-puzzle-catalog-read returned; the service ran DIF.Y1.
-## Returns {ok, puzzle_id, rating, reason}. X1 and X2 deal nothing, and a deal with
+## The records offered are the ones CTR-puzzle-catalog-read returned; the service ran
+## DIF.Y1, and a released client offers the one record O1 returned. Returns
+## {ok, puzzle_id, rating, reason}. X1 and X2 deal nothing, and a deal with
 ## no record raises `deal_due` so the caller can fetch one.
 ## K3 / SCH-puzzle-attempt I3 — the next deal waits for the attempt: while one is open
 ## the deal refuses, settled or not. `advance()` is the cue-read path that drops the
@@ -181,10 +184,20 @@ func deal(catalog_records: Array = []) -> Dictionary:
 	if has_open_puzzle():
 		return {"ok": false, "reason": "puzzle_open"}
 	_close_puzzle()
-	var pick: Dictionary = _select(catalog_records)
-	if pick.is_empty():
+	# R1 — O2: the Domain picks the record, or refuses when the offered set has no member.
+	var candidates := PuzzleProgression.candidate_set(
+		catalog_records,
+		player_elo,
+		recent_solved,
+		ELO_MATCH_RANGE,
+		ELO_BAND_WIDEN,
+		FIELD_PUZZLE_ID,
+		FIELD_RATING
+	)
+	if candidates.is_empty():
 		deal_due.emit()
 		return {"ok": false, "reason": "no_record"}
+	var pick: Dictionary = candidates[_pick_index(candidates)]
 	# PRG.M1 M4 — only snapshot 2026-10-05 PuzzleIds are ever open or saved.
 	if str(pick.get(FIELD_SNAPSHOT_ID, SNAPSHOT_ID)) != SNAPSHOT_ID:
 		return {"ok": false, "reason": "snapshot"}
@@ -218,9 +231,8 @@ func _hold_attempt(pick: Dictionary, moves: Array, fen: String, first: Dictionar
 	attempt_record_fen = fen
 	attempt_first_move = first
 	attempt_any_checkmate_wins = any_checkmate_wins(pick)
-	required_sequence = []
-	for index in range(1, moves.size()):
-		required_sequence.append(_uci_parts(str(moves[index])))
+	# R5 — O3: the Domain derives the required sequence from the record's moves.
+	required_sequence = PuzzleProgression.required_sequence(moves)
 	sequence_index = 0
 	solving_side = str(rules.position_field()["side_to_move"])
 	wrong_move_on_puzzle = false
@@ -237,43 +249,12 @@ func any_checkmate_wins(record: Dictionary) -> bool:
 	return _themes_of(record).has("mateIn1")
 
 
-## DIF.Y1 selection: window match, recentSolved preference, then widen / allow-recent relax.
-## Unit tests and the in-memory path use it on a small array; the production deal reads
-## the one record the service chose (CTR-puzzle-catalog-read G2) and widens nothing.
-func _select(records: Array) -> Dictionary:
-	if records.is_empty():
-		return {}
-	var reach: int = ELO_MATCH_RANGE
-	for widen_step in range(5):
-		var fresh: Array = []
-		var recent: Array = []
-		for record in records:
-			if record is Dictionary and _within(record, reach):
-				if recent_solved.has(str(record.get(FIELD_PUZZLE_ID, ""))):
-					recent.append(record)
-				else:
-					fresh.append(record)
-		if not fresh.is_empty():
-			return _pick_lowest(fresh)
-		# After a full widen round with no fresh candidate, allow a recent solve.
-		if widen_step >= 1 and not recent.is_empty():
-			return _pick_lowest(recent)
-		reach += ELO_BAND_WIDEN
-	return _pick_lowest(records.filter(func(record: Variant) -> bool: return record is Dictionary))
-
-
-func _within(record: Dictionary, reach: int) -> bool:
-	return absi(int(record.get(FIELD_RATING, 0)) - int(round(player_elo))) <= reach
-
-
-func _pick_lowest(records: Array) -> Dictionary:
-	var best: Dictionary = {}
-	for record in records:
-		if not (record is Dictionary):
-			continue
-		if best.is_empty() or int(record[FIELD_RATING]) < int(best[FIELD_RATING]):
-			best = record
-	return best
+## DIF.Y1 selection is the Domain's (PuzzleProgression.candidate_set); this session only
+## picks which member of the winning rung deals (GS.Q1: any member may be, so two deals
+## need not agree). Production offers one record per released read
+## (CTR-puzzle-catalog-read G1), so the choice collapses there.
+func _pick_index(candidates: Array) -> int:
+	return (randi() % candidates.size()) if candidates.size() > 1 else 0
 
 
 ## R2 / L-puzzle-stream K2 — accept a Solving-side move; returns the judging result.
@@ -595,15 +576,14 @@ func dismiss_save_failure() -> Dictionary:
 
 ## DIF.Y1 / PRG.A1 / PRG.M1 — SEQ-puzzle-result-commit S1–S4: one Elo update per
 ## outcome, the recentSolved append, then the whole-document commit (B1 / B2).
+## S1–S2 — O1: the Domain returns both values; the session holds and commits them.
 func _apply_outcome(ending: String) -> Dictionary:
-	var score := 1.0 if ending == END_W1 else 0.0
-	# S1 — DIF.Y1: E = 1 / (1 + 10^((puzzleElo − playerElo) / 400)); no cap.
-	var expected := 1.0 / (1.0 + pow(10.0, (float(puzzle_elo) - player_elo) / 400.0))
-	player_elo += elo_k * (score - expected)
-	# S2 — only a clean solve records the PuzzleId; the window is trimmed to CFG.T7.
-	if ending == END_W1 and not puzzle_id.is_empty():
-		recent_solved.append(puzzle_id)
-		recent_solved = _trim_recent(recent_solved)
+	var before := player_elo
+	var scored := PuzzleProgression.score(
+		player_elo, float(puzzle_elo), ending, puzzle_id, recent_solved, elo_k
+	)
+	player_elo = float(scored["player_elo"])
+	recent_solved = _trim_recent(scored["recent_solved"])
 	outcome = str(OUTCOME_BY_ENDING.get(ending, ""))
 	# S3 / S4 — commit the full document; B2 keeps the prior one and flags S3.
 	var committed := _commit()
@@ -612,13 +592,13 @@ func _apply_outcome(ending: String) -> Dictionary:
 	last_result = {
 		"end_reason": ending,
 		"cue": str(CUE_BY_ENDING[ending]),
-		"score": score,
-		"expected": expected,
+		"score": float(scored["score"]),
+		"expected": PuzzleProgression.expected_score(before, float(puzzle_elo)),
 		"player_elo": player_elo,
 		"committed": committed,
 		"solved": ending == END_W1,
 	}
-	return {"player_elo": player_elo, "score": score, "committed": committed}
+	return {"player_elo": player_elo, "score": float(scored["score"]), "committed": committed}
 
 
 ## SEQ-puzzle-result-commit S3 — commit the full document through CTR-persist-document O2.
