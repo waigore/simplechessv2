@@ -50,4 +50,4 @@ After enable (and restart if needed): confirm the server’s tools appear, then 
 
 - Skill: `.agents/skills/setup-project-mcp/`
 - Secret guard: that skill’s `references/secret-guard.md`
-- Asset tool policy (Recraft, ElevenLabs, fal, bans): [`asset-tools.md`](asset-tools.md)
+- Asset tool policy (Recraft, ElevenLabs, fal, Poly Haven, bans): [`asset-tools.md`](asset-tools.md)
