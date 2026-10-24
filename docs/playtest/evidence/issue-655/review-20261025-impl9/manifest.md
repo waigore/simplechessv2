@@ -4,6 +4,7 @@
 - **Disposition**: none claimed; the proposal in [`../review-20261025T000000Z/disposition.md`](../review-20261025T000000Z/disposition.md) stands.
 - **Environment**: headless (`ENV.1`) — Godot `4.7.2.stable.official.ed1daf0bf`, clean detached worktree of `origin/main` `ce8a156`.
 - **Build / session id**: probe `TEL.3` `sess-1792862240351-24968-playtest-190316`; published artefact in [`logs/build-identity.txt`](logs/build-identity.txt).
+- **Mid-pass change**: #648's `specs/` sentence landed as **`a94210d`** (PR #815) *during* this pass. Criteria 1 and 6 are therefore recorded **both before and after** it; see [`results.md`](results.md) and [`logs/landed-648.md`](logs/landed-648.md).
 - **Repeat count**: 1 probe leg, 1 import, 1 unit-suite run, 1 artefact identity check.
 - **Coverage mode**: `critical-only`.
 
@@ -11,12 +12,12 @@
 
 | Row / protocol | Outcome | Evidence |
 |---|---|---|
-| Criterion 1 — quote the `specs/` sentence stating the catalog route's release status | **unmet** — the sentence does not exist on `ce8a156` | [`logs/criterion1-grep.log`](logs/criterion1-grep.log); #648 AC2 owns it |
+| Criterion 1 — quote the `specs/` sentence stating the catalog route's release status | **unmet on `ce8a156`; satisfied from `a94210d`** | [`logs/criterion1-grep.log`](logs/criterion1-grep.log) |
 | Criterion 2 — deal path reaches the resolver (no refusal is `B5`'s empty-value guard) | **fail** | `X655 B5 endpoint=<> key_set=false is_available=false` |
 | Criterion 3 — one named outcome (`K1` dealt **or** `F-puzzle-catalog.X2` absence) | **fail** | `X655 ENTERED state=S1 has_puzzle=false pid=<>` |
 | Criterion 4 — absence recorded as `FAIL.T14` | **holds as an observable** | `last_failure=<status>`, no puzzle id, Elo 1000.00 kept |
 | Criterion 5 — `C5` → `EX.confirm` → Cancel on the entered `S1` | **pass** | `X655 C5_ACTIVATED`, `X655 CANCEL`, `X655 ROUTER … flow_left=true` |
-| Criterion 6 — published rows with build/session id, or **held** under the sequencing note | **held** — condition met and verified | `index.pck` byte-identical to the artefact `review-20261025-impl7` measured; #648 and #479 both unlanded |
+| Criterion 6 — published rows with build/session id, or **held** under the sequencing note | **held** — one half of the condition has now landed | `index.pck` still pre-#648; #479's PR #806 still open |
 | Criterion 7 — `#550` manifest rows | **unchanged** | [`logs/finding-550.md`](logs/finding-550.md): the sweep has not re-run |
 | Criterion 8 — no `specs/`/`asset_catalog/`/`game_assets/` change; `game/` only under item 4 | **holds** | this pass adds only this folder |
 | Criterion 9 — #332 / #333 / #335 relationship | **holds** | no edge added or implied |
