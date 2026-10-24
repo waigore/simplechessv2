@@ -363,10 +363,30 @@ class WebExportTest(unittest.TestCase):
                     web_export.ensure_no_client_engine(shipped)
 
     def test_engine_check_refuses_a_uci_endpoint(self) -> None:
+        for marker in ("uci://127.0.0.1:7700", '{"endpoint": "uci:7700"}'):
+            with self.subTest(marker=marker):
+                shipped = self._clean_tree()
+                (shipped / "index.html").write_text(f"<a href='{marker}'>", encoding="utf-8")
+                with self.assertRaisesRegex(web_export.BundleError, "UCI engine marker"):
+                    web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_refuses_engine_options_and_names(self) -> None:
+        for marker in ("option name Threads type spin", "engine_name"):
+            with self.subTest(marker=marker):
+                shipped = self._clean_tree()
+                (shipped / web_export.PACK).write_text(marker, encoding="utf-8")
+                with self.assertRaisesRegex(web_export.BundleError, "UCI engine marker"):
+                    web_export.ensure_no_client_engine(shipped)
+
+    def test_app_vocabulary_is_not_an_engine(self) -> None:
         shipped = self._clean_tree()
-        (shipped / "index.html").write_text('<a href="uci://127.0.0.1:7700">', encoding="utf-8")
-        with self.assertRaisesRegex(web_export.BundleError, "UCI endpoint"):
-            web_export.ensure_no_client_engine(shipped)
+        (shipped / web_export.PACK).write_text(
+            "best_move_uci res://advice_endpoint.gd stockfishing res://playt_uci_marker.gd\n"
+            '## The move format (best_move_uci) is app vocabulary: "invalid UCI" is a test label.\n'
+            'func _uci_parts(uci: String) -> Dictionary:\n\treturn {"from": uci.substr(0, 2)}\n',
+            encoding="utf-8",
+        )
+        web_export.ensure_no_client_engine(shipped)
 
     def test_engine_word_inside_a_longer_word_is_not_an_engine(self) -> None:
         shipped = self._clean_tree()

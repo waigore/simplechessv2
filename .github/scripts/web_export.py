@@ -56,11 +56,17 @@ LOADABLE_SUFFIXES = {".svg", ".png", ".woff2", ".ttf", ".otf", ".ogg"}
 # The weight of the text the tree's scene code declares (#696, ADR-0002
 # §Validation "No client Stockfish endpoint", CTR-advice-stream G3). Client code
 # arrives in the PCK, so those bytes are what the engine-boundary check reads
-# there; the loose scene artifacts are read the same way. Each engine name is
-# anchored so a word the app happens to write ("stockfishing") does not redden a
-# build. The engine's own weight in a browser is a `.wasm` peer; Godot's build
-# entry points (`index.*`) are the app itself, never an engine file.
+# there; the loose scene artifacts are read the same way. Each marker is
+# anchored so app vocabulary is not read as an engine: the engine's own name
+# ("stockfishing"), the move format (`best_move_uci`), a GDScript identifier or
+# comment word (`uci`), and the backend's HTTP route (`advice_endpoint`) all
+# pass, while a UCI engine peer (`uci://…`, `option name`, `engine_name`) and a
+# `.wasm` / `.nnue` sibling are refused.
+# Godot's build entry points (`index.*`) are the app itself, never an engine.
 ENGINE_BUNDLE_NAMES = re.compile(r"(?<![a-z0-9])(?:stockfish|sf_1[0-9])(?![a-z0-9])", re.IGNORECASE)
+ENGINE_ENDPOINT_MARKERS = re.compile(
+    r'(?i)(?:uci://|(?<![(\w-])uci:(?![\w-])|"uci:[^"\s]*|option name|engine_name)'
+)
 ENGINE_BUNDLE_SUFFIXES = {".wasm", ".nnue"}
 APP_ENTRY_POINTS = {"index.wasm", "index.pck", "index.html"}
 ENGINE_TEXT_ARTIFACTS = ("index.pck", "index.html")
@@ -313,8 +319,9 @@ def ensure_no_client_engine(shipped: Path) -> None:
         found = ENGINE_BUNDLE_NAMES.search(text.decode("utf-8", "replace"))
         if found is not None:
             raise BundleError(f"{name} names the engine ({found.group(0)})")
-        if b"uci" in text.lower():
-            raise BundleError(f"{name} carries a UCI endpoint")
+        marker = ENGINE_ENDPOINT_MARKERS.search(text.decode("utf-8", "replace"))
+        if marker is not None:
+            raise BundleError(f"{name} carries a UCI engine marker ({marker.group(0).strip()})")
 
 
 def preset_settings(repo_root: Path, preset: str) -> str:
