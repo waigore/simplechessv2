@@ -47,6 +47,19 @@ on `PATH` for Python 3.11. The `Coverage` CI check on the deliverable PRs was gr
 deliverable adds four lines of test and a small seam branch, so the ratio is not in doubt;
 recording the gap rather than claiming a number this pass did not measure.
 
+## Commands run
+
+```
+godot --headless --path game --import --quit                     # exit 0
+GODOT_BIN=/opt/homebrew/bin/godot python3 .github/scripts/gdscript_tests.py test
+                                                                 # 32 headless unit test(s) passed
+gdformat --check game                                            # 68 files would be left unchanged
+gdlint game                                                      # Success: no problems found
+python3 .github/scripts/spec_lint.py                             # 0 error(s), 1 warning(s)
+```
+
+Logs: `logs/unit-tests.log`, `logs/gdformat.log`, `logs/gdlint.log`, `logs/spec-lint.log`.
+
 ## Delivered landing points (read, then re-measured)
 
 | Deliverable | Commit / PR |
