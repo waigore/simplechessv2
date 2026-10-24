@@ -114,6 +114,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/playtest/evidence-manifest.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/playtest/design/` | [playtest/protocol.md](playtest/protocol.md) |
 | `specs/playtest/ux/` | [playtest/protocol.md](playtest/protocol.md) |
+| `specs/playtest/filmed-seating.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/assets/assets.md` | [assets/assets.md](assets/assets.md) |
 | `specs/assets/glossary.md` | [assets/glossary.md](assets/glossary.md) |
 | `specs/assets/ids.md` | [assets/ids.md](assets/ids.md) |
