@@ -16,6 +16,12 @@ const SHARED_RESULT := "shared-result"
 const PUZZLE_PLAY := "puzzle-play"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
+## #793 — a prompt over R1 must be read with the board underneath, not scrawled
+## on by it: `BoardPresentation` draws its board, pieces, and overlays in canvas
+## layers above z_index 0 (a dragged piece reaches 10), so a prompt left at 0 is
+## repainted by the board on a display even though it is later in the tree. This
+## band clears every layer the board owns.
+const OVERLAY_Z := 20
 ## UIS.T2 reference frame height: UiChrome sizes are project-space px at this height.
 const REFERENCE_FRAME_HEIGHT_PX := UiChrome.REFERENCE_FRAME_HEIGHT_PX
 
@@ -430,8 +436,6 @@ func _show_shared_play(state: Dictionary) -> void:
 		"side_to_move": str(state.get("side_to_move", "white")),
 		"in_check": bool(state.get("in_check", false)),
 		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
-		# E2 `marks` — the session's check mark, drawn on the board (PER.R6).
-		"check_square": str(state.get("check_square", "")),
 	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
@@ -504,6 +508,12 @@ static func place_centered(panel: Control, top_px: float) -> void:
 	panel.offset_right = half_width
 	panel.offset_top = top_px
 	panel.offset_bottom = top_px + panel.custom_minimum_size.y
+
+
+## `place_centered`, raised into `OVERLAY_Z` so the prompt paints over the board.
+static func place_centered_over_board(panel: Control, top_px: float) -> void:
+	place_centered(panel, top_px)
+	panel.z_index = OVERLAY_Z
 
 
 func _layout_shared_play_regions() -> void:

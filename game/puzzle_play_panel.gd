@@ -303,9 +303,12 @@ func _build_confirm() -> void:
 	_confirm_box.name = "StreamConfirm"
 	_confirm_box.visible = false
 	_confirm_box.custom_minimum_size = Vector2(280, 140)
-	Presentation.place_centered(_confirm_box, 220.0)
+	Presentation.place_centered_over_board(_confirm_box, 220.0)
 	_confirm_box.add_theme_constant_override("separation", 12)
 	add_child(_confirm_box)
+	# #793 — raised to `Presentation.OVERLAY_Z`; keep it after the chrome so tree
+	# order agrees with the band a display paints.
+	move_child(_confirm_box, _chrome.get_index() + 1)
 	var panel := PanelContainer.new()
 	panel.add_theme_stylebox_override("panel", UiChrome.panel_style())
 	_confirm_box.add_child(panel)
@@ -344,9 +347,10 @@ func _build_save_failure() -> void:
 	_save_box.name = "SaveFailure"
 	_save_box.visible = false
 	_save_box.custom_minimum_size = Vector2(280, 120)
-	Presentation.place_centered(_save_box, 220.0)
+	Presentation.place_centered_over_board(_save_box, 220.0)
 	_save_box.add_theme_constant_override("separation", 12)
 	add_child(_save_box)
+	move_child(_save_box, _chrome.get_index() + 1)
 	var panel := PanelContainer.new()
 	panel.add_theme_stylebox_override("panel", UiChrome.panel_style())
 	_save_box.add_child(panel)

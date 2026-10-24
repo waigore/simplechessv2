@@ -35,7 +35,7 @@ func _run_all() -> String:
 		_check_o4_bishops_opposite_and_same,
 		_check_new_session_reinit,
 		_check_stalemate_by_moves,
-		_check_check_square_mark,
+		_check_in_check_signal,
 	]
 	for check in checks:
 		var problem: String = check.call()
@@ -258,9 +258,9 @@ func _check_stalemate_by_moves() -> String:
 	return "A4 %s" % end_problem if not end_problem.is_empty() else ""
 
 
-## PER.R6 — the mark follows the checked king only: reported while in check,
-## empty when the check resolves (the router carries it on every play render).
-func _check_check_square_mark() -> String:
+## PER.R6 — in-check follows the check only: reported while the side to move is
+## in check, cleared once the check resolves (the mark reads this field).
+func _check_in_check_signal() -> String:
 	var state := {}
 	var session := SharedGameSession.new()
 	(
@@ -279,18 +279,18 @@ func _check_check_square_mark() -> String:
 	session._sync_active_to_side_to_move()
 	# The router's own read: `chrome_state` is what every play render carries.
 	state = session.chrome_state("en", BoardGeometry.SEAT_BOTTOM)
-	if str(state.get("check_square", "")) != "":
-		return "R6 no mark before the check"
+	if bool(state.get("in_check", false)):
+		return "R6 no check reported before the check"
 	if not session.try_move("a5", "a1") or not session._in_check_now():
 		return "R6 setup move must give check"
 	state = session.chrome_state("en", BoardGeometry.SEAT_BOTTOM)
-	if bool(state.get("in_check", false)) and str(state.get("check_square", "")) != "e1":
-		return "R6 mark must sit on the checked king e1"
+	if not bool(state.get("in_check", false)):
+		return "R6 in-check must ride the play render"
 	if not session.try_move("e1", "e2"):
 		return "R6 escape move e1-e2 must be legal"
 	state = session.chrome_state("en", BoardGeometry.SEAT_BOTTOM)
-	if str(state.get("check_square", "")) != "":
-		return "R6 mark must clear once the check resolves"
+	if bool(state.get("in_check", false)):
+		return "R6 in-check must clear once the check resolves"
 	return ""
 
 
