@@ -12,6 +12,7 @@ Summary and the Must rows: [`tools.md`](tools.md). A protocol cites a row here o
 | `SIT.4` | Frame-time / latency capture | Protocol times a move for frame time, or times `EX.loading` clearing ([quality.md](../definition/quality.md) Performance, Load time) | `S11` |
 | `SIT.5` | Telemetry read assertion | Protocol asserts its own steps emitted `TEL.1`–`TEL.5` with the cited story IDs (Observability) | `S12` |
 | `SIT.6` | Phone-width viewport at smallest text size | Protocol judges text legibility on a phone-width layout ([UIS.T2](../aesthetics/ui-style.md), Accessibility) | `S13` |
+| `SIT.7` | Screen-and-audio recording of a Graphical session | A [filmed seating](filmed-seating.md) records the release build once, end to end, for its `SRF.*`, `SND.*`, and `MOT.*` review | TBD — no seam named: is a recording a seam-free capture of the shipped page, or does technical design give it one? |
 
 `SIT.4` and `SIT.5` evidence records device, browser, build id, and repeat count in the [manifest](evidence-manifest.md); one sample is not evidence.
 

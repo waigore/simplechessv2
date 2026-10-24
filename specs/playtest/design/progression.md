@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 - **Level**: Design
 - **Spec key**: `PTD-progression`
-- **Environment**: Headless only
+- **Environment**: `ENV.1` Headless only
 - **Cites**: `PRG` (A1, P1, P2, P3, M1, F1, Z1–Z3)
 - **Situational tools**: None
 
@@ -34,4 +34,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot. Run it Headless per the environment line; a graphical run on the same build supplies the screenshots [acceptance requires](../evidence.md#cite-from-acceptance).
+Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot.
