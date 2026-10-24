@@ -1,0 +1,7 @@
+# Published build identity — read 2026-10-25 by this pass
+$ curl -sI https://waigore.github.io/simplechessv2/index.pck
+last-modified: Sat, 24 Oct 2026 13:00:58 GMT
+content-length: 9561236
+
+# Unchanged since PR #782 / run 40096272525 on `main` `a5b35ae`.
+# Same artefact the review-20261025T000000Z pass measured.
