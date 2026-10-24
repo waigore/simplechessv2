@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+{"TEL.1":"shared.start","TEL.2":1792874129058,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"measure.start","TEL.2":1792874129074,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+{"TEL.1":"shared.move","TEL.2":1792874129075,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"measure.end","TEL.2":1792874129079,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+ZZ kind=frame_times -> status=refused detail=no window samples=0 last_status=ok last_samples=1
+{"TEL.1":"shared.start","TEL.2":1792874129107,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"measure.start","TEL.2":1792874129121,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+{"TEL.1":"shared.move","TEL.2":1792874129122,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"measure.end","TEL.2":1792874129126,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+ZZ kind= -> status=refused detail=no window samples=0 last_status=ok last_samples=1
+{"TEL.1":"shared.start","TEL.2":1792874129154,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"measure.start","TEL.2":1792874129168,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+{"TEL.1":"shared.move","TEL.2":1792874129168,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"measure.end","TEL.2":1792874129172,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+ZZ kind=loading_ready -> status=refused detail=no window samples=0 last_status=ok last_samples=1
+{"TEL.1":"shared.start","TEL.2":1792874129201,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"measure.start","TEL.2":1792874129214,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+{"TEL.1":"shared.move","TEL.2":1792874129215,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"measure.end","TEL.2":1792874129219,"TEL.3":"sess-1792874128840-8741-playtest-435316","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+ZZ kind=bogus -> status=refused detail=no window samples=0 last_status=ok last_samples=1
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
