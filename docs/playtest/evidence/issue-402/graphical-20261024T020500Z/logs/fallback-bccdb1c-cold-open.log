@@ -1,0 +1,72 @@
+0.057s net 200 http://127.0.0.1:8791/index.html
+0.073s net 200 http://127.0.0.1:8791/index.png
+0.076s net 200 http://127.0.0.1:8791/index.js
+1.747s log.warning [rendering] [.WebGL-0x13c000cb400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels http://127.0.0.1:8791/index.html
+1.778s net 200 http://127.0.0.1:8791/index.wasm
+1.780s net 200 http://127.0.0.1:8791/index.pck
+1.793s net 200 http://127.0.0.1:8791/index.icon.png
+500.000s DRIVER probe canvas=true frames=7 text=""
+2.659s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+3.377s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+3.582s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+3.771s console.error ERROR: Error opening file 'res://game_assets/icons/style-anchor-sheet.svg'.
+3.771s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.771s console.error WARNING: Unresolved asset ID: 01a15199-87f5-7df8-a987-eecaaca9f919
+3.771s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.771s console.error ERROR: Error opening file 'res://game_assets/interface-art/style-anchor-sheet.svg'.
+3.771s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.771s console.error WARNING: Unresolved asset ID: 01a151ef-6a32-77ec-ace1-9190aa56b7dc
+3.771s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.772s console.error ERROR: Can't open file from path 'res://game_assets/fonts/noto-sans-tc-400.woff2'.
+3.772s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+3.772s console.error ERROR: Can't open file from path 'res://game_assets/fonts/noto-sans-jp-400.woff2'.
+3.772s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+3.772s console.error ERROR: Can't open file from path 'res://game_assets/fonts/noto-sans-latin-400.woff2'.
+3.772s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+3.772s console.error ERROR: Can't open file from path 'res://game_assets/fonts/noto-sans-latin-500.woff2'.
+3.774s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+3.776s console.error ERROR: Can't open file from path 'res://game_assets/fonts/noto-sans-latin-600.woff2'.
+3.776s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+3.776s console.error ERROR: Error opening file 'res://game_assets/icons/quit.svg'.
+3.776s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.776s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-7176-8475-f6cd65a63925
+3.776s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.776s console.error ERROR: Error opening file 'res://game_assets/icons/mode-puzzle.svg'.
+3.776s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.776s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-72b7-adf6-c1acb94ff9a3
+3.776s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.777s console.error ERROR: Error opening file 'res://game_assets/icons/mode-shared.svg'.
+3.777s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.777s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-78fc-abb4-616df8fb4273
+3.777s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.777s console.error ERROR: Error opening file 'res://game_assets/interface-art/panel-surface.svg'.
+3.777s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.777s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-7a2d-b550-db4a1ffd02c2
+3.777s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.777s console.error ERROR: Error opening file 'res://game_assets/icons/advice.svg'.
+3.777s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.777s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-7a81-9d34-29765e8dd787
+3.777s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.777s console.error ERROR: Error opening file 'res://game_assets/interface-art/chip-surface.svg'.
+3.777s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.777s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-7ea7-9828-22b148c9be59
+3.777s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.777s console.error ERROR: Error opening file 'res://game_assets/icons/back.svg'.
+3.778s console.error    at: load_image (core/io/image_loader.cpp:91)
+3.778s console.error WARNING: Unresolved asset ID: 01a15dc4-969f-7f48-9456-b4a7ae75565b
+3.778s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+3.778s console.error ERROR: Preload boot left 9 approved IDs unresolved
+3.778s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+3.778s console.error ERROR: Boot assets failed: 9 approved IDs unresolved
+3.778s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+3.792s log.warning [rendering] [.WebGL-0x13c000de000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels http://127.0.0.1:8791/index.html
+3.793s log.warning [rendering] [.WebGL-0x13c000e1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat) http://127.0.0.1:8791/index.html
+4.166s net 200 blob:http://127.0.0.1:8791/d4542250-6228-47bc-a62e-d9795b3ef887
+1000.000s DRIVER probe canvas=true frames=14 text=""
+2000.000s DRIVER probe canvas=true frames=70 text=""
+3000.000s DRIVER probe canvas=true frames=125 text=""
+5000.000s DRIVER probe canvas=true frames=245 text=""
+10000.000s DRIVER probe canvas=true frames=550 text=""
+15000.000s DRIVER probe canvas=true frames=855 text=""
+20000.000s DRIVER probe canvas=true frames=1160 text=""
+25000.000s DRIVER probe canvas=true frames=1457 text=""

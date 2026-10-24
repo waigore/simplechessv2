@@ -1,0 +1,335 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (42 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | 01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | 01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | 01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | 01a151f8-b7d8-710a-b767-92c9137bfd63.ogg[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | 01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | 01a15200-69b2-7d13-a30d-696fa4ff390b.ogg[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | 01a15200-69b2-7964-a602-ad5b19583125.ogg[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | play-table.svg[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | noto-sans-jp-400.woff2[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | noto-sans-latin-400.woff2[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | noto-sans-latin-500.woff2[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | noto-sans-latin-600.woff2[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | noto-sans-tc-400.woff2[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | advice.svg[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | back.svg[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | mode-puzzle.svg[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | mode-shared.svg[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | quit.svg[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | style-anchor-sheet.svg[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | chip-surface.svg[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | panel-surface.svg[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | style-anchor-sheet.svg[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | cafe-ambient-a.ogg[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | cafe-ambient-b.ogg[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | b-black.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | b-white.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | k-black.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | k-white.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | n-black.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | n-white.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | p-black.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | p-white.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | q-black.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | q-white.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | r-black.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | r-white.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | style-anchor-sheet.svg[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | check.ogg[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | end-resolve.ogg[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | move-settle.ogg[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | puzzle-fail.ogg[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | touch-select.ogg[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (42 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   2% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   4% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   9% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  11% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  16% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  18% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  25% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  27% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  30% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  32% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  34% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  37% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  39% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  41% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  44% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  48% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  51% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  55% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  58% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  62% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  65% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  67% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  69% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  72% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  74% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  79% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  81% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  83% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  88% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  90% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  93% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  95% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | noto-sans-tc-400.woff2[39m[0m
+[   2% ] [90m[1mreimport[22m | noto-sans-jp-400.woff2[39m[0m
+[   4% ] [90m[1mreimport[22m | noto-sans-latin-400.woff2[39m[0m
+[   6% ] [90m[1mreimport[22m | noto-sans-latin-500.woff2[39m[0m
+[   9% ] [90m[1mreimport[22m | noto-sans-latin-600.woff2[39m[0m
+[  11% ] [90m[1mreimport[22m | noto-sans-tc-400.woff2[39m[0m
+WARNING: Desync during ogg import.
+     at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:649)
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+ERROR: Error importing 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[  13% ] [90m[1mreimport[22m | noto-sans-jp-400.woff2[39m[0m
+ERROR: Error importing 'res://game_assets/sound-effects/check.ogg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[  16% ] [90m[1mreimport[22m | noto-sans-latin-400.woff2[39m[0m
+ERROR: Error importing 'res://game_assets/sound-effects/touch-select.ogg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+ERROR: Error importing 'res://game_assets/sound-effects/move-settle.ogg'.
+[  18% ] [90m[1mreimport[22m | noto-sans-latin-500.woff2[39m[0m
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[  20% ] [90m[1mreimport[22m | noto-sans-latin-600.woff2[39m[0m
+ERROR: Error importing 'res://game_assets/sound-effects/end-resolve.ogg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[  23% ] [90m[1mreimport[22m | touch-select.ogg[39m[0m
+[  25% ] [90m[1mreimport[22m | puzzle-fail.ogg[39m[0m
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+[  27% ] [90m[1mreimport[22m | move-settle.ogg[39m[0m
+[  30% ] [90m[1mreimport[22m | end-resolve.ogg[39m[0m
+[  32% ] [90m[1mreimport[22m | check.ogg[39m[0m
+ERROR: Ogg Vorbis decoding failed. Check that your data is a valid Ogg Vorbis audio stream.
+   at: load_from_buffer (modules/vorbis/audio_stream_ogg_vorbis.cpp:693)
+[  34% ] [90m[1mreimport[22m | cafe-ambient-b.ogg[39m[0m
+ERROR: Error importing 'res://game_assets/music/cafe-ambient-a.ogg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[  37% ] [90m[1mreimport[22m | cafe-ambient-a.ogg[39m[0m
+ERROR: Error importing 'res://game_assets/music/cafe-ambient-b.ogg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[  39% ] [90m[1mreimport[22m | 01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg[39m[0m
+[  41% ] [90m[1mreimport[22m | 01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg[39m[0m
+[  44% ] [90m[1mreimport[22m | noto-sans-tc-400.woff2[39m[0m
+[  46% ] [90m[1mreimport[22m | noto-sans-jp-400.woff2[39m[0m
+[  48% ] [90m[1mreimport[22m | noto-sans-latin-400.woff2[39m[0m
+[  51% ] [90m[1mreimport[22m | noto-sans-latin-500.woff2[39m[0m
+[  53% ] [90m[1mreimport[22m | noto-sans-latin-600.woff2[39m[0m
+[  55% ] [90m[1mreimport[22m | touch-select.ogg[39m[0m
+[  58% ] [90m[1mreimport[22m | puzzle-fail.ogg[39m[0m
+[  60% ] [90m[1mreimport[22m | move-settle.ogg[39m[0m
+[  62% ] [90m[1mreimport[22m | end-resolve.ogg[39m[0m
+[  65% ] [90m[1mreimport[22m | check.ogg[39m[0m
+[  67% ] [90m[1mreimport[22m | cafe-ambient-b.ogg[39m[0m
+[  69% ] [90m[1mreimport[22m | cafe-ambient-a.ogg[39m[0m
+[  72% ] [90m[1mreimport[22m | 01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg[39m[0m
+[  74% ] [90m[1mreimport[22m | 01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg[39m[0m
+[  76% ] [90m[1mreimport[22m | 01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg[39m[0m
+[  79% ] [90m[1mreimport[22m | 01a151f8-b7d8-710a-b767-92c9137bfd63.ogg[39m[0m
+[  81% ] [90m[1mreimport[22m | 01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg[39m[0m
+[  83% ] [90m[1mreimport[22m | 01a15200-69b2-7964-a602-ad5b19583125.ogg[39m[0m
+[  86% ] [90m[1mreimport[22m | 01a15200-69b2-7d13-a30d-696fa4ff390b.ogg[39m[0m
+[  88% ] [90m[1mreimport[22m | style-anchor-sheet.svg[39m[0m
+[  90% ] [90m[1mreimport[22m | r-white.png[39m[0m
+[  93% ] [90m[1mreimport[22m | r-black.png[39m[0m
+[  95% ] [90m[1mreimport[22m | q-white.png[39m[0m
+[  97% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (42 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1msavepack[22m | Started Packing (102 steps)[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg-79ed3ed05a46f1c3d12554c740858fb6.oggvorbisstr[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg.import[39m[0m
+[   2% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg-f57d646ae58ccb0d049815458311157a.oggvorbisstr[39m[0m
+[   2% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg.import[39m[0m
+[   3% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg-4f793bf92140c8cb73066c563542d103.oggvorbisstr[39m[0m
+[   3% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg.import[39m[0m
+[   4% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a151f8-b7d8-710a-b767-92c9137bfd63.ogg-016dacd6ddaf8faa3c6451c1836d764a.oggvorbisstr[39m[0m
+[   4% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a151f8-b7d8-710a-b767-92c9137bfd63.ogg.import[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg-bc3097473a086d7bffc9db2a3bf667b0.oggvorbisstr[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg.import[39m[0m
+[   7% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg-652a4fb660d75ce20bd1981d3fac47ba.oggvorbisstr[39m[0m
+[   7% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg.import[39m[0m
+[   8% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/01a15200-69b2-7964-a602-ad5b19583125.ogg-483638c911d93f1fedb0d9bef5660b2c.oggvorbisstr[39m[0m
+[   8% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/01a15200-69b2-7964-a602-ad5b19583125.ogg.import[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://audio_runtime/checksums.json[39m[0m
+[  11% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/play-table.svg-e81b2ab0c94d551afe10bf2273a218ef.ctex[39m[0m
+[  11% ] [90m[1msavepack[22m | Storing File: res://game_assets/board-backgrounds/play-table.svg.import[39m[0m
+[  12% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/noto-sans-jp-400.woff2-696f60f174c5018aeb4792490174490e.fontdata[39m[0m
+[  12% ] [90m[1msavepack[22m | Storing File: res://game_assets/fonts/noto-sans-jp-400.woff2.import[39m[0m
+[  13% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/noto-sans-latin-400.woff2-5947a322cecaced46d950c45661f3a69.fontdata[39m[0m
+[  13% ] [90m[1msavepack[22m | Storing File: res://game_assets/fonts/noto-sans-latin-400.woff2.import[39m[0m
+[  14% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/noto-sans-latin-500.woff2-315a6aff0992b05b6702f389a214f6be.fontdata[39m[0m
+[  14% ] [90m[1msavepack[22m | Storing File: res://game_assets/fonts/noto-sans-latin-500.woff2.import[39m[0m
+[  16% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/noto-sans-latin-600.woff2-990edffc10ca3aa2295be80bd71812c8.fontdata[39m[0m
+[  16% ] [90m[1msavepack[22m | Storing File: res://game_assets/fonts/noto-sans-latin-600.woff2.import[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/noto-sans-tc-400.woff2-b5e3444be75abbad7708d1ea344f79aa.fontdata[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://game_assets/fonts/noto-sans-tc-400.woff2.import[39m[0m
+[  18% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/advice.svg-641b7cdb38f7b12ebfb73e3e20614c5b.ctex[39m[0m
+[  18% ] [90m[1msavepack[22m | Storing File: res://game_assets/icons/advice.svg.import[39m[0m
+[  19% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/back.svg-82796b557871508b46795ca8e44e002f.ctex[39m[0m
+[  19% ] [90m[1msavepack[22m | Storing File: res://game_assets/icons/back.svg.import[39m[0m
+[  21% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/mode-puzzle.svg-9856b79697cdecf8e460c53799c35475.ctex[39m[0m
+[  21% ] [90m[1msavepack[22m | Storing File: res://game_assets/icons/mode-puzzle.svg.import[39m[0m
+[  22% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/mode-shared.svg-dbeb4165201aa80c9b0d19a53068a8d9.ctex[39m[0m
+[  22% ] [90m[1msavepack[22m | Storing File: res://game_assets/icons/mode-shared.svg.import[39m[0m
+[  23% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/quit.svg-771d67fce6c0f0141fb710b984156325.ctex[39m[0m
+[  23% ] [90m[1msavepack[22m | Storing File: res://game_assets/icons/quit.svg.import[39m[0m
+[  25% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/style-anchor-sheet.svg-a67736924586db3559c42cf527f38842.ctex[39m[0m
+[  25% ] [90m[1msavepack[22m | Storing File: res://game_assets/icons/style-anchor-sheet.svg.import[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/chip-surface.svg-b5beb0ac4a486638e6699630908aae84.ctex[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://game_assets/interface-art/chip-surface.svg.import[39m[0m
+[  27% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/panel-surface.svg-6814c5541d3e59ce1bb40dfb47b59ce0.ctex[39m[0m
+[  27% ] [90m[1msavepack[22m | Storing File: res://game_assets/interface-art/panel-surface.svg.import[39m[0m
+[  28% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/style-anchor-sheet.svg-b6c82dd27eadaa1d2e8bf025d85c0939.ctex[39m[0m
+[  28% ] [90m[1msavepack[22m | Storing File: res://game_assets/interface-art/style-anchor-sheet.svg.import[39m[0m
+[  30% ] [90m[1msavepack[22m | Storing File: res://game_assets/music/cafe-ambient-a.ogg.import[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://game_assets/music/cafe-ambient-b.ogg.import[39m[0m
+[  32% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/b-black.png-ab28074823467ed6135528a223dbda88.ctex[39m[0m
+[  32% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/b-black.png.import[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/b-white.png-dd3e26abf856f3232c9a742f1416c45f.ctex[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/b-white.png.import[39m[0m
+[  34% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/k-black.png-8cbe059190f96a5c9aba555902275f50.ctex[39m[0m
+[  34% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/k-black.png.import[39m[0m
+[  35% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/k-white.png-6435e73ab636f5fae9f5ba4882d92f5c.ctex[39m[0m
+[  35% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/k-white.png.import[39m[0m
+[  36% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/n-black.png-b2403a51c6d8398da8e8e3843f211e03.ctex[39m[0m
+[  36% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/n-black.png.import[39m[0m
+[  37% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/n-white.png-c6477cd55b83e0823e34073496f295da.ctex[39m[0m
+[  37% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/n-white.png.import[39m[0m
+[  39% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/p-black.png-a67c1cf8956785c4b7de36a554201c8f.ctex[39m[0m
+[  39% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/p-black.png.import[39m[0m
+[  40% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/p-white.png-4e29f9ae22ea388e4ee8909043704707.ctex[39m[0m
+[  40% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/p-white.png.import[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/q-black.png-e6025f503c640ff0544c9430ccb68bc2.ctex[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/q-black.png.import[39m[0m
+[  43% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/q-white.png-18d733c45b7f2dfc270c31cba4b088cb.ctex[39m[0m
+[  43% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/q-white.png.import[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/r-black.png-66f8e046e2d21df213df8f58a919febe.ctex[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/r-black.png.import[39m[0m
+[  45% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/r-white.png-70cb726605463591525a39d7b2c344c6.ctex[39m[0m
+[  45% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/r-white.png.import[39m[0m
+[  46% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/style-anchor-sheet.svg-2eec82d1db5ebf42776000d54335e664.ctex[39m[0m
+[  46% ] [90m[1msavepack[22m | Storing File: res://game_assets/piece-sprites/style-anchor-sheet.svg.import[39m[0m
+[  48% ] [90m[1msavepack[22m | Storing File: res://game_assets/sound-effects/check.ogg.import[39m[0m
+[  49% ] [90m[1msavepack[22m | Storing File: res://game_assets/sound-effects/end-resolve.ogg.import[39m[0m
+[  50% ] [90m[1msavepack[22m | Storing File: res://game_assets/sound-effects/move-settle.ogg.import[39m[0m
+[  51% ] [90m[1msavepack[22m | Storing File: res://game_assets/sound-effects/puzzle-fail.ogg.import[39m[0m
+[  53% ] [90m[1msavepack[22m | Storing File: res://game_assets/sound-effects/touch-select.ogg.import[39m[0m
+[  54% ] [90m[1msavepack[22m | Storing File: res://advice_client.gdc[39m[0m
+[  55% ] [90m[1msavepack[22m | Storing File: res://shared_result_panel.gdc[39m[0m
+[  56% ] [90m[1msavepack[22m | Storing File: res://advice_marks.gdc[39m[0m
+[  58% ] [90m[1msavepack[22m | Storing File: res://presentation_audio.gdc[39m[0m
+[  59% ] [90m[1msavepack[22m | Storing File: res://advice_stream_transport.gdc[39m[0m
+[  60% ] [90m[1msavepack[22m | Storing File: res://shared_setup_panel.gdc[39m[0m
+[  62% ] [90m[1msavepack[22m | Storing File: res://advice_wire_reader.gdc[39m[0m
+[  63% ] [90m[1msavepack[22m | Storing File: res://asset_manifest.json[39m[0m
+[  64% ] [90m[1msavepack[22m | Storing File: res://asset_resolver.gdc[39m[0m
+[  65% ] [90m[1msavepack[22m | Storing File: res://playtest_seams.gdc[39m[0m
+[  66% ] [90m[1msavepack[22m | Storing File: res://board_geometry.gdc[39m[0m
+[  67% ] [90m[1msavepack[22m | Storing File: res://board_presentation.gdc[39m[0m
+[  68% ] [90m[1msavepack[22m | Storing File: res://ui_chrome.gdc[39m[0m
+[  69% ] [90m[1msavepack[22m | Storing File: res://catalog_deal_client.gdc[39m[0m
+[  71% ] [90m[1msavepack[22m | Storing File: res://puzzle_stream.gdc[39m[0m
+[  72% ] [90m[1msavepack[22m | Storing File: res://catalog_deal_transport.gdc[39m[0m
+[  73% ] [90m[1msavepack[22m | Storing File: res://puzzle_play_flow.gdc[39m[0m
+[  74% ] [90m[1msavepack[22m | Storing File: res://catalog_wire_reader.gdc[39m[0m
+[  76% ] [90m[1msavepack[22m | Storing File: res://puzzle_session.gdc[39m[0m
+[  77% ] [90m[1msavepack[22m | Storing File: res://chess_rules.gdc[39m[0m
+[  78% ] [90m[1msavepack[22m | Storing File: res://presentation.gdc[39m[0m
+[  80% ] [90m[1msavepack[22m | Storing File: res://shared_audio_cues.gdc[39m[0m
+[  81% ] [90m[1msavepack[22m | Storing File: res://puzzle_play_panel.gdc[39m[0m
+[  82% ] [90m[1msavepack[22m | Storing File: res://shared_game_session.gdc[39m[0m
+[  83% ] [90m[1msavepack[22m | Storing File: res://deferred_advice_transport.gdc[39m[0m
+[  85% ] [90m[1msavepack[22m | Storing File: res://session_router.gdc[39m[0m
+[  86% ] [90m[1msavepack[22m | Storing File: res://fake_advice_transport.gdc[39m[0m
+[  87% ] [90m[1msavepack[22m | Storing File: res://fake_catalog_transport.gdc[39m[0m
+[  88% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn[39m[0m
+[  90% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-f4b6c4e8894832aca0836654dc8256f3-main_release.scn[39m[0m
+[  91% ] [90m[1msavepack[22m | Storing File: res://mode_pick_panel.gdc[39m[0m
+[  92% ] [90m[1msavepack[22m | Storing File: res://persist_store.gdc[39m[0m
+[  93% ] [90m[1msavepack[22m | Storing File: res://shared_play_panel.gdc[39m[0m
+[  95% ] [90m[1msavepack[22m | Storing File: res://playtest_gate.gdc[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://playtest_harness.gdc[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://string_table.gdc[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://advice_client.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://shared_result_panel.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://advice_marks.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://presentation_audio.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://advice_stream_transport.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://shared_setup_panel.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://advice_wire_reader.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://asset_resolver.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://playtest_seams.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://board_geometry.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://board_presentation.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://ui_chrome.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://catalog_deal_client.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://puzzle_stream.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://catalog_deal_transport.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://puzzle_play_flow.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://catalog_wire_reader.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://puzzle_session.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://chess_rules.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://presentation.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://shared_audio_cues.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://puzzle_play_panel.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://shared_game_session.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://deferred_advice_transport.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://session_router.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://fake_advice_transport.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://fake_catalog_transport.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://main.tscn.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://main_release.tscn.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://mode_pick_panel.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://persist_store.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://shared_play_panel.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://playtest_gate.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://playtest_harness.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://string_table.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://.godot/global_script_class_cache.cfg[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://.godot/uid_cache.bin[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://project.binary[39m[0m
+[92m[ DONE ][39m [1msavepack[22m
+[0m
+python3 .github/scripts/web_export.py --preset "Web Release"  3.87s user 0.31s system 220% cpu 1.890 total
