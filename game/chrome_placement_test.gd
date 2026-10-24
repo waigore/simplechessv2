@@ -108,6 +108,7 @@ func _sweep_shared_dialogs(frame: Vector2) -> String:
 
 
 func _sweep_puzzle_dialogs(frame: Vector2) -> String:
+	## S2 (leave stream) — the only dialog C5 raises.
 	_router._go_mode_pick("S1")
 	await _settle()
 	_router.handle_control("mode-pick", "C2")
@@ -116,16 +117,49 @@ func _sweep_puzzle_dialogs(frame: Vector2) -> String:
 	await _settle()
 	_router.handle_control("puzzle-play", "C5")
 	await _settle()
-	for node_name: String in ["StreamConfirm", "SaveFailure"]:
-		var problem := _centered(_child("PuzzlePlay", node_name), DIALOGS[node_name], frame)
-		if not problem.is_empty():
-			return problem
-		_widen_copy(_child("PuzzlePlay", node_name))
-		await _settle()
-		problem = _centered(_child("PuzzlePlay", node_name), DIALOGS[node_name], frame)
-		if not problem.is_empty():
-			return problem
-	return ""
+	var problem := _measured("PuzzlePlay", "StreamConfirm", frame)
+	if not problem.is_empty():
+		return problem
+	_widen_copy(_child("PuzzlePlay", "StreamConfirm"))
+	await _settle()
+	problem = _measured("PuzzlePlay", "StreamConfirm", frame)
+	if not problem.is_empty():
+		return problem
+	## S3 (EX.save-failure) has its own entry: a failed puzzle commit, not C5.
+	return await _sweep_save_failure(frame)
+
+
+func _sweep_save_failure(frame: Vector2) -> String:
+	_router._go_mode_pick("S1")
+	await _settle()
+	_router.handle_control("mode-pick", "C2")
+	await _settle()
+	_deal_fixture()
+	await _settle()
+	var persist := _presentation.get_node("PersistStore") as PersistStore
+	persist.force_write_failure = true
+	_router.handle_input_commit("b1", "b8", "")
+	await _settle()
+	var problem := _measured("PuzzlePlay", "SaveFailure", frame)
+	if not problem.is_empty():
+		return problem
+	_widen_copy(_child("PuzzlePlay", "SaveFailure"))
+	await _settle()
+	return _measured("PuzzlePlay", "SaveFailure", frame)
+
+
+## A dialog is only placed for the player if it is on screen: measure it only
+## when it is visible, so a hidden node cannot pass the geometry check.
+func _measured(panel_name: String, node_name: String, frame: Vector2) -> String:
+	var dialog := _child(panel_name, node_name)
+	if dialog == null:
+		return "missing dialog %s" % node_name
+	if not dialog.is_visible_in_tree():
+		return (
+			"%s is not visible in tree at %s (player cannot see it; state=%s)"
+			% [node_name, frame, _router.puzzle_flow.session.play_ui_state]
+		)
+	return _centered(dialog, DIALOGS[node_name], frame)
 
 
 func _sweep(panels: Dictionary, frame: Vector2) -> String:
