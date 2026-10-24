@@ -1,0 +1,328 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+libasound.so.2: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+libasound.so.2: cannot open shared object file: No such file or directory
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+STEP run_id=graphical-20261024T073700Z
+STEP env display=X11 adapter=llvmpipe (LLVM 20.1.2, 256 bits) api=4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2 method=gl_compatibility headless=false
+STEP booted godot=4.7.2-stable (official) display=X11 window=(1280, 720) frame=(1280.0, 720.0) seams=true
+{"TEL.1":"set_viewport","TEL.2":1792829760414,"TEL.3":"sess-1792829754776-2271808-playtest-2013073","TEL.4":"SIT.6","TEL.5":"pass"}
+STEP FRAME w1280 window=(1280, 720) viewport=(1280.0, 720.0)
+STEP ok ModePick       rect=[P: (480.0, 80.0), S: (320.0, 334.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280, 720)
+STEP   controls screen=mode-pick frame=(1280, 720) total=9 outside_frame=0
+STEP text screen=mode-pick frame=(1280, 720) smallest_px=18 control=SharedGame scale=1.000
+STEP shot w1280-01-mode-pick size=(1280, 720) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1280-01-mode-pick.png
+STEP   tree panel visible=ModePick
+STEP ok SharedSetup    rect=[P: (480.0, 60.0), S: (320.0, 460.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280, 720)
+STEP   controls screen=shared-setup frame=(1280, 720) total=10 outside_frame=0
+STEP text screen=shared-setup frame=(1280, 720) smallest_px=18 control=WhiteSeat scale=1.000
+STEP shot w1280-02-shared-setup size=(1280, 720) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1280-02-shared-setup.png
+STEP   tree panel visible=SharedSetup
+{"TEL.1":"shared.start","TEL.2":1792829768086,"TEL.3":"sess-1792829754776-2271808-playtest-2013073","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792829773221,"TEL.3":"sess-1792829754776-2271808-playtest-2013073","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+STEP ok ResignConfirm  rect=[P: (500.0, 200.0), S: (280.0, 140.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280, 720)
+STEP   controls screen=resign-confirm frame=(1280, 720) total=6 outside_frame=0
+STEP text screen=resign-confirm frame=(1280, 720) smallest_px=18 control=ResignConfirmMsg scale=1.000
+STEP shot w1280-03-resign-confirm size=(1280, 720) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1280-03-resign-confirm.png
+STEP   tree panel visible=ResignConfirm
+{"TEL.1":"shared.resign","TEL.2":1792829780378,"TEL.3":"sess-1792829754776-2271808-playtest-2013073","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792829780417,"TEL.3":"sess-1792829754776-2271808-playtest-2013073","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792829780419,"TEL.3":"sess-1792829754776-2271808-playtest-2013073","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+STEP ok SharedResult   rect=[P: (480.0, 120.0), S: (320.0, 313.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280, 720)
+STEP   controls screen=shared-result frame=(1280, 720) total=8 outside_frame=0
+STEP text screen=shared-result frame=(1280, 720) smallest_px=18 control=SharedGameCopy scale=1.000
+STEP shot w1280-04-shared-result size=(1280, 720) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1280-04-shared-result.png
+STEP   tree panel visible=SharedResult
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.enter","TEL.2":1792829789099,"TEL.3":"sess-1792829784842-2271808-playtest-32079423","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _drive_frame (res://zz_616_drive.gd:226)
+         [7] _new_sitting (res://zz_616_drive.gd:63)
+         [8] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.confirm","TEL.2":1792829796009,"TEL.3":"sess-1792829784842-2271808-playtest-32079423","TEL.5":"leave_confirm"}
+STEP ok StreamConfirm  rect=[P: (500.0, 220.0), S: (280.0, 140.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280, 720)
+STEP   controls screen=stream-confirm frame=(1280, 720) total=6 outside_frame=0
+STEP text screen=stream-confirm frame=(1280, 720) smallest_px=18 control=StreamConfirmMsg scale=1.000
+STEP shot w1280-05-stream-confirm size=(1280, 720) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1280-05-stream-confirm.png
+STEP   tree panel visible=StreamConfirm
+{"TEL.1":"puzzle.cancel","TEL.2":1792829799884,"TEL.3":"sess-1792829784842-2271808-playtest-32079423","TEL.5":"ok"}
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.enter","TEL.2":1792829805794,"TEL.3":"sess-1792829802397-2271808-playtest-49634803","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _drive_frame (res://zz_616_drive.gd:241)
+         [7] _new_sitting (res://zz_616_drive.gd:63)
+         [8] _settle (res://zz_616_drive.gd:83)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _drive_frame (res://zz_616_drive.gd:247)
+       [9] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792829812362,"TEL.3":"sess-1792829802397-2271808-playtest-49634803","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792829812387,"TEL.3":"sess-1792829802397-2271808-playtest-49634803","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792829812387,"TEL.3":"sess-1792829802397-2271808-playtest-49634803","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+STEP ok SaveFailure    rect=[P: (500.0, 220.0), S: (280.0, 136.0)] parent=[P: (0.0, 0.0), S: (1280.0, 720.0)] centre_dx=0.0 top_dy=0.0 frame=(1280, 720)
+STEP   controls screen=save-failure frame=(1280, 720) total=4 outside_frame=0
+STEP text screen=save-failure frame=(1280, 720) smallest_px=18 control=SaveFailureMsg scale=1.000
+STEP shot w1280-06-save-failure size=(1280, 720) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1280-06-save-failure.png
+STEP   tree panel visible=SaveFailure
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"set_viewport","TEL.2":1792829819192,"TEL.3":"sess-1792829816331-2271808-playtest-63568603","TEL.4":"SIT.6","TEL.5":"pass"}
+STEP FRAME w1600 window=(1600, 900) viewport=(1600.0, 900.0)
+STEP ok ModePick       rect=[P: (640.0, 80.0), S: (320.0, 375.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600, 900)
+STEP   controls screen=mode-pick frame=(1600, 900) total=9 outside_frame=0
+STEP text screen=mode-pick frame=(1600, 900) smallest_px=23 control=SharedGame scale=1.000
+STEP shot w1600-01-mode-pick size=(1600, 900) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1600-01-mode-pick.png
+STEP   tree panel visible=ModePick
+STEP ok SharedSetup    rect=[P: (640.0, 60.0), S: (320.0, 515.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600, 900)
+STEP   controls screen=shared-setup frame=(1600, 900) total=10 outside_frame=0
+STEP text screen=shared-setup frame=(1600, 900) smallest_px=23 control=WhiteSeat scale=1.000
+STEP shot w1600-02-shared-setup size=(1600, 900) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1600-02-shared-setup.png
+STEP   tree panel visible=SharedSetup
+{"TEL.1":"shared.start","TEL.2":1792829828943,"TEL.3":"sess-1792829816331-2271808-playtest-63568603","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792829838883,"TEL.3":"sess-1792829816331-2271808-playtest-63568603","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+STEP ok ResignConfirm  rect=[P: (650.0, 200.0), S: (300.0, 150.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600, 900)
+STEP   controls screen=resign-confirm frame=(1600, 900) total=6 outside_frame=0
+STEP text screen=resign-confirm frame=(1600, 900) smallest_px=23 control=ResignConfirmMsg scale=1.000
+STEP shot w1600-03-resign-confirm size=(1600, 900) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1600-03-resign-confirm.png
+STEP   tree panel visible=ResignConfirm
+{"TEL.1":"shared.resign","TEL.2":1792829847234,"TEL.3":"sess-1792829816331-2271808-playtest-63568603","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792829847256,"TEL.3":"sess-1792829816331-2271808-playtest-63568603","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792829847257,"TEL.3":"sess-1792829816331-2271808-playtest-63568603","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+STEP ok SharedResult   rect=[P: (640.0, 120.0), S: (320.0, 354.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600, 900)
+STEP   controls screen=shared-result frame=(1600, 900) total=8 outside_frame=0
+STEP text screen=shared-result frame=(1600, 900) smallest_px=23 control=SharedGameCopy scale=1.000
+STEP shot w1600-04-shared-result size=(1600, 900) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1600-04-shared-result.png
+STEP   tree panel visible=SharedResult
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.enter","TEL.2":1792829856176,"TEL.3":"sess-1792829851765-2271808-playtest-99003325","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _drive_frame (res://zz_616_drive.gd:226)
+         [7] _new_sitting (res://zz_616_drive.gd:63)
+         [8] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.confirm","TEL.2":1792829865374,"TEL.3":"sess-1792829851765-2271808-playtest-99003325","TEL.5":"leave_confirm"}
+STEP ok StreamConfirm  rect=[P: (650.0, 220.0), S: (300.0, 187.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600, 900)
+STEP   controls screen=stream-confirm frame=(1600, 900) total=6 outside_frame=0
+STEP text screen=stream-confirm frame=(1600, 900) smallest_px=23 control=StreamConfirmMsg scale=1.000
+STEP shot w1600-05-stream-confirm size=(1600, 900) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1600-05-stream-confirm.png
+STEP   tree panel visible=StreamConfirm
+{"TEL.1":"puzzle.cancel","TEL.2":1792829870324,"TEL.3":"sess-1792829851765-2271808-playtest-99003325","TEL.5":"ok"}
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.enter","TEL.2":1792829877366,"TEL.3":"sess-1792829873570-2271808-playtest-120808086","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _drive_frame (res://zz_616_drive.gd:241)
+         [7] _new_sitting (res://zz_616_drive.gd:63)
+         [8] _settle (res://zz_616_drive.gd:83)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _drive_frame (res://zz_616_drive.gd:247)
+       [9] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792829886442,"TEL.3":"sess-1792829873570-2271808-playtest-120808086","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792829886472,"TEL.3":"sess-1792829873570-2271808-playtest-120808086","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792829886472,"TEL.3":"sess-1792829873570-2271808-playtest-120808086","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+STEP ok SaveFailure    rect=[P: (660.0, 220.0), S: (280.0, 187.0)] parent=[P: (0.0, 0.0), S: (1600.0, 900.0)] centre_dx=0.0 top_dy=0.0 frame=(1600, 900)
+STEP   controls screen=save-failure frame=(1600, 900) total=4 outside_frame=0
+STEP text screen=save-failure frame=(1600, 900) smallest_px=23 control=SaveFailureMsg scale=1.000
+STEP shot w1600-06-save-failure size=(1600, 900) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/w1600-06-save-failure.png
+STEP   tree panel visible=SaveFailure
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"set_viewport","TEL.2":1792829895277,"TEL.3":"sess-1792829892083-2271808-playtest-139321101","TEL.4":"SIT.6","TEL.5":"pass"}
+STEP O12 phone report={"applied":true,"body_text_px":21.0,"frame_height_px":844.0,"height":844,"rendered_text_scale":1.31875,"text_scale":1.0,"width":390}
+STEP O12 phone viewport=(390.0, 844.0) window=(390, 844)
+STEP FRAME phone window=(390, 844) viewport=(390.0, 844.0)
+STEP ok ModePick       rect=[P: (35.0, 80.0), S: (320.0, 361.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390, 844)
+STEP   controls screen=mode-pick frame=(390, 844) total=9 outside_frame=0
+STEP text screen=mode-pick frame=(390, 844) smallest_px=21 control=SharedGame scale=1.000
+STEP shot phone-01-mode-pick size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/phone-01-mode-pick.png
+STEP   tree panel visible=ModePick
+STEP ok SharedSetup    rect=[P: (35.0, 60.0), S: (320.0, 497.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390, 844)
+STEP   controls screen=shared-setup frame=(390, 844) total=10 outside_frame=0
+STEP text screen=shared-setup frame=(390, 844) smallest_px=21 control=WhiteSeat scale=1.000
+STEP shot phone-02-shared-setup size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/phone-02-shared-setup.png
+STEP   tree panel visible=SharedSetup
+{"TEL.1":"shared.start","TEL.2":1792829898387,"TEL.3":"sess-1792829892083-2271808-playtest-139321101","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792829900346,"TEL.3":"sess-1792829892083-2271808-playtest-139321101","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+STEP ok ResignConfirm  rect=[P: (52.5, 200.0), S: (285.0, 146.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390, 844)
+STEP   controls screen=resign-confirm frame=(390, 844) total=6 outside_frame=0
+STEP text screen=resign-confirm frame=(390, 844) smallest_px=21 control=ResignConfirmMsg scale=1.000
+STEP shot phone-03-resign-confirm size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/phone-03-resign-confirm.png
+STEP   tree panel visible=ResignConfirm
+{"TEL.1":"shared.resign","TEL.2":1792829903701,"TEL.3":"sess-1792829892083-2271808-playtest-139321101","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792829903724,"TEL.3":"sess-1792829892083-2271808-playtest-139321101","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792829903726,"TEL.3":"sess-1792829892083-2271808-playtest-139321101","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+STEP ok SharedResult   rect=[P: (35.0, 120.0), S: (320.0, 340.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390, 844)
+STEP   controls screen=shared-result frame=(390, 844) total=8 outside_frame=0
+STEP text screen=shared-result frame=(390, 844) smallest_px=21 control=SharedGameCopy scale=1.000
+STEP shot phone-04-shared-result size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/phone-04-shared-result.png
+STEP   tree panel visible=SharedResult
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.enter","TEL.2":1792829906990,"TEL.3":"sess-1792829905125-2271808-playtest-152362811","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _drive_frame (res://zz_616_drive.gd:226)
+         [7] _new_sitting (res://zz_616_drive.gd:63)
+         [8] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.confirm","TEL.2":1792829909646,"TEL.3":"sess-1792829905125-2271808-playtest-152362811","TEL.5":"leave_confirm"}
+STEP ok StreamConfirm  rect=[P: (52.5, 220.0), S: (285.0, 181.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390, 844)
+STEP   controls screen=stream-confirm frame=(390, 844) total=6 outside_frame=0
+STEP text screen=stream-confirm frame=(390, 844) smallest_px=21 control=StreamConfirmMsg scale=1.000
+STEP shot phone-05-stream-confirm size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/phone-05-stream-confirm.png
+STEP   tree panel visible=StreamConfirm
+{"TEL.1":"puzzle.cancel","TEL.2":1792829911680,"TEL.3":"sess-1792829905125-2271808-playtest-152362811","TEL.5":"ok"}
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.enter","TEL.2":1792829915268,"TEL.3":"sess-1792829912900-2271808-playtest-160138031","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _drive_frame (res://zz_616_drive.gd:241)
+         [7] _new_sitting (res://zz_616_drive.gd:63)
+         [8] _settle (res://zz_616_drive.gd:83)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _drive_frame (res://zz_616_drive.gd:247)
+       [9] _settle (res://zz_616_drive.gd:83)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792829918306,"TEL.3":"sess-1792829912900-2271808-playtest-160138031","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792829918328,"TEL.3":"sess-1792829912900-2271808-playtest-160138031","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792829918329,"TEL.3":"sess-1792829912900-2271808-playtest-160138031","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+STEP ok SaveFailure    rect=[P: (55.0, 220.0), S: (280.0, 181.0)] parent=[P: (0.0, 0.0), S: (390.0, 844.0)] centre_dx=0.0 top_dy=0.0 frame=(390, 844)
+STEP   controls screen=save-failure frame=(390, 844) total=4 outside_frame=0
+STEP text screen=save-failure frame=(390, 844) smallest_px=21 control=SaveFailureMsg scale=1.000
+STEP shot phone-06-save-failure size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/phone-06-save-failure.png
+STEP   tree panel visible=SaveFailure
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+     GDScript backtrace (most recent call first):
+         [0] _new_sitting (res://zz_616_drive.gd:55)
+         [1] _settle (res://zz_616_drive.gd:83)
+STEP render fps=74.0 process_ms=20.30 draw_calls=32 frame=(390, 844)
+STEP shot caps-frame-3239 size=(390, 844) err=0 path=res://../docs/playtest/evidence/issue-616/graphical-20261024T073700Z/screenshots/caps-frame-3239.png
+STEP   tree panel visible=ModePick
+STEP SHOTS ["w1280-01-mode-pick","w1280-02-shared-setup","w1280-03-resign-confirm","w1280-04-shared-result","w1280-05-stream-confirm","w1280-06-save-failure","w1600-01-mode-pick","w1600-02-shared-setup","w1600-03-resign-confirm","w1600-04-shared-result","w1600-05-stream-confirm","w1600-06-save-failure","phone-01-mode-pick","phone-02-shared-setup","phone-03-resign-confirm","phone-04-shared-result","phone-05-stream-confirm","phone-06-save-failure","caps-frame-3239"]
+STEP RESULT fails=0
+STEP DONE
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+exit=0
