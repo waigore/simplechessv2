@@ -1,18 +1,18 @@
 {
   "build": {
     "binary": "Godot 4.7.2.stable.official.ed1daf0bf",
-    "commit": "8cdfd45a1f1d7c1726244437a0d4277c6edd9e6c",
-    "display_driver": "headless",
+    "commit": "34ac59e3dfd7f300219ede627a4d27ce4b01e5fc",
+    "display_driver": "macOS",
     "export_preset": "Web Playtest",
     "godot": "4.7.2-stable (official)",
     "os": "macOS",
     "os_version": "27.0.1",
-    "pck_sha256": "17a820b6b42ca261780110b01b1eb804b6f03a51415705317d5b44565eb75550",
-    "window_size": "none"
+    "pck_sha256": "6e8f99c344004c23c8703ff8e1c77a01f2e2512273b0ef17c4ee301e31cdaa90",
+    "window_size": "(1280, 720)"
   },
   "errors": [],
   "godot": "4.7.2-stable (official)",
-  "kind": "headless",
+  "kind": "graphical",
   "none_rows": {
     "localization.md#US2": {
       "defect": 788,
@@ -45,25 +45,8 @@
     "end-conditions": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "end-conditions.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "end-conditions/conditions.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "end-conditions/conditions-draw.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "end-conditions/conditions-counts.md#PS1"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "exceptions": {
       "fail": [],
@@ -83,41 +66,8 @@
     "game-state": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "game-state.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-play.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-play-moment.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-play-reset.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-play-end.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-play-draw.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-persist.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "game-state/fields-persist-config.md#PS1"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "localization": {
       "fail": [],
@@ -142,36 +92,9 @@
     },
     "mode-and-config": {
       "fail": [],
-      "not_judged": [
-        "difficulty-tunables.md#PS1"
-      ],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "configuration.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "flows/mode-pick.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "flows/mode-pick-unavailable.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "loops/two-player-tunables.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "features/move-advice-tunables.md#PS1"
-        },
-        {
-          "outcome": "not-judged",
-          "row": "difficulty-tunables.md#PS1"
-        }
-      ],
-      "verdict": "not-judged"
+      "not_judged": [],
+      "rows": [],
+      "verdict": "not-run"
     },
     "mode-pick": {
       "fail": [],
@@ -206,77 +129,32 @@
     "pieces-common": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "entities/pieces.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/common.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/common-legality.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/common-attack.md#PS2"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "pieces-king": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/king.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/king-castling.md#PS1"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "pieces-officers": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/officers.md#PS1"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "pieces-pawn": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "entities/pieces/pawn.md#PS1"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "shared-game": {
       "fail": [],
       "not_judged": [],
-      "rows": [
-        {
-          "outcome": "pass",
-          "row": "loops/two-player-game.md#PS1"
-        },
-        {
-          "outcome": "pass",
-          "row": "loops/two-player-draw.md#PS1"
-        }
-      ],
-      "verdict": "pass"
+      "rows": [],
+      "verdict": "not-run"
     },
     "shared-play": {
       "fail": [],
@@ -393,51 +271,6 @@
         }
       ]
     },
-    "configuration.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "PS1.3/1.5 Bottom White, Untimed clocks none",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.6 Blitz both clocks start at 60 s (60000 / 60000)",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.7 Rapid starts at 600 s (600000 / 600000)",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.14 increment applied after White's move (62983 ms)",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.9 Advice On at start",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.10 Advice Off",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.12 Increment blocked when Untimed",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "PS1.11 Increment available when timed",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        }
-      ]
-    },
     "controls-drag.md#US2": {
       "outcome": "pass",
       "scenarios": [
@@ -490,291 +323,6 @@
           "note": "US1.7 clear on piece",
           "outcome": "pass",
           "protocol": "controls"
-        }
-      ]
-    },
-    "difficulty-tunables.md#PS1": {
-      "outcome": "not-judged",
-      "scenarios": [
-        {
-          "note": "DIF tunables are Wave 2 puzzle-stream",
-          "outcome": "not-judged",
-          "protocol": "mode-and-config"
-        }
-      ]
-    },
-    "end-conditions.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "one ending applies",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        },
-        {
-          "note": "L2 resign ends",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        }
-      ]
-    },
-    "end-conditions/conditions-counts.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "D3.2 third repetition draws (ended at move 8 of 12)",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        },
-        {
-          "note": "D3.1 second repetition keeps playing",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        }
-      ]
-    },
-    "end-conditions/conditions-draw.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "D2 offer records side white",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        }
-      ]
-    },
-    "end-conditions/conditions-puzzle.md#PS1": {
-      "outcome": "not-judged",
-      "scenarios": [
-        {
-          "note": "W1/L4/L5/L6 are Wave 2 puzzle-stream",
-          "outcome": "not-judged",
-          "protocol": "end-conditions"
-        }
-      ]
-    },
-    "end-conditions/conditions.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "D2 accept ends game",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        },
-        {
-          "note": "L2 resign loses",
-          "outcome": "pass",
-          "protocol": "end-conditions"
-        }
-      ]
-    },
-    "entities/pieces.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "e2 pawn White / Pawn / S1",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        },
-        {
-          "note": "orthodox back rank [\"rook\", \"knight\", \"bishop\", \"queen\", \"king\", \"bishop\", \"knight\", \"rook\"]",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        }
-      ]
-    },
-    "entities/pieces/common-attack.md#PS2": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "PS2.1 pawn e4 captures on d5",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        },
-        {
-          "note": "PS2.2 pawn d3 moves to d4 only, attacking no empty square ([\"d4\"])",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        },
-        {
-          "note": "PS2.3/2.4 rook slides to a2, blocked before a4",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        },
-        {
-          "note": "PS2.5 pinned rook still attacks e3",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        },
-        {
-          "note": "PS2.6 knight checks through blockers",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        },
-        {
-          "note": "PS2.7 Black king may not step next to the White king",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        }
-      ]
-    },
-    "entities/pieces/common-legality.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "I11 only side to move",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        }
-      ]
-    },
-    "entities/pieces/common.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "I4 friendly destination illegal",
-          "outcome": "pass",
-          "protocol": "pieces-common"
-        }
-      ]
-    },
-    "entities/pieces/king-castling.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "PS1.1 kingside → king g1, rook f1, h1 empty, rights dropped",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.2 queenside → king c1, rook d1",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.3 king already moved → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.4 rook already moved → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.5 f1 blocked → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.6 in check → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.7 crossing square attacked → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.8 destination attacked → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.9 rook square attacked still castles",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        },
-        {
-          "note": "PS1.10 b1 attacked still castles queenside",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        }
-      ]
-    },
-    "entities/pieces/king.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "king boxed in at start; no legal step (0)",
-          "outcome": "pass",
-          "protocol": "pieces-king"
-        }
-      ]
-    },
-    "entities/pieces/officers.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "bishop blocked at c1 (0), knight jumps b1→a3 ([\"a3\", \"c3\"])",
-          "outcome": "pass",
-          "protocol": "pieces-officers"
-        },
-        {
-          "note": "rook on d4 reaches 14 squares on an open board",
-          "outcome": "pass",
-          "protocol": "pieces-officers"
-        },
-        {
-          "note": "bishop on d4 reaches 13 squares on an open board",
-          "outcome": "pass",
-          "protocol": "pieces-officers"
-        },
-        {
-          "note": "queen on d4 reaches 27 squares on an open board",
-          "outcome": "pass",
-          "protocol": "pieces-officers"
-        },
-        {
-          "note": "friendly piece blocks the rook ray at d6",
-          "outcome": "pass",
-          "protocol": "pieces-officers"
-        }
-      ]
-    },
-    "entities/pieces/pawn.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "PS1.1/1.3 pawn single + double from e2 ([\"e3\", \"e4\"])",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.5 e4→d5 captures the Black pawn",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.6 diagonal with no target → illegal",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.7 en passant removes the d5 pawn",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.8 en passant right expires after White's own move",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.9 a7→a8 asks for a promotion piece (S4)",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.10 staying a pawn is refused (S4)",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
-        },
-        {
-          "note": "PS1.11 underpromotion to a knight places a White knight",
-          "outcome": "pass",
-          "protocol": "pieces-pawn"
         }
       ]
     },
@@ -833,156 +381,6 @@
         }
       ]
     },
-    "features/move-advice-tunables.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "CFG.ADVICE_TIME_MS default 2000",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        }
-      ]
-    },
-    "flows/mode-pick-unavailable.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "FL PS1.1 no piece move at P1 (loading blocks C1/C2)",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        }
-      ]
-    },
-    "flows/mode-pick.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "FL PS1.1 mode-pick is P1 on cold open",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        }
-      ]
-    },
-    "game-state.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "V1 White to move",
-          "outcome": "pass",
-          "protocol": "game-state"
-        },
-        {
-          "note": "V2 untimed: no clock runs",
-          "outcome": "pass",
-          "protocol": "game-state"
-        },
-        {
-          "note": "V3 no advice in shared",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-persist-config.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "whiteSeat/clock/increment/advice defaults",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-persist.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "playerElo 1000 default, lastMode none",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-play-draw.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "draw offer initial none",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-play-end.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "drawOffer initial none",
-          "outcome": "pass",
-          "protocol": "game-state"
-        },
-        {
-          "note": "gameEnded after resign",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-play-moment.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "selectedPiece initial none",
-          "outcome": "pass",
-          "protocol": "game-state"
-        },
-        {
-          "note": "selectedPiece set on select",
-          "outcome": "pass",
-          "protocol": "game-state"
-        },
-        {
-          "note": "deselect clears selectedPiece",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-play-puzzle.md#PS1": {
-      "outcome": "not-judged",
-      "scenarios": [
-        {
-          "note": "puzzle fields are Wave 2",
-          "outcome": "not-judged",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-play-reset.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "Untimed shared start clears clocks",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
-    "game-state/fields-play.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "PS1.2 new game resets to orthodox opening",
-          "outcome": "pass",
-          "protocol": "game-state"
-        },
-        {
-          "note": "GS.position readable",
-          "outcome": "pass",
-          "protocol": "game-state"
-        }
-      ]
-    },
     "journeys/shared-session.md#US1": {
       "outcome": "pass",
       "scenarios": [
@@ -1030,71 +428,6 @@
           "note": "LOC.US1.1 key names are a spec review",
           "outcome": "not-judged",
           "protocol": "localization"
-        }
-      ]
-    },
-    "loops/two-player-draw.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "D2 offer recorded for side white in S6",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        },
-        {
-          "note": "withdraw clears the offer",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        }
-      ]
-    },
-    "loops/two-player-game.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "PS1.1 untimed orthodox opening, White to move, clocks none",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        },
-        {
-          "note": "PS1.5 illegal attempt refused, position unchanged",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        },
-        {
-          "note": "PS1.4 e2e4 → Black",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        },
-        {
-          "note": "PS1.10 resign exit",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        },
-        {
-          "note": "PS1.2/1.3 clocks start on White and only White's drains (59976 → 58976 ms, Black 60000)",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        },
-        {
-          "note": "PS1.12/1.13 flag ends the game (ended=true, reason=END.L3)",
-          "outcome": "pass",
-          "protocol": "shared-game"
-        }
-      ]
-    },
-    "loops/two-player-tunables.md#PS1": {
-      "outcome": "pass",
-      "scenarios": [
-        {
-          "note": "CFG.BLITZ_START 60 applied",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
-        },
-        {
-          "note": "CFG.RAPID_START 600 applied",
-          "outcome": "pass",
-          "protocol": "mode-and-config"
         }
       ]
     },
@@ -1480,5 +813,5 @@
     }
   },
   "session_id": "sess-20261025-478-wave1-playtest",
-  "tel_count": 136
+  "tel_count": 87
 }
