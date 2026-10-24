@@ -4,7 +4,8 @@ description: |-
   Apply and verify first-time GitHub settings for a repo from this template:
   remotes (origin / gh default / upstream), Actions enabled, a main ruleset
   (PR only, required up-to-date checks, no bypass), squash-only merges,
-  auto-merge, delete head branches on merge, and default labels.
+  auto-merge, delete head branches on merge, issue and PR creation restricted
+  to collaborators only, and default labels.
   Use when initializing a new remote, after forking the template, or when the user
   asks to set up branch protection / PR-only main / auto-merge.
   Use proactively when AGENTS.md rules assume protection but the remote is not configured yet.

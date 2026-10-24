@@ -15,7 +15,11 @@ Safe invocation, the guard, and the read-back: [`docs/issues/body-writes.md`](..
 
 ```bash
 python3 .github/scripts/gh_issue.py create --file /tmp/issue-body.md \
-  -- --title "TITLE"
+  -- --title "TITLE" \
+  --label "type:task" \
+  --label "status:pending-review"
+# Add --label "priority:high" or --label "priority:critical" only when a human
+# requests that priority; do not apply priority:normal (unlabeled means normal).
 ```
 
 Capture the issue URL/number from the command output, then read the body back per the reference above. The wrapper already ran the guard and the read-back; it exits 1 when either fails.
