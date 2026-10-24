@@ -2,6 +2,9 @@ class_name BoardPresentationTest
 extends SceneTree
 ## Headless checks for #56: geometry, seat flip, timing budgets.
 
+## FRM.P1 body box half-width: the widest silhouette / tallest body margin.
+const FRM_P1_BODY_HALF := 0.425
+
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -457,7 +460,10 @@ func _check_motion(board: BoardPresentation) -> String:
 	err = await _motion_capture_castle(board)
 	if not err.is_empty():
 		return err
-	return await _motion_marks(board, rules)
+	err = await _motion_marks(board, rules)
+	if not err.is_empty():
+		return err
+	return await _check_check_mark(board)
 
 
 func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
@@ -647,6 +653,84 @@ func _motion_marks(board: BoardPresentation, rules: ChessRules) -> String:
 	if 2.0 * r * r < 0.25 - 0.0001:
 		return "PER.R4 empty mark under 1/4 square"
 	return ""
+
+
+## PER.R6 / CMP-presentation.R7 — the checked King carries a PAL.C8 L-frame.
+func _check_check_mark(board: BoardPresentation) -> String:
+	var checked_position := {
+		"occupancy":
+		{
+			"e8": {"color": "black", "kind": "king", "square": "e8"},
+			"f7": {"color": "white", "kind": "queen", "square": "f7"},
+		},
+		"side_to_move": "black",
+	}
+	var quiet_options := {"side_to_move": "black"}
+	board.render_position(checked_position, "", PackedStringArray(), quiet_options)
+	await process_frame
+	var marks := board.get_node_or_null("World/Seat/Content/Overlays/CheckMarks") as Node2D
+	var quiet := _first_fail(
+		[
+			[marks != null, "PER.R6 check mark node missing"],
+			[marks != null and marks.get_child_count() == 0, "PER.R6 mark shown out of check"],
+		]
+	)
+	if not quiet.is_empty() or marks == null:
+		return quiet
+	board.render_position(
+		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "black"}
+	)
+	await process_frame
+	var count_ok := [[marks.get_child_count() == 2, "PER.R6 check cue must be two L-frames"]]
+	var shown := _first_fail(
+		count_ok + _l_frame_checks(marks.get_children(), BoardGeometry.square_center("e8"))
+	)
+	if not shown.is_empty():
+		return shown
+	# In check with no rendered King of that side must not throw a mark.
+	board.render_position(
+		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "white"}
+	)
+	await process_frame
+	return _first_fail(
+		[[marks.get_child_count() == 0, "PER.R6 in check without a rendered King threw a mark"]]
+	)
+
+
+## PAL.K9 form: two asymmetric L-frames, C8, inside the square and off the body.
+func _l_frame_checks(children: Array, center: Vector2) -> Array:
+	var checks: Array = []
+	for child in children:
+		var line := child as Line2D
+		checks.append([line != null, "PER.R6 check cue must be a stroke"])
+		if line == null:
+			continue
+		checks.append(
+			[line.default_color == CheckMarks.COLOR_CHECK, "PER.R6 check cue must be PAL.C8"]
+		)
+		checks.append(
+			[
+				line.default_color != BoardPresentation.COLOR_SELECT,
+				"PAL.K9 check cue must differ from the selection ring"
+			]
+		)
+		checks.append([line.get_point_count() == 3, "PAL.K9 check cue must be an L-frame"])
+		if line.get_point_count() != 3:
+			continue
+		checks.append([_arms_unequal(line), "PAL.K9 check L arms must be unequal, not a bracket"])
+		for i in line.get_point_count():
+			var point := line.get_point_position(i)
+			var dx := absf(point.x - center.x)
+			var dy := absf(point.y - center.y)
+			checks.append([dx <= 0.5 and dy <= 0.5, "PER.R6 check cue left the King square"])
+			checks.append([maxf(dx, dy) >= FRM_P1_BODY_HALF, "PER.R1 check cue covers the body"])
+	return checks
+
+
+func _arms_unequal(line: Line2D) -> bool:
+	var first := line.get_point_position(0).distance_to(line.get_point_position(1))
+	var second := line.get_point_position(1).distance_to(line.get_point_position(2))
+	return not is_equal_approx(first, second)
 
 
 func _first_fail(checks: Array) -> String:
