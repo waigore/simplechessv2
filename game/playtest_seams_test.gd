@@ -53,11 +53,45 @@ func _check_release() -> bool:
 		problem = "release S12 assert_telemetry"
 	elif not viewport_report.is_empty():
 		problem = "S13 release viewport"
-	elif not seams.last_viewport_report().is_empty():
-		problem = "S13 release viewport report"
 	if not problem.is_empty():
 		return _fail(problem)
+	if not _check_release_measure(seams):
+		return false
 	return true
+
+
+## S11 / O10 / D3 — the release answer is the always-shaped refused report, asserted
+## here on the release-mode instance this entry point already builds. That no seam
+## node ships at all (`R3`) stays with the release-export smoke, not this test.
+func _check_release_measure(seams: PlaytestSeams) -> bool:
+	var kinds := ["frame_times", "loading_ready", "unknown"]
+	for kind in kinds:
+		var start_report := seams.start_measurement(kind)
+		var report := seams.measure(kind)
+		for one in [start_report, report]:
+			var problem := _measure_refusal(one, kind)
+			if not problem.is_empty():
+				return _fail("S11 release %s" % problem)
+	var disarmed := seams.measure("")
+	if str(disarmed.get("status", "")) != "refused":
+		return _fail("S11 release disarm")
+	if str(disarmed.get("detail", "")) != "release":
+		return _fail("S11 release disarm detail")
+	return true
+
+
+func _measure_refusal(report: Dictionary, kind: String) -> String:
+	if str(report.get("status", "")) != "refused":
+		return "%s status" % kind
+	if str(report.get("detail", "")) != "release":
+		return "%s detail" % kind
+	if not (report.get("samples", null) as Array).is_empty():
+		return "%s samples" % kind
+	if int(report.get("sample_count", -1)) != 0:
+		return "%s sample_count" % kind
+	if not is_zero_approx(float(report.get("max_ms", -1.0))):
+		return "%s max_ms" % kind
+	return ""
 
 
 func _check_playtest() -> bool:
@@ -125,7 +159,7 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 	seams.bind_text_report(Presentation.body_text_screen_px_for_frame_height)
 	var wanted := Vector2i(PlaytestSeams.VIEWPORT_PHONE_WIDTH, PlaytestSeams.VIEWPORT_PHONE_HEIGHT)
 	var phone := seams.set_viewport(wanted.x, wanted.y, 1.0)
-	var shown := seams.last_viewport_report()
+	var shown: Dictionary = seams.dump_state().get("viewport", {})
 	# The unit-test binary runs this seam outside the tree, so it holds no frame
 	# yet: the report keeps its shape but no limb may claim the requested one.
 	var framed := PlaytestGate.in_frame(seams)
