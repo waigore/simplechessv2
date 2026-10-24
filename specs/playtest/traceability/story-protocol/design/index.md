@@ -25,7 +25,7 @@ Design protocols cite element IDs and keys, never `PS` IDs, so a row is judged w
 
 ## Row-level `none` — 0
 
-Every design row's `Spec key`, element range, or `Proves` entry is covered by a protocol's **Cites**, so no row carries a linked `type:defect`. `entities/pieces.md#PS1` is judged by `PTD-pieces-common`, which cites `P1`–`P4`, `S1`–`S3`, and `Placement`. The two `F-puzzle-catalog` rows and the `SC-puzzle-stream-visit` row are judged by `PTD-puzzle-stream`, whose **Cites** names both keys ([#702](https://github.com/waigore/simplechessv2/issues/702)). There is no `puzzle-catalog-select.md#PS1`: the file carries only `PS2`.
+Every design row's `Spec key`, element range, or `Proves` entry is covered by a protocol's **Cites**, so no row carries a linked `type:defect`. `entities/pieces.md#PS1` is judged by `PTD-pieces-common`, which cites `P1`–`P4`, `S1`–`S3`, and `Placement`. The two `F-puzzle-catalog` rows and the `SC-puzzle-stream-visit` row were row-level `none` while no key-level cite named them; `PTD-puzzle-stream`'s **Cites** names both keys, so they are judged. [#702](https://github.com/waigore/simplechessv2/issues/702) records that resolution. There is no `puzzle-catalog-select.md#PS1`: the file carries only `PS2`.
 
 ## Tally
 

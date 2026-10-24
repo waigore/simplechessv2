@@ -16,7 +16,7 @@ Part of the [protocol view](protocols.md). 12 UX protocols (Headless and Graphic
 | [controls](../../ux/controls.md) | `IN.US1`, `IN.US2`, `IN.US3` | [`controls.md#US1`](../../../ux/stories/controls.md), [`controls-drag.md#US2`](../../../ux/stories/controls-drag.md), [`controls-point.md#US3`](../../../ux/stories/controls-point.md) | — |
 | [navigation](../../ux/navigation.md) | `NAV.US1`, `NAV.US2` | [`navigation.md#US1`](../../../ux/stories/navigation.md), [`navigation-conditions.md#US2`](../../../ux/stories/navigation-conditions.md) | — |
 | [exceptions](../../ux/exceptions.md) | `EX.US1` | [`stories/exceptions.md#US1`](../../../ux/stories/exceptions.md), [`exceptions-play.md#US1`](../../../ux/stories/exceptions-play.md) (split rule) | — |
-| [localization](../../ux/localization.md) | `UI-mode-pick.US1`, `LOC.US1` | [`screens/mode-pick.md#US1`](../../../ux/stories/screens/mode-pick.md), [`mode-pick-unavailable.md#US1`](../../../ux/stories/screens/mode-pick-unavailable.md), [`localization.md#US1`](../../../ux/stories/localization.md) | [`localization.md#US2`](../../../ux/stories/localization.md) — out of playtest scope ([#701](https://github.com/waigore/simplechessv2/issues/701)) |
+| [localization](../../ux/localization.md) | `UI-mode-pick.US1`, `LOC.US1` | [`screens/mode-pick.md#US1`](../../../ux/stories/screens/mode-pick.md), [`mode-pick-unavailable.md#US1`](../../../ux/stories/screens/mode-pick-unavailable.md), [`localization.md#US1`](../../../ux/stories/localization.md) | [`localization.md#US2`](../../../ux/stories/localization.md) — out of playtest scope ([#788](https://github.com/waigore/simplechessv2/issues/788)) |
 
 ## Notes
 
