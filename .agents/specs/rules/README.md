@@ -105,6 +105,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/playtest/glossary.md` | [playtest/glossary.md](playtest/glossary.md) |
 | `specs/playtest/ids.md` | [playtest/ids.md](playtest/ids.md) |
 | `specs/playtest/traceability.md` | [playtest/traceability.md](playtest/traceability.md) |
+| `specs/playtest/traceability/` | [playtest/traceability.md](playtest/traceability.md) |
 | `specs/playtest/coverage.md` | [playtest/coverage.md](playtest/coverage.md) |
 | `specs/playtest/tools.md` | [playtest/tools.md](playtest/tools.md) |
 | `specs/playtest/tools-situational.md` | [playtest/tools.md](playtest/tools.md) |
@@ -114,6 +115,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/playtest/evidence-manifest.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/playtest/design/` | [playtest/protocol.md](playtest/protocol.md) |
 | `specs/playtest/ux/` | [playtest/protocol.md](playtest/protocol.md) |
+| `specs/playtest/filmed-seating.md` | [playtest/evidence.md](playtest/evidence.md) |
 | `specs/assets/assets.md` | [assets/assets.md](assets/assets.md) |
 | `specs/assets/glossary.md` | [assets/glossary.md](assets/glossary.md) |
 | `specs/assets/ids.md` | [assets/ids.md](assets/ids.md) |

@@ -43,7 +43,7 @@ Root: [`docs/playtest/evidence/`](../../docs/playtest/evidence/). Each required 
 | Must | Telemetry events | Agent can correlate observations to story IDs and outcomes |
 | Must | Headless session | Design and UX protocols run with no graphics display |
 | Must | Graphical session | UX protocols run in a full rendered environment |
-| Situational | Seed, replay, state dump, timing, telemetry read, legibility viewport — see [`tools.md`](tools.md) and [`tools-situational.md`](tools-situational.md) | When a protocol requires them |
+| Situational | Seed, replay, state dump, timing, telemetry read, legibility viewport, screen-and-audio recording — see [`tools.md`](tools.md) and [`tools-situational.md`](tools-situational.md) | When a protocol requires them |
 
 ADRs and technical design (including verification seams) must satisfy Must rows. Situational rows apply only when a protocol needs them. Detail: [`tools.md`](tools.md), [`tools-situational.md`](tools-situational.md).
 
@@ -53,7 +53,9 @@ ADRs and technical design (including verification seams) must satisfy Must rows.
 
 ## Index
 
-Global specs: [`glossary.md`](glossary.md), [`ids.md`](ids.md), [`traceability.md`](traceability.md), [`coverage.md`](coverage.md), [`tools.md`](tools.md), [`tools-situational.md`](tools-situational.md), [`procedures.md`](procedures.md), [`evidence.md`](evidence.md).
+Global specs: [`glossary.md`](glossary.md), [`ids.md`](ids.md), [`traceability.md`](traceability.md), [`traceability/story-protocol.md`](traceability/story-protocol.md), [`coverage.md`](coverage.md), [`tools.md`](tools.md), [`tools-situational.md`](tools-situational.md), [`procedures.md`](procedures.md), [`evidence.md`](evidence.md).
+
+Situational artifact: [`filmed-seating.md`](filmed-seating.md) — a recorded Graphical sitting that the aesthetics review watches and listens to end to end.
 
 **Design protocols** (Headless only):
 

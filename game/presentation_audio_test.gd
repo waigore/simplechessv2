@@ -54,7 +54,8 @@ func _unit_audio() -> String:
 	):
 		problem = "X2–X4 cues"
 	var before_unbound := audio.cue_play_count
-	## Wave 2 X5 UUID — Wave 1 never binds or calls it; unbound stays silent.
+	## `sound-effects/puzzle-fail` (`SND.X5`, `puzzle-play` cue `cue_failed`) — no
+	## `shared-play` state binds or calls it, so unbound stays silent.
 	audio.play_cue("01a151f8-b7d8-759c-89c5-e1be5eecb2b2")
 	audio.play_cue("missing-id")
 	if problem.is_empty() and audio.cue_play_count != before_unbound:

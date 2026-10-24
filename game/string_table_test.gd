@@ -1,6 +1,7 @@
 class_name StringTableTest
 extends SceneTree
-## Wave-1 localization: Copy keys, CJK glyphs, and ~40% layout (#62).
+## Localization contract (`specs/ux/localization.md` L2–L4): Copy keys, CJK glyphs, and
+## the 40% growth layout (#62).
 
 const VIEW_SIZE := Vector2(720, 1280)
 const GROWTH := 0.4
@@ -362,7 +363,7 @@ func _spec_owner_keys(owner: String, want_source: PackedStringArray) -> PackedSt
 
 ## Every Copy table under `specs/ux/screens/` plus the `exceptions` Key column,
 ## as owner → keys in table order. An `exceptions` Key-column entry the shipped
-## table does not carry belongs to another owner (or is `EX.error`, Wave 3), so
+## table does not carry belongs to another owner (or is `EX.error`), so
 ## the column is checked as a subset of the shipped keys rather than absorbed.
 func _spec_copy_keys(specs_root: String) -> Dictionary:
 	var owners := _screen_copy_keys(specs_root.path_join("ux/screens"))

@@ -1,0 +1,26 @@
+# Protocol view: design
+
+Authoring rules: [`.agents/specs/rules/playtest/traceability.md`](../../../../.agents/specs/rules/playtest/traceability.md).
+
+Part of the [protocol view](protocols.md). 12 design protocols (Headless only). **Cites** is quoted from the protocol file; **Judged rows** is what that cite covers under the [design judge rule](../story-protocol.md).
+
+| Protocol | **Cites** | Judged rows | `none` in namespace |
+|----------|-----------|-------------|---------------------|
+| [shared-game](../../design/shared-game.md) | `L-two-player-game` (K1–K3, E1–E4) | [`two-player-game.md#PS1`](../../../design/stories/loops/two-player-game.md), [`two-player-draw.md#PS1`](../../../design/stories/loops/two-player-draw.md) | `two-player-tunables.md#PS1` (CFG only) |
+| [puzzle-stream](../../design/puzzle-stream.md) | `L-puzzle-stream` (K1–K4, E1), `END.L4`, `END.L5`, `DIF.Y1` | [`puzzle-stream.md#PS1`](../../../design/stories/loops/puzzle-stream.md), [`puzzle-stream-advance.md#PS1`](../../../design/stories/loops/puzzle-stream-advance.md) | `scenarios/puzzle-stream-visit.md#PS1` |
+| [move-advice](../../design/move-advice.md) | `F-move-advice` (R1–R9) | [`move-advice.md#PS1`](../../../design/stories/features/move-advice.md), [`move-advice-clear.md#PS1`](../../../design/stories/features/move-advice-clear.md) | `move-advice-tunables.md#PS1` (CFG only) |
+| [mode-and-config](../../design/mode-and-config.md) | `FL-mode-pick`, `CFG` | [`configuration.md#PS1`](../../../design/stories/configuration.md), [`flows/mode-pick.md#PS1`](../../../design/stories/flows/mode-pick.md), [`mode-pick-unavailable.md#PS1`](../../../design/stories/flows/mode-pick-unavailable.md), [`two-player-tunables.md#PS1`](../../../design/stories/loops/two-player-tunables.md), [`move-advice-tunables.md#PS1`](../../../design/stories/features/move-advice-tunables.md), [`difficulty-tunables.md#PS1`](../../../design/stories/difficulty-tunables.md) | — |
+| [end-conditions](../../design/end-conditions.md) | `END` (L1–L6, D1–D5, W1, P1) | [`end-conditions.md#PS1`](../../../design/stories/end-conditions.md), [`conditions.md#PS1`](../../../design/stories/end-conditions/conditions.md), [`conditions-puzzle.md#PS1`](../../../design/stories/end-conditions/conditions-puzzle.md), [`conditions-draw.md#PS1`](../../../design/stories/end-conditions/conditions-draw.md), [`conditions-counts.md#PS1`](../../../design/stories/end-conditions/conditions-counts.md) | — |
+| [game-state](../../design/game-state.md) | `GS` (selected fields + invariants from stories) | [`game-state.md#PS1`](../../../design/stories/game-state.md), [`fields-play.md#PS1`](../../../design/stories/game-state/fields-play.md), [`fields-play-moment.md#PS1`](../../../design/stories/game-state/fields-play-moment.md), [`fields-play-puzzle.md#PS1`](../../../design/stories/game-state/fields-play-puzzle.md), [`fields-play-reset.md#PS1`](../../../design/stories/game-state/fields-play-reset.md), [`fields-play-end.md#PS1`](../../../design/stories/game-state/fields-play-end.md), [`fields-play-draw.md#PS1`](../../../design/stories/game-state/fields-play-draw.md), [`fields-persist.md#PS1`](../../../design/stories/game-state/fields-persist.md), [`fields-persist-config.md#PS1`](../../../design/stories/game-state/fields-persist-config.md) | — |
+| [pieces-common](../../design/pieces-common.md) | `E-pieces` common (I1–I11) | [`common.md#PS1`](../../../design/stories/entities/pieces/common.md), [`common-legality.md#PS1`](../../../design/stories/entities/pieces/common-legality.md), [`common-attack.md#PS2`](../../../design/stories/entities/pieces/common-attack.md) | — |
+| [pieces-king](../../design/pieces-king.md) | `E-pieces` king (I12–I22) | [`king.md#PS1`](../../../design/stories/entities/pieces/king.md), [`king-castling.md#PS1`](../../../design/stories/entities/pieces/king-castling.md) | — |
+| [pieces-officers](../../design/pieces-officers.md) | `E-pieces` officers | [`officers.md#PS1`](../../../design/stories/entities/pieces/officers.md) | — |
+| [pieces-pawn](../../design/pieces-pawn.md) | `E-pieces` pawn stories | [`pawn.md#PS1`](../../../design/stories/entities/pieces/pawn.md) | — |
+| [difficulty](../../design/difficulty.md) | `DIF` | [`difficulty.md#PS1`](../../../design/stories/difficulty.md), [`difficulty-repeat.md#PS1`](../../../design/stories/difficulty-repeat.md) | `difficulty-tunables.md#PS1` (CFG only) |
+| [progression](../../design/progression.md) | `PRG` (A1, P1–P3, M1, F1, Z1–Z3) | [`progression.md#PS1`](../../../design/stories/progression.md), [`progression-mode.md#PS2`](../../../design/stories/progression-mode.md) | — |
+
+## Notes
+
+- Rows whose scenarios prove only `CFG.*` tunables are judged by `PTD-mode-and-config` through its bare `CFG` cite, not by their own key's protocol. That is why `two-player-tunables.md#PS1`, `move-advice-tunables.md#PS1`, and `difficulty-tunables.md#PS1` appear above under `mode-and-config`.
+- `E-pieces` element ranges follow [pieces.md](../../../design/entities/pieces.md): I1–I11, I12–I22, I23–I27, I28–I34.
+- Every design protocol judges at least one row. The four rows no design protocol judges are listed in the [design view index](design/index.md).
