@@ -240,6 +240,8 @@ func _promotion_and_save_failure() -> String:
 		if status == null or status.text != StringTable.puzzle_play("choose_promotion", "en"):
 			problem = "S4 does not show choose_promotion"
 	if problem.is_empty():
+		problem = _promotion_names_readable(panel)
+	if problem.is_empty():
 		# IN.deselect leaves the pawn selected and drops the choice.
 		if not _router.handle_deselect():
 			problem = "IN.deselect did not cancel S4"
@@ -259,6 +261,66 @@ func _promotion_and_save_failure() -> String:
 	if problem.is_empty():
 		problem = await _save_failure()
 	return problem
+
+
+## #795 — S4 names its four options (C6): the actor must be able to read which
+## sprite commits which piece, so each name needs a visible, single-line, on-strip
+## box. Marking the label `visible` with the right `text` still passed while the
+## copy sat on an invisible off-strip sentinel, so measure what the actor sees.
+func _promotion_names_readable(panel: PuzzlePlayPanel) -> String:
+	var row := panel.find_child("PromotionRow", true, false) as Control
+	if row == null or not row.is_visible_in_tree():
+		return "S4 does not show the C6 promotion names (#795)"
+	var strip := (panel.find_child("PuzzleChrome", true, false) as Control).get_global_rect()
+	# The strip must hold every child it now carries: the last one ends inside it.
+	# (The reserve follows the frame, which a headless runner reports differently,
+	# so measure the laid-out content rather than the constant.)
+	var actions := panel.find_child("StreamActions", true, false) as Control
+	if actions.get_global_rect().end.y > strip.end.y + 0.5:
+		return "R2 strip ends before its content at %s (#795)" % actions.get_global_rect().end.y
+	if (
+		PuzzlePlayPanel.chrome_reserved_px(1.0, "S4")
+		<= PuzzlePlayPanel.chrome_reserved_px(1.0, "S1")
+	):
+		return "S4 does not reserve its promotion-name line (#795)"
+	var board := _board_rect(panel)
+	for kind in PuzzleSession.PROMOTE_ORDER:
+		var label := row.find_child("PromoteName%s" % kind.capitalize(), true, false) as Label
+		var problem := _promotion_name_problem(label, kind, strip, board)
+		if not problem.is_empty():
+			return problem
+	return ""
+
+
+## One S4 option name: present, visible, the piece's copy, one line, fitting its
+## box at UIS.T2, inside the R2 strip, and clear of R1's squares.
+func _promotion_name_problem(label: Label, kind: String, strip: Rect2, board: Rect2) -> String:
+	if label == null:
+		return "S4 omits the %s promotion name (#795)" % kind
+	var box := label.get_global_rect()
+	var needed := label.get_combined_minimum_size()
+	var problems := {
+		"not visible": not label.is_visible_in_tree(),
+		"reads %s" % label.text: label.text != StringTable.puzzle_play(kind, "en"),
+		"wraps": label.autowrap_mode != TextServer.AUTOWRAP_OFF,
+		"measures %s" % str(needed): needed.x < 1.0 or needed.y < 1.0,
+		"box %s clips %s" % [str(box.size), str(needed)]:
+		box.size.y + 0.5 < needed.y or box.size.x + 0.5 < needed.x,
+		"is under UIS.T2": label.get_theme_font_size("font_size") < UiChrome.BODY_PX,
+		"at %s leaves %s" % [str(box), str(strip)]: not strip.encloses(box),
+		"overlaps the board": box.intersects(board),
+	}
+	for symptom in problems:
+		if problems[symptom]:
+			return "S4 %s promotion name %s (#795)" % [kind, symptom]
+	return ""
+
+
+## R1 is the region below the reserve; a name inside it would cover squares.
+func _board_rect(panel: PuzzlePlayPanel) -> Rect2:
+	var host := panel.get_parent().get_parent() as Control
+	var board := host.find_child("BoardPresentation", true, false) as Control
+	return board.get_global_rect()
 
 
 func _save_failure() -> String:

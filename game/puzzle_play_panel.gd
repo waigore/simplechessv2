@@ -10,6 +10,9 @@ const SCREEN_ID := "puzzle-play"
 ## R2–R3 strip; Presentation reserves this so R1 is never covered (PRJ.A1).
 const CHROME_TOP_PX := 12.0
 const CHROME_RESERVED_PX := 168.0
+## The S4 promotion-name line at the 640 px reference frame: one UIS.T2 line as
+## the names measure at scale 1.0. See `s4_name_row_px`.
+const S4_NAME_ROW_PX := 27.0
 ## UIS.F1 / controls F1 — every control is at least a 44px-class touch target.
 const TOUCH_TARGET_PX := 44
 
@@ -32,6 +35,7 @@ var _abandon: Button
 var _leave: Button
 var _promote_row: HBoxContainer
 var _promote_btns: Dictionary = {}
+var _promote_names: Dictionary = {}
 var _confirm_box: VBoxContainer
 var _confirm_msg: Label
 var _confirm_ok: Button
@@ -44,9 +48,26 @@ var _ui_font: Font
 var _text_scale := 1.0
 
 
-## UIS.T2 ratio scaling — the chrome reserve grows with the text it holds.
-static func chrome_reserved_px(text_scale_value: float) -> float:
-	return CHROME_RESERVED_PX * maxf(1.0, text_scale_value)
+## UIS.T2 ratio scaling — the chrome reserve grows with the text it holds. S4 adds
+## a line of T2 promotion names (#795), so the reserve grows with the state too,
+## rather than squeezing the names into the S1 strip.
+static func chrome_reserved_px(text_scale_value: float, state_id: String = "") -> float:
+	var ratio := maxf(1.0, text_scale_value)
+	return CHROME_RESERVED_PX * ratio + (s4_name_row_px(ratio) if state_id == "S4" else 0.0)
+
+
+## The name line's own size. It is not the strip's summed term again: the line
+## grows with UIS.T2 (`UiChrome` sizes the labels from the frame, not from the
+## scale the caller passes), so a reserve that multiplied it by the ratio left the
+## names 2 px outside the strip at 1.125.
+static func s4_name_row_px(text_scale_value: float) -> float:
+	return S4_NAME_ROW_PX * maxf(1.0, text_scale_value)
+
+
+## The reserve for the state the panel is showing; Presentation reads the same
+## value to place R1, so the strip and the board never disagree.
+func reserved_px() -> float:
+	return chrome_reserved_px(_text_scale, ui_state)
 
 
 ## SIT.6 / S13 — the frame reflowed: take the new ratio and restyle in place.
@@ -153,6 +174,18 @@ func refresh() -> void:
 	_apply_copy()
 	_apply_availability()
 	_show_state(ui_state)
+	# `configure` may have moved `ui_state`; refresh always runs, so the strip is
+	# sized here once the state is final rather than from `_build`.
+	_apply_strip_size()
+
+
+## The R2–R3 strip takes exactly this state's reserve, so a taller S4 cannot
+## spill its names into R1 (PRJ.A1) or clip them at the old S1 height (#795).
+func _apply_strip_size() -> void:
+	if _chrome == null:
+		return
+	# Offsets are measured from the top edge, so the bottom is the whole reserve.
+	_chrome.offset_bottom = reserved_px()
 
 
 func _build() -> void:
@@ -165,7 +198,6 @@ func _build() -> void:
 	_chrome.offset_left = 16
 	_chrome.offset_right = -16
 	_chrome.offset_top = CHROME_TOP_PX
-	_chrome.offset_bottom = chrome_reserved_px(_text_scale) - CHROME_TOP_PX
 	_chrome.add_theme_constant_override("separation", 8)
 	add_child(_chrome)
 
@@ -200,12 +232,27 @@ func _build() -> void:
 		promote_y += 30.0
 		_promote_btns[kind] = btn
 
-	# C6 — Q/R/B/N copy labels appear with the chooser sprites on the board (S4).
+	# C6 — the four chooser options named in R2 while the sprites stand on the board
+	# (S4). Each option gets its own T2 label (#795): the sentinels stay invisible
+	# and off-strip for focus order and cannot carry copy the actor reads.
 	_promote_row = HBoxContainer.new()
 	_promote_row.name = "PromotionRow"
 	_promote_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	_promote_row.add_theme_constant_override("separation", 12)
+	_promote_row.add_theme_constant_override("separation", 28)
+	_promote_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_promote_row.visible = false
 	_chrome.add_child(_promote_row)
+	for kind in PuzzleSession.PROMOTE_ORDER:
+		var option := Label.new()
+		option.name = "PromoteName%s" % kind.capitalize()
+		# No width floor: the label takes the width its word needs at UIS.T2, so
+		# the longest name in any locale still reads on one line.
+		option.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		option.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		option.autowrap_mode = TextServer.AUTOWRAP_OFF
+		option.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_promote_names[kind] = option
+		_promote_row.add_child(option)
 
 	# R3 — stream actions C3, C4, C5 in controls-table order.
 	var row := HBoxContainer.new()
@@ -342,6 +389,13 @@ func _style_all() -> void:
 		UiChrome.style_button(button as Button, false, false, _text_scale)
 	for kind in PuzzleSession.PROMOTE_ORDER:
 		UiChrome.style_button(_promote_btns[kind] as Button, false, false, _text_scale)
+	# UIS.T2 size for the four C6 names (#795). `style_label` turns word-wrap on
+	# for body copy; a name is one line, and a wrapped one splits mid-word
+	# ("Que/en"), so the wrap it sets is cleared again here.
+	for kind in PuzzleSession.PROMOTE_ORDER:
+		var name_label := _promote_names[kind] as Label
+		UiChrome.style_label(name_label, false, _text_scale)
+		name_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	UiChrome.style_label(_confirm_msg, false, _text_scale)
 	UiChrome.style_label(_save_msg, false, _text_scale)
 
@@ -366,6 +420,7 @@ func _apply_font() -> void:
 	]
 	for kind in PuzzleSession.PROMOTE_ORDER:
 		nodes.append(_promote_btns[kind])
+		nodes.append(_promote_names[kind])
 	for node in nodes:
 		UiChrome.apply_font(node, _ui_font)
 
@@ -388,6 +443,7 @@ func _apply_copy() -> void:
 		_status.text = StringTable.puzzle_play("refused_place", locale)
 	for kind in PuzzleSession.PROMOTE_ORDER:
 		(_promote_btns[kind] as Button).text = StringTable.puzzle_play(kind, locale)
+		(_promote_names[kind] as Label).text = StringTable.puzzle_play(kind, locale)
 
 
 func _apply_availability() -> void:
@@ -396,12 +452,23 @@ func _apply_availability() -> void:
 	_reveal.disabled = not control_available("C3")
 	_abandon.disabled = not control_available("C4")
 	_leave.disabled = not control_available("C5")
+	var c6_available := control_available("C6")
 	for kind in PuzzleSession.PROMOTE_ORDER:
-		(_promote_btns[kind] as Button).disabled = not control_available("C6")
+		(_promote_btns[kind] as Button).disabled = not c6_available
+		# PAL.K7 — an unavailable option keeps its name, in inactive ink.
+		_apply_disabled_ink(_promote_names[kind] as Label, c6_available)
 	_style_all()
 
 
-## S1 keeps R2/R3 only; S4 adds the C6 labels; S5 adds the refused-place text.
+## PAL.K7 — the name stays readable yet reads inactive (C5's muted ink at 40%).
+func _apply_disabled_ink(label: Label, enabled: bool) -> void:
+	if enabled:
+		label.remove_theme_color_override("font_color")
+	else:
+		label.add_theme_color_override("font_color", Color(UiChrome.COLOR_MUTED, 0.4))
+
+
+## S1 keeps R2/R3 only; S4 adds the C6 names; S5 adds the refused-place text.
 func _show_state(state_id: String) -> void:
 	ui_state = state_id
 	_confirm_box.visible = state_id == "S2"
