@@ -1,0 +1,68 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "GATE",
+  "block": "perf",
+  "load": [],
+  "localization": [],
+  "durability": {},
+  "recovery": {},
+  "perf": [
+    {
+      "repeat": 1,
+      "shot": "D1-d-4-after-move.png",
+      "idle": {
+        "n": 22,
+        "p50": 66.7,
+        "p95": 83.3,
+        "max": 83.3,
+        "over16_7": 22,
+        "over33_4": 22
+      },
+      "move": {
+        "n": 24,
+        "p50": 66.7,
+        "p95": 83.4,
+        "max": 99.9,
+        "over16_7": 24,
+        "over33_4": 24
+      },
+      "whole": {
+        "n": 190,
+        "p50": 66.6,
+        "p95": 83.4,
+        "max": 200,
+        "over16_7": 189,
+        "over33_4": 163
+      }
+    },
+    {
+      "repeat": 2,
+      "shot": "D2-d-4-after-move.png",
+      "idle": {
+        "n": 28,
+        "p50": 50,
+        "p95": 66.7,
+        "max": 66.7,
+        "over16_7": 28,
+        "over33_4": 27
+      },
+      "move": {
+        "n": 28,
+        "p50": 50,
+        "p95": 66.7,
+        "max": 133.3,
+        "over16_7": 28,
+        "over33_4": 28
+      },
+      "whole": {
+        "n": 228,
+        "p50": 50,
+        "p95": 66.7,
+        "max": 133.3,
+        "over16_7": 225,
+        "over33_4": 175
+      }
+    }
+  ],
+  "board": {}
+}
