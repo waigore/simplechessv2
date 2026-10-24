@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/playtest/traceability.md`](../../../.agents/specs/rules/playtest/traceability.md).
 
-The home for a story row no build run can observe, recorded by [#701](https://github.com/waigore/simplechessv2/issues/701). The row unit and the `none` vocabulary are owned by [`story-rows.md`](../story-rows.md); this file records no rule of its own.
+The home for a story row no build run can observe, recorded by [#701](https://github.com/waigore/simplechessv2/issues/701) and tracked by its live successor defect [#788](https://github.com/waigore/simplechessv2/issues/788). The row unit and the `none` vocabulary are owned by [`story-rows.md`](../story-rows.md); this file records no rule of its own.
 
 ## Recorded rows
 
