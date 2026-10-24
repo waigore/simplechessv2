@@ -122,6 +122,30 @@ Non-blocking gaps filled for the demo only. Not decisions; not authority for mai
 | A3 | Promotion chooser sits over the promotion square (order Q/R/B/N demo-fixed). | Chooser layout detail; specs fix the control (`EX.promote`/`C6`), not its coordinates. | `specs/design/screens/shared-play.md` (chooser placement note) |
 | A4 | Stalemate (`D1`) is computed by the same `result()` endpoint exercised every ply, but the scripted autodrive only asserts the mate ending. | The demo question needs one game ending alive (`E1` mate, asserted); stalemate reuses the identical code path. | `specs/design/end-conditions.md` (D1 demo note) |
 
+## Promotion act
+
+Filled by `require-demo-promotion`. Incomplete until every included element is keep or drop and any conflict spec PR has merged.
+
+| Element | Choice | Note |
+|---------|--------|------|
+| `E-pieces.I1`–`I35` | keep | none |
+| `L-two-player-game.K1`, `K2`, `E1`, `E4` | keep | none |
+| `END.L1` (+ wired stalemate) | keep | none |
+| `GS.position`, `sideToMove`, `selectedPiece`, `gameEnded`, `V1`, `V2` | keep | none |
+| `SPC.A1`, `P1`, `E1`, `L1` | keep | none |
+| `PRJ.P1` | keep | none |
+| `CAM-board.F1`, `M2` | keep | Demo seats White Bottom (0°); full M2 Top-seat 180° remains in spec for Shared game |
+| `PHY.M1`–`M5`, `I1` | keep | none |
+| `PER.R1`, `R3`, `R4`, `R6`–`R8` | keep | none |
+| `AES.P1`–`P3` | keep | none |
+| `MOT.A2`, `T1`, `E1`–`E2` | keep | none |
+| `PAL.C1`, `C2`, `C5`, `C6`, `C8`–`C11` | keep | none |
+| `SND.X1`–`X4` | keep | none |
+| `SND.M1`–`M2`, `L1`–`L2` | keep | none |
+| `IN.select`, `move`, `deselect` (touch) | keep | none |
+
+Act: complete
+
 ## Run
 
 - **Setup**: checkout the repo; the demo is a standalone Godot project at `demos/shared-game/` (its own `project.godot`). It loads cataloged assets by ID at runtime from `game_assets/` and `audio_runtime/` at the repo root (ADR-0005), so it must run with the repo checkout intact.
