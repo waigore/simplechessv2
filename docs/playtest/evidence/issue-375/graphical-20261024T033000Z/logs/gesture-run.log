@@ -1,0 +1,27 @@
+R375-G {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R375-G {"check":"router_present","detail":"","ok":true}
+R375-G {"check":"presentation_present","detail":"","ok":true}
+R375-G {"check":"assets_loaded","detail":"20","ok":true}
+R375-G {"check":"play_reached","detail":"shared-play","ok":true}
+R375-G {"check":"board_gestures_live","detail":"shared-play","ok":true}
+R375-G {"check":"advice_error_raised","detail":"true","ok":true}
+R375-G {"check":"service_parked_offline","detail":"false","ok":true}
+R375-G {"check":"client_parked","detail":"true","ok":true}
+R375-G {"check":"ui_state_s3","detail":"S3","ok":true}
+R375-G {"check":"ex_error_panel_up","detail":"true","ok":true}
+R375-G {"err":0,"path":"res://../docs/playtest/evidence/issue-375/graphical-20261024T033000Z/screenshots/s3-error.png","screenshot":"s3-error"}
+R375-G {"check":"side_to_move_before","detail":"white","ok":true}
+R375-G {"check":"presentation_live","detail":"","ok":true}
+R375-G {"check":"session_live","detail":"","ok":true}
+R375-G {"check":"pointer_move_g1f3_in_s3","detail":"side now white","ok":false}
+R375-G {"check":"error_still_up_after_move","detail":"","ok":true}
+R375-G {"check":"still_offline_after_move","detail":"","ok":true}
+R375-G {"check":"pointer_move_g8f6_in_s3","detail":"side now white","ok":false}
+R375-G {"check":"tap_move_e2e4_in_s3","detail":"side now white","ok":false}
+R375-G {"err":0,"path":"res://../docs/playtest/evidence/issue-375/graphical-20261024T033000Z/screenshots/s3-played.png","screenshot":"s3-played"}
+R375-G {"check":"dismiss_present","detail":"","ok":true}
+R375-G {"check":"dismiss_returns_s1","detail":"S4","ok":false}
+R375-G {"check":"panel_hidden_after_dismiss","detail":"","ok":true}
+R375-G {"check":"pointer_move_d7d5_after_dismiss","detail":"side now white","ok":false}
+R375-G {"err":0,"path":"res://../docs/playtest/evidence/issue-375/graphical-20261024T033000Z/screenshots/after-dismiss.png","screenshot":"after-dismiss"}
+R375-G {"summary":{"checks":23,"failed":5}}

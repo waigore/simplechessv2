@@ -1,0 +1,31 @@
+R375-INK {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R375-INK {"check":"router_present","detail":"","ok":true}
+R375-INK {"check":"presentation_present","detail":"","ok":true}
+R375-INK {"check":"play_reached","detail":"shared-play","ok":true}
+R375-INK {"check":"board_present","detail":"","ok":true}
+R375-INK {"body_px":259,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"white|pawn"}
+R375-INK {"check":"per_r5_white_pawn","detail":"body=259 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":492,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"white|knight"}
+R375-INK {"check":"per_r5_white_knight","detail":"body=492 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":308,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"white|bishop"}
+R375-INK {"check":"per_r5_white_bishop","detail":"body=308 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":364,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"white|rook"}
+R375-INK {"check":"per_r5_white_rook","detail":"body=364 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":331,"coverage":0.00604229607250755,"ink_on_body_px":2,"ink_px":583,"piece":"white|queen"}
+R375-INK {"check":"per_r5_white_queen","detail":"body=331 ink=583 on_body=2 coverage=0.60%","ok":true}
+R375-INK {"body_px":362,"coverage":0.0165745856353591,"ink_on_body_px":6,"ink_px":583,"piece":"white|king"}
+R375-INK {"check":"per_r5_white_king","detail":"body=362 ink=583 on_body=6 coverage=1.66%","ok":true}
+R375-INK {"body_px":252,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"black|pawn"}
+R375-INK {"check":"per_r5_black_pawn","detail":"body=252 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":493,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"black|knight"}
+R375-INK {"check":"per_r5_black_knight","detail":"body=493 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":292,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"black|bishop"}
+R375-INK {"check":"per_r5_black_bishop","detail":"body=292 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":341,"coverage":0.0,"ink_on_body_px":0,"ink_px":583,"piece":"black|rook"}
+R375-INK {"check":"per_r5_black_rook","detail":"body=341 ink=583 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":325,"coverage":0.00307692307692308,"ink_on_body_px":1,"ink_px":583,"piece":"black|queen"}
+R375-INK {"check":"per_r5_black_queen","detail":"body=325 ink=583 on_body=1 coverage=0.31%","ok":true}
+R375-INK {"body_px":346,"coverage":0.0173410404624277,"ink_on_body_px":6,"ink_px":583,"piece":"black|king"}
+R375-INK {"check":"per_r5_black_king","detail":"body=346 ink=583 on_body=6 coverage=1.73%","ok":true}
+R375-INK {"worst_coverage":0.0173410404624277}
+R375-INK {"summary":{"checks":17,"failed":0}}
