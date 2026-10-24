@@ -45,4 +45,6 @@ Action skills pass: issue number, expected `from` status (short name without `st
 
 ## Fail-review cascade
 
-When `review-project-issue` names related issues as impacted, each named issue may be moved to `status:pending-refinement` regardless of its current status (swap all `status:*` → `pending-refinement`). Do not use this exception for any other action.
+When `review-project-issue` has authorized a cascade under [Cascade (fail review)](../../../../docs/issues/workflow-cascade.md), each authorized issue may be moved to `status:pending-refinement` from any current status (swap all `status:*` → `pending-refinement`). Expected `from` is that issue’s current status. The gate applies the swap; it does not re-decide authorization. This exception is only for that authorized cascade.
+
+`project-planner-agent` may move an issue from `pending-refinement` back to the `status:*` it held before that cascade, or to `pending-review` when the prior label cannot be read, after commenting why the cascade doc does not still authorize it. The issue that failed review is not this edge. Other callers cannot use it.
