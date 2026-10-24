@@ -167,8 +167,11 @@ func _chrome_placement_problem(frame_size: Vector2) -> String:
 
 
 func _centre_x(control: Control) -> float:
-	## Where the control's center sits: its position plus half of what it draws.
-	return control.position.x + control.pivot_offset.x
+	## Where the control draws its centre: the left edge of its drawn rect plus
+	## half of what it draws. `position` alone is the anchor origin, so a box
+	## centred with 0.5 anchors reads `position.x` half a width left of centre.
+	var rect := control.get_global_rect()
+	return rect.position.x + rect.size.x * 0.5
 
 
 func _exercise_screens() -> bool:

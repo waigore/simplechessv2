@@ -20,6 +20,8 @@ func _run() -> void:
 		if err.is_empty():
 			err = await _check_viewport(board)
 		if err.is_empty():
+			err = await _check_orientation(board)
+		if err.is_empty():
 			err = await _check_motion(board)
 	if not err.is_empty():
 		_fail(err)
@@ -279,6 +281,169 @@ func _check_viewport(board: BoardPresentation) -> String:
 	if not is_equal_approx(clamped.y, 10.0):
 		return "pillarbox visible height stays 10"
 	return ""
+
+
+func _check_orientation(board: BoardPresentation) -> String:
+	## #617 — raster art must not be mirrored by the world Y flip (SPC.E1).
+	## Synthetic asymmetric texture: black top-left pixel, everything else white.
+	var texture := _asymmetric_texture()
+	var assets: Dictionary = {BoardPresentation.BOARD_BG_ID: texture}
+	for key in BoardPresentation.PIECE_IDS.keys():
+		assets[str(BoardPresentation.PIECE_IDS[key])] = texture
+	board.provide_assets(assets)
+	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "knight", "square": "e2"}},
+				"side_to_move": "white",
+			}
+		)
+	)
+	board.show_promotion_choice("e8", "white")
+	await process_frame
+	for pass_index in range(2):
+		for seat in [BoardGeometry.SEAT_BOTTOM, BoardGeometry.SEAT_TOP]:
+			# Re-entry: a second provide_assets() re-runs _apply_kind_texture.
+			if pass_index == 1:
+				board.provide_assets(assets)
+			board.set_white_seat(seat)
+			var err := _assert_orientation(board, seat)
+			if not err.is_empty():
+				return err
+	board.clear_promotion_choice()
+	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "knight", "square": "e2"}},
+				"side_to_move": "white",
+			}
+		)
+	)
+	await process_frame
+	# Settle: the 0.92 squash restores the pre-settle (art) scale.
+	var sprite := _piece_sprite(board, "e2")
+	if sprite == null:
+		return "#617 piece sprite missing before settle"
+	var before := sprite.scale
+	board.update_drag("begin", {"square": "e2", "world": BoardGeometry.square_center("e2")})
+	await board.end_drag_legal("e4")
+	sprite = _piece_sprite(board, "e4")
+	if sprite == null:
+		return "#617 piece sprite missing after drop"
+	if not sprite.scale.is_equal_approx(before):
+		return "#617 settle did not restore scale %s vs %s" % [sprite.scale, before]
+	# And the settled sprite still satisfies art space after the squash.
+	if not (sprite.scale.x > 0.0 and sprite.scale.y < 0.0):
+		return "#617 settled scale %s not (+,−)" % sprite.scale
+	return ""
+
+
+func _asymmetric_texture() -> ImageTexture:
+	var img := Image.create(8, 8, false, Image.FORMAT_RGBA8)
+	img.fill(Color.WHITE)
+	img.set_pixel(0, 0, Color.BLACK)
+	return ImageTexture.create_from_image(img)
+
+
+func _piece_sprite(board: BoardPresentation, square: String) -> Sprite2D:
+	var node := board.get_node_or_null("World/Seat/Content/Pieces/piece_%s" % square)
+	if node == null:
+		return null
+	return node.get_node_or_null("Sprite") as Sprite2D
+
+
+func _chooser_sprite(board: BoardPresentation) -> Sprite2D:
+	## Lookup by `promote_kind` meta: a rebuild may rename nodes (@Node2D@…).
+	var root := board.get_node_or_null("World/Seat/Content/Overlays/PromoteChoice")
+	if root == null:
+		return null
+	for child in root.get_children():
+		if str(child.get_meta("promote_kind", "")).is_empty():
+			continue
+		return child.get_node_or_null("Sprite") as Sprite2D
+	return null
+
+
+func _assert_orientation(board: BoardPresentation, seat: String) -> String:
+	var piece := _piece_sprite(board, "e2")
+	var chooser := _chooser_sprite(board)
+	var backdrop := board.get_node_or_null("World/Seat/Content/Board/BoardBackdrop") as Sprite2D
+	for pair in [["piece", piece], ["chooser", chooser], ["backdrop", backdrop]]:
+		var err := _assert_art_space(str(pair[0]), pair[1] as Sprite2D, seat)
+		if not err.is_empty():
+			return err
+	# Seat space: no mirror on screen; CAM-board.M2 rotation only.
+	var global_basis := piece.get_global_transform()
+	if global_basis.determinant() <= 0.0:
+		return (
+			"#617 piece global determinant %s mirrored at seat %s"
+			% [global_basis.determinant(), seat]
+		)
+	var expected := PI if seat == BoardGeometry.SEAT_TOP else 0.0
+	var got := wrapf(global_basis.get_rotation(), -PI, PI)
+	if not is_equal_approx(absf(got), expected):
+		return "#617 piece global rotation %s at seat %s (want %s)" % [got, seat, expected]
+	return _assert_marker(piece, seat)
+
+
+## Art space: a present texture and a (+,−) local scale, i.e. no mirror and the
+## texture's top edge facing screen up regardless of seat.
+func _assert_art_space(label: String, sprite: Sprite2D, seat: String) -> String:
+	if sprite == null:
+		return "#617 %s sprite missing (seat %s)" % [label, seat]
+	if sprite.texture == null:
+		return "#617 %s has no texture — orientation would be vacuous" % label
+	var local := sprite.scale
+	if not (local.x > 0.0 and local.y < 0.0):
+		return "#617 %s local scale %s not (+,−) at seat %s" % [label, local, seat]
+	return ""
+
+
+## Marker: the texture's top-left texel must land on the sprite's top-left
+## corner (Bottom) or bottom-right corner (Top) — proof of facing, not parity.
+func _assert_marker(piece: Sprite2D, seat: String) -> String:
+	var tex := piece.texture
+	var half := Vector2(tex.get_width(), tex.get_height()) * 0.5
+	var tol := (Vector2(tex.get_width() - 1.0, tex.get_height() - 1.0) * 0.5).length()
+	var corners: Array = []
+	for sx in [1.0, -1.0]:
+		for sy in [1.0, -1.0]:
+			corners.append(piece.get_global_transform() * Vector2(half.x * sx, half.y * sy))
+	var want := (
+		_screen_top_left(corners)
+		if seat == BoardGeometry.SEAT_BOTTOM
+		else _screen_bottom_right(corners)
+	)
+	var marked := piece.get_global_transform() * (-half)
+	if marked.distance_to(want) > tol:
+		return "#617 marker lands %s, want %s at seat %s" % [marked, want, seat]
+	return ""
+
+
+func _screen_top_left(points: Array) -> Vector2:
+	var best := points[0] as Vector2
+	for p in points:
+		var v := p as Vector2
+		if v.x < best.x:
+			best.x = v.x
+		if v.y < best.y:
+			best.y = v.y
+	return best
+
+
+func _screen_bottom_right(points: Array) -> Vector2:
+	var best := points[0] as Vector2
+	for p in points:
+		var v := p as Vector2
+		if v.x > best.x:
+			best.x = v.x
+		if v.y > best.y:
+			best.y = v.y
+	return best
 
 
 func _check_motion(board: BoardPresentation) -> String:
