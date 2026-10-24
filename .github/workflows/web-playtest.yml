@@ -3,6 +3,8 @@ name: Web playtest
 # Exports the playtest Web build to build/web/ (ADR-0007) and runs the
 # headless playtest smoke (ENV.1). The smoke imports the project first so
 # class_name resolves on a clean checkout. Not the Unit tests job.
+# This job also produces the gating engine-boundary verdict (#696), which is why
+# it must stay a pull request check.
 
 on:
   pull_request:
@@ -20,6 +22,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # The engine-boundary verdict (#696, ADR-0002 §Validation "No client
+      # Stockfish endpoint", CTR-advice-stream G3). This job runs on every pull
+      # request, so the check can gate a merge; `web-release.yml` runs the same
+      # function over the release export before it publishes. Both directions
+      # are recorded on this run, before any Godot work: the contra-positive
+      # trees are written by the check itself, so they need no export.
+      - name: Prove the bundle check refuses engine trees
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/web_export.py --synthetic-engine-verdicts
 
       - name: Install Godot 4.7.2
         run: |
@@ -58,6 +71,16 @@ jobs:
           set -euo pipefail
           export GODOT_BIN="$(python3 -c "import sys; sys.path.insert(0, '.github/scripts'); from gdscript_tests import ensure_godot; print(ensure_godot())")"
           python3 .github/scripts/web_export.py --preset "Web Playtest"
+
+      # The passing half, on a real export (#696). The playtest export stands in
+      # for the release scene here for one reason only: `Web release` runs this
+      # same function on the `Web Release` export before it publishes, so the
+      # release scene's own content is guarded on the run that builds it. This
+      # step is what reddens the pull request that adds an engine to the client.
+      - name: Check the shipped tree carries no client engine
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/web_export.py --check-engine build/web
 
       - name: Headless playtest smoke
         run: |

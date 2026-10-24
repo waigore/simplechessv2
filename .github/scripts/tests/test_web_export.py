@@ -328,3 +328,83 @@ class WebExportTest(unittest.TestCase):
         repo = self._write_repo()
         godot = _fake_godot(self.tmp_path, artifacts=True)
         self._export_fails(repo, godot, web_export.PLAYTEST_PRESET)
+
+    def _clean_tree(self) -> Path:
+        """A shipped tree shaped like an export that carries no engine."""
+        shipped = self.tmp_path / "build" / "web"
+        shipped.mkdir(parents=True, exist_ok=True)
+        (shipped / "index.html").write_text("<html>Simple Chess</html>", encoding="utf-8")
+        (shipped / "index.pck").write_text("res://main.tscn", encoding="utf-8")
+        return shipped
+
+    def test_engine_check_passes_a_tree_with_no_engine(self) -> None:
+        shipped = self._clean_tree()
+        (shipped / "index.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00")
+        web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_refuses_an_engine_name_in_the_pack(self) -> None:
+        shipped = self._clean_tree()
+        (shipped / web_export.PACK).write_text("res://bin/stockfish", encoding="utf-8")
+        with self.assertRaisesRegex(web_export.BundleError, "names the engine"):
+            web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_refuses_a_loose_engine_binary(self) -> None:
+        shipped = self._clean_tree()
+        (shipped / "sf_16").write_text("ELF", encoding="utf-8")
+        with self.assertRaisesRegex(web_export.BundleError, "engine file"):
+            web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_refuses_an_engine_wasm_or_nnue(self) -> None:
+        for name in ("engine.wasm", "nn-5af11540bbfe.nnue"):
+            with self.subTest(name=name):
+                shipped = self._clean_tree()
+                (shipped / name).write_bytes(b"\x00asm")
+                with self.assertRaisesRegex(web_export.BundleError, "engine file"):
+                    web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_refuses_a_uci_endpoint(self) -> None:
+        for marker in ("uci://127.0.0.1:7700", '{"endpoint": "uci:7700"}'):
+            with self.subTest(marker=marker):
+                shipped = self._clean_tree()
+                (shipped / "index.html").write_text(f"<a href='{marker}'>", encoding="utf-8")
+                with self.assertRaisesRegex(web_export.BundleError, "UCI engine marker"):
+                    web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_refuses_engine_options_and_names(self) -> None:
+        for marker in ("option name Threads type spin", "engine_name"):
+            with self.subTest(marker=marker):
+                shipped = self._clean_tree()
+                (shipped / web_export.PACK).write_text(marker, encoding="utf-8")
+                with self.assertRaisesRegex(web_export.BundleError, "UCI engine marker"):
+                    web_export.ensure_no_client_engine(shipped)
+
+    def test_app_vocabulary_is_not_an_engine(self) -> None:
+        shipped = self._clean_tree()
+        (shipped / web_export.PACK).write_text(
+            "best_move_uci res://advice_endpoint.gd stockfishing res://playt_uci_marker.gd\n"
+            '## The move format (best_move_uci) is app vocabulary: "invalid UCI" is a test label.\n'
+            'func _uci_parts(uci: String) -> Dictionary:\n\treturn {"from": uci.substr(0, 2)}\n',
+            encoding="utf-8",
+        )
+        web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_word_inside_a_longer_word_is_not_an_engine(self) -> None:
+        shipped = self._clean_tree()
+        (shipped / web_export.PACK).write_text("res://stockfishing_story.gd", encoding="utf-8")
+        web_export.ensure_no_client_engine(shipped)
+
+    def test_engine_check_names_a_tree_it_cannot_read(self) -> None:
+        with self.assertRaisesRegex(web_export.BundleError, "index.pck"):
+            web_export.ensure_no_client_engine(self.tmp_path / "missing")
+
+    def test_engine_check_cli_is_red_then_green(self) -> None:
+        shipped = self._clean_tree()
+        assert web_export.main(["--check-engine", str(shipped)]) == 0
+        (shipped / f"{web_export.INJECTED_ENGINE_NAME}.wasm").write_bytes(b"\x00asm")
+        assert web_export.main(["--check-engine", str(shipped)]) == 1
+
+    def test_synthetic_engine_verdicts_refuse_every_contra_positive(self) -> None:
+        script = Path(__file__).resolve().parents[1] / "web_export.py"
+        assert web_export.synthetic_engine_verdicts() == 0
+        assert web_export.synthetic_engine_verdicts(script) == 0
+

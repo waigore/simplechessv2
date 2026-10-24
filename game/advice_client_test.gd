@@ -5,6 +5,8 @@ extends SceneTree
 ## backend is a simulated peer speaking CTR-advice-stream (ADR-0002 Testability);
 ## no Stockfish endpoint exists here.
 
+const FAIL_T1_STOPPED := "FAIL.T1: a failed stream stops and delivers nothing further"
+
 
 func _initialize() -> void:
 	call_deferred("_start")
@@ -253,18 +255,32 @@ func _check_offline_clears() -> String:
 	var live := _stream(session)
 	live.push_update({"best_move_uci": "d2d4", "eval_cp": 12})
 	session.advice_control("poll")
+	if session.play_state()["advice_eval"] != 12:
+		return "the update must show an eval before the failure"
 	live.push_end(AdviceWireReader.REASON_ERROR)
 	var events: Array = session.advice_control("poll").get("events", [])
 	var state := session.play_state()
 	if bool(state["online"]):
 		return "a backend failure must clear GS.online (X3)"
-	if state["advice_best_move"] != null:
-		return "going offline must clear advice (R9, X3)"
-	if not _has_outcome(events, "advice.error", "unavailable"):
-		return "FAIL.T1 must be reported for EX.error and telemetry"
-	if not session.gestures_available():
-		return "play must continue after an advice failure (FAIL.T1)"
+	# R9 / X3 clear both fields: a failed search leaves no mark and no number.
+	var cleared := state["advice_best_move"] == null and state["advice_eval"] == null
+	if not cleared:
+		return "going offline must clear both advice fields (R9, X3)"
+	var reported := _has_outcome(events, "advice.error", "unavailable")
+	var stopped := _stopped_after_failure(session)
+	if not (reported and session.gestures_available() and stopped):
+		var detail := "%s: the failure must be reported, play must continue" % FAIL_T1_STOPPED
+		return "%s after it: %s" % [detail, events]
 	return ""
+
+
+## FAIL.T1 "Stop eval": once a stream has failed, it delivers nothing further.
+func _stopped_after_failure(session: SharedGameSession) -> bool:
+	for _tick in range(5):
+		if not session.advice_control("poll").get("events", []).is_empty():
+			return false
+	var state := session.play_state()
+	return state["advice_best_move"] == null and state["advice_eval"] == null
 
 
 func _check_game_end_clears() -> String:
