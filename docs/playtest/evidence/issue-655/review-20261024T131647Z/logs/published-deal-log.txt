@@ -1,0 +1,92 @@
+ 40.56s [net.req] GET https://waigore.github.io/simplechessv2/
+ 40.56s [net.req] GET https://waigore.github.io/simplechessv2/index.png
+ 40.56s [net.req] GET https://waigore.github.io/simplechessv2/index.js
+ 40.56s [net.req] GET https://waigore.github.io/simplechessv2/index.wasm
+ 40.56s [net.req] GET https://waigore.github.io/simplechessv2/index.pck
+ 40.56s [net.req] GET https://waigore.github.io/simplechessv2/index.icon.png
+ 40.56s [console.log] Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+ 40.56s [console.log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+ 40.56s [console.log] Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Preload ambient left 2 approved IDs unresolved
+ 40.56s [console.error]    at: push_error (core/variant/variant_utility.cpp:1023)
+ 40.56s [net.req] GET blob:https://waigore.github.io/1f076c74-9d68-49c5-8c59-92362b202364
+ 40.56s [log.warning] rendering: [.WebGL-0x13c00101600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+ 40.56s [log.warning] rendering: [.WebGL-0x13c00101600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+ 40.56s [log.warning] rendering: [.WebGL-0x13c00101600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+ 40.56s [log.warning] rendering: [.WebGL-0x13c00101600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] ERROR: Preload ambient left 2 approved IDs unresolved
+ 40.56s [console.error]    at: push_error (core/variant/variant_utility.cpp:1023)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/move-settle.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/move-settle.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a151f8-b7d8-710a-b767-92c9137bfd63
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a151f8-b7d8-759c-89c5-e1be5eecb2b2
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/touch-select.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/touch-select.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7ae6-84af-767ba53d09f6
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/check.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/check.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7e05-9921-e892e9a2e064
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/end-resolve.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/end-resolve.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: Unresolved asset ID: 01a151f8-b7d8-7fe3-b94f-e3a562395d96
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
+ 40.56s [console.error] ERROR: Preload play left 5 approved IDs unresolved
+ 40.56s [console.error]    at: push_error (core/variant/variant_utility.cpp:1023)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/move-settle.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/move-settle.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/touch-select.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/touch-select.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/check.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/check.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] ERROR: Can't open file from path 'res://game_assets/sound-effects/end-resolve.ogg'.
+ 40.56s [console.error]    at: get_file_as_bytes (core/io/file_access.cpp:907)
+ 40.56s [console.error] ERROR: Cannot open file 'res://game_assets/sound-effects/end-resolve.ogg'.
+ 40.56s [console.error]    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+ 40.56s [console.error] WARNING: puzzle stream: deal read failed (status)
+ 40.56s [console.error]    at: push_warning (core/variant/variant_utility.cpp:1033)
