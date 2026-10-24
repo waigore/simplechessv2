@@ -47,14 +47,14 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`audit-spec-applicability`](audit-spec-applicability/SKILL.md) | Audit Applies/N/A upstream grounds and downstream carry-outs; report for author-spec |
 | [`audit-spec-terminology`](audit-spec-terminology/SKILL.md) | Audit glossary ownership and term usage (undefined, drift, synonyms, homonyms); report for author-spec |
 | [`audit-spec-tbd`](audit-spec-tbd/SKILL.md) | Find TBDs (undecided aspects), propose grounded answers, confirm with the user, then author-spec |
-| [`scope-gameplay-demo`](scope-gameplay-demo/SKILL.md) | Decide which spec gaps block a demo from what it must show or apply; the gate is [Before building](../../docs/demos.md#before-building) |
-| [`create-gameplay-demo`](create-gameplay-demo/SKILL.md) | Build a demo under `demos/` after `scope-gameplay-demo` passes; spec-traced reference artifact |
+| [`scope-poc`](scope-poc/SKILL.md) | Clarify PoC purpose/scope/outcome from log or issue; tool/env blockers only; [Before building](../../docs/pocs.md#before-building) |
+| [`create-poc`](create-poc/SKILL.md) | Build a PoC under `pocs/` after `scope-poc` passes; freer exploration, not spec-bound |
 | [`manage-asset`](manage-asset/SKILL.md) | Generate, import, update, or deprecate assets per `specs/assets/` procedures; catalog, review, PR |
 | [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs CLI / soft SFX or soft third-party-visual → registry); PR |
 | [`register-asset`](register-asset/SKILL.md) | Catalog a person-supplied (human-made or third-party) asset; person-granted review exemption or review-asset; PR |
 | [`review-asset`](review-asset/SKILL.md) | Review produced assets vs kind spec and `specs/aesthetics/`; Pass/Fail by element ID, read-only |
-| [`require-demo-promotion`](require-demo-promotion/SKILL.md) | Required promotion act before main-code work: walk every demo element, resolve conflicts, record keep or drop |
-| [`promote-gameplay-demo`](promote-gameplay-demo/SKILL.md) | Reimplement one demo's confirmed keep list: assumptions into specs, technical design, asset approval, code review |
+| [`reconcile-poc`](reconcile-poc/SKILL.md) | Optional PoC reconcile act: keep/drop/adapt claims, resolve conflicts, record act |
+| [`promote-poc`](promote-poc/SKILL.md) | Reimplement one PoC's keep/adapt list: assumptions into specs, technical design, asset approval, code review |
 | [`sync-upstream-template`](sync-upstream-template/SKILL.md) | Merge upstream template changes downstream: baseline, per-file classify, confirm conflicts, one sync PR |
 
 When adding or renaming a skill: update this table, add facades per `docs/skills.md`, and keep the thin Skills pointer in [`AGENTS.md`](../../AGENTS.md) unchanged unless the path to this catalog moves.

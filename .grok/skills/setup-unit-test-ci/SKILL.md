@@ -12,7 +12,7 @@ description: |-
     - user: "Wire coverage to 90%" → update Threshold and Coverage job
 ---
 
-# Setup unit-test CI (facade)
+# Setup unit test CI (facade)
 
 Canonical instructions: [`.agents/skills/setup-unit-test-ci/SKILL.md`](../../../.agents/skills/setup-unit-test-ci/SKILL.md).
 

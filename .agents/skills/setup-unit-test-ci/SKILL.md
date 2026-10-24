@@ -29,7 +29,7 @@ Wire the `Unit tests` and `Coverage` checks. **Contracts:** Unit tests / Coverag
 2. **Read** the Unit tests and Coverage sections in `docs/coding-conventions.md` and [`.github/workflows/unit-tests.yml`](../../../.github/workflows/unit-tests.yml).
 3. **Already done**: tables have real commands (not placeholders) or intentional `None — <reason>`, workflow steps match, and the `main` ruleset requires `Unit tests` and `Coverage` → report Pass; do not rewrite.
 4. **Invent commands**:
-   - Prefer **sources** in the repo (test projects, runner configs, package scripts, coverage config) for main code only — never `demos/` or `.github/scripts`.
+   - Prefer **sources** in the repo (test projects, runner configs, package scripts, coverage config) for main code only — never `pocs/` or `.github/scripts`.
    - Else invent from the Accepted Engine ADR and Accepted Framework / Library ADRs (and the language SDK they imply).
    - Coverage command must fail when coverage is below Threshold (default 80 unless the Coverage table or user says otherwise).
 5. **Write** the Unit tests and Coverage tables in `docs/coding-conventions.md` (keep Threshold unless overriding). Replace the Not configured steps in `unit-tests.yml` with toolchain setup and one step per table row. Keep `Coverage` `needs: [unit-tests]`. Job names stay `Unit tests` and `Coverage`.
@@ -39,7 +39,7 @@ Wire the `Unit tests` and `Coverage` checks. **Contracts:** Unit tests / Coverag
 
 ## Rules
 
-- Main code only; never configure steps that test `demos/` or `.github/scripts`.
+- Main code only; never configure steps that test `pocs/` or `.github/scripts`.
 - Keep conventions and `unit-tests.yml` in sync; one step per Unit tests row; Coverage enforces Threshold.
 - Do not weaken or remove other required checks.
 - Do not restate `ensure-dev-env-setup` or `setup-github-repo` steps; call or link them.

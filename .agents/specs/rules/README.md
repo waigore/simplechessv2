@@ -42,6 +42,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/design/story-coverage.md` | [design/story-coverage.md](design/story-coverage.md) |
 | `specs/design/game-state.md` | [design/game-state.md](design/game-state.md) |
 | `specs/design/configuration.md` | [design/configuration.md](design/configuration.md) |
+| `specs/design/demo.md` | [design/demo.md](design/demo.md) |
 | `specs/design/difficulty.md` | [design/difficulty.md](design/difficulty.md) |
 | `specs/design/progression.md` | [design/progression.md](design/progression.md) |
 | `specs/design/end-conditions.md` | [design/end-conditions.md](design/end-conditions.md) |

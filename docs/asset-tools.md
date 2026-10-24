@@ -2,7 +2,7 @@
 
 Known tools for image and audio generation, editing, and touch-up, and the tools this project bans. Specs stay product-neutral: most generation tools realize a tool role in [`specs/assets/tools.md`](../specs/assets/tools.md) through an Accepted Integration ADR. Tools this file marks **ADR-free**, and touch-up options, need no ADR. Touch-ups run through `APR.touch-up` ([`specs/assets/procedures/touch-up.md`](../specs/assets/procedures/touch-up.md)).
 
-**Style series lock**: visual kinds **with a binding** require **Recraft**; music, SFX, and voice kinds require the **ElevenLabs CLI**. A soft-enforced third-party/human-made visual kind with no product style id needs no tool binding — anchors plus review carry the series.
+**Style series lock**: visuals **with a binding** require **Recraft**; music, SFX, and voice require the **ElevenLabs CLI**. Soft-enforced third-party/human-made visuals with no product style id need no binding — anchors and review suffice.
 
 ## Banned tools
 
@@ -18,8 +18,9 @@ Known tools for image and audio generation, editing, and touch-up, and the tools
 | Audio style establish (finetune / voice) or style-constrained music/voice/SFX generate | ElevenLabs CLI (required) |
 | Exploratory image work, editing, graphic design, vector art | Recraft |
 | Default when Recraft can do the job | Recraft |
-| High-throughput batch image generation (expect Recraft touch-up after); visual series not `active` | fal.ai |
-| Specific image model Recraft lacks; visual series not `active` | fal.ai |
+| High-throughput batch image generation (expect Recraft touch-up after); visual series not `active` | fal.ai or Cheaper Inference |
+| Specific image model Recraft lacks; visual series not `active` | fal.ai or Cheaper Inference (default model `flux-2-max`) |
+| OpenAI-compatible REST image gen/edit without MCP; visual series not `active` | Cheaper Inference |
 | Free CC0 texture or model library (search + download) | Poly Haven |
 
 ## Generation and design
@@ -27,6 +28,7 @@ Known tools for image and audio generation, editing, and touch-up, and the tools
 - **Recraft**: [`asset-tools-recraft.md`](asset-tools-recraft.md) (ADR-free; required for visual style series).
 - **ElevenLabs**: [`asset-tools-elevenlabs.md`](asset-tools-elevenlabs.md) (ADR-free; CLI only; required for audio style series).
 - **fal.ai**: [`asset-tools-fal.md`](asset-tools-fal.md) (needs Integration ADR; not for active style series).
+- **Cheaper Inference**: [`asset-tools-cheaperinference.md`](asset-tools-cheaperinference.md) (ADR-free; REST; default `flux-2-max`; locked steps in [`asset-tools-cheaperinference-steps.md`](asset-tools-cheaperinference-steps.md); not for active style series).
 - **Poly Haven**: [`asset-tools-polyhaven.md`](asset-tools-polyhaven.md) (ADR-free; REST; textures + models; locked steps in [`asset-tools-polyhaven-steps.md`](asset-tools-polyhaven-steps.md)).
 
 ## Pipelines
@@ -41,4 +43,5 @@ A touch-up is an optional edit to an asset's files that brings it closer to its 
 
 - **Recraft / fal**: MCP servers `recraft` and `fal` ship disabled. Enable locally per [`mcp.md`](mcp.md); use `setup-project-mcp`. Do not commit enabled state.
 - **ElevenLabs**: CLI only ([`asset-tools-elevenlabs.md`](asset-tools-elevenlabs.md)). No MCP server. Assume `ELEVENLABS_API_KEY` is in the environment.
+- **Cheaper Inference**: REST only ([`asset-tools-cheaperinference.md`](asset-tools-cheaperinference.md)). No MCP server. Assume `CHEAPERINFERENCE_API_KEY` is in the environment.
 - **Poly Haven**: REST only ([`asset-tools-polyhaven.md`](asset-tools-polyhaven.md)). No MCP, no API key; send a project `User-Agent` on every request.

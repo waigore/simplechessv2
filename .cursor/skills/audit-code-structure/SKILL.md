@@ -9,7 +9,7 @@ description: |-
   findings without filing issues, or when suggest-code-refactors asks for the audit.
 
   Examples:
-    - user: "Audit structure, don't file issues" → whole tree except demos/
+    - user: "Audit structure, don't file issues" → whole tree except pocs/
     - user: "Audit src/combat" → that portion
     - suggest-code-refactors: pass the request scope, return this report
 ---

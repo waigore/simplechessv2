@@ -32,7 +32,7 @@ Use the first match:
 2. **Verify caller** — linked deliverable PRs that contain **code changes** → those PR diffs.
 3. **Default** — uncommitted / working-tree changes (`git status`, staged + unstaged diff).
 
-**Code changes:** any touched implementation file (source, tests, build that shapes runtime). Skip this skill when the diff is only docs, specs, agent skills/rules, or similar non-implementation paths. Exclude paths under `demos/` ([gameplay demos](../../../docs/demos.md)); code promoted out of `demos/` into the main tree is reviewed normally.
+**Code changes:** any touched implementation file (source, tests, build that shapes runtime). Skip this skill when the diff is only docs, specs, agent skills/rules, or similar non-implementation paths. Exclude paths under `pocs/` ([PoCs](../../../docs/pocs.md)); code promoted out of `pocs/` into the main tree is reviewed normally.
 
 If there is nothing to review, report **N/A** (not a Pass) and stop.
 

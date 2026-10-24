@@ -7,9 +7,10 @@ description: |-
   review-asset, and open a PR. Spec first: only assets a coverage rule
   requires, through tool roles realized by Accepted ADRs or ADR-free tools in
   docs/asset-tools.md (Recraft for visual gen/edit/touch-up and style series;
-  ElevenLabs CLI for music/SFX/voice and audio style series — never MCP;
-  fal needs an ADR and is not used when the kind series is active). Never a
-  banned tool.
+  Cheaper Inference ADR-free for non-series visual gen/reference via locked
+  steps + cheaperinference_image.py; ElevenLabs CLI for music/SFX/voice and
+  audio style series — never MCP; fal needs an ADR and is not used when the
+  kind series is active). Never a banned tool.
   Use when the user asks to create, generate, source, regenerate, replace,
   touch up, or retire art, animation, interface art, fonts, or audio.
   For establishing a kind's style series, use establish-asset-style.

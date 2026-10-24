@@ -13,7 +13,7 @@ Agents use the matching `create-project-*` skill so labels, sub-issues, and bloc
 | [workflow-cascade.md](workflow-cascade.md) | When a failed review moves another issue |
 | [body-writes.md](body-writes.md) | Safe `gh issue` body/comment writes, the guard, and the read-back |
 | [workflow-dispatch.md](workflow-dispatch.md) | Background dispatch agents (one issue per run) |
-| [waves.md](waves.md) | Milestones as waves; description = expected deliverable; foundation; vertical epics; demo before main code; wave audit |
+| [waves.md](waves.md) | Milestones as waves; description = expected deliverable; foundation; vertical epics; optional PoCs; wave audit |
 
 ## Types and labels
 

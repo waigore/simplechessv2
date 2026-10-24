@@ -10,15 +10,17 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 
 | Path | Covers |
 |------|--------|
-| [asset-tools.md](asset-tools.md) | Asset tools index: bans, preference; Recraft, ElevenLabs, fal, Poly Haven linked |
+| [asset-tools.md](asset-tools.md) | Asset tools index: bans, preference; Recraft, ElevenLabs, fal, Cheaper Inference, Poly Haven linked |
+| [asset-tools-cheaperinference-steps.md](asset-tools-cheaperinference-steps.md) | Locked Cheaper Inference generate / reference-anchor steps + script |
 | [asset-tools-polyhaven.md](asset-tools-polyhaven.md) | Poly Haven CC0 texture/model catalog (ADR-free REST) |
 | [asset-tools-polyhaven-steps.md](asset-tools-polyhaven-steps.md) | Locked Poly Haven search / pick / download steps |
 | [texture-pipeline.md](texture-pipeline.md) | Texture select → land → tile check → optional touch-up → review |
 | [mcp.md](mcp.md) | Project MCP wiring for Cursor / OpenCode / Grok; auth rules; declared servers; smoke test |
 | [coding-conventions.md](coding-conventions.md) | Project-owned coding conventions and lint/format/unit-test/coverage tooling; extends `solid.md` |
-| [demos.md](demos.md) | Gameplay demos under `demos/`: scope, what is relaxed, traceability, promotion |
-| [demo-promotion.md](demo-promotion.md) | Required promotion act before main-code work; keep or drop; conflicts; reimplementation |
-| [demo-style-assets.md](demo-style-assets.md) | Style and asset gate when a demo must show or play them: assets, findings, verification |
+| [demo.md](demo.md) | Product demo mode: config-bounded slice of the main game; `specs/design/demo.md` |
+| [pocs.md](pocs.md) | Proofs of concept under `pocs/`: requests, scope, relaxed bars, optional promotion |
+| [poc-promotion.md](poc-promotion.md) | Optional PoC reconcile act; keep/drop/adapt; reimplementation |
+| [poc-style-assets.md](poc-style-assets.md) | Style and asset gate when a PoC shows or plays them |
 | [dev-env-setup.md](dev-env-setup.md) | Local game-stack and asset-tool install/verify; then `setup-unit-test-ci` |
 | [open-design-skill-setup.md](open-design-skill-setup.md) | User-local Open Design skill + content under `~/.open-design-skill/`; optional agent wiring |
 | [github-repo-setup.md](github-repo-setup.md) | First-time GitHub settings to apply and verify (remotes, Actions, `main` ruleset, squash, auto-merge, labels) |

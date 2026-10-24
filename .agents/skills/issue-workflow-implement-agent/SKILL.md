@@ -22,6 +22,6 @@ Thin automation entrypoint for `status:pending-implementation`.
 ## Steps
 
 1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-implementation`.
-2. **Perform** the implementation work required by that issue (branch, code/specs/assets as scoped, PR as appropriate). Before changing anything outside `demos/`, run [`require-demo-promotion`](../require-demo-promotion/SKILL.md) and continue only on pass. `implement-project-issue` records evidence only — it does not replace this step.
+2. **Perform** the implementation work required by that issue (branch, code/specs/assets as scoped, PR as appropriate). Respect native **blocked-by** edges (including a PoC task when one must prove a claim). Do **not** require a global PoC or `reconcile-poc` before main-tree edits. `implement-project-issue` records evidence only — it does not replace this step.
 3. **Read and run** `implement-project-issue` for that issue.
 4. **Report** the underlying skill's outcome (URL, evidence, new status). Stop after `implement-project-issue`. Verification is a later `issue-workflow-verify-agent` run.

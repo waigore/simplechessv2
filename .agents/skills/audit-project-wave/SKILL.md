@@ -20,7 +20,7 @@ Judge a **filed** wave against the contract in [`docs/issues/waves.md`](../../..
 
 ## Principles
 
-- **Contract bar** — Expected deliverable (milestone description), foundation-before-verticals, vertical slices, demo-before-main-code: as in `docs/issues/waves.md`. Soft size: **≤2–3 epics / wave**, **~10 implementation tasks / epic**. Prefer smaller focused waves over large scopes that hide complexity.
+- **Contract bar** — Expected deliverable (milestone description), foundation-before-verticals, vertical slices, optional PoCs (local blocked-by only): as in `docs/issues/waves.md`. Soft size: **≤2–3 epics / wave**, **~10 implementation tasks / epic**. Prefer smaller focused waves over large scopes that hide complexity.
 - **Coherent and consistent** — Epics (and tasks where filed) clearly serve the milestone deliverable; no overlaps, contradictions, or mis-membership.
 - **Focused implementation** — No work that enlarges effort without benefit to this wave’s deliverable. Drop, defer, or move noise elsewhere.
 - **In / out of scope** — The wave must state what is in, what is out, and what is deferred or assigned to other waves. Prefer **split or move** over stuffing this wave when completeness would bloat it.
@@ -31,7 +31,7 @@ Judge a **filed** wave against the contract in [`docs/issues/waves.md`](../../..
 1. **Resolve** — Milestone (ask if unclear). Load description + `type:epic` issues on it, and their child tasks where defined.
 2. **Judge** — Against the principles above and the waves contract. Vague/missing milestone description → propose one from epic goals + specs (do not invent product scope); do not mutate until confirmed.
 3. **Propose** — Findings and proposed changes (description edit, new/moved epics, task add/drop/defer, set-level scope/Notes). `--no-create` / draft-only: print and stop.
-4. **Confirm**, then **apply** agreed mutations only. Do not build demos or game code here.
+4. **Confirm**, then **apply** agreed mutations only. Do not build PoCs or game code here.
 5. **Report** — Milestone URL, what changed, remaining risks.
 
 ## Rules
