@@ -172,7 +172,7 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 		Presentation.body_text_screen_px_for_frame_height(wanted.y)
 		> Presentation.body_text_screen_px_for_frame_height(UiChrome.REFERENCE_FRAME_HEIGHT_PX)
 	)
-	var panel_button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
+	var panel_button := seams.get_node("PlaytestDebug/DebugPanel/Controls/SetViewport") as Button
 	var problem := ""
 	if reports.size() != 1 or phone.is_empty() or shown != phone:
 		problem = "S13 viewport report"
@@ -217,8 +217,11 @@ func _check_viewport(seams: PlaytestSeams) -> bool:
 ## control's own height. A 44 px button resolved `16 * 44 / 640` and drew at
 ## 1 px, and the phone frame drew at a stale desktop ratio. The subject is the
 ## debug panel's own control: a 44 px box in the frame the layout renders in.
+## #837 — the control is measured expanded: a collapsed panel hides it, and a
+## hidden control is a no-op for a size, so the frame must still resolve.
 func _check_frame_height(seams: PlaytestSeams) -> bool:
-	var button := seams.get_node("PlaytestDebug/DebugPanel/SetViewport") as Button
+	seams._expand_debug_panel()
+	var button := seams.get_node("PlaytestDebug/DebugPanel/Controls/SetViewport") as Button
 	var own_height := button.size.y
 	var frame := UiChrome.frame_height_of(button)
 	var scale := UiChrome.responsive_text_scale(button)
@@ -243,9 +246,68 @@ func _check_frame_height(seams: PlaytestSeams) -> bool:
 	return true
 
 
+## #837 — the seam's own chrome must not paint over the screen `S6` judges: a
+## collapsed panel draws one header, keeps every seam node at its path, and
+## reports that the judged frame carries no panel.
+func _check_debug_collapse(seams: PlaytestSeams, phone: Dictionary) -> bool:
+	var panel_path := "PlaytestDebug/DebugPanel/"
+	var header := seams.get_node(panel_path + PlaytestSeams.SHOW_SEAMS) as Button
+	var problem := ""
+	if header == null or not header.visible or not header.is_visible_in_tree():
+		problem = "#837 a collapsed panel must draw its header"
+	elif bool(phone.get("debug_panel_visible", true)):
+		problem = "#837 S6 frame still carries the debug panel"
+	elif _controls_visible(seams):
+		problem = "#837 a collapsed panel must draw only its header"
+	elif not _collapsed_rests_on_header(seams, header):
+		problem = "#837 collapsed chrome must sit above, clear of the content"
+	elif not _panel_hides_again(seams):
+		problem = "#837 expanding must restore the seam controls at their paths"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
+func _controls_visible(seams: PlaytestSeams) -> bool:
+	var controls := seams.get_node("PlaytestDebug/DebugPanel/" + PlaytestSeams.CONTROLS_NODE)
+	for child in controls.get_children():
+		if (child as CanvasItem).is_visible_in_tree():
+			return true
+	return false
+
+
+func _collapsed_rests_on_header(seams: PlaytestSeams, header_control: Control) -> bool:
+	## Cleared of the mode-pick panel's copy, and small beside the frame it covers.
+	var copy := seams.get_parent().get_node_or_null("ScreenHost/ModePick") as Control
+	var frame := float(seams.get_tree().root.size.y)
+	if copy == null or frame <= 0.0:
+		return true
+	var box := header_control.get_global_rect()
+	var judged := copy.get_global_rect()
+	return box.end.y <= judged.position.y and box.size.y < frame / 4.0 and box.size.x < frame / 2.0
+
+
+func _panel_hides_again(seams: PlaytestSeams) -> bool:
+	var panel := "PlaytestDebug/DebugPanel/"
+	var expand := seams.get_node(panel + PlaytestSeams.SHOW_SEAMS) as Button
+	var hide_button := seams.get_node(panel + PlaytestSeams.HIDE_SEAMS) as Button
+	expand.pressed.emit()
+	var expanded := seams._debug_panel_on_screen() and _controls_visible(seams)
+	if not hide_button.is_visible_in_tree():
+		return false
+	hide_button.pressed.emit()
+	return expanded and not seams._debug_panel_on_screen()
+
+
+## `S13` — the applied report: `G2` / `I3`, the `#837` chrome limb, and a frame
+## height only when this run really renders one (`I6`).
 func _application_matches(report: Dictionary, framed: bool, wanted_px: int) -> bool:
 	## `applied` names ENV.2, and only a seam inside a frame may name its height.
 	if bool(report.get("applied", false)) != PlaytestGate.has_display():
+		return false
+	## #837 — a frame applied from a playtest build is judged without this run's
+	## debug chrome on it, or the report would name a screen that is covered.
+	if bool(report.get("debug_panel_visible", true)):
 		return false
 	if not framed or not PlaytestGate.has_display():
 		## No frame to read: the report keeps its shape but names no height.
@@ -363,7 +425,9 @@ func _check_debug(seams: PlaytestSeams, stage: Dictionary) -> bool:
 	var overlay := seams.get_node("PlaytestDebug/StoryOverlay") as Label
 	var overlay_text := overlay.text
 	var overlay_on := overlay.visible
-	var panel := "PlaytestDebug/DebugPanel/"
+	var panel := "PlaytestDebug/DebugPanel/Controls/"
+	## #837 — the panel ships collapsed, so a runner expands it before driving.
+	seams._expand_debug_panel()
 	seams.emit_tel("play_move", "pass", "EX.loading")
 	seams.emit_tel("play_move", "pass", "SIT.2")
 	var assert_button := seams.get_node(panel + "AssertTelemetry") as Button
