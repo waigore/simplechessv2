@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/ux/stories.md`](../../.agents/specs/rules/ux/stories.md).
 
-- **Serves**: Instant play, Cafe calm; Shared game, Puzzle stream, new session (definition); every actor, screen, journey, navigation, control, and exception file.
+- **Serves**: Instant play, Cafe calm; Shared game, Puzzle stream, new run (definition); every actor, screen, journey, navigation, control, and exception file.
 
 | Spec | Core | Coverage | Story file |
 |------|------|----------|------------|

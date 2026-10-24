@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/design/traceability.md`](../../.agents/sp
 | Instant play | vision | [`loops/`](loops/); [`features/move-advice.md`](features/move-advice.md) (never delays a move); [`entities/pieces.md`](entities/pieces.md) |
 | Clear board | vision | [`entities/pieces.md`](entities/pieces.md); [`experience.md`](experience.md) clarity |
 | Cafe calm | vision | Untimed default in [`configuration.md`](configuration.md); [`flows/mode-pick.md`](flows/mode-pick.md); [`experience.md`](experience.md); [`world.md`](world.md) |
-| Shared game; clocks; new session | definition | [`loops/two-player-game.md`](loops/two-player-game.md); [`configuration.md`](configuration.md); [`end-conditions.md`](end-conditions.md) |
+| Shared game; clocks; new run | definition | [`loops/two-player-game.md`](loops/two-player-game.md); [`configuration.md`](configuration.md); [`end-conditions.md`](end-conditions.md) |
 | Puzzle stream + Elo matching | definition | [`loops/puzzle-stream.md`](loops/puzzle-stream.md); [`features/puzzle-catalog.md`](features/puzzle-catalog.md); [`difficulty.md`](difficulty.md); [`progression.md`](progression.md) |
 | Optional Stockfish advice | definition | [`features/move-advice.md`](features/move-advice.md) |
 | Win / lose (shared + puzzle) | definition | [`end-conditions.md`](end-conditions.md) |

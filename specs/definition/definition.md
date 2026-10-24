@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/definition.md`](../../.agents/specs/rules
 - Untimed play, and timed blitz and rapid with time added after each move.
 - A continuous solo puzzle stream that gets harder or easier from each result.
 - Optional move advice when the browser is online and Advice is On.
-- Starting a new two-player session after a game ends.
+- Starting a new two-player run after a game ends.
 
 The release ships it in one build: the two-player screens (`mode-pick`, `shared-setup`, `shared-play`, `shared-result`) and the puzzle screens (`puzzle-play`, `puzzle-play-controls`), with their Advice copy. A screen, mode, key, schema field, or protocol ships because its owning spec defines it, never a stage number. Order across builds is [tracker detail](../../docs/issues/waves.md), not scope.
 
@@ -24,7 +24,7 @@ The release ships it in one build: the two-player screens (`mode-pick`, `shared-
 ### Player objectives
 
 - **Goal**: Win the shared game, or solve the puzzle currently dealt.
-- **Win / lose conditions**: A game ends by checkmate, resignation, stalemate, agreement, threefold repetition, the fifty-move rule, or clock expiry. In a timed game, a side whose clock reaches zero loses if the other side can still checkmate, and the game is drawn otherwise. Only the side to move has a clock running. The players may begin a new session. A puzzle is solved when its required sequence is played with no wrong move. A wrong move does not deal the next puzzle. Revealing the solution, or completing the sequence only after a wrong move, is a failure, and the next puzzle is dealt.
+- **Win / lose conditions**: A game ends by checkmate, resignation, stalemate, agreement, threefold repetition, the fifty-move rule, or clock expiry. In a timed game, a side whose clock reaches zero loses if the other side can still checkmate, and the game is drawn otherwise. Only the side to move has a clock running. The players may begin a new run. A puzzle is solved when its required sequence is played with no wrong move. A wrong move does not deal the next puzzle. Revealing the solution, or completing the sequence only after a wrong move, is a failure, and the next puzzle is dealt.
 - **Progression**: Puzzle selection tracks each result and deals a harder or easier puzzle next. Two-player games have no long-term progression.
 
 ### Product objectives

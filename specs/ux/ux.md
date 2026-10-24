@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/ux/ux.md`](../../.agents/specs/rules/ux/ux.md).
 
-- **Serves**: Instant play, Clear board, Cafe calm (vision); Shared game, Puzzle stream, new session, timed/untimed play, optional Advice, Web touch (definition scope); [design.md](../design/design.md), [view.md](../view/view.md).
+- **Serves**: Instant play, Clear board, Cafe calm (vision); Shared game, Puzzle stream, new run, timed/untimed play, optional Advice, Web touch (definition scope); [design.md](../design/design.md), [view.md](../view/view.md).
 
 ## Index
 

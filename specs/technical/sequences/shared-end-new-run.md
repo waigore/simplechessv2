@@ -1,11 +1,11 @@
-# Sequence: Shared end and new session
+# Sequence: Shared end and new run
 
 Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents/specs/rules/technical/sequences.md).
 
 - **Trigger**: Shared game reaches an end condition (`GS.gameEnded`)
 - **Participants**: [`CMP-shared-game-session`](../components/shared-game-session.md), [`CMP-chess-rules`](../components/chess-rules.md), [`CMP-advice-client`](../components/advice-client.md), [`CMP-presentation`](../components/presentation.md), [`CMP-session-router`](../components/session-router.md)
 - **Contracts used**: [`CTR-local-move`](../contracts/local-move.md), [`CTR-advice-stream`](../contracts/advice-stream.md), [`CTR-presentation`](../contracts/presentation.md)
-- **Serves**: Shared result UX; new session after end ([two-player-game K3](../../design/loops/two-player-game.md))
+- **Serves**: Shared result UX; new run after end ([two-player-game K3](../../design/loops/two-player-game.md))
 - **Informed by**: end-conditions; UX shared-result
 - **ADRs**: [ADR-0001](../../adr/decisions/0001-godot-engine.md), [ADR-0002](../../adr/decisions/0002-stockfish-advice-backend.md)
 
@@ -18,7 +18,7 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | S3 | shared-game | presentation | CTR-presentation.E1 | Show shared-result |
 | S4 | presentation | session-router | CTR-presentation.O2 | Play again → shared-setup |
 | S5 | presentation | session-router | CTR-presentation.O2 | Stop → mode-pick |
-| S6 | session-router | shared-game | internal | If Play again: new Shared session (setup unlocked) |
+| S6 | session-router | shared-game | internal | If Play again: new Shared run (setup unlocked) |
 
 ## Branches
 
@@ -43,5 +43,5 @@ sequenceDiagram
   S->>A: S2 cancel
   S->>V: S3 result
   V->>R: S4 or S5
-  R->>S: S6 new session if again
+  R->>S: S6 new run if again
 ```
