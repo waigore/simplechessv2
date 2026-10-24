@@ -244,13 +244,35 @@ func _load_font(path: String) -> Resource:
 
 func _load_audio(asset_id: String, path: String) -> Resource:
 	# `AST.O3` / `CTR-asset-resolve` G5: an approved Opus file plays from its
-	# committed Vorbis copy under `audio_runtime/`, on every platform.
+	# committed Vorbis copy under `audio_runtime/`.
+	if OS.has_feature("web"):
+		# No source header to sniff: the Ogg importer takes both catalogued audio
+		# files, so on Web neither is served as a loose file and opening them by
+		# path fails (#785). Every catalogued audio file is Ogg Opus (`AST.O3`), so
+		# the Vorbis copy is the only playable route — read it as the imported
+		# resource, as textures and fonts do above.
+		return _load_runtime_audio_resource(asset_id)
+	# Elsewhere the catalogued source is served, so its header decides.
 	if _header_contains(path, "OpusHead"):
-		var runtime := _runtime_audio_path(asset_id)
-		if not FileAccess.file_exists(runtime):
-			return null
-		return AudioStreamOggVorbis.load_from_file(runtime)
+		return _load_runtime_audio(asset_id)
 	return AudioStreamOggVorbis.load_from_file(path)
+
+
+func _load_runtime_audio(asset_id: String) -> Resource:
+	var runtime := _runtime_audio_path(asset_id)
+	if not FileAccess.file_exists(runtime):
+		return null
+	return AudioStreamOggVorbis.load_from_file(runtime)
+
+
+## On Web the runtime copy is packed by the Ogg importer, not served loose: its
+## bytes are reachable only as the imported resource (`ResourceLoader`), never
+## through `FileAccess` or `load_from_file` (#785).
+func _load_runtime_audio_resource(asset_id: String) -> Resource:
+	var loaded := ResourceLoader.load(_runtime_audio_path(asset_id))
+	if loaded is AudioStreamOggVorbis:
+		return loaded
+	return null
 
 
 func _runtime_audio_path(asset_id: String) -> String:
