@@ -26,6 +26,4 @@ The 2026-10-23T162407Z run was recorded before PR #620 (`a56be38`) joined the de
 - No graphical run applies: the component is not on any screen yet, and both cited protocols are `ENV.1` Headless only.
 - `PTD-difficulty` S3 and `PTD-puzzle-stream` S2–S6 are the Shared-game and stream leaves, not this issue.
 
-## Observation (not this issue, not a fail)
-
-While probing `CMP-chess-rules` on a throwaway script, `legal_targets` returned no targets for a king in check whose escape square is attacked only by an enemy king: with `k7/1R6/1N6/8/8/7N/8/1R4K1 b`, the black king's only move is to capture the rook on `b7`, which the knight on `b6` guards, yet `attacks("white", "b7")` is false while `attacks("black", "b7")` is true — the attack test looks like it answers "does an enemy piece attack this square" rather than "does the given side attack this square" for king-adjacent squares. En passant generation is also absent. Neither affects any #331 criterion — the deal applies only the record's opening move — but they are `CMP-chess-rules` correctness questions that already have a verify note; worth a defect if untracked.
+An `CMP-chess-rules` correctness observation found while probing belongs to [observation.md](observation.md).
