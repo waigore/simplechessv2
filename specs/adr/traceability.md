@@ -18,6 +18,7 @@ The Alignment table is in [`traceability/alignment.md`](traceability/alignment.m
 | ADR-0008 | [SCH-puzzle-catalog](../technical/schemata/puzzle-catalog.md) | Cited |
 | ADR-0010 | [`specs/technical/configuration.md`](../technical/configuration.md) | Cited |
 | ADR-0010 | [`CMP-advice-client`](../technical/components/advice-client.md) | Cited |
+| ADR-0010 | [`CMP-advice-backend`](../technical/components/advice-backend.md) | Cited |
 | ADR-0010 | [`CTR-advice-stream`](../technical/contracts/advice-stream.md) | Cited |
 | ADR-0011 | [CMP-advice-backend](../technical/components/advice-backend.md) | Cited |
 | ADR-0011 | [modules.md](../technical/modules.md) M2, B2 | Cited |
