@@ -1,6 +1,7 @@
 class_name ModePickPanel
 extends PanelContainer
-## UI-mode-pick regions R1–R3 and states S1, S3, S4. C2 (Wave 2) enters `puzzle-play`.
+## UI-mode-pick regions R1–R3 and states S1, S3, S4. C2 (the `puzzle-play` screen's
+## entry) enters `puzzle-play`.
 
 signal control_activated(control_id: String)
 signal pointed(control_id: String)
