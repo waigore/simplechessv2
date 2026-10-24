@@ -77,14 +77,26 @@ jobs:
           test -s build/web/index.wasm
           test -s build/web/index.pck
 
-      # A tree with no cataloged asset file loads and then never leaves the
-      # loading screen (#630), so the release fails here instead of publishing.
-      - name: Check the shipped tree carries the asset root
+      # The engine-boundary verdict (#696, ADR-0002 §Validation "No client
+      # Stockfish endpoint", CTR-advice-stream G3). `Web playtest` produces the
+      # gating verdict on every pull request with the same function, so this call
+      # is defence-in-depth on the tree before it publishes. Both directions run:
+      # the contra-positive trees are written here, and the real release export
+      # must pass.
+      - name: Check the shipped tree carries no client engine
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/web_export.py --synthetic-engine-verdicts
+          python3 .github/scripts/web_export.py --check-engine build/web
+
+      # A tree that carries no asset file, or carries one at no route the
+      # shipped resolver reads, loads and then never leaves the loading screen
+      # (#630, #715), so the release fails here instead of publishing.
+      - name: Check the shipped tree serves the asset root
         run: |
           set -euo pipefail
           python3 .github/scripts/web_export.py --preset "Web Release" --check-assets
-          find build/web/game_assets -type f ! -name '*.import' ! -name '*.uid' | head -5
-          du -sh build/web/game_assets build/web/audio_runtime
+          python3 .github/scripts/web_export.py --preset "Web Release" --check-boot
 
       - name: Check the release target and that the checkout was restored
         run: |

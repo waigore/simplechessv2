@@ -1,0 +1,11 @@
+V375 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+V375 {"check":"router_present","detail":"","ok":true}
+V375 {"check":"presentation_present","detail":"","ok":true}
+V375 {"check":"advice_error_raised","detail":"","ok":true}
+V375 {"check":"session_online","detail":"","ok":false}
+V375 {"check":"session_advice_error","detail":"","ok":true}
+V375 {"check":"router_ui_state","detail":"S3","ok":true}
+V375 {"check":"gestures_available","detail":"","ok":true}
+V375 {"check":"can_place_g1f3","detail":"","ok":true}
+V375 {"check":"handle_input_commit_g1f3","detail":"side now black","ok":true}
+V375 {"check":"ex_error_panel_up","detail":"","ok":true}
