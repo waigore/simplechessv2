@@ -1,0 +1,13 @@
+1.855s log.warning [.WebGL-0x13c000cb400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2.858s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+3.544s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+3.741s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+4.442s log.warning [.WebGL-0x13c000df200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+7.017s log.warning WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+7.017s log.warning WebGL: INVALID_OPERATION: bufferSubData: no buffer
+7.994s log.warning WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+7.994s log.warning WebGL: INVALID_OPERATION: bufferSubData: no buffer
+9.152s log.warning WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+9.152s log.warning WebGL: INVALID_OPERATION: bufferSubData: no buffer
+10.137s log.warning WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+10.137s log.warning WebGL: INVALID_OPERATION: bufferSubData: no buffer
