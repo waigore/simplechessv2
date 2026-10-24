@@ -1,0 +1,19 @@
+== gh issue list --search 'T9 OR T10 deploy'
+  #479 OPEN — Specify how the advice base URL and API key reach the client and backend
+  #648 OPEN — Decide whether the puzzle catalog route ships enabled: T9/T10 never reach the shipped build, so Puzzle stream deals nothing
+  #505 OPEN — Record the advice backend deployment posture: operator/player-run only, no project vendor
+  #655 OPEN — Puzzle stream deals nothing on the shipped-path build: T9/T10 are unset
+  #550 OPEN — Run the wave-2 playtest sweep: puzzle-stream and puzzle-session protocols on one playtest build
+  #769 OPEN — Promote advice keep list into main code
+  #786 CLOSED — Published release ships no T9/T10 for the puzzle catalog route: the enabled branch still deals nothing
+  #36 OPEN — Optional Stockfish Advice
+== gh issue list --search 'publish release client'
+  #648 OPEN — Decide whether the puzzle catalog route ships enabled: T9/T10 never reach the shipped build, so Puzzle stream deals nothing
+  #655 OPEN — Puzzle stream deals nothing on the shipped-path build: T9/T10 are unset
+  #37 OPEN — Shippable cafe-table release
+  #479 OPEN — Specify how the advice base URL and API key reach the client and backend
+  #654 OPEN — Close out the Accepted-ADR validation rows #403 does not cover (ADR-0004, 0005 remainder, 0006–0013) on the shipped release
+  #558 OPEN — Soak a 15–40 minute sitting and prove the Advice-Off offline behavior on a build
+  #560 OPEN — Own the two ADR-0002 Every-release checks that have no leaf: no Stockfish in the release export, and FAIL.T1 clearing advice
+  #403 OPEN — Close out the Every-release ADR validation rows on the shipped release
+== gh issue list --search 'repository secret CI bundle'
