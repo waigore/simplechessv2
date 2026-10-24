@@ -22,6 +22,7 @@ Delete native **blocked-by** edges that are already satisfied on the default bra
 - Default: every open `type:epic`, `type:task`, and `type:defect` issue.
 - If the user names issue numbers, judge only those issues' blocked-by links.
 - Delete each edge that passes the rule without asking for confirmation.
+- When ordering work across many issues, prefer higher **priority** first (`priority:critical` → `priority:high` → `priority:normal` / unlabeled), then judgement within a tier — same rule as [workflow-dispatch.md](../../../docs/issues/workflow-dispatch.md). Do not change `priority:*` labels.
 
 ## Steps
 
@@ -34,7 +35,7 @@ Delete native **blocked-by** edges that are already satisfied on the default bra
    ```
 
    Judge `origin/<default-branch>` only. Ignore the working tree, any other local branch, and open pull requests.
-2. List the target issues (`gh issue list --state open --limit 200` once per type label; raise the limit if a page comes back full). For each issue, list native blockers with `gh api --paginate`. Each object includes numeric REST `id` and issue `number`:
+2. List the target issues (`gh issue list --state open --limit 200` once per type label; raise the limit if a page comes back full). Order the work by priority tier then judgement (see Scope). For each issue, list native blockers with `gh api --paginate`. Each object includes numeric REST `id` and issue `number`:
 
    ```bash
    gh api --paginate "repos/OWNER/REPO/issues/NUMBER/dependencies/blocked_by"

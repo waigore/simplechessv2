@@ -1,9 +1,10 @@
 ---
 name: enforce-task-workflow-status
 description: |-
-  Gate or audit epic/task/defect status:* labels per docs/issues/workflow.md.
+  Gate or audit epic/task/defect status:* labels per docs/issues/workflow.md,
+  and repair duplicate priority:* labels (keep highest).
   Use when transitioning workflow status after review/refine/clarify/implement/verify/accept,
-  or when auditing issues for missing or duplicate status labels.
+  or when auditing issues for missing or duplicate status/priority labels.
   Use proactively before applying a status change so only one valid status:* remains.
 
   Examples:

@@ -37,3 +37,12 @@
 - name: no-automerge
   color: "B60205"
   description: "PR: opt out of automatic squash-merge (user-requested only)"
+- name: priority:critical
+  color: "B60205"
+  description: "Handle before high and normal"
+- name: priority:high
+  color: "D93F0B"
+  description: "Handle before normal; after critical"
+- name: priority:normal
+  color: "C5DEF5"
+  description: "Explicit normal (optional; unlabeled already means normal)"

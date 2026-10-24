@@ -1,5 +1,5 @@
 # Local override. Bare `gh` prefers the remote named upstream
-# (waigore/game-dev-template). Pin gates to this repo's origin.
+# (waigore/game-dev-template). Pin gates and issue lists to this repo's origin.
 # Planner waits one hour after each run (same as the template default).
 # Every agent uses OpenCode's cheaper-inference DeepSeek V4.1 Flash 1017.
 # This lives only in config.local.yaml. To follow the template agent→provider
@@ -25,19 +25,11 @@ agents:
     parallel_run: 3
     issues:
       command:
-        - gh
-        - issue
-        - list
-        - --repo
-        - waigore/simplechessv2
-        - --state
-        - open
-        - --label
+        - env
+        - GH_REPO=waigore/simplechessv2
+        - sh
+        - .orc/scripts/list-status-issues.sh
         - status:pending-review
-        - --limit
-        - "100"
-        - --json
-        - number
     gate:
       command:
         - sh
@@ -49,19 +41,11 @@ agents:
     parallel_run: 3
     issues:
       command:
-        - gh
-        - issue
-        - list
-        - --repo
-        - waigore/simplechessv2
-        - --state
-        - open
-        - --label
+        - env
+        - GH_REPO=waigore/simplechessv2
+        - sh
+        - .orc/scripts/list-status-issues.sh
         - status:pending-refinement
-        - --limit
-        - "100"
-        - --json
-        - number
     gate:
       command:
         - sh
@@ -73,19 +57,11 @@ agents:
     parallel_run: 3
     issues:
       command:
-        - gh
-        - issue
-        - list
-        - --repo
-        - waigore/simplechessv2
-        - --state
-        - open
-        - --label
+        - env
+        - GH_REPO=waigore/simplechessv2
+        - sh
+        - .orc/scripts/list-status-issues.sh
         - status:pending-implementation
-        - --limit
-        - "100"
-        - --json
-        - number
     gate:
       command:
         - sh
@@ -97,19 +73,11 @@ agents:
     parallel_run: 3
     issues:
       command:
-        - gh
-        - issue
-        - list
-        - --repo
-        - waigore/simplechessv2
-        - --state
-        - open
-        - --label
+        - env
+        - GH_REPO=waigore/simplechessv2
+        - sh
+        - .orc/scripts/list-status-issues.sh
         - status:pending-verification
-        - --limit
-        - "100"
-        - --json
-        - number
     gate:
       command:
         - sh
@@ -118,6 +86,13 @@ agents:
 
   issue-workflow-accept-agent:
     provider: opencode-cheaperinference-deepseek-v41-flash
+    issues:
+      command:
+        - env
+        - GH_REPO=waigore/simplechessv2
+        - sh
+        - .orc/scripts/list-status-issues.sh
+        - status:pending-acceptance
     gate:
       command:
         - sh

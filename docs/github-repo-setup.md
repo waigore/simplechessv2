@@ -40,9 +40,9 @@ Actions enabled; allowed-actions policy permits workflows' actions (e.g. `action
 | Require a pull request before merging | On; 0 required approvals (baseline) |
 | Require status checks to pass | On; **branches up to date**; checks: `Spec lint`, `PR hygiene`, `Code lint`, `Unit tests`, `Coverage` ([`.github/workflows/`](../.github/workflows/)) |
 
-Classic protection on `main` may stay; GitHub keeps the stricter of both. Do not remove or weaken without confirmation. UI check pickers need a prior run; the API accepts names before then.
+Classic protection may stay; GitHub keeps the stricter of both. Do not remove or weaken without confirmation. UI check pickers need a prior run; the API accepts names before then.
 
-Outcome: `main` only via PR; no bypass; merge/auto-merge only when those five checks pass on a branch up to date with `main`.
+Outcome: `main` only via PR; no bypass; those five checks must pass on a branch up to date with `main`.
 
 ## 4. Merge settings
 
@@ -52,23 +52,23 @@ Settings → General → Pull Requests:
 - Squash message default: **Pull request title and description**.
 - **Always suggest updating pull request branches** on.
 - **Allow auto-merge** on. Same-repo non-draft PRs squash-merge when mergeable unless `no-automerge` ([`automerge.yml`](../.github/workflows/automerge.yml)).
-- **Automatically delete head branches** on. After a PR merges, GitHub deletes the head branch.
+- **Automatically delete head branches** on.
 
-## 5. Labels
+## 5. Issue and pull request creation
+
+Issues enabled. Public and private: issue and PR creation **Collaborators only** (`issueCreationPolicy` / `pullRequestCreationPolicy` = `COLLABORATORS_ONLY`). Who counts and UI path: [examples](github-repo-setup-examples.md).
+
+## 6. Labels
 
 Every label in [`.github/project-labels.yml`](../.github/project-labels.yml) exists on GitHub. Missing → Actions → **Sync labels** → **Run workflow**, or `bash .github/scripts/sync-labels.sh` (`gh`, `yq`). See [`labels.md`](labels.md).
 
-## 6. Verify
+## 7. Verify
 
 Read every setting back from GitHub; a write is not proof. Confirm Actions can run (e.g. `Spec lint` on `main`). Pass only when every outcome holds.
 
 ## Blockers
 
-On tooling error, try another tool. When an outcome cannot be reached (plan limit, org policy, missing admin), setup **fails**:
-
-- Report the missing outcome, why, and options (public repo, upgrade plan, org owner).
-- Stop: no PRs until resolved.
-- Never substitute a weaker setting.
+On tooling error, try another tool. When an outcome cannot be reached (plan limit, org policy, missing admin), setup **fails**: report the missing outcome, why, and options; stop (no PRs until resolved); never substitute a weaker setting.
 
 ## Related
 
