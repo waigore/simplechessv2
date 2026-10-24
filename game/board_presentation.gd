@@ -16,6 +16,7 @@ const COLOR_INK := Color("2C2A28")
 const COLOR_CREAM := Color("F7F1E8")
 ## PAL.C8 check rose — refused-place flash (PER.R8 / PAL.K5 full strength ≥ 2:1).
 const COLOR_DANGER := Color("C28A86")
+
 ## Empty legal diamond half-diagonal so area 2 r² ≥ 1/4 square (PER.R4).
 const LEGAL_EMPTY_R := 0.36
 ## Capture ring radius / stroke so ink area ≈ 2π r w ≥ 1/4 square.

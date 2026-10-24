@@ -10,6 +10,9 @@ const SCREEN_ID := "shared-play"
 const CHROME_TOP_PX := 12.0
 const CHROME_BOTTOM_PX := 156.0
 const CHROME_RESERVED_PX := 168.0
+## PAL.C8 check-rose keyline on the R2 check chip (PER.R6 / UIS.C4); the palette
+## hex lives once, in UiChrome.
+const COLOR_CHECK: Color = UiChrome.COLOR_DANGER
 
 var locale := "en"
 var ui_state := "S1"
@@ -207,7 +210,7 @@ func _build() -> void:
 	_check = Label.new()
 	_check.name = "CheckCue"
 	_check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	UiChrome.style_label(_check)
+	_style_check_label()
 	_check.add_theme_color_override("font_color", UiChrome.COLOR_INK)
 	_check_chip.add_child(_check)
 	_chrome.add_child(_check_chip)
@@ -444,7 +447,8 @@ func _link_focus_chain(controls: Array[Control]) -> void:
 
 func _style_all() -> void:
 	UiChrome.style_label(_status, true, _text_scale)
-	UiChrome.style_label(_check, false, _text_scale)
+	_check_chip.add_theme_stylebox_override("panel", _check_chip_style())
+	_style_check_label()
 	UiChrome.style_label(_clocks, false, _text_scale)
 	UiChrome.style_label(_advice_eval, false, _text_scale)
 	UiChrome.style_label(_confirm_msg, false, _text_scale)
@@ -499,19 +503,12 @@ func _apply_font() -> void:
 		UiChrome.apply_font(node, _ui_font)
 
 
-## PER.R6 chip: C10 ground, PAL.C8 border at the UIS.I1 1.5 px floor, so the
-## word keeps PAL.K4 contrast while the mark stays C8.
-func _check_chip_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = UiChrome.COLOR_BG
-	style.border_color = UiChrome.COLOR_DANGER
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(UiChrome.RADIUS)
-	style.content_margin_left = 10
-	style.content_margin_right = 10
-	style.content_margin_top = 1
-	style.content_margin_bottom = 1
-	return style
+## PER.R6 — an autowrapping Label reports ~1 px of minimum width, so a shrinking
+## chip collapses to its padding and wraps the word letter by letter. The cue is
+## one short word in every locale: keep it on one line and size the chip to it.
+func _style_check_label() -> void:
+	UiChrome.style_label(_check, false, _text_scale)
+	_check.autowrap_mode = TextServer.AUTOWRAP_OFF
 
 
 func _apply_copy() -> void:
@@ -536,6 +533,24 @@ func _apply_copy() -> void:
 	for kind in SharedGameSession.PROMOTE_ORDER:
 		(_promote_btns[kind] as Button).text = StringTable.shared_play(kind, locale)
 	_refresh_clocks()
+
+
+## PAL.K9 lockup: C10 mark surface with a PAL.C8 keyline. The keyline is 2
+## project px at the 640 px reference frame (≥ UIS.I1's 1.5 px floor) scaled by
+## the caller's text ratio; the C8 border is the check colour, the word carries
+## the meaning.
+func _check_chip_style() -> StyleBoxFlat:
+	var style := UiChrome.panel_style()
+	# PAL.S3: the chip stays C9 ink on C10; the C8 keyline is the check accent
+	# (UIS.C4) and no fourth swatch is introduced.
+	style.set_corner_radius_all(UiChrome.RADIUS)
+	style.set_border_width_all(UiChrome.scaled_px(2, _text_scale))
+	style.border_color = COLOR_CHECK
+	style.content_margin_left = UiChrome.scaled_px(10, _text_scale)
+	style.content_margin_right = UiChrome.scaled_px(10, _text_scale)
+	style.content_margin_top = 2
+	style.content_margin_bottom = 2
+	return style
 
 
 func _refresh_clocks() -> void:

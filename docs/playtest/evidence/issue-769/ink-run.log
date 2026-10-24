@@ -1,0 +1,31 @@
+R769-INK {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R769-INK {"check":"router_present","detail":"","ok":true}
+R769-INK {"check":"presentation_present","detail":"","ok":true}
+R769-INK {"check":"play_reached","detail":"shared-play","ok":true}
+R769-INK {"check":"board_present","detail":"","ok":true}
+R769-INK {"body_px":4561,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"white|pawn"}
+R769-INK {"check":"per_r5_white_pawn","detail":"body=4561 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4792,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"white|knight"}
+R769-INK {"check":"per_r5_white_knight","detail":"body=4792 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4607,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"white|bishop"}
+R769-INK {"check":"per_r5_white_bishop","detail":"body=4607 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4667,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"white|rook"}
+R769-INK {"check":"per_r5_white_rook","detail":"body=4667 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4629,"coverage":0.000648088139987038,"ink_on_body_px":3,"ink_px":1100,"piece":"white|queen"}
+R769-INK {"check":"per_r5_white_queen","detail":"body=4629 ink=1100 on_body=3 coverage=0.06%","ok":true}
+R769-INK {"body_px":4664,"coverage":0.00128644939965695,"ink_on_body_px":6,"ink_px":1100,"piece":"white|king"}
+R769-INK {"check":"per_r5_white_king","detail":"body=4664 ink=1100 on_body=6 coverage=0.13%","ok":true}
+R769-INK {"body_px":4556,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"black|pawn"}
+R769-INK {"check":"per_r5_black_pawn","detail":"body=4556 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4792,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"black|knight"}
+R769-INK {"check":"per_r5_black_knight","detail":"body=4792 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4595,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"black|bishop"}
+R769-INK {"check":"per_r5_black_bishop","detail":"body=4595 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4640,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"black|rook"}
+R769-INK {"check":"per_r5_black_rook","detail":"body=4640 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R769-INK {"body_px":4624,"coverage":0.00064878892733564,"ink_on_body_px":3,"ink_px":1100,"piece":"black|queen"}
+R769-INK {"check":"per_r5_black_queen","detail":"body=4624 ink=1100 on_body=3 coverage=0.06%","ok":true}
+R769-INK {"body_px":4648,"coverage":0.00129087779690189,"ink_on_body_px":6,"ink_px":1100,"piece":"black|king"}
+R769-INK {"check":"per_r5_black_king","detail":"body=4648 ink=1100 on_body=6 coverage=0.13%","ok":true}
+R769-INK {"worst_coverage":0.00129087779690189}
+R769-INK {"summary":{"checks":17,"failed":0}}

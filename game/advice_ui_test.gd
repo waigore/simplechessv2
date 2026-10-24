@@ -132,7 +132,13 @@ func _marks_show_and_clear() -> String:
 				marks.last_from == "e2" and marks.last_to == "e4",
 				"R3 marks must show e2-e4 (got %s-%s)" % [marks.last_from, marks.last_to],
 			],
-			[marks.get_child_count() > 0, "PER.R5 from/to marks and the arrow must be drawn"],
+			[
+				marks.get_child_count() == 11,
+				(
+					"PER.R5 must draw 4 edge brackets per square plus a 3-stroke arrow "
+					+ "(got %d)" % marks.get_child_count()
+				),
+			],
 			[eval_label.visible, "R3 eval must show when values are set"],
 			[eval_label.text == "+0.34", "R3 eval text %s" % eval_label.text],
 			[
@@ -153,22 +159,31 @@ func _marks_show_and_clear() -> String:
 
 ## PER.R5 — marks and arrow cover ≤ 10% of a piece body. FRM.P1 defines the body
 ## as the opaque body inside the 0.85 × 0.85 SPC.E1 box, not the square and not
-## the transparent canvas. The brackets sit in the square's corner margin, beyond
-## the widest body half-width, so they cover no body; only the arrow can.
+## the transparent canvas. PAL.K9 gives Advice the edge-bracket form: one stroke
+## per edge midpoint with the corners open, so the mark never reads as a capture
+## corner pair. The brackets sit on the square rim, beyond every body half-width,
+## so they cover no body; only the arrow can.
 func _marks_fit_the_body_bound() -> String:
 	## FRM.P1: the widest body is the knight at 0.40 of a square.
 	const WIDEST_HALF_WIDTH := 0.20
 	## FRM.P1: the body box is 0.85, so the tall King body reaches 0.361.
 	const KING_HALF_HEIGHT := 0.85 * 0.85 * 0.5
+	## The four edges: each mark is one stroke centred on an edge midpoint.
+	var edge := 0.5 - AdviceMarks.ADVICE_STROKE * 0.5
 	var coverage := AdviceMarks.body_coverage()
+	var form_ok := AdviceMarks.EDGES.size() == 4
+	for expected in [Vector2(0.0, -1.0), Vector2(1.0, 0.0), Vector2(0.0, 1.0), Vector2(-1.0, 0.0)]:
+		form_ok = form_ok and AdviceMarks.EDGES.has(expected)
 	return _first_fail(
 		[
+			[form_ok, "PAL.K9 advice marks must be one stroke per edge midpoint"],
 			[
-				AdviceMarks.bracket_inner_edge() > WIDEST_HALF_WIDTH,
-				(
-					"brackets must start beyond the widest body (%.3f)"
-					% AdviceMarks.bracket_inner_edge()
-				),
+				edge > WIDEST_HALF_WIDTH,
+				"edge brackets must sit beyond the widest body (%.3f)" % edge,
+			],
+			[
+				AdviceMarks.ADVICE_STROKE > 1.5 / 36.0,
+				"advice strokes must clear the UIS.I1 1.5 screen px floor",
 			],
 			[
 				AdviceMarks.ARROW_TIP_GAP >= KING_HALF_HEIGHT,

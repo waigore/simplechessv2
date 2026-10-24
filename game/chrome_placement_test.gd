@@ -120,6 +120,9 @@ func _sweep_puzzle_dialogs(frame: Vector2) -> String:
 	var problem := _measured("PuzzlePlay", "StreamConfirm", frame)
 	if not problem.is_empty():
 		return problem
+	problem = _children_inside("PuzzlePlay", "StreamConfirm", frame)
+	if not problem.is_empty():
+		return problem
 	_widen_copy(_child("PuzzlePlay", "StreamConfirm"))
 	await _settle()
 	problem = _measured("PuzzlePlay", "StreamConfirm", frame)
@@ -143,9 +146,38 @@ func _sweep_save_failure(frame: Vector2) -> String:
 	var problem := _measured("PuzzlePlay", "SaveFailure", frame)
 	if not problem.is_empty():
 		return problem
+	problem = _children_inside("PuzzlePlay", "SaveFailure", frame)
+	if not problem.is_empty():
+		return problem
 	_widen_copy(_child("PuzzlePlay", "SaveFailure"))
 	await _settle()
 	return _measured("PuzzlePlay", "SaveFailure", frame)
+
+
+## #793 — the prompt is only readable if its copy and controls are drawn inside
+## the panel that carries it, at every frame the box itself is measured at. Read
+## on the drawn rects, like `_centered`, and on the shipped copy (`_widen_copy`
+## deliberately grows a label past its box, which is #616's case, not this one).
+func _children_inside(panel_name: String, node_name: String, frame: Vector2) -> String:
+	var dialog := _child(panel_name, node_name)
+	if dialog == null:
+		return "missing dialog %s" % node_name
+	var panel := dialog.find_child("*", true, false) as Control
+	if panel == null:
+		return "%s has no panel at %s" % [node_name, frame]
+	var panel_rect := panel.get_global_rect()
+	for node: Node in dialog.find_children("*", "", true, false):
+		var drawn := node as Control
+		if drawn == null or not drawn.is_visible_in_tree():
+			continue
+		if not (drawn is Label or drawn is Button):
+			continue
+		if not panel_rect.encloses(drawn.get_global_rect()):
+			return (
+				"%s draws %s outside its panel at %s (child %s, panel %s)"
+				% [node_name, drawn.name, frame, drawn.get_global_rect(), panel_rect]
+			)
+	return ""
 
 
 ## A dialog is only placed for the player if it is on screen: measure it only
