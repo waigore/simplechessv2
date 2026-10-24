@@ -12,7 +12,7 @@ The row unit, the UX and design judge rules, the multi-protocol rule, and the `n
 
 | View | Rows | Lists |
 |------|------|-------|
-| [UX story view](story-protocol/ux.md) | 32 | Every non-journey UX heading, its protocols, reached and unreached scenarios |
+| [UX story view](story-protocol/ux.md) | 23 | Every screen, control, navigation, and exception heading, its protocols, reached and unreached scenarios |
 | [Journey and actor view](story-protocol/journeys-actors.md) | 11 | The 2 journey rows, the 9 actor rows, and how a bare journey key resolves |
 | [Design story view](story-protocol/design/index.md) | 41 | Every design heading, its `Spec key`, element range, protocols |
 | [Protocol view](story-protocol/protocols.md) | 24 | Each protocol and the rows it judges, split by level |

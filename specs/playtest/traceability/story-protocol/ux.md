@@ -37,4 +37,4 @@ One row per UX story heading, per the [map index](../story-protocol.md). 34 rows
 - **Split resolution**: `UI-mode-pick.US1` reaches both `screens/mode-pick.md#US1` and `screens/mode-pick-unavailable.md#US1`; `EX.US1` reaches `exceptions.md#US1` and `exceptions-play.md#US1`; the two `US3` splits likewise.
 - **`exceptions` reached set** comes from the landed step/Pass-row cites, not its **Cites**: S1 → `EX.US1.5`; S3 → `EX.US1.7`, `EX.US1.2`. S2 (illegal move) names no scenario heading; that gap is recorded, not filled.
 - **`screens/mode-pick.md#US1`** has eight scenario headings; there is no `US1.2`.
-- 32 non-journey rows: 31 judged, 1 row-level `none`. With the 2 journey rows, 33 UX rows are judged. Scenario-cell `none` counts separately.
+- 23 non-journey rows here: 22 judged, 1 row-level `none` (`localization.md#US2`). The 2 journey and 9 actor rows are in [journeys-actors.md](journeys-actors.md), all 11 judged, so the UX set is 33 judged of 34. Scenario-cell `none` counts separately.
