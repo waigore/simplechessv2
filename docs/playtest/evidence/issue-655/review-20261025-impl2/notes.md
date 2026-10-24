@@ -10,10 +10,10 @@ The `specs/` sentence that states it is still **absent**. `git grep -n -i "ships
 
 Nothing about the defect's substance. That is the finding: a full pass later, on a newer `main`, the measurement is identical.
 
-- **`main` moved, nothing relevant did.** The worktree is on `4e50418` (previous pass: `8cdfd45`). `game/session_router.gd:33-34` still initialise `advice_endpoint` / `advice_api_key` to `""`; the only assignment in `game/` is the test seam `game/advice_ui_test.gd:40`. No `specs/` file states the catalog route's release status.
-- **The published artefact has not moved.** `index.pck` `last-modified` is still 2026-10-24 13:00:58 GMT, `content-length` 9561236 — the same artefact #782 and the previous pass measured (CI run 40096272525, `a5b35ae`). The published leg's rows therefore cannot have changed.
-- **The `C5` leg is still green**, re-measured not inherited: on `4e50418`, `C5` raises `leave_confirm` on the entered `S1`, Cancel returns to `S1`, and the journey continues to `mode-pick` with `flow_left=true`, on a new `TEL.3` session.
-- **The environment is healthy here**: import and the unit suite both run clean; the suite is 29/29.
+- **`main` moved, nothing relevant did.** The worktree is on `4e50418` (previous pass: `8cdfd45`). `game/session_router.gd:33-34` still initialise `advice_endpoint` / `advice_api_key` to `""`; the only assignment in `game/` is the test seam `game/advice_ui_test.gd:40`.
+- **The published artefact has not moved.** `index.pck` `last-modified` is still 2026-10-24 13:00:58 GMT, 9561236 bytes — the same artefact #782 measured. Its rows cannot have changed.
+- **The `C5` leg is still green**, re-measured not inherited, on a new `TEL.3` session.
+- **The environment is healthy**: import and the unit suite run clean; the suite is 29/29.
 
 ## Why this pass writes no code
 
