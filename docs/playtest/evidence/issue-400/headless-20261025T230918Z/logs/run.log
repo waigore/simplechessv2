@@ -1,0 +1,44 @@
+# Run log — #400 headless
+
+Build `820f202`, session `sess-1792879521801-55149-playtest-466860`, Godot `4.7.2-stable (official)`, locale `en_US`.
+
+Telemetry rows: 273. Driver errors: [].
+
+## Protocol verdicts
+- `controls` — **not-judged** (failed rows: none; not-judged rows: controls-point.md#US3)
+- `difficulty` — **pass** (failed rows: none; not-judged rows: none)
+- `end-conditions` — **not-judged** (failed rows: none; not-judged rows: end-conditions/conditions-counts.md#PS1)
+- `exceptions` — **not-judged** (failed rows: none; not-judged rows: exceptions.md#US1, exceptions-play.md#US1)
+- `game-state` — **pass** (failed rows: none; not-judged rows: none)
+- `localization` — **not-judged** (failed rows: none; not-judged rows: localization.md#US1)
+- `mode-and-config` — **not-judged** (failed rows: none; not-judged rows: features/move-advice-tunables.md#PS1, difficulty-tunables.md#PS1)
+- `mode-pick` — **pass** (failed rows: none; not-judged rows: none)
+- `move-advice` — **pass** (failed rows: none; not-judged rows: none)
+- `navigation` — **pass** (failed rows: none; not-judged rows: none)
+- `pieces-common` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/common-attack.md#PS2)
+- `pieces-king` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/king-castling.md#PS1)
+- `pieces-officers` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/officers.md#PS1)
+- `pieces-pawn` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/pawn.md#PS1)
+- `progression` — **pass** (failed rows: none; not-judged rows: none)
+- `puzzle-play` — **not-judged** (failed rows: none; not-judged rows: screens/puzzle-play-place.md#US3)
+- `puzzle-session` — **pass** (failed rows: none; not-judged rows: none)
+- `puzzle-stream` — **pass** (failed rows: none; not-judged rows: none)
+- `shared-game` — **not-judged** (failed rows: none; not-judged rows: loops/two-player-game.md#PS1)
+- `shared-play` — **not-judged** (failed rows: none; not-judged rows: screens/shared-play-place.md#US3, screens/shared-play-unavailable.md#US4)
+- `shared-result` — **pass** (failed rows: none; not-judged rows: none)
+- `shared-session` — **pass** (failed rows: none; not-judged rows: none)
+- `shared-setup` — **pass** (failed rows: none; not-judged rows: none)
+
+## Static asset reading (before protocol step 1)
+- boot: 11 of 11 opened; play: 19 of 19 opened; unresolved {'boot': 0, 'play': 0}; boot_outcome 0; session_playable True.
+
+## Telemetry excerpt
+
+Every `TEL.*` row the run emitted is in `telemetry.ndjson`; the first and last rows are quoted here.
+    {"TEL.1":"report.assets","TEL.2":1792879521932,"TEL.3":"sess-1792879521801-55149-playtest-466860","TEL.4":"CTR-asset-resolve","TEL.5":"read"}
+    {"TEL.1":"jump","TEL.2":1792879521937,"TEL.3":"sess-1792879521801-55149-playtest-466860","TEL.4":"mode-pick","TEL.5":"pass"}
+    {"TEL.1":"puzzle.enter","TEL.2":1792879521939,"TEL.3":"sess-1792879521801-55149-playtest-466860","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+    …
+    {"TEL.1":"jump","TEL.2":1792879523618,"TEL.3":"sess-1792879521801-55149-playtest-466860","TEL.4":"session-ended","TEL.5":"pass"}
+    {"TEL.1":"puzzle.enter","TEL.2":1792879523629,"TEL.3":"sess-1792879521801-55149-playtest-466860","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+    {"TEL.1":"puzzle.deal_failed","TEL.2":1792879523638,"TEL.3":"sess-1792879521801-55149-playtest-466860","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
