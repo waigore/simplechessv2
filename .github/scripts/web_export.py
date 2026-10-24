@@ -7,10 +7,13 @@ playtest seams (ADR-0004 / CTR-playtest-drive.G2); the checkout is restored
 afterwards. The release preset is `runnable=false`, so a developer's editor run
 still opens the playtest scene.
 
-A Web build resolves the cataloged asset root (`game_assets/`, ADR-0005) as
-loose files under `res://`, so `prepare_asset_root` stages that directory into
-the preset's output directory and `ensure_staged_assets` fails a release export
-whose shipped tree carries no cataloged asset file (#647).
+A Web build serves the cataloged asset root (`game_assets/`, ADR-0005) and the
+playback audio copies as loose files under `res://`, at the routes
+`game/asset_resolver.gd` builds on Web. `prepare_asset_root` stages the repo-root
+directories under `game/` for the engine and copies them loose into the shipped
+tree; `ensure_staged_assets` fails a build that carries no cataloged asset file
+(#647) and `ensure_boot_assets_resolve` fails one whose `boot` assets sit at no
+route the resolver reads (#630, #715).
 """
 
 from __future__ import annotations
@@ -42,6 +45,9 @@ AUDIO_RUNTIME = "audio_runtime"
 NOT_ASSET_FILES = {".import", ".uid"}
 PACK = "index.pck"
 MANIFEST = "asset_manifest.json"
+# The byte a PCK file table puts after each entry path, so a match is that exact
+# route rather than a prefix of a longer one (`.svg` must not match `.svg.import`).
+PACK_ENTRY_END = chr(0)
 # The file kinds the resolver loads (`game/asset_resolver.gd` `_load_media`).
 LOADABLE_SUFFIXES = {".svg", ".png", ".woff2", ".ttf", ".otf", ".ogg"}
 
@@ -135,8 +141,10 @@ def shipped_blob(shipped: Path) -> bytes:
 
     A Godot export either serves a file loose or writes it into `index.pck`, and
     this check must see both, so it reads the tree as one byte stream rather than
-    depending on how the engine lays a pack out.
+    depending on how the engine lays a pack out. `shipped` may be the pack itself.
     """
+    if shipped.is_file():
+        return shipped.read_bytes()
     if not shipped.is_dir():
         return b""
     return b"\x00".join(
@@ -199,15 +207,78 @@ def ensure_staged_assets(shipped: Path, repo_root: Path) -> None:
         raise ExportError(f"the shipped tree carries no {AUDIO_RUNTIME}/ copy")
 
 
+def asset_root_present(shipped: Path, repo_root: Path) -> bool:
+    """Whether a shipped Web tree carries the cataloged asset root at all (#647's object)."""
+    document = _manifest(repo_root)
+    cataloged = {
+        path for asset_id in document.get("assets", {}) for path in asset_files(document, asset_id)
+    }
+    blob = shipped_blob(shipped)
+    loose = {_relative(path, shipped / ASSET_ROOT) for path in staged_asset_files(shipped)}
+    return any(path in loose or f"{ASSET_ROOT}/{path}".encode() in blob for path in cataloged)
+
+
+def missing_boot_files(shipped: Path, repo_root: Path) -> list[tuple[str, str]]:
+    """The `boot` files the shipped tree serves at no route resolution reads (`(ID, file)`).
+
+    Carrying a file is not resolving it (#630, #715): a `boot` file resolves when
+    it is served **loose** at `<asset_root>/<file>` beside `index.html`, or when
+    that exact route is a packed entry of `index.pck` — the two places the Web
+    resolver's `res://<asset_root>/…` read reaches.
+    """
+    blob = shipped_blob(shipped / PACK)
+    loose = {_relative(path, shipped / ASSET_ROOT) for path in staged_asset_files(shipped)}
+    unresolved: list[tuple[str, str]] = []
+    for asset_id, path in boot_asset_ids(_manifest(repo_root)):
+        if path in {seen for _, seen in unresolved}:
+            continue
+        served = path in loose and (shipped / ASSET_ROOT / path).is_file()
+        packed = f"res://{ASSET_ROOT}/{path}{PACK_ENTRY_END}".encode() in blob
+        if not served and not packed:
+            unresolved.append((asset_id, path))
+    return unresolved
+
+
+def ensure_boot_assets_resolve(shipped: Path, repo_root: Path) -> None:
+    """A shipped Web tree must serve each `boot` asset at a route the resolver reads (#715).
+
+    The reading is the resolver's own: how many boot files resolve, and the IDs
+    of those that do not. A tree that ships no asset root is reported as such,
+    never as a crash or a skip — that is the export dropping the root, which
+    #630 measured as the player-visible stall.
+    """
+    boot_files = boot_asset_ids(_manifest(repo_root))
+    if not boot_files:
+        raise ExportError(f"the manifest names no loadable {ASSET_ROOT}/ file for boot")
+    missing = missing_boot_files(shipped, repo_root)
+    if not missing:
+        return
+    ids = ", ".join(f"{asset_id} ({path})" for asset_id, path in missing)
+    total = len({path for _, path in boot_files})
+    resolved = total - len(missing)
+    if not asset_root_present(shipped, repo_root):
+        raise ExportError(
+            f"0 of {total} boot asset file(s) resolved — {ASSET_ROOT}/ absent from the "
+            f"exported tree {shipped}: {ids}"
+        )
+    raise ExportError(
+        f"{resolved} of {total} boot asset file(s) resolved — no route serves: {ids}"
+    )
+
+
 def prepare_asset_root(repo_root: Path, shipped: Path) -> None:
-    """Stage the repo-root asset root and audio copies under `game/` for export.
+    """Stage the repo-root asset root and audio copies for export and for serving.
 
     Godot only exports files inside the project tree (`game/`), so the copies go
-    to `game/<root>/` and land in the shipped tree at `<root>/` beside
-    `index.html`, which is where the resolver reads them on Web
-    (`game/asset_resolver.gd` `res://<root>/…`). Copied, never moved:
-    `game_assets/` stays the source of truth at the repo root (ADR-0005).
+    to `game/<root>/`. Both presets are `export_filter="exclude"`, so what the
+    engine packs for those files is import metadata and remapped derivatives,
+    never the source file, while the resolver opens the source path. The shipped
+    tree therefore also serves the sources **loose** under `<root>/` beside
+    `index.html`, at the `res://<root>/…` route `game/asset_resolver.gd` builds
+    on Web. Copied, never moved: `game_assets/` stays the source of truth at the
+    repo root (ADR-0005); both copies are untracked build output.
     """
+    shipped.mkdir(parents=True, exist_ok=True)
     for name in (ASSET_ROOT, AUDIO_RUNTIME):
         source = repo_root / name
         if not source.is_dir():
@@ -216,7 +287,10 @@ def prepare_asset_root(repo_root: Path, shipped: Path) -> None:
         if destination.exists():
             shutil.rmtree(destination)
         shutil.copytree(source, destination)
-    shipped.mkdir(parents=True, exist_ok=True)
+        served = shipped / name
+        if served.exists():
+            shutil.rmtree(served)
+        shutil.copytree(source, served)
 
 
 def discard_asset_root(repo_root: Path) -> None:
@@ -258,6 +332,37 @@ def export(repo_root: Path, preset: str, godot: Path, output: Path) -> None:
     ensure_staged_assets(output.parent, repo_root)
 
 
+def asset_files(document: dict, asset_id: str) -> list[str]:
+    """`asset_id`'s files that are loadable content rather than a license text."""
+    entry: dict = document.get("assets", {}).get(asset_id, {})
+    return [
+        str(name)
+        for name in entry.get("files", [])
+        if Path(str(name)).suffix in LOADABLE_SUFFIXES
+    ]
+
+
+def boot_asset_ids(document: dict) -> list[tuple[str, str]]:
+    """`(asset ID, asset-root-relative file)` for each file the `boot` group preloads.
+
+    Read from the committed manifest, so the check follows the catalog. One
+    approved entry can name several files; each is a separate route to serve.
+    """
+    return [
+        (str(asset_id), path)
+        for asset_id in document.get("groups", {}).get("boot", [])
+        for path in asset_files(document, asset_id)
+    ]
+
+
+def _manifest(repo_root: Path) -> dict:
+    """The committed manifest `game/asset_manifest.json` the catalog generates."""
+    manifest_path = repo_root / "game" / MANIFEST
+    if not manifest_path.is_file():
+        raise ExportError(f"missing manifest: game/{MANIFEST}")
+    return json.loads(manifest_path.read_text(encoding="utf-8"))
+
+
 def preset_settings(repo_root: Path, preset: str) -> str:
     """The `game/export_presets.cfg` sections of `preset`."""
     text = (repo_root / "game" / "export_presets.cfg").read_text(encoding="utf-8")
@@ -279,6 +384,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--preset", choices=[PLAYTEST_PRESET, RELEASE_PRESET])
     parser.add_argument(
+        "--check-boot",
+        action="store_true",
+        help="fail unless the shipped tree serves each boot asset at a route the resolver reads",
+    )
+    parser.add_argument(
         "--pages-status",
         metavar="HTTP_STATUS",
         help="map a Pages probe status to present/absent (the release deploy gate)",
@@ -293,13 +403,18 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     modes = [
         chosen
-        for chosen in (args.pages_status is not None, args.check_assets, args.preset is not None)
+        for chosen in (
+            args.pages_status is not None,
+            args.check_assets,
+            args.check_boot,
+            args.preset is not None,
+        )
         if chosen
     ]
-    if args.pages_status is not None and args.check_assets:
-        parser.error("--pages-status and --check-assets are mutually exclusive")
+    if args.pages_status is not None and (args.check_assets or args.check_boot):
+        parser.error("--pages-status does not combine with an export-tree check")
     if not modes:
-        parser.error("one of --preset, --check-assets or --pages-status is required")
+        parser.error("one of --preset, --check-assets, --check-boot or --pages-status is required")
     if args.pages_status is not None:
         try:
             present = release_gate(pages_present_from_status(args.pages_status))
@@ -308,8 +423,8 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print("true" if present else "false")
         return 0
-    if args.check_assets and args.preset is None:
-        parser.error("--check-assets needs --preset to find the export's output directory")
+    if (args.check_assets or args.check_boot) and args.preset is None:
+        parser.error("--check-assets/--check-boot need --preset to find the export's output directory")
     repo_root = Path(args.repo).resolve()
     try:
         output = preset_export_path(repo_root, args.preset)
@@ -321,6 +436,12 @@ def main(argv: list[str] | None = None) -> int:
                 f"{assets}/{expected} cataloged {ASSET_ROOT}/ file(s), "
                 f"{audio} {AUDIO_RUNTIME}/ copy(ies) in {output.parent}"
             )
+            return 0
+        if args.check_boot:
+            ensure_boot_assets_resolve(output.parent, repo_root)
+            total = len({path for _, path in boot_asset_ids(_manifest(repo_root))})
+            missing = missing_boot_files(output.parent, repo_root)
+            print(f"{total - len(missing)} of {total} boot asset file(s) resolved from {output.parent}")
             return 0
         export(repo_root, args.preset, Path(args.godot), output)
     except ExportError as error:
