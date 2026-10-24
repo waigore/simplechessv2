@@ -20,7 +20,7 @@
 
 ## Defects filed
 
-- **Filed**: pointer tap and drag refused in Shared play on the shipped graph — a press and release inside one frame lose the press. This is `PTU-exceptions` S3's playability leg; number to be recorded when filed.
+- **#753** — pointer tap and drag refused in Shared play on the shipped graph: a repaint between a press and its release drops the press. This is `PTU-exceptions` S3's playability leg.
 - **Fixed on this branch**: the S3 `EX.error` panel never rendered — the router repainted only on an advice-value change (`game/session_router.gd` `_advice_shown`).
 
 ## Paths

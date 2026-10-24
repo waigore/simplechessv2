@@ -18,7 +18,7 @@ An early pass measured 0 ink because it set the marks before rendering the posit
 
 `logs/gesture_probe.gd` enters play with Advice On and T9 on `http://127.0.0.1:1/advice`, a closed port, so the shipped transport fails on its own — no simulated peer, no Stockfish. Observed: the client parks (`online == false`, `failed()`), the session reads `S3`, the **`EX.error` panel is up**, Dismiss hides it and returns `S1`.
 
-**Pointer gestures do not move a piece** — `g1f3`, `g8f6`, `e2e4` as drags and taps were refused, side unchanged, while `input_commit("g1","f3")` in the same session at the same moment succeeds. Filed on its own `type:defect`: a press and release inside one frame reach the release with no press (a frame-boundary reset clears `_press_active`) — what a finger's tap does. Not S3-specific (the drag after Dismiss was refused too), but it blocks judging S3's "board still playable" leg by gesture.
+**Pointer gestures do not move a piece** — `g1f3`, `g8f6`, `e2e4` as drags and taps were refused, side unchanged, while `input_commit("g1","f3")` in the same session at the same moment succeeds. Filed as **#753**: `_on_pointer_up` drops a release whose `_press_active` a repaint's `_reset_gesture()` has already cleared — what a finger's quick tap can do. Not S3-specific (the drag after Dismiss was refused too), but it blocks judging S3's "board still playable" leg by gesture.
 
 ## Fixed on the branch
 
