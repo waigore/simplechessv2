@@ -19,16 +19,14 @@ None touches the deal path.
 
 ## Criteria 2, 3 and 6 stay the defect's live symptom
 
-- **2** `CatalogDealClient.is_available()` is false because both values are empty:
+- **2** `is_available()` is false because both values are empty:
   `X655 B5 endpoint=<> key_set=false is_available=false`. The only assignment anywhere in
   `game/` is the test seam `game/advice_ui_test.gd:40-41`.
-- **3** The stream enters `S1` with nothing dealt, no puzzle id, and `last_failure=<status>`
-  — neither `K1` nor a committed `F-puzzle-catalog.X2` verdict. The body calls this a `fail`
-  verbatim.
-- **6** `R9` states a missing `T9`/`T10` on the published release is *"a deployment fault,
+- **3** The stream enters `S1` with nothing dealt, no puzzle id, `last_failure=<status>` —
+  neither `K1` nor a committed `F-puzzle-catalog.X2`. The body calls this a `fail`.
+- **6** `R9` calls a missing `T9`/`T10` on the published release *"a deployment fault,
   never an accepted state"*. The published `index.pck` is unchanged since
-  `review-20261025T022500Z` measured a zero-catalog-request cold open, so it cannot have
-  moved. No release has happened since.
+  `review-20261025T022500Z` measured a zero-catalog-request cold open; no release since.
 
 ## Criteria that hold
 
