@@ -594,22 +594,73 @@ func _check_mode_pick_layouts() -> String:
 	return ""
 
 
+## L4 for `shared-setup` C4: one label joins `advice` with `advice_on` or
+## `advice_off`, so each locale drives the pair Off, then On, asserting the router
+## flag flipped and the row joined the member that state renders before the +40%
+## pass. The entry flag is restored after the sweep, so a future default cannot
+## leak this sweep's last toggle into `_check_shared_play_layouts`.
 func _check_shared_setup_layout() -> String:
 	_router.handle_control("mode-pick", "C1")
 	await process_frame
 	if _router.stage != "shared-setup":
 		return "expected shared-setup"
+	var entry_on := _router.advice_on
 	for locale in StringTable.LOCALES:
 		_router.locale = locale
-		_router.screen_requested.emit("shared-setup", _router._shared_setup_state())
-		await process_frame
-		var err := await _assert_readable(_shared_setup(), "shared-setup %s" % locale)
+		var err := await _drive_setup_advice(locale, false, entry_on)
+		if err.is_empty():
+			err = await _drive_setup_advice(locale, true, entry_on)
 		if not err.is_empty():
 			return err
+	if _router.advice_on != entry_on:
+		_router.handle_control("shared-setup", "C4")
 	_router.locale = "en"
+	_router.screen_requested.emit("shared-setup", _router._shared_setup_state())
+	await process_frame
+	if _router.advice_on != entry_on:
+		return "shared-setup C4 did not restore its entry flag"
 	_router.handle_control("shared-setup", "C6")
 	await process_frame
 	return ""
+
+
+## One C4 cell: bring the toggle to `want_on`, assert it, then read the row.
+func _drive_setup_advice(locale: String, want_on: bool, entry_on: bool) -> String:
+	if _router.advice_on != want_on:
+		_router.handle_control("shared-setup", "C4")
+		await process_frame
+	if _router.advice_on != want_on:
+		return "shared-setup %s C4 did not toggle to %s" % [locale, "On" if want_on else "Off"]
+	var panel := _shared_setup()
+	var want := _setup_advice_line(locale, want_on)
+	var row := panel.find_child("Advice", true, false) as Button
+	if row == null:
+		return "shared-setup %s has no C4 row" % locale
+	if row.text != want:
+		return "shared-setup %s C4 %s reads %s, want %s" % [
+			locale, "On" if want_on else "Off", row.text, want
+		]
+	var tag := "shared-setup %s C4 %s" % [locale, "On" if want_on else "Off"]
+	var err := await _assert_readable(panel, tag)
+	if not err.is_empty():
+		return err
+	if entry_on == want_on:
+		return ""
+	## Return to the entry flag so the next locale starts from the same state.
+	_router.handle_control("shared-setup", "C4")
+	await process_frame
+	if _router.advice_on != entry_on:
+		return "shared-setup %s C4 did not toggle back" % locale
+	return ""
+
+
+## The C4 label as `shared_setup.advice · shared_setup.advice_on|advice_off`.
+func _setup_advice_line(locale: String, advice_on: bool) -> String:
+	var member := "advice_on" if advice_on else "advice_off"
+	return (
+		"%s · %s"
+		% [StringTable.shared_setup("advice", locale), StringTable.shared_setup(member, locale)]
+	)
 
 
 func _check_shared_play_layouts() -> String:
@@ -632,34 +683,74 @@ func _check_shared_play_layouts() -> String:
 	_router.shared_session.play_ui_state = SharedGameSession.UI_S1
 	_router.shared_session.confirm_kind = ""
 	_router.shared_session.draw_offer = ""
+	_router.shared_session.advice_error = false
 	_router._emit_play_screen()
 	await process_frame
 	return err
 
 
 func _drive_play_locale(locale: String) -> String:
+	## Fourth element is `advice_error`: `EX.error` / S3 is the only state that
+	## renders `shared-play.advice_error` and `dismiss`. Every other entry clears it,
+	## so no locale starts the next drive on a stale S3.
 	var states: Array = [
-		["S1", SharedGameSession.UI_S1, ""],
-		["S2-resign", SharedGameSession.UI_S2, SharedGameSession.CONFIRM_RESIGN],
-		["S4", SharedGameSession.UI_S4, ""],
-		["S5", SharedGameSession.UI_S5, ""],
-		["S6", SharedGameSession.UI_S6, ""],
+		["S1", SharedGameSession.UI_S1, "", false],
+		["S2-resign", SharedGameSession.UI_S2, SharedGameSession.CONFIRM_RESIGN, false],
+		["S3", SharedGameSession.UI_S3, "", true],
+		["S4", SharedGameSession.UI_S4, "", false],
+		["S5", SharedGameSession.UI_S5, "", false],
+		["S6", SharedGameSession.UI_S6, "", false],
 	]
 	for entry in states:
-		var err := await _drive_play_chrome(locale, str(entry[0]), str(entry[1]), str(entry[2]))
+		var err := await _drive_play_chrome(
+			locale, str(entry[0]), str(entry[1]), str(entry[2]), bool(entry[3])
+		)
 		if not err.is_empty():
 			return err
 	return ""
 
 
-func _drive_play_chrome(locale: String, label: String, ui_state: String, confirm: String) -> String:
+func _drive_play_chrome(
+	locale: String, label: String, ui_state: String, confirm: String, advice_error: bool
+) -> String:
 	var session := _router.shared_session
 	session.play_ui_state = ui_state
 	session.confirm_kind = confirm
 	session.draw_offer = "white" if ui_state == SharedGameSession.UI_S6 else ""
+	session.advice_error = advice_error
 	_router._emit_play_screen()
 	await process_frame
-	return await _assert_readable(_play_panel(), "shared-play %s %s" % [locale, label])
+	var panel := _play_panel()
+	if advice_error:
+		## S3 producer: the box is shown and carries exactly the two S3 rows, so a
+		## `pass` cannot come from an absent or untranslated row.
+		var err := _s3_producer(panel, locale)
+		if not err.is_empty():
+			return err
+	return await _assert_readable(panel, "shared-play %s %s" % [locale, label])
+
+
+## S3 `EX.error` producer: the box is shown and carries exactly the two S3 rows,
+## so a `pass` cannot come from an absent or untranslated row.
+func _s3_producer(panel: SharedPlayPanel, locale: String) -> String:
+	var box := panel.get_node_or_null("AdviceError") as Control
+	if box == null or not box.visible:
+		return "shared-play %s S3 advice error box hidden" % locale
+	var msg := box.find_child("AdviceErrorMsg", true, false) as Label
+	if msg == null or not msg.visible:
+		return "shared-play %s S3 AdviceErrorMsg hidden" % locale
+	var want_msg := StringTable.shared_play("advice_error", locale)
+	if msg.text != want_msg:
+		return "shared-play %s S3 AdviceErrorMsg reads %s, want %s" % [locale, msg.text, want_msg]
+	var dismiss := box.find_child("AdviceErrorDismiss", true, false) as Button
+	if dismiss == null or not dismiss.visible:
+		return "shared-play %s S3 AdviceErrorDismiss hidden" % locale
+	var want_dismiss := StringTable.shared_play("dismiss", locale)
+	if dismiss.text != want_dismiss:
+		return "shared-play %s S3 AdviceErrorDismiss reads %s, want %s" % [
+			locale, dismiss.text, want_dismiss
+		]
+	return ""
 
 
 func _check_shared_result_layout() -> String:
