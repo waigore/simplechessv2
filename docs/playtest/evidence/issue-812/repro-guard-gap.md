@@ -66,26 +66,13 @@ route packed: True    ambient-b loose: False    missing ambient: []
 A `.import` sidecar that merely spells the route in its `path=` text is not an
 entry, and the guard does not see it as one.
 
-## The route is the resolver's, chosen by the stream header
+## The route is the resolver's
 
-`_load_audio` plays the Vorbis copy only when the catalog stream's own header
-carries `OpusHead`; any other audio stream loads where it lies. A guard that took
-the `.ogg` suffix alone would demand a copy for a stream the resolver plays in
-place, so it would red a bundle that plays. Measured on a tree built from the real
-manifest and catalog under `build/web/`, every playback copy removed:
-
-```
---check-groups -> 14 of 19 play asset file(s) resolved — no route serves: five audio_runtime/ routes
-```
-
-then `game_assets/sound-effects/check.ogg` replaced by a plain Vorbis stream:
-
-```
---check-groups -> 15 of 19 play asset file(s) resolved — the check.ogg route is no longer named
-```
-
-So a non-Opus catalog stream grades at its catalog path — the file the resolver
-loads — while the seven Opus catalog streams still grade only at their copies.
+`_load_audio` takes the Vorbis copy only when the catalog stream's header carries
+`OpusHead`; any other stream plays where it lies. Copies removed, real manifest:
+`14 of 19 play asset file(s) resolved`; with `check.ogg` plain Vorbis: `15 of
+19`, that route unnamed — a bundle that plays, not refused. The defect's
+signature still refuses `ambient` 0 of 2.
 
 ## Green on a healthy real bundle
 
