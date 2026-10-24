@@ -60,9 +60,9 @@ var play_ui_state: String:
 			return puzzle_flow.ui_state()
 		if shared_session == null:
 			return SharedGameSession.UI_S1
-		return (
-			SharedGameSession.UI_S3 if shared_session.advice_error else shared_session.play_ui_state
-		)
+		# One derivation (states.md S3): an advice failure is S3 over the session's
+		# own play state, so the gate and the screen read the same source.
+		return shared_session.ui_state()
 	set(value):
 		if puzzle_flow != null and stage == STAGE_PUZZLE_PLAY:
 			puzzle_flow.session.play_ui_state = value
@@ -210,8 +210,12 @@ func handle_input_commit(from_square: String, to_square: String, promotion: Stri
 		return false
 	if _seams_paused():
 		return false
-	if not shared_session.gestures_available():
+	if not play_gestures_available():
 		return false
+	return _apply_play_gesture(from_square, to_square, promotion)
+
+
+func _apply_play_gesture(from_square: String, to_square: String, promotion: String) -> bool:
 	if to_square.is_empty():
 		return _apply_select(from_square)
 	return _apply_place(from_square, to_square, promotion)
@@ -367,7 +371,8 @@ func side_to_move() -> String:
 	return shared_session.side_to_move()
 
 
-## R1 — C1/C2/C6 gestures are live in S1, S3 and S5 (`PuzzleSession.gestures_available`).
+## R1 — board gestures are live in S1, S3 and S5 (and S6 where the screen allows
+## the board); each session owns its own allow-list.
 func play_gestures_available() -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.gestures_available()
