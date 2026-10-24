@@ -6,7 +6,7 @@ Agents use the matching `create-project-*` skill so labels, sub-issues, and bloc
 
 | Doc | Covers |
 |-----|--------|
-| [requirements.md](requirements.md) | Required sections and content per type |
+| [requirements.md](requirements.md) | Required sections per type; when to file defect vs task vs clarify |
 | [body-shapes.md](body-shapes.md) | Canonical body templates (Epic / Task / Defect) |
 | [hierarchy.md](hierarchy.md) | Sub-issues, depth limit, blocked-by |
 | [workflow.md](workflow.md) | Status labels, transitions, evidence |

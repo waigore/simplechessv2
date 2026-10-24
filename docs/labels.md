@@ -33,7 +33,7 @@ bash .github/scripts/sync-labels.sh
 |------|-------|-------------|
 | `type:epic` | `6F42C1` | Broad orchestration epic |
 | `type:task` | `0366D6` | Concrete unit of agent work |
-| `type:defect` | `D73A4A` | Bug, problem, or issue with any deliverable (code, game, spec, etc.) |
+| `type:defect` | `D73A4A` | In-game or interface bug (not specs, docs, or planning) |
 | `status:pending-review` | `FBCA04` | Pending review |
 | `status:pending-refinement` | `E4A8FF` | Reviewed; refinements needed |
 | `status:pending-clarification` | `D93F0B` | Needs product-owner clarification |

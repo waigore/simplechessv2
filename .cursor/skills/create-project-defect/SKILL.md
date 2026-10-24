@@ -3,8 +3,8 @@ name: create-project-defect
 description: |-
   Create a GitHub Defect issue (type:defect) from docs/issues/; wire related
   links and native blocked-by when provided.
-  Use when the user reports a bug, broken behavior, or a problem with any deliverable.
-  Use proactively when a failure needs a tracked defect rather than burying it in a task.
+  Use when the user reports wrong game or interface behavior vs expected play.
+  Do not use for specs, docs, maps, or planning gaps (tasks or clarification).
 
   Examples:
   - user: "File a defect: jump input ignored on web" → collect per docs/issues/, create
