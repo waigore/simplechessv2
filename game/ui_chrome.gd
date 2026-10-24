@@ -162,15 +162,14 @@ static func text_scale_for_frame_height(frame_height_px: float) -> float:
 	return frame_height_px / REFERENCE_FRAME_HEIGHT_PX
 
 
-## The frame every UIS.T2 surface currently renders into. A headless runner has
-## no display frame (its root window stays at the 100 px placeholder), so a
-## resized control is its own frame and a full-rect one reports the project size.
+## The frame every UIS.T2 surface currently renders into: the running window, the
+## same frame `S13` reports. A control's own height is never the frame — a 44 px
+## button would resolve `16 * 44 / 640` and draw at 1 px (#708). A headless runner
+## has no display frame (its root window stays at the 100 px placeholder), so a
+## full-rect control reports the project size instead.
 static func frame_height_of(control: Control) -> float:
-	if not is_instance_valid(control):
+	if not is_instance_valid(control) or not control.is_inside_tree():
 		return 0.0
-	var own := control.size.y
-	if own > 0.0:
-		return own
 	var tree := control.get_tree()
 	if tree != null and tree.root != null and DisplayServer.get_name() != "headless":
 		return float(tree.root.size.y)
