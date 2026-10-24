@@ -1,0 +1,10 @@
+# Published build identity — read 2026-10-24T16:55Z
+
+Source: https://waigore.github.io/simplechessv2/index.pck
+
+last-modified: Sat, 24 Oct 2026 13:00:58 GMT
+etag: "6adcac0a-91e494"
+content-length: 9561236
+
+Unchanged from the artefact recorded in ../review-20261025T000000Z/logs/build-identity.txt
+(last-modified 2026-10-24 13:00:58 GMT, 9561236 bytes). The published rows cannot differ from that run.
