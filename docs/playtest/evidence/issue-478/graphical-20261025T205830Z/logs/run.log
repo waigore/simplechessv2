@@ -1,0 +1,797 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+{"TEL.1":"report.assets","TEL.2":1792875416358,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"CTR-asset-resolve","TEL.5":"read"}
+{"TEL.1":"jump","TEL.2":1792875416393,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875416396,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _judge_mode_pick (res://_w400/w400_sweep.gd:524)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"jump","TEL.2":1792875416450,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875416516,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _judge_mode_pick (res://_w400/w400_sweep.gd:556)
+         [7] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"jump","TEL.2":1792875416536,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875416696,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875416707,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875416722,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875416735,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875416742,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875416748,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792875416751,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875416785,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"jump","TEL.2":1792875416790,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875416807,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875416862,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875416878,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875416887,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792875416922,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875416927,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875416942,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875417003,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.D2"}
+{"TEL.1":"jump","TEL.2":1792875417008,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417026,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875417037,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417041,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.move","TEL.2":1792875417046,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.deselect","TEL.2":1792875417084,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417090,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417095,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417115,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417126,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417141,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875417149,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417153,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875417160,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417164,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417172,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417190,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875417201,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.again","TEL.2":1792875417224,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417230,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417235,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875417245,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.stop","TEL.2":1792875417276,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T8","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792875417285,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875417296,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.stop","TEL.2":1792875417301,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T8","TEL.5":"ok"}
+{"TEL.1":"shared.start","TEL.2":1792875417305,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875417316,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.again","TEL.2":1792875417321,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417328,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _judge_puzzle_session (res://_w400/w400_sweep.gd:1007)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _judge_puzzle_session (res://_w400/w400_sweep.gd:1009)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875417345,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875417376,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792875417414,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417423,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875417439,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875417440,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875417475,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792875417475,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"jump","TEL.2":1792875417484,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417487,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875417502,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875417502,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417547,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417549,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875417561,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875417562,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.select","TEL.2":1792875417576,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875417581,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417647,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417649,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875417665,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875417665,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875417675,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"reveal_confirm"}
+{"TEL.1":"puzzle.cancel","TEL.2":1792875417719,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417727,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417729,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875417745,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875417745,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875417760,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"reveal_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792875417794,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792875417794,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"cue_failed"}
+{"TEL.1":"jump","TEL.2":1792875417809,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417817,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875417826,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"shared.again","TEL.2":1792875417833,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T7","TEL.5":"ok"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875417843,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _judge_navigation (res://_w400/w400_sweep.gd:1191)
+         [7] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.confirm","TEL.2":1792875417855,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792875417860,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+{"TEL.1":"shared.start","TEL.2":1792875417873,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875417888,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792875417893,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417899,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417923,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875417938,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875417948,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417952,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.deselect","TEL.2":1792875417957,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875417965,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875417974,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875417980,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418057,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418066,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418075,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418097,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418106,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418152,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418159,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418168,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418185,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418192,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418243,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418251,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418261,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418278,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418288,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418343,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875418357,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792875418364,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875418370,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875418378,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875418385,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"jump","TEL.2":1792875418390,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418410,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418421,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418450,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418458,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418469,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418486,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418498,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418513,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418531,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418544,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875418557,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875418567,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418576,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792875418601,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418610,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875418618,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.D2"}
+{"TEL.1":"jump","TEL.2":1792875418621,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418634,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875418647,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"jump","TEL.2":1792875418651,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418670,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418680,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875418694,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875418710,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875418711,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875418726,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792875418726,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875418735,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+SWEEP-DBG dealt=w400gl4 elo=1013.06
+{"TEL.1":"puzzle.move","TEL.2":1792875418748,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+SWEEP-TEL puzzle.move/wrong/UI-puzzle-play.US2.5
+{"TEL.1":"puzzle.wrong","TEL.2":1792875418749,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+SWEEP-TEL puzzle.wrong/wrong/UI-puzzle-play.US2.5
+SWEEP-SCR ui=S1 pid=<null>
+{"TEL.1":"puzzle.move","TEL.2":1792875418766,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"outcome"}
+SWEEP-TEL puzzle.move/outcome/UI-puzzle-play.US2.5
+{"TEL.1":"puzzle.result","TEL.2":1792875418766,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"cue_failed"}
+SWEEP-TEL puzzle.result/cue_failed/UI-puzzle-play.US2.5
+SWEEP-SCR ui=S1 pid=<null>
+SWEEP-DBG l4 wrongs=1 end=END.L4 elo=1003.84
+{"TEL.1":"puzzle.dealt","TEL.2":1792875418775,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+SWEEP-TEL puzzle.dealt/ok/UI-puzzle-play.US1
+SWEEP-SCR ui=S1 pid=<null>
+{"TEL.1":"puzzle.confirm","TEL.2":1792875418791,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"reveal_confirm"}
+SWEEP-TEL puzzle.confirm/reveal_confirm/
+SWEEP-SCR ui=S2 pid=<null>
+{"TEL.1":"puzzle.end","TEL.2":1792875418796,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"ok"}
+SWEEP-TEL puzzle.end/ok/UI-puzzle-play.US1.3
+{"TEL.1":"puzzle.result","TEL.2":1792875418796,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"cue_failed"}
+SWEEP-TEL puzzle.result/cue_failed/UI-puzzle-play.US1.3
+SWEEP-SCR ui=S1 pid=<null>
+{"TEL.1":"jump","TEL.2":1792875418809,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418814,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875418823,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792875418828,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875418832,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"jump","TEL.2":1792875418835,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875418845,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875418857,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875418857,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418873,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418880,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875418892,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875418899,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+{"TEL.1":"shared.deselect","TEL.2":1792875418906,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418913,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418928,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875418938,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.deselect","TEL.2":1792875418943,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418949,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418968,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875418977,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875418995,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875419010,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419019,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _judge_puzzle_stream (res://_w400/w400_sweep.gd:1755)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419031,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875419046,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419046,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419055,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875419068,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419071,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419083,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419084,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875419099,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419102,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419113,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"jump","TEL.2":1792875419115,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419118,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419129,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _judge_puzzle_stream (res://_w400/w400_sweep.gd:1836)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [7] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419129,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+WARNING: puzzle stream: deal read failed (bad_fen)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:71)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _judge_puzzle_stream (res://_w400/w400_sweep.gd:1841)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419133,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"bad_fen"}
+{"TEL.1":"jump","TEL.2":1792875419140,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419142,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419158,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419158,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875419168,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792875419169,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.move","TEL.2":1792875419180,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419180,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"cue_failed"}
+{"TEL.1":"jump","TEL.2":1792875419190,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419193,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419205,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419205,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875419214,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"reveal_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792875419219,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419219,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"cue_failed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419229,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875419242,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"abandon_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792875419248,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419248,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875419259,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792875419267,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+{"TEL.1":"shared.start","TEL.2":1792875419277,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.select","TEL.2":1792875419291,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792875419299,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875419304,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419316,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419330,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419330,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"jump","TEL.2":1792875419349,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419351,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419367,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419367,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875419378,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419378,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"jump","TEL.2":1792875419386,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419389,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419402,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419402,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875419413,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792875419414,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875419419,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"abandon_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792875419423,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419424,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+{"TEL.1":"jump","TEL.2":1792875419440,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419443,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419455,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"jump","TEL.2":1792875419457,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419460,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419472,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419472,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792875419483,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419483,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875419491,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792875419496,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419503,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419517,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+{"TEL.1":"puzzle.dealt","TEL.2":1792875419517,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792875419527,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.5":"abandon_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792875419537,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792875419537,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+{"TEL.1":"jump","TEL.2":1792875419552,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"shared.start","TEL.2":1792875419559,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.end","TEL.2":1792875419569,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"jump","TEL.2":1792875419574,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"session-ended","TEL.5":"pass"}
+{"TEL.1":"puzzle.enter","TEL.2":1792875419590,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _enter_puzzle (res://_w400/w400_sweep.gd:981)
+         [7] _to_mode_pick (res://_w400/w400_sweep.gd:440)
+         [8] _frames (res://_w400/w400_sweep.gd:210)
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _feed_puzzle (res://_w400/w400_sweep.gd:1000)
+         [5] _enter_puzzle (res://_w400/w400_sweep.gd:983)
+         [6] _frames (res://_w400/w400_sweep.gd:210)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792875419608,"TEL.3":"sess-1792875416162-20580-playtest-580200","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+W400 kind=graphical session=sess-1792875416162-20580-playtest-580200 tel=267 errors=[]
+WARNING: 11 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
