@@ -5,6 +5,12 @@ extends Node
 signal boot_ready
 signal play_ready
 signal ambient_ready
+## CTR-asset-resolve E4 — a preload group left approved IDs unresolved (a surfaced
+## failure, never a silent wait). Carries the unresolved count.
+signal boot_failed(unresolved: int)
+## Settles the Boot preload either way (E1 or E4), for a caller or a test that must
+## not wait on an event that already fired.
+signal boot_settled
 signal must_overlay(asset_id: String)
 
 const MANIFEST_PATH := "res://asset_manifest.json"
@@ -15,6 +21,12 @@ const _LICENSE_EXT := "txt"
 var playtest_override := -1
 var session_playable := true
 var log_counts: Dictionary = {}
+
+## CTR-asset-resolve E4 — Boot's outcome once it settles: 0 when every approved ID
+## resolved, the unresolved count when the Boot preload failed, -1 while pending.
+## The resolver records it here as well as emitting, so a caller that starts late
+## still observes the failure instead of waiting on an event that already happened.
+var boot_outcome := -1
 
 var _manifest: Dictionary = {}
 var _cache: Dictionary = {}
@@ -27,7 +39,8 @@ func _ready() -> void:
 
 
 func preload_boot() -> void:
-	call_deferred("_preload", "boot", boot_ready)
+	boot_outcome = -1
+	call_deferred("_preload", "boot", boot_ready, boot_failed)
 
 
 func preload_play() -> void:
@@ -118,20 +131,32 @@ func apply_manifest(data: Dictionary) -> void:
 	log_counts.clear()
 
 
-func _preload(group_name: String, done: Signal) -> void:
+func _preload(group_name: String, done: Signal, failed: Signal = Signal()) -> void:
 	if group_loaded(group_name):
 		done.emit()
+		if group_name == "boot":
+			boot_settled.emit()
 		return
 	var missing := 0
 	for asset_id in _group_ids(group_name):
 		if resolve(str(asset_id)) == null:
 			missing += 1
 	_unresolved_counts[group_name] = missing
+	_loaded_groups[group_name] = missing == 0
+	var settles_boot := group_name == "boot"
+	if settles_boot:
+		boot_outcome = missing
 	if missing > 0:
+		# E4: settle the group as a surfaced failure. Without it the caller waits forever.
 		push_error("Preload %s left %d approved IDs unresolved" % [group_name, missing])
+		if failed.get_object() != null:
+			failed.emit(missing)
+		if settles_boot:
+			boot_settled.emit()
 		return
-	_loaded_groups[group_name] = true
 	done.emit()
+	if settles_boot:
+		boot_settled.emit()
 
 
 func _read_manifest_file() -> void:
@@ -165,10 +190,19 @@ func _group_ids(group_name: String) -> Array:
 	return []
 
 
-func _absolute(relative: String) -> String:
-	var project := ProjectSettings.globalize_path("res://").trim_suffix("/")
+func resolve_absolute_path(relative: String) -> String:
+	## Where a manifest-relative asset path resolves on this platform. Web reads the
+	## asset root as loose files under `res://` (staged beside `index.html`); every
+	## other platform reads the repo-root root (ADR-0005).
 	var root_name := str(_manifest.get("asset_root", ""))
+	if OS.has_feature("web"):
+		return "res://".path_join(root_name).path_join(relative)
+	var project := ProjectSettings.globalize_path("res://").trim_suffix("/")
 	return project.get_base_dir().path_join(root_name).path_join(relative)
+
+
+func _absolute(relative: String) -> String:
+	return resolve_absolute_path(relative)
 
 
 func _load_media(asset_id: String, path: String) -> Resource:
@@ -207,6 +241,8 @@ func _load_audio(asset_id: String, path: String) -> Resource:
 
 
 func _runtime_audio_path(asset_id: String) -> String:
+	if OS.has_feature("web"):
+		return "res://".path_join(AUDIO_RUNTIME).path_join("%s.ogg" % asset_id)
 	var project := ProjectSettings.globalize_path("res://").trim_suffix("/")
 	return project.get_base_dir().path_join(AUDIO_RUNTIME).path_join("%s.ogg" % asset_id)
 
