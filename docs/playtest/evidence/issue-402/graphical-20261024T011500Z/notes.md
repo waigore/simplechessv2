@@ -29,6 +29,6 @@ Packing the asset root needs a mechanism chosen in `specs/` — ADR-0005 and ADR
 
 ## Unblocking
 
-#630 unblocks every row. After it: Performance needs release-side capture (#544 seam, #506 verdict shape); Observability needs #506 too, since the export emits no `TEL.*` lines today; Reliability and Save durability need #557 / #558 on the shipped build; legibility needs the 390×844 read (#546 seam); shape, color, and Localization need the reviews #536 and `PTU-localization` (#494) name.
+#630 unblocks the screen-behind rows. After it: Performance needs release-side capture (#544 seam, #506 verdict shape); Observability is not #630's — it judges the playtest-certified build (`SIT.5` over `E1`), and needs #506's build envelope rather than a release-side `TEL.*` (#729); Reliability and Save durability need #557 / #558 on the shipped build; legibility needs the 390×844 read (#546 seam); shape, color, and Localization need the reviews #536 and `PTU-localization` (#494) name.
 
 Marked, not judged: advice readiness (Advice Off, no board) and the shape/color claims, which `tools-situational.md` places outside playtest and cannot be judged on a build that renders no piece.
