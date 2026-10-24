@@ -13,7 +13,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 
 | ID | Name | Input | Output / effect | When |
 |----|------|-------|-----------------|------|
-| O1 | resolve | asset ID | Loaded engine resource or unresolved | Draw / play needs asset |
+| O1 | resolve | asset ID | Loaded engine resource or unresolved | Draw / play needs asset, from the path the shipped tree carries (ADR-0014) |
 | O2 | preload_boot | Boot ID set | Boot group ready | Cold open ([`AST.G1`](../asset-access.md)) |
 | O3 | preload_play | Play ID set | Play group ready | First Shared/Puzzle play ([`AST.G2`](../asset-access.md)) |
 | O4 | preload_ambient | Ambient ID set | Ambient group ready | Mode pick becomes ready (`EX.loading` → ready, after boot ready); not on cold open ([`AST.G3`](../asset-access.md)) |
@@ -25,6 +25,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | E1 | boot_ready | — | O2 complete | Session router |
 | E2 | play_ready | — | O3 complete | Session router (relays to L1 via [`CTR-presentation`](presentation.md) E5) |
 | E3 | ambient_ready | — | O4 complete | Session router |
+| E4 | boot_failed | unresolved count | O2 left an approved ID unresolved; emitted instead of E1 | Session router |
 
 ## Guarantees
 
@@ -35,13 +36,14 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | G3 | Unresolved IDs follow [`AST.R3`](../asset-access.md) |
 | G4 | L1 never calls this contract; asset needs route through L2 (ADR-0006) |
 | G5 | Approved Opus files stay in the asset root; resolve returns the Vorbis copy ([`AST.O3`](../asset-access.md)) |
+| G6 | Every preload group settles: it ends in its ready event or a failure the caller observes (E4 for Boot). No preload leaves the caller waiting |
 
 ## Errors
 
 | Condition | Result |
 |-----------|--------|
 | Unknown ID / load fail | Unresolved path per AST.R3; [`FAIL.T4`](../failures.md) |
-| Preload leaves an approved ID unresolved | Group stays not ready; ready event withheld; that ID still follows AST.R3 |
+| Preload leaves an approved ID unresolved | Preload is a surfaced failure, not a stall: E1 is withheld, E4 `boot_failed` is emitted with the unresolved count, and the group stays not ready. That ID still follows AST.R3 |
 
 ## Diagram
 
