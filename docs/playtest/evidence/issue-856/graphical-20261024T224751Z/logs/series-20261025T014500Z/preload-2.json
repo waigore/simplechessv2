@@ -1,0 +1,17 @@
+{
+  "arm": "preload",
+  "run": 2,
+  "url": "http://127.0.0.1:8081/index_preload.html",
+  "firstPaintedMs": 1717,
+  "probeContextMs": 4,
+  "probeContextEndMs": 32,
+  "engineBanner": "268ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+  "firstFetchMs": 32,
+  "pck": {
+    "startMs": 21,
+    "endMs": 60,
+    "initiatorType": "link",
+    "transferredBytes": 9570888
+  },
+  "domContentLoadedMs": 48
+}
