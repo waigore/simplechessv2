@@ -9,7 +9,7 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Instant play | vision | [`screens/shared-play.md`](screens/shared-play.md), [`controls.md`](controls.md) |
 | Clear board | vision | shared-play / puzzle-play board + coordinates; [`perception.md`](../view/perception.md) R7 |
 | Cafe calm | vision | [`screens/mode-pick.md`](screens/mode-pick.md), journeys |
-| Shared game; Puzzle stream; new session | definition | screens + [`shared-result.md`](screens/shared-result.md) Play again |
+| Shared game; Puzzle stream; new run | definition | screens + [`shared-result.md`](screens/shared-result.md) Play again |
 | Untimed play; timed Blitz and Rapid with time added after each move | definition | [`screens/shared-setup.md`](screens/shared-setup.md) Clock/Increment; [`screens/shared-play.md`](screens/shared-play.md) clocks |
 | Optional Stockfish move advice when online and Advice On | definition | [`screens/shared-play.md`](screens/shared-play.md) Advice; [`screens/shared-setup.md`](screens/shared-setup.md); [`exceptions.md`](exceptions.md) `EX.error` |
 | Web touch | definition | [`controls.md`](controls.md) bindings |

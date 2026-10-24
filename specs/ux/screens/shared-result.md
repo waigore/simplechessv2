@@ -25,7 +25,7 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 
 | ID | Control | UI action | Available when | Result |
 |----|---------|-----------|----------------|--------|
-| C1 | Play again | `IN.activate` | always | → `shared-setup` (NAV.T7) — new session |
+| C1 | Play again | `IN.activate` | always | → `shared-setup` (NAV.T7) — new run |
 | C2 | Stop | `IN.activate` | always | → `mode-pick` (NAV.T8) |
 
 ## States
@@ -52,4 +52,4 @@ Copy owner `shared-result`; keys and `en` source per [localization.md](../locali
 
 ## Experience intent
 
-Clear outcome, then either a new session or back to modes — no friction. Meets Accessibility: the result is stated in text, not color alone; controls are 44px-class touch targets.
+Clear outcome, then either a new run or back to modes — no friction. Meets Accessibility: the result is stated in text, not color alone; controls are 44px-class touch targets.
