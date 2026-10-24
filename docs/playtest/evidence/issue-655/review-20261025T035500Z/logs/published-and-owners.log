@@ -1,0 +1,17 @@
+$ curl -sI https://waigore.github.io/simplechessv2/index.pck
+last-modified: Sat, 24 Oct 2026 17:57:05 GMT
+etag: "6adcf171-91ff1c"
+content-length: 9568028
+
+$ gh pr view 806 --json state,mergedAt
+{"mergedAt":null,"number":806,"state":"OPEN"}
+
+$ gh pr list --state all --search "in:title 479"
+[{"number":806,"state":"OPEN","title":"Record the advice key's source and delivery exclusion (#479)"},{"number":808,"state":"OPEN","title":"Record the #655 re-run on ddaca90, with the #479 exclusion finding"}]
+
+$ gh issue list --search "479 OR 648 OR 550" (status labels)
+550 ['status:pending-verification'] Run the wave-2 playtest sweep: puzzle-stream and puzzle-sess
+479 ['status:pending-acceptance'] Specify how the advice base URL and API key reach the client
+648 ['status:pending-verification'] Decide whether the puzzle catalog route ships enabled: T9/T1
+655 ['status:pending-verification'] Puzzle stream deals nothing on the shipped-path build: T9/T1
+537 ['status:pending-implementation'] Wave-gated copy and protocol leaves sit outside their wave's
