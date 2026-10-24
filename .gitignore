@@ -21,3 +21,7 @@ agent-orc/.venv/
 agent-orc/dist/
 agent-orc/*.egg-info/
 agent-orc/src/*.egg-info/
+
+# Runtime log from a manual run redirected into the repo root (#680); the
+# shell redirect writes it, so ignore it rather than change a producer.
+/server.log
