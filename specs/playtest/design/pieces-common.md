@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 - **Level**: Design
 - **Spec key**: `PTD-pieces-common`
-- **Environment**: Headless only
+- **Environment**: `ENV.1` Headless only
 - **Cites**: `E-pieces` common (I1–I11 board, capture, check, legality)
 - **Situational tools**: `SIT.1`
 
@@ -33,4 +33,4 @@ Authoring rules: [`.agents/specs/rules/playtest/protocol.md`](../../../.agents/s
 
 ## Evidence
 
-Default evidence rules.
+Default evidence rules ([`evidence.md`](../evidence.md)). The protocol states no extras and waives no screenshot.

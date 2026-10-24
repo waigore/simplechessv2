@@ -12,9 +12,9 @@ In [`string-table-fields.md`](string-table-fields.md) §Fields.
 
 | ID | Invariant |
 |----|-----------|
-| I2 | `zh-Hant` and `ja` have a value for every `en` key; no key is missing in any shipped locale |
+| I2 | `zh-Hant` and `ja` have a value for every `en` key of every F2 owner; a key missing in either fails, naming the owner and key (L1) |
 | I3 | An owner's key set is exactly the Key column of its Copy table, or of [`exceptions.md`](../../ux/exceptions.md) for `exceptions`, in table order; no extra key, no missing key |
-| I5 | A `zh-Hant` or `ja` value is not a verbatim copy of its `en` value, except a row marked same in every locale (`UI-mode-pick.C4` own name; `shared-play` / `puzzle-play` `queen` `rook` `bishop` `knight`, per [Localization copy](../../ux/localization.md) L3) |
+| I5 | A `zh-Hant` or `ja` value is not a verbatim copy of its `en` value, except a row marked same in every locale (`UI-mode-pick.C4` own name; `shared-play` / `puzzle-play` `queen` `rook` `bishop` `knight`, per [Localization copy](../../ux/localization.md) L3); every other F2 row fails when its value equals `en`, naming the owner and key (L1) |
 
 The remaining invariants are in [`string-table-invariants.md`](string-table-invariants.md) §Invariants.
 
@@ -24,7 +24,7 @@ In [`string-table-invariants.md`](string-table-invariants.md) §Lifecycle.
 
 ## Relationships
 
-- One owner to many keys: many-to-one. F2 enumerates the owners.
+- One owner to many keys: many-to-one. F2 lists the owners whose three locales are complete, in display order; no consumer depends on it.
 - Rows are consumed through [`CTR-localization`](../contracts/localization.md).
 
 ## Diagram
@@ -45,7 +45,7 @@ A key missing in a locale reads `en` and logs once per owner and key; play conti
 
 ## Completeness gate
 
-The gate is the parity test in `game/string_table_test.gd`. It reads every Copy table under [`specs/ux/screens/`](../../ux/screens/) and the Key column of [`exceptions.md`](../../ux/exceptions.md), compares each key set exactly against the shipped tables in all three locales, and compares the owner set those tables name against the shipped owners. It is the only copy-completeness gate; the localization playtest protocol observes the same keys as a player.
+In [`string-table-gate.md`](string-table-gate.md) §Owner-addition rule; the `exceptions` Key column is read as a subset of the shipped keys (§Key-column shapes). It is the only copy-completeness gate, and a playtest protocol observes the same keys as a player (I2).
 
 ## Same in every locale
 
