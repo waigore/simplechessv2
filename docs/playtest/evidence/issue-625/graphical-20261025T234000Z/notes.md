@@ -9,39 +9,23 @@ the acceptance criteria require Performance and Reliability to be read on a phon
 non-development low-end machine, and to be `not-judged` when only the laptop could read them —
 here not even the laptop reading exists, because the only hardware present is the dev machine.
 
-## Why the run stopped where it did
-
-Three needs, none of them met in an unattended pass:
-
-1. **A physical phone (or a non-development laptop).** #625 is explicitly the *funded*,
-   off-device reading; it exists because every other shipped-build check runs on the
-   repository's runner or a desktop. No phone is attached to this machine and the issue is
-   assigned to a person who sits at it — the sitting itself (mode pick → a full Shared game →
-   two puzzle attempts → background → quit/reopen) is a person at a table, not a script.
-2. **A network path from that phone to the build.** The host's own LAN address
-   (`192.168.0.119:8625`) times out from the host while `127.0.0.1:8625` answers — macOS
-   Application Firewall enabled, no prompt in an unattended run. Serving to a phone needs
-   the firewall opened for the trial or a tunnel, which is a setup decision for the owner.
-3. **A person's hands.** Frame-rate evidence on a phone, a backgrounded tab, and a quit are
-   interactive acts. Scripting them from the same machine would re-create the desktop reading
-   #625 exists to replace.
+Why the sitting could not be taken: [blockers.md](blockers.md).
 
 ## What the run does establish
 
 - The build under test exists, builds clean from `main`, and carries #647's asset root:
   `--check-boot` resolves **14/14** boot assets, `--check-assets` **35/35** cataloged files
-  from `build/web/`.
+  from `build/web/` ([builds.md](builds.md) §2).
 - It is the **seam-stripped release scene**: `game/main_release.tscn`, no `PlaytestSeams`
   node, **0** `TEL.*` lines in the console — which is why the correlation key is the export
   path plus the commit sha and no session id exists to record.
-- On the dev machine at 390×844 DPR 2 the export reaches mode pick with **no console error**,
-  labels painted, `Last mode` affordance shown. That matches #854's published-`c5b8189`
-  re-read (`#833`'s near-invisible focused label is fixed on this build) and is *not* a row
-  verdict.
+- On the dev machine at 390×844 DPR 2 the export reaches mode pick with **no console error**
+  ([readings.md](readings.md)). That matches #854's published-`c5b8189` re-read (`#833`'s
+  near-invisible focused label is fixed on this build) and is *not* a row verdict.
 - The published URL still serves `c5b8189` (26 commits behind `main`); the fallback the body
   defines is therefore the correct build choice, and no `Web release` run id exists for
   `491554e` — a future run that wants the published reading must wait for Pages to serve a
-  commit carrying the repair.
+  commit carrying the repair ([builds.md](builds.md) §1).
 
 ## Defects
 

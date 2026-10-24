@@ -15,7 +15,11 @@ Raw: [logs/probe-result.json](logs/probe-result.json), [logs/probe-console.log](
 
 Everything below is a **build identity reading**, not a row verdict. `SIT.4` frame times, load
 time and the frame-rate evidence #625 asks for need the same measurement on the phone, and
-SwiftShader's own numbers are not frame-rate evidence for any device.
+SwiftShader's own numbers are not frame-rate evidence for any device. Each row's specific gap:
+Performance needs a move on a phone; Load time needs a cold open over a named café-grade
+network (loopback plus the probe's 16 s delay give no usable number); Reliability needs a move
+and a puzzle attempt first, then a mobile background; Save durability needs a committed puzzle
+result first (the release also deals nothing — #655).
 
 ## Page state at six samples
 
@@ -30,7 +34,8 @@ SwiftShader's own numbers are not frame-rate evidence for any device.
 
 All six frames are identical (`screenshots/probe-frame-01` … `-06`): mode pick,
 *Choose how to play*, `Shared game · Last` (Last-mode affordance), `Puzzle stream`, `Quit`,
-`English` — labels painted, no white screen, no stall on the loading screen. The first sample
+`English` — labels painted, no white screen, no stall on the loading screen. The loader has
+cleared by the first sample: `#status` and `#status-progress-status` are both `null`. The first sample
 is late by design (the probe waits 16 s before its first frame); this is **not** a load-time
 measurement and is not read as one — #856 holds the desktop-measured 3.0–4.4 s cold open.
 
@@ -38,20 +43,11 @@ measurement and is not read as one — #856 holds the desktop-measured 3.0–4.4
 
 - **`TEL.*` lines**: 0 (`TEL.1`–`TEL.5`). Expected: release strips the seam (ADR-0004 `G2`,
   #729). No session id recorded, none invented.
-- **Errors**: 0. Warnings: 2 × `GPU stall due to ReadPixels` / `CONTEXT_LOST_WEBGL` (SwiftShader
-  and screenshot capture, desktop-only artefact), 1 × `AudioContext was not allowed to start`
-  (expected before a user gesture).
+- **Errors**: 0. Warnings: 3, all expected before a user gesture on this host —
+  2 × WebGL performance (`GPU stall due to ReadPixels` / `CONTEXT_LOST_WEBGL`, SwiftShader and
+  screenshot capture, a desktop-only artefact), 1 × `AudioContext was not allowed to start`.
 - **Responses**: 200 for `/`, `index.png`, `index.js`, `index.wasm`, `index.pck`,
   `index.icon.png`; no 4xx/5xx.
 - **`localStorage`**: `{}` at the end — nothing committed, because no game and no puzzle attempt
   ran on this pass. So "last committed Player Elo / Last mode" had no value to carry, and the
   background/return and quit/reopen legs were not exercised.
-
-## Rows this run could not read
-
-| Row | Why not |
-|---|---|
-| Performance — 60 fps, no hitch > 1 frame during a move | needs a move on a phone; no phone, and SwiftShader is not frame-rate evidence |
-| Load time — board playable ≤ 3 s | needs a cold open on a phone over a named café-grade network; loopback + 16 s probe delay give no usable number |
-| Reliability — background/return | needs a move and a puzzle attempt first, then a background on a mobile browser |
-| Save durability — quit/reopen | needs a committed puzzle result first (no deal/attempt ran; the release also deals nothing — #655) |
