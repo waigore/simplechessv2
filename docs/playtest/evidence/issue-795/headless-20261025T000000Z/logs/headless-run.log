@@ -1,0 +1,196 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+{"TEL.1":"puzzle.enter","TEL.2":1792869389893,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _run (res://_w795_accept.gd:41)
+         [7] _pump (res://_w795_accept.gd:94)
+CHECK PASS c2 enters puzzle-play puzzle-play
+LOCALE_STARTen
+{"TEL.1":"puzzle.promote","TEL.2":1792869389954,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (en) S4
+CHECK PASS router and panel locale are en router=en panel=en
+CHECK PASS PromotionRow shown in S4 (en) 
+CHECK PASS PromotionRow holds four names (en) 
+CHECK PASS queen name reads its copy (en) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name does not wrap (en) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name is at least UIS.T2 (en) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name is not clipped (en) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name sits inside R2 (en) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name covers no square (en) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS rook name reads its copy (en) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name does not wrap (en) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name is at least UIS.T2 (en) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name is not clipped (en) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name sits inside R2 (en) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name covers no square (en) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS bishop name reads its copy (en) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name does not wrap (en) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name is at least UIS.T2 (en) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name is not clipped (en) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name sits inside R2 (en) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name covers no square (en) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS knight name reads its copy (en) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name does not wrap (en) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name is at least UIS.T2 (en) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name is not clipped (en) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name sits inside R2 (en) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name covers no square (en) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+names[en]=["Queen", "Rook", "Bishop", "Knight"]
+{"TEL.1":"puzzle.enter","TEL.2":1792869390053,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _run (res://_w795_accept.gd:54)
+         [7] _pump (res://_w795_accept.gd:94)
+LOCALE_STARTzh-Hant
+{"TEL.1":"puzzle.promote","TEL.2":1792869390122,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (zh-Hant) S4
+CHECK PASS router and panel locale are zh-Hant router=zh-Hant panel=zh-Hant
+CHECK PASS PromotionRow shown in S4 (zh-Hant) 
+CHECK PASS PromotionRow holds four names (zh-Hant) 
+CHECK PASS queen name reads its copy (zh-Hant) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name does not wrap (zh-Hant) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name is at least UIS.T2 (zh-Hant) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name is not clipped (zh-Hant) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name sits inside R2 (zh-Hant) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name covers no square (zh-Hant) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS rook name reads its copy (zh-Hant) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name does not wrap (zh-Hant) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name is at least UIS.T2 (zh-Hant) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name is not clipped (zh-Hant) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name sits inside R2 (zh-Hant) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name covers no square (zh-Hant) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS bishop name reads its copy (zh-Hant) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name does not wrap (zh-Hant) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name is at least UIS.T2 (zh-Hant) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name is not clipped (zh-Hant) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name sits inside R2 (zh-Hant) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name covers no square (zh-Hant) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS knight name reads its copy (zh-Hant) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name does not wrap (zh-Hant) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name is at least UIS.T2 (zh-Hant) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name is not clipped (zh-Hant) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name sits inside R2 (zh-Hant) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name covers no square (zh-Hant) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+names[zh-Hant]=["Queen", "Rook", "Bishop", "Knight"]
+{"TEL.1":"puzzle.enter","TEL.2":1792869390218,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _run (res://_w795_accept.gd:54)
+         [7] _pump (res://_w795_accept.gd:94)
+LOCALE_STARTja
+{"TEL.1":"puzzle.promote","TEL.2":1792869390287,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (ja) S4
+CHECK PASS router and panel locale are ja router=ja panel=ja
+CHECK PASS PromotionRow shown in S4 (ja) 
+CHECK PASS PromotionRow holds four names (ja) 
+CHECK PASS queen name reads its copy (ja) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name does not wrap (ja) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name is at least UIS.T2 (ja) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name is not clipped (ja) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name sits inside R2 (ja) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS queen name covers no square (ja) text=Queen box=(57.0, 27.0) font=18 needed=(57.0, 27.0)
+CHECK PASS rook name reads its copy (ja) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name does not wrap (ja) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name is at least UIS.T2 (ja) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name is not clipped (ja) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name sits inside R2 (ja) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS rook name covers no square (ja) text=Rook box=(43.0, 27.0) font=18 needed=(43.0, 27.0)
+CHECK PASS bishop name reads its copy (ja) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name does not wrap (ja) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name is at least UIS.T2 (ja) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name is not clipped (ja) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name sits inside R2 (ja) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS bishop name covers no square (ja) text=Bishop box=(58.0, 27.0) font=18 needed=(58.0, 27.0)
+CHECK PASS knight name reads its copy (ja) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name does not wrap (ja) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name is at least UIS.T2 (ja) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name is not clipped (ja) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name sits inside R2 (ja) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+CHECK PASS knight name covers no square (ja) text=Knight box=(56.0, 27.0) font=18 needed=(56.0, 27.0)
+names[ja]=["Queen", "Rook", "Bishop", "Knight"]
+{"TEL.1":"puzzle.enter","TEL.2":1792869390384,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _run (res://_w795_accept.gd:54)
+         [7] _pump (res://_w795_accept.gd:94)
+{"TEL.1":"puzzle.promote","TEL.2":1792869390452,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (en) S4
+CHECK PASS router and panel locale are en router=en panel=en
+{"TEL.1":"puzzle.move","TEL.2":1792869390494,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792869390494,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] deal (res://puzzle_session.gd:186)
+         [3] advance (res://puzzle_session.gd:478)
+         [4] _advance_if_owed (res://puzzle_play_flow.gd:280)
+         [5] _after_result (res://puzzle_play_flow.gd:257)
+         [6] promotion (res://puzzle_play_flow.gd:149)
+         [7] handle_promotion_commit (res://session_router.gd:244)
+         [8] _run (res://_w795_accept.gd:72)
+         [9] _deal (res://_w795_accept.gd:121)
+         [10] _pump (res://_w795_accept.gd:94)
+commit tapped=queen sprite_pos=(6.22, 7.22) hit=queen committed=true state_before=S4 after=S1
+CHECK PASS the queen sprite hit-tests as queen queen
+CHECK PASS tapping queen commits true
+CHECK PASS tapping queen leaves S4 S4→S1
+{"TEL.1":"puzzle.promote","TEL.2":1792869390549,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (en) S4
+CHECK PASS router and panel locale are en router=en panel=en
+{"TEL.1":"puzzle.move","TEL.2":1792869390591,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792869390592,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+commit tapped=rook sprite_pos=(6.78, 7.22) hit=rook committed=true state_before=S4 after=S1
+CHECK PASS the rook sprite hit-tests as rook rook
+CHECK PASS tapping rook commits true
+CHECK PASS tapping rook leaves S4 S4→S1
+{"TEL.1":"puzzle.promote","TEL.2":1792869390646,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (en) S4
+CHECK PASS router and panel locale are en router=en panel=en
+{"TEL.1":"puzzle.move","TEL.2":1792869390687,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792869390688,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+commit tapped=bishop sprite_pos=(6.22, 7.78) hit=bishop committed=true state_before=S4 after=S1
+CHECK PASS the bishop sprite hit-tests as bishop bishop
+CHECK PASS tapping bishop commits true
+CHECK PASS tapping bishop leaves S4 S4→S1
+{"TEL.1":"puzzle.promote","TEL.2":1792869390742,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.5":"ok"}
+CHECK PASS last-rank place enters S4 (en) S4
+CHECK PASS router and panel locale are en router=en panel=en
+{"TEL.1":"puzzle.move","TEL.2":1792869390784,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792869390785,"TEL.3":"sess-1792869389657-71308-playtest-189534","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+commit tapped=knight sprite_pos=(6.78, 7.78) hit=knight committed=true state_before=S4 after=S1
+CHECK PASS the knight sprite hit-tests as knight knight
+CHECK PASS tapping knight commits true
+CHECK PASS tapping knight leaves S4 S4→S1
+FAILURES=[]
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
