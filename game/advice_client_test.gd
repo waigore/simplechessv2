@@ -262,20 +262,22 @@ func _check_offline_clears() -> String:
 		return "a backend failure must clear GS.online (X3)"
 	# R9 / X3 clear both fields: a failed search leaves no mark and no number.
 	if state["advice_best_move"] != null or state["advice_eval"] != null:
-		return "going offline must clear advice, both marks (R9, X3)"
+		return "going offline must clear both advice fields (R9, X3)"
 	if not _has_outcome(events, "advice.error", "unavailable"):
 		return "FAIL.T1 must be reported for EX.error and telemetry"
 	if not session.gestures_available():
 		return "play must continue after an advice failure (FAIL.T1)"
-	# FAIL.T1 "Stop eval": the failed stream is over, so nothing more is delivered.
+	return _stopped_after_failure(session)
+
+
+## FAIL.T1 "Stop eval": once a stream has failed, it delivers nothing further.
+func _stopped_after_failure(session: SharedGameSession) -> String:
 	for tick in range(5):
 		var later: Array = session.advice_control("poll").get("events", [])
 		if not later.is_empty():
 			return "a failed stream must stop, no further delivery (FAIL.T1): %s" % [later]
-	if (
-		session.play_state()["advice_best_move"] != null
-		or session.play_state()["advice_eval"] != null
-	):
+	var state := session.play_state()
+	if state["advice_best_move"] != null or state["advice_eval"] != null:
 		return "nothing may be delivered after the failure (FAIL.T1)"
 	return ""
 
