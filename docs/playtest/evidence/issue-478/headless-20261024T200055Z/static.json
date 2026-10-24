@@ -1,0 +1,198 @@
+{
+  "boot": {
+    "01a15199-87f5-7df8-a987-eecaaca9f919": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a151ef-6a32-77ec-ace1-9190aa56b7dc": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15215-15bd-77a5-b804-9ea4d95880a4": {
+      "cached": true,
+      "class": "FontFile",
+      "opened": true
+    },
+    "01a15215-15bd-7e3f-a3f8-ffcb1333a0ab": {
+      "cached": true,
+      "class": "FontFile",
+      "opened": true
+    },
+    "01a15dc4-969f-7176-8475-f6cd65a63925": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dc4-969f-72b7-adf6-c1acb94ff9a3": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dc4-969f-78fc-abb4-616df8fb4273": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dc4-969f-7a2d-b550-db4a1ffd02c2": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dc4-969f-7a81-9d34-29765e8dd787": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dc4-969f-7ea7-9828-22b148c9be59": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dc4-969f-7f48-9456-b4a7ae75565b": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    }
+  },
+  "boot_outcome": 0,
+  "log_counts": {},
+  "play": {
+    "01a14f87-eeee-7f30-aa10-4516f0191610": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a151f8-b7d8-710a-b767-92c9137bfd63": {
+      "cached": true,
+      "class": "AudioStreamOggVorbis",
+      "opened": true
+    },
+    "01a151f8-b7d8-759c-89c5-e1be5eecb2b2": {
+      "cached": true,
+      "class": "AudioStreamOggVorbis",
+      "opened": true
+    },
+    "01a151f8-b7d8-7ae6-84af-767ba53d09f6": {
+      "cached": true,
+      "class": "AudioStreamOggVorbis",
+      "opened": true
+    },
+    "01a151f8-b7d8-7e05-9921-e892e9a2e064": {
+      "cached": true,
+      "class": "AudioStreamOggVorbis",
+      "opened": true
+    },
+    "01a151f8-b7d8-7fe3-b94f-e3a562395d96": {
+      "cached": true,
+      "class": "AudioStreamOggVorbis",
+      "opened": true
+    },
+    "01a15dab-051c-7023-973b-0b37ef3aa1b3": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-7061-9aaf-f2ba5a069413": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-7155-b8ec-6de860bae114": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-72b6-8859-f3edab33c514": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-7392-9318-e8b69bf7abf2": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-73b7-bad0-e6df05f4d2b6": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-73c8-9edc-c4e82957f267": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-73ff-96fa-a75c6719313a": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-75dc-8624-91f1c45f98f7": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-784b-859a-1d347edf39f0": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-7c3f-94fc-ce51926b3549": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    },
+    "01a15dab-051c-7db1-8f3e-9cb5e68058d8": {
+      "cached": true,
+      "class": "ImageTexture",
+      "opened": true
+    }
+  },
+  "resolved_ids": {
+    "boot": [
+      "01a15199-87f5-7df8-a987-eecaaca9f919",
+      "01a151ef-6a32-77ec-ace1-9190aa56b7dc",
+      "01a15215-15bd-77a5-b804-9ea4d95880a4",
+      "01a15215-15bd-7e3f-a3f8-ffcb1333a0ab",
+      "01a15dc4-969f-7176-8475-f6cd65a63925",
+      "01a15dc4-969f-72b7-adf6-c1acb94ff9a3",
+      "01a15dc4-969f-78fc-abb4-616df8fb4273",
+      "01a15dc4-969f-7a2d-b550-db4a1ffd02c2",
+      "01a15dc4-969f-7a81-9d34-29765e8dd787",
+      "01a15dc4-969f-7ea7-9828-22b148c9be59",
+      "01a15dc4-969f-7f48-9456-b4a7ae75565b"
+    ],
+    "play": [
+      "01a14f87-eeee-7f30-aa10-4516f0191610",
+      "01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855",
+      "01a151f8-b7d8-710a-b767-92c9137bfd63",
+      "01a151f8-b7d8-759c-89c5-e1be5eecb2b2",
+      "01a151f8-b7d8-7ae6-84af-767ba53d09f6",
+      "01a151f8-b7d8-7e05-9921-e892e9a2e064",
+      "01a151f8-b7d8-7fe3-b94f-e3a562395d96",
+      "01a15dab-051c-7023-973b-0b37ef3aa1b3",
+      "01a15dab-051c-7061-9aaf-f2ba5a069413",
+      "01a15dab-051c-7155-b8ec-6de860bae114",
+      "01a15dab-051c-72b6-8859-f3edab33c514",
+      "01a15dab-051c-7392-9318-e8b69bf7abf2",
+      "01a15dab-051c-73b7-bad0-e6df05f4d2b6",
+      "01a15dab-051c-73c8-9edc-c4e82957f267",
+      "01a15dab-051c-73ff-96fa-a75c6719313a",
+      "01a15dab-051c-75dc-8624-91f1c45f98f7",
+      "01a15dab-051c-784b-859a-1d347edf39f0",
+      "01a15dab-051c-7c3f-94fc-ce51926b3549",
+      "01a15dab-051c-7db1-8f3e-9cb5e68058d8"
+    ]
+  },
+  "unresolved": {
+    "boot": 0,
+    "play": 0
+  }
+}

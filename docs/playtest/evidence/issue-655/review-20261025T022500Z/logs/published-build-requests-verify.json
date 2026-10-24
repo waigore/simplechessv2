@@ -1,0 +1,21 @@
+{
+ "url": "https://waigore.github.io/simplechessv2/",
+ "all_requests": [
+  "https://waigore.github.io/simplechessv2/",
+  "https://waigore.github.io/simplechessv2/index.png",
+  "https://waigore.github.io/simplechessv2/index.js",
+  "https://waigore.github.io/simplechessv2/index.wasm",
+  "https://waigore.github.io/simplechessv2/index.pck",
+  "https://waigore.github.io/simplechessv2/index.icon.png",
+  "blob:https://waigore.github.io/aa41f2cc-039f-4e0b-8f16-12cea9cc4bf7"
+ ],
+ "requests_after_boot_before_stream": 7,
+ "requests_after_entering_stream": [],
+ "non_own_origin": [],
+ "catalog_or_advice_route_requests": [],
+ "deal_lines": [
+  "WARNING: puzzle stream: deal read failed (status)",
+  "WARNING: puzzle stream: deal read failed (status)"
+ ],
+ "console_lines_total": 162
+}

@@ -16,6 +16,12 @@ const SHARED_RESULT := "shared-result"
 const PUZZLE_PLAY := "puzzle-play"
 const SESSION_ENDED := "session-ended"
 const DRAG_THRESHOLD_PX := 12.0
+## #793 — a prompt over R1 must be read with the board underneath, not scrawled
+## on by it: `BoardPresentation` draws its board, pieces, and overlays in canvas
+## layers above z_index 0 (a dragged piece reaches 10), so a prompt left at 0 is
+## repainted by the board on a display even though it is later in the tree. This
+## band clears every layer the board owns.
+const OVERLAY_Z := 20
 ## UIS.T2 reference frame height: UiChrome sizes are project-space px at this height.
 const REFERENCE_FRAME_HEIGHT_PX := UiChrome.REFERENCE_FRAME_HEIGHT_PX
 
@@ -428,6 +434,7 @@ func _show_shared_play(state: Dictionary) -> void:
 		"reject_square": str(state.get("reject_square", "")),
 		"pending_promote_to": str(state.get("pending_promote_to", "")),
 		"side_to_move": str(state.get("side_to_move", "white")),
+		"in_check": bool(state.get("in_check", false)),
 		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
 	}
 	var move_var: Variant = state.get("move", null)
@@ -503,6 +510,12 @@ static func place_centered(panel: Control, top_px: float) -> void:
 	panel.offset_bottom = top_px + panel.custom_minimum_size.y
 
 
+## `place_centered`, raised into `OVERLAY_Z` so the prompt paints over the board.
+static func place_centered_over_board(panel: Control, top_px: float) -> void:
+	place_centered(panel, top_px)
+	panel.z_index = OVERLAY_Z
+
+
 func _layout_shared_play_regions() -> void:
 	## R2–R4 stay in the top strip; R1 board fills the remaining viewport.
 	if _board == null or _shared_play == null:
@@ -552,6 +565,9 @@ func _show_puzzle_play(state: Dictionary) -> void:
 	_puzzle_play.configure(state, _ui_font, text_scale())
 	_puzzle_play.puzzle_open = bool(state.get("puzzle_open", false))
 	_puzzle_play.refresh()
+	# R1 starts below the strip: the shared reserve, or the puzzle strip's own when
+	# the state needs more (S4 names four options, a line taller — #795).
+	_board.offset_top = maxf(play_chrome_top_px(), _puzzle_play.reserved_px())
 	var position: Dictionary = state.get("position", {}) as Dictionary
 	var selection := str(state.get("selection", ""))
 	var legal: PackedStringArray = PackedStringArray()

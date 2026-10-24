@@ -1,0 +1,22 @@
+## C5/EX.confirm gate in game/puzzle_session.gd (needs_puzzle=false for C5)
+func request_confirm(control_id: String) -> Dictionary:
+	var kind := ""
+	var needs_puzzle := true
+	var ends_attempt := false
+	match control_id:
+		"C3":
+			kind = CONFIRM_REVEAL
+			ends_attempt = true
+		"C4":
+			kind = CONFIRM_ABANDON
+			ends_attempt = true
+		"C5":
+			kind = CONFIRM_LEAVE
+			needs_puzzle = false
+		_:
+			return {"ok": false}
+	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+		return {"ok": false}
+	if ends_attempt and _is_settled():
+		return {"ok": false, "reason": "settled"}
+	play_ui_state = UI_S2

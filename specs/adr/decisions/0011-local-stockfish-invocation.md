@@ -16,7 +16,7 @@ ADR-0002 makes the advice backend the only UCI peer. The client never talks to S
 
 How does the Python advice server reach Stockfish?
 
-In scope: who invokes Stockfish, and whether that link is a network connection. Out of scope: host vendor, deploy path, the advice wire schema, the API key (ADR-0010), and the GPL compliance approach ([ADR-0012](0012-advice-backend-gpl-compliance.md)).
+In scope: who invokes Stockfish, and whether that link is a network connection. Out of scope: host vendor and deploy path ([ADR-0015](0015-advice-backend-operator-deployments.md)), the advice wire schema, the API key (ADR-0010), and GPL ([ADR-0012](0012-advice-backend-gpl-compliance.md)).
 
 ## Decision
 
@@ -30,7 +30,7 @@ The Python server starts Stockfish. The UCI link is local, not a network connect
 2. Local engine traffic keeps the 2000 ms cap and the non-waiting move (ADR-0002).
 3. Local UCI keeps Stockfish off the browser (ADR-0002).
 
-Costs accepted: the Python server and Stockfish live and fail together. This ADR does not say where that server runs.
+Costs accepted: the Python server and Stockfish live and fail together. This ADR does not say where that server runs; [ADR-0015](0015-advice-backend-operator-deployments.md) does.
 
 ## Rejected alternatives
 

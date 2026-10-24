@@ -29,9 +29,9 @@ Each element below answers part of the demo question; every ID exists in `specs/
 | `PER.R5` with `PER.R1`, `PER.R3`, `PER.R4`, `PER.R6` | `board_view.gd` `set_advice_move()`: from/to corner brackets and an arrow in `PAL.C7` on the square rims (off the body centre), fading in over `ADVICE_FADE_S`; both marks together stay under 10% of a piece body. Selection, legal marks, and the turn chip behave as in demo #63. |
 | `PAL.C7`, `PAL.C10`, `PAL.C9`, `PAL.C8` | Advice teal for the marks and the eval, cream panels, ink text, rose error ink. |
 | `UIS.T2`, `UIS.I1` | Eval and error copy at ≥ `T2` body size; the Advice glyph is `UIS.I1` `icons/advice`. |
-| `CTR-advice-stream` O1–O3, E1–E2, G1, G3 | O1 = `{"api_key", "fen", "time_ms"}` printed by `_start_advice()`; E1 ticks (`best_move_uci`, `eval_cp`, `depth`, `time_ms`) drive the marks; O2/E2 cancel on move, Off, offline, and end. No client UCI, no Stockfish endpoint. |
+| `CTR-advice-stream` O1–O3, E1–E2, G1, G3 | O1 = `{"api_key", "fen", "time_ms"}` printed by `_start_advice()`; `fen` is the real placement (`_fen()`, the orthodox `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR …` at the start) and the autodrive asserts it against `START_FEN`. E1 ticks (`best_move_uci`, `eval_cp`, `depth`, `time_ms`) drive the marks; O2/E2 cancel on move, Off, offline, and end. No client UCI, no Stockfish endpoint. |
 | `SCH-advice-update` F1–F6, L2, I3 | F1/F2 from `best_move_uci`, F3/F4/F5/F6 carried by the tick; L2 writes only the advice fields; a tick from a cancelled stream is dropped (`_stream_id` guard in `poll_advice()`). |
-| `CMP-advice-backend` R1–R4 (simulated) | `sim_peer.gd` stands in for the backend as the sole answerer, stops by the requested cap, and streams one move per position. It is never a UCI peer. |
+| `CMP-advice-backend` R1–R4 (simulated) | `sim_peer.gd` stands in for the backend as the sole answerer, stops by the requested cap, and streams one move per position. It reads the ply from the `fen` placement by replaying `LINE` in order (`line_ply`), so an off-line position gets `FALLBACK`. It is never a UCI peer. |
 | `CMP-advice-client` (simulated) | `main.gd` keeps the client half: reads the cap, sends O1, applies E1, drops stale E1, clears on O2/O3. |
 | `specs/technical/sequences/advice-stream.md` S1–S7, B1–B3 | The same order on one node: start → request → (simulated search) → updates → fields → marks → end, with B1 (error), B2 (local move during a stream), B3 (Off). |
 | `specs/design/experience/feedback.md` “Advice ready” | Best move and eval appear in the band with a calm fade; the move was never delayed. |
@@ -88,6 +88,7 @@ Problems met while producing or registering the assets, each filed as a spec cha
 
 | ID | Finding | Element | Filed as |
 |----|---------|---------|----------|
+| F1 | The rendered board is mirrored on both axes: White sits on top and the files run right-to-left under the `a`–`h` band, so letters and pieces read as Black's view while `square_index`/`square_name` stay orthodox. Seen in the `advice-ready` screenshot, 2026-10-25. | `PER.R7`, `SPC.A1` | No new issue filed: the catalog `board-backgrounds/play-table` backdrop prints 1–8 from the far edge (already recorded on #63 and in #376's implementation note), and this PoC reads the board from `square_index`, so no wire value is affected. |
 | None | The demo consumed cataloged approved assets as-is; no generation, registration, or style problem surfaced. | — | — |
 
 ## Decisions
@@ -102,6 +103,10 @@ Design decisions encoded in the code, each traced to the spec.
 | D4 | Offline and a backend error both show the S3 line; the same page keeps playing and Dismiss clears the line without retrying. | `F-move-advice.R9`, `X3`, `EX.error`, `FAIL.T1` | `main.gd` `go_offline`, `simulate_failure`, `_dismiss_error` |
 | D5 | The marks use corner brackets on the square rims plus a centre-line arrow, teal `PAL.C7`, under 10% body coverage, fading in over 0.12 s. | `PER.R5`, `PER.R1`, `PAL.C7`, `UIS.M2` | `board_view.gd` `_add_advice_square`, `_add_advice_arrow`, `ADVICE_FADE_S` |
 | D6 | The peer deepens in three ticks (depth 6 → 12 → 18 at 5% / 35% / 85% of the cap), so advice visibly settles rather than snapping in. | `F-move-advice.R7`, `feedback.md` “Advice ready” | `sim_peer.gd` `TICKS`, `schedule` |
+| D7 | O1 `fen` is built from the named square (`a1 = 0`, so `(rank - 1) * 8 + file`), encoded with the FEN letter `piece_kind()` already returns; the autodrive asserts the start placement so a mis-encoded board fails loudly. | `CTR-advice-stream` Wire (`fen`) | `main.gd` `_fen`, `_fen_letter`, `START_FEN` |
+| D8 | The peer recognises its ply by replaying `LINE` in order from the start position, not by reading the FEN move counters; an off-line position gets `FALLBACK`. | `CMP-advice-backend` R1–R4 (simulated) | `sim_peer.gd` `answer_for`, `line_ply` |
+
+The rendered board is mirrored on both axes (White on top, files right-to-left under the `a`–`h` band), so it reads as Black's view; the pipeline finding below records it. `_fen` does not follow that rendering: it maps the named square (`square_index`) to FEN and emits an orthodox placement.
 
 ## Assumptions
 
@@ -153,8 +158,8 @@ Act: complete
 - **Import once** (fresh checkout): `godot --headless --path pocs/advice --import --quit`
 - **Run**: `godot --path pocs/advice` — tap a White piece, tap its destination; tap the `Advice On` switch in the band to turn advice Off; tap `Dismiss` on the error line.
 - **Headless smoke (autodrive)**: `DEMO_AUTODRIVE=1 godot --headless --path pocs/advice` — prints `[demo] PASS` when every check holds:
-  1. **Calm** — advice is ready at ~100 ms (first tick) and deepens to its final tick near the 2000 ms cap; the ready time is printed against that budget.
-  2. **Move never waits** — e2e4 is commanded while the first stream is open; advice clears on the move and the new position is evaluated for Black (e7e5), its marks on the new squares.
+  1. **Calm** — the O1 `fen` is the orthodox start placement (`[demo] O1 start fen: rnbqkbnr/…`), advice is ready at ~100 ms (first tick) and deepens to its final tick near the 2000 ms cap; the ready time is printed against that budget.
+  2. **Move never waits** — e2e4 is commanded while the first stream is open; advice clears on the move and the new position is evaluated for Black (e7e5), its marks on the new squares; the line then continues Nf3, Nc6 from the peer.
   3. **Off** — Advice Off clears the marks and eval and closes the stream; On resumes.
   4. **Offline** — the connection drops mid-evaluation: advice clears, the S3 line shows, reconnect resumes.
   5. **Failure** — a simulated backend failure clears advice and shows the S3 line; a local move still lands; Dismiss returns to S1.
@@ -165,6 +170,7 @@ Act: complete
 
 - No screens, clocks, result screen, promotion advice, or real backend: the peer is a scripted table, not a search.
 - The O1 request is printed, not sent: there is no network transport and no API key in the demo (ADR-0002).
+- The O1 `fen` omits the move counters and en-passant field beyond `-` (`… - 0 1`): enough for the wire's position, and the peer never reads them.
 - Under headless Linux the audio devices may be absent, so cues and beds no-op silently.
 - The demo's evals are plausible, not engine-grade.
 - The board is seated White only (no flip), like demo #63.

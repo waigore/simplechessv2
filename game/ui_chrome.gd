@@ -42,6 +42,13 @@ static func style_button(
 	add_font_size(button, BODY_PX, text_scale)
 	button.add_theme_color_override("font_color", COLOR_INK)
 	button.add_theme_color_override("font_disabled_color", Color(COLOR_INK, 0.4))
+	# #793 — the default theme paints a focused, hovered, or pressed button's
+	# label near-white, which is invisible on this cream chrome (PAL.K4: ink on
+	# cream). Keep C9 ink in every state the M2 border ease already carries.
+	for state in [
+		"font_focus_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color"
+	]:
+		button.add_theme_color_override(state, COLOR_INK)
 	var base_border := COLOR_ACCENT if (primary or last_mode) else COLOR_BORDER
 	var hover_border := COLOR_TABLE if not primary else COLOR_ACCENT.darkened(0.12)
 	var normal: StyleBoxFlat

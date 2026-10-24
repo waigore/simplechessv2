@@ -1,0 +1,16 @@
+### 1280x720
+viewport=(1280, 720) scale=1.125 state=S4
+strip=[P: (16.0, 12.0), S: (1248.0, 532.0)] board=[P: (0.0, 219.375), S: (1280.0, 500.625)]
+queen=[P: (491.0, 460.0), S: (57.0, 27.0)] text=Queen in_strip=true hits_board=true
+rook=[P: (576.0, 460.0), S: (43.0, 27.0)] text=Rook in_strip=true hits_board=true
+bishop=[P: (647.0, 460.0), S: (58.0, 27.0)] text=Bishop in_strip=true hits_board=true
+knight=[P: (733.0, 460.0), S: (56.0, 27.0)] text=Knight in_strip=true hits_board=true
+saved=/Users/waigore/Library/Application Support/Godot/app_userdata/Simple Chess/w795-s4-500.png
+### 720x1280
+viewport=(720, 1280) scale=3.5546875 state=S4
+strip=[P: (16.0, 12.0), S: (1248.0, 867.0)] board=[P: (0.0, 693.1641), S: (1280.0, 1581.836)]
+queen=[P: (408.0, 753.0), S: (101.0, 48.0)] text=Queen in_strip=true hits_board=true
+rook=[P: (537.0, 753.0), S: (76.0, 48.0)] text=Rook in_strip=true hits_board=true
+bishop=[P: (641.0, 753.0), S: (103.0, 48.0)] text=Bishop in_strip=true hits_board=true
+knight=[P: (772.0, 753.0), S: (99.0, 48.0)] text=Knight in_strip=true hits_board=true
+saved=/Users/waigore/Library/Application Support/Godot/app_userdata/Simple Chess/w795-s4-2d0.png
