@@ -77,6 +77,15 @@ jobs:
           test -s build/web/index.wasm
           test -s build/web/index.pck
 
+      # A tree with no cataloged asset file loads and then never leaves the
+      # loading screen (#630), so the release fails here instead of publishing.
+      - name: Check the shipped tree carries the asset root
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/web_export.py --preset "Web Release" --check-assets
+          find build/web/game_assets -type f ! -name '*.import' ! -name '*.uid' | head -5
+          du -sh build/web/game_assets build/web/audio_runtime
+
       - name: Check the release target and that the checkout was restored
         run: |
           set -euo pipefail

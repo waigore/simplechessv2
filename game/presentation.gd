@@ -276,6 +276,19 @@ func _build_shell() -> void:
 ## restyle on any later action keeps the reflowed sizes (AC4). One path, no
 ## phone-width theme; the board reflows on its next render.
 func _on_frame_resized() -> void:
+	_reflow_text()
+	_layout_shared_play_regions()
+
+
+## #708 — `S13` only reports the frame the layout really renders in when the
+## ratio follows the window, not a stale one from before the resize. `O12` may
+## change the drawable without a `resized` signal (a content-scale change), so
+## the seam asks the node to reflow on every applied viewport.
+func reflow_text_for_frame() -> void:
+	_reflow_text()
+
+
+func _reflow_text() -> void:
 	if _router == null:
 		return
 	var scale := text_scale()
@@ -284,7 +297,6 @@ func _on_frame_resized() -> void:
 	_mode_pick.set_text_scale(scale)
 	_shared_setup.set_text_scale(scale)
 	_shared_result.set_text_scale(scale)
-	_layout_shared_play_regions()
 
 
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
