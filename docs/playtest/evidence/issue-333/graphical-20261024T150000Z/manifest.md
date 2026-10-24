@@ -15,8 +15,8 @@
 - **Deal source**: the seams build's catalog peer answers no read by default, so the play
   legs enter the mate-in-one and promotion scenarios through `DBG.3` (a dealt record injected
   into the live session) exactly as `game/puzzle_play_test.gd` does. Entry, leave, and the
-  journey legs run on the real `C2` / `C5` / confirm path. This is recorded as a limitation:
-  the network deal path itself is not exercised here.
+  journey legs run on the real `C2` / `C5` / confirm path. This is a limitation: the network
+  deal path itself is not exercised here.
 - **Screenshots**: all under `screenshots/`, from this build.
 
 ## Results
@@ -36,16 +36,9 @@
 
 ## Defects
 
-- **#793** — the S2 confirm dialog (`StreamConfirm`, plus `SaveFailure`) lays out at its rect
-  but paints nothing; the player cannot see or read any confirm.
-- **#794** — R2 `PlayerElo` and `ResultCue` wrap to one letter per line (`autowrap` +
-  `HORIZONTAL_ALIGNMENT`), so Elo and every result cue are unreadable.
-- **#795** — the S4 promotion chooser's Q/R/B/N copy labels render in an 18 px strip, clipped
-  and unreadable.
+- **#793** — S2 confirm dialog paints nothing; **#794** — R2 text wraps per letter;
+  **#795** — S4 promotion labels clipped. Detail in `notes.md`.
 
 ## Paths
 
-- `notes.md`
-- `logs/graphical-run.log`, `logs/graphical-rects.log`, `logs/graphical-r2.log`
-- `screenshots/` (12 captures)
-- `probe/` — the throwaway harnesses that produced the readings
+- `notes.md`, `logs/`, `screenshots/` (12 captures), `probe/` (throwaway harnesses)
