@@ -78,7 +78,9 @@ func _entry_and_leave() -> String:
 		var elo := _panel().find_child("PlayerElo", true, false) as Label
 		if elo == null or not elo.visible or not elo.text.begins_with("Elo"):
 			problem = "R2 does not show GS.playerElo"
-		elif _board().white_seat != BoardGeometry.SEAT_BOTTOM:
+		else:
+			problem = _r2_wrap_problem(elo, "PlayerElo")
+		if problem.is_empty() and _board().white_seat != BoardGeometry.SEAT_BOTTOM:
 			problem = "Solving side White must read 0° (CAM-board.M2)"
 	if problem.is_empty():
 		problem = await _solving_side_black()
@@ -147,6 +149,8 @@ func _actions_and_states() -> String:
 			problem = "a Wrong move did not play SND.X5"
 		elif audio.cue_play_count != 1:
 			problem = "a Wrong move played more than one cue"
+		else:
+			problem = _r2_wrap_problem(cue, "cue_wrong")
 	if problem.is_empty():
 		# S2 for Reveal: named prompt, Confirm ends the attempt with `cue_failed`.
 		_router.handle_control("puzzle-play", "C3")
@@ -160,6 +164,8 @@ func _actions_and_states() -> String:
 		await process_frame
 		if cue == null or cue.text != StringTable.puzzle_play("cue_failed", "en"):
 			problem = "L5 did not show cue_failed"
+		else:
+			problem = _r2_wrap_problem(cue, "cue_failed")
 	if problem.is_empty():
 		# S2 for Abandon: Confirm → END.L6 → `cue_abandon`.
 		_deal_mate()
@@ -168,10 +174,28 @@ func _actions_and_states() -> String:
 		await process_frame
 		if cue == null or cue.text != StringTable.puzzle_play("cue_abandon", "en"):
 			problem = "L6 did not show cue_abandon"
+		else:
+			problem = _r2_wrap_problem(cue, "cue_abandon")
 	if problem.is_empty():
 		_deal_mate()
 		problem = _s1_focus_order(_panel())
 	return problem
+
+
+## #794 — R2 renders one line: a word-wrapped label in the centred `EloAndStatus`
+## row was offered no width and grew 1 px wide and 405 px tall, so `Elo 1000` and
+## every cue drew one character per line while `visible` and `text` still passed.
+## A single line is at most twice its font height; anything taller has wrapped.
+func _r2_wrap_problem(label: Label, what: String) -> String:
+	if label == null:
+		return "R2 %s is missing" % what
+	if label.autowrap_mode != TextServer.AUTOWRAP_OFF:
+		return "R2 %s word-wraps instead of reading on one line (#794)" % what
+	var minimum := label.get_combined_minimum_size()
+	var line_px := label.get_theme_font_size("font_size") * 2.0
+	if minimum.x < 1.0 or minimum.y > line_px:
+		return "R2 %s wraps to %s instead of one line (#794)" % [what, str(minimum)]
+	return ""
 
 
 ## S1 availability and focus order (puzzle-play-controls.md), including the 44px class.
@@ -216,6 +240,8 @@ func _promotion_and_save_failure() -> String:
 		if status == null or status.text != StringTable.puzzle_play("choose_promotion", "en"):
 			problem = "S4 does not show choose_promotion"
 	if problem.is_empty():
+		problem = _promotion_names_readable(panel)
+	if problem.is_empty():
 		# IN.deselect leaves the pawn selected and drops the choice.
 		if not _router.handle_deselect():
 			problem = "IN.deselect did not cancel S4"
@@ -230,9 +256,71 @@ func _promotion_and_save_failure() -> String:
 		var cue := panel.find_child("ResultCue", true, false) as Label
 		if cue.text != StringTable.puzzle_play("cue_solved", "en"):
 			problem = "W1 did not show cue_solved (got %s)" % cue.text
+		else:
+			problem = _r2_wrap_problem(cue, "cue_solved")
 	if problem.is_empty():
 		problem = await _save_failure()
 	return problem
+
+
+## #795 — S4 names its four options (C6): the actor must be able to read which
+## sprite commits which piece, so each name needs a visible, single-line, on-strip
+## box. Marking the label `visible` with the right `text` still passed while the
+## copy sat on an invisible off-strip sentinel, so measure what the actor sees.
+func _promotion_names_readable(panel: PuzzlePlayPanel) -> String:
+	var row := panel.find_child("PromotionRow", true, false) as Control
+	if row == null or not row.is_visible_in_tree():
+		return "S4 does not show the C6 promotion names (#795)"
+	var strip := (panel.find_child("PuzzleChrome", true, false) as Control).get_global_rect()
+	# The strip must hold every child it now carries: the last one ends inside it.
+	# (The reserve follows the frame, which a headless runner reports differently,
+	# so measure the laid-out content rather than the constant.)
+	var actions := panel.find_child("StreamActions", true, false) as Control
+	if actions.get_global_rect().end.y > strip.end.y + 0.5:
+		return "R2 strip ends before its content at %s (#795)" % actions.get_global_rect().end.y
+	if (
+		PuzzlePlayPanel.chrome_reserved_px(1.0, "S4")
+		<= PuzzlePlayPanel.chrome_reserved_px(1.0, "S1")
+	):
+		return "S4 does not reserve its promotion-name line (#795)"
+	var board := _board_rect(panel)
+	for kind in PuzzleSession.PROMOTE_ORDER:
+		var label := row.find_child("PromoteName%s" % kind.capitalize(), true, false) as Label
+		var problem := _promotion_name_problem(label, kind, strip, board)
+		if not problem.is_empty():
+			return problem
+	return ""
+
+
+## One S4 option name: present, visible, the piece's copy, one line, fitting its
+## box at UIS.T2, inside the R2 strip, and clear of R1's squares.
+func _promotion_name_problem(label: Label, kind: String, strip: Rect2, board: Rect2) -> String:
+	if label == null:
+		return "S4 omits the %s promotion name (#795)" % kind
+	var box := label.get_global_rect()
+	var needed := label.get_combined_minimum_size()
+	var problems := {
+		"not visible": not label.is_visible_in_tree(),
+		"reads %s" % label.text: label.text != StringTable.puzzle_play(kind, "en"),
+		"wraps": label.autowrap_mode != TextServer.AUTOWRAP_OFF,
+		"measures %s" % str(needed): needed.x < 1.0 or needed.y < 1.0,
+		"box %s clips %s" % [str(box.size), str(needed)]:
+		box.size.y + 0.5 < needed.y or box.size.x + 0.5 < needed.x,
+		"is under UIS.T2": label.get_theme_font_size("font_size") < UiChrome.BODY_PX,
+		"at %s leaves %s" % [str(box), str(strip)]: not strip.encloses(box),
+		"overlaps the board": box.intersects(board),
+	}
+	for symptom in problems:
+		if problems[symptom]:
+			return "S4 %s promotion name %s (#795)" % [kind, symptom]
+	return ""
+
+
+## R1 is the region below the reserve; a name inside it would cover squares.
+func _board_rect(panel: PuzzlePlayPanel) -> Rect2:
+	var host := panel.get_parent().get_parent() as Control
+	var board := host.find_child("BoardPresentation", true, false) as Control
+	return board.get_global_rect()
 
 
 func _save_failure() -> String:

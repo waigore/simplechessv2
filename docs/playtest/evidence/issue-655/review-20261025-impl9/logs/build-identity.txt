@@ -1,0 +1,7 @@
+measured at: 2026-10-24T17:18:02Z
+url: https://waigore.github.io/simplechessv2/index.pck
+last-modified: Sat, 24 Oct 2026 13:00:58 GMT
+etag: "6adcac0a-91e494"
+content-length: 9561236
+note: byte-identical to the artefact recorded in review-20261025-impl7 (same last-modified, etag, length),
+      so the published rows those folders measured cannot differ on this artefact.
