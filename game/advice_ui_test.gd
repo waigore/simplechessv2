@@ -46,6 +46,8 @@ func _after_boot() -> void:
 	if problem.is_empty():
 		problem = _marks_show_and_clear()
 	if problem.is_empty():
+		problem = _marks_fit_the_body_bound()
+	if problem.is_empty():
 		problem = _toggle_clears_at_once()
 	if problem.is_empty():
 		problem = _marks_clear_on_move()
@@ -149,6 +151,37 @@ func _marks_show_and_clear() -> String:
 	return ""
 
 
+## PER.R5 — marks and arrow cover ≤ 10% of a piece body. FRM.P1 defines the body
+## as the opaque body inside the 0.85 × 0.85 SPC.E1 box, not the square and not
+## the transparent canvas. The brackets sit in the square's corner margin, beyond
+## the widest body half-width, so they cover no body; only the arrow can.
+func _marks_fit_the_body_bound() -> String:
+	## FRM.P1: the widest body is the knight at 0.40 of a square.
+	const WIDEST_HALF_WIDTH := 0.20
+	## FRM.P1: the body box is 0.85, so the tall King body reaches 0.361.
+	const KING_HALF_HEIGHT := 0.85 * 0.85 * 0.5
+	var coverage := AdviceMarks.body_coverage()
+	return _first_fail(
+		[
+			[
+				AdviceMarks.bracket_inner_edge() > WIDEST_HALF_WIDTH,
+				(
+					"brackets must start beyond the widest body (%.3f)"
+					% AdviceMarks.bracket_inner_edge()
+				),
+			],
+			[
+				AdviceMarks.ARROW_TIP_GAP >= KING_HALF_HEIGHT,
+				"the arrowhead must stop short of the to-piece body",
+			],
+			[
+				coverage <= 0.10,
+				"PER.R5: marks cover %.1f%% of the King body (bound 10%%)" % [coverage * 100.0],
+			],
+		]
+	)
+
+
 func _toggle_clears_at_once() -> String:
 	_router.handle_control("shared-play", "C3")
 	if bool(_router.play_snapshot().get("advice", true)):
@@ -198,6 +231,10 @@ func _error_s3_dismiss() -> String:
 	var dismiss := play.find_child("AdviceErrorDismiss", true, false) as Button
 	if box == null or msg == null or dismiss == null:
 		return "S3 EX.error panel missing"
+	# Let the failed fetch park the client before a local move: a probe that
+	# moves on the failure tick cannot tell an offline gate from no gate.
+	await process_frame
+	await process_frame
 	var problem := _first_fail(
 		[
 			[
@@ -215,7 +252,27 @@ func _error_s3_dismiss() -> String:
 			],
 			[dismiss.custom_minimum_size.x >= UiChrome.MIN_TOUCH, "44px-class targets"],
 			[_router.play_gestures_available(), "C1-C5 stay available as S1 in S3"],
+			[
+				_router.shared_session.advice_client.failed(),
+				"the client must be parked before the S3 move is judged",
+			],
+			[
+				_router.shared_session.online == false,
+				"the failed fetch keeps the advice service offline (FAIL.T1)",
+			],
+			[
+				_router.shared_session.advice_error,
+				"the parked failure stays in EX.error while the board is played",
+			],
 			[_router.handle_input_commit("d7", "d5"), "a local move must land at once in S3"],
+			[
+				_router.shared_session.online == false and _router.shared_session.advice_error,
+				"the move must not wait on or clear the parked advice failure",
+			],
+			[
+				_router.handle_input_commit("e4", "e5"),
+				"both sides keep playing in S3 while the advice service is offline",
+			],
 		]
 	)
 	var st := _router._shared_play_state()
@@ -247,17 +304,18 @@ func _leave_clears_marks() -> String:
 	# X3 — the browser reconnects: reachable again, and the client un-parks.
 	client.resume()
 	_router.shared_session.online = true
-	if not _router.handle_input_commit("a2", "a3"):
+	# Black is to move: the S3 leg plays both sides, so the last move was White's.
+	if not _router.handle_input_commit("a7", "a6"):
 		return "a completed move must land while advice is live"
 	_router._process(0.016)
 	_router.shared_session.advice_control("poll")
 	var peer := _peer()
 	if peer == null:
 		return "advice must stay live after a completed move (R8)"
-	# Black is to move: the peer answers with Black's best move (R5).
-	peer.push_update({"best_move_uci": "g8f6", "eval_cp": 3})
+	# White is to move: the peer answers with White's best move (R5).
+	peer.push_update({"best_move_uci": "b1c3", "eval_cp": 3})
 	_router._process(0.016)
-	if _marks().last_from != "g8":
+	if _marks().last_from != "b1":
 		return "marks before leaving (got '%s')" % _marks().last_from
 	_router.handle_control("shared-play", "C4")
 	_router.handle_control("shared-play", "confirm")
