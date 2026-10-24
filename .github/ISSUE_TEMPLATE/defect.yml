@@ -1,12 +1,12 @@
 name: Defect
-description: A problem with the game or some other deliverable.
+description: An in-game or interface bug (not specs, docs, or planning).
 title: ""
 labels: ["type:defect", "status:pending-review"]
 body:
   - type: markdown
     attributes:
       value: |
-        Use for a bug or problem with any deliverable. Agents: prefer the `create-project-defect` skill.
+        Use for wrong game or interface behavior vs expected play. Spec/design/doc problems are tasks or clarification — not defects. Agents: prefer the `create-project-defect` skill.
   - type: textarea
     id: description
     attributes:

@@ -3,8 +3,9 @@ name: create-project-defect
 description: |-
   Create a GitHub Defect issue (type:defect) from docs/issues/; wire related
   links and native blocked-by when provided.
-  Use when the user reports a bug, broken behavior, or a problem with any deliverable.
-  Use proactively when a failure needs a tracked defect rather than burying it in a task.
+  Use when the user reports wrong game or interface behavior vs expected play.
+  Do not use for specs, docs, story maps, AC hygiene, or planning gaps (those
+  are tasks or clarification — see docs/issues/requirements.md).
 
   Examples:
   - user: "File a defect: jump input ignored on web" → collect per docs/issues/, create
@@ -14,7 +15,7 @@ description: |-
 
 # Create project defect
 
-Create a repository **Defect** (`type:defect`).
+Create a repository **Defect** (`type:defect`) for an **in-game or interface** bug only.
 
 **Issue contract:** [`docs/issues/`](../../../docs/issues/) (`requirements.md`, `body-shapes.md`, `hierarchy.md`). Do not redefine sections or invent a parallel template in this skill.
 
@@ -24,7 +25,7 @@ Create a repository **Defect** (`type:defect`).
 
 ## Steps
 
-1. **Read** Defect requirements + body shape docs.
+1. **Read** Defect requirements + body shape docs. Abort and redirect if the report is a spec/design/doc/planning problem: use clarification on an owning open issue, or `create-project-task` when material and uncovered — never a defect.
 2. **Collect** `title` and content for every required Defect section; optional reproduction, context, `related`, `parent`, `blocked_by`, `blocking`. Ask if required content is missing.
 3. **Build** the body exactly as specified in `body-shapes.md`.
 4. If `--no-create` / "draft only": print title + body and stop.
@@ -38,6 +39,7 @@ Create a repository **Defect** (`type:defect`).
 - Apply labels `type:defect` and `status:pending-review`. Apply `priority:high` or `priority:critical` only when the human requests it; leave priority unlabeled for normal.
 - Do not change priority after create; only humans set or change priority later.
 - Default: create on GitHub.
+- Never file a defect for specs, docs, maps, or non-material hygiene ([`requirements.md`](../../../docs/issues/requirements.md) — When to file what).
 
 ## Related
 

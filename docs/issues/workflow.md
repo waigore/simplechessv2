@@ -1,6 +1,6 @@
 # Issue workflow status
 
-Applies equally to Epic, Task, and Defect. Source of truth for status labels and transitions; skills must follow it and invent no parallel statuses.
+Applies to Epic, Task, and Defect. Source of truth for status labels and transitions; skills must follow it and invent no parallel statuses.
 
 ## Labels
 
@@ -21,9 +21,9 @@ Catalog and priority: [`docs/labels.md`](../labels.md) (unlabeled = normal; crea
 
 ## Transitions and evidence
 
-Evidence is freeform prose; intent must be clear. Post it as an issue comment (refinement also edits the body), then call `enforce-task-workflow-status`.
+Evidence is freeform prose; intent must be clear. Post as an issue comment (refinement also edits the body), then call `enforce-task-workflow-status`.
 
-Every write follows [body-writes.md](body-writes.md): compose to a file, write through `.github/scripts/gh_issue.py` (guard and read-back built in), and treat a failed read-back as a lost body, not evidence.
+Every write follows [body-writes.md](body-writes.md): compose to a file, write through `.github/scripts/gh_issue.py` (guard and read-back built in); a failed read-back is a lost body, not evidence.
 
 | From | Action / evidence | To |
 |------|-------------------|-----|
@@ -33,16 +33,17 @@ Every write follows [body-writes.md](body-writes.md): compose to a file, write t
 | pending-refinement | Refined issue body + summary comment | pending-review |
 | pending-clarification | PO clarification comment | pending-review, or pending-refinement if refine still needed |
 | pending-implementation | Comment summarizing deliverables (PRs/commits) | pending-verification |
-| pending-verification | Independent pass: every deliverable checked; standards followed; tests adequate | pending-acceptance |
+| pending-verification | Independent pass: each deliverable checked; standards followed; tests adequate | pending-acceptance |
 | pending-verification | Fail: detail issues | pending-implementation |
-| pending-acceptance | Accept: repo-locatable test evidence per AC; related PRs | accepted |
-| pending-acceptance | Fail: link created defect | pending-implementation |
+| pending-acceptance | Accept: repo-locatable test evidence per AC; related PRs | accepted (leave open; planner may close) |
+| pending-acceptance | Fail (game/interface): link created defect | pending-implementation |
+| pending-acceptance | Spec/ambiguity blocks testing (no defect) | pending-clarification |
 | pending-acceptance | Cannot test without PO input | pending-clarification |
 | pending-review, pending-refinement, pending-clarification, pending-implementation, pending-verification, pending-acceptance | Supersession comment naming the successor; see [terminal-states.md](terminal-states.md) | superseded |
 
-Reviews are holistic against the whole issue and its parent/sibling relationships, including after prior refinements.
+Reviews are holistic against the issue and parent/sibling relationships, including after prior refinements.
 
-No row leaves `accepted` or `superseded`: both are terminal ([terminal-states.md](terminal-states.md)).
+No row leaves `accepted` or `superseded`: both terminal ([terminal-states.md](terminal-states.md)).
 
 Fail-review cascades: [workflow-cascade.md](workflow-cascade.md).
 
@@ -58,4 +59,4 @@ Fail-review cascades: [workflow-cascade.md](workflow-cascade.md).
 | `verify-project-issue` | Independent verify pass / fail |
 | `accept-project-issue` | Accept / fail / clarify |
 
-Create skills apply type + `status:pending-review`; priority unlabeled unless a human requested high or critical. Dispatch: [workflow-dispatch.md](workflow-dispatch.md).
+Create skills apply type + `status:pending-review`; priority unlabeled unless human requested high or critical. Dispatch: [workflow-dispatch.md](workflow-dispatch.md).

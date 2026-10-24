@@ -20,7 +20,7 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`create-project-task`](create-project-task/SKILL.md) | Create a Task issue (`type:task`) with parent/blocked-by wiring |
 | [`plan-project-waves`](plan-project-waves/SKILL.md) | Cut coherent waves from specs; vertical epics + leaves for the expanded wave; confirm before filing |
 | [`audit-project-wave`](audit-project-wave/SKILL.md) | Audit a filed wave (epics + tasks) for coherence, focus, completeness; confirm before mutating |
-| [`project-planner-agent`](project-planner-agent/SKILL.md) | Align plan with specs while shrinking open issues; create only when necessary (breadth or depth) |
+| [`project-planner-agent`](project-planner-agent/SKILL.md) | Align plan with specs; shrink/distill (close non-gameplay defects); create only when necessary |
 | [`unblock-project-issues`](unblock-project-issues/SKILL.md) | Remove blocked-by when the default branch satisfies the blocker or the edge is obsolete (acceptance is not a gate) |
 | [`create-project-defect`](create-project-defect/SKILL.md) | Create a Defect issue (`type:defect`) with related/blocked-by wiring |
 | [`enforce-task-workflow-status`](enforce-task-workflow-status/SKILL.md) | Gate or audit `status:*` labels; hygiene for duplicate `priority:*` |

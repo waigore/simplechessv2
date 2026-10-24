@@ -7,7 +7,7 @@ description: |-
 
   Examples:
     - user: "Accept #12 with evidence in docs/playtest/evidence/..." → accept comment, status:accepted, leave open (planner may close later)
-    - user: "Acceptance failed; file defect" → create defect, link, → pending-implementation
+    - user: "Acceptance failed; file defect" → create defect (game/interface only), link, → pending-implementation
     - user: "Need PO input to finish acceptance on #12" → pending-clarification
     - user: "Headless accept on #12; screenshots still waiting" → stay pending-acceptance, no defect
 ---
