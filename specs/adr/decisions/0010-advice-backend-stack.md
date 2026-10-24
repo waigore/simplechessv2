@@ -24,6 +24,8 @@ In scope: server separation and runtime, the configured endpoint, and simple API
 - The frontend opens advice traffic only to its **configured advice API endpoint**.
 - Every advice request carries the **configured API key**. A missing or wrong key is an advice failure ([`FAIL.T1`](../../technical/failures.md)) that clears advice without blocking a local move.
 - No host vendor or deploy path is chosen; the endpoint is configuration.
+- **Client-side delivery of the configured endpoint and key is the deploy path**, so it stays out of this decision and out of `specs/`: no delivery mechanism is named there, and none is required. A key that a published bundle makes readable is accepted as an **abuse throttle**, not a secrecy boundary.
+- The backend reads its key from its own **environment variable**; a request whose `api_key` does not match is rejected as [`FAIL.T1`](../../technical/failures.md), and an unset variable is treated the same way — never as an open door.
 
 ## Reasoning
 
@@ -36,12 +38,7 @@ Cost: one extra runtime; a static per-deployment key.
 
 ## Rejected alternatives
 
-| Alternative | Why rejected |
-|-------------|--------------|
-| Engine or backend inside the Godot client | Violates ADR-0002 server-only UCI |
-| Hard-coded backend URL | Repointing a deploy would change code |
-| No authentication | Open compute for anyone who finds the URL |
-| Accounts or OAuth | No accounts exist; overkill for optional advice |
+Moved to [`rejected-alternatives.md`](0010-advice-backend-stack/rejected-alternatives.md): four options rejected against a driver. Client-side delivery of the values is not among them — it is the deploy path, outside this decision's scope.
 
 ## Non-functional requirements
 
@@ -55,16 +52,8 @@ Shared secret over TLS; endpoint is portable configuration.
 
 ## Imposes
 
-| Spec or element | Constraint |
-|-----------------|------------|
-| [`specs/technical/configuration.md`](../../technical/configuration.md) | Advice endpoint and API key are client configuration values consumed by the advice client |
-| [`CMP-advice-client`](../../technical/components/advice-client.md) | Sends advice traffic only to the configured endpoint, with the configured key |
-| [`CTR-advice-stream`](../../technical/contracts/advice-stream.md) | Requests carry the key; a mismatch is an advice failure that never blocks a local move |
+Moved to [`imposes-validation.md`](0010-advice-backend-stack/imposes-validation.md): one row per constrained spec element, including the backend's own key source.
 
 ## Validation
 
-| Check | Method | When |
-|-------|--------|------|
-| Wrong or missing key fails advice; local move unblocked | Automated test | Every build |
-| Client opens advice traffic only to the configured endpoint | Review rule / architecture test | Every release |
-| No host vendor, deploy path, cost, or GPL text here (0015, 0012) | Spec lint | Before acceptance |
+Moved to [`imposes-validation.md`](0010-advice-backend-stack/imposes-validation.md): each check, its method, and when it runs, including the unset-key rejection.
