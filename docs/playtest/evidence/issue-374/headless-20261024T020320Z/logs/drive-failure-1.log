@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R374 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R374 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R374 {"check":"router_present","detail":"","ok":true}
+R374 {"check":"presentation_present","detail":"","ok":true}
+R374 {"check":"play_reached","detail":"shared-play","ok":true}
+WARNING: advice: error after 38 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:823)
+         [3] advice_control (res://shared_game_session.gd:803)
+         [4] _drive_advice (res://session_router.gd:492)
+         [5] _poll_advice (res://session_router.gd:483)
+         [6] _process (res://session_router.gd:129)
+R374 {"failure":{"best_move":null,"error":true,"eval":null,"online":false,"streams_started":352}}
+R374 {"check":"connection_loss_marks_offline","detail":"false","ok":true}
+R374 {"check":"loss_clears_advice","detail":"side=white best=<null> eval=<null> online=false advice=true stage=S1","ok":true}
+R374 {"check":"play_continues_offline","detail":"side=black best=<null> eval=<null> online=false advice=true stage=S1","ok":true}
+R374 {"check":"one_error_not_per_poll","detail":"{\"events\":[]}","ok":true}
+R374 {"summary":{"checks":9,"failed":0}}
