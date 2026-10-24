@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/specs/rules/technical/schemata.md).
 
-Fields of [`SCH-string-table`](string-table.md), split per the rules' §Splitting. Invariants, the sharing, missing-key, gate, and same-in-every-locale rules are in [`string-table-fields-rules.md`](string-table-fields-rules.md); the lifecycle, relationships, diagram, and persistence are in [`string-table-invariants.md`](string-table-invariants.md).
+Fields of [`SCH-string-table`](string-table.md), split per the rules' §Splitting. The gate rules are in [`string-table-gate.md`](string-table-gate.md); the sharing, missing-key, and same-in-every-locale rules are in [`string-table-fields-rules.md`](string-table-fields-rules.md); the lifecycle, relationships, diagram, and persistence are in [`string-table-invariants.md`](string-table-invariants.md).
 
 ## Fields
 

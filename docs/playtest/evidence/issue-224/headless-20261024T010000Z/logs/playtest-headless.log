@@ -1,0 +1,34 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+A224 playtest_build=true session=sess-1792797116424-23630-playtest godot=4.7.2-stable (official) display=headless
+A224 JUDGE ENV.1 environment pass — headless display (headless)
+A224 JUDGE ENV.1 TEL.3 pass — session id marks a playtest build
+A224 JUDGE S1 PRG.A1/P1 pass — committed Player Elo 1032.5, reopen reads 1032.50
+A224 JUDGE S1 PRG.P2/M1 pass — committed Last mode puzzle, reopen reads puzzle
+A224 JUDGE S1 PRG.P3/M1 pass — committed recentSolved [pz-1], reopen reads ["pz-1"]
+A224 JUDGE S1 PRG.A1 start pass — cleared store reopens at CFG.ELO_START 1000
+A224 JUDGE S2 PRG.P3 cap pass — solved list held at 20 IDs (cap CFG.ELO_RECENT_WINDOW=20)
+A224 JUDGE S2 PRG.P3 order pass — newest ID last (pz-solve-24)
+A224 JUDGE S2 PRG.P3 drop pass — oldest ID dropped from the window
+{"TEL.1":"puzzle.enter","TEL.2":1792797116513,"TEL.3":"sess-1792797116424-23630-playtest","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:729)
+         [4] _on_mode_pick_control (res://session_router.gd:596)
+         [5] handle_control (res://session_router.gd:191)
+         [6] _judge_s1_stream (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-224/headless-20261024T010000Z/probe/accept224_probe.gd:137)
+         [7] _after_boot (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-224/headless-20261024T010000Z/probe/accept224_probe.gd:67)
+         [8] _settle (/Users/waigore/Documents/GitHub/simplechessv2_all/1/docs/playtest/evidence/issue-224/headless-20261024T010000Z/probe/accept224_probe.gd:196)
+A224 JUDGE S1 PRG.A1 save not-judged — no puzzle dealt on this build (catalog endpoint/key unset per configuration B3)
+A224 JUDGE S1 PRG.P3 append not-judged — no puzzle dealt on this build (catalog endpoint/key unset per configuration B3)
+A224 stream_checkpoint dealt=false
+A224 shared_entry stage=shared-setup elo 1000.00→1000.00 recent=["pz-solve-05", "pz-solve-06", "pz-solve-07", "pz-solve-08", "pz-solve-09", "pz-solve-10", "pz-solve-11", "pz-solve-12", "pz-solve-13", "pz-solve-14", "pz-solve-15", "pz-solve-16", "pz-solve-17", "pz-solve-18", "pz-solve-19", "pz-solve-20", "pz-solve-21", "pz-solve-22", "pz-solve-23", "pz-solve-24"]
+A224 JUDGE S4 PRG.A1/F1 pass — Shared entry reached shared-setup; no axis advanced, nothing carried forward (elo same=true, recentSolved same=true)
+A224 JUDGE S4 PRG.Z1–Z3 pass — Puzzle-stream completion rules gain nothing from a Shared game
+A224 SUMMARY pass=11 fail=0 not-judged=2
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

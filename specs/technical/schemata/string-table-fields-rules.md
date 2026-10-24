@@ -24,7 +24,7 @@ In [`string-table-invariants.md`](string-table-invariants.md) §Lifecycle.
 
 ## Relationships
 
-- One owner to many keys: many-to-one. F2 enumerates the owners.
+- One owner to many keys: many-to-one. F2 lists the owners whose three locales are complete, in display order; no consumer depends on it.
 - Rows are consumed through [`CTR-localization`](../contracts/localization.md).
 
 ## Diagram
@@ -45,7 +45,7 @@ A key missing in a locale reads `en` and logs once per owner and key; play conti
 
 ## Completeness gate
 
-The gate is the parity test in `game/string_table_test.gd`. It reads every Copy table under [`specs/ux/screens/`](../../ux/screens/) and the Key column of [`exceptions.md`](../../ux/exceptions.md), compares each key set exactly against the shipped tables in all three locales, and compares the owner set those tables name against the shipped owners. It is the only copy-completeness gate; the localization playtest protocol observes the same keys as a player. It follows the shipped side of the `exceptions` column ([`string-table-gate.md`](string-table-gate.md) §Gate-input rule).
+In [`string-table-gate.md`](string-table-gate.md) §Owner-addition rule; the `exceptions` Key column is read as a subset of the shipped keys (§Key-column shapes). It is the only copy-completeness gate, and a playtest protocol observes the same keys as a player (I2).
 
 ## Same in every locale
 

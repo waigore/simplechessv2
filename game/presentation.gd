@@ -467,8 +467,28 @@ func _show_advice_update(state: Dictionary) -> void:
 ## any logical frame size and no absolute `position` overrides the anchors.
 ## `top_px` is the reference-frame vertical top the mockups keep.
 func _place_centred_column(panel: Control, top_px: float) -> void:
-	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_KEEP_SIZE)
+	Presentation.place_centered(panel, top_px)
+
+
+## #616 — the one placement model for a chrome panel: horizontally centered in
+## its parent at a fixed vertical top. Offsets are written against the 0.5
+## anchors from the panel's min size, never a fixed x or its laid-out size, so
+## the column stays centered when the `expand` frame changes size — a panel is
+## placed while still hidden, before its content has sized it.
+## `GROW_DIRECTION_BOTH` keeps that true when localized copy makes the content
+## wider than the min size: the box widens to each side of the anchor instead of
+## to the right only, which would drift the drawn centre off the frame.
+static func place_centered(panel: Control, top_px: float) -> void:
+	var half_width := panel.custom_minimum_size.x * 0.5
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	panel.anchor_left = 0.5
+	panel.anchor_right = 0.5
+	panel.anchor_top = 0.0
+	panel.anchor_bottom = 0.0
+	panel.offset_left = -half_width
+	panel.offset_right = half_width
 	panel.offset_top = top_px
+	panel.offset_bottom = top_px + panel.custom_minimum_size.y
 
 
 func _layout_shared_play_regions() -> void:

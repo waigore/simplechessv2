@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/technical/schemata.md`](../../../.agents/specs/rules/technical/schemata.md).
 
-Invariants and lifecycle of [`SCH-string-table`](string-table.md), split per the rules' §Splitting. Fields are in [`string-table-fields.md`](string-table-fields.md); the copy rules are in [`string-table-fields-rules.md`](string-table-fields-rules.md).
+Invariants and lifecycle of [`SCH-string-table`](string-table.md), split per the rules' §Splitting. Fields are in [`string-table-fields.md`](string-table-fields.md); the copy rules are in [`string-table-fields-rules.md`](string-table-fields-rules.md); the gate rules are in [`string-table-gate.md`](string-table-gate.md).
 
 ## Fields
 
