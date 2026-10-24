@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Responsibility |
 |----|----------------|
-| R1 | Read generated asset manifest by asset ID only ([`AST.R1`](../asset-access.md)); Opus audio loads [`AST.O3`](../asset-access.md) |
+| R1 | Read generated asset manifest by asset ID only ([`AST.R1`](../asset-access.md)); audio routes by its own stream header — Opus loads [`AST.O3`](../asset-access.md), any other stream loads where it lies |
 | R2 | Preload Boot group before mode pick ready ([`AST.G1`](../asset-access.md)); a group that leaves an approved ID unresolved emits [`CTR-asset-resolve`](../contracts/asset-resolve.md) E4 with the count, logged, and never the ready event |
 | R3 | Preload Play group on first play screen ([`AST.G2`](../asset-access.md)) |
 | R4 | Handle unresolved IDs per [`AST.R3`](../asset-access.md) |

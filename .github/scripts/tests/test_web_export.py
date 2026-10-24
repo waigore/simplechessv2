@@ -50,6 +50,12 @@ export_path="../build/web/index.html"
 variant/thread_support=false
 '''
 
+# The two stream headers `game/asset_resolver.gd` `_load_audio` tells apart when
+# it picks an audio route: an Ogg page carrying `OpusHead` plays from the Vorbis
+# copy, anything else plays where it lies (#812).
+OPUS_STREAM = b"OggS\x00\x02" + bytes(20) + b"\x01" + web_export.OPUS_HEADER
+VORBIS_STREAM = b"OggS\x00\x02" + bytes(20) + b"\x01vorbis"
+
 
 def _fake_godot(tmp_path: Path, *, artifacts: bool, fail: bool = False, assets: bool = False) -> Path:
     """A stand-in `godot` that writes export artifacts from its last argument.
@@ -395,12 +401,29 @@ class WebExportTest(unittest.TestCase):
             },
         )
 
+    def _stage_stream(self, shipped: Path, relative: str, header: bytes) -> None:
+        """Stage a cataloged audio source the way the export does: repo copy and shipped copy.
+
+        The resolver routes by the stream's own header, so a test that means the
+        Vorbis-copy route writes `OPUS_STREAM`, and one that means the in-place
+        route writes `VORBIS_STREAM` (#812).
+        """
+        for root in (self.repo / web_export.ASSET_ROOT, shipped / web_export.ASSET_ROOT):
+            target = root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(header)
+
+    def _stage_ambient_streams(self, shipped: Path, header: bytes) -> None:
+        for name in ("cafe-ambient-a.ogg", "cafe-ambient-b.ogg"):
+            self._stage_stream(shipped, f"music/{name}", header)
+
     def test_group_check_passes_when_the_audio_copies_ship_loose(self) -> None:
         self._music_manifest()
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
+        self._stage_ambient_streams(shipped, OPUS_STREAM)
         for asset_id in ("bed-a", "bed-b"):
-            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(b"OggS")
+            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(VORBIS_STREAM)
         web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
         assert web_export.missing_group_files(shipped, self.repo, "ambient") == []
 
@@ -409,9 +432,7 @@ class WebExportTest(unittest.TestCase):
         self._music_manifest()
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
-        (shipped / web_export.ASSET_ROOT / "music").mkdir(parents=True)
-        for name in ("cafe-ambient-a.ogg", "cafe-ambient-b.ogg"):
-            (shipped / web_export.ASSET_ROOT / "music" / name).write_bytes(b"OpusHead")
+        self._stage_ambient_streams(shipped, OPUS_STREAM)
         with self.assertRaises(web_export.ExportError) as raised:
             web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
         assert "0 of 2 ambient asset file(s) resolved" in str(raised.exception)
@@ -423,10 +444,8 @@ class WebExportTest(unittest.TestCase):
         self._music_manifest()
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
-        (shipped / web_export.ASSET_ROOT / "music").mkdir(parents=True)
-        for name in ("cafe-ambient-a.ogg", "cafe-ambient-b.ogg"):
-            (shipped / web_export.ASSET_ROOT / "music" / name).write_bytes(b"OpusHead")
-        (shipped / web_export.AUDIO_RUNTIME / "other-sfx.ogg").write_bytes(b"OggS")
+        self._stage_ambient_streams(shipped, OPUS_STREAM)
+        (shipped / web_export.AUDIO_RUNTIME / "other-sfx.ogg").write_bytes(VORBIS_STREAM)
         # The catalog check counts the asset root and an audio copy: both present.
         assert web_export.asset_root_present(shipped, self.repo)
         with self.assertRaises(web_export.ExportError) as raised:
@@ -438,6 +457,7 @@ class WebExportTest(unittest.TestCase):
         self._music_manifest()
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
+        self._stage_ambient_streams(shipped, OPUS_STREAM)
         _pck(
             shipped / web_export.PACK,
             [f"res://audio_runtime/{asset_id}.ogg" for asset_id in ("bed-a", "bed-b")],
@@ -449,10 +469,36 @@ class WebExportTest(unittest.TestCase):
         self._music_manifest()
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, assets=False, audio=False)
+        self._stage_ambient_streams(shipped, OPUS_STREAM)
         _pck(shipped / web_export.PACK, ["res://audio_runtime/bed-a.ogg.import"])
         assert web_export.missing_group_files(shipped, self.repo, "ambient") == [
             ("bed-a", "audio_runtime/bed-a.ogg"),
             ("bed-b", "audio_runtime/bed-b.ogg"),
+        ]
+
+    def test_group_check_plays_a_non_opus_stream_where_it_lies(self) -> None:
+        """A plain Vorbis catalog stream is the file the resolver plays, so no copy is due (#812)."""
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        self._stage_ambient_streams(shipped, VORBIS_STREAM)
+        assert web_export.group_routes(shipped, self.repo, "ambient") == [
+            ("bed-a", "music/cafe-ambient-a.ogg"),
+            ("bed-b", "music/cafe-ambient-b.ogg"),
+        ]
+        web_export.ensure_group_assets_resolve(shipped, self.repo, "ambient")
+        assert web_export.missing_group_files(shipped, self.repo, "ambient") == []
+
+    def test_group_check_names_the_catalog_path_when_no_stream_ships(self) -> None:
+        """Without the catalog stream the resolver reads the catalog path and finds nothing (#812)."""
+        self._music_manifest()
+        shipped = self.tmp_path / "build" / "web"
+        self._stage_assets(shipped, assets=False, audio=False)
+        for asset_id in ("bed-a", "bed-b"):
+            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(VORBIS_STREAM)
+        assert web_export.missing_group_files(shipped, self.repo, "ambient") == [
+            ("bed-a", "music/cafe-ambient-a.ogg"),
+            ("bed-b", "music/cafe-ambient-b.ogg"),
         ]
 
     def test_group_check_reads_each_non_audio_kind_at_the_asset_root(self) -> None:
@@ -462,7 +508,8 @@ class WebExportTest(unittest.TestCase):
         )
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, audio=False)
-        (shipped / web_export.AUDIO_RUNTIME / "sfx.ogg").write_bytes(b"OggS")
+        # The sound effect is a plain stream, so it plays from the catalog path.
+        self._stage_stream(shipped, "sound-effects/check.ogg", VORBIS_STREAM)
         assert web_export.missing_group_files(shipped, self.repo, "play") == [
             ("board", "board-backgrounds/play-table.svg")
         ]
@@ -479,10 +526,12 @@ class WebExportTest(unittest.TestCase):
         self._music_manifest()
         shipped = self.tmp_path / "build" / "web"
         self._stage_assets(shipped, audio=False)
+        self._stage_ambient_streams(shipped, OPUS_STREAM)
+        self._stage_stream(shipped, "sound-effects/check.ogg", OPUS_STREAM)
         check = ["--check-groups", "--repo", str(self.repo), "--preset", web_export.RELEASE_PRESET]
         assert web_export.main(check) == 1
         for asset_id in ("bed-a", "bed-b", "sfx"):
-            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(b"OggS")
+            (shipped / web_export.AUDIO_RUNTIME / f"{asset_id}.ogg").write_bytes(VORBIS_STREAM)
         assert web_export.main(check) == 0
 
     def test_pack_entries_reads_the_real_directory_and_no_sidecar_text(self) -> None:

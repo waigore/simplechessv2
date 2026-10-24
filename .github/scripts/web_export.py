@@ -15,7 +15,8 @@ tree; `ensure_staged_assets` fails a build that carries no cataloged asset file
 (#647), `ensure_boot_assets_resolve` fails one whose `boot` assets sit at no
 route the resolver reads (#630, #715), and `ensure_group_assets_resolve` reads
 every preload group (`boot`, `play`, `ambient`) at the route its kind is read
-at, so a bundle that cannot play a group never publishes (#812).
+at — an Opus stream at its Vorbis copy, every other stream where it lies — so a
+bundle that cannot play a group never publishes (#812).
 
 `ensure_no_client_engine` is the engine-boundary check of ADR-0002 §Validation
 ("No client Stockfish endpoint"; CTR-advice-stream G3): the `Web playtest` and
@@ -63,6 +64,11 @@ PACK_MAGIC = b"GDPC"
 PACK_ENTRY_TAIL = 8 + 8 + 16 + 4
 # The file kinds the resolver loads (`game/asset_resolver.gd` `_load_media`).
 LOADABLE_SUFFIXES = {".svg", ".png", ".woff2", ".ttf", ".otf", ".ogg"}
+# `game/asset_resolver.gd` `_load_audio` plays the committed Vorbis copy only when
+# the catalog stream's own header names Opus, reading this many leading bytes;
+# every other stream plays from the catalog path (#812).
+OPUS_HEADER = b"OpusHead"
+STREAM_HEADER_BYTES = 64
 # Every preload group the shipped tree must serve ([`AST.G1`]–[`G3`]) — `boot`,
 # `play` and `ambient` (#812).
 PRELOAD_GROUPS = ("boot", "play", "ambient")
@@ -310,7 +316,7 @@ def missing_boot_files(shipped: Path, repo_root: Path) -> list[tuple[str, str]]:
     blob = shipped_blob(shipped / PACK)
     loose = {_relative(path, shipped / ASSET_ROOT) for path in staged_asset_files(shipped)}
     unresolved: list[tuple[str, str]] = []
-    for asset_id, path in boot_asset_ids(_manifest(repo_root)):
+    for asset_id, path in group_members(_manifest(repo_root), "boot"):
         if path in {seen for _, seen in unresolved}:
             continue
         served = path in loose and (shipped / ASSET_ROOT / path).is_file()
@@ -323,7 +329,8 @@ def missing_boot_files(shipped: Path, repo_root: Path) -> list[tuple[str, str]]:
 def group_members(document: dict, group: str) -> list[tuple[str, str]]:
     """`(asset ID, asset-root-relative file)` for each file a preload group loads.
 
-    Read from the committed manifest, so the check follows the catalog.
+    Read from the committed manifest, so the check follows the catalog. One
+    approved entry can name several files; each is a separate route to serve.
     """
     return [
         (str(asset_id), path)
@@ -332,43 +339,71 @@ def group_members(document: dict, group: str) -> list[tuple[str, str]]:
     ]
 
 
+def group_routes(shipped: Path, repo_root: Path, group: str) -> list[tuple[str, str]]:
+    """`(asset ID, route)` for each file a preload group loads, at the route its kind is read at.
+
+    `game/asset_resolver.gd` picks an audio route from the **stream**, not the
+    suffix: `_load_audio` probes the catalog file and plays the committed Vorbis
+    copy `res://audio_runtime/<id>.ogg` only when that header names Opus
+    (`AST.O3`), taking the catalog path itself otherwise. An approved catalog
+    `.ogg` that is a plain Vorbis stream therefore plays where it sits, and a
+    guard that demanded a copy for it would refuse a bundle that plays. Every
+    other kind reads `res://<asset_root>/<file>` (#812).
+    """
+    routes: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for asset_id, path in group_members(_manifest(repo_root), group):
+        opus = Path(path).suffix == ".ogg" and stream_is_opus(shipped, repo_root, path)
+        route = audio_route(asset_id) if opus else path
+        if route in seen:
+            continue
+        seen.add(route)
+        routes.append((asset_id, route))
+    return routes
+
+
+def stream_is_opus(shipped: Path, repo_root: Path, path: str) -> bool:
+    """Whether the catalog stream at `<asset_root>/<file>` is Opus, as the resolver reads it.
+
+    `_load_audio` probes the file it is about to play — `res://<asset_root>/<file>`
+    on Web — for `OpusHead`. A shipped copy speaks for itself; a packed-only
+    catalog file is the committed source the export packed, so the repo copy
+    speaks for it. A stream neither copy serves resolves to no route either way.
+    """
+    for candidate in (shipped / ASSET_ROOT / path, repo_root / ASSET_ROOT / path):
+        if candidate.is_file():
+            with candidate.open("rb") as stream:
+                return OPUS_HEADER in stream.read(STREAM_HEADER_BYTES)
+    return False
+
+
 def missing_group_files(shipped: Path, repo_root: Path, group: str) -> list[tuple[str, str]]:
     """The `group` files the shipped tree serves at no route resolution reads.
 
-    A file resolves when the Web route it is read at carries it. That route
-    differs by kind (`game/asset_resolver.gd`):
-    - `.ogg` reads the committed Vorbis copy `res://audio_runtime/<id>.ogg`, never
-      the catalog path, so that route is what must resolve (#812);
-    - every other kind reads `res://<asset_root>/<file>`.
-    Either route is served **loose** beside `index.html` or as a packed entry of
-    `index.pck` — the two places `res://…` reads reach on Web. The `.import`
-    sidecar the engine writes is not a route (#812).
+    Each member's route comes from `group_routes`. Either route is served
+    **loose** beside `index.html` or as a packed entry of `index.pck` — the two
+    places `res://…` reads reach on Web. The `.import` sidecar the engine writes
+    is not a route (#812).
     """
     blob = shipped_blob(shipped / PACK)
     loose = {_relative(path, shipped / ASSET_ROOT) for path in staged_asset_files(shipped)}
     loose_audio = {path.name for path in staged_audio_files(shipped)}
     entries = set(pack_entries(shipped / PACK))
     unresolved: list[tuple[str, str]] = []
-    seen: set[str] = set()
-    for asset_id, path in group_members(_manifest(repo_root), group):
-        # Audio plays from its Vorbis copy, not from the catalog path (AST.O3).
-        route = audio_route(asset_id) if Path(path).suffix == ".ogg" else path
-        if route in seen:
-            continue
-        seen.add(route)
-        if route == path:
-            served = path in loose and (shipped / ASSET_ROOT / path).is_file()
-            packed = f"res://{ASSET_ROOT}/{path}{PACK_ENTRY_END}".encode() in blob
-        else:
+    for asset_id, route in group_routes(shipped, repo_root, group):
+        if route.startswith(f"{AUDIO_RUNTIME}/"):
             served = Path(route).name in loose_audio
             packed = f"res://{route}" in entries
+        else:
+            served = route in loose and (shipped / ASSET_ROOT / route).is_file()
+            packed = f"res://{ASSET_ROOT}/{route}{PACK_ENTRY_END}".encode() in blob
         if not served and not packed:
             unresolved.append((asset_id, route))
     return unresolved
 
 
 def audio_route(asset_id: str) -> str:
-    """The route an approved audio ID plays from: its Vorbis copy ([`AST.O3`])."""
+    """The route an approved Opus ID plays from: its Vorbis copy ([`AST.O3`])."""
     return f"{AUDIO_RUNTIME}/{asset_id}.ogg"
 
 
@@ -377,17 +412,18 @@ def ensure_group_assets_resolve(shipped: Path, repo_root: Path, group: str) -> N
 
     The `boot` guard (#630, #715) reads one group; `ambient` had none, so a bundle
     whose builder never imported those copies shipped silent with every guard
-    green (#812). The reading is the resolver's own, so a bundle that plays the
-    group passes and one that cannot is refused.
+    green (#812). The reading is the resolver's own — including its header-chosen
+    audio route — so a bundle that plays the group passes and one that cannot is
+    refused.
     """
-    members = group_members(_manifest(repo_root), group)
+    members = group_routes(shipped, repo_root, group)
     if not members:
         raise ExportError(f"the manifest names no loadable file for the {group} group")
     missing = missing_group_files(shipped, repo_root, group)
     if not missing:
         return
     ids = ", ".join(f"{asset_id} ({route})" for asset_id, route in missing)
-    total = len({route for _, route in members})
+    total = len(members)
     resolved = total - len(missing)
     if not asset_root_present(shipped, repo_root):
         raise ExportError(
@@ -405,7 +441,7 @@ def ensure_boot_assets_resolve(shipped: Path, repo_root: Path) -> None:
     never as a crash or a skip — that is the export dropping the root, which
     #630 measured as the player-visible stall.
     """
-    boot_files = boot_asset_ids(_manifest(repo_root))
+    boot_files = group_members(_manifest(repo_root), "boot")
     if not boot_files:
         raise ExportError(f"the manifest names no loadable {ASSET_ROOT}/ file for boot")
     missing = missing_boot_files(shipped, repo_root)
@@ -497,19 +533,6 @@ def asset_files(document: dict, asset_id: str) -> list[str]:
         str(name)
         for name in entry.get("files", [])
         if Path(str(name)).suffix in LOADABLE_SUFFIXES
-    ]
-
-
-def boot_asset_ids(document: dict) -> list[tuple[str, str]]:
-    """`(asset ID, asset-root-relative file)` for each file the `boot` group preloads.
-
-    Read from the committed manifest, so the check follows the catalog. One
-    approved entry can name several files; each is a separate route to serve.
-    """
-    return [
-        (str(asset_id), path)
-        for asset_id in document.get("groups", {}).get("boot", [])
-        for path in asset_files(document, asset_id)
     ]
 
 
@@ -718,14 +741,14 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.check_boot:
             ensure_boot_assets_resolve(output.parent, repo_root)
-            total = len({path for _, path in boot_asset_ids(_manifest(repo_root))})
+            total = len({path for _, path in group_members(_manifest(repo_root), "boot")})
             missing = missing_boot_files(output.parent, repo_root)
             print(f"{total - len(missing)} of {total} boot asset file(s) resolved from {output.parent}")
             return 0
         if args.check_groups:
             for group in PRELOAD_GROUPS:
                 ensure_group_assets_resolve(output.parent, repo_root, group)
-                total = len({route for _, route in group_members(_manifest(repo_root), group)})
+                total = len(group_routes(output.parent, repo_root, group))
                 missing = missing_group_files(output.parent, repo_root, group)
                 print(
                     f"{total - len(missing)} of {total} {group} asset file(s) resolved "
