@@ -1,0 +1,20 @@
+## .github/workflows/web-release.yml — any T9/T10 injection step?
+6:# publishes that directory. No playtest build and no advice backend (ADR-0009).
+81:      # Stockfish endpoint", CTR-advice-stream G3). `Web playtest` produces the
+154:          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+155:          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+## scripts a release export runs
+34:        run: |
+39:        run: |
+66:        run: |
+72:        run: |
+83:      # is defence-in-depth on the tree before it publishes. Both directions run:
+87:        run: |
+99:        run: |
+106:        run: |
+139:        run: |
+159:        run: |
+
+## web_export.py — any advice value write?
+82:# comment word (`uci`), and the backend's HTTP route (`advice_endpoint`) all

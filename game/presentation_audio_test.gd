@@ -109,6 +109,9 @@ func _integration_spine() -> String:
 		problem = "ambient must not load on cold open"
 	if problem.is_empty() and (audio == null or audio.music_started):
 		problem = "music must stay off on cold open"
+	## Boot settles on a deferred call, then two frames pass before the Ambient load
+	## (#856), so the group is read on the third frame after the scene starts.
+	await process_frame
 	await process_frame
 	await process_frame
 	if problem.is_empty() and router.stage != "mode-pick":

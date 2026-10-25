@@ -1,0 +1,28 @@
+{
+  "coldOpen": 2,
+  "url": "https://waigore.github.io/simplechessv2/",
+  "modePickAtS": 12.315,
+  "firstInteractionAtS": 18.362,
+  "audio": {
+    "contexts": 1,
+    "states": [
+      "running"
+    ],
+    "currentTime": [
+      7.64
+    ],
+    "sampleRate": [
+      48000
+    ],
+    "destinationMaxChannelCount": [
+      2
+    ]
+  },
+  "unresolvedAmbient": false,
+  "unresolvedAssetIdWarnings": 0,
+  "cantOpenAudio": 0,
+  "shots": [
+    "cold-open-2-mode-pick.png",
+    "cold-open-2-after-enter.png"
+  ]
+}

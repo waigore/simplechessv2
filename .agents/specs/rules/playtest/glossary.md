@@ -8,7 +8,7 @@ Shared language for playtest specs. Each term is defined once here. Other specs 
 
 Design terms stay in `specs/design/glossary.md`. UX terms stay in `specs/ux/glossary.md`. Do not redefine them here; cite those glossaries when a protocol needs a game or interface term.
 
-The skeleton already defines Coverage mode, Design playtest, Evidence run, Graphical run, Headless run, Manifest, `not-judged`, Playtest protocol, Protocol verdict, Situational tool, Story outcome, Telemetry event, and UX playtest. Keep those rows. Add a row for a term this project needs. Keep added rows alphabetical. One term per concept: no synonyms. The outcome vocabulary (`pass`, `fail`, `not-judged`) and the story-versus-protocol combine rule are owned by `evidence.md`; glossary rows define the terms only and link there.
+The skeleton already defines Coverage mode, Design playtest, Evidence run, Graphical run, Headless run, Manifest, `not-judged`, Playtest protocol, Protocol verdict, Situational tool, Story outcome, Story row, Telemetry event, and UX playtest. Keep those rows. Add a row for a term this project needs. Keep added rows alphabetical. One term per concept: no synonyms. The outcome vocabulary (`pass`, `fail`, `not-judged`) and the story-versus-protocol combine rule are owned by `evidence.md`; glossary rows define the terms only and link there.
 
 Columns: term, a one-sentence definition, and where it is detailed (a link, or "here").
 

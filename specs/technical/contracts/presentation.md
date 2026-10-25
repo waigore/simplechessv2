@@ -26,6 +26,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 | E3 | play_cue | cue id | Design feedback; first music start when mode pick becomes ready (BED_M1/M2 → M1→M2→M1) | [`CMP-presentation`](../components/presentation.md) |
 | E4 | show_advice | best move + eval, or none | Advice fields change | [`CMP-presentation`](../components/presentation.md) |
 | E5 | provide_assets | resolved resources by asset ID | After L2 resolves via [`CTR-asset-resolve`](asset-resolve.md) | [`CMP-presentation`](../components/presentation.md) |
+| E6 | reload_requested | — | The player activated the `EX.load-failure` Reload control (`UI-mode-pick.C5`) | [`CMP-presentation`](../components/presentation.md) → [`CMP-session-router`](../components/session-router.md) |
 
 ## Guarantees
 
@@ -41,6 +42,7 @@ Authoring rules: [`.agents/specs/rules/technical/contracts.md`](../../../.agents
 |-----------|--------|
 | Unknown screen or control id | Ignored; no state change |
 | Unresolved asset | Degraded visuals per [`AST.R3`](../asset-access.md) |
+| Boot preload failed ([`CTR-asset-resolve`](asset-resolve.md) E4) | The router shows `EX.load-failure` in place of `EX.loading`; E1 names it. The wait never outlives the failure ([`FAIL.T15`](../failures.md)) |
 
 ## Diagram
 

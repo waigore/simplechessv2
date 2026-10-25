@@ -1,0 +1,54 @@
+## owner read — live, not inherited
+#648 OPEN type:task,status:pending-acceptance — Decide whether the puzzle catalog route ships enabled: T9/T10 never reach the shipped build, so Puzzle stream deals nothing
+#479 OPEN type:task,status:pending-acceptance — Specify how the advice base URL and API key reach the client and backend
+#550 OPEN type:task,status:pending-verification — Run the wave-2 playtest sweep: puzzle-stream and puzzle-session protocols on one playtest build
+#555 MERGED  — Stream advice updates as they arrive, not at the search cap (#374)
+#671 OPEN type:task,status:pending-implementation — Record the served-snapshot I1 run on the catalog host (#329 AC5)
+#505 OPEN type:task,status:pending-verification — Record the advice backend deployment posture: operator/player-run only, no project vendor
+#786 CLOSED type:defect,status:superseded — Published release ships no T9/T10 for the puzzle catalog route: the enabled branch still deals nothing
+
+## issues matching deploy / T9 / T10 / catalog (open)
+#648 — Decide whether the puzzle catalog route ships enabled: T9/T10 never reach the shipped build, so Puzzle stream deals nothing
+#655 — Puzzle stream deals nothing on the shipped-path build: T9/T10 are unset
+#505 — Record the advice backend deployment posture: operator/player-run only, no project vendor
+#479 — Specify how the advice base URL and API key reach the client and backend
+#550 — Run the wave-2 playtest sweep: puzzle-stream and puzzle-session protocols on one playtest build
+#769 — Promote advice keep list into main code
+#35 — Adaptive Puzzle stream
+#557 — Exercise crash, reload, and faulted-session durability of Player Elo and Last mode
+#36 — Optional Stockfish Advice
+#671 — Record the served-snapshot I1 run on the catalog host (#329 AC5)
+#402 — Verify every quality.md row on the shipped release build
+#693 — Record the filmed seating of the release build on the published URL
+#333 — Build the puzzle play screen, mode-pick entry, and stream journey
+#567 — Record the ambient playlist's second bed heard at SND.L1–L2, the evidence #558 is blocked on
+#37 — Shippable cafe-table release
+#627 — Record what a person hears on the shipped build: cafe ambience and every shipped cue on device speakers
+#768 — Promote puzzle-stream keep list into main code
+#654 — Close out the Accepted-ADR validation rows #403 does not cover (ADR-0004, 0005 remainder, 0006–0013) on the shipped release
+#626 — Run #558's sitting soak and #557's durability legs on a phone browser, where the sitting actually happens
+#641 — Check that turn, clocks, player side, and marks survive colour-blind simulation (no game information by color alone)
+#647 — Implement the asset-root route so the shipped Web build carries game_assets/ and stops stalling on loading (#636 AC7, fixes #630)
+#403 — Close out the Every-release ADR validation rows on the shipped release
+#375 — Build the advice UI: shared-play marks and toggle, setup row, and the S3 error state
+#625 — Record a funded, off-device run of the published release build
+#34 — Shared game on one device
+#459 — Record the GPL compliance approach for the Stockfish-backed advice backend
+#640 — Check piece-shape naming and colour-blind independence on the shipped build (Accessibility review, PER.R1 / PAL.K1 K2)
+#376 — PoC follow-on: advice
+#558 — Soak a 15–40 minute sitting and prove the Advice-Off offline behavior on a build
+#537 — Wave-gated copy and protocol leaves sit outside their wave's milestone
+
+## published artefact
+HTTP/2 200 
+last-modified: Sat, 24 Oct 2026 17:57:05 GMT
+etag: "6adcf171-91ff1c"
+content-length: 9568028
+
+## live Pages deployment + Web release run
+deployment 7302318984 sha c5b8189b 2026-10-24T17:56:45Z
+run 40118381611 sha c5b8189b success
+
+## main vs the deployed sha
+ba233a1 Record the #767 acceptance run (headless + graphical) (#851)
+c5b8189 Keep the PER.R6 Check word on one line (#767) (#817)

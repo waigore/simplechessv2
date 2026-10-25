@@ -1,0 +1,37 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R375 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R375 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R375 {"check":"router_present","detail":"","ok":true}
+R375 {"check":"presentation_present","detail":"","ok":true}
+R375 {"check":"setup_reached","detail":"shared-setup","ok":true}
+R375 {"check":"setup_advice_default_on","detail":"true","ok":true}
+R375 {"check":"setup_c4_off","detail":"false","ok":true}
+R375 {"check":"setup_c4_on","detail":"true","ok":true}
+R375 {"check":"play_reached","detail":"shared-play","ok":true}
+R375 {"check":"session_has_client","detail":"","ok":true}
+R375 {"check":"client_is_shipped_transport","detail":"","ok":true}
+R375 {"check":"board_and_marks_present","detail":"","ok":true}
+WARNING: advice: error after 41 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:832)
+         [3] advice_control (res://shared_game_session.gd:812)
+         [4] _drive_advice (res://session_router.gd:510)
+         [5] _poll_advice (res://session_router.gd:501)
+         [6] _process (res://session_router.gd:133)
+R375 {"check":"advice_error_raised","detail":"true","ok":true}
+R375 {"check":"ui_state_s3","detail":"S3","ok":true}
+R375 {"check":"board_still_renders","detail":"from= to= children=0","ok":true}
+R375 {"check":"local_move_while_s3","detail":"side_to_move=black","ok":true}
+R375 {"check":"error_dialog_visible","detail":"true","ok":true}
+R375 {"error_panel":{"texts":["Advice unavailable. Play continues."],"visible":true}}
+R375 {"check":"dismiss_control_present","detail":"AdviceErrorDismiss:<Button#49643784062>","ok":true}
+R375 {"check":"dismiss_clears_error","detail":"false","ok":true}
+R375 {"check":"dismiss_returns_s1","detail":"{ \"visible\": false, \"texts\": [\"Advice unavailable. Play continues.\"] }","ok":true}
+R375 {"check":"ui_state_s1_after_dismiss","detail":"S1","ok":true}
+R375 {"summary":{"checks":21,"failed":0}}
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

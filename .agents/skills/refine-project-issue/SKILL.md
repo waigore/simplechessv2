@@ -35,3 +35,4 @@ Apply refinements to a typed issue in `status:pending-refinement`.
 - A refinement that establishes an issue is superseded, duplicate, or retired gates `pending-refinement → superseded`, naming the successor; the body still records it. **Do not close** the issue (only [`project-planner-agent`](../project-planner-agent/SKILL.md) closes superseded work).
 - Keep body shapes from `docs/issues/body-shapes.md`.
 - Call `enforce-task-workflow-status` for the label change.
+- Strip or rewrite ACs that require story-row `none` cells to name a live `type:defect`; align with [`requirements.md`](../../../docs/issues/requirements.md) and [`story-rows.md`](../../../specs/playtest/story-rows.md).

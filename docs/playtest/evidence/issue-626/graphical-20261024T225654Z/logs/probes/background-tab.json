@@ -1,0 +1,47 @@
+[
+  {
+    "step": "cold-open",
+    "hidden": false,
+    "store": {
+      "key_present": false,
+      "player_elo": null,
+      "last_mode": null
+    },
+    "shot": "screenshots/background-01-cold.png"
+  },
+  {
+    "step": "on-board",
+    "store": {
+      "key_present": true,
+      "player_elo": 1000,
+      "last_mode": "shared"
+    },
+    "shot": "screenshots/background-02-board.png"
+  },
+  {
+    "step": "backgrounding",
+    "game_target": "2F2F99B9AD557EFB33158A2C0196314F",
+    "second_tab": "7ADF5DBD50FF7ADADFF8D1F21F779AE0"
+  },
+  {
+    "step": "foreground",
+    "background_at": "2026-10-24T23:31:28.583Z",
+    "background_ms": 45014,
+    "hidden": false,
+    "store": {
+      "key_present": true,
+      "player_elo": 1000,
+      "last_mode": "shared"
+    },
+    "frames": 10,
+    "shot": "screenshots/background-03-foreground-return.png"
+  },
+  {
+    "step": "tap-after-foreground",
+    "tap": {
+      "ms": 286,
+      "ok": true
+    },
+    "shot": "screenshots/background-04-after-tap.png"
+  }
+]
