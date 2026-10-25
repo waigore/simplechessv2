@@ -1,0 +1,29 @@
+## criterion 1 — the specs/ release-status sentence and its commits (ancestors of HEAD)
+5d80029 Record the #794 R2 playtest evidence, both environments (#794) (#816)
+
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+a94210d State that the catalog route ships enabled (#648) (#815)
+a9192a07 is ancestor of HEAD: yes
+a94210d is ancestor of HEAD: yes
+
+43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+56:Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on that server's deploy path, which the operator owns (ADR-0015). Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
+
+## criterion 2 — is_available() and every assignment of T9/T10 in game/
+33:var advice_endpoint := ""
+34:var advice_api_key := ""
+483:	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
+552:	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+756:	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+--- all game/ assignments (non-test) ---
+game/advice_ui_test.gd:40:	_router.advice_endpoint = "http://advice.test/advice"
+game/advice_ui_test.gd:41:	_router.advice_api_key = "test-key"
+
+## criterion 5 — the C5 / has_open_puzzle gate
+517:## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
+518:## controls: C3 and C4 name an open puzzle; C5 does not — leave stream is available on
+521:## action is refused (END.P1, one ending per attempt); C5 still leaves.
+533:		"C5":
+--- blame ---
+40ec44e Refuse a second ending on a settled puzzle attempt (#332) (#737)
+2e389b5 Make C5 raise the leave confirm on S1 with no puzzle open (#655) (#694)

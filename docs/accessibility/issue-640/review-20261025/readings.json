@@ -1,0 +1,586 @@
+{
+  "source": "https://waigore.github.io/simplechessv2/",
+  "frame": {
+    "width": 390,
+    "height": 844,
+    "dpr": 2
+  },
+  "capturePng": "screenshots/board-control.png",
+  "geometry": {
+    "capturePx": {
+      "left": 78,
+      "top": 753,
+      "side": 624,
+      "square": 78,
+      "bottom": 1377
+    },
+    "cssPx": {
+      "left": 39,
+      "top": 376.5,
+      "side": 312,
+      "square": 39
+    },
+    "capture": {
+      "width": 780,
+      "height": 1688
+    }
+  },
+  "spec": {
+    "C1": "#E8D5B5",
+    "C2": "#8B5A3C",
+    "C3": "#F5F0E6",
+    "C4": "#2C2A28",
+    "K1_MIN_DELTA": 0.25
+  },
+  "drawn": {
+    "C1-light": {
+      "file": 1,
+      "rank": 3,
+      "x": 195,
+      "y": 1182,
+      "xCss": 97.5,
+      "yCss": 591,
+      "rgb": [
+        232,
+        213,
+        181
+      ],
+      "hex": "#E8D5B5"
+    },
+    "C2-dark": {
+      "file": 0,
+      "rank": 3,
+      "x": 117,
+      "y": 1182,
+      "xCss": 58.5,
+      "yCss": 591,
+      "rgb": [
+        139,
+        90,
+        60
+      ],
+      "hex": "#8B5A3C"
+    },
+    "C2-dark-b": {
+      "file": 2,
+      "rank": 3,
+      "x": 273,
+      "y": 1182,
+      "xCss": 136.5,
+      "yCss": 591,
+      "rgb": [
+        139,
+        90,
+        60
+      ],
+      "hex": "#8B5A3C"
+    },
+    "C1-light-b": {
+      "file": 3,
+      "rank": 3,
+      "x": 351,
+      "y": 1182,
+      "xCss": 175.5,
+      "yCss": 591,
+      "rgb": [
+        232,
+        213,
+        181
+      ],
+      "hex": "#E8D5B5"
+    }
+  },
+  "control": {
+    "delta": 0.549529599094625,
+    "luminance": {
+      "C1": 0.680805005087012,
+      "C2": 0.1312754059923871
+    }
+  },
+  "swatchMatch": {
+    "C1": {
+      "spec": "#E8D5B5",
+      "drawn": "#E8D5B5",
+      "equal": true
+    },
+    "C2": {
+      "spec": "#8B5A3C",
+      "drawn": "#8B5A3C",
+      "equal": true
+    },
+    "c1SecondSample": {
+      "drawn": "#E8D5B5",
+      "equal": true
+    },
+    "c2SecondSample": {
+      "drawn": "#8B5A3C",
+      "equal": true
+    }
+  },
+  "lightness": {
+    "protanopia": {
+      "samples": {
+        "C1-light": {
+          "x": 117,
+          "y": 195,
+          "rgb": [
+            101,
+            101,
+            60
+          ],
+          "hex": "#65653C"
+        },
+        "C2-dark": {
+          "x": 39,
+          "y": 195,
+          "rgb": [
+            216,
+            216,
+            181
+          ],
+          "hex": "#D8D8B5"
+        },
+        "C2-dark-b": {
+          "x": 195,
+          "y": 195,
+          "rgb": [
+            216,
+            216,
+            181
+          ],
+          "hex": "#D8D8B5"
+        },
+        "C1-light-b": {
+          "x": 273,
+          "y": 195,
+          "rgb": [
+            101,
+            101,
+            60
+          ],
+          "hex": "#65653C"
+        }
+      },
+      "delta": 0.5464655252225663,
+      "deltaPerPair": [
+        0.5464655252225663,
+        0.5464655252225663
+      ],
+      "luminances": {
+        "C1light": 0.12400306702996576,
+        "C2dark": 0.6704685922525321,
+        "C1lightb": 0.12400306702996576,
+        "C2darkb": 0.6704685922525321
+      },
+      "passes": true
+    },
+    "deuteranopia": {
+      "samples": {
+        "C1-light": {
+          "x": 117,
+          "y": 195,
+          "rgb": [
+            109,
+            109,
+            57
+          ],
+          "hex": "#6D6D39"
+        },
+        "C2-dark": {
+          "x": 39,
+          "y": 195,
+          "rgb": [
+            220,
+            220,
+            180
+          ],
+          "hex": "#DCDCB4"
+        },
+        "C2-dark-b": {
+          "x": 195,
+          "y": 195,
+          "rgb": [
+            220,
+            220,
+            180
+          ],
+          "hex": "#DCDCB4"
+        },
+        "C1-light-b": {
+          "x": 273,
+          "y": 195,
+          "rgb": [
+            109,
+            109,
+            57
+          ],
+          "hex": "#6D6D39"
+        }
+      },
+      "delta": 0.552134344604835,
+      "deltaPerPair": [
+        0.552134344604835,
+        0.552134344604835
+      ],
+      "luminances": {
+        "C1light": 0.14483896103870292,
+        "C2dark": 0.696973305643538,
+        "C1lightb": 0.14483896103870292,
+        "C2darkb": 0.696973305643538
+      },
+      "passes": true
+    }
+  },
+  "simulations": {
+    "protanopia": "Viénot, Brettel & Mollon (1999) dichromat LMS-plane reduction, applied in linear RGB",
+    "deuteranopia": "Viénot, Brettel & Mollon (1999) dichromat LMS-plane reduction, applied in linear RGB"
+  },
+  "k2": {
+    "judgedSquarePx": 78,
+    "minRatio": 3,
+    "pairs": [
+      {
+        "label": "white piece on C2",
+        "side": "white",
+        "square": "C2",
+        "squareSpec": "#8B5A3C",
+        "squareDrawn": "#8B5A3C",
+        "squareAt": {
+          "file": 1,
+          "rank": 2
+        },
+        "crop": {
+          "left": 156,
+          "top": 1221,
+          "width": 78,
+          "height": 78
+        },
+        "tones": [
+          {
+            "hex": "#FDFDFC",
+            "count": 307
+          },
+          {
+            "hex": "#F5F0E6",
+            "count": 88
+          },
+          {
+            "hex": "#FCFCFB",
+            "count": 9
+          },
+          {
+            "hex": "#FFFFFF",
+            "count": 6
+          },
+          {
+            "hex": "#FBFBFA",
+            "count": 6
+          },
+          {
+            "hex": "#F4EFE5",
+            "count": 5
+          }
+        ],
+        "drawnFill": "#FDFDFC",
+        "drawnContour": "#F5F0E6",
+        "carrier": {
+          "tone": "fill",
+          "spec": "#F5F0E6",
+          "against": "#8B5A3C"
+        },
+        "weak": {
+          "tone": "contour",
+          "spec": "#2C2A28",
+          "against": "#8B5A3C"
+        }
+      },
+      {
+        "label": "white piece on C1",
+        "side": "white",
+        "square": "C1",
+        "squareSpec": "#E8D5B5",
+        "squareDrawn": "#E8D5B5",
+        "squareAt": {
+          "file": 5,
+          "rank": 1
+        },
+        "crop": {
+          "left": 468,
+          "top": 1299,
+          "width": 78,
+          "height": 78
+        },
+        "tones": [
+          {
+            "hex": "#FDFDFC",
+            "count": 406
+          },
+          {
+            "hex": "#F5F0E6",
+            "count": 44
+          },
+          {
+            "hex": "#FCFCFB",
+            "count": 5
+          },
+          {
+            "hex": "#302E2C",
+            "count": 5
+          },
+          {
+            "hex": "#F3EEE4",
+            "count": 4
+          },
+          {
+            "hex": "#F4EFE5",
+            "count": 4
+          }
+        ],
+        "drawnFill": "#FDFDFC",
+        "drawnContour": "#F5F0E6",
+        "carrier": {
+          "tone": "contour",
+          "spec": "#2C2A28",
+          "against": "#E8D5B5"
+        },
+        "weak": {
+          "tone": "fill",
+          "spec": "#F5F0E6",
+          "against": "#E8D5B5"
+        }
+      },
+      {
+        "label": "black piece on C1",
+        "side": "black",
+        "square": "C1",
+        "squareSpec": "#E8D5B5",
+        "squareDrawn": "#E8D5B5",
+        "squareAt": {
+          "file": 0,
+          "rank": 8
+        },
+        "crop": {
+          "left": 78,
+          "top": 753,
+          "width": 78,
+          "height": 78
+        },
+        "tones": [
+          {
+            "hex": "#2C2A28",
+            "count": 493
+          },
+          {
+            "hex": "#1D1B1A",
+            "count": 92
+          },
+          {
+            "hex": "#2D2B29",
+            "count": 9
+          },
+          {
+            "hex": "#2B2927",
+            "count": 8
+          },
+          {
+            "hex": "#2E2C2A",
+            "count": 8
+          },
+          {
+            "hex": "#6B6863",
+            "count": 8
+          }
+        ],
+        "drawnFill": "#2C2A28",
+        "drawnContour": "#1D1B1A",
+        "carrier": {
+          "tone": "fill",
+          "spec": "#2C2A28",
+          "against": "#E8D5B5"
+        },
+        "weak": {
+          "tone": "contour",
+          "spec": "#F5F0E6",
+          "against": "#E8D5B5"
+        }
+      },
+      {
+        "label": "black piece on C2",
+        "side": "black",
+        "square": "C2",
+        "squareSpec": "#8B5A3C",
+        "squareDrawn": "#8B5A3C",
+        "squareAt": {
+          "file": 1,
+          "rank": 8
+        },
+        "crop": {
+          "left": 156,
+          "top": 753,
+          "width": 78,
+          "height": 78
+        },
+        "tones": [
+          {
+            "hex": "#2C2A28",
+            "count": 732
+          },
+          {
+            "hex": "#1D1B1A",
+            "count": 69
+          },
+          {
+            "hex": "#2D2B29",
+            "count": 32
+          },
+          {
+            "hex": "#1C1A19",
+            "count": 25
+          },
+          {
+            "hex": "#2E2C2A",
+            "count": 20
+          },
+          {
+            "hex": "#2E2C29",
+            "count": 8
+          }
+        ],
+        "drawnFill": "#2C2A28",
+        "drawnContour": "#1D1B1A",
+        "carrier": {
+          "tone": "contour",
+          "spec": "#F5F0E6",
+          "against": "#8B5A3C"
+        },
+        "weak": {
+          "tone": "fill",
+          "spec": "#2C2A28",
+          "against": "#8B5A3C"
+        }
+      }
+    ],
+    "simulations": {
+      "protanopia": [
+        {
+          "label": "white piece on C2",
+          "piece": "b2 pawn",
+          "squareHex": "#65653C",
+          "fillHex": "#FDFDFC",
+          "contourHex": "#F1F1E6",
+          "fillRatio": 5.971789441224979,
+          "contourRatio": 5.33827374631433,
+          "carrierTone": "fill",
+          "carrierRatio": 5.971789441224979,
+          "weakTone": "contour",
+          "weakRatio": 5.33827374631433,
+          "carrierPasses": true
+        },
+        {
+          "label": "white piece on C1",
+          "piece": "f1 bishop",
+          "squareHex": "#D8D8B5",
+          "fillHex": "#FDFDFC",
+          "contourHex": "#F1F1E6",
+          "fillRatio": 1.426727312253319,
+          "contourRatio": 1.2753733247147434,
+          "carrierTone": "contour",
+          "carrierRatio": 1.2753733247147434,
+          "weakTone": "fill",
+          "weakRatio": 1.426727312253319,
+          "carrierPasses": false
+        },
+        {
+          "label": "black piece on C1",
+          "piece": "a8 rook",
+          "squareHex": "#D8D8B5",
+          "fillHex": "#2A2A28",
+          "contourHex": "#1B1B1A",
+          "fillRatio": 9.85975937016565,
+          "contourRatio": 11.829448160601547,
+          "carrierTone": "fill",
+          "carrierRatio": 9.85975937016565,
+          "weakTone": "contour",
+          "weakRatio": 11.829448160601547,
+          "carrierPasses": true
+        },
+        {
+          "label": "black piece on C2",
+          "piece": "b8 knight",
+          "squareHex": "#65653C",
+          "fillHex": "#2A2A28",
+          "contourHex": "#1B1B1A",
+          "fillRatio": 2.35560682842417,
+          "contourRatio": 2.8261875181173495,
+          "carrierTone": "contour",
+          "carrierRatio": 2.8261875181173495,
+          "weakTone": "fill",
+          "weakRatio": 2.35560682842417,
+          "carrierPasses": false
+        }
+      ],
+      "deuteranopia": [
+        {
+          "label": "white piece on C2",
+          "piece": "b2 pawn",
+          "squareHex": "#6D6D39",
+          "fillHex": "#FDFDFC",
+          "contourHex": "#F2F2E6",
+          "fillRatio": 5.272774876052352,
+          "contourRatio": 4.744738547339087,
+          "carrierTone": "fill",
+          "carrierRatio": 5.272774876052352,
+          "weakTone": "contour",
+          "weakRatio": 4.744738547339087,
+          "carrierPasses": true
+        },
+        {
+          "label": "white piece on C1",
+          "piece": "f1 bishop",
+          "squareHex": "#DCDCB4",
+          "fillHex": "#FDFDFC",
+          "contourHex": "#F2F2E6",
+          "fillRatio": 1.386851587340455,
+          "contourRatio": 1.247966837305823,
+          "carrierTone": "contour",
+          "carrierRatio": 1.247966837305823,
+          "weakTone": "fill",
+          "weakRatio": 1.386851587340455,
+          "carrierPasses": false
+        },
+        {
+          "label": "black piece on C1",
+          "piece": "a8 rook",
+          "squareHex": "#DCDCB4",
+          "fillHex": "#2B2B28",
+          "contourHex": "#1C1C1A",
+          "fillRatio": 10.102115976875275,
+          "contourRatio": 12.13091748310556,
+          "carrierTone": "fill",
+          "carrierRatio": 10.102115976875275,
+          "weakTone": "contour",
+          "weakRatio": 12.13091748310556,
+          "carrierPasses": true
+        },
+        {
+          "label": "black piece on C2",
+          "piece": "b8 knight",
+          "squareHex": "#6D6D39",
+          "fillHex": "#2B2B28",
+          "contourHex": "#1C1C1A",
+          "fillRatio": 2.657070689980989,
+          "contourRatio": 3.1906885013715462,
+          "carrierTone": "contour",
+          "carrierRatio": 3.1906885013715462,
+          "weakTone": "fill",
+          "weakRatio": 2.657070689980989,
+          "carrierPasses": true
+        }
+      ]
+    },
+    "carrierPasses": {
+      "protanopia": false,
+      "deuteranopia": false
+    }
+  }
+}
