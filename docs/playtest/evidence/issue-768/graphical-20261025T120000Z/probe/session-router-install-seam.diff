@@ -1,0 +1,24 @@
+diff --git a/game/session_router.gd b/game/session_router.gd
+index b4b3e99..a605e37 100644
+--- a/game/session_router.gd
++++ b/game/session_router.gd
+@@ -777,8 +777,19 @@ func _enter_puzzle_play() -> void:
+ 	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+ 
+ 
++## Acceptance drive (#768): install the answer-capable peer this run deals through.
++var _accept768_peer: Variant = null
++
++
++func _set_accept768_peer(peer: Variant) -> void:
++	_accept768_peer = peer
++
++
+ ## The simulated catalog peer for tests and playtests (ADR-0013 Testability).
+ func _puzzle_sim_factory() -> Variant:
++	if _accept768_peer != null:
++		# The factory receives the client; one answer-capable peer serves the run.
++		return func() -> Variant: return _accept768_peer
+ 	if _seams == null:
+ 		return null
+ 	return Callable(FakeCatalogTransport, "new")
