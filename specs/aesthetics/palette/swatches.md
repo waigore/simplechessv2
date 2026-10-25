@@ -15,5 +15,5 @@ Swatches of [`palette.md`](../palette.md), which links every palette set and col
 | C7 | Advice teal | `#53A2BE` | accent | Advice marks ([PER.R5](../../view/perception.md)); reserved, never a piece fill; advice-ready feedback ([feedback.md](../../design/experience/feedback.md)) |
 | C8 | Check rose | `#C28A86` | hazard | Check and refused place ([PER.R6](../../view/perception.md), [PER.R8](../../view/perception.md)) |
 | C9 | Ink | `#2C2A28` | outline / text | UI text and labels; board coordinates in C9 on the C10 chip that sits on the [SPC.L1](../../view/spatial-model.md) margin ([PAL.K8](../palette.md)) |
-| C10 | Cream panel | `#F7F1E8` | sky / surface | UI panels and soft fills; the on-board mark foreground ([PAL.K9](../palette.md)) |
+| C10 | Cream panel | `#F7F1E8` | sky / surface | UI panels and soft fills; the on-board mark foreground ([PAL.K9](../palette.md)) and the last-move ticks it carries ([PER.R9](../../view/perception.md)) |
 | C11 | Legal sage | `#6EA746` | accent | Legal destinations ([PER.R4](../../view/perception.md)) |

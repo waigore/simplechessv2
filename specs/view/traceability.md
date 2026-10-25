@@ -16,7 +16,7 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Mode pick flow ([FL-mode-pick](../design/flows/mode-pick.md)) | design | [`cameras/board.md`](cameras/board.md) (Used in P2/P3; T1 trigger) |
 | Shared-game loop ([loops/two-player-game.md](../design/loops/two-player-game.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
 | Puzzle stream loop ([loops/puzzle-stream.md](../design/loops/puzzle-stream.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
-| Accessibility (shape, not color alone) | quality | [`perception.md`](perception.md) R1–R2 |
+| Accessibility (shape, not color alone) | quality | [`perception.md`](perception.md) R1–R2 R9 |
 
 ## Topic coverage
 

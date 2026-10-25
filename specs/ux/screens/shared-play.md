@@ -13,25 +13,26 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | Shown in | Design element | Visible when |
 |----------|----------------|--------------|
 | R1 | `GS.position` | always |
-| R1 | Board coordinates (a–h, 1–8) | always — edges only; follow White-seat flip |
+| R1 | Last-move cue on from and to squares, [PAL.K9](../../aesthetics/palette/rules.md) form ([PER.R9](../../view/perception.md)) | after the first move, until the next |
+| R1 | Board coordinates (a–h, 1–8) | always — edges only; White-seat flip |
 | R1 | `GS.selectedPiece` | piece selected |
 | R2 | `GS.whiteClock`, `GS.blackClock` | Clock is Blitz or Rapid |
 | R2 | `GS.sideToMove` | always |
 | R3 | `GS.adviceBestMove`, `GS.adviceEval` | Advice On and online and values set |
-| R2 | Check cue: the word Check and [PAL.C8](../../aesthetics/palette.md) | side to move in check |
+| R2 | Check cue: the word Check and C8 | side to move in check |
 
 ## Regions
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Position and coordinates | 8×8; edge letters/numbers; selection and legal marks. `IN.deselect` clears the selection |
-| R2 | Status | Turn, clocks, check | Side to move; clocks when timed; Check word and [PAL.C8](../../aesthetics/palette.md) |
-| R3 | Advice | Shared Advice chrome | Toggle; best-move marks when On |
-| R4 | End | Resign or draw | Resign; Offer draw |
+| R1 | Board | Position and coordinates | 8×8; edge letters/numbers; selection, legal, and last-move marks. `IN.deselect` clears selection |
+| R2 | Status | Turn, clocks, check | Side to move; clocks; Check and C8 |
+| R3 | Advice | Advice chrome | Toggle; best-move marks |
+| R4 | End | Resign or draw | Resign, Offer draw |
 
 ## Controls
 
-C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md). Focus order is that table.
+C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md), whose order is the focus order.
 
 ## States
 
@@ -39,7 +40,7 @@ S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
-All keys below vary by locale (`en`, `zh-Hant`, `ja`), except `queen`, `rook`, `bishop`, and `knight`, which stay the `en` value in every locale ([L3](../localization.md)).
+Keys vary by locale (`en`, `zh-Hant`, `ja`), except `queen`, `rook`, `bishop`, `knight`, which stay `en` ([L3](../localization.md)).
 
 | Key | String | Used in |
 |-----|--------|---------|
@@ -67,8 +68,8 @@ All keys below vary by locale (`en`, `zh-Hant`, `ja`), except `queen`, `rook`, `
 | bishop | Bishop | C6 |
 | knight | Knight | C6 |
 
-Copy owner `shared-play`; keys and `en` source per [localization.md](../localization.md) L1. Strings resolve through the locale's string table ([`CTR-localization`](../../technical/contracts/localization.md)) (A1).
+Owner `shared-play`; keys and `en` source per [localization.md](../localization.md) L1; strings resolve per [`CTR-localization`](../../technical/contracts/localization.md) (A1).
 
 ## Experience intent
 
-Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone; 44px-class targets.
+Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone.

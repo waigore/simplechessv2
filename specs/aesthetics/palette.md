@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/spe
 | K6 | Legal-destination marks read on both squares | C11 on C1 and C2 | Contrast ≥ 2:1 on each (measured 2.0:1) | [PER.R4](../view/perception.md) |
 | K7 | Disabled ink reads inactive yet distinct | C9 at 40% on C10 | Contrast ≥ 2:1 (2.3:1) | [`UIS.C5`](ui-style.md); Accessibility |
 | K8 | Board coordinates read on the cafe margin | Coordinate ink on the C10 chip, over C5 | Contrast ≥ 4.5:1 ([PER.R7](../view/perception.md)); C9 on C10 **12.73:1** | Accessibility; [PER.R7](../view/perception.md) |
-| K9 | Overlay accents are not told apart by hue alone | C6, C7, C8, C11 on C1 and C2 | Each mark has its own **form and placement** (ring, disk, corner brackets, hatching, L-frame, edge brackets); no mark alone carries its meaning | Accessibility; [experience.md](../design/experience.md) Channels |
+| K9 | Overlay accents are not told apart by hue alone | C6, C7, C8, C11 on C1 and C2, and the C10 mark ticks | Each mark has its own **form and placement** (ring, disk, corner brackets, hatching, L-frame, edge brackets, last-move ticks); no mark alone carries its meaning | Accessibility; [experience.md](../design/experience.md) Channels; [PER.R9](../view/perception.md) |
 
 ## Swatches and palette sets
 
