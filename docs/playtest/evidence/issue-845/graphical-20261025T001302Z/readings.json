@@ -1,0 +1,171 @@
+{
+  "frame": {
+    "width": 390,
+    "height": 844,
+    "dpr": 2
+  },
+  "filingTap": {
+    "tap": {
+      "x": 219,
+      "y": 654
+    },
+    "ringSquare": "e1",
+    "ringBox": {
+      "left": 195,
+      "right": 233.5,
+      "top": 649.5,
+      "bottom": 688
+    },
+    "e1Box": {
+      "top": 649.5,
+      "bottom": 688.5
+    },
+    "e2Centre": {
+      "x": 214.5,
+      "y": 630
+    },
+    "e4Centre": {
+      "x": 214.5,
+      "y": 552
+    },
+    "side": "white",
+    "shot": "screenshots/filing-after-219-654.png"
+  },
+  "pairs": [
+    {
+      "pair": "e2-e4",
+      "fromTap": {
+        "x": 214.5,
+        "y": 630
+      },
+      "toTap": {
+        "x": 214.5,
+        "y": 552
+      },
+      "selectedRing": "e2",
+      "afterSide": "black",
+      "afterInk": [
+        "a1",
+        "a2",
+        "b1",
+        "b2",
+        "c2",
+        "d1",
+        "d2",
+        "e4",
+        "f2",
+        "g1",
+        "g2",
+        "h1",
+        "h2"
+      ],
+      "shots": {
+        "select": "screenshots/e2-e4-a.png",
+        "after": "screenshots/e2-e4-b.png"
+      }
+    },
+    {
+      "pair": "d2-d4",
+      "fromTap": {
+        "x": 175.5,
+        "y": 630
+      },
+      "toTap": {
+        "x": 175.5,
+        "y": 552
+      },
+      "selectedRing": "d2",
+      "afterSide": "black",
+      "afterInk": [
+        "a1",
+        "a2",
+        "b1",
+        "b2",
+        "c2",
+        "d1",
+        "d4",
+        "e2",
+        "f2",
+        "g1",
+        "g2",
+        "h1",
+        "h2"
+      ],
+      "shots": {
+        "select": "screenshots/d2-d4-a.png",
+        "after": "screenshots/d2-d4-b.png"
+      }
+    },
+    {
+      "pair": "b1-c3",
+      "fromTap": {
+        "x": 97.5,
+        "y": 669
+      },
+      "toTap": {
+        "x": 136.5,
+        "y": 591
+      },
+      "selectedRing": "b1",
+      "afterSide": "black",
+      "afterInk": [
+        "a1",
+        "a2",
+        "b2",
+        "c2",
+        "c3",
+        "d1",
+        "d2",
+        "e2",
+        "f2",
+        "g1",
+        "g2",
+        "h1",
+        "h2"
+      ],
+      "shots": {
+        "select": "screenshots/b1-c3-a.png",
+        "after": "screenshots/b1-c3-b.png"
+      }
+    },
+    {
+      "pair": "g1-f3",
+      "fromTap": {
+        "x": 292.5,
+        "y": 669
+      },
+      "toTap": {
+        "x": 253.5,
+        "y": 591
+      },
+      "selectedRing": "g1",
+      "afterSide": "black",
+      "afterInk": [
+        "a1",
+        "a2",
+        "b1",
+        "b2",
+        "c2",
+        "d1",
+        "d2",
+        "e2",
+        "f2",
+        "f3",
+        "g2",
+        "h1",
+        "h2"
+      ],
+      "shots": {
+        "select": "screenshots/g1-f3-a.png",
+        "after": "screenshots/g1-f3-b.png"
+      }
+    }
+  ],
+  "grid": {
+    "left": 39,
+    "right": 351,
+    "top": 376.5,
+    "bottom": 688.5,
+    "square": 39
+  }
+}

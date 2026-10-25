@@ -1,0 +1,17 @@
+{
+  "arm": "preload-worklets",
+  "run": 1,
+  "url": "http://127.0.0.1:8081/index_preload_worklet.html",
+  "firstPaintedMs": 1655,
+  "probeContextMs": 17,
+  "probeContextEndMs": 29,
+  "engineBanner": "264ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+  "firstFetchMs": 29,
+  "pck": {
+    "startMs": 6,
+    "endMs": 71,
+    "initiatorType": "link",
+    "transferredBytes": 9570888
+  },
+  "domContentLoadedMs": 49
+}

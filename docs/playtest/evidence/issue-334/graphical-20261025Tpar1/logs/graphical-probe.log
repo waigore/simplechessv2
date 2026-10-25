@@ -1,0 +1,119 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+A334G build=true session=sess-1792882280138-80759-playtest-439809 godot=4.7.2-stable (official) display=macOS window=(1280, 720) spec_root=/Users/waigore/Documents/GitHub/simplechessv2_all/1/.orc/worktrees/issue-workflow-accept-agent-1-20261024T223251014333Z/specs
+A334G JUDGE PTU-localization ENV ENV.2 pass — rendered display (macOS) at (1280, 720)
+A334G JUDGE PTU-localization ENV TEL.3 pass — session id: sess-1792882280138-80759-playtest-439809
+A334G shot 01-mode-pick-en.png 1280x720 err=0
+A334G s1 en stage=mode-pick visible=Choose how to play | Shared game · Last | Puzzle stream | Quit | English
+A334G s1 C4 step=1 locale=zh-Hant stage=mode-pick R3=繁體中文
+A334G s1 C4 step=1 visible=選擇遊玩方式 | 共用對局 · 上次 | 謎題串流 | 結束 | 繁體中文
+A334G shot 02-mode-pick-zh-Hant.png 1280x720 err=0
+A334G s1 C4 step=2 locale=ja stage=mode-pick R3=日本語
+A334G s1 C4 step=2 visible=遊び方を選ぶ | シェア対局 · 前回 | パズルストリーム | 終了 | 日本語
+A334G shot 03-mode-pick-ja.png 1280x720 err=0
+A334G JUDGE PTU-localization S1 P1 first activation pass — stage=mode-pick R3=繁體中文 zh-Hant title 選擇遊玩方式 present=true
+A334G JUDGE PTU-localization S1 P3 locale own name pass — locale row zh-Hant=繁體中文 ja=日本語
+A334G s1 readings zh-Hant visible=選擇遊玩方式 | 共用對局 · 上次 | 謎題串流 | 結束 | 繁體中文
+A334G s1 readings ja visible=遊び方を選ぶ | シェア対局 · 前回 | パズルストリーム | 終了 | 日本語
+A334G JUDGE PTU-localization S1 P2 locale-dependent rows pass — title/shared/puzzle render per locale; not shown=[]; not differing=[]
+A334G JUDGE PTU-localization S1 F1 FAIL.T13 pass — no FAIL.T13 miss marker in this run log (grep -c 'A334G MISS' = 0)
+{"TEL.1":"shared.start","TEL.2":1792882280412,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=ja
+{"TEL.1":"shared.start","TEL.2":1792882280442,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=en
+A334G s2 shared-play en queen=Queen visible=White to move | Advice On | Resign | Offer draw
+A334G shot 04-shared-play-en.png 1280x720 err=0
+{"TEL.1":"shared.start","TEL.2":1792882280487,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=zh-Hant
+A334G s2 shared-play zh-Hant queen=Queen visible=白方行棋 | 建議：開 | 認輸 | 提議和棋
+{"TEL.1":"shared.start","TEL.2":1792882280517,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=ja
+A334G s2 shared-play ja queen=Queen visible=白の手番 | アドバイス オン | 投了 | 引き分けを提案
+A334G JUDGE PTU-localization S2 P4 shared-play zh-Hant fail — Copy-table strings render; queen=Queen present=false
+A334G JUDGE PTU-localization S2 P4 shared-play ja fail — Copy-table strings render; queen=Queen present=false
+A334G s3 third activation closed at locale=ja stage=mode-pick
+{"TEL.1":"shared.start","TEL.2":1792882280569,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=ja
+{"TEL.1":"shared.start","TEL.2":1792882280595,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=en
+{"TEL.1":"shared.select","TEL.2":1792882280606,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280610,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d2->d4 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280621,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280625,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive e7->e6 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280635,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280639,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d4->d5 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280650,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280654,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d7->d6 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280664,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280668,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A334G s3 drive d5->d6 moved=false stage=shared-play state=S5
+{"TEL.1":"shared.deselect","TEL.2":1792882280679,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280682,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A334G s3 drive a7->a6 moved=false stage=shared-play state=S5
+{"TEL.1":"shared.deselect","TEL.2":1792882280692,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+A334G shot 06-shared-play-promote-en.png 1280x720 err=0
+A334G s3 promotion en opened=false shown=[] unreadable=[] queen=false
+{"TEL.1":"shared.start","TEL.2":1792882280736,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=zh-Hant
+{"TEL.1":"shared.select","TEL.2":1792882280747,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280751,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d2->d4 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280762,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280766,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive e7->e6 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280776,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280780,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d4->d5 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280792,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280796,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d7->d6 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280813,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280816,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A334G s3 drive d5->d6 moved=false stage=shared-play state=S5
+{"TEL.1":"shared.deselect","TEL.2":1792882280827,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280830,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A334G s3 drive a7->a6 moved=false stage=shared-play state=S5
+{"TEL.1":"shared.deselect","TEL.2":1792882280842,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+A334G shot 06-shared-play-promote-zh-Hant.png 1280x720 err=0
+A334G s3 promotion zh-Hant opened=false shown=[] unreadable=[] queen=false
+{"TEL.1":"shared.start","TEL.2":1792882280883,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+A334G shared-play entry stage=shared-play locale=ja
+{"TEL.1":"shared.select","TEL.2":1792882280894,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280898,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d2->d4 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280910,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280915,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive e7->e6 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280926,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280931,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d4->d5 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280942,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280947,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+A334G s3 drive d7->d6 moved=true stage=shared-play state=S1
+{"TEL.1":"shared.select","TEL.2":1792882280957,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280961,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A334G s3 drive d5->d6 moved=false stage=shared-play state=S5
+{"TEL.1":"shared.deselect","TEL.2":1792882280973,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+{"TEL.1":"shared.move","TEL.2":1792882280977,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.3","TEL.5":"illegal"}
+A334G s3 drive a7->a6 moved=false stage=shared-play state=S5
+{"TEL.1":"shared.deselect","TEL.2":1792882280988,"TEL.3":"sess-1792882280138-80759-playtest-439809","TEL.4":"UI-shared-play.US1.5","TEL.5":"ok"}
+A334G shot 06-shared-play-promote-ja.png 1280x720 err=0
+A334G s3 promotion ja opened=false shown=[] unreadable=[] queen=false
+A334G JUDGE PTU-localization S3 P5 queen fail — `C4` closed at en=false; promotion chooser (S4/C6) renders the queen option in all three locales
+A334G JUDGE PTU-localization S3 P5 queen legible fail — the chooser's four piece rows are inked (no clipped / missing glyph): { "en": { "shown": [], "unreadable": [], "queen": false, "opened": false }, "zh-Hant": { "shown": [], "unreadable": [], "queen": false, "opened": false }, "ja": { "shown": [], "unreadable": [], "queen": false, "opened": false } }
+A334G JUDGE PTU-localization TABLE AC1 pass — 21 puzzle-play keys + mode-pick.puzzle resolve in 3 locales ([])
+A334G JUDGE PTU-localization TABLE AC3 pass — 17 varying keys, en copies: []
+A334G judge step=PTU-localization-S1-S2-S3 complete
+A334G RESULT rows=12 failures=4
+A334G VERDICT ENV pass
+A334G VERDICT S1 pass
+A334G VERDICT S2 fail
+A334G VERDICT S3 fail
+A334G VERDICT TABLE pass
+WARNING: 12 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

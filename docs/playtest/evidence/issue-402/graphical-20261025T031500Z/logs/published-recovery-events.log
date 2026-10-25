@@ -1,0 +1,18 @@
+7.103s log.warning [.WebGL-0x10c000cc000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+7.923s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+10.402s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+10.653s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+11.100s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+11.100s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+11.100s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+11.101s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+11.101s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+11.101s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+11.101s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+11.101s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+11.101s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+11.101s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+11.102s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+11.102s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+11.102s console.error ERROR: Preload ambient left 2 approved IDs unresolved
+11.102s console.error    at: push_error (core/variant/variant_utility.cpp:1023)

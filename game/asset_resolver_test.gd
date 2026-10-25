@@ -48,8 +48,18 @@ func _after_boot() -> void:
 		problem = "boot group"
 	elif _router.stage != SessionRouter.STAGE_MODE_PICK:
 		problem = "mode pick did not become ready"
-	elif not _resolver.group_loaded("ambient"):
-		problem = "ambient must load when mode pick is ready"
+	elif _resolver.group_loaded("ambient"):
+		## #856: the frame that first paints mode pick carries no Ambient read, so
+		## the group is still unloaded in the frame mode pick became ready.
+		problem = "ambient loaded in the mode-pick frame"
+	if not problem.is_empty():
+		_fail(problem)
+		return
+	## The frames after the paint are when `AST.G3`'s Ambient load lands (#856).
+	await process_frame
+	await process_frame
+	if not _resolver.group_loaded("ambient"):
+		problem = "ambient must load once mode pick is painted"
 	elif _resolver.resolve(boot_id) == null:
 		problem = "boot id did not resolve"
 	elif _any_cached("play"):

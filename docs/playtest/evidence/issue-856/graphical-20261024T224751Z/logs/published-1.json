@@ -1,0 +1,22 @@
+{
+  "label": "published-1",
+  "firstPaintedMs": 6579,
+  "probeContextMs": 2707,
+  "probeContextEndMs": 2976,
+  "engineBanner": "5042ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+  "wasmRequestedMs": 4272,
+  "wasmDownloadedMs": 670,
+  "pckRequestedMs": 4272,
+  "pckDownloadedMs": 587,
+  "domContentLoadedMs": 4289,
+  "paints": [
+    {
+      "name": "first-paint",
+      "startMs": 4136
+    },
+    {
+      "name": "first-contentful-paint",
+      "startMs": 6624
+    }
+  ]
+}

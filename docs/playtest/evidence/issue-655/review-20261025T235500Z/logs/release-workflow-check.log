@@ -1,0 +1,13 @@
+$ grep -n "T9\|T10\|ADVICE\|advice\|secrets\." .github/workflows/web-release.yml
+6:# publishes that directory. No playtest build and no advice backend (ADR-0009).
+81:      # Stockfish endpoint", CTR-advice-stream G3). `Web playtest` produces the
+154:          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+155:          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+$ grep -n "advice\|T9\|T10" .github/scripts/web_export.py
+22:("No client Stockfish endpoint"; CTR-advice-stream G3): the `Web playtest` and
+77:# §Validation "No client Stockfish endpoint", CTR-advice-stream G3). Client code
+82:# comment word (`uci`), and the backend's HTTP route (`advice_endpoint`) all
+554:    ADR-0002 §Validation "No client Stockfish endpoint" and CTR-advice-stream G3:
+555:    the client talks only to the advice backend, so an export that names the
+(no line = the publish pipeline has no step that could set T9/T10)

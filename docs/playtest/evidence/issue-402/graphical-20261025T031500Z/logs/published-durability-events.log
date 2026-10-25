@@ -1,0 +1,130 @@
+5.173s log.warning [.WebGL-0x104000c8400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+6.708s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+7.748s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+7.976s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+8.401s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+8.401s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+8.401s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+8.402s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+8.402s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+8.402s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+8.402s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+8.402s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+8.402s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+8.402s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+8.402s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+8.402s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+8.402s console.error ERROR: Preload ambient left 2 approved IDs unresolved
+8.402s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+8.432s log.warning [.WebGL-0x104000e1c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+9.746s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+9.873s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+10.010s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+10.408s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+10.408s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+10.408s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+10.408s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+10.408s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+10.409s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+10.409s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+10.409s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+10.409s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+10.409s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+10.409s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+10.410s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+10.410s console.error ERROR: Preload ambient left 2 approved IDs unresolved
+10.410s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+16.822s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+16.822s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.823s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+16.823s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.825s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+16.825s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.825s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+16.826s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.826s console.error ERROR: Preload ambient left 2 approved IDs unresolved
+16.826s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+16.861s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/move-settle.ogg'.
+16.861s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.861s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/move-settle.ogg'.
+16.862s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.862s console.error WARNING: Unresolved asset ID: 01a151f8-b7d8-710a-b767-92c9137bfd63
+16.862s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+16.863s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+16.863s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.863s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+16.863s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.864s console.error WARNING: Unresolved asset ID: 01a151f8-b7d8-759c-89c5-e1be5eecb2b2
+16.864s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+16.865s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/touch-select.ogg'.
+16.865s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.865s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/touch-select.ogg'.
+16.865s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.865s console.error WARNING: Unresolved asset ID: 01a151f8-b7d8-7ae6-84af-767ba53d09f6
+16.865s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+16.866s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/check.ogg'.
+16.866s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.866s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/check.ogg'.
+16.867s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.867s console.error WARNING: Unresolved asset ID: 01a151f8-b7d8-7e05-9921-e892e9a2e064
+16.867s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+16.869s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/end-resolve.ogg'.
+16.869s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.869s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/end-resolve.ogg'.
+16.869s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.870s console.error WARNING: Unresolved asset ID: 01a151f8-b7d8-7fe3-b94f-e3a562395d96
+16.870s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+16.912s console.error ERROR: Preload play left 5 approved IDs unresolved
+16.912s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+16.912s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/move-settle.ogg'.
+16.912s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.912s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/move-settle.ogg'.
+16.913s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.913s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+16.913s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.913s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/puzzle-fail.ogg'.
+16.913s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.913s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/touch-select.ogg'.
+16.913s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.913s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/touch-select.ogg'.
+16.914s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.922s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/check.ogg'.
+16.922s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.924s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/check.ogg'.
+16.924s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.924s console.error ERROR: Can't open file from path 'res://game_assets/sound-effects/end-resolve.ogg'.
+16.925s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+16.925s console.error ERROR: Cannot open file 'res://game_assets/sound-effects/end-resolve.ogg'.
+16.925s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+16.929s console.error WARNING: puzzle stream: deal read failed (status)
+16.932s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+20.549s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+20.745s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+20.906s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+21.315s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+21.316s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+21.316s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+21.316s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+21.317s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+21.317s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+21.317s console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+21.317s console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+21.317s console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+21.317s console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+21.317s console.error WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+21.318s console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+21.318s console.error ERROR: Preload ambient left 2 approved IDs unresolved
+21.319s console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+27.173s console.error Error calling method setItem on: Storage error: Error: forced write failure (#402 evidence)
+    at Storage.setItem (<anonymous>:1:108)
+    at _godot_js_wrapper_object_call (https://waigore.github.io/simplechessv2/index.js:1:217434)
+    at wasm://wasm/096bca0a:wasm-function[56138]:0x1dba0b6
+    at wasm://wasm/096bca0a:wasm-function[7258]:0x41ff33
+    at wasm://wasm/096bca0a:wasm-function[2238]:0x16e4ed
+    at wasm://wasm/096bca0a:wasm-function[43240]:0x1a7d6d4
+    at wasm://wasm/096bca0a:wasm-function[8840]:0x4ffc02
+    at wasm://wasm/096bca0a:wasm-function[43982]:0x1aa880e
+    at wasm://wasm/096bca0a:wasm-function[7258]:0x41ff33
+    at wasm://wasm/096bca0a:wasm-function[2238]:0x16e4ce
+27.173s console.error ERROR: PersistStore: write failed; prior commit kept
+27.174s console.error    at: push_error (core/variant/variant_utility.cpp:1023)

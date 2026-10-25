@@ -1,0 +1,44 @@
+# Run log — #400 graphical
+
+Build `820f202`, session `sess-1792879524222-55186-playtest-446768`, Godot `4.7.2-stable (official)`, locale `en_US`.
+
+Telemetry rows: 8. Driver errors: [].
+
+## Protocol verdicts
+- `controls` — **not-judged** (failed rows: none; not-judged rows: controls.md#US1, controls-drag.md#US2)
+- `difficulty` — **not-judged** (failed rows: none; not-judged rows: difficulty.md#PS1, difficulty-repeat.md#PS1)
+- `end-conditions` — **not-judged** (failed rows: none; not-judged rows: end-conditions.md#PS1, end-conditions/conditions.md#PS1, end-conditions/conditions-puzzle.md#PS1, end-conditions/conditions-draw.md#PS1, end-conditions/conditions-counts.md#PS1)
+- `exceptions` — **not-judged** (failed rows: none; not-judged rows: exceptions.md#US1, exceptions-play.md#US1)
+- `game-state` — **not-judged** (failed rows: none; not-judged rows: game-state.md#PS1, game-state/fields-play.md#PS1, game-state/fields-play-moment.md#PS1, game-state/fields-play-puzzle.md#PS1, game-state/fields-play-reset.md#PS1, game-state/fields-play-end.md#PS1, game-state/fields-play-draw.md#PS1, game-state/fields-persist.md#PS1, game-state/fields-persist-config.md#PS1)
+- `localization` — **not-judged** (failed rows: none; not-judged rows: screens/mode-pick.md#US1, screens/mode-pick-unavailable.md#US1)
+- `mode-and-config` — **not-judged** (failed rows: none; not-judged rows: configuration.md#PS1, flows/mode-pick.md#PS1, flows/mode-pick-unavailable.md#PS1, loops/two-player-tunables.md#PS1, difficulty-tunables.md#PS1)
+- `mode-pick` — **not-judged** (failed rows: none; not-judged rows: screens/mode-pick.md#US1, screens/mode-pick-unavailable.md#US1)
+- `move-advice` — **not-judged** (failed rows: none; not-judged rows: features/move-advice.md#PS1, features/move-advice-clear.md#PS1)
+- `navigation` — **not-judged** (failed rows: none; not-judged rows: navigation.md#US1, navigation-conditions.md#US2)
+- `pieces-common` — **not-judged** (failed rows: none; not-judged rows: entities/pieces.md#PS1, entities/pieces/common.md#PS1, entities/pieces/common-legality.md#PS1, entities/pieces/common-attack.md#PS2)
+- `pieces-king` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/king.md#PS1, entities/pieces/king-castling.md#PS1)
+- `pieces-officers` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/officers.md#PS1)
+- `pieces-pawn` — **not-judged** (failed rows: none; not-judged rows: entities/pieces/pawn.md#PS1)
+- `progression` — **not-judged** (failed rows: none; not-judged rows: progression.md#PS1, progression-mode.md#PS2)
+- `puzzle-play` — **not-judged** (failed rows: none; not-judged rows: screens/puzzle-play.md#US1, screens/puzzle-play-regions.md#US2, screens/puzzle-play-choices.md#US3, screens/puzzle-play-place.md#US3, screens/puzzle-play-confirm.md#US5)
+- `puzzle-session` — **not-judged** (failed rows: none; not-judged rows: journeys/puzzle-session.md#US1)
+- `puzzle-stream` — **not-judged** (failed rows: none; not-judged rows: loops/puzzle-stream.md#PS1, loops/puzzle-stream-advance.md#PS1, features/puzzle-catalog.md#PS1, features/puzzle-catalog-select.md#PS2, scenarios/puzzle-stream-visit.md#PS1)
+- `shared-game` — **not-judged** (failed rows: none; not-judged rows: loops/two-player-game.md#PS1, loops/two-player-draw.md#PS1)
+- `shared-play` — **not-judged** (failed rows: none; not-judged rows: screens/shared-play.md#US1, screens/shared-play-regions.md#US2, screens/shared-play-choices.md#US3, screens/shared-play-place.md#US3, actors/bottom-player.md#US1, actors/top-player.md#US1)
+- `shared-result` — **not-judged** (failed rows: none; not-judged rows: screens/shared-result.md#US1)
+- `shared-session` — **not-judged** (failed rows: none; not-judged rows: journeys/shared-session.md#US1)
+- `shared-setup` — **not-judged** (failed rows: none; not-judged rows: screens/shared-setup.md#US1)
+
+## Static asset reading (before protocol step 1)
+- boot: 11 of 11 opened; play: 19 of 19 opened; unresolved {'boot': 0, 'play': 0}; boot_outcome 0; session_playable True.
+
+## Telemetry excerpt
+
+Every `TEL.*` row the run emitted is in `telemetry.ndjson`; the first and last rows are quoted here.
+    {"TEL.1":"report.assets","TEL.2":1792879524363,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"CTR-asset-resolve","TEL.5":"read"}
+    {"TEL.1":"shared.start","TEL.2":1792879524436,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+    {"TEL.1":"jump","TEL.2":1792879524468,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"session-ended","TEL.5":"pass"}
+    …
+    {"TEL.1":"jump","TEL.2":1792879524543,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"mode-pick","TEL.5":"pass"}
+    {"TEL.1":"shared.start","TEL.2":1792879524547,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+    {"TEL.1":"shared.select","TEL.2":1792879524558,"TEL.3":"sess-1792879524222-55186-playtest-446768","TEL.4":"UI-shared-play.US1.2","TEL.5":"ok"}

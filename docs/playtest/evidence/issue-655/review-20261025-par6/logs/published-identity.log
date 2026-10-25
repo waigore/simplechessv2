@@ -1,0 +1,7 @@
+## published artefact identity
+HTTP/2 200 
+last-modified: Sat, 24 Oct 2026 17:57:05 GMT
+etag: "6adcf171-91ff1c"
+content-length: 9568028
+## catalog route
+GET /catalog/deal -> 404

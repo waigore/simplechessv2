@@ -1,0 +1,35 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R558 {"check":"release_scene_has_no_seams","detail":"main_release.tscn","ok":true}
+R558 {"check":"router_present","detail":"","ok":true}
+R558 {"check":"presentation_present","detail":"","ok":true}
+R558 {"check":"shared_play_reached","detail":"shared-play","ok":true}
+R558 {"check":"advice_client_is_shipped","detail":"","ok":true}
+R558 {"check":"advice_endpoint_empty","detail":"","ok":true}
+R558 {"advice":false,"advice_best_move":null,"advice_error":false,"advice_eval":null,"check":"advice_off.start","mode":"shared","online":true,"side_to_move":"white"}
+R558 {"check":"advice_off.advice_is_off","detail":"false","ok":true}
+R558 {"check":"advice_off.best_move_none","detail":"","ok":true}
+R558 {"check":"advice_off.eval_none","detail":"","ok":true}
+R558 {"check":"move.f2f3","detail":"","ok":true}
+R558 {"advice":false,"advice_best_move":null,"advice_error":false,"advice_eval":null,"check":"advice_off.after_move","mode":"shared","online":true,"side_to_move":"black"}
+R558 {"check":"advice_off.after_move.side_black","detail":"black","ok":true}
+R558 {"check":"advice_off.after_move.best_move_none","detail":"","ok":true}
+R558 {"check":"advice_off.after_move.eval_none","detail":"","ok":true}
+R558 {"check":"advice_off.after_move.no_error","detail":"","ok":true}
+R558 {"check":"online_on.advice_is_on","detail":"true","ok":true}
+R558 {"check":"online_on.advice_client_unavailable","detail":"T9/T10 empty on the release","ok":true}
+R558 {"check":"online_on.best_move_none","detail":"","ok":true}
+R558 {"check":"online_on.eval_none","detail":"","ok":true}
+R558 {"check":"offline.move.e7e5","detail":"","ok":true}
+R558 {"advice":true,"advice_best_move":null,"advice_error":false,"advice_eval":null,"check":"offline_and_on.after_move","mode":"shared","online":false,"side_to_move":"white"}
+R558 {"check":"offline_and_on.online_false","detail":"","ok":true}
+R558 {"check":"offline_and_on.best_move_none","detail":"","ok":true}
+R558 {"check":"offline_and_on.eval_none","detail":"","ok":true}
+R558 {"check":"offline_and_on.no_error","detail":"","ok":true}
+R558 {"advice":true,"advice_best_move":null,"advice_error":false,"advice_eval":null,"check":"offline.r9","mode":"shared","online":false,"side_to_move":"white"}
+R558 {"check":"offline.r9.best_move_none","detail":"","ok":true}
+R558 {"check":"offline.r9.eval_none","detail":"","ok":true}
+R558 {"check":"offline.r9.events_array","detail":"","ok":true}
+R558 {"summary":{"checks":26,"failures":0}}
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
