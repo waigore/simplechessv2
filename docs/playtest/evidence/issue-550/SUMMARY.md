@@ -18,23 +18,9 @@ No row failed anywhere, so no `type:defect` was filed.
 
 ## `not-judged` rows
 
-| Story row | Protocol | Why it is `not-judged` |
-|---|---|---|
-| `entities/pieces/common-attack.md#PS2` | `pieces-common` | `I5`/`I6` attacked-square scenarios need a crafted position, and the build offers no position seam for the puzzle or shared board. |
-| `entities/pieces/king-castling.md#PS1` | `pieces-king` | castling needs a cleared `f1`/`g1`, reachable only through a crafted position. |
-| `entities/pieces/officers.md#PS1` | `pieces-officers` | the queen's and rooks' long rays are blocked by the orthodox opening, so those scenarios need a crafted position. |
-| `entities/pieces/pawn.md#PS1` | `pieces-pawn` | en passant and promotion need a crafted position. |
-| `screens/puzzle-play-place.md#US3` | `puzzle-play` | `US3.13` promotion and `US3.14` the lapsed confirm need a last-rank pawn; no reachable deal offers one and the build offers no position seam. |
-| `controls-point.md#US3` | `controls` | pointing needs a display; the graphical run judges it. |
-| `exceptions.md#US1` | `exceptions` | `US1.6` needs a non-touch Web device (unsupported input), which neither environment is; the other cells of the row are judged. |
-| `exceptions-play.md#US1` | `exceptions` | `US1.8`/`US1.9` promotion needs a crafted position; the other cells of the row are judged. |
-| `localization.md#US1` | `localization` | `LOC.US1.1` (key names) is a spec review, not a run state, per `specs/playtest/ux/localization.md` §Evidence; the protocol reads `LOC.US1` as its three scenarios, so the row stays `not-judged` while `LOC.US1.2`/`LOC.US1.3` pass. |
+The nine `not-judged` rows and their reasons are the `not-judged` table in each manifest, stated once there. Four share one cause — a crafted position the build offers no seam for (piece scenarios, and `US3.13`/`US3.14` promotion); the rest are one row each: a display for pointing, a non-touch device for unsupported input, and `LOC.US1.1` key names, which `specs/playtest/ux/localization.md` §Evidence calls a spec review rather than a run state.
 
-## Row-level `none`
-
-| Story row | Recorded | Linked defect |
-|---|---|---|
-| `localization.md#US2` | none — `LOC.US2` is out of playtest scope; judged by spec read | [#788](https://github.com/waigore/simplechessv2/issues/788) |
+**Row-level `none`**: `localization.md#US2` — `LOC.US2` is out of playtest scope; judged by spec read, tracked by [#788](https://github.com/waigore/simplechessv2/issues/788).
 
 ## The deal source, stated once
 
