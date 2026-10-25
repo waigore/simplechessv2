@@ -25,9 +25,9 @@ State which rows mode `full` selects, in one sentence, so the set has one readin
 
 ## Rows no protocol judges
 
-- Row-level `none` is `none — <reason>` with a linked `type:defect` number; scenario-cell `none` sits in the row's scenario cell and needs no defect.
+- Row-level `none` is `none — <reason>` with a durable reason. When material uncovered work needs an owner, the row names an open epic or task. Do not require a linked `type:defect`; a defect is not a planning owner. Scenario-cell `none` sits in the row's scenario cell and needs no owner.
 - `none` is not `out` and not `not-judged`; the outcome vocabulary stays in [`evidence.md`](evidence.md).
-- The only fail of this rule is a row-level `none` with no defect number.
+- The only fail of this rule is a row-level `none` with no durable reason.
 
 ## Splitting
 

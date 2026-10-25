@@ -26,8 +26,8 @@ Mode `full` selects every design row and every UX row, journey rows included. It
 
 ## Rows no protocol judges
 
-- A row no protocol judges is recorded `none — <reason>` and names a linked `type:defect` number. It is never `out` and never `not-judged`.
-- A scenario inside a judged row that no step reaches is a scenario-cell `none`, listed in that row's scenario cell. It needs no defect number and is not a row-level `none`.
-- A row-level `none` without a defect number is the only fail of this rule.
+- A row no protocol judges is recorded `none — <reason>` with a durable reason. When material uncovered work needs an owner, the row names an open epic or task. It does not require a linked `type:defect`, and a defect is not a planning owner. It is never `out` and never `not-judged`.
+- A scenario inside a judged row that no step reaches is a scenario-cell `none`, listed in that row's scenario cell. It needs no owner and is not a row-level `none`.
+- A row-level `none` without a durable reason is the only fail of this rule.
 
 Runs record outcomes per [`evidence.md`](evidence.md). The applied row list is the story-to-protocol map under `specs/playtest/traceability/`, recorded by [#481](https://github.com/waigore/simplechessv2/issues/481); this file is the rule it applies.
