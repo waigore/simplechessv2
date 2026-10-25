@@ -39,6 +39,7 @@ Create a repository **Task** (`type:task`).
 - Do not change priority after create; only humans set or change priority later.
 - Default: create on GitHub.
 - Do not invent a parent; only attach when the user names one.
+- Draft ACs per [`requirements.md`](../../../docs/issues/requirements.md). If the task touches [`specs/playtest/story-rows.md`](../../../specs/playtest/story-rows.md), require epic/task owners or durable `none` reasons — never “every `none` names a live `type:defect`.”
 
 ## Related
 
