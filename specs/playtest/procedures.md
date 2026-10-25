@@ -16,7 +16,7 @@ At `status:pending-acceptance` (`accept-project-issue`) when the issue's deliver
 
 ## Prep
 
-- Build under test is the one under acceptance, named by commit and by the source it was read from. The published URL (ADR-0009) is preferred whenever it serves that commit; a release export of the same preset into `build/web/` (ADR-0007) is the only fallback, used while the commit is unpublished, and the manifest records the source and why. The fallback never stands in for a published reading.
+- Build under test is the one under acceptance, named by commit and by the source it was read from. It is a local export into `build/web/` (ADR-0007) or an in-process run of that commit. The project publishes no client URL (ADR-0016). The manifest records which source was read.
 - Must tools from [`tools.md`](tools.md) are available (`ENV.*`, `DBG.*`, `TEL.*`, both drive paths); `ENV.*` is the environment class from [`ids.md`](ids.md), not a second tool set. The Must environments are `ENV.1` (Headless) and `ENV.2` (Graphical).
 - Any Situational tool a selected protocol cites is available.
 - Evidence folders exist under [`docs/playtest/evidence/`](../../docs/playtest/evidence/) for each required environment run.

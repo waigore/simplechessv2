@@ -2,17 +2,15 @@
 
 Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/rules/adr/decision.md).
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-10-25
 - **Category**: Integration
 - **Supersedes**: None
-- **Informed by**: Instant play; Cafe calm (vision); [F-move-advice](../../design/features/move-advice.md); [ADR-0009](0009-github-pages-client-host.md), [ADR-0010](0010-advice-backend-stack.md), [ADR-0011](0011-local-stockfish-invocation.md), [ADR-0012](0012-advice-backend-gpl-compliance.md), [ADR-0013](0013-puzzle-catalog-api.md)
+- **Informed by**: Instant play; Cafe calm (vision); [F-move-advice](../../design/features/move-advice.md); [ADR-0010](0010-advice-backend-stack.md), [ADR-0011](0011-local-stockfish-invocation.md), [ADR-0012](0012-advice-backend-gpl-compliance.md), [ADR-0013](0013-puzzle-catalog-api.md)
 
 ## Context
 
-ADR-0010 chooses no host vendor or deploy path. ADR-0013 and `CMP-catalog-service` R8 nonetheless presuppose **a** backend host and deploy path, and `configuration.md` T9/T10 say "set per deployment". Nothing records whether that host is ever the project's. The product owner answered on #505: the game is experimental with no public release; the Advice control stays and works only against an operator/player-run backend configured through T9/T10.
-
-**Open question:** does the owner approve that ADR-0013's host and deploy path is the operator's, narrowing what that Accepted ADR implies? Until then this record is Proposed.
+ADR-0010 chooses no host vendor or deploy path. ADR-0013 and `CMP-catalog-service` R8 nonetheless presuppose **a** backend host and deploy path, and `configuration.md` T9/T10 say "set per deployment". Nothing records whether that host is ever the project's. The product owner answered on #505, and approved this record on 2026-10-25: the game is experimental with no public release; the Advice control stays and works only against an operator/player-run backend configured through T9/T10. ADR-0013's host and deploy path is the operator's.
 
 ## Purpose
 
@@ -64,4 +62,4 @@ Licensing and cost, maintainability, and security are affected; all rows are in 
 | Check | Method | When |
 |-------|--------|------|
 | No project backend host, URL, or deploy plan in specs | Spec lint plus review | Before acceptance |
-| The docs cite this posture as Proposed until approved | Review rule | Every release |
+| Specs cite this posture as the operator's host | Review | Every release |
