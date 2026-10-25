@@ -1,7 +1,8 @@
 # Builds — #626 mobile-browser sitting
 
 What was read, where it came from, and what the seat can and cannot show. Judgement text in
-[notes.md](notes.md); results table in [manifest.md](manifest.md).
+[notes.md](notes.md); results table in [manifest.md](manifest.md); the seat in full in
+[seat.md](seat.md).
 
 ## The build under test (the reading)
 
@@ -44,30 +45,6 @@ release gates over it all came back clean:
 
 No `Web Release` export fallback was needed for the graded run: the published URL was live and
 readable, so nothing here stands in for it.
-
-## The seat
-
-Headless Chrome **156.0.8078.47** on macOS 27.0.1 arm64, viewport **390×844 CSS px** at
-**DPR 2** with touch emulation — a phone-class viewport, not a phone.
-
-**What the phone-class viewport reaches**
-
-- the published build's own responsive layout and its touch hit areas at a phone width;
-- one continuous sitting with real wall-clock time passing;
-- **background → foreground** through the real tab lifecycle (`Target.activateTarget` on a
-  second tab, then back);
-- **quit → reopen** in a persistent origin store, and a cache-ignoring **reload**;
-- the page's own `localStorage` document, read in the page's origin — no desktop devtools path.
-
-**What only a handset can reach, and is therefore `not-judged`**
-
-- the mobile OS suspending or killing the browser process;
-- `localStorage` eviction under device storage pressure;
-- tab discard under memory pressure;
-- battery/thermal throttling, and a real cellular network's latency.
-
-See [notes.md *The seat*](notes.md) for why the lifecycle-freeze route was abandoned and what
-replaced it.
 
 ## Audio on this commit
 
