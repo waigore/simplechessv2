@@ -27,7 +27,8 @@
 An advance is a painted frame that differs from the frame taken immediately before that arm's
 press, in the same session; the game's own `last_mode` document corroborates every one
 (`shared` after C1, `puzzle` after C2). Per-arm hit point, hold, frame digests and the
-page-level gesture log: [readings.md](readings.md).
+page-level gesture log: [readings.md](readings.md); the boundary sweep is in
+[boundary-and-totals.md](boundary-and-totals.md).
 
 **No late placement pass:** 12 samples over 48 s after the cold open found one identical frame from
 sample 1 (19.4 s) onward, so the boxes do not move after the screen is up
