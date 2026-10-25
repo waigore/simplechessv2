@@ -207,46 +207,68 @@ func _check_boot_failure_surfaced() -> bool:
 
 
 ## The router half: E4 ends the wait, `EX.load-failure` is named, and C5 Reload loads
-## the game again from the start — a fresh Boot read, never a cached verdict.
+## the game again from the start. The router gets its *own* resolver — the one it binds
+## in `_ready` and reloads from — because a decoy resolver cannot show where the real
+## reload lands (#923).
 func _router_loads_again_after_failure(manifest: Dictionary) -> String:
-	var router_probe := AssetResolver.new()
-	router_probe.playtest_override = 1
-	root.add_child(router_probe)
-	router_probe.boot_failed.connect(_router._on_boot_failed)
-	router_probe.apply_manifest(manifest)
+	var parent := Node.new()
+	root.add_child(parent)
+	var resolver := AssetResolver.new()
+	resolver.name = "AssetResolver"
+	resolver.playtest_override = 1
+	parent.add_child(resolver)
+	var router := SessionRouter.new()
+	router.name = "SessionRouter"
+	parent.add_child(router)
+	resolver.apply_manifest(manifest)
 	var screens: Array[String] = []
-	_router.screen_requested.connect(
+	router.screen_requested.connect(
 		func(screen_id: String, _state: Dictionary) -> void: screens.append(screen_id)
 	)
-	## One frame runs the deferred preload, so the checks below never wait on a boot
-	## event that already failed.
-	router_probe.preload_boot()
+	router.start()
+	## The Boot preload is deferred; let it settle before judging the stage.
 	await process_frame
-	var problem := _load_failure_is_named(screens)
+	await process_frame
+	var problem := _load_failure_is_named(router, screens)
 	if problem.is_empty():
-		_router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C1")
-		if _router.stage != SessionRouter.STAGE_LOAD_FAILED:
+		router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C1")
+		if router.stage != SessionRouter.STAGE_LOAD_FAILED:
 			problem = "EX.load-failure acted on a control it does not offer"
 	if problem.is_empty():
-		_router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
-		if _router.stage != SessionRouter.STAGE_LOADING or _router.boot_failure_count != 1:
+		screens.clear()
+		router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
+		if router.stage != SessionRouter.STAGE_LOADING or router.boot_failure_count != 1:
 			problem = "Reload did not load the game again from the start"
 	if problem.is_empty():
 		## The manifest leaves Boot unresolvable, so the reloaded attempt must fail the
 		## same way, through a fresh read.
-		if _router._resolver.boot_outcome == 1 or _router._resolver.group_loaded("boot"):
+		if resolver.boot_outcome == 1 or resolver.group_loaded("boot"):
 			problem = "Reload kept a failed Boot verdict the wait would not read again"
+	## #923: the stage C5 sets is transient. Judge where the reloaded read *lands* —
+	## `exceptions.md` EX.load-failure Recovery says "Boot assets, then `mode-pick` or
+	## this row", so a Boot that fails again must come back to this row, never to
+	## mode-pick.
+	if problem.is_empty():
 		await process_frame
+		await process_frame
+		if router.stage != SessionRouter.STAGE_LOAD_FAILED:
+			problem = "Reload settled on %s, not EX.load-failure" % router.stage
+		elif screens.is_empty() or screens[-1] != SessionRouter.STAGE_LOAD_FAILED:
+			problem = "Reload's second Boot failure was not named to the presentation"
+		elif router.boot_failure_count != 1:
+			problem = "Reload lost the unresolved count"
+	parent.queue_free()
 	return problem
 
 
 ## E4 reached the router and replaced the wait with `EX.load-failure`.
-func _load_failure_is_named(screens: Array[String]) -> String:
-	if _router.boot_failure_count != 1:
+func _load_failure_is_named(router: SessionRouter, screens: Array[String]) -> String:
+	if router.boot_failure_count != 1:
 		return "session router did not observe the boot failure"
-	if _router.stage != SessionRouter.STAGE_LOAD_FAILED:
+	if router.stage != SessionRouter.STAGE_LOAD_FAILED:
 		return "boot failure left STAGE_LOADING: EX.loading is waited on after it failed"
-	if screens.is_empty() or screens[0] != SessionRouter.STAGE_LOAD_FAILED:
+	## `start()` names `EX.loading` first; the failure replaces it.
+	if screens.is_empty() or screens[-1] != SessionRouter.STAGE_LOAD_FAILED:
 		return "boot failure did not name EX.load-failure to the presentation"
 	return ""
 
