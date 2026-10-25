@@ -16,18 +16,20 @@ Authoring rules: [`.agents/specs/rules/technical/sequences.md`](../../../.agents
 | S1 | session-router | asset-resolver | CTR-asset-resolve.O2 | Preload Boot asset IDs |
 | S2 | session-router | persist-store | CTR-persist-document.O1 | Load document or defaults |
 | S3 | persist-store | session-router | CTR-persist-document.O1 return | Provide Elo / Last mode |
-| S4 | session-router | presentation | CTR-presentation.E1 | Show mode pick when Boot ready |
+| S4 | session-router | presentation | CTR-presentation.E1 | Show `EX.loading`, then mode pick when Boot ready |
+| S5 | presentation | session-router | CTR-presentation.E6 | Reload activated on `EX.load-failure` |
+| S6 | session-router | presentation | CTR-presentation.E1 | Show `EX.load-failure` in place of `EX.loading` |
 
 ## Branches
 
 | ID | Condition | Next steps | Outcome |
 |----|-----------|------------|---------|
 | B1 | Persist corrupt/missing | S2 defaults → S3 → S4 | Mode pick with Elo start |
-| B2 | Boot asset fail | S1 `AST.R3` handling → S4 if possible | Degraded visuals; session continues |
+| B2 | Boot leaves an approved ID unresolved | S1 E4 → S6 → S5 → S1 | `EX.load-failure` replaces `EX.loading`; Reload loads the game again from the start ([`FAIL.T15`](../failures.md)) |
 
 ## Postconditions
 
-- Mode pick is interactive without waiting on Advice or Play assets.
+- Mode pick is interactive without waiting on Advice or Play assets, or `EX.load-failure` names the failed load.
 - Committed Elo and Last mode are available to sessions.
 
 ## Diagram
@@ -41,5 +43,8 @@ sequenceDiagram
   SR->>AR: S1 Boot preload
   SR->>PS: S2 load
   PS->>SR: S3 committed fields
-  SR->>V: S4 mode pick
+  SR->>V: S4 EX.loading, then mode pick
+  AR-->>SR: E4 boot_failed (B2)
+  SR->>V: S6 EX.load-failure
+  V->>SR: S5 Reload
 ```

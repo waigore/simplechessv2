@@ -147,6 +147,8 @@
     }
     .dialog p { margin: 0 0 var(--gap-md); }
     .dialog .actions { display: flex; gap: var(--gap-sm); justify-content: center; flex-wrap: wrap; }
+    .failure .actions { display: flex; justify-content: center; }
+    .failure .actions .btn { min-width: 12rem; }
     .loading {
       text-align: center;
       padding: var(--gap-lg) 0;
@@ -177,6 +179,7 @@
       <a href="#ex-loading">ex-loading</a>
       <a href="#ex-confirm">ex-confirm</a>
       <a href="#ex-save-failure">ex-save-failure</a>
+      <a href="#ex-load-failure">ex-load-failure</a>
     </nav>
     <div class="stage states">
       <section id="state-default" data-state="default">
@@ -214,6 +217,15 @@
           <div class="actions">
             <button type="button" class="btn btn-primary">Confirm</button>
             <button type="button" class="btn btn-secondary">Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="ex-load-failure" data-state="EX.load-failure">
+        <div class="card dialog failure" data-od-id="mode-pick-load-failure">
+          <p>Some artwork could not load.</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" data-control="C5">Reload</button>
           </div>
         </div>
       </section>

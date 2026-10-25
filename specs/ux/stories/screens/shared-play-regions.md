@@ -113,3 +113,23 @@ Given GS.selectedPiece is the White king on e1 (legal moves derived from GS.posi
 When shared-play S1 is shown
 Then R1 marks each legal destination square
 ```
+
+### US2.11: Last move visible
+
+- **Proves**: R1
+
+```gherkin
+Given White just played e2–e4, next move unsettled (game-state H1)
+When shared-play S1 is shown
+Then R1 shows the last move on both e2 and e4 (PER.R9)
+```
+
+### US2.12: Last move replaced by the next
+
+- **Proves**: R1
+
+```gherkin
+Given Black then played e7–e5, settled
+When shared-play S1 is shown
+Then R1 shows the last move on e7 and e5 And no last-move mark on e2 or e4
+```

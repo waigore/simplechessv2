@@ -17,6 +17,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R3 | Commit Last mode via persist when a mode is entered |
 | R4 | Return to mode pick after Shared result or when leaving Puzzle |
 | R5 | Hold `GS.locale` (`en`, `zh-Hant`, `ja`) as a configuration field; do not write it to the persist document |
+| R6 | On Boot failure ([`CTR-asset-resolve`](../contracts/asset-resolve.md) E4), leave `EX.loading` for `EX.load-failure` (`FAIL.T15`); Reload loads the game again from the start |
 
 ## Communication
 
@@ -26,7 +27,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | C2 | [`CMP-shared-game-session`](shared-game-session.md) | calls | internal | Start / tear down Shared |
 | C3 | [`CMP-puzzle-session`](puzzle-session.md) | calls | internal | Start / tear down Puzzle |
 | C4 | [`CMP-presentation`](presentation.md) | both | [`CTR-presentation`](../contracts/presentation.md) | Screens E1; Shared cues/ambient E3 (SFX + BED_M1 playlist start); asset needs O3 up, E5 down. Locale switch applies immediately |
-| C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Boot before ready (a failed Boot reports E4; the `EX.loading` wait stays); Ambient when mode pick becomes ready; Play on first Shared entry; resolve L1 asset needs |
+| C5 | [`CMP-asset-resolver`](asset-resolver.md) | calls | [`CTR-asset-resolve`](../contracts/asset-resolve.md) | Boot before ready; E4 Boot failure shows `EX.load-failure` (R6, `FAIL.T15`); Ambient when mode pick becomes ready; Play on first Shared entry; resolve L1 asset needs |
 | C6 | [`CMP-playtest-seams`](playtest-seams.md) | listens | [`CTR-playtest-drive`](../contracts/playtest-drive.md) | E2 jump re-enters modes (playtest builds) |
 
 ## Owns / mutates
