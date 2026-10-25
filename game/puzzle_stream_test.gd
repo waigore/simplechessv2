@@ -28,6 +28,7 @@ func _run_all() -> String:
 		_check_undeliverable_record_deals_nothing,
 		_check_leave_retires_the_read,
 		_check_missing_peer_fails_without_dealing,
+		_check_unconfigured_read_is_not_a_status_failure,
 		_check_failure_leaves_the_open_puzzle_untouched,
 		_check_one_deal_at_a_time,
 		_check_usable,
@@ -235,17 +236,22 @@ func _check_missing_peer_fails_without_dealing() -> String:
 		return "X2: a failed read must not leave a puzzle open or scored"
 	if stream.last_failure != CatalogWireReader.REASON_ERROR:
 		return "X2: the failure must be observable to the caller"
-	var unconfigured := FakeCatalogTransport.new()
-	var unconfigured_session := _session()
-	var bare := PuzzleStream.new(unconfigured_session, CatalogDealClient.new())
-	if bare.request() or unconfigured.requests.size() != 0:
+	return ""
+
+
+## B5 — an unset `T9` / `T10` is refused before any request is attempted, and it is not
+## reported with the same reason a sent-but-unsuccessful read reports.
+func _check_unconfigured_read_is_not_a_status_failure() -> String:
+	var peer := FakeCatalogTransport.new()
+	var session := _session()
+	var stream := PuzzleStream.new(session, CatalogDealClient.new())
+	if stream.request() or peer.requests.size() != 0:
 		return "B5: T9 / T10 unset is a failed read, not a request"
-	if bare.last_failure != CatalogWireReader.REASON_UNCONFIGURED:
+	if stream.last_failure != CatalogWireReader.REASON_UNCONFIGURED:
 		return (
-			"B5: an unset T9 / T10 must not read as a transport or status failure (got %s)"
-			% bare.last_failure
+			"B5: an unset T9 / T10 must not read as a status failure (got %s)" % stream.last_failure
 		)
-	if unconfigured_session.player_elo != 1000.0:
+	if session.player_elo != 1000.0:
 		return "B5: a failed read leaves Elo unchanged"
 	return ""
 
