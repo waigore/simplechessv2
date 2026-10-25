@@ -1,0 +1,8 @@
+shared-refused-00: +0 ms after pointer-up
+shared-refused-01: +158 ms after pointer-up
+shared-refused-02: +293 ms after pointer-up
+shared-refused-03: +452 ms after pointer-up
+shared-refused-04: +625 ms after pointer-up
+shared-refused-05: +788 ms after pointer-up
+shared-refused-06: +939 ms after pointer-up
+shared-refused-07: +1100 ms after pointer-up
