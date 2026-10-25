@@ -1,0 +1,80 @@
+warning: [.WebGL-0x11c000c7200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+warning: [.WebGL-0x11c000e2800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+warning: WebGL: INVALID_OPERATION: bindBuffer: element array buffers can not be bound to a different target
+warning: WebGL: INVALID_OPERATION: bufferSubData: no buffer
+log: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+log: OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+log: Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+error: WARNING: puzzle stream: deal read failed (status)
+error:    at: push_warning (core/variant/variant_utility.cpp:1033)

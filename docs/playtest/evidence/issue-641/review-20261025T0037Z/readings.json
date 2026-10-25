@@ -1,0 +1,896 @@
+{
+  "board_px": [
+    78,
+    752,
+    702,
+    1376
+  ],
+  "square_px": 78,
+  "frames": {
+    "shared-turn-a": {
+      "accents_on_board": {
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#585854": {
+          "count": 34,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-turn-b": {
+      "accents_on_board": {
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#585854": {
+          "count": 34,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-selection": {
+      "accents_on_board": {
+        "#6CA444": {
+          "count": 3136,
+          "accent": "C11"
+        },
+        "#B8940C": {
+          "count": 1392,
+          "accent": "C6"
+        },
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {
+          "C6": 1314
+        },
+        "e3": {
+          "C11": 1568
+        },
+        "e4": {
+          "C11": 1568
+        },
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-refused-00": {
+      "accents_on_board": {
+        "#6CA444": {
+          "count": 3136,
+          "accent": "C11"
+        },
+        "#DCBCA4": {
+          "count": 2178,
+          "accent": "other"
+        },
+        "#B8940C": {
+          "count": 1392,
+          "accent": "C6"
+        },
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {
+          "C6": 1314
+        },
+        "e3": {
+          "C11": 1568
+        },
+        "e4": {
+          "C11": 1568
+        },
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-refused-settled": {
+      "accents_on_board": {
+        "#6CA444": {
+          "count": 3136,
+          "accent": "C11"
+        },
+        "#B8940C": {
+          "count": 1392,
+          "accent": "C6"
+        },
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {
+          "C6": 1314
+        },
+        "e3": {
+          "C11": 1568
+        },
+        "e4": {
+          "C11": 1568
+        },
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-destinations-empty": {
+      "accents_on_board": {
+        "#6CA444": {
+          "count": 3136,
+          "accent": "C11"
+        },
+        "#B8940C": {
+          "count": 1314,
+          "accent": "C6"
+        },
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {
+          "C6": 1314
+        },
+        "f3": {
+          "C11": 1568
+        },
+        "h3": {
+          "C11": 1568
+        },
+        "e8": {}
+      }
+    },
+    "shared-destinations-capture": {
+      "accents_on_board": {
+        "#6CA444": {
+          "count": 3088,
+          "accent": "C11"
+        },
+        "#B8940C": {
+          "count": 1392,
+          "accent": "C6"
+        },
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {
+          "C6": 78
+        },
+        "e4": {
+          "C6": 1314
+        },
+        "e5": {
+          "C11": 1568
+        },
+        "f5": {
+          "C11": 1520
+        },
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-check": {
+      "accents_on_board": {
+        "#C08884": {
+          "count": 225,
+          "accent": "C8"
+        },
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {
+          "C8": 215
+        }
+      }
+    },
+    "shared-last-move": {
+      "accents_on_board": {
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#585854": {
+          "count": 34,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "shared-advice": {
+      "accents_on_board": {
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#585854": {
+          "count": 34,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "puzzle-side": {
+      "accents_on_board": {
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#585854": {
+          "count": 34,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    },
+    "puzzle-side-steady": {
+      "accents_on_board": {
+        "#686460": {
+          "count": 53,
+          "accent": "other"
+        },
+        "#605C58": {
+          "count": 52,
+          "accent": "other"
+        },
+        "#4C4848": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#5C5854": {
+          "count": 49,
+          "accent": "other"
+        },
+        "#54504C": {
+          "count": 46,
+          "accent": "other"
+        },
+        "#585450": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#64605C": {
+          "count": 41,
+          "accent": "other"
+        },
+        "#585854": {
+          "count": 34,
+          "accent": "other"
+        }
+      },
+      "named_squares": {
+        "e2": {},
+        "e3": {},
+        "e4": {},
+        "e5": {},
+        "f5": {},
+        "g1": {},
+        "f3": {},
+        "h3": {},
+        "e8": {}
+      }
+    }
+  },
+  "refused_delta": {
+    "changed_px_vs_selected_board": 2178,
+    "box_px": [
+      312,
+      831,
+      389,
+      908
+    ],
+    "square": "d7",
+    "mean_rgb": [
+      220,
+      189,
+      166
+    ],
+    "d7_square_px": [
+      312,
+      830,
+      390,
+      908
+    ]
+  },
+  "last_move_window": {
+    "shared-last-move-00": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-01": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-02": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-03": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-04": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-05": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-06": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move-07": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    },
+    "shared-last-move": {
+      "accents_on_board": {
+        "C6": 0,
+        "C7": 0,
+        "C8": 3,
+        "C11": 0
+      },
+      "board_px_differing_from_settled": 0
+    }
+  },
+  "contrast": {
+    "C6": {
+      "as_drawn": {
+        "on_C1": 2.01,
+        "on_C2": 2.01
+      },
+      "protanopia": {
+        "mark_rgb": [
+          167,
+          146,
+          0
+        ],
+        "light_square_rgb": [
+          222,
+          212,
+          179
+        ],
+        "dark_square_rgb": [
+          104,
+          95,
+          58
+        ],
+        "on_C1": 2.1,
+        "on_C2": 2.06
+      },
+      "deuteranopia": {
+        "mark_rgb": [
+          175,
+          156,
+          26
+        ],
+        "light_square_rgb": [
+          226,
+          217,
+          182
+        ],
+        "dark_square_rgb": [
+          115,
+          106,
+          60
+        ],
+        "on_C1": 1.95,
+        "on_C2": 1.98
+      }
+    },
+    "C7": {
+      "as_drawn": {
+        "on_C1": 2.01,
+        "on_C2": 2.01
+      },
+      "protanopia": {
+        "mark_rgb": [
+          146,
+          159,
+          191
+        ],
+        "light_square_rgb": [
+          222,
+          212,
+          179
+        ],
+        "dark_square_rgb": [
+          104,
+          95,
+          58
+        ],
+        "on_C1": 1.79,
+        "on_C2": 2.41
+      },
+      "deuteranopia": {
+        "mark_rgb": [
+          131,
+          147,
+          190
+        ],
+        "light_square_rgb": [
+          226,
+          217,
+          182
+        ],
+        "dark_square_rgb": [
+          115,
+          106,
+          60
+        ],
+        "on_C1": 2.16,
+        "on_C2": 1.79
+      }
+    },
+    "C8": {
+      "as_drawn": {
+        "on_C1": 2.01,
+        "on_C2": 2.01
+      },
+      "protanopia": {
+        "mark_rgb": [
+          149,
+          145,
+          134
+        ],
+        "light_square_rgb": [
+          222,
+          212,
+          179
+        ],
+        "dark_square_rgb": [
+          104,
+          95,
+          58
+        ],
+        "on_C1": 2.12,
+        "on_C2": 2.04
+      },
+      "deuteranopia": {
+        "mark_rgb": [
+          162,
+          156,
+          133
+        ],
+        "light_square_rgb": [
+          226,
+          217,
+          182
+        ],
+        "dark_square_rgb": [
+          115,
+          106,
+          60
+        ],
+        "on_C1": 1.94,
+        "on_C2": 1.99
+      }
+    },
+    "C11": {
+      "as_drawn": {
+        "on_C1": 2.01,
+        "on_C2": 2.01
+      },
+      "protanopia": {
+        "mark_rgb": [
+          173,
+          155,
+          60
+        ],
+        "light_square_rgb": [
+          222,
+          212,
+          179
+        ],
+        "dark_square_rgb": [
+          104,
+          95,
+          58
+        ],
+        "on_C1": 1.89,
+        "on_C2": 2.29
+      },
+      "deuteranopia": {
+        "mark_rgb": [
+          165,
+          150,
+          77
+        ],
+        "light_square_rgb": [
+          226,
+          217,
+          182
+        ],
+        "dark_square_rgb": [
+          115,
+          106,
+          60
+        ],
+        "on_C1": 2.1,
+        "on_C2": 1.84
+      }
+    }
+  },
+  "squares": {
+    "C1_luminance": 0.6808,
+    "C2_luminance": 0.1313,
+    "C1_vs_C2": 4.03
+  }
+}

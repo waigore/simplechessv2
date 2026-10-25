@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R375 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R375 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R375 {"check":"router_present","detail":"","ok":true}
+R375 {"check":"presentation_present","detail":"","ok":true}
+R375 {"check":"setup_reached","detail":"shared-setup","ok":true}
+R375 {"check":"setup_advice_default_on","detail":"true","ok":true}
+R375 {"check":"setup_c4_off","detail":"false","ok":true}
+R375 {"check":"setup_c4_on","detail":"true","ok":true}
+WARNING: advice: error after 29 ms
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _ended (res://advice_client.gd:153)
+         [1] poll (res://advice_client.gd:129)
+         [2] _poll_advice (res://shared_game_session.gd:832)
+         [3] advice_control (res://shared_game_session.gd:812)
+         [4] _drive_advice (res://session_router.gd:510)
+         [5] _poll_advice (res://session_router.gd:501)
+         [6] _process (res://session_router.gd:133)
+R375 {"check":"play_reached","detail":"shared-play","ok":true}
+R375 {"check":"session_has_client","detail":"","ok":true}
+R375 {"check":"client_is_shipped_transport","detail":"","ok":true}
+R375 {"check":"board_and_marks_present","detail":"","ok":true}
+R375 {"telemetry":[{"event":"shared.advice","outcome":"toggled","story":"UI-shared-play.US1.4"},{"event":"shared.advice","outcome":"toggled","story":"UI-shared-play.US1.4"}]}
+R375 {"check":"tel_toggle_story_ids","detail":"","ok":true}
+R375 {"summary":{"checks":13,"failed":0}}
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

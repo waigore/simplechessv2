@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"TEL.1":"jump","TEL.2":1792879251730,"TEL.3":"sess-1792879251727-52214-playtest-199415","TEL.4":"mode-pick","TEL.5":"pass"}
+{"TEL.1":"smoke_inspect","TEL.2":1792879251730,"TEL.3":"sess-1792879251727-52214-playtest-199415","TEL.4":"EX.loading","TEL.5":"pass"}
+{"TEL.1":"pause","TEL.2":1792879251730,"TEL.3":"sess-1792879251727-52214-playtest-199415","TEL.5":"pass"}
+{"TEL.1":"resume","TEL.2":1792879251730,"TEL.3":"sess-1792879251727-52214-playtest-199415","TEL.5":"pass"}
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

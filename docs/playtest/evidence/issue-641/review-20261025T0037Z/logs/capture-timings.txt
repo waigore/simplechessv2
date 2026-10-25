@@ -1,0 +1,16 @@
+shared-refused-00: +0 ms after pointer-up
+shared-refused-01: +304 ms after pointer-up
+shared-refused-02: +541 ms after pointer-up
+shared-refused-03: +757 ms after pointer-up
+shared-refused-04: +943 ms after pointer-up
+shared-refused-05: +1139 ms after pointer-up
+shared-refused-06: +1292 ms after pointer-up
+shared-refused-07: +1484 ms after pointer-up
+shared-last-move-00: +0 ms after the move tap
+shared-last-move-01: +241 ms after the move tap
+shared-last-move-02: +372 ms after the move tap
+shared-last-move-03: +539 ms after the move tap
+shared-last-move-04: +670 ms after the move tap
+shared-last-move-05: +854 ms after the move tap
+shared-last-move-06: +1005 ms after the move tap
+shared-last-move-07: +1151 ms after the move tap
