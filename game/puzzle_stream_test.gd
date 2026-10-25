@@ -242,10 +242,10 @@ func _check_missing_peer_fails_without_dealing() -> String:
 ## B5 — an unset `T9` / `T10` is refused before any request is attempted, and it is not
 ## reported with the same reason a sent-but-unsuccessful read reports.
 func _check_unconfigured_read_is_not_a_status_failure() -> String:
-	var peer := FakeCatalogTransport.new()
 	var session := _session()
-	var stream := PuzzleStream.new(session, CatalogDealClient.new())
-	if stream.request() or peer.requests.size() != 0:
+	var client := CatalogDealClient.new()
+	var stream := PuzzleStream.new(session, client)
+	if stream.request() or client.in_flight():
 		return "B5: T9 / T10 unset is a failed read, not a request"
 	if stream.last_failure != CatalogWireReader.REASON_UNCONFIGURED:
 		return (
