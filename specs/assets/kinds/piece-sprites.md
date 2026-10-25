@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 
 - **Kind**: Sprites
 - **Source types**: AI generation; human-made
-- **Style**: [AES.P2](../../aesthetics/aesthetics.md); [AES.P3](../../aesthetics/aesthetics.md); [FRM.S1 L1 D1](../../aesthetics/form.md); [PAL.S1](../../aesthetics/palette.md) [C3](../../aesthetics/palette.md) [C4](../../aesthetics/palette.md)
+- **Style**: [AES.P2](../../aesthetics/aesthetics.md) [AES.P3](../../aesthetics/aesthetics.md) [FRM.S1 L1 D1](../../aesthetics/form.md) [PAL.S1](../../aesthetics/palette.md) [C3](../../aesthetics/palette.md) [C4](../../aesthetics/palette.md)
 - **Tool roles**: TL.1
 - **Approval**: As hub
 - **Serves**: Clear board; Instant play; [E-pieces](../../design/entities/pieces.md); [PER.R1](../../view/perception.md)
@@ -23,7 +23,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S2 | Medium | SVG preferred ([ADR-0005](../../adr/decisions/0005-asset-catalog-roots.md)); PNG alpha OK |
 | S3 | Detail | ≤ 3 fills; Staunton; height [FRM.P2](../../aesthetics/form.md) |
 | S4 | Anchor | Opaque bottoms on the bottom edge of [SPC.E1](../../view/spatial-model.md) |
-| S5 | Rasterize | SVG → PNG via one pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); never mix rasterizers. Ship PNGs carry the O1 contour hex |
+| S5 | Rasterize | SVG → PNG via one pipeline rasterizer ([`docs/asset-tools-recraft.md`](../../../docs/asset-tools-recraft.md)); never mix rasterizers; ship PNGs carry the O1 contour |
 | S6 | Transparency | Edge flood-fill near-white (RGB ≥ 250); never global white punch |
 | S7 | Sheet crop | Pipeline input only: crop AI/human sheet (ivory top / charcoal bottom; KQRBNP; 6-col; ~8px pad) into twelve cell files; catalog result is V1 (twelve files), never the sheet |
 | S8 | Fit | `fit_contain` square (LANCZOS); center; no stretch |
@@ -72,7 +72,7 @@ Full recipe: [`piece-sprites/recipes.md`](piece-sprites/recipes.md).
 | K4 | Style | Look vs [AES.P2](../../aesthetics/aesthetics.md) [AES.P3](../../aesthetics/aesthetics.md) | Quiet mahogany mood |
 | K5 | Budget B2 | Catalog vs V1 | 12 entries (one file each; not a sheet) |
 | K6 | Fit / crop | Rebuild; compare catalog PNGs by asset ID for each V1 handle | No stretch; ivory intact |
-| K7 | Side fills | Inspect vs [PAL.C3](../../aesthetics/palette.md) [PAL.C4](../../aesthetics/palette.md) [SRF.O1](../../aesthetics/surface.md) | Fill C3 / C4; whole contour O1 |
+| K7 | Side fills | Inspect [PAL.C3](../../aesthetics/palette.md) [PAL.C4](../../aesthetics/palette.md) [SRF.O1](../../aesthetics/surface.md) | Fill C3 / C4; whole contour O1 |
 
 ## Naming
 
