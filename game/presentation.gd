@@ -9,6 +9,8 @@ signal input_commit(from_square: String, to_square: String, promotion: String)
 signal asset_needed(asset_ids: PackedStringArray)
 
 const LOADING_SCREEN := "loading"
+## EX.load-failure — the cold open Boot load failed; the `EX.loading` wait ends here.
+const LOAD_FAILED := SessionRouter.STAGE_LOAD_FAILED
 const MODE_PICK := "mode-pick"
 const SHARED_SETUP := "shared-setup"
 const SHARED_PLAY := "shared-play"
@@ -31,6 +33,7 @@ var last_point_control := ""
 var current_screen := LOADING_SCREEN
 
 var _loading: Label
+var _load_failure: LoadFailurePanel
 var _host: Control
 var _mode_pick: ModePickPanel
 var _shared_setup: SharedSetupPanel
@@ -113,6 +116,8 @@ func show_screen(screen_id: String, state: Dictionary) -> void:
 	match screen_id:
 		LOADING_SCREEN:
 			_show_loading()
+		LOAD_FAILED:
+			_show_load_failure()
 		MODE_PICK:
 			_show_mode_pick(state)
 		SHARED_SETUP:
@@ -193,6 +198,15 @@ func _build_shell() -> void:
 	_loading.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	UiChrome.style_label(_loading, true, text_scale())
 	add_child(_loading)
+
+	_load_failure = LoadFailurePanel.new()
+	_load_failure.name = "LoadFailure"
+	_load_failure.visible = false
+	_load_failure.custom_minimum_size = Vector2(320, 180)
+	_place_centred_column(_load_failure, 120.0)
+	_load_failure.control_activated.connect(_on_load_failure_control)
+	_load_failure.pointed.connect(_on_pointed)
+	add_child(_load_failure)
 
 	_host = Control.new()
 	_host.name = "ScreenHost"
@@ -303,6 +317,8 @@ func _reflow_text() -> void:
 	_mode_pick.set_text_scale(scale)
 	_shared_setup.set_text_scale(scale)
 	_shared_result.set_text_scale(scale)
+	if _load_failure != null:
+		_load_failure.set_text_scale(scale)
 
 
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
@@ -314,6 +330,16 @@ func _show_loading() -> void:
 	_hide_panels()
 	_loading.text = StringTable.mode_pick("loading", _router.locale)
 	UiChrome.transition_in(_loading)
+
+
+## UI-mode-pick S5 / EX.load-failure — the wait is over, so the loading message goes
+## and the failure names itself with C5 Reload as its only control.
+func _show_load_failure() -> void:
+	current_screen = LOAD_FAILED
+	_hide_panels()
+	_load_failure.configure(_router.locale, _ui_font, text_scale())
+	UiChrome.transition_in(_load_failure)
+	_load_failure.focusable_controls()[0].grab_focus()
 
 
 func render_position(
@@ -357,6 +383,8 @@ func _apply_ui_fonts(resources_by_id: Dictionary) -> void:
 			var faces: Array[Font] = [cjk as Font]
 			_ui_font.fallbacks = faces
 		UiChrome.apply_font(_loading, _ui_font)
+		if _load_failure != null:
+			_load_failure.configure(_router.locale, _ui_font, text_scale())
 		UiChrome.apply_font(_ended_label, _ui_font)
 		UiChrome.apply_font(_unsupported, _ui_font)
 
@@ -628,6 +656,7 @@ func _show_ended() -> void:
 
 
 func _hide_panels() -> void:
+	_loading.visible = false
 	_mode_pick.visible = false
 	_mode_pick.modulate.a = 1.0
 	_shared_setup.visible = false
@@ -642,6 +671,8 @@ func _hide_panels() -> void:
 	_puzzle_play.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
+	_load_failure.visible = false
+	_load_failure.modulate.a = 1.0
 	_clear_advice_chrome()
 	_reset_gesture()
 
@@ -652,6 +683,12 @@ func _clear_advice_chrome() -> void:
 		_board.render_advice(null)
 	if _shared_play != null:
 		_shared_play.advice_error = false
+
+
+## UI-mode-pick C5 on EX.load-failure — Reload re-opens the game (CTR-presentation E6).
+func _on_load_failure_control(control_id: String) -> void:
+	if control_id == LoadFailurePanel.CONTROL_RELOAD:
+		_router.reload_after_load_failure()
 
 
 func _on_mode_pick_control(control_id: String) -> void:
