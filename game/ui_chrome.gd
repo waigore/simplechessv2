@@ -14,6 +14,8 @@ const MIN_TOUCH := 44.0
 ## UIS.T2 project-space sizes at REFERENCE_FRAME_HEIGHT_PX (Presentation scales them).
 const BODY_PX := 16
 const TITLE_PX := 28
+## UIS.I1 stroke floor: 1.5 screen px on every stroked icon, keyline, or chip edge.
+const KEYLINE_PX := 1.5
 ## UIS.T2 reference frame height (SIT.6 / S13 read it, never set it).
 const REFERENCE_FRAME_HEIGHT_PX := 640.0
 const RADIUS := 8

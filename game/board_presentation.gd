@@ -17,15 +17,44 @@ const COLOR_CREAM := Color("F7F1E8")
 ## PAL.C8 check rose — refused-place flash (PER.R8 / PAL.K5 full strength ≥ 2:1).
 const COLOR_DANGER := Color("C28A86")
 
-## Empty legal diamond half-diagonal so area 2 r² ≥ 1/4 square (PER.R4).
+## Empty legal destination: a solid PAL.C11 disk at the square centre, radius 0.36,
+## so its area πr² = 0.407 square clears PER.R4's 1/4 (rules-k9.md *Mark table*).
 const LEGAL_EMPTY_R := 0.36
-## Capture ring radius / stroke so ink area ≈ 2π r w ≥ 1/4 square.
-const LEGAL_CAPTURE_R := 0.40
-const LEGAL_CAPTURE_W := 0.10
+const LEGAL_DISK_SEGMENTS := 32
+## Capture destination: PAL.C11 corner brackets — two strokes per corner, inside
+## the square, never a ring (rules-k9.md *Mark table*). rules-k9.md states the
+## 1/4 area bound but no size for this form (conflict 1, #792), so the size is this
+## body's choice: at stroke 0.06 unit — the ring's own width, so a bracket reads as
+## a bracket and not a hairline — an arm of 0.52 reaches 8 × 0.06 × 0.52 = 0.25
+## exactly; arm 0.56 clears it with margin (8 × 0.06 × 0.56 = 0.2688). The arm is
+## longer than the PER.R9 tick's 0.10 and changes neither the two-strokes-per-corner
+## form nor the corner placement, and it stays inside the square's 1.0.
+const LEGAL_BRACKET_W := 0.06
+const LEGAL_BRACKET_ARM := 0.56
 ## Selection frame stroke in world units (≪ 10% of piece body — PER.R1 / R3).
 const SELECT_STROKE := 0.06
 ## Reject frame stroke — rim only so piece silhouette stays readable (PER.R1 / R8).
 const REJECT_STROKE := 0.10
+## PER.R8 refused place: PAL.C8 hatching over the square's own fill, inside the
+## ring (rules.md *Layer split*). No foreground, no keyline — the hatch is a fill.
+const HATCH_STROKE := 0.06
+const HATCH_GAP := 0.16
+const HATCH_INSET := 0.10
+## PER.R9 last move, from-square: a soft PAL.C7 band on the square edge opposite
+## the move — blurred, no hard stroke, no keyline, never enclosing (rules-k9.md).
+## Layers of (world width, alpha): a wide faint field, a mid haze, a soft core. The
+## widest is 0.09 on the outer edge 0.41–0.50, so the band keeps 2.16 px of light
+## and its body overlap is (0.425 − 0.41) × 0.60 = 0.009 of the King's 0.1274 body,
+## 7.1% — inside PER.R9's 10% (SPC.E1). Every layer clears the UIS.I1 1.5 px floor.
+const BAND_LAYERS := [[0.09, 0.16], [0.0625, 0.30], [0.0417, 0.52]]
+const BAND_LENGTH := 0.60
+## PER.R9 last move, to-square: PAL.C10 corner ticks in the outer 0.10 of the
+## square — 0.04 wide, 0.60 long on the from-facing edge, each L arm 0.10
+## (rules-k9.md *Per-rule*).
+const TICK_W := 0.04
+const TICK_LONG := 0.60
+const TICK_ARM := 0.10
+const TICK_BAND := 0.10
 ## C6 chooser sprites scaled to fit a 2×2 on the destination square.
 const PROMOTE_SPRITE_SCALE := 0.42
 const BOARD_BG_ID := "01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855"
@@ -76,8 +105,18 @@ var _legal_root: Node2D
 ## PER.R6 check L-frame on the checked King's square (E2 `in_check`).
 var _check_marks: CheckMarks
 var _reject_flash: Line2D
+## PER.R8 PAL.C8 hatching on the refused square, riding the same 0.3 s flash.
+var _reject_hatch: Node2D
 ## PER.R5 advice marks (E4 `show_advice`), over the pieces.
 var _advice_marks: AdviceMarks
+## PAL.K9 *Layer split* / UIS.C6 — one PAL.C10 foreground per marked square.
+var _mark_foreground: MarkForeground
+## PER.R9 last move: the from-square's soft PAL.C7 band.
+var _last_move_band: Node2D
+var _last_from := ""
+var _last_to := ""
+## The square carrying the PER.R6 cream L-frame, empty when nobody is in check.
+var _checked_square := ""
 var _promote_root: Node2D
 var _promote_square := ""
 var _promote_color := ""
@@ -149,6 +188,20 @@ func _ready() -> void:
 	_legal_root = Node2D.new()
 	_legal_root.name = "LegalMarks"
 	_overlay_root.add_child(_legal_root)
+	# The refused-place hatch sits over the square's own fill and over selection and
+	# legal marks; both return as it fades (PER.R8).
+	_reject_hatch = Node2D.new()
+	_reject_hatch.name = "RejectHatch"
+	_reject_hatch.visible = false
+	_overlay_root.add_child(_reject_hatch)
+	# PER.R9 band draws on the square, under the cream foreground.
+	_last_move_band = Node2D.new()
+	_last_move_band.name = "LastMoveBand"
+	_overlay_root.add_child(_last_move_band)
+	# The one PAL.C10 foreground per marked square (UIS.C6): above the marks the
+	# square carries, below the accents that draw on it.
+	_mark_foreground = MarkForeground.new()
+	_overlay_root.add_child(_mark_foreground)
 	_check_marks = CheckMarks.new()
 	_overlay_root.add_child(_check_marks)
 	_reject_flash = Line2D.new()
@@ -244,14 +297,17 @@ func render_advice(advice_best_move: Variant) -> void:
 		return
 	if not (advice_best_move is Dictionary):
 		_advice_marks.clear()
+		_refresh_mark_foreground()
 		return
 	var move: Dictionary = advice_best_move
 	var from_square := str(move.get("from", ""))
 	var to_square := str(move.get("to", ""))
 	if from_square.is_empty() or to_square.is_empty():
 		_advice_marks.clear()
+		_refresh_mark_foreground()
 		return
 	_advice_marks.show_best_move(from_square, to_square)
+	_refresh_mark_foreground()
 
 
 ## CMP-presentation.R8 — the one accessible name a piece node exposes: the Copy key
@@ -408,6 +464,8 @@ func play_move(
 	if rook != null:
 		_rekey_piece(castle_rook_from, castle_rook_to, rook)
 	await _settle(mover)
+	# PER.R9 — the pair is replaced by the move that settles, never by a refused one.
+	_set_last_move(from_square, to_square)
 	camera_offset = Vector2.ZERO
 	_motion_busy = false
 	travel_finished.emit(to_square)
@@ -537,6 +595,19 @@ func _layout_camera() -> void:
 	)
 	_fit_board_sprite()
 	_refresh_coordinates()
+	# The foreground keyline is a screen-px width (UIS.C6 / UIS.I1), so every
+	# frame that changes the world scale re-derives it.
+	if _mark_foreground != null:
+		_mark_foreground.pixels_per_unit = world_px()
+		_sync_last_move_band()
+		_refresh_mark_foreground()
+
+
+## Screen px per world unit at the current frame — 36 at 360 × 640 (PRJ.P1).
+func world_px() -> float:
+	if _world == null:
+		return 36.0
+	return absf(_world.scale.x)
 
 
 func _build_squares() -> void:
@@ -572,11 +643,16 @@ func _build_coordinates() -> void:
 
 func _make_coord_label(text: String, key: String) -> Label:
 	## PER.R7: UIS.T2 size, C9 ink on C10 cream chip (≥ 4.5:1), catalog font when bound.
+	## PAL.K8 draws C9 ink on the C10 chip, so the chip carries the 1.5 px C9 keyline
+	## (UIS.I1): the int border field is set to the ceiling of the floor.
 	var chip := Panel.new()
 	chip.name = "%s_chip" % key
 	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
 	style.bg_color = COLOR_CREAM
+	style.border_color = COLOR_INK
+	style.set_border_width_all(_chip_keyline_px())
+	style.anti_aliasing = true
 	style.set_corner_radius_all(3)
 	style.content_margin_left = 2
 	style.content_margin_right = 2
@@ -611,6 +687,11 @@ func _reflow_coordinates() -> void:
 		if label != null:
 			UiChrome.add_body_size(label, _text_scale)
 			label.custom_minimum_size = _coord_chip_size()
+
+
+## UIS.I1's 1.5 screen px floor in the integer border field of StyleBoxFlat.
+static func _chip_keyline_px() -> int:
+	return int(ceil(UiChrome.KEYLINE_PX))
 
 
 func _coord_chip_size() -> Vector2:
@@ -735,29 +816,54 @@ func _sync_overlays() -> void:
 				is_capture = true
 				break
 		if is_capture:
-			# Hollow ring at full PAL.C11; ink area 2π r w ≥ 1/4 square (PER.R4 / PAL.K6).
-			var ring := Line2D.new()
-			ring.width = LEGAL_CAPTURE_W
-			ring.default_color = COLOR_LEGAL
-			ring.closed = true
-			for i in range(16):
-				var ang := TAU * float(i) / 16.0
-				ring.add_point(c + Vector2(cos(ang), sin(ang)) * LEGAL_CAPTURE_R)
-			_legal_root.add_child(ring)
+			_legal_root.add_child(capture_brackets(sq))
 		else:
-			# Diamond at full PAL.C11; area 2 r² ≥ 1/4 square.
-			var mark := Polygon2D.new()
-			mark.color = COLOR_LEGAL
-			var r := LEGAL_EMPTY_R
-			mark.polygon = PackedVector2Array(
-				[
-					c + Vector2(-r, 0),
-					c + Vector2(0, -r),
-					c + Vector2(r, 0),
-					c + Vector2(0, r),
-				]
-			)
-			_legal_root.add_child(mark)
+			_legal_root.add_child(empty_disk(sq))
+	_refresh_mark_foreground()
+
+
+## PER.R4 / rules-k9.md — the empty destination's solid PAL.C11 disk at the square
+## centre: area πr² = 0.407 square at the kept 0.36 radius (≥ 1/4).
+static func empty_disk(square: String) -> Polygon2D:
+	var c := BoardGeometry.square_center(square)
+	var mark := Polygon2D.new()
+	mark.name = "EmptyDisk_%s" % square
+	mark.color = COLOR_LEGAL
+	var points := PackedVector2Array()
+	for i in range(LEGAL_DISK_SEGMENTS):
+		var ang := TAU * float(i) / float(LEGAL_DISK_SEGMENTS)
+		points.append(c + Vector2(cos(ang), sin(ang)) * LEGAL_EMPTY_R)
+	mark.polygon = points
+	return mark
+
+
+## PER.R4 / rules-k9.md — the capture destination's PAL.C11 corner brackets: two
+## strokes per corner, inside the square, no ring. The strokes are drawn
+## separately so the four corners stay visibly apart from the selection ring.
+static func capture_brackets(square: String) -> Node2D:
+	var c := BoardGeometry.square_center(square)
+	var root := Node2D.new()
+	root.name = "CaptureBracket_%s" % square
+	var inset := 0.5 - LEGAL_BRACKET_W * 0.5
+	for sx in [-1.0, 1.0]:
+		for sy in [-1.0, 1.0]:
+			var sx_f := float(sx)
+			var sy_f := float(sy)
+			var corner := c + Vector2(sx_f * inset, sy_f * inset)
+			root.add_child(_legal_stroke(corner, corner + Vector2(-sx_f * LEGAL_BRACKET_ARM, 0.0)))
+			root.add_child(_legal_stroke(corner, corner + Vector2(0.0, -sy_f * LEGAL_BRACKET_ARM)))
+	return root
+
+
+static func _legal_stroke(from_point: Vector2, to_point: Vector2) -> Line2D:
+	var line := Line2D.new()
+	line.name = "Bracket"
+	line.width = LEGAL_BRACKET_W
+	line.default_color = COLOR_LEGAL
+	line.antialiased = true
+	line.add_point(from_point)
+	line.add_point(to_point)
+	return line
 
 
 func _apply_choice_overlays(options: Dictionary) -> void:
@@ -783,8 +889,12 @@ func _sync_check_marks(options: Dictionary) -> void:
 		return
 	if not bool(options.get("in_check", false)):
 		_check_marks.clear()
+		_checked_square = ""
+		_refresh_mark_foreground()
 		return
-	_check_marks.show_square(_king_square(str(options.get("side_to_move", "white"))))
+	_checked_square = _king_square(str(options.get("side_to_move", "white")))
+	_check_marks.show_square(_checked_square)
+	_refresh_mark_foreground()
 
 
 func _king_square(color: String) -> String:
@@ -795,6 +905,153 @@ func _king_square(color: String) -> String:
 		if str(piece.get("kind", "")) == "king":
 			return str(square)
 	return ""
+
+
+## PER.R9 — the last move as one state on two squares: a soft PAL.C7 band on the
+## from-square and PAL.C10 corner ticks on the to-square, told apart by form and
+## placement, never hue. Held until the next move settles; drawn in board space so
+## CAM-board.M2's 180° flip carries both without re-deriving (rules-k9.md).
+func _set_last_move(from_square: String, to_square: String) -> void:
+	_last_from = from_square if BoardGeometry.is_square(from_square) else ""
+	_last_to = to_square if BoardGeometry.is_square(to_square) else ""
+	_sync_last_move_band()
+	_refresh_mark_foreground()
+
+
+func last_move() -> PackedStringArray:
+	return PackedStringArray([_last_from, _last_to])
+
+
+## PER.R9 — leaving the board (a new game, or a screen it does not belong to)
+## drops the last-move pair; on the board it is replaced only by the next move.
+func clear_last_move() -> void:
+	_last_from = ""
+	_last_to = ""
+	_sync_last_move_band()
+	_refresh_mark_foreground()
+
+
+## The one PAL.C10 foreground layer (UIS.C6), for the layer and form checks.
+func mark_foreground() -> MarkForeground:
+	return _mark_foreground
+
+
+## The PER.R9 from-square soft band node.
+func last_move_band() -> Node2D:
+	return _last_move_band
+
+
+## The PER.R8 refused-place hatching node.
+func reject_hatch() -> Node2D:
+	return _reject_hatch
+
+
+## The from-square's band, rebuilt from the current seat because it is placed by
+## the move's direction, not by the square alone.
+func _sync_last_move_band() -> void:
+	if _last_move_band == null:
+		return
+	for child in _last_move_band.get_children():
+		_last_move_band.remove_child(child)
+		child.queue_free()
+	if _last_from.is_empty() or _last_to.is_empty():
+		return
+	var points := from_band_points(_last_from, _last_to)
+	if points.size() < 2:
+		return
+	# Soft: three translucent PAL.C7 layers of falling width. No hard stroke, no
+	# keyline, open at both ends — the ring stays the only closed, crisp form.
+	for layer in BAND_LAYERS:
+		var line := Line2D.new()
+		line.name = "SoftBand"
+		line.width = float(layer[0])
+		line.default_color = Color(AdviceMarks.COLOR_ADVICE, float(layer[1]))
+		line.antialiased = true
+		for point in points:
+			line.add_point(point)
+		_last_move_band.add_child(line)
+
+
+## The PER.R9 from-square band in world coordinates: a 0.60-long open segment on
+## the square's outer edge, on the side facing away from the to-square, beyond
+## every body half-width (PER.R1 / SPC.E1) so it covers no body.
+static func from_band_points(from_square: String, to_square: String) -> PackedVector2Array:
+	var from_center := BoardGeometry.square_center(from_square)
+	var to_center := BoardGeometry.square_center(to_square)
+	var away := (from_center - to_center)
+	if away.length() < 0.0001:
+		return PackedVector2Array()
+	# One edge, chosen along the move's dominant axis, so the pair reads as a
+	# direction even with hue removed.
+	var normal := (
+		Vector2(signf(away.x), 0.0) if absf(away.x) >= absf(away.y) else Vector2(0.0, signf(away.y))
+	)
+	var half_band := float(BAND_LAYERS[0][0]) * 0.5
+	var mid := from_center + normal * (0.5 - half_band)
+	var along := Vector2(-normal.y, normal.x)
+	return PackedVector2Array([mid - along * BAND_LENGTH * 0.5, mid + along * BAND_LENGTH * 0.5])
+
+
+## The PER.R9 to-square ticks in world coordinates: an L in each corner, in the
+## outer 0.10 of the square. The long arm (0.60) runs along the edge that faces
+## the from-square; the short arm (0.10) turns inward at the same corner, so the
+## four ticks read as one direction with the band opposite them.
+static func tick_polylines(to_square: String, from_square: String) -> Array[PackedVector2Array]:
+	var out: Array[PackedVector2Array] = []
+	if not BoardGeometry.is_square(to_square) or not BoardGeometry.is_square(from_square):
+		return out
+	var to_center := BoardGeometry.square_center(to_square)
+	var facing := BoardGeometry.square_center(from_square) - to_center
+	if facing.length() < 0.0001:
+		return out
+	var axis := (
+		Vector2(signf(facing.x), 0.0) if absf(facing.x) >= absf(facing.y) else Vector2(0.0, signf(facing.y))
+	)
+	var cross := Vector2(-axis.y, axis.x)
+	var offset := 0.5 - TICK_BAND * 0.5
+	for sa in [-1.0, 1.0]:
+		for sc in [-1.0, 1.0]:
+			var sa_f := float(sa)
+			var sc_f := float(sc)
+			var elbow := to_center + axis * (sa_f * offset) + cross * (sc_f * offset)
+			var long_end := elbow - cross * (sc_f * TICK_LONG)
+			var short_end := elbow - axis * (sa_f * TICK_ARM)
+			out.append(PackedVector2Array([long_end, elbow, short_end]))
+	return out
+
+
+## One foreground layer per marked square, built from whichever marks want cream
+## this frame (UIS.C6, rules.md *One layer*).
+func _refresh_mark_foreground() -> void:
+	if _mark_foreground == null:
+		return
+	_mark_foreground.pixels_per_unit = world_px()
+	_mark_foreground.clear()
+	if not _checked_square.is_empty():
+		# PER.R6 — the cream L-frame on the two corners the C8 cue already uses.
+		_mark_foreground.set_mark(_checked_square, "check", _foreground_marks(
+			CheckMarks.l_frame_polylines(_checked_square), Color.TRANSPARENT, CheckMarks.CHECK_STROKE
+		))
+	if _advice_marks != null:
+		for square in [_advice_marks.last_from, _advice_marks.last_to]:
+			_mark_foreground.set_mark(str(square), "advice", _foreground_marks(
+				AdviceMarks.edge_brackets(str(square)),
+				AdviceMarks.COLOR_ADVICE,
+				AdviceMarks.ADVICE_STROKE
+			))
+	if not _last_to.is_empty() and not _last_from.is_empty():
+		_mark_foreground.set_mark(_last_to, "ticks", _foreground_marks(
+			tick_polylines(_last_to, _last_from), Color.TRANSPARENT, TICK_W
+		))
+
+
+static func _foreground_marks(
+	polylines: Array[PackedVector2Array], accent: Color, width: float
+) -> Array:
+	var marks: Array = []
+	for points in polylines:
+		marks.append({"points": points, "accent": accent, "width": width})
+	return marks
 
 
 ## PER.R8 — full-strength PAL.C8 rim on the attempted square for 0.3 s (SPC.L4).
@@ -811,6 +1068,7 @@ func flash_reject(square: String) -> void:
 		return
 	_reject_square = square
 	var c := BoardGeometry.square_center(square)
+	_build_reject_hatch(c)
 	var half := 0.5 - REJECT_STROKE * 0.5
 	_reject_flash.clear_points()
 	_reject_flash.add_point(c + Vector2(-half, -half))
@@ -824,10 +1082,49 @@ func flash_reject(square: String) -> void:
 		_reject_tween.kill()
 	_reject_tween = create_tween()
 	_reject_tween.set_ease(Tween.EASE_OUT)
+	_reject_tween.set_parallel(true)
 	_reject_tween.tween_property(
 		_reject_flash, "default_color", Color(COLOR_DANGER, 0.0), SharedGameSession.REJECT_FLASH_S
 	)
-	_reject_tween.tween_callback(_on_reject_flash_tween_done)
+	# The hatching rides the same flash and needs no cream foreground and no keyline:
+	# it is PAL.C8 over the square's own fill, inside the ring (rules.md *Layer split*).
+	_reject_hatch.modulate.a = 1.0
+	_reject_tween.tween_property(_reject_hatch, "modulate:a", 0.0, SharedGameSession.REJECT_FLASH_S)
+	_reject_tween.chain().tween_callback(_on_reject_flash_tween_done)
+
+
+## PER.R8 — PAL.C8 hatching across the refused square's own fill, inset inside the
+## selection ring and clear of the rim the flash keeps.
+func _build_reject_hatch(center: Vector2) -> void:
+	for child in _reject_hatch.get_children():
+		_reject_hatch.remove_child(child)
+		child.queue_free()
+	var reach := 0.5 - HATCH_INSET
+	var step := HATCH_GAP / sqrt(2.0)
+	var offset := -2.0 * reach
+	while offset <= 2.0 * reach:
+		var span := hatch_span(offset, reach)
+		if not span.is_empty():
+			var line := Line2D.new()
+			line.name = "HatchStroke"
+			line.width = HATCH_STROKE
+			line.default_color = COLOR_DANGER
+			line.antialiased = true
+			line.add_point(center + (span[0] as Vector2))
+			line.add_point(center + (span[1] as Vector2))
+			_reject_hatch.add_child(line)
+		offset += step
+	_reject_hatch.visible = true
+
+
+## One 45° hatch stroke, given its constant x − y and the inset square's reach.
+## Returned as the two ends clipped to the square, or empty when it misses it.
+static func hatch_span(offset: float, reach: float) -> Array:
+	var start := maxf(-reach, offset - reach)
+	var end := minf(reach, offset + reach)
+	if start >= end:
+		return []
+	return [Vector2(start, start - offset), Vector2(end, end - offset)]
 
 
 func _on_reject_flash_tween_done() -> void:
@@ -841,6 +1138,9 @@ func clear_reject_flash() -> void:
 		_reject_tween = null
 	_reject_flash.visible = false
 	_reject_square = ""
+	if _reject_hatch != null:
+		_reject_hatch.visible = false
+		_reject_hatch.modulate.a = 1.0
 
 
 ## EX.promote — Q/R/B/N upright sprites in a 2×2 on the destination square.

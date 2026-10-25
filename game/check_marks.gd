@@ -47,6 +47,21 @@ static func l_frame_points(sign: Vector2) -> PackedVector2Array:
 	return PackedVector2Array([long_end, corner, short_end])
 
 
+## The same two L-frames in world coordinates: the PAL.C10 foreground the C8 cue
+## rides on (`rules.md` *Layer split*, `UIS.C6`, #792).
+static func l_frame_polylines(square: String) -> Array[PackedVector2Array]:
+	var out: Array[PackedVector2Array] = []
+	if not BoardGeometry.is_square(square):
+		return out
+	var center := BoardGeometry.square_center(square)
+	for sign in corner_signs():
+		var points := PackedVector2Array()
+		for point in l_frame_points(sign):
+			points.append(center + point)
+		out.append(points)
+	return out
+
+
 ## Mark `square`; the mark is rebuilt only when the King moves.
 func show_square(square: String) -> void:
 	if not BoardGeometry.is_square(square):

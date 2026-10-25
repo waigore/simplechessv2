@@ -52,12 +52,14 @@ func _check_cue() -> String:
 	var chip := play.find_child("CheckChip", true, false) as PanelContainer
 	var label := play.find_child("CheckCue", true, false) as Label
 	var marks := board.get_node_or_null("World/Seat/Content/Overlays/CheckMarks") as CheckMarks
-	if chip == null or label == null or marks == null:
+	var fg := board.mark_foreground()
+	if chip == null or label == null or marks == null or fg == null:
 		return "PER.R6 check indicator missing"
 	var quiet := _first_fail(
 		[
 			[not chip.visible and not label.visible, "PER.R6 chip shown out of check"],
 			[marks.get_child_count() == 0, "PER.R6 board mark shown out of check"],
+			[fg.marked_squares().is_empty(), "PER.R6 cream foreground shown out of check"],
 		]
 	)
 	if not quiet.is_empty():
@@ -89,6 +91,15 @@ func _check_cue() -> String:
 			[marks.get_child_count() == 2, "PER.R6 checked King must carry the board mark"],
 			[marks.marked_square == "e8", "PER.R6 board mark must sit on the checked King"],
 			[
+				fg.marked_squares().has("e8"),
+				"PER.R6 the checked King's square carries the one C10 foreground"
+			],
+			[fg.marks_on("e8").size() == 2, "PER.R6 check draws a C10 L-frame on the foreground"],
+			[
+				not fg.find_children("Keyline", "Line2D", true, false).is_empty(),
+				"UIS.C6 the check foreground carries its C9 keyline"
+			],
+			[
 				str(_seams.assert_telemetry([_check_row()]).get("verdict", "")) == "pass",
 				"TEL shared.check row missing"
 			],
@@ -102,6 +113,7 @@ func _check_cue() -> String:
 		[
 			[not chip.visible and not label.visible, "PER.R6 chip must clear with the check"],
 			[marks.get_child_count() == 0, "PER.R6 board mark must clear with the check"],
+			[not fg.marked_squares().has("e8"), "PER.R6 the cream L-frame must clear with the check"],
 		]
 	)
 
