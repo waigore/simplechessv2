@@ -1,0 +1,53 @@
+[
+  {
+    "step": "cold-open",
+    "shot": "screenshots/freeze-01-cold.png"
+  },
+  {
+    "step": "tap-shared",
+    "touch": {
+      "ms": 413,
+      "ok": true
+    }
+  },
+  {
+    "step": "tap-start",
+    "touch": {
+      "ms": 378,
+      "ok": true
+    }
+  },
+  {
+    "step": "on-board",
+    "shot": "screenshots/freeze-02-board.png"
+  },
+  {
+    "step": "after-resume",
+    "shot": "screenshots/freeze-03-after-resume.png"
+  },
+  {
+    "step": "tap-after-resume",
+    "touch": {
+      "ms": 20002,
+      "error": "CDP Input.dispatchTouchEvent exceeded 20000 ms"
+    }
+  },
+  {
+    "step": "tap-after-reopen",
+    "touch": {
+      "ms": 20003,
+      "error": "CDP Input.dispatchTouchEvent exceeded 20000 ms"
+    }
+  },
+  {
+    "step": "tap-after-reload",
+    "touch": {
+      "ms": 20003,
+      "error": "CDP Input.dispatchTouchEvent exceeded 20000 ms"
+    }
+  },
+  {
+    "step": "after-reload",
+    "shot": "screenshots/freeze-04-after-reload.png"
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "step": "select",
+    "css": {
+      "x": 215,
+      "y": 632
+    },
+    "ring": null,
+    "destination_dots": [],
+    "shot": "screenshots/move-01-selected.png"
+  },
+  {
+    "step": "deselect",
+    "ring": null,
+    "destination_dots": [],
+    "shot": "screenshots/move-02-deselected.png"
+  },
+  {
+    "step": "reselect",
+    "ring": null,
+    "destination_dots": [],
+    "shot": "screenshots/move-03-reselected.png"
+  },
+  {
+    "step": "place-rank3",
+    "css": {
+      "x": 215,
+      "y": 552
+    },
+    "ring": null,
+    "destination_dots": [],
+    "shot": "screenshots/move-04-placed.png"
+  }
+]
