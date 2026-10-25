@@ -123,6 +123,18 @@ func unresolved_count(group_name: String) -> int:
 	return int(_unresolved_counts.get(group_name, 0))
 
 
+## EX.load-failure Reload (#882): a reloaded Boot load reads the served tree again
+## instead of the IDs the failed attempt left cached. Only this group's state is
+## cleared; anything else a longer sitting cached stays.
+func reset_group(group_name: String) -> void:
+	for asset_id in _group_ids(group_name):
+		_cache.erase(str(asset_id))
+	_loaded_groups.erase(group_name)
+	_unresolved_counts.erase(group_name)
+	if group_name == "boot":
+		boot_outcome = -1
+
+
 func apply_manifest(data: Dictionary) -> void:
 	_manifest = data
 	_cache.clear()

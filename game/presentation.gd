@@ -9,6 +9,8 @@ signal input_commit(from_square: String, to_square: String, promotion: String)
 signal asset_needed(asset_ids: PackedStringArray)
 
 const LOADING_SCREEN := "loading"
+## EX.load-failure — the cold open Boot load failed; the `EX.loading` wait ends here.
+const LOAD_FAILED := SessionRouter.STAGE_LOAD_FAILED
 const MODE_PICK := "mode-pick"
 const SHARED_SETUP := "shared-setup"
 const SHARED_PLAY := "shared-play"
@@ -31,6 +33,7 @@ var last_point_control := ""
 var current_screen := LOADING_SCREEN
 
 var _loading: Label
+var _load_failure: LoadFailurePanel
 var _host: Control
 var _mode_pick: ModePickPanel
 var _shared_setup: SharedSetupPanel
@@ -113,6 +116,8 @@ func show_screen(screen_id: String, state: Dictionary) -> void:
 	match screen_id:
 		LOADING_SCREEN:
 			_show_loading()
+		LOAD_FAILED:
+			_show_load_failure()
 		MODE_PICK:
 			_show_mode_pick(state)
 		SHARED_SETUP:
@@ -193,6 +198,15 @@ func _build_shell() -> void:
 	_loading.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	UiChrome.style_label(_loading, true, text_scale())
 	add_child(_loading)
+
+	_load_failure = LoadFailurePanel.new()
+	_load_failure.name = "LoadFailure"
+	_load_failure.visible = false
+	_load_failure.custom_minimum_size = Vector2(320, 180)
+	_place_centred_column(_load_failure, 120.0)
+	_load_failure.control_activated.connect(_on_load_failure_control)
+	_load_failure.pointed.connect(_on_pointed)
+	add_child(_load_failure)
 
 	_host = Control.new()
 	_host.name = "ScreenHost"
@@ -303,6 +317,8 @@ func _reflow_text() -> void:
 	_mode_pick.set_text_scale(scale)
 	_shared_setup.set_text_scale(scale)
 	_shared_result.set_text_scale(scale)
+	if _load_failure != null:
+		_load_failure.set_text_scale(scale)
 
 
 func _on_screen_requested(screen_id: String, state: Dictionary) -> void:
@@ -314,6 +330,16 @@ func _show_loading() -> void:
 	_hide_panels()
 	_loading.text = StringTable.mode_pick("loading", _router.locale)
 	UiChrome.transition_in(_loading)
+
+
+## UI-mode-pick S5 / EX.load-failure — the wait is over, so the loading message goes
+## and the failure names itself with C5 Reload as its only control.
+func _show_load_failure() -> void:
+	current_screen = LOAD_FAILED
+	_hide_panels()
+	_load_failure.configure(_router.locale, _ui_font, text_scale())
+	UiChrome.transition_in(_load_failure)
+	_load_failure.focusable_controls()[0].grab_focus()
 
 
 func render_position(
@@ -357,6 +383,8 @@ func _apply_ui_fonts(resources_by_id: Dictionary) -> void:
 			var faces: Array[Font] = [cjk as Font]
 			_ui_font.fallbacks = faces
 		UiChrome.apply_font(_loading, _ui_font)
+		if _load_failure != null:
+			_load_failure.configure(_router.locale, _ui_font, text_scale())
 		UiChrome.apply_font(_ended_label, _ui_font)
 		UiChrome.apply_font(_unsupported, _ui_font)
 
@@ -628,6 +656,7 @@ func _show_ended() -> void:
 
 
 func _hide_panels() -> void:
+	_loading.visible = false
 	_mode_pick.visible = false
 	_mode_pick.modulate.a = 1.0
 	_shared_setup.visible = false
@@ -642,6 +671,8 @@ func _hide_panels() -> void:
 	_puzzle_play.modulate.a = 1.0
 	_ended_label.visible = false
 	_ended_label.modulate.a = 1.0
+	_load_failure.visible = false
+	_load_failure.modulate.a = 1.0
 	_clear_advice_chrome()
 	_reset_gesture()
 
@@ -652,6 +683,12 @@ func _clear_advice_chrome() -> void:
 		_board.render_advice(null)
 	if _shared_play != null:
 		_shared_play.advice_error = false
+
+
+## UI-mode-pick C5 on EX.load-failure — Reload re-opens the game (CTR-presentation E6).
+func _on_load_failure_control(control_id: String) -> void:
+	if control_id == LoadFailurePanel.CONTROL_RELOAD:
+		_router.reload_after_load_failure()
 
 
 func _on_mode_pick_control(control_id: String) -> void:
@@ -723,7 +760,7 @@ func _on_pointer_down(at: Vector2, index: int) -> void:
 	if not piece.is_empty() and str(piece.get("color", "")) == side:
 		# B10 may start with nothing selected; begin drag follow from this square.
 		_drag_from = _press_square
-		var world := _board.screen_to_world(at)
+		var world := _board_world_at(at)
 		_board.update_drag("begin", {"square": _press_square, "world": world})
 		return
 	# B3: press on a destination square while a piece is already selected.
@@ -735,7 +772,7 @@ func _on_pointer_move(at: Vector2) -> void:
 	if not _dragging and _press_screen.distance_to(at) >= DRAG_THRESHOLD_PX:
 		_dragging = true
 	if _dragging:
-		_board.update_drag("move", _board.screen_to_world(at))
+		_board.update_drag("move", _board_world_at(at))
 
 
 func _on_pointer_up(at: Vector2, index: int) -> void:
@@ -751,7 +788,7 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 	# S4: tap a promotion sprite (C6) or deselect (IN.deselect drops choice).
 	if _router.play_ui_state == SharedGameSession.UI_S4:
 		_finish_drag(true)
-		var kind := _board.promotion_kind_at(_board.screen_to_world(at))
+		var kind := _board.promotion_kind_at(_board_world_at(at))
 		if not kind.is_empty():
 			_router.handle_promotion_commit(kind)
 		else:
@@ -818,10 +855,24 @@ func _finish_drag(legal_or_idle: bool) -> void:
 		_board.end_drag_illegal()
 
 
+## CMP-presentation.R2 — the one pointer→board conversion every gesture uses
+## (#845). A pointer event reaches this control in *its* local space, while
+## `BoardPresentation.screen_to_world` reads canvas space (the space
+## `_refresh_coordinates` paints from). Applying this control's canvas
+## transform is what joins the two: it is identity while the presentation owns
+## the whole canvas (today's shell), and stays correct if the presentation is
+## ever offset or scaled. Tap select, drag begin/move, promotion tap, and the
+## release square all call this, so no gesture can drift from the others.
+func _board_world_at(at: Vector2) -> Vector2:
+	if _board == null:
+		return Vector2.ZERO
+	return _board.screen_to_world(get_global_transform_with_canvas() * at)
+
+
 func _square_at_screen(at: Vector2) -> String:
 	if _board == null or not _board.visible:
 		return ""
-	return BoardGeometry.square_at(_board.screen_to_world(at))
+	return BoardGeometry.square_at(_board_world_at(at))
 
 
 func _reset_gesture() -> void:

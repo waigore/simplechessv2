@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Mode pick; loops; configuration; Advice | design | navigation, screens, journeys |
 | End conditions: win, draw, loss, clock expiry ([conditions.md](../design/end-conditions/conditions.md)) | design | [`screens/shared-result.md`](screens/shared-result.md); [`screens/shared-play.md`](screens/shared-play.md) clocks; [`exceptions.md`](exceptions.md) `EX.draw-offer` |
 | Progression: Last mode, Player Elo, save failure ([progression.md](../design/progression.md)) | design | [`screens/mode-pick.md`](screens/mode-pick.md); [`screens/puzzle-play.md`](screens/puzzle-play.md); [`exceptions.md`](exceptions.md) `EX.save-failure` |
-| PER.R1–R8; no camera controls | view | play screens; controls (no CC bindings) |
+| PER.R1–R9; no camera controls | view | play screens; controls (no CC bindings) |
 | UIS interface style | aesthetics | [`presentation.md`](presentation.md) |
 
 ## Topic coverage

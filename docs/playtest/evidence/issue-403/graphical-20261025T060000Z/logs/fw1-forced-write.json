@@ -1,0 +1,54 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/?fw=6",
+  "label": "fw1",
+  "origin": "https://waigore.github.io/simplechessv2/?fw=6",
+  "storageKey": "simplechessv2.persist.v1",
+  "opened": {
+    "present": false
+  },
+  "seeded": {
+    "seeded": true,
+    "doc": {
+      "version": 1,
+      "player_elo": 800,
+      "last_mode": "shared",
+      "recent_solved": []
+    }
+  },
+  "armed": {
+    "armed": true
+  },
+  "before": {
+    "present": true,
+    "raw": "{\"version\":1,\"player_elo\":800,\"last_mode\":\"shared\",\"recent_solved\":[]}",
+    "doc": {
+      "version": 1,
+      "player_elo": 800,
+      "last_mode": "shared",
+      "recent_solved": []
+    }
+  },
+  "after": {
+    "present": true,
+    "raw": "{\"version\":1,\"player_elo\":800,\"last_mode\":\"shared\",\"recent_solved\":[]}",
+    "doc": {
+      "version": 1,
+      "player_elo": 800,
+      "last_mode": "shared",
+      "recent_solved": []
+    }
+  },
+  "fault": {
+    "failedWrites": 1
+  },
+  "unchanged": true,
+  "beforeLastMode": "shared",
+  "afterLastMode": "shared",
+  "writeFailedLine": [
+    {
+      "t": 10.947,
+      "kind": "console.error",
+      "text": "ERROR: PersistStore: write failed; prior commit kept"
+    }
+  ]
+}

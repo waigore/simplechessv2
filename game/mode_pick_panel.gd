@@ -52,14 +52,47 @@ func set_ui_state(state_id: String) -> void:
 	_show_state(state_id)
 
 
+## UI-mode-pick Controls table: C1–C4 are available when S1 or S4; S3 offers
+## only Confirm and Cancel, S4 adds Dismiss.
+func control_available(control_id: String) -> bool:
+	match control_id:
+		"C1", "C2", "C3", "C4":
+			return ui_state == "S1" or ui_state == "S4"
+		"confirm", "cancel":
+			return ui_state == "S3"
+		"dismiss":
+			return ui_state == "S4"
+	return false
+
+
+func button_for(control_id: String) -> Button:
+	var buttons := {
+		"C1": _shared,
+		"C2": _puzzle,
+		"C3": _quit,
+		"C4": _locale_btn,
+		"confirm": _confirm_ok,
+		"cancel": _confirm_cancel,
+		"dismiss": _dismiss,
+	}
+	return buttons.get(control_id, null) as Button
+
+
 func focusable_controls() -> Array[Control]:
+	var out: Array[Control] = []
 	match ui_state:
 		"S3":
-			return [_confirm_ok, _confirm_cancel]
+			out = [_confirm_ok, _confirm_cancel]
 		"S4":
-			return [_dismiss, _shared, _puzzle, _quit, _locale_btn]
+			out = [_dismiss, _shared, _puzzle, _quit, _locale_btn]
 		_:
-			return [_shared, _puzzle, _quit, _locale_btn]
+			out = [_shared, _puzzle, _quit, _locale_btn]
+	var available: Array[Control] = []
+	for ctrl in out:
+		if ctrl is BaseButton and (ctrl as BaseButton).disabled:
+			continue
+		available.append(ctrl)
+	return available
 
 
 func _build() -> void:
@@ -251,6 +284,7 @@ func _show_state(state_id: String) -> void:
 	ui_state = state_id
 	_confirm_box.visible = false
 	_save_box.visible = false
+	_apply_availability()
 	_style_all()
 	# Animate sub-panels only when this screen is already up (avoid nested M1 fade).
 	var animate := visible and modulate.a > 0.5
@@ -266,6 +300,15 @@ func _show_state(state_id: String) -> void:
 			_default_box.visible = false
 			_reveal_box(_default_box, animate)
 	_focus_first()
+
+
+## #846 — a hidden C1–C4 keeps emitting `pressed` unless it is disabled, so the
+## panel refuses them in S3 as well as the router.
+func _apply_availability() -> void:
+	for control_id in ["C1", "C2", "C3", "C4", "confirm", "cancel", "dismiss"]:
+		var button := button_for(control_id)
+		if button != null:
+			button.disabled = not control_available(control_id)
 
 
 func _reveal_box(box: Control, animate: bool) -> void:
@@ -284,6 +327,9 @@ func _focus_first() -> void:
 
 
 func _on_activate(control_id: String) -> void:
+	var button := button_for(control_id)
+	if button != null and button.disabled:
+		return
 	control_activated.emit(control_id)
 
 

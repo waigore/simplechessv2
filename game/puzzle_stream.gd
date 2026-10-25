@@ -43,6 +43,9 @@ func request() -> bool:
 	if client == null:
 		refused(CatalogWireReader.REASON_ERROR)
 		return false
+	if not bool(client.is_available()):
+		refused(CatalogWireReader.REASON_UNCONFIGURED)
+		return false
 	if not started(client.request(session.player_elo, session.recent_solved)):
 		refused(CatalogWireReader.REASON_STATUS)
 		return false

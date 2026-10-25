@@ -1,12 +1,12 @@
 class_name StringTableTest
 extends SceneTree
-## Localization contract (`specs/ux/localization.md` L2–L4): Copy keys, CJK glyphs, and
+## Localization contract (`specs/ux/localization.md` L2–L4, L7): Copy keys, CJK glyphs, and
 ## the 40% growth layout (#62).
 
 const VIEW_SIZE := Vector2(720, 1280)
 const GROWTH := 0.4
 
-## The owners L3 marks; their rows live in `StringTable.EVERY_LOCALE_ROWS`.
+## The owners L7 marks; their rows live in `StringTable.EVERY_LOCALE_ROWS`.
 const MARKED_OWNERS := ["mode-pick", "shared-play", "puzzle-play"]
 
 var _owner_getters: Dictionary = {}
@@ -129,7 +129,7 @@ func _puzzle_play_suite() -> Array:
 ## #334 non-vacuity proof: the shipped `puzzle-play` suite passes the gate above,
 ## and each mutation the leaf names is reported with its `owner.key` message. A
 ## dropped `zh-Hant` key and an `en`-copied varying key must fail; the same copy on
-## a marked `L3` piece row must pass. A green run therefore cannot mean the owner
+## a marked `L7` piece row must pass. A green run therefore cannot mean the owner
 ## stopped being checked — the checks are exercised, not just satisfied.
 func _copy_gate_negative_cases() -> String:
 	var suite := _puzzle_play_suite()
@@ -160,7 +160,7 @@ func _with_row(base: Callable, key: String, locale: String, value: String) -> Ca
 		return str(base.call(read_key, read_locale))
 
 
-## SCH-string-table I5 / L3: the `mode-pick` own name is not a stored key
+## SCH-string-table I5 / L7: the `mode-pick` own name is not a stored key
 ## (`game/string_table.gd` synthesizes it from LOCALE_OWN_NAME), so it asserts
 ## own-name identity per locale through the same read `_locale_helpers` uses.
 func _marked_rows_en_equal() -> String:
@@ -190,7 +190,7 @@ func _locale_own_names() -> String:
 	return ""
 
 
-## L3 drift guard: the marked set is exactly L3's named rows, every marked row is a
+## L7 drift guard: the marked set is exactly L7's rows through L9's kind map, every marked row is a
 ## shipped copy key, and a marked row's `en` value stays its canonical piece name.
 func _marked_rows_match_l3() -> String:
 	var shipped := {}
@@ -213,7 +213,7 @@ func _marked_rows_match_l3() -> String:
 	var named := _l3_named_pairs()
 	named.sort()
 	if marked != named:
-		return "marked rows %s disagree with L3's %s" % [marked, named]
+		return "marked rows %s disagree with L7's %s" % [marked, named]
 	return ""
 
 
@@ -235,7 +235,7 @@ func _marked_pairs() -> Array:
 	return pairs
 
 
-## L3's prose as `owner.key`: the `mode-pick` own name plus the piece names of
+## L7's rows as `owner.key`: the `mode-pick` own name plus the piece names L9 maps in
 ## every other marked owner.
 func _l3_named_pairs() -> Array:
 	var pairs: Array = ["mode-pick.locale"]
@@ -247,8 +247,8 @@ func _l3_named_pairs() -> Array:
 	return pairs
 
 
-## SCH-string-table I5 for puzzle-play: every key varies by locale except the four
-## piece names L3 marks as same in every locale.
+## SCH-string-table I5 for puzzle-play: every key varies by locale except the six
+## piece names L7 marks as same in every locale.
 func _no_english_leak_in_puzzle_play() -> String:
 	for locale in StringTable.LOCALES:
 		if locale == "en":

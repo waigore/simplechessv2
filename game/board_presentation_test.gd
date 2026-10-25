@@ -19,9 +19,13 @@ func _run() -> void:
 		await process_frame
 		err = _check_seat(board)
 		if err.is_empty():
+			err = _check_accessible_name_meta(board)
+		if err.is_empty():
 			err = await _check_art_orientation(board)
 		if err.is_empty():
 			err = await _check_viewport(board)
+		if err.is_empty():
+			err = await _check_tap_round_trip(board)
 		if err.is_empty():
 			err = await _check_orientation(board)
 		if err.is_empty():
@@ -288,6 +292,96 @@ func _check_viewport(board: BoardPresentation) -> String:
 	return ""
 
 
+## #845 — a tap on a *painted* square must select that square. The exported
+## build plays the project's 1280×720 base through `canvas_items`/`expand`, so
+## the frame is a non-identity stretch of the canvas; the inverse half of the
+## check therefore goes through that stretch, exactly as a pointer does. A test
+## under the identity transform a bare runner starts with would pass either way
+## and prove nothing.
+func _check_tap_round_trip(board: BoardPresentation) -> String:
+	_apply_release_stretch()
+	var squares := ["a1", "e1", "h1", "a2", "e2", "e4", "d4", "e5", "a8", "h8"]
+	var stretched := false
+	for frame in [Vector2i(720, 1280), Vector2i(1280, 720), Vector2i(800, 282), Vector2i(390, 844)]:
+		root.size = frame
+		await process_frame
+		board.size = root.get_visible_rect().size
+		await process_frame
+		var stretch := root.get_final_transform()
+		# 1280×720 *is* the base, so its stretch is legitimately identity; every
+		# other frame must arrive through a real transform or the check is hollow.
+		if frame == Vector2i(1280, 720):
+			if stretch != Transform2D.IDENTITY:
+				return "#845 the base frame must play at 1:1"
+		elif stretch == Transform2D.IDENTITY:
+			return "#845 identity stretch at %s — the check would prove nothing" % frame
+		else:
+			stretched = true
+		var problem := _check_painted_squares(board, stretch, frame, squares)
+		if not problem.is_empty():
+			return problem
+	_reset_release_stretch(board)
+	if not stretched:
+		return "#845 no frame exercised a canvas stretch"
+	return ""
+
+
+func _check_painted_squares(
+	board: BoardPresentation, stretch: Transform2D, frame: Vector2i, squares: Array
+) -> String:
+	# The frame in the stretch's own pixels: the control fills the frame, so its
+	# stretched size is the frame the build plays into.
+	var frame_rect := Rect2(Vector2.ZERO, stretch * board.size)
+	for square in squares:
+		var painted: Vector2 = stretch * board.world_to_screen(board.framed_center(square))
+		if not frame_rect.has_point(painted):
+			return "#845 %s paints outside %s at %s" % [square, frame, painted]
+		# The pointer path receives canvas coordinates; the painted point only
+		# becomes one after the frame's own stretch is removed (#845).
+		var delivered := stretch.affine_inverse() * painted
+		var hit := BoardGeometry.square_at(board.screen_to_world(delivered))
+		if hit != square:
+			return "#845 tap on painted %s hit %s at %s" % [square, hit, frame]
+	return _check_painted_frame(board, stretch, frame)
+
+
+## Half two: the paint itself must sit where the frame's geometry puts it, not
+## merely invert against itself. PRJ.A1 centres the eye on the board and never
+## crops, so its world centre lands on the control's centre and, on a portrait
+## frame, the 10-unit visible width is the frame's full width.
+func _check_painted_frame(
+	board: BoardPresentation, stretch: Transform2D, frame: Vector2i
+) -> String:
+	var painted_centre := stretch * board.world_to_screen(BoardGeometry.BOARD_CENTER)
+	var control_centre := stretch * (board.get_global_transform_with_canvas() * (board.size * 0.5))
+	if painted_centre.distance_to(control_centre) > 1.0:
+		return (
+			"#845 board centre paints at %s, not the control centre %s"
+			% [painted_centre, control_centre]
+		)
+	var control_px: Vector2 = stretch * board.size
+	if frame.y > frame.x:
+		var span := stretch * board.world_to_screen(Vector2(BoardGeometry.BOARD_SIZE, 0.0))
+		var origin := stretch * board.world_to_screen(Vector2.ZERO)
+		var expected := control_px.x * BoardGeometry.BOARD_SIZE / BoardGeometry.SHORT_AXIS
+		if absf(span.x - origin.x - expected) > 1.0:
+			return "#845 the 8-wide board spans %s of %s px" % [span.x - origin.x, expected]
+	return ""
+
+
+func _apply_release_stretch() -> void:
+	root.content_scale_size = Vector2i(1280, 720)
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+
+
+func _reset_release_stretch(board: BoardPresentation) -> void:
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	root.content_scale_size = Vector2i(0, 0)
+	root.size = Vector2i(720, 1280)
+	board.size = Vector2(720, 1280)
+
+
 func _check_orientation(board: BoardPresentation) -> String:
 	## #617 — raster art must not be mirrored by the world Y flip (SPC.E1).
 	## Synthetic asymmetric texture: black top-left pixel, everything else white.
@@ -449,6 +543,27 @@ func _screen_bottom_right(points: Array) -> Vector2:
 		if v.y > best.y:
 			best.y = v.y
 	return best
+
+
+## CMP-presentation.R8: a rendered piece node exposes its kind's name as metadata
+## (never a drawn label).
+func _check_accessible_name_meta(board: BoardPresentation) -> String:
+	var rules := ChessRules.new()
+	rules.reset_opening()
+	board.render_position(rules.position_field())
+	var seen := 0
+	for child in board.find_child("Pieces", true, false).get_children():
+		var node := child as Node2D
+		if node == null or not node.has_meta("piece_kind"):
+			continue
+		seen += 1
+		var kind := str(node.get_meta("piece_kind"))
+		var want := BoardPresentation.accessible_name(kind, "shared-play", "en")
+		if want.is_empty() or str(node.get_meta("accessible_name", "")) != want:
+			return "R8 %s has no accessible name metadata" % node.name
+	if seen != 32:
+		return "R8 saw %d piece nodes, want 32" % seen
+	return ""
 
 
 func _check_motion(board: BoardPresentation) -> String:

@@ -1,0 +1,722 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "pub-touch",
+  "mode": "touch",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "dpr": 3
+  },
+  "wait": "30000",
+  "startedAt": "2026-10-25T01:08:20.413Z",
+  "sessions": [
+    {
+      "index": 1,
+      "mode": "fresh",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 2,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 3,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 4,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 5,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 6,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 7,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 8,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 9,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 10,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 11,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 12,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 13,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    }
+  ],
+  "arms": [
+    {
+      "index": 0,
+      "session": 1,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32470.1,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32470.1,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33213.5,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33213.5,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 1,
+      "session": 2,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32650.7,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32650.8,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33234.5,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33234.6,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 2,
+      "session": 3,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32809.5,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32809.6,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33338.7,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33338.7,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 3,
+      "session": 4,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32730.2,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32730.3,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33646.8,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33646.9,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 4,
+      "session": 5,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 33116.1,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 33116.1,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33809.9,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33809.9,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 5,
+      "session": 6,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32644.3,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32644.3,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33270,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33270,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 6,
+      "session": 7,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 33081.8,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 33081.9,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33619.9,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33619.9,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 7,
+      "session": 8,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32686.6,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32686.6,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33318.8,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33318.9,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 8,
+      "session": 9,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32793.1,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32793.1,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33471.7,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33471.7,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 9,
+      "session": 10,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32577.4,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32577.4,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33140.5,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33140.5,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 10,
+      "session": 11,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32534.3,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32534.4,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33149.5,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33149.6,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 11,
+      "session": 12,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32285.4,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32285.4,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32801.9,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 32801.9,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 12,
+      "session": 13,
+      "point": "outside-panel",
+      "x": 40,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "advanced": false,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32501.8,
+          "x": 40,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32501.8,
+          "x": 40,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33224.3,
+          "x": 40,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33224.3,
+          "x": 40,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {}
+    },
+    {
+      "index": 13,
+      "session": 13,
+      "point": "outside-panel",
+      "x": 195,
+      "y": 400,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "advanced": false,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 36830.4,
+          "x": 195,
+          "y": 400,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 36830.5,
+          "x": 195,
+          "y": 400,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 37210.9,
+          "x": 195,
+          "y": 400,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 37210.9,
+          "x": 195,
+          "y": 400,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {}
+    }
+  ],
+  "storageAtBaseline": {},
+  "finishedAt": "2026-10-25T01:16:32.996Z",
+  "summary": {
+    "shared": {
+      "advanced": 6,
+      "total": 6
+    },
+    "puzzle": {
+      "advanced": 6,
+      "total": 6
+    },
+    "outside-panel": {
+      "advanced": 0,
+      "total": 2
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "pub-geo",
+  "count": 12,
+  "step": 2000,
+  "frames": [
+    {
+      "sample": 0,
+      "tMs": 13338,
+      "sha": "a598d42240229fcaca792a87fc2858f3e80447bf2f616f98efa071972e305705"
+    },
+    {
+      "sample": 1,
+      "tMs": 19381,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 2,
+      "tMs": 22221,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 3,
+      "tMs": 25114,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 4,
+      "tMs": 27994,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 5,
+      "tMs": 30789,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 6,
+      "tMs": 33438,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 7,
+      "tMs": 36325,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 8,
+      "tMs": 39331,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 9,
+      "tMs": 42125,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 10,
+      "tMs": 44983,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    },
+    {
+      "sample": 11,
+      "tMs": 47824,
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+    }
+  ]
+}

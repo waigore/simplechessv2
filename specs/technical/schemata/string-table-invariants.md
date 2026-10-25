@@ -16,7 +16,7 @@ Moved to [`string-table-fields.md`](string-table-fields.md) §Fields.
 | I2 | `zh-Hant` and `ja` have a value for every `en` key of every F2 owner; a key missing in either fails, naming the owner and key (L1) |
 | I3 | An owner's key set is exactly the Key column of its Copy table, or of [`exceptions.md`](../../ux/exceptions.md) for `exceptions`, in table order; no extra key, no missing key |
 | I4 | No value equals its key (that would render a raw identifier) |
-| I5 | A `zh-Hant` or `ja` value is not a verbatim copy of its `en` value, except a row marked same in every locale (`UI-mode-pick.C4` own name; `shared-play` / `puzzle-play` `queen` `rook` `bishop` `knight`, per [Localization copy](../../ux/localization.md) L3); every other F2 row fails when its value equals `en`, naming the owner and key (L1) |
+| I5 | A `zh-Hant` or `ja` value is not a verbatim copy of its `en` value, except a row [Localization copy](../../ux/localization.md) L7 marks same in every locale (`UI-mode-pick.C4` own name plus the piece names L9 maps, on both play owners); every other F2 row fails when its value equals `en`, naming the owner and key (L1) |
 | I6 | Each value's glyphs resolve in the shipped font chain ([`AK-fonts.V1`](../../assets/kinds/fonts.md)) for its locale |
 | I7 | Copy is not a persist field ([`fields-persist`](../../design/game-state/fields-persist.md)); no string is saved |
 

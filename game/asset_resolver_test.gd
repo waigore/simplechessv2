@@ -48,8 +48,18 @@ func _after_boot() -> void:
 		problem = "boot group"
 	elif _router.stage != SessionRouter.STAGE_MODE_PICK:
 		problem = "mode pick did not become ready"
-	elif not _resolver.group_loaded("ambient"):
-		problem = "ambient must load when mode pick is ready"
+	elif _resolver.group_loaded("ambient"):
+		## #856: the frame that first paints mode pick carries no Ambient read, so
+		## the group is still unloaded in the frame mode pick became ready.
+		problem = "ambient loaded in the mode-pick frame"
+	if not problem.is_empty():
+		_fail(problem)
+		return
+	## The frames after the paint are when `AST.G3`'s Ambient load lands (#856).
+	await process_frame
+	await process_frame
+	if not _resolver.group_loaded("ambient"):
+		problem = "ambient must load once mode pick is painted"
 	elif _resolver.resolve(boot_id) == null:
 		problem = "boot id did not resolve"
 	elif _any_cached("play"):
@@ -159,7 +169,8 @@ func _check_preload_gap() -> bool:
 
 func _check_boot_failure_surfaced() -> bool:
 	## Inverted from the old "stall is correct" check: a Boot group that leaves an
-	## approved ID unresolved settles as CTR-asset-resolve E4, and the caller sees it.
+	## approved ID unresolved settles as CTR-asset-resolve E4, the caller sees it,
+	## and the router leaves `EX.loading` for `EX.load-failure` (#882).
 	var probe := AssetResolver.new()
 	probe.playtest_override = 1
 	root.add_child(probe)
@@ -189,16 +200,106 @@ func _check_boot_failure_surfaced() -> bool:
 		return _fail("failed boot preload did not surface the failure")
 	if probe.boot_outcome != 1 or probe.group_loaded("boot"):
 		return _fail("failed boot preload did not log the unresolved count")
+	var problem := await _router_loads_again_after_failure(probe._manifest)
+	if not problem.is_empty():
+		return _fail(problem)
+	return _check_load_failure_surface()
+
+
+## The router half: E4 ends the wait, `EX.load-failure` is named, and C5 Reload loads
+## the game again from the start — a fresh Boot read, never a cached verdict.
+func _router_loads_again_after_failure(manifest: Dictionary) -> String:
 	var router_probe := AssetResolver.new()
 	router_probe.playtest_override = 1
 	root.add_child(router_probe)
 	router_probe.boot_failed.connect(_router._on_boot_failed)
-	router_probe.apply_manifest(probe._manifest)
+	router_probe.apply_manifest(manifest)
+	var screens: Array[String] = []
+	_router.screen_requested.connect(
+		func(screen_id: String, _state: Dictionary) -> void: screens.append(screen_id)
+	)
+	## One frame runs the deferred preload, so the checks below never wait on a boot
+	## event that already failed.
 	router_probe.preload_boot()
-	await router_probe.boot_settled
+	await process_frame
+	var problem := _load_failure_is_named(screens)
+	if problem.is_empty():
+		_router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C1")
+		if _router.stage != SessionRouter.STAGE_LOAD_FAILED:
+			problem = "EX.load-failure acted on a control it does not offer"
+	if problem.is_empty():
+		_router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
+		if _router.stage != SessionRouter.STAGE_LOADING or _router.boot_failure_count != 1:
+			problem = "Reload did not load the game again from the start"
+	if problem.is_empty():
+		## The manifest leaves Boot unresolvable, so the reloaded attempt must fail the
+		## same way, through a fresh read.
+		if _router._resolver.boot_outcome == 1 or _router._resolver.group_loaded("boot"):
+			problem = "Reload kept a failed Boot verdict the wait would not read again"
+		await process_frame
+	return problem
+
+
+## E4 reached the router and replaced the wait with `EX.load-failure`.
+func _load_failure_is_named(screens: Array[String]) -> String:
 	if _router.boot_failure_count != 1:
-		return _fail("session router did not observe the boot failure")
+		return "session router did not observe the boot failure"
+	if _router.stage != SessionRouter.STAGE_LOAD_FAILED:
+		return "boot failure left STAGE_LOADING: EX.loading is waited on after it failed"
+	if screens.is_empty() or screens[0] != SessionRouter.STAGE_LOAD_FAILED:
+		return "boot failure did not name EX.load-failure to the presentation"
+	return ""
+
+
+## UI-mode-pick S5 — the shipped surface names the failure and offers Reload in
+## every locale; `EX.loading` is gone rather than waited on (#882).
+func _check_load_failure_surface() -> bool:
+	var packed := load("res://main.tscn") as PackedScene
+	var view := packed.instantiate() as Presentation
+	var harness := view.get_node_or_null("PlaytestHarness")
+	if harness != null:
+		view.remove_child(harness)
+		harness.free()
+	root.add_child(view)
+	view.show_screen(SessionRouter.STAGE_LOAD_FAILED, {})
+	var panel := view.get_node_or_null("LoadFailure") as LoadFailurePanel
+	if panel == null or not panel.visible:
+		return _fail("EX.load-failure has no surface")
+	if (view.get_node("LoadingLabel") as Label).visible:
+		return _fail("EX.loading stays on screen after the Boot load failed")
+	if (
+		panel.button_for(LoadFailurePanel.CONTROL_RELOAD) == null
+		or not panel.button_for(LoadFailurePanel.CONTROL_RELOAD).visible
+	):
+		return _fail("EX.load-failure offers no Reload")
+	var problem := _load_failure_copy_is_localized(panel)
+	if problem.is_empty():
+		view.show_screen(SessionRouter.STAGE_LOADING, {})
+		if panel.visible:
+			problem = "EX.load-failure stayed up once the load gate returned"
+	view.queue_free()
+	if not problem.is_empty():
+		return _fail(problem)
 	return true
+
+
+## Every locale carries its own load-failure message and Reload label, and nothing
+## else is offered on S5.
+func _load_failure_copy_is_localized(panel: LoadFailurePanel) -> String:
+	if panel.control_available("C1") or panel.control_available("C4"):
+		return "EX.load-failure offers a control it does not have"
+	var message_label := panel.find_child("LoadFailureMessage", true, false) as Label
+	var reload := panel.button_for(LoadFailurePanel.CONTROL_RELOAD)
+	for locale in StringTable.LOCALES:
+		panel.configure(locale, null, 1.0)
+		var message := StringTable.exception_text("load_failure", locale)
+		if message_label == null or message_label.text != message:
+			return "EX.load-failure message missing in %s" % locale
+		if reload.text != StringTable.exception_text("reload", locale):
+			return "EX.load-failure Reload copy missing in %s" % locale
+		if locale != "en" and message == StringTable.exception_text("load_failure", "en"):
+			return "EX.load-failure message still English in %s" % locale
+	return ""
 
 
 func _check_vorbis_copy(music_id: String) -> bool:

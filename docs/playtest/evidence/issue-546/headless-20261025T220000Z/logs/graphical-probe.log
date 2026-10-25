@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+PROBE display=macOS
+PROBE playtest_build=true
+PROBE window_before=(1280, 720)
+PROBE content_scale_mode_before=1
+{"TEL.1":"set_viewport","TEL.2":1792880828955,"TEL.3":"sess-1792880828868-68430-playtest-398404","TEL.5":"fail"}
+PROBE invalid_input_report_empty=true
+{"TEL.1":"set_viewport","TEL.2":1792880828971,"TEL.3":"sess-1792880828868-68430-playtest-398404","TEL.4":"SIT.6","TEL.5":"pass"}
+{"TEL.1":"set_viewport","TEL.2":1792880828988,"TEL.3":"sess-1792880828868-68430-playtest-398404","TEL.4":"SIT.6","TEL.5":"pass"}
+PROBE idempotent=true
+PROBE report={"applied":true,"body_text_px":21.0,"debug_panel_visible":false,"frame_height_px":844.0,"height":844,"rendered_text_scale":1.31875,"text_scale":1.0,"width":390}
+PROBE window_after=(390, 844)
+PROBE root_size=(390, 844) content_scale_size=(0, 0)
+PROBE uis_t2_need_px=21
+PROBE seam_body_text_px=21.0
+PROBE mode_pick_text_scale=1.31875
+PROBE text name=Title text=Choose how to play font_px=37 rect=(272.0, 111.0) line_h=54.0 text_w=340.0 clip_v=false below_t2=false
+PROBE text name=SharedGame text=Shared game · Last font_px=21 rect=(272.0, 54.0) line_h=32.0 text_w=188.0 clip_v=false below_t2=false
+PROBE text name=PuzzleStream text=Puzzle stream font_px=21 rect=(272.0, 54.0) line_h=32.0 text_w=138.0 clip_v=false below_t2=false
+PROBE text name=Quit text=Quit font_px=21 rect=(82.0, 54.0) line_h=32.0 text_w=42.0 clip_v=false below_t2=false
+PROBE text name=SwitchLocale text=English font_px=21 rect=(111.0, 54.0) line_h=32.0 text_w=71.0 clip_v=false below_t2=false
+PROBE screenshot=docs/playtest/evidence/issue-546/headless-20261025T220000Z/screenshots/s6-phone-390x844.png size=(390, 844)
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

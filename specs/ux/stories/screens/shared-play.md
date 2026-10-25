@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/ux/story.md`](../../../../.agents/specs/r
 
 | Element | Summary | Scenarios |
 |---------|---------|-----------|
-| R1 | Board | US2.1 US2.2 US2.3 US2.10 |
+| R1 | Board | US2.1–US2.3 US2.10–US2.12 |
 | R2 | Status | US2.4 US2.5 US2.6 US2.7 |
 | R3 | Advice | US2.8 US2.9 |
 | R4 | Resign | US1.1 |

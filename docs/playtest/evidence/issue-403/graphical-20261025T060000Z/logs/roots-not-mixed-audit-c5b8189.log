@@ -1,0 +1,10 @@
+catalog entries: 32 (.gitkeep excluded)
+cataloged file paths: 38
+files under game_assets (excl .gitkeep): 38
+on disk but not cataloged: []
+cataloged but missing: []
+extensions: {'.ogg': 7, '.png': 12, '.svg': 11, '.txt': 3, '.woff2': 5}
+engine/build files in game_assets: []
+game/project.godot inside game_assets? False
+game/asset_manifest.json inside game_assets? False
+build/web inside game_assets? False

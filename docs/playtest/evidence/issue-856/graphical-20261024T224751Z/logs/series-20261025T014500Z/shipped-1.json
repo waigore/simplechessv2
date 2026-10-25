@@ -1,0 +1,17 @@
+{
+  "arm": "shipped",
+  "run": 1,
+  "url": "http://127.0.0.1:8081/index.html",
+  "firstPaintedMs": 1783,
+  "probeContextMs": 40,
+  "probeContextEndMs": 89,
+  "engineBanner": "330ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+  "firstFetchMs": 90,
+  "pck": {
+    "startMs": 90,
+    "endMs": 161,
+    "initiatorType": "fetch",
+    "transferredBytes": 9570888
+  },
+  "domContentLoadedMs": 130
+}
