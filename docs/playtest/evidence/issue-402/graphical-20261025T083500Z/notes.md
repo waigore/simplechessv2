@@ -19,7 +19,10 @@ a proxy pass, which `specs/playtest/evidence.md` forbids.
 `not-judged` here means one of two things, never a soft `fail`:
 
 1. **No display on this seat** — rows 1, 2, 5, 7, 9, 10. The build is not accused; the
-   reading was not taken. #625 owns 1 and 2 (and the device legs); #557 owns 5 and 7.
+   reading was not taken. #625 owns 1 and 2 (and the device legs); #557 owns 5 and 7;
+   row 9 has no live owner — #546 closed accepted on 2026-10-25T06:00Z having read `SIT.6`
+   on the playtest scene at `aa16e09`, so its phone-width leg still needs a first reading
+   on a release build.
 2. **The row's own seat is another build or a precondition the release cannot meet** —
    rows 3, 4, 6. Row 3 needs Advice On *and* online, impossible with empty `T9`/`T10`;
    row 4's only `pass` is on `c4202bb`; row 6 is read on the playtest-certified build by
