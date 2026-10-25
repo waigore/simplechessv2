@@ -1,0 +1,36 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "GATE",
+  "block": "board",
+  "load": [],
+  "localization": [],
+  "durability": {},
+  "recovery": {},
+  "perf": [],
+  "board": {
+    "paintedE1": {
+      "x": 219.375,
+      "y": 703.125
+    },
+    "paintedE2": {
+      "x": 219.375,
+      "y": 654.375
+    },
+    "ringAfterVisibleE2Tap": {
+      "left": 195,
+      "top": 649.5,
+      "right": 233.5,
+      "bottom": 688,
+      "centreX": 214.25,
+      "centreY": 668.75
+    },
+    "ringAfterY640Tap": {
+      "left": 195,
+      "top": 610.5,
+      "right": 233.5,
+      "bottom": 649,
+      "centreX": 214.25,
+      "centreY": 629.75
+    }
+  }
+}

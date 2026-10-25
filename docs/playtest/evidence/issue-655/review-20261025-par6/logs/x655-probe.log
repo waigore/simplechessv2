@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _initialize (res://../docs/playtest/evidence/issue-655/review-20261025-par6/probe/x655_confirm_probe.gd:16)
+{"TEL.1":"puzzle.enter","TEL.2":1792883679143,"TEL.3":"sess-1792883679081-94520-playtest-273473","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:756)
+         [4] _on_mode_pick_control (res://session_router.gd:623)
+         [5] handle_control (res://session_router.gd:195)
+         [6] _probe_router (res://../docs/playtest/evidence/issue-655/review-20261025-par6/probe/x655_confirm_probe.gd:74)
+{"TEL.1":"puzzle.confirm","TEL.2":1792883679143,"TEL.3":"sess-1792883679081-94520-playtest-273473","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792883679143,"TEL.3":"sess-1792883679081-94520-playtest-273473","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}

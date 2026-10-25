@@ -29,6 +29,9 @@ func _check_all() -> bool:
 		_check_loading_ready,
 		_check_refusals,
 		_check_report_shape,
+		_check_consumed_report,
+		_check_loading_never_empty,
+		_check_disarm_measurement,
 		_check_debug_control,
 	]
 	for leg in legs:
@@ -78,10 +81,12 @@ func _check_shared_close() -> bool:
 	var report := _report(seams)
 	if str(report.get("status", "")) != "ok":
 		problem = "shared window close"
-	elif not is_equal_approx(float(report.get("max_ms", 0.0)), 33.25):
-		problem = "shared max_ms"
-	elif int(report.get("sample_count", 0)) != 3:
-		problem = "shared sample_count"
+	elif not is_equal_approx(float(report.get("max_ms", 0.0)), 17.5):
+		problem = "shared max_ms is the slowest frame inside the window"
+	elif int(report.get("sample_count", 0)) != 2:
+		## The frame the move landed on is not one the window held: the two frames
+		## of the move precede it, and the move frame closes the window.
+		problem = "shared sample_count must count the window's own frames"
 	elif str(report.get("solver", "")) != "white":
 		problem = "shared solver after close"
 	elif str(report.get("events", {}).get("end", {}).get("TEL.4", "")) != "PTU-shared-play":
@@ -310,12 +315,133 @@ func _check_report_shape() -> bool:
 	return true
 
 
+## #544 acceptance finding 1 — a window that closes by itself is not lost. The
+## first `measure(kind)` this window measured hands the report over, and only once:
+## a second ask is a refusal, so one arm never yields two reports.
+func _check_consumed_report() -> bool:
+	var seams := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	seams.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [10.0, 20.0]
+	## One frame inside the window, then the move frame that closes it.
+	seams._process(0.0)
+	_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
+	seams._process(0.0)
+	var got := seams.measure(PlaytestMeasure.KIND_FRAME_TIMES)
+	var problem := ""
+	if str(got.get("status", "")) != "ok":
+		problem = "self-closed window must hand its report over, got %s" % [got.get("status", "")]
+	elif str(got.get("detail", "")) != "":
+		problem = "consumed report carries no detail"
+	elif int(got.get("sample_count", 0)) != 1:
+		problem = "consumed report keeps its samples"
+	elif not is_equal_approx(float(got.get("max_ms", 0.0)), 10.0):
+		problem = "consumed report carries its max_ms"
+	elif str(got.get("events", {}).get("end", {}).get("TEL.4", "")) != "PTU-shared-play":
+		problem = "consumed report carries its measure.end event"
+	elif str(seams.measure(PlaytestMeasure.KIND_FRAME_TIMES).get("detail", "")) != "no window":
+		problem = "a consumed report must not be handed over twice"
+	elif str(seams.dump_state().get("measurement", {}).get("status", "")) != "ok":
+		problem = "the handed-over report stays readable in dump_state"
+	if not problem.is_empty():
+		return _fail(problem)
+	## A wrong kind leaves the window's own reading for the kind that measured it.
+	var other := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	other.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [10.0]
+	_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
+	other._process(0.0)
+	if str(other.measure(PlaytestMeasure.KIND_LOADING_READY).get("status", "")) != "refused":
+		return _fail("a wrong kind must not take another window's report")
+	if str(other.measure(PlaytestMeasure.KIND_FRAME_TIMES).get("status", "")) != "ok":
+		return _fail("a wrong kind must leave the measured report for its own kind")
+	return true
+
+
+## #544 acceptance finding 2 — a `loading_ready` window that met its close
+## predicate always carries a real reading. The window spans the frames whose
+## snapshot is still `loading`, so `ok` with no samples is unreachable: even a
+## load that finished between two ticks reports the frame it was still loading on.
+func _check_loading_never_empty() -> bool:
+	var shortest := _new_seam()
+	## `mode-pick` is already current on the very first observation: the shortest
+	## possible span, and the one that reported `ok` about nothing before.
+	_snapshot = {"stage": SessionRouter.STAGE_LOADING, "mode": ""}
+	shortest.start_measurement(PlaytestMeasure.KIND_LOADING_READY)
+	_frames = [33.0]
+	_snapshot = {"stage": SessionRouter.STAGE_MODE_PICK, "mode": ""}
+	shortest._process(0.0)
+	var report := shortest.measure(PlaytestMeasure.KIND_LOADING_READY)
+	var problem := ""
+	if str(report.get("status", "")) != "ok":
+		problem = "shortest loading span never measured"
+	elif int(report.get("sample_count", 0)) <= 0:
+		problem = "a closed loading window must carry a reading, got 0 samples"
+	elif not is_equal_approx(float(report.get("max_ms", 0.0)), 33.0):
+		problem = "the loading frame is the reading"
+	## A load that lasts: every frame it observed belongs to it, `mode-pick` closes.
+	var lasting := _new_seam()
+	_snapshot = {"stage": SessionRouter.STAGE_LOADING, "mode": ""}
+	lasting.start_measurement(PlaytestMeasure.KIND_LOADING_READY)
+	_frames = [20.0, 25.0, 40.0]
+	lasting._process(0.0)
+	lasting._process(0.0)
+	_snapshot = {"stage": SessionRouter.STAGE_MODE_PICK, "mode": ""}
+	lasting._process(0.0)
+	var long_report := lasting.measure(PlaytestMeasure.KIND_LOADING_READY)
+	if problem.is_empty() and int(long_report.get("sample_count", 0)) != 3:
+		problem = (
+			"loading window keeps its own frames, got %d"
+			% [int(long_report.get("sample_count", 0))]
+		)
+	if problem.is_empty() and not is_equal_approx(float(long_report.get("max_ms", 0.0)), 40.0):
+		problem = "loading max_ms is the slowest frame of the load"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
+## #544 acceptance finding 3 — `measure("")` is the documented disarm. An open
+## window comes back `cancelled`; a window that already closed by itself is still
+## handed over rather than lost.
+func _check_disarm_measurement() -> bool:
+	var seams := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	seams.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [10.0, 12.0]
+	seams._process(0.0)
+	var cancelled := seams.measure("")
+	var problem := ""
+	if str(cancelled.get("status", "")) != "cancelled":
+		problem = "measure('') must cancel an open window"
+	elif int(cancelled.get("sample_count", 0)) != 1:
+		problem = "cancelled window keeps its samples"
+	elif not is_zero_approx(float(cancelled.get("max_ms", -1.0))):
+		problem = "cancelled window claims no max_ms"
+	elif str(seams.measure("").get("detail", "")) != "no window":
+		problem = "disarm with nothing open is refused"
+	## A window that closed by itself is handed over by the disarm, not lost.
+	var self_closed := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	self_closed.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [10.0]
+	_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
+	self_closed._process(0.0)
+	var handed := self_closed.measure("")
+	if problem.is_empty() and str(handed.get("status", "")) != "ok":
+		problem = "the disarm must hand over a self-closed window"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
 ## D4 — the `Measure` control only arms: it submits no input and plays no move.
 func _check_debug_control() -> bool:
 	var seams := _new_seam()
 	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
-	var field := seams.get_node("PlaytestDebug/DebugPanel/MeasureKind") as LineEdit
-	var button := seams.get_node("PlaytestDebug/DebugPanel/Measure") as Button
+	var field := seams.get_node("PlaytestDebug/DebugPanel/Controls/MeasureKind") as LineEdit
+	var button := seams.get_node("PlaytestDebug/DebugPanel/Controls/Measure") as Button
 	if field == null or button == null:
 		return _fail("measure debug control missing")
 	field.text = PlaytestMeasure.KIND_FRAME_TIMES

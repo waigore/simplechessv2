@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+{"TEL.1":"jump","TEL.2":1792873837166,"TEL.3":"sess-1792873837000-6648-playtest-393266","TEL.4":"loading","TEL.5":"pass"}
+{"TEL.1":"jump","TEL.2":1792873837168,"TEL.3":"sess-1792873837000-6648-playtest-393266","TEL.4":"mode-pick","TEL.5":"pass"}
+ZZ live last-report-after-loading={"armed":false,"detail":"","kind":"","max_ms":0.0,"sample_count":0,"status":""}
+{"TEL.1":"shared.start","TEL.2":1792873837198,"TEL.3":"sess-1792873837000-6648-playtest-393266","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"measure.start","TEL.2":1792873837217,"TEL.3":"sess-1792873837000-6648-playtest-393266","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+ZZ armed={"armed":true,"detail":"","kind":"frame_times","max_ms":0.0,"sample_count":0,"status":"ok"}
+ZZ move=a2a3
+{"TEL.1":"shared.move","TEL.2":1792873837227,"TEL.3":"sess-1792873837000-6648-playtest-393266","TEL.4":"UI-shared-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"measure.end","TEL.2":1792873837231,"TEL.3":"sess-1792873837000-6648-playtest-393266","TEL.4":"PTU-shared-play","TEL.5":"pass"}
+ZZ after-move last={"armed":false,"detail":"","kind":"frame_times","max_ms":2.77777777777778,"sample_count":7,"status":"ok"} armed=false
