@@ -1,0 +1,102 @@
+{
+  "coldOpen": 1,
+  "url": "https://waigore.github.io/simplechessv2/",
+  "canvas": {
+    "x": 0,
+    "y": 0,
+    "w": 390,
+    "h": 844
+  },
+  "tap": {
+    "x": 195,
+    "y": 303.84
+  },
+  "preInteraction": [
+    {
+      "tapCount": 2,
+      "reads": [
+        {
+          "peak": 0.43857,
+          "rms": 0.19576
+        },
+        {
+          "peak": 0,
+          "rms": 0
+        }
+      ]
+    },
+    {
+      "tapCount": 2,
+      "reads": [
+        {
+          "peak": 0.35054,
+          "rms": 0.17264
+        },
+        {
+          "peak": 0,
+          "rms": 0
+        }
+      ]
+    },
+    {
+      "tapCount": 2,
+      "reads": [
+        {
+          "peak": 0.40371,
+          "rms": 0.13688
+        },
+        {
+          "peak": 0,
+          "rms": 0
+        }
+      ]
+    }
+  ],
+  "postInteraction": [
+    {
+      "tapCount": 2,
+      "reads": [
+        {
+          "peak": 0.4879,
+          "rms": 0.20116
+        },
+        {
+          "peak": 0,
+          "rms": 0
+        }
+      ]
+    },
+    {
+      "tapCount": 2,
+      "reads": [
+        {
+          "peak": 0.17625,
+          "rms": 0.07129
+        },
+        {
+          "peak": 0,
+          "rms": 0
+        }
+      ]
+    },
+    {
+      "tapCount": 2,
+      "reads": [
+        {
+          "peak": 0.15486,
+          "rms": 0.07766
+        },
+        {
+          "peak": 0,
+          "rms": 0
+        }
+      ]
+    }
+  ],
+  "shots": [
+    "deep-1-mode-pick.png",
+    "deep-1-after-enter.png"
+  ],
+  "unresolvedAssetIdWarnings": 0,
+  "unresolvedAmbient": false
+}

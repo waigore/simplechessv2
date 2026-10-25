@@ -41,3 +41,4 @@ Cut shippable **waves** from `specs/` and file issues. Contract: [`docs/issues/w
 
 - Confirm before filing (except planner bootstrap above). Do not invent scope the user rejected.
 - Do not build PoCs or game code in this skill.
+- When [`specs/playtest/story-rows.md`](../../../specs/playtest/story-rows.md) exists, map in-wave stories to filed epic/task owners; out-of-wave rows stay `none` with a durable reason. Do not file defects as story-row planning owners ([`requirements.md`](../../../docs/issues/requirements.md)).

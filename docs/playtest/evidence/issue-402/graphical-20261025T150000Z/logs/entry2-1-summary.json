@@ -1,0 +1,25 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "coldOpen": 1,
+  "arms": [
+    {
+      "label": "c1-195-163",
+      "x": 195,
+      "y": 163,
+      "holdMs": 200,
+      "changedFrame": true,
+      "gestures": [
+        "pointerdown@195,163",
+        "touchstart@0,0",
+        "pointerup@195,163",
+        "touchend@0,0"
+      ]
+    }
+  ],
+  "shots": [
+    "entry2-1-00-mode-pick.png",
+    "entry2-1-after-c1-195-163.png"
+  ],
+  "unresolvedAssetIdWarnings": 0,
+  "unresolvedAmbient": false
+}
