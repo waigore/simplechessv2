@@ -1,0 +1,5 @@
+log.warning [rendering] [.WebGL-0x134000cb400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x134000dec00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
