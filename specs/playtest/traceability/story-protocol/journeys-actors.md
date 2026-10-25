@@ -17,16 +17,18 @@ The only rows whose **Cites** is a bare journey key. That key judges `specs/ux/s
 
 ## Actors — 9 rows, 9 judged
 
-`PTU-actors` cites each actor split, so no actor row is single-cited. The `US1` rows stay with `PTU-shared-play`.
+The two `US1` rows reach `PTU-shared-play`; the seven `US2`–`US5` splits are judged rows no protocol cites. `PTU-shared-play` judges the `US1` rows at story level and no actor split, so no actor row is single-cited.
 
 | Story | Protocol | Reached | Level |
 |-------|----------|---------|-------|
 | [`actors/bottom-player.md#US1`](../../../ux/stories/actors/bottom-player.md) | `PTU-shared-play` | story-level | Full |
 | [`actors/top-player.md#US1`](../../../ux/stories/actors/top-player.md) | `PTU-shared-play` | story-level | Full |
-| [`actors/bottom-player-choices.md#US2`](../../../ux/stories/actors/bottom-player-choices.md) | `PTU-actors` | US2.1–US2.10 | Full |
-| [`actors/bottom-player-host.md#US3`](../../../ux/stories/actors/bottom-player-host.md) | `PTU-actors` | US3.1–US3.8 | Full |
-| [`actors/bottom-player-puzzle.md#US4`](../../../ux/stories/actors/bottom-player-puzzle.md) | `PTU-actors` | US4.1–US4.6 | Full |
-| [`actors/bottom-player-exceptions.md#US5`](../../../ux/stories/actors/bottom-player-exceptions.md) | `PTU-actors` | US5.1, US5.2 | Full |
-| [`actors/top-player-choices.md#US2`](../../../ux/stories/actors/top-player-choices.md) | `PTU-actors` | US2.1–US2.10 | Full |
-| [`actors/top-player-host.md#US3`](../../../ux/stories/actors/top-player-host.md) | `PTU-actors` | US3.1–US3.12 | Full |
-| [`actors/top-player-puzzle.md#US4`](../../../ux/stories/actors/top-player-puzzle.md) | `PTU-actors` | US4.1–US4.6 | Full |
+| [`actors/bottom-player-choices.md#US2`](../../../ux/stories/actors/bottom-player-choices.md) | no protocol cites it | US2.1–US2.10 | Full |
+| [`actors/bottom-player-host.md#US3`](../../../ux/stories/actors/bottom-player-host.md) | no protocol cites it | US3.1–US3.8 | Full |
+| [`actors/bottom-player-puzzle.md#US4`](../../../ux/stories/actors/bottom-player-puzzle.md) | no protocol cites it | US4.1–US4.6 | Full |
+| [`actors/bottom-player-exceptions.md#US5`](../../../ux/stories/actors/bottom-player-exceptions.md) | no protocol cites it | US5.1, US5.2 | Full |
+| [`actors/top-player-choices.md#US2`](../../../ux/stories/actors/top-player-choices.md) | no protocol cites it | US2.1–US2.10 | Full |
+| [`actors/top-player-host.md#US3`](../../../ux/stories/actors/top-player-host.md) | no protocol cites it | US3.1–US3.12 | Full |
+| [`actors/top-player-puzzle.md#US4`](../../../ux/stories/actors/top-player-puzzle.md) | no protocol cites it | US4.1–US4.6 | Full |
+
+The seven uncited splits are not row-level `none`: their record, and the decision on an owning protocol, lives in [#865](https://github.com/waigore/simplechessv2/issues/865).
