@@ -1,19 +1,36 @@
-# Palette K9 forms: per-rule detail
+# Palette K9 marks
 
 Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../../.agents/specs/rules/aesthetics/palette.md).
 
-Split from [`rules.md`](rules.md) to keep that file under 500 words. The `K9` mark table and layer split are there.
+Split from [`rules.md`](rules.md), which keeps the K9 rule, the hue sentence, and the layer split. Swatches: [`swatches.md`](swatches.md).
+
+## Mark table
+
+Every state carries a row; `kept` says what stays visible next to it.
+
+| State | Accent | Form | Placement | Kept |
+|-------|--------|------|-----------|------|
+| Selection ([PER.R3](../../view/perception.md)) | [C6](swatches.md) | Closed ring | Square's outer edge, filling that rule's frame | Piece held |
+| Empty destination ([PER.R4](../../view/perception.md)) | [C11](swatches.md) | Disk | Square centre | None |
+| Capture destination ([PER.R4](../../view/perception.md)) | [C11](swatches.md) | Corner brackets | Two strokes per corner, inside | None |
+| Refused place ([PER.R8](../../view/perception.md)) | [C8](swatches.md) | Hatching | Fill, inside the ring | 0.3 s C8 flash, [PHY.M5](../../view/physics.md) return |
+| Check ([PER.R6](../../view/perception.md)) | [C8](swatches.md) | L-frame | Two opposite corners | Check word, [X4](../sound.md) |
+| Advice ([PER.R5](../../view/perception.md)) | [C7](swatches.md) | Edge brackets | One per edge midpoint, corners open | Advice chrome, eval |
+| From-square ([PER.R9](../../view/perception.md)) | [C7](swatches.md) | Soft band | Square edge opposite the ring: blurred, no hard stroke | Ring; piece held |
+| To-square ([PER.R9](../../view/perception.md)) | [C10](swatches.md) | Corner ticks | An L in each corner facing the from-square | Moved piece; selection, capture, check |
+
+Last move is one state on two squares: a soft band on the from-square, corner ticks on the to-square. Only the to-square takes a crisp edge, so the pair says which end is which without hue. The band shares the ring's edge but is soft, open, and never encloses.
 
 ## Per-rule
 
-`PER.R3`: the ring never covers the body, so ≥ 90% stays visible. `PER.R4`: the disk radius is 0.282 square (`πr²` ≥ 1/4 square); each capture corner stroked 0.06 square wide by 0.10 long also clears 1/4 of the square. `PER.R5`: Advice brackets stay in the [SPC.E1](../../view/spatial-model.md) box, ≤ 10% of the body. `PER.R8`: hatching rides the C8 flash; selection and legal marks return after 0.3 s.
+Ring ≥ 90% of the body stays visible. Disk πr² ≥ 1/4 square, as do the capture brackets. Advice brackets stay ≤ 10% of the body. Refusal hatching rides the flash.
 
-`PER.R9`: the ticks sit in the outer 0.10 of a square, measured in square fractions — the from-square's back tick is 0.04 wide by 0.60 long, inset 0.04 on the edge facing the to-square; the to-square carries two corner Ls, each 0.10 wide by 0.20 long along each of its two arms, in the two corners facing the from-square. The busiest square draws 0.06 of its area (two Ls; the back tick draws 0.024), so each sits inside the ≤ 10% bound with room to spare, and no tick crosses another form's stroke path where they share a square: the corner Ls read by their corner placement, which no other form uses, and the back tick is an edge segment no other form draws. They follow the move, not the board, so they point the same way after [CAM-board.M2](../../view/cameras/board.md) flips it, and they never need the piece body cleared — the ticks sit around it, not through it, so the moved piece keeps its full [SPC.E1](../../view/spatial-model.md) silhouette. The reading is the keyline, not the cream: C9 on C1 is **9.95:1** and on C2 **2.47:1**, while the C10 tick itself is **1.28:1** on C1.
+`PER.R9`: the band is C7, tested by K5 — 2.00:1 on both squares — and soft enough to read as a field, not a stroke. The ticks sit in the outer 0.10 of the to-square — 0.04 wide, 0.60 long on the edge facing the from-square, each L arm 0.10 — so they cover ≤ 10% of the body and cross no other stroke. The piece keeps its full silhouette. They follow the move, not the board, so they point the same way after [CAM-board.M2](../../view/cameras/board.md) flips it.
 
 ## Stroke floor
 
-The forms hold by construction, not by a pixel floor. Strokes keep [`UIS.I1`](../ui-style.md)'s **1.5 screen px** minimum; at 360 × 640 (360 px over 10 units, [PRJ.P1](../../view/projection.md)) 1 unit = 36 px and one square is 36 px, so the `0.06` ring is **2.16 px**, the `0.10` bracket **3.6 px**, and the `0.04` tick **1.44 px** — under the floor, so the C9 keyline around it, not the cream stroke, carries it.
+Strokes keep [`UIS.I1`](../ui-style.md)'s **1.5 screen px** minimum. At 360 × 640 (36 px a square, [PRJ.P1](../../view/projection.md)) the `0.06` ring is **2.16 px** and the `0.10` bracket **3.6 px**; the `0.04` tick is **1.44 px**, under the floor, so its C9 keyline carries it.
 
 ## Look
 
-The tick pairs are drawn on both square colors in [`../sheets/palette.html`](../sheets/palette.html), under its `PAL.K9` last-move section.
+Both marks drawn on both square colors in [`../sheets/palette.html`](../sheets/palette.html).
