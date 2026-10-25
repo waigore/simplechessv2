@@ -11,15 +11,16 @@ const LOCALE_OWN_NAME := {
 	"ja": "日本語",
 }
 
-## SCH-string-table I5 / `specs/ux/localization.md` L3: the rows allowed to render
-## their `en` value in every locale, keyed by owner then key. L3 closes the set to
-## three owners and nine rows (the `mode-pick` own name plus four piece names in
-## `shared-play` and `puzzle-play`); the I5 tests read this map both ways, so a row
-## missing here fails as "not en-equal" / "not every-locale" rather than slipping by.
+## SCH-string-table I5 / `specs/ux/localization.md` L7: the marked rows, keyed by
+## owner then key. L7 is the single source and closes the set to three owners and
+## 13 rows: the `mode-pick` own name (`UI-mode-pick.C4`) plus the six piece names
+## L9 maps, on `shared-play` and on `puzzle-play`. The I5 tests read this map both
+## ways, so a row missing here fails as "not en-equal" / "not every-locale" rather
+## than slipping by.
 const EVERY_LOCALE_ROWS: Dictionary = {
 	"mode-pick": ["locale"],
-	"shared-play": ["queen", "rook", "bishop", "knight"],
-	"puzzle-play": ["queen", "rook", "bishop", "knight"],
+	"shared-play": ["pawn", "king", "queen", "rook", "bishop", "knight"],
+	"puzzle-play": ["pawn", "king", "queen", "rook", "bishop", "knight"],
 }
 
 const _MODE_PICK := {
@@ -70,8 +71,10 @@ const _MODE_PICK := {
 ## UI-puzzle-play Copy table (specs/ux/screens/puzzle-play.md). Puzzle play is its own
 ## owner: rows sharing a bare name with another owner are carried here, never resolved across.
 
-## The `en` value L3 names for each same-in-every-locale piece row.
+## The `en` value L7 marks for each piece-name row, and the kind→key map L9 owns.
 const PIECE_NAMES := {
+	"pawn": "Pawn",
+	"king": "King",
 	"queen": "Queen",
 	"rook": "Rook",
 	"bishop": "Bishop",
@@ -98,6 +101,8 @@ const _PUZZLE_PLAY := {
 		"cue_abandon": "Abandoned",
 		"choose_promotion": "Choose promotion",
 		"refused_place": "Refused place",
+		"pawn": "Pawn",
+		"king": "King",
 		"queen": "Queen",
 		"rook": "Rook",
 		"bishop": "Bishop",
@@ -122,6 +127,8 @@ const _PUZZLE_PLAY := {
 		"cue_abandon": "已放棄",
 		"choose_promotion": "選擇升變棋子",
 		"refused_place": "無法放置",
+		"pawn": "Pawn",
+		"king": "King",
 		"queen": "Queen",
 		"rook": "Rook",
 		"bishop": "Bishop",
@@ -146,6 +153,8 @@ const _PUZZLE_PLAY := {
 		"cue_abandon": "中断",
 		"choose_promotion": "昇格する駒を選ぶ",
 		"refused_place": "置けません",
+		"pawn": "Pawn",
+		"king": "King",
 		"queen": "Queen",
 		"rook": "Rook",
 		"bishop": "Bishop",
@@ -235,6 +244,8 @@ const _SHARED_PLAY := {
 		"check": "Check",
 		"choose_promotion": "Choose promotion",
 		"refused_place": "Refused place",
+		"pawn": "Pawn",
+		"king": "King",
 		"queen": "Queen",
 		"rook": "Rook",
 		"bishop": "Bishop",
@@ -261,6 +272,8 @@ const _SHARED_PLAY := {
 		"check": "將軍",
 		"choose_promotion": "選擇升變",
 		"refused_place": "無法落子",
+		"pawn": "Pawn",
+		"king": "King",
 		"queen": "Queen",
 		"rook": "Rook",
 		"bishop": "Bishop",
@@ -287,6 +300,8 @@ const _SHARED_PLAY := {
 		"check": "チェック",
 		"choose_promotion": "プロモーションを選択",
 		"refused_place": "置けません",
+		"pawn": "Pawn",
+		"king": "King",
 		"queen": "Queen",
 		"rook": "Rook",
 		"bishop": "Bishop",
@@ -408,7 +423,8 @@ static func shared_setup_keys() -> PackedStringArray:
 	return _keys_of(_SHARED_SETUP)
 
 
-## The piece names L3 marks same in every locale, in `PIECE_NAMES` order.
+## The piece names L7 marks same in every locale, in `PIECE_NAMES` order — the
+## Copy keys L9 maps one-to-one from a piece kind.
 static func piece_name_keys() -> PackedStringArray:
 	return PackedStringArray(PIECE_NAMES.keys())
 
@@ -418,7 +434,12 @@ static func piece_name(key: String) -> String:
 	return str(PIECE_NAMES.get(key, key))
 
 
-## True when L3 marks `owner`.`key` as the same string in every locale.
+## L9: the one Copy key that names `kind`, or "" for a kind L9 does not map.
+static func piece_name_key(kind: String) -> String:
+	return kind if PIECE_NAMES.has(kind) else ""
+
+
+## True when L7 marks `owner`.`key` as the same string in every locale.
 static func every_locale_row(owner: String, key: String) -> bool:
 	var rows: Variant = EVERY_LOCALE_ROWS.get(owner)
 	return rows is Array and (rows as Array).has(key)

@@ -19,24 +19,24 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | R2 | `GS.whiteClock`, `GS.blackClock` | Blitz/Rapid |
 | R2 | `GS.sideToMove` | always |
 | R3 | `GS.adviceBestMove`, `GS.adviceEval` | Advice On, online, set |
-| R2 | Check: the word Check, C8 | side to move in check |
+| R2 | Check: word Check, C8 | side to move in check |
 
 ## Regions
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Position, coordinates, and the last move | 8×8; edge letters/numbers; selection, legal, and last-move marks. `IN.deselect` clears selection |
+| R1 | Board | Position, coordinates, last move | 8×8; edge letters/numbers; selection, legal, last-move marks; `IN.deselect` clears selection |
 | R2 | Status | Turn, clocks, check | Side to move; clocks; Check, C8 |
 | R3 | Advice | Advice chrome | Toggle; best-move marks |
 | R4 | End | Resign or draw | Resign, Offer draw |
 
 ## Controls
 
-C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md), whose order is the focus order.
+C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md), in focus order.
 
 ## States
 
-S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
+S1–S6: [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
@@ -63,10 +63,12 @@ Keys vary by locale (`en`, `zh-Hant`, `ja`); `queen`, `rook`, `bishop`, and `kni
 | check | Check | R2 |
 | choose_promotion | Choose promotion | S4 |
 | refused_place | Refused place | S5 |
-| queen | Queen | C6 |
-| rook | Rook | C6 |
-| bishop | Bishop | C6 |
-| knight | Knight | C6 |
+| pawn | Pawn | R1 |
+| king | King | R1 |
+| queen | Queen | R1, C6 |
+| rook | Rook | R1, C6 |
+| bishop | Bishop | R1, C6 |
+| knight | Knight | R1, C6 |
 
 Copy owner `shared-play`; source per [localization.md](../localization.md) L1; strings resolve via the locale table ([`CTR-localization`](../../technical/contracts/localization.md)) (A1).
 
