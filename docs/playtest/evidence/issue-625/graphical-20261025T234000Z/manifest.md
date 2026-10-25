@@ -37,8 +37,8 @@ not row verdicts** — see [readings.md](readings.md) §*Page state* and §*Cons
 ## Paths
 
 - [notes.md](notes.md) — why the run stopped, what could not be reached, the environment facts
-- [build-identity.md](build-identity.md) — build identity re-measured independently: the Pages
-  deployment record marks deploy steps skipped, and #647's repair is an ancestor of `c5b8189`,
+- [build-identity.md](build-identity.md) — build identity re-measured independently: #647's
+  repair is an ancestor of `c5b8189`, so a published-URL reading was available,
   and an appendix re-measuring the build identity independently (deployment record vs. what is
   served; #647's repair is an ancestor of `c5b8189`, so a published-URL reading was available)
 - [builds.md](builds.md) — build resolution, Pages state, export commands and their output
