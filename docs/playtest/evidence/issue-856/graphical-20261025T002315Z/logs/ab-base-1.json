@@ -1,0 +1,96 @@
+{
+  "runner": "aligned",
+  "label": "ab-base-1",
+  "rows": [
+    {
+      "run": 1,
+      "url": "http://127.0.0.1:8092/index.html",
+      "firstPaintedMs": 1762,
+      "probeContextMs": 5,
+      "probeContextEndMs": 37,
+      "engineBanner": "278ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "appLines": [],
+      "pck": {
+        "startMs": 37,
+        "endMs": 70,
+        "initiatorType": "fetch",
+        "transferredBytes": 9573000,
+        "decodedBytes": 9572700
+      },
+      "wasm": {
+        "startMs": 37,
+        "endMs": 152,
+        "transferredBytes": 39515054,
+        "decodedBytes": 39514754
+      },
+      "domContentLoadedMs": 37,
+      "console": [
+        "278ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "436ms OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "677ms Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "1150ms 856 mode-pick-ready 931",
+        "1632ms 856 ambient-started 1412"
+      ]
+    },
+    {
+      "run": 2,
+      "url": "http://127.0.0.1:8092/index.html",
+      "firstPaintedMs": 1967,
+      "probeContextMs": 132,
+      "probeContextEndMs": 147,
+      "engineBanner": "370ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "appLines": [],
+      "pck": {
+        "startMs": 147,
+        "endMs": 182,
+        "initiatorType": "fetch",
+        "transferredBytes": 9573000,
+        "decodedBytes": 9572700
+      },
+      "wasm": {
+        "startMs": 147,
+        "endMs": 248,
+        "transferredBytes": 39515054,
+        "decodedBytes": 39514754
+      },
+      "domContentLoadedMs": 155,
+      "console": [
+        "370ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "648ms OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "906ms Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "1349ms 856 mode-pick-ready 1039",
+        "1843ms 856 ambient-started 1533"
+      ]
+    },
+    {
+      "run": 3,
+      "url": "http://127.0.0.1:8092/index.html",
+      "firstPaintedMs": 1747,
+      "probeContextMs": 10,
+      "probeContextEndMs": 25,
+      "engineBanner": "234ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "appLines": [],
+      "pck": {
+        "startMs": 25,
+        "endMs": 64,
+        "initiatorType": "fetch",
+        "transferredBytes": 9573000,
+        "decodedBytes": 9572700
+      },
+      "wasm": {
+        "startMs": 25,
+        "endMs": 132,
+        "transferredBytes": 39515054,
+        "decodedBytes": 39514754
+      },
+      "domContentLoadedMs": 26,
+      "console": [
+        "234ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "408ms OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "653ms Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "1135ms 856 mode-pick-ready 951",
+        "1630ms 856 ambient-started 1447"
+      ]
+    }
+  ]
+}
