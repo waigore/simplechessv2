@@ -1,0 +1,331 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "pub-mouse",
+  "mode": "mouse",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "dpr": 3
+  },
+  "wait": "30000",
+  "startedAt": "2026-10-25T01:30:52.167Z",
+  "sessions": [
+    {
+      "index": 1,
+      "mode": "fresh",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 2,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 3,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 4,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 5,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 6,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 7,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    }
+  ],
+  "arms": [
+    {
+      "index": 0,
+      "session": 1,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32574.9,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33178.8,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 33183.8,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 1,
+      "session": 2,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 31875.7,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32389.5,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 32395.9,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 2,
+      "session": 3,
+      "point": "shared",
+      "x": 195,
+      "y": 163,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32269.3,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32480.9,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 32488.5,
+          "x": 195,
+          "y": 163,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 3,
+      "session": 4,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32058.8,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32332.1,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 32437.2,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 4,
+      "session": 5,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32196.4,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32453.8,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 32560.3,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 5,
+      "session": 6,
+      "point": "puzzle",
+      "x": 195,
+      "y": 204,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 31960.5,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32522.6,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 32613.6,
+          "x": 195,
+          "y": 204,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 6,
+      "session": 7,
+      "point": "seam-195-183",
+      "x": 195,
+      "y": 183,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "advanced": false,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 31772.9,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32043.2,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        },
+        {
+          "type": "click",
+          "t": 32043.3,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {}
+    }
+  ],
+  "storageAtBaseline": {},
+  "finishedAt": "2026-10-25T01:35:09.373Z",
+  "summary": {
+    "shared": {
+      "advanced": 3,
+      "total": 3
+    },
+    "puzzle": {
+      "advanced": 3,
+      "total": 3
+    },
+    "seam-195-183": {
+      "advanced": 0,
+      "total": 1
+    }
+  }
+}
