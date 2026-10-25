@@ -28,6 +28,7 @@ func _run_all() -> String:
 		_check_undeliverable_record_deals_nothing,
 		_check_leave_retires_the_read,
 		_check_missing_peer_fails_without_dealing,
+		_check_unset_values_are_not_a_sent_read,
 		_check_failure_leaves_the_open_puzzle_untouched,
 		_check_one_deal_at_a_time,
 		_check_usable,
@@ -242,6 +243,24 @@ func _check_missing_peer_fails_without_dealing() -> String:
 		return "B5: T9 / T10 unset is a failed read, not a request"
 	if unconfigured_session.player_elo != 1000.0:
 		return "B5: a failed read leaves Elo unchanged"
+	return ""
+
+
+## B5 / #655 — an unset `T9` / `T10` is a read that never left the client, and it says so:
+## the reason is `unconfigured`, not a status or transport reason the deal path reports.
+func _check_unset_values_are_not_a_sent_read() -> String:
+	var bare := PuzzleStream.new(_session(), CatalogDealClient.new())
+	if bare.request():
+		return "B5: T9 / T10 unset must not start a read"
+	if bare.last_failure != CatalogWireReader.REASON_UNCONFIGURED:
+		return "B5: unset values are `unconfigured`, not `%s`" % bare.last_failure
+	for sent in [
+		CatalogWireReader.REASON_STATUS,
+		CatalogWireReader.REASON_ERROR,
+		CatalogWireReader.REASON_TIMEOUT,
+	]:
+		if bare.last_failure == sent:
+			return "B5: a read the client never sent must not read as `%s`" % sent
 	return ""
 
 

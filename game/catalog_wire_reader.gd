@@ -15,6 +15,10 @@ const REASON_TIMEOUT := "timeout"
 const REASON_STATUS := "status"
 const REASON_BULK := "bulk"
 const REASON_MALFORMED := "malformed"
+## B5 — the client carries no `T9` / `T10` pair, so the read never leaves it. Distinct
+## from the reasons above, which a read the client sent reports: a playtest that must
+## see the deal path reach the resolver checks this reason is not the one it got.
+const REASON_UNCONFIGURED := "unconfigured"
 
 ## SCH-puzzle-catalog I1 — the only snapshot the served records name.
 const SNAPSHOT_ID := "2026-10-05"

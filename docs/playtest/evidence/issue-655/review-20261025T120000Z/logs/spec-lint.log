@@ -1,0 +1,12 @@
+  ERROR: docs/accessibility/issue-640/review-20261025/logs/render-measurement.md:3 [links] broken link: ../notes.md
+  ERROR: docs/accessibility/issue-640/review-20261025/logs/render-measurement.md:3 [links] broken link: ../manifest.md
+  ERROR: docs/accessibility/issue-640/review-20261025/screenshots/silhouette-naming.md:9 [links] broken link: ../notes.md
+  ERROR: docs/accessibility/issue-640/review-20261025/screenshots/silhouette-naming.md:85 [links] broken link: ../notes.md
+  WARNING: specs/view/glossary.md:14 [glossary] 'Diagram' is also defined in specs/technical/glossary.md; define it once and link
+  ERROR: docs/accessibility/issue-640/review-20261025/logs/render-measurement.md:1 [word-limit] 954 words (limit 500); split into focused files and link between them
+  ERROR: docs/accessibility/issue-640/review-20261025/logs/source-validation.md:1 [word-limit] 638 words (limit 500); split into focused files and link between them
+  ERROR: docs/accessibility/issue-640/review-20261025/screenshots/silhouette-naming.md:1 [word-limit] 806 words (limit 500); split into focused files and link between them
+  ERROR: docs/playtest/evidence/issue-627/graphical-20261024T235414Z/manifest.md:1 [word-limit] 1171 words (limit 500); split into focused files and link between them
+  ERROR: docs/playtest/evidence/issue-627/graphical-20261024T235414Z/notes.md:1 [word-limit] 730 words (limit 500); split into focused files and link between them
+  ERROR: docs/playtest/evidence/issue-878/review-20261025T-review-round2/checks.md:1 [word-limit] 507 words (limit 500); split into focused files and link between them
+Spec lint: 10 error(s), 1 warning(s) across 10 checks.

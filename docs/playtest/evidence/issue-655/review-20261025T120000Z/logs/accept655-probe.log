@@ -1,0 +1,69 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+A655 ==== leg A: shipped values (absence record) ====
+A655 shipped T9= T10=<unset>
+A655 JUDGE AC2 shipped values pass — T9=<unset> T10 unset before any assignment (session_router.gd:33-34)
+A655 A build=true session=sess-1792889319637-48929-playtest-350148 godot=4.7.2-stable (official)
+A655 JUDGE TEL.3 build identity pass — TEL.3 session id sess-1792889319637-48929-playtest-350148 on playtest build=true
+{"TEL.1":"puzzle.enter","TEL.2":1792889319807,"TEL.3":"sess-1792889319637-48929-playtest-350148","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (unconfigured)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:100)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:777)
+         [4] _on_mode_pick_choice_control (res://session_router.gd:645)
+         [5] _on_mode_pick_control (res://session_router.gd:621)
+         [6] handle_control (res://session_router.gd:198)
+         [7] _leg_absence (res://../docs/playtest/evidence/issue-655/review-20261025T120000Z/probe/accept655_probe.gd:100)
+         [8] _boot (res://../docs/playtest/evidence/issue-655/review-20261025T120000Z/probe/accept655_probe.gd:77)
+         [9] _settle (res://../docs/playtest/evidence/issue-655/review-20261025T120000Z/probe/accept655_probe.gd:341)
+A655 A after C2 stage=puzzle-play
+A655 JUDGE AC2 C2 entry pass — C2 enters puzzle-play (the issue's reproduction step 2)
+A655 A available=false last_failure=unconfigured dealt=false pid='' elo 1000.00
+A655 JUDGE AC2 is_available gate pass — T9/T10 unset ⇒ is_available()=false; the refusal is B5's empty-value guard, not a transport failure
+A655 JUDGE AC3 X2 absence pass — F-puzzle-catalog.X2 — nothing dealt, GS.puzzleId stays none
+A655 A elo before=1000.00 after=1000.00
+A655 JUDGE AC3 GS.playerElo kept pass — GS.playerElo 1000.00 → 1000.00 (document and session)
+A655 JUDGE AC4 FAIL.T14 row pass — FAIL.T14: Elo kept, no puzzle id, reason 'unconfigured' on PuzzleStream.last_failure and in this log
+A655 JUDGE AC4 player-facing copy held — no specs/ requirement for player-facing absence copy (FAIL.T14's Effect column names none); none invented
+A655 JUDGE AC4 log window pass — SIT.5 log window sess-1792889319637-48929-playtest-350148 carries 1 events; a failed deal raises no `deal_failed` telemetry because the read never started (0)
+{"TEL.1":"puzzle.confirm","TEL.2":1792889319830,"TEL.3":"sess-1792889319637-48929-playtest-350148","TEL.5":"leave_confirm"}
+A655 A C5 state S1 -> S2 kind=leave_confirm controls=[]
+A655 JUDGE AC5 C5 on empty S1 pass — C5 on S1 with no open puzzle: S1 → S2, leave_confirm (US5.1)
+{"TEL.1":"puzzle.cancel","TEL.2":1792889319838,"TEL.3":"sess-1792889319637-48929-playtest-350148","TEL.5":"ok"}
+A655 A cancel state=S1 stage=puzzle-play pid=
+A655 JUDGE AC5 Cancel returns pass — Cancel: S1, stage=puzzle-play, no deal and no pending confirm (US5.3)
+A655 JUDGE AC5 leave_confirm copy pass — EX.confirm copy: Leave the puzzle stream?
+{"TEL.1":"puzzle.confirm","TEL.2":1792889319848,"TEL.3":"sess-1792889319637-48929-playtest-350148","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.leave","TEL.2":1792889319854,"TEL.3":"sess-1792889319637-48929-playtest-350148","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+A655 JUDGE AC5 Confirm leaves pass — Confirm on leave_confirm leaves to mode-pick with nothing scored (J-puzzle-session B1)
+A655 ==== leg B: T9/T10 set (deal path reaches the resolver) ====
+A655 shipped T9= T10=<unset>
+A655 JUDGE AC2 shipped values pass — T9=<unset> T10 unset before any assignment (session_router.gd:33-34)
+A655 B session=sess-1792889319859-48929-playtest-572336
+{"TEL.1":"puzzle.enter","TEL.2":1792889320025,"TEL.3":"sess-1792889319859-48929-playtest-572336","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+A655 JUDGE AC2 deal path reaches resolver pass — with T9/T10 present is_available()=true, so the deal path reaches the resolver (the criterion's `whenever`)
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:100)
+         [1] _failed (res://puzzle_stream.gd:117)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _leg_configured (res://../docs/playtest/evidence/issue-655/review-20261025T120000Z/probe/accept655_probe.gd:234)
+         [5] _boot (res://../docs/playtest/evidence/issue-655/review-20261025T120000Z/probe/accept655_probe.gd:77)
+         [6] _settle (res://../docs/playtest/evidence/issue-655/review-20261025T120000Z/probe/accept655_probe.gd:341)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792889320037,"TEL.3":"sess-1792889319859-48929-playtest-572336","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+A655 B waited_frames=0 in_flight=false due=false last_failure=error
+A655 B available=true last_failure=error dealt=false pid=''
+A655 JUDGE AC2 refusal is not B5 pass — the refusal is 'error' — a failed read the client sent (FAIL.T14 transport), not the empty-value guard
+A655 JUDGE AC3 named outcome pass — deal resolved to X2 (nothing dealt, reason 'error') — not the inert S1 the issue filed
+A655 B elo unchanged=true
+A655 JUDGE AC3 X2 holds pass — with the values present and the host unreachable: nothing dealt, no puzzle id, Elo 1000.00 unchanged
+A655 JUDGE AC6 published leg held — held — the published release needs #479's T9/T10 client delivery and a deployed catalog route (#648); no judgment is taken on the published URL here
+A655 TALLY pass=17 fail=0 held=2 rows=19
+A655_PROBE pass
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
