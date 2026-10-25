@@ -346,14 +346,20 @@ const _EXCEPTIONS := {
 	"en":
 	{
 		"unsupported_input": "Touch to play",
+		"load_failure": "Some artwork could not load.",
+		"reload": "Reload",
 	},
 	"zh-Hant":
 	{
 		"unsupported_input": "請以觸控遊玩",
+		"load_failure": "部分圖像無法載入。",
+		"reload": "重新載入",
 	},
 	"ja":
 	{
 		"unsupported_input": "タッチで操作してください",
+		"load_failure": "一部の画像を読み込めませんでした。",
+		"reload": "再読み込み",
 	},
 }
 

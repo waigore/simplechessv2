@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/rules/ux/screens.md).
 
-- **Job**: Play one Shared game
+- **Job**: Play one Shared game on the shared board
 - **Actors**: [`bottom-player.md`](../actors/bottom-player.md), [`top-player.md`](../actors/top-player.md)
 - **Serves**: Instant play, Clear board, Accessibility; [two-player-game](../../design/loops/two-player-game.md); [PER.R*](../../view/perception.md)
 - **Mockup**: [`../mockups/screens/shared-play.html`](../mockups/screens/shared-play.html)
@@ -13,25 +13,26 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | Shown in | Design element | Visible when |
 |----------|----------------|--------------|
 | R1 | `GS.position` | always |
-| R1 | Board coordinates (a–h, 1–8) | always — edges only; follow seat flip |
-| R1 | `GS.selectedPiece` | piece selected |
-| R2 | `GS.whiteClock`, `GS.blackClock` | Clock is Blitz or Rapid |
+| R1 | Last-move cue, both squares ([PER.R9](../../view/perception.md)) | between moves |
+| R1 | Board coordinates (a–h, 1–8) | always — edges only; White-seat flip |
+| R1 | `GS.selectedPiece` | selected |
+| R2 | `GS.whiteClock`, `GS.blackClock` | Blitz/Rapid |
 | R2 | `GS.sideToMove` | always |
-| R3 | `GS.adviceBestMove`, `GS.adviceEval` | Advice On, online, values set |
-| R2 | Check cue: word Check and [PAL.C8](../../aesthetics/palette.md) | in check |
+| R3 | `GS.adviceBestMove`, `GS.adviceEval` | Advice On, online, set |
+| R2 | Check: word Check, C8 | side to move in check |
 
 ## Regions
 
 | ID | Region | Purpose | Contents |
 |----|--------|---------|----------|
-| R1 | Board | Position and coordinates | 8×8; edge letters/numbers; selection and legal marks; `IN.deselect` clears selection |
-| R2 | Status | Turn, clocks, check | Side to move; clocks when timed; Check word and [PAL.C8](../../aesthetics/palette.md) |
-| R3 | Advice | Shared Advice chrome | Toggle; best-move marks |
-| R4 | End | Resign or draw | Resign; Offer draw |
+| R1 | Board | Position, coordinates, last move | 8×8; edge letters/numbers; selection, legal, last-move marks; `IN.deselect` clears selection |
+| R2 | Status | Turn, clocks, check | Side to move; clocks; Check, C8 |
+| R3 | Advice | Advice chrome | Toggle; best-move marks |
+| R4 | End | Resign or draw | Resign, Offer draw |
 
 ## Controls
 
-C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md), the focus order.
+C1–C10 are in [`shared-play-controls.md`](shared-play-controls.md), in focus order.
 
 ## States
 
@@ -39,7 +40,7 @@ S1–S6: [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
-All keys vary by locale (`en`, `zh-Hant`, `ja`) except the six piece-type names (L7): they stay `en`, are never drawn, and compose a piece's accessible name ([R7](../../technical/components/presentation.md)).
+Keys vary by locale (`en`, `zh-Hant`, `ja`); `queen`, `rook`, `bishop`, and `knight` stay `en` ([L3](../localization.md)).
 
 | Key | String | Used in |
 |-----|--------|---------|
@@ -69,8 +70,8 @@ All keys vary by locale (`en`, `zh-Hant`, `ja`) except the six piece-type names 
 | bishop | Bishop | R1, C6 |
 | knight | Knight | R1, C6 |
 
-Copy owner `shared-play`; keys and `en` per [localization.md](../localization.md) L1; strings resolve through the locale's string table ([`CTR-localization`](../../technical/contracts/localization.md)) (A1).
+Copy owner `shared-play`; source per [localization.md](../localization.md) L1; strings resolve via the locale table ([`CTR-localization`](../../technical/contracts/localization.md)) (A1).
 
 ## Experience intent
 
-Clear seats, turn, one Advice switch. Promotion and draw stay on the board; moves never wait on the network. Pieces read by shape; nothing by color alone.
+Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone; the last move stays visible; 44px-class targets.

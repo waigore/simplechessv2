@@ -1,0 +1,17 @@
+{
+  "arm": "probe-later",
+  "run": 2,
+  "url": "http://127.0.0.1:8081/index_probe_later.html",
+  "firstPaintedMs": 1776,
+  "probeContextMs": 4,
+  "probeContextEndMs": 80,
+  "engineBanner": "340ms Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+  "firstFetchMs": 76,
+  "pck": {
+    "startMs": 76,
+    "endMs": 116,
+    "initiatorType": "fetch",
+    "transferredBytes": 9570888
+  },
+  "domContentLoadedMs": 80
+}

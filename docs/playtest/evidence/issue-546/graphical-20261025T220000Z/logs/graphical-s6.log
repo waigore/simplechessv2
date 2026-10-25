@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+display=macOS
+playtest_build=true
+window_before=(1280, 720)
+content_scale_mode_before=1
+setviewport_control_present=true
+setviewport_control_label=SetViewport
+debug_panel_visible_before_press=false
+{"TEL.1":"set_viewport","TEL.2":1792883153257,"TEL.3":"sess-1792883153140-87876-playtest-457570","TEL.4":"SIT.6","TEL.5":"pass"}
+report_panel_path={"applied":true,"body_text_px":21.0,"debug_panel_visible":false,"frame_height_px":844.0,"height":844,"rendered_text_scale":1.31875,"text_scale":1.0,"width":390}
+window_after=(390, 844)
+frame=(390, 844) content_scale_size=(0, 0)
+uis_t2_need_px=21
+mode_pick_text_scale=1.31875
+expected_text_scale=1.31875
+{"TEL.1":"set_viewport","TEL.2":1792883153277,"TEL.3":"sess-1792883153140-87876-playtest-457570","TEL.4":"SIT.6","TEL.5":"pass"}
+report_second_call_identical=true
+{"TEL.1":"set_viewport","TEL.2":1792883153278,"TEL.3":"sess-1792883153140-87876-playtest-457570","TEL.4":"SIT.6","TEL.5":"pass"}
+report_argument_scale={"applied":true,"body_text_px":21.0,"debug_panel_visible":false,"frame_height_px":844.0,"height":844,"rendered_text_scale":1.31875,"text_scale":4.0,"width":390}
+body_px_ignores_argument=true
+name=Title text=Choose how to play font_px=37 need=21 below_t2=false lines=2/2 lines_ok=true rect=[P: (59.0, 104.0), S: (272.0, 111.0)] in_frame=true chrome_overlap=0.0 covered=0.000 VERDICT=pass
+name=SharedGame text=Shared game · Last font_px=21 need=21 below_t2=false lines=1/1 lines_ok=true rect=[P: (59.0, 231.0), S: (272.0, 54.0)] in_frame=true chrome_overlap=0.0 covered=0.000 VERDICT=pass
+name=PuzzleStream text=Puzzle stream font_px=21 need=21 below_t2=false lines=1/1 lines_ok=true rect=[P: (59.0, 297.0), S: (272.0, 54.0)] in_frame=true chrome_overlap=0.0 covered=0.000 VERDICT=pass
+name=Quit text=Quit font_px=21 need=21 below_t2=false lines=1/1 lines_ok=true rect=[P: (59.0, 363.0), S: (82.0, 54.0)] in_frame=true chrome_overlap=0.0 covered=0.000 VERDICT=pass
+name=SwitchLocale text=English font_px=21 need=21 below_t2=false lines=1/1 lines_ok=true rect=[P: (220.0, 363.0), S: (111.0, 54.0)] in_frame=true chrome_overlap=0.0 covered=0.000 VERDICT=pass
+screenshot_raw=res://s6-phone-390x844.png size=(390, 844) err=0
+cap_ok=true
+after_run: cp game/s6-phone-390x844.png docs/playtest/evidence/issue-546/graphical-20261025T220000Z/screenshots/s6-phone-390x844.png
+frame_is_phone=true
+release_report={}
+probe_failures=0

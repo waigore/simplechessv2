@@ -45,7 +45,7 @@ A key missing in a locale reads `en` and logs once per owner and key; play conti
 
 ## Completeness gate
 
-In [`string-table-gate.md`](string-table-gate.md) §Owner-addition rule; the `exceptions` Key column is read as a subset of the shipped keys (§Key-column shapes). It is the only copy-completeness gate, and a playtest protocol observes the same keys as a player (I2).
+In [`string-table-gate.md`](string-table-gate.md) §Owner-addition rule; the `exceptions` Key column is read as a subset of the shipped keys (§Gate-input rule). It is the only copy-completeness gate, and a playtest protocol observes the same keys as a player (I2).
 
 ## Same in every locale
 

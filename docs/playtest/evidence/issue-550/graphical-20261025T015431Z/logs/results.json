@@ -1,0 +1,1059 @@
+{
+  "build_commit": "",
+  "errors": [],
+  "fail_rows": {
+    "screens/mode-pick-unavailable.md#US1": {
+      "defect": 846,
+      "reason": "S3 quit confirm does not block C1/C2/C4 (US1.10, US1.11, US1.13)"
+    }
+  },
+  "godot": "4.7.2-stable (official)",
+  "kind": "graphical",
+  "lang": "en_US",
+  "none_rows": {
+    "localization.md#US2": {
+      "defect": 788,
+      "protocol": "localization",
+      "reason": "LOC.US2 is out of playtest scope; judged by spec read"
+    }
+  },
+  "protocols": {
+    "controls": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "pass",
+          "row": "controls.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "controls-drag.md#US2"
+        },
+        {
+          "outcome": "pass",
+          "row": "controls-point.md#US3"
+        }
+      ],
+      "none": [],
+      "not_judged": [],
+      "verdict": "pass"
+    },
+    "difficulty": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "difficulty.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "difficulty-repeat.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "difficulty.md#PS1",
+        "difficulty-repeat.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "end-conditions": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "end-conditions.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "end-conditions/conditions.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "end-conditions/conditions-puzzle.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "end-conditions/conditions-draw.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "end-conditions/conditions-counts.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "end-conditions.md#PS1",
+        "end-conditions/conditions.md#PS1",
+        "end-conditions/conditions-puzzle.md#PS1",
+        "end-conditions/conditions-draw.md#PS1",
+        "end-conditions/conditions-counts.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "exceptions": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "exceptions.md#US1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "exceptions-play.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "exceptions.md#US1",
+        "exceptions-play.md#US1"
+      ],
+      "verdict": "not-judged"
+    },
+    "game-state": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "game-state.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-play.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-play-moment.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-play-puzzle.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-play-reset.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-play-end.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-play-draw.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-persist.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "game-state/fields-persist-config.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "game-state.md#PS1",
+        "game-state/fields-play.md#PS1",
+        "game-state/fields-play-moment.md#PS1",
+        "game-state/fields-play-puzzle.md#PS1",
+        "game-state/fields-play-reset.md#PS1",
+        "game-state/fields-play-end.md#PS1",
+        "game-state/fields-play-draw.md#PS1",
+        "game-state/fields-persist.md#PS1",
+        "game-state/fields-persist-config.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "localization": {
+      "defects": [
+        846
+      ],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "pass",
+          "row": "screens/mode-pick.md#US1"
+        },
+        {
+          "defect": 846,
+          "outcome": "pass",
+          "reason": "S3 quit confirm does not block C1/C2/C4 (US1.10, US1.11, US1.13)",
+          "row": "screens/mode-pick-unavailable.md#US1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "localization.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "localization.md#US1"
+      ],
+      "verdict": "not-judged"
+    },
+    "mode-and-config": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "configuration.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "flows/mode-pick.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "flows/mode-pick-unavailable.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "loops/two-player-tunables.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "features/move-advice-tunables.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "difficulty-tunables.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "configuration.md#PS1",
+        "flows/mode-pick.md#PS1",
+        "flows/mode-pick-unavailable.md#PS1",
+        "loops/two-player-tunables.md#PS1",
+        "features/move-advice-tunables.md#PS1",
+        "difficulty-tunables.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "mode-pick": {
+      "defects": [
+        846
+      ],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "pass",
+          "row": "screens/mode-pick.md#US1"
+        },
+        {
+          "defect": 846,
+          "outcome": "pass",
+          "reason": "S3 quit confirm does not block C1/C2/C4 (US1.10, US1.11, US1.13)",
+          "row": "screens/mode-pick-unavailable.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [],
+      "verdict": "pass"
+    },
+    "move-advice": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "features/move-advice.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "features/move-advice-clear.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "features/move-advice.md#PS1",
+        "features/move-advice-clear.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "navigation": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "pass",
+          "row": "navigation.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "navigation-conditions.md#US2"
+        }
+      ],
+      "none": [],
+      "not_judged": [],
+      "verdict": "pass"
+    },
+    "pieces-common": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/common.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/common-legality.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/common-attack.md#PS2"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "entities/pieces.md#PS1",
+        "entities/pieces/common.md#PS1",
+        "entities/pieces/common-legality.md#PS1",
+        "entities/pieces/common-attack.md#PS2"
+      ],
+      "verdict": "not-judged"
+    },
+    "pieces-king": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/king.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/king-castling.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "entities/pieces/king.md#PS1",
+        "entities/pieces/king-castling.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "pieces-officers": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/officers.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "entities/pieces/officers.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "pieces-pawn": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "entities/pieces/pawn.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "entities/pieces/pawn.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "progression": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "progression.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "progression-mode.md#PS2"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "progression.md#PS1",
+        "progression-mode.md#PS2"
+      ],
+      "verdict": "not-judged"
+    },
+    "puzzle-play": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "pass",
+          "row": "screens/puzzle-play.md#US1"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/puzzle-play-regions.md#US2"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/puzzle-play-choices.md#US3"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "screens/puzzle-play-place.md#US3"
+        },
+        {
+          "outcome": "pass",
+          "row": "screens/puzzle-play-confirm.md#US5"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "screens/puzzle-play-place.md#US3"
+      ],
+      "verdict": "not-judged"
+    },
+    "puzzle-session": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "pass",
+          "row": "journeys/puzzle-session.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [],
+      "verdict": "pass"
+    },
+    "puzzle-stream": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "loops/puzzle-stream.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "loops/puzzle-stream-advance.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "features/puzzle-catalog.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "features/puzzle-catalog-select.md#PS2"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "scenarios/puzzle-stream-visit.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "loops/puzzle-stream.md#PS1",
+        "loops/puzzle-stream-advance.md#PS1",
+        "features/puzzle-catalog.md#PS1",
+        "features/puzzle-catalog-select.md#PS2",
+        "scenarios/puzzle-stream-visit.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "shared-game": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "loops/two-player-game.md#PS1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "loops/two-player-draw.md#PS1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "loops/two-player-game.md#PS1",
+        "loops/two-player-draw.md#PS1"
+      ],
+      "verdict": "not-judged"
+    },
+    "shared-play": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-play.md#US1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-play-regions.md#US2"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-play-choices.md#US3"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-play-place.md#US3"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-play-unavailable.md#US4"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "actors/bottom-player.md#US1"
+        },
+        {
+          "outcome": "not-judged",
+          "row": "actors/top-player.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "screens/shared-play.md#US1",
+        "screens/shared-play-regions.md#US2",
+        "screens/shared-play-choices.md#US3",
+        "screens/shared-play-place.md#US3",
+        "screens/shared-play-unavailable.md#US4",
+        "actors/bottom-player.md#US1",
+        "actors/top-player.md#US1"
+      ],
+      "verdict": "not-judged"
+    },
+    "shared-result": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-result.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "screens/shared-result.md#US1"
+      ],
+      "verdict": "not-judged"
+    },
+    "shared-session": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "journeys/shared-session.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "journeys/shared-session.md#US1"
+      ],
+      "verdict": "not-judged"
+    },
+    "shared-setup": {
+      "defects": [],
+      "fail": [],
+      "judged": [
+        {
+          "outcome": "not-judged",
+          "row": "screens/shared-setup.md#US1"
+        }
+      ],
+      "none": [],
+      "not_judged": [
+        "screens/shared-setup.md#US1"
+      ],
+      "verdict": "not-judged"
+    }
+  },
+  "rows": {
+    "controls-drag.md#US2": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US2.1 drag move asks the place",
+          "outcome": "pass",
+          "protocol": "controls"
+        }
+      ]
+    },
+    "controls-point.md#US3": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US3.1 point on mode-pick C1 \u2192 C1",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US3.2\u2013US3.5 focus chain over 6 play controls (all focused: true)",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US3 a pointer tap at the e2 piece's rendered centre selects it (true at (666.55, 587.25))",
+          "outcome": "pass",
+          "protocol": "controls"
+        }
+      ]
+    },
+    "controls.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.5 IN.select e2",
+          "outcome": "pass",
+          "protocol": "controls"
+        },
+        {
+          "note": "US1.7 clear on piece",
+          "outcome": "pass",
+          "protocol": "controls"
+        }
+      ]
+    },
+    "exceptions-play.md#US1": {
+      "outcome": "not-judged",
+      "scenarios": [
+        {
+          "note": "US1.10 rejected place",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.11 flash ends",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.12 draw offer answered by Decline (C8) returns to S1 (SS6 \u2192 SS1, offer '')",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.8/1.9 promotion needs a crafted position",
+          "outcome": "not-judged",
+          "protocol": "exceptions"
+        }
+      ]
+    },
+    "exceptions.md#US1": {
+      "outcome": "not-judged",
+      "scenarios": [
+        {
+          "note": "US1.7 confirm shown on resign",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.2 confirm cancel",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.3/1.15 interrupt: cold boot returns mode-pick (log)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.4/US1.16 failed write of Player Elo + Last mode shows EX.save-failure (S3, committed false); earlier commit kept (Elo 1001.97)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.4 Dismiss continues the sitting (SS1)",
+          "outcome": "pass",
+          "protocol": "exceptions"
+        },
+        {
+          "note": "US1.6 unsupported input needs a non-touch Web device",
+          "outcome": "not-judged",
+          "protocol": "exceptions"
+        }
+      ]
+    },
+    "journeys/puzzle-session.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.1 C2 \u2192 puzzle-play, dealt w550s",
+          "outcome": "pass",
+          "protocol": "puzzle-session"
+        },
+        {
+          "note": "US1.2 C5 from SS1 \u2192 SS2 leave confirm",
+          "outcome": "pass",
+          "protocol": "puzzle-session"
+        },
+        {
+          "note": "US1.3 Cancel \u2192 S1, puzzle still open true",
+          "outcome": "pass",
+          "protocol": "puzzle-session"
+        },
+        {
+          "note": "US1.2 Confirm \u2192 mode-pick, Player Elo kept (1000.00 \u2192 1000.00)",
+          "outcome": "pass",
+          "protocol": "puzzle-session"
+        }
+      ]
+    },
+    "localization.md#US1": {
+      "outcome": "not-judged",
+      "scenarios": [
+        {
+          "note": "LOC.US1.3 title/shared/puzzle differ; locale own names \u7e41\u9ad4\u4e2d\u6587 \u65e5\u672c\u8a9e",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.2 own-name row reads its own name",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.2 S2 five screens \u00d7 3 locales: every string is its Copy-table value",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.3 S3 piece-name rows stay the en value in every locale (queen reads [\"Queen\", \"Queen\", \"Queen\"])",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.2 S2 `shared-play` advice_on/advice_off/advice_error in three locales: each reads its Copy-table value",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.1 key names are a spec review",
+          "outcome": "not-judged",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.3 rendered copy complete in en (gaps: [])",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.3 rendered copy complete in zh_Hant (gaps: [])",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.3 rendered copy complete in ja (gaps: [])",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "LOC.US1.2 mode-pick chrome reads its own locale strings in all three locales",
+          "outcome": "pass",
+          "protocol": "localization"
+        }
+      ]
+    },
+    "navigation-conditions.md#US2": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US2.3 T6 fail-stay",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US2.1 T3 fail-stay",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US2.6/2.7 loading blocks C1/C2 (cold open log)",
+          "outcome": "pass",
+          "protocol": "navigation"
+        }
+      ]
+    },
+    "navigation.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.1 T1",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.5 T5",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.4 T4",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.6 T6",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.7 T7",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.2 T2",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.3 T9",
+          "outcome": "pass",
+          "protocol": "navigation"
+        },
+        {
+          "note": "US1.10 N1 opens at mode-pick",
+          "outcome": "pass",
+          "protocol": "navigation"
+        }
+      ]
+    },
+    "screens/mode-pick-unavailable.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.10 C1 unavailable in S3 (ui_state S3, stage mode-pick)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.11 C2 unavailable in S3 (ui_state S3, stage mode-pick)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.13 C4 does not switch locale in S3 (locale en \u2192 en, stage mode-pick)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.12 no second confirm",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.14 Confirm ends session",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.15 S4 keeps S1 controls available (Dismiss \u2192 S1)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        }
+      ]
+    },
+    "screens/mode-pick.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "S1 shows Title/Shared/Puzzle/Quit/locale",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.3 C1 \u2192 shared-setup",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.4 C2 \u2192 puzzle-play",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.5/1.7 C3 \u2192 S3, Cancel \u2192 S1",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.8 save-failure \u2192 S4, Dismiss \u2192 S1",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        },
+        {
+          "note": "US1.9 first C4 \u2192 locale zh-Hant, R3 \u7e41\u9ad4\u4e2d\u6587",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "FAIL.T13 misses in run log: true",
+          "outcome": "pass",
+          "protocol": "localization"
+        },
+        {
+          "note": "S6 phone-width viewport 390\u00d7844: body text 21.0 px (UIS.T2 \u2265 16 at a 640 px frame; frame height 844.0)",
+          "outcome": "pass",
+          "protocol": "mode-pick"
+        }
+      ]
+    },
+    "screens/puzzle-play-choices.md#US3": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US3.1 C3 reveal confirm \u2192 SS2 reveal_confirm",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US3.2 cancel keeps the puzzle open (SS1)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        }
+      ]
+    },
+    "screens/puzzle-play-confirm.md#US5": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US5.1 reveal \u2192 END.L5 (results 1 \u2192 2, at confirm { \"ui_state\": \"S2\", \"confirm_kind\": \"reveal_confirm\", \"open\": true, \"outcome\": \"\" })",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US5.2 reveal scores S = 0 (elo 1011.15 \u2192 1001.97)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US5.3 confirm leaves S2 (SS1)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        }
+      ]
+    },
+    "screens/puzzle-play-place.md#US3": {
+      "outcome": "not-judged",
+      "scenarios": [
+        {
+          "note": "US3.11 refused place a7 \u2192 SS5, selection kept (a7) [gesture accepted false]",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US3.12 flash ends \u2192 SS1",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US3.13 promotion and US3.14 lapsed confirm need a last-rank pawn not reachable in this run",
+          "outcome": "not-judged",
+          "protocol": "puzzle-play"
+        }
+      ]
+    },
+    "screens/puzzle-play-regions.md#US2": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US2.1 board renders the dealt position (e2 = { \"color\": \"white\", \"kind\": \"pawn\" })",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US2.2 R2 shows Player Elo 1011 (no Elo label)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US2.3 harness begins in SS1",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        }
+      ]
+    },
+    "screens/puzzle-play.md#US1": {
+      "outcome": "pass",
+      "scenarios": [
+        {
+          "note": "US1.1/2.2 dealt record opens the board (w400a)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US1.3 opponent's first move applied; side to move black",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "US1.1/2.7 solve advances (END.W1, elo 1000.00 \u2192 1011.15, gesture true, owed moves done 0)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        },
+        {
+          "note": "R2 result cue named for the solve: 'cue_solved' (puzzle.result)",
+          "outcome": "pass",
+          "protocol": "puzzle-play"
+        }
+      ]
+    }
+  },
+  "screenshots": [
+    "screenshots/01-mode-pick-default.png",
+    "screenshots/02-puzzle-play-entered-from-mode-pick.png",
+    "screenshots/03-mode-pick-quit-confirm.png",
+    "screenshots/04-mode-pick-save-failure.png",
+    "screenshots/05-mode-pick-save-failure-controls.png",
+    "screenshots/06-puzzle-session-s1-empty.png",
+    "screenshots/07-puzzle-session-leave-confirm.png",
+    "screenshots/08-puzzle-session-leave-cancel.png",
+    "screenshots/09-puzzle-play-dealt.png",
+    "screenshots/10-puzzle-play-regions.png",
+    "screenshots/11-puzzle-play-refused-place.png",
+    "screenshots/12-puzzle-play-reveal-confirm.png",
+    "screenshots/13-puzzle-play-confirm-state.png",
+    "screenshots/14-exceptions-puzzle-save-failure.png",
+    "screenshots/15-mode-pick-zh-Hant.png",
+    "screenshots/16-mode-pick-ja.png",
+    "screenshots/17-localization-en-screens.png",
+    "screenshots/18-localization-zh-Hant-screens.png",
+    "screenshots/19-localization-ja-screens.png",
+    "screenshots/20-localization-advice-on-en.png",
+    "screenshots/21-localization-advice-off-en.png",
+    "screenshots/22-localization-advice-error-en.png",
+    "screenshots/23-localization-advice-on-zh-Hant.png",
+    "screenshots/24-localization-advice-off-zh-Hant.png",
+    "screenshots/25-localization-advice-error-zh-Hant.png",
+    "screenshots/26-localization-advice-on-ja.png",
+    "screenshots/27-localization-advice-off-ja.png",
+    "screenshots/28-localization-advice-error-ja.png",
+    "screenshots/29-localization-mode-pick-en.png",
+    "screenshots/30-localization-mode-pick-zh_Hant.png",
+    "screenshots/31-localization-mode-pick-ja.png",
+    "screenshots/32-controls-point-e2.png",
+    "screenshots/33-mode-pick-s6-phone-390x844.png",
+    "screenshots/34-puzzle-play-leave-confirm.png",
+    "screenshots/35-exceptions-resign-confirm.png",
+    "screenshots/36-exceptions-resign-cancel.png"
+  ],
+  "session_id": "sess-1792893281479-94581-playtest-643849",
+  "tel_count": 93
+}

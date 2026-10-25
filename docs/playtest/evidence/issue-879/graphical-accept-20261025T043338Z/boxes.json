@@ -1,0 +1,27 @@
+{
+  "frame": "screenshots/accept-frame-1.png",
+  "frame_sha256": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+  "method": "python3 scripts/boxes.py on the frame above (full-width painted border rows), panel x from a dark-row scan",
+  "panel": {
+    "x0": 87.33,
+    "x1": 302.33,
+    "y0": 24.5,
+    "y1": 271.5
+  },
+  "shared": {
+    "x": 195,
+    "y": 163,
+    "box": "y 144.83-181.67"
+  },
+  "puzzle": {
+    "x": 195,
+    "y": 204,
+    "box": "y 185.83-223.00"
+  },
+  "outside": {
+    "x": 40,
+    "y": 163,
+    "box": "left of the panel, x < 87.33"
+  },
+  "modePickSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+}
