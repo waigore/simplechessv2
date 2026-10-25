@@ -29,9 +29,10 @@
     /* C10 ticks with a C9 keyline, 1.5 screen px at the reference frame */
     .tick { position: absolute; background: #2C2A28; }        /* PAL.C9 keyline */
     .tick::after { content: ""; position: absolute; inset: 1.5px; background: #F7F1E8; } /* PAL.C10 */
-    /* From-square: one stroke just inside the edge that faces the to-square (0.04 wide, 0.60 long, inset 0.04) */
-    .tick.back { top: 20%; bottom: 20%; right: 4%; width: 4%; }
-    /* To-square: an L in each of the two corners that faces the from-square (0.20 arms, 0.04 wide) */
+    /* From-square: a C7 soft band along the edge that faces the to-square (no hard stroke) */
+    .band { position: absolute; left: 0; right: 0; top: 0; height: 16%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(83, 162, 190, 0.95), rgba(83, 162, 190, 0) 70%); }
+    /* To-square: an L tick in each of the two corners that faces the from-square */
     .tick.corner { width: 20%; height: 20%; }
     .tick.corner.tl { top: 4%; left: 4%; }
     .tick.corner.br { bottom: 4%; right: 4%; }
@@ -315,14 +316,14 @@
             <div style="background: #53A2BE;"></div>
             <div style="background: #E8D5B5;"></div>
           </div>
-          <p>PAL.K9 C7 on C1 — advice edge-midpoint brackets</p>
+          <p>PAL.K9 C7 on C1 — advice edge-midpoint brackets; last-move soft band</p>
         </figure>
         <figure class="pair" data-element="PAL.K9">
           <div class="sample">
             <div style="background: #53A2BE;"></div>
             <div style="background: #8B5A3C;"></div>
           </div>
-          <p>PAL.K9 C7 on C2 — advice edge-midpoint brackets</p>
+          <p>PAL.K9 C7 on C2 — advice edge-midpoint brackets; last-move soft band</p>
         </figure>
         <figure class="pair" data-element="PAL.K9">
           <div class="sample">
@@ -356,36 +357,36 @@
     </section>
 
     <section>
-      <h2>PAL.K9 Last-move ticks (PER.R9)</h2>
+      <h2>PAL.K9 Last move (PER.R9)</h2>
       <div class="board">
         <figure class="sq" data-element="PER.R9">
           <div class="face" style="background: #E8D5B5;">
-            <span class="tick back"></span>
+            <span class="band"></span>
           </div>
-          <figcaption><p><b>PER.R9</b>e2 on C1 — from: one back tick</p></figcaption>
+          <figcaption><p><b>PER.R9</b>e2 on C1 — from: C7 soft band</p></figcaption>
         </figure>
         <figure class="sq" data-element="PER.R9">
           <div class="face" style="background: #8B5A3C;">
-            <span class="tick back"></span>
+            <span class="band"></span>
           </div>
-          <figcaption><p><b>PER.R9</b>e2 on C2 — from: one back tick</p></figcaption>
+          <figcaption><p><b>PER.R9</b>e2 on C2 — from: C7 soft band</p></figcaption>
         </figure>
         <figure class="sq" data-element="PER.R9">
           <div class="face" style="background: #E8D5B5;">
             <span class="tick corner tl"></span>
             <span class="tick corner br"></span>
           </div>
-          <figcaption><p><b>PER.R9</b>e4 on C1 — to: two corner ticks</p></figcaption>
+          <figcaption><p><b>PER.R9</b>e4 on C1 — to: two C10 corner ticks</p></figcaption>
         </figure>
         <figure class="sq" data-element="PER.R9">
           <div class="face" style="background: #8B5A3C;">
             <span class="tick corner tl"></span>
             <span class="tick corner br"></span>
           </div>
-          <figcaption><p><b>PER.R9</b>e4 on C2 — to: two corner ticks</p></figcaption>
+          <figcaption><p><b>PER.R9</b>e4 on C2 — to: two C10 corner ticks</p></figcaption>
         </figure>
       </div>
-      <p>The pair reads along the move: the back tick sits on the edge facing the to-square; the corner ticks face the from-square. C10 on the C9 keyline, no new swatch.</p>
+      <p>The pair reads along the move: the soft band sits on the from-square's edge facing the to-square; the corner ticks face the from-square. The band is soft C7 on the square; the ticks are C10 on the C9 keyline. No new swatch.</p>
     </section>
   </article>
 </body>

@@ -3,7 +3,7 @@
 Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/specs/rules/aesthetics/palette.md).
 
 - **Reference sheet**: [`sheets/palette.html`](sheets/palette.html)
-- **Serves**: P2, P3; Clear board; Accessibility; [PER.R1](../view/perception.md)–[PER.R8](../view/perception.md)
+- **Serves**: P2, P3; Clear board; Accessibility; [PER.R1](../view/perception.md)–[PER.R9](../view/perception.md)
 
 ## Color rules
 
@@ -17,8 +17,8 @@ Authoring rules: [`.agents/specs/rules/aesthetics/palette.md`](../../.agents/spe
 | K6 | Legal-destination marks read on both squares | C11 on C1 and C2 | Contrast ≥ 2:1 on each (measured 2.0:1) | [PER.R4](../view/perception.md) |
 | K7 | Disabled ink reads inactive yet distinct | C9 at 40% on C10 | Contrast ≥ 2:1 (2.3:1) | [`UIS.C5`](ui-style.md); Accessibility |
 | K8 | Board coordinates read on the cafe margin | Coordinate ink on the C10 chip, over C5 | Contrast ≥ 4.5:1 ([PER.R7](../view/perception.md)); C9 on C10 **12.73:1** | Accessibility; [PER.R7](../view/perception.md) |
-| K9 | Overlay accents are not told apart by hue alone | C6, C7, C8, C11 on C1 and C2, and the C10 mark ticks | Each mark has its own **form and placement** (ring, disk, corner brackets, hatching, L-frame, edge brackets, last-move ticks); no mark alone carries its meaning | Accessibility; [experience.md](../design/experience.md) Channels; [PER.R9](../view/perception.md) |
+| K9 | Overlay accents are not told apart by hue alone | C6, C7, C8, C11 on C1 and C2, plus the soft band and the C10 ticks | Each mark has its own **form and placement** (ring, disk, corner brackets, hatching, L-frame, edge brackets, soft band, ticks); no mark alone carries its meaning | Accessibility; [experience.md](../design/experience.md) Channels; [PER.R9](../view/perception.md) |
 
 ## Swatches and palette sets
 
-`C1`–`C11` are in [`palette/swatches.md`](palette/swatches.md); `S1`–`S3`, each with its context and color limit, in [`palette/sets.md`](palette/sets.md). `K8`–`K9` move to [`palette/rules.md`](palette/rules.md) with their measured pairs, mark table, and layer split; the rows above keep the rule and its test.
+`C1`–`C11` are in [`palette/swatches.md`](palette/swatches.md); `S1`–`S3`, each with its context and color limit, in [`palette/sets.md`](palette/sets.md). `K8`–`K9` move to [`palette/rules.md`](palette/rules.md) with their measured pairs, mark table, and layer split; the rows above keep the rule and its test. `K9`'s per-mark detail is in [`palette/rules-k9.md`](palette/rules-k9.md).
