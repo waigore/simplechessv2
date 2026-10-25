@@ -397,6 +397,13 @@ func play_move(
 	travel_finished.emit(to_square)
 
 
+## CMP-presentation.R2 — the board's screen↔world pair, in *canvas* space: the
+## same space `get_global_transform_with_canvas()` and `_refresh_coordinates`
+## work in, and the space a pointer event reaches the presentation in once that
+## control's own transform is removed (`Presentation._board_world_at`, #845).
+## `to_global`/`to_local` walk every ancestor transform, so a seat flip, camera
+## zoom, or stretch is included and the pair inverts exactly. Do not apply a
+## canvas transform again here: callers already hold canvas coordinates.
 func screen_to_world(screen: Vector2) -> Vector2:
 	if _content == null:
 		return Vector2.ZERO
