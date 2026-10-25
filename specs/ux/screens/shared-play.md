@@ -16,7 +16,6 @@ Authoring rules: [`.agents/specs/rules/ux/screens.md`](../../../.agents/specs/ru
 | R1 | Last-move cue on from and to squares, [PAL.K9](../../aesthetics/palette/rules.md) form ([PER.R9](../../view/perception.md)) | after the first move, until the next |
 | R1 | Board coordinates (a–h, 1–8) | always — edges only; White-seat flip |
 | R1 | `GS.selectedPiece` | piece selected |
-| R1 | Last move: its from- and to-square ([PER.R9](../../view/perception.md)) | from when the move settles until the next move settles |
 | R2 | `GS.whiteClock`, `GS.blackClock` | Clock is Blitz or Rapid |
 | R2 | `GS.sideToMove` | always |
 | R3 | `GS.adviceBestMove`, `GS.adviceEval` | Advice On and online and values set |
@@ -45,4 +44,4 @@ Keys and strings are in [`shared-play-copy.md`](shared-play-copy.md).
 
 ## Experience intent
 
-Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone; the last move stays visible on the board; 44px-class targets.
+Clear seats and turn. One Advice switch. Promotion and draw stay on the board. Moves never wait on the network. Pieces read by shape; nothing by color alone; the last move stays visible; 44px-class targets.

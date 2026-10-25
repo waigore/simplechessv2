@@ -35,5 +35,5 @@ Then e2 carries the PAL.K9 soft band in PAL.C7 at ≥ 2:1 on C1 and C2 (PAL.K5) 
 ```gherkin
 Given CAM-board Web 9:16, White plays e2–e4, then taps d2 with Advice On, all overlays at 11% of the King's body
 When the move has settled and the next move has not
-Then overlay coverage is 11% of the body And that exceeds R9's ≤ 10% limit
+Then e2 still carries its soft band and e4 its corner ticks And overlay coverage is 11% of the body, exceeding R9's ≤ 10% limit
 ```
