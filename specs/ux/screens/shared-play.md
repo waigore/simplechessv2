@@ -40,7 +40,33 @@ S1–S6 are in [`shared-play-states.md`](shared-play-states.md).
 
 ## Copy
 
-Keys and strings are in [`shared-play-copy.md`](shared-play-copy.md).
+Keys vary by locale (`en`, `zh-Hant`, `ja`); `queen`, `rook`, `bishop`, `knight` stay `en` ([L3](../localization.md)).
+
+| Key | String | Used in |
+|-----|--------|---------|
+| advice_on | Advice On | C3 |
+| advice_off | Advice Off | C3 |
+| resign | Resign | C4 |
+| resign_confirm | Resign this game? | S2 |
+| offer_draw | Offer draw | C5 |
+| offer_confirm | Offer a draw? | S2 |
+| accept | Accept | C7 |
+| decline | Decline | C8 |
+| withdraw | Withdraw | C9 |
+| draw_offered | Draw offered | S6 |
+| confirm | Confirm | S2 |
+| cancel | Cancel | S2 |
+| advice_error | Advice unavailable. Play continues. | S3 |
+| dismiss | Dismiss | S3 |
+| white_to_move | White to move | R2 |
+| black_to_move | Black to move | R2 |
+| check | Check | R2 |
+| choose_promotion | Choose promotion | S4 |
+| refused_place | Refused place | S5 |
+| queen | Queen | C6 |
+| rook | Rook | C6 |
+| bishop | Bishop | C6 |
+| knight | Knight | C6 |
 
 ## Experience intent
 
