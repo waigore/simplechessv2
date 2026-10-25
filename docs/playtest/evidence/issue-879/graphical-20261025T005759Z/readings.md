@@ -28,20 +28,6 @@ legs paint the same layout and the same coordinates apply.
 `logs/published-centre-readings.json`. `published-01-shared-advanced.png` shows "Shared game
 setup"; `published-02-puzzle-advanced.png` shows the puzzle-play screen with `Elo 1000`.
 
-## Published `69a03d4`, boundary sweep (one arm per point)
-
-| Point | y against the painted boxes | Result |
-|---|---|---|
-| (195,170) — the issue's own C1 point | 11.7 px inside C1 | **advanced** (`shared`) |
-| (195,180) | 1.7 px inside C1, above its bottom border | **advanced** (`shared`) |
-| (195,187) | 1.2 px inside C2, below its top border | **advanced** (`puzzle`) |
-| (195,217) — the issue's own C2 point | 6 px inside C2 | **advanced** (`puzzle`) |
-| (150,185) — the issue's recorded failing point | **in the seam** | no change |
-| (195,183) | **in the seam** | no change |
-
-`logs/published-boundary-readings.json`. The two seam arms ran **first** in the session that then
-advanced on (195,170); a press 3 px away activated the same engine 1.2 s later.
-
 ## Local `Web Release` of `69a03d4`, touch (6 arms per button)
 
 **6/6** C1, **6/6** C2, 0/1 outside panel, 0/2 seam — the published leg repeated on the export.
@@ -53,13 +39,5 @@ advanced on (195,170); a press 3 px away activated the same engine 1.2 s later.
 `touchstart`, so the loss is not in the touch-emulation path either.
 `logs/published-mouse-readings.json`.
 
-## Delivery on every arm
-
-Every arm — advancing or not — recorded `pointerdown`, `touchstart`, `pointerup`, `touchend` in the
-page's capture-phase log (`logs/*-readings.json`, field `pageGestures`), so delivery never
-differed between the arms that advanced and the arms that did not.
-
-## Is the activation intermittent?
-
-No loss in 34 presses inside a painted control (30 centre-grid arms plus 4 boundary points), across three legs, fresh and reopened sessions,
-and two input paths. All 7 presses that did not act were in the seam or outside the panel.
+The boundary sweep, the delivery note on every arm, and what the totals say about an intermittent
+loss are in [boundary-and-totals.md](boundary-and-totals.md).

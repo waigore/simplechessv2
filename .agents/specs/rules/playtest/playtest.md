@@ -42,6 +42,6 @@ State the root path `docs/playtest/evidence/` and the required artifact kinds: s
 
 ## Index
 
-Keep the global-spec list (glossary, ids, traceability, coverage, tools, procedures, evidence). For a protocol, copy `design/_template.md` or `ux/_template.md` to `<kebab-name>.md`, fill the copy, and add the link under Design protocols or UX protocols. Leave `_template.md` unchanged. When there are no protocols yet, write "None yet" and point at the template.
+Keep the global-spec list (glossary, ids, traceability, coverage, story-rows, tools, procedures, evidence). For a protocol, copy `design/_template.md` or `ux/_template.md` to `<kebab-name>.md`, fill the copy, and add the link under Design protocols or UX protocols. Leave `_template.md` unchanged. When there are no protocols yet, write "None yet" and point at the template.
 
 If the index pushes `playtest.md` past 500 words, move the index to `specs/playtest/index.md` and leave a link in `playtest.md`.

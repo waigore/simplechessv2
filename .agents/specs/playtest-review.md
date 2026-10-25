@@ -12,7 +12,8 @@ Same sections and required content as the rules file for each spec in scope. Fil
 - [ ] Each Markdown file links its authoring-rules file from [`rules/README.md`](rules/README.md). Those rules are not pasted into the spec.
 - [ ] Purpose, levels, coverage, gate, evidence, architecture constraints, and index in `playtest.md` are filled per [playtest.md](rules/playtest/playtest.md).
 - [ ] Coverage mode on the hub is `full` or `critical-only`. Critical IDs follow [coverage.md](rules/playtest/coverage.md).
-- [ ] Global specs (glossary, ids, traceability, coverage, tools, procedures, evidence) exist and are linked from the hub.
+- [ ] Global specs (glossary, ids, traceability, coverage, story-rows, tools, procedures, evidence) exist and are linked from the hub.
+- [ ] When `story-rows.md` exists: it states the row unit, the judge rule, and which rows mode `full` selects; a row-level `none` carries a durable reason, or names an open epic or task when material work needs an owner; `none` must not require a linked `type:defect`; defects are not planning owners ([story-rows.md](rules/playtest/story-rows.md)).
 - [ ] Every protocol file under `design/` or `ux/` (except `_template.md`) is listed in the hub index, and every indexed file exists. "None yet" is used when there are no protocols yet.
 
 ### Scope boundaries
