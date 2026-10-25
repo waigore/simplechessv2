@@ -34,7 +34,7 @@ Last move is one state on two squares — a back tick on from, two corner ticks 
 
 **Hue removed.** Seven mark forms — closed ring, solid disk, four corner pairs, parallel fill, corner L, edge-midpoint brackets, C10 ticks — all but the ticks built from an accent swatch. Selection is the only closed ring; capture differs in **form**, not radius.
 
-**Layer split.** Selection draws on the square; the other six on a full-opacity C10 foreground keylined in C9 ([`UIS.C6`](../ui-style.md)). The keyline separates: accents are 2.01:1 on C1 and C2, C8 on C10 2.57:1, C9 on C10 **12.73:1**.
+**Layer split.** Selection draws on the square; the other six on a full-opacity C10 foreground keylined in C9 at 1.5 screen px ([`UIS.C6`](../ui-style.md)). The keyline separates: accents are 2.01:1 on C1 and C2, C8 on C10 2.57:1, C9 on C10 **12.73:1**.
 
 **One layer.** A square never draws two cream layers: refused, check, last-move, and Advice marks share one C10 foreground. No swatch added; C10 and C9 are in [S2](sets.md).
 
