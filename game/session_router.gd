@@ -418,8 +418,9 @@ func _on_boot_ready() -> void:
 
 ## CTR-asset-resolve E4 — Boot left approved IDs unresolved. The failure is
 ## observable here instead of the caller waiting forever on a ready that never
-## comes. `EX.loading` has no specified failure exit or copy (#647 S2), so this
-## does not invent one: the wait stays until the UX owner specifies the surface.
+## comes. `EX.loading` still has no specified failure exit or copy, so this does
+## not invent one: the wait stays until the UX owner specifies the surface, which
+## #882 owns (filed from #647's S2 step).
 func _on_boot_failed(unresolved: int) -> void:
 	push_error("Boot assets failed: %d approved IDs unresolved" % unresolved)
 	boot_failure_count = unresolved
