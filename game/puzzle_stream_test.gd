@@ -241,7 +241,10 @@ func _check_missing_peer_fails_without_dealing() -> String:
 	if bare.request() or unconfigured.requests.size() != 0:
 		return "B5: T9 / T10 unset is a failed read, not a request"
 	if bare.last_failure != CatalogWireReader.REASON_UNCONFIGURED:
-		return "B5: an unset T9 / T10 must not read as a transport or status failure (got %s)" % bare.last_failure
+		return (
+			"B5: an unset T9 / T10 must not read as a transport or status failure (got %s)"
+			% bare.last_failure
+		)
 	if unconfigured_session.player_elo != 1000.0:
 		return "B5: a failed read leaves Elo unchanged"
 	return ""
