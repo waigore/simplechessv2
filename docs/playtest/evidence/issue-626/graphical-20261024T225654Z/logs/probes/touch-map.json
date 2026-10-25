@@ -1,0 +1,63 @@
+[
+  {
+    "step": "mode-pick",
+    "board_ink": 0,
+    "top_ink": 0.033,
+    "shot": "screenshots/touch-01-mode-pick.png"
+  },
+  {
+    "step": "setup",
+    "board_ink": 0.015,
+    "top_ink": 0.029,
+    "shot": "screenshots/touch-02-setup.png"
+  },
+  {
+    "step": "board",
+    "board_ink": 0.408,
+    "top_ink": 0.293,
+    "shot": "screenshots/touch-03-board.png"
+  },
+  {
+    "step": "touch-e2-403-point",
+    "css": {
+      "x": 215,
+      "y": 632
+    },
+    "board_ink": 0.412,
+    "top_ink": 0.277,
+    "ringed": true,
+    "square": "f1",
+    "shot": "screenshots/touch-04-after-touch-e2.png"
+  },
+  {
+    "step": "mouse-e2-403-point",
+    "css": {
+      "x": 215,
+      "y": 632
+    },
+    "board_ink": 0.408,
+    "top_ink": 0.277,
+    "ringed": false,
+    "shot": "screenshots/touch-05-after-mouse-e2.png"
+  },
+  {
+    "step": "synthesized-touch-e2-403-point",
+    "css": {
+      "x": 215,
+      "y": 632
+    },
+    "canvas": {
+      "canvas": [
+        390,
+        844,
+        0,
+        0
+      ]
+    },
+    "board_ink": 0.412,
+    "top_ink": 0.277,
+    "ringed": true,
+    "square": "f1",
+    "shot": "screenshots/touch-06-after-synth-e2.png"
+  }
+]
