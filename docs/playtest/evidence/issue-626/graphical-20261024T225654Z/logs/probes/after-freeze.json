@@ -1,0 +1,57 @@
+[
+  {
+    "step": "cold-open",
+    "tap": {
+      "label": "cold-tap-shared",
+      "ms": 306,
+      "ok": true
+    }
+  },
+  {
+    "step": "after-cold-tap",
+    "shot": "screenshots/after-freeze-01-after-cold-tap.png",
+    "events": {
+      "touchstart": 1,
+      "pointerdown": 1,
+      "mousedown": 0,
+      "visibility": []
+    }
+  },
+  {
+    "step": "after-resume",
+    "shot": "screenshots/after-freeze-02-after-resume.png",
+    "events": {
+      "touchstart": 1,
+      "pointerdown": 1,
+      "mousedown": 0,
+      "visibility": [
+        "hidden"
+      ]
+    }
+  },
+  {
+    "step": "cdp-touch-after-freeze",
+    "tap": {
+      "label": "cdp-touch",
+      "ms": 20002,
+      "error": "CDP Input.dispatchTouchEvent exceeded 20000 ms"
+    }
+  },
+  {
+    "step": "synthesized-touch-after-freeze",
+    "events": {
+      "touchstart": 2,
+      "pointerdown": 1,
+      "mousedown": 0,
+      "visibility": [
+        "hidden"
+      ]
+    },
+    "shot": "screenshots/after-freeze-03-after-synthesized-touch.png"
+  },
+  {
+    "step": "still-alive",
+    "evaluate": 2,
+    "hidden": true
+  }
+]

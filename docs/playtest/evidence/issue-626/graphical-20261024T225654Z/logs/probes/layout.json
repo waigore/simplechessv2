@@ -1,0 +1,46 @@
+[
+  {
+    "step": "board",
+    "box": {
+      "left": 0,
+      "top": 65,
+      "width": 780,
+      "height": 1390,
+      "css": {
+        "left": 0,
+        "top": 32.5,
+        "size": 390,
+        "square": 48.75
+      }
+    },
+    "ink": 0.408,
+    "shot": "screenshots/layout-01-board.png"
+  },
+  {
+    "step": "control-advice",
+    "css": {
+      "x": 46,
+      "y": 74
+    },
+    "ink": 0.408,
+    "shot": "screenshots/layout-02-advice-tapped.png"
+  },
+  {
+    "step": "control-resign",
+    "css": {
+      "x": 96,
+      "y": 74
+    },
+    "ink": 0.408,
+    "shot": "screenshots/layout-03-resign-tapped.png"
+  },
+  {
+    "step": "control-draw",
+    "css": {
+      "x": 143,
+      "y": 74
+    },
+    "ink": 0.408,
+    "shot": "screenshots/layout-04-draw-tapped.png"
+  }
+]
