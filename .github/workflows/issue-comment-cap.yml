@@ -58,12 +58,11 @@ jobs:
             done
             gh issue edit "${ISSUE}" --repo "${REPO}" --add-label "status:pending-redefinition"
 
-            gh issue comment "${ISSUE}" --repo "${REPO}" --body "$(cat <<'EOF'
-Comment cap (20) exceeded. Conversation locked permanently and labeled `status:pending-redefinition`.
-
-The project planner will redefine this as a new task (`redefine-project-issue`). Do not unlock.
-EOF
-)"
+            BODY=$(printf '%s\n' \
+              'Comment cap (20) exceeded. Conversation locked permanently and labeled `status:pending-redefinition`.' \
+              '' \
+              'The project planner will redefine this as a new task (`redefine-project-issue`). Do not unlock.')
+            gh issue comment "${ISSUE}" --repo "${REPO}" --body "${BODY}"
           fi
 
           if [[ "${LOCKED}" != "true" ]]; then
