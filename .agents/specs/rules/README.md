@@ -130,6 +130,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/assets/catalog/` | [assets/catalog.md](assets/catalog.md) |
 | `specs/assets/kinds/` | [assets/kinds.md](assets/kinds.md) |
 | `specs/adr/adr.md` | [adr/adr.md](adr/adr.md) |
+| `specs/adr/index.md` | [adr/adr.md](adr/adr.md) |
 | `specs/adr/traceability.md` | [adr/traceability.md](adr/traceability.md) |
 | `specs/adr/decisions/` | [adr/decision.md](adr/decision.md) |
 | `specs/adr/archive/README.md` | [adr/adr.md](adr/adr.md) |
