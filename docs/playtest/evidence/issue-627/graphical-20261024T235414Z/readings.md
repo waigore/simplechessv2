@@ -18,7 +18,7 @@ vocabulary: `pass`, `fail`, `not-judged`, `none`.
 
 None of the five cues was reached: a press inside "Shared game" is **delivered and
 ignored** on the published build (#879), so no board, puzzle, or result screen was
-entered in four sessions on two published shas. Details in `notes.md`.
+entered in four sessions on two published shas. Details in `cues.md`.
 
 | Element | Reading | Outcome |
 |---|---|---|
