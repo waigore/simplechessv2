@@ -41,7 +41,7 @@ Render layers (draw bands), farthest to nearest.
 | L1 | Cafe / table | Ambient backdrop | Fixed | 0 |
 | L2 | Board | Light and dark squares ([E-pieces.I35](../design/entities/pieces/common.md)) | Fixed | 1 |
 | L3 | Pieces | All piece bodies | By rank then file when overlapping draws | 1 |
-| L4 | Overlays | Selection, legal-move marks, Advice marks, eval | Fixed above pieces | 1 |
+| L4 | Overlays | Selection, legal-move marks, Advice marks, last-move band and ticks, eval | Fixed above pieces | 1 |
 
 ## Bounds
 

@@ -1,0 +1,62 @@
+
+
+## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
+## controls: C3 and C4 name an open puzzle; C5 does not — leave stream is available on
+## every S1 the stream can land in, including S1 with no puzzle dealt (US5.1).
+## C3 and C4 are refused on a settled attempt: they would raise a confirm whose one
+## action is refused (END.P1, one ending per attempt); C5 still leaves.
+func request_confirm(control_id: String) -> Dictionary:
+	var kind := ""
+	var needs_puzzle := true
+	var ends_attempt := false
+	match control_id:
+		"C3":
+			kind = CONFIRM_REVEAL
+			ends_attempt = true
+		"C4":
+			kind = CONFIRM_ABANDON
+			ends_attempt = true
+		"C5":
+			kind = CONFIRM_LEAVE
+			needs_puzzle = false
+		_:
+			return {"ok": false}
+	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+		return {"ok": false}
+	if ends_attempt and _is_settled():
+		return {"ok": false, "reason": "settled"}
+	play_ui_state = UI_S2
+	confirm_kind = kind
+	selected_piece = ""
+	return {"ok": true, "event": "puzzle.confirm", "outcome": kind}
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 515) 
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 516) 
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 517) ## UI-puzzle-play S2 — EX.confirm for Reveal (C3), Abandon (C4) and Leave stream (C5).
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 518) ## controls: C3 and C4 name an open puzzle; C5 does not — leave stream is available on
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 519) ## every S1 the stream can land in, including S1 with no puzzle dealt (US5.1).
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 520) ## C3 and C4 are refused on a settled attempt: they would raise a confirm whose one
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 521) ## action is refused (END.P1, one ending per attempt); C5 still leaves.
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 522) func request_confirm(control_id: String) -> Dictionary:
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 523) 	var kind := ""
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 524) 	var needs_puzzle := true
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 525) 	var ends_attempt := false
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 526) 	match control_id:
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 527) 		"C3":
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 528) 			kind = CONFIRM_REVEAL
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 529) 			ends_attempt = true
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 530) 		"C4":
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 531) 			kind = CONFIRM_ABANDON
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 532) 			ends_attempt = true
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 533) 		"C5":
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 534) 			kind = CONFIRM_LEAVE
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 535) 			needs_puzzle = false
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 536) 		_:
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 537) 			return {"ok": false}
+2e389b59 (waigore  2026-10-24 08:07:58 +0800 538) 	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 539) 		return {"ok": false}
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 540) 	if ends_attempt and _is_settled():
+40ec44ee (waigore  2026-10-24 11:02:03 +0800 541) 		return {"ok": false, "reason": "settled"}
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 542) 	play_ui_state = UI_S2
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 543) 	confirm_kind = kind
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 544) 	selected_piece = ""
+ed5f0051 (K Junior 2026-10-23 15:19:10 +0800 545) 	return {"ok": true, "event": "puzzle.confirm", "outcome": kind}

@@ -1,0 +1,19 @@
+{
+  "published": {
+    "url": "https://waigore.github.io/simplechessv2/index.pck",
+    "bytes": 9572540,
+    "sha256": "75abdd591c15e08ac7f0406169908190e18588a3a885ee4a202dfa30d31ad5ea",
+    "routes": 158
+  },
+  "local_export_of_69a03d4": {
+    "path": "build/web/index.pck",
+    "bytes": 9572540,
+    "sha256": "30241c6b4c062f78deaccb8b2fa3e412d222b42963320f0cff6f51c6a46d2771",
+    "routes": 158
+  },
+  "index_html_identical": true,
+  "index_wasm_identical": true,
+  "route_lists_identical": true,
+  "first_differing_byte": 9294153,
+  "byte_differences": 251968
+}

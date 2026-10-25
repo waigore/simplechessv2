@@ -12,6 +12,7 @@ Approved look for the SS1 mahogany board and ivory/charcoal piece set. Lives und
 | `piece_sprite_pipeline.py` | Shared S5–S8 steps (one Chrome/Chromium rasterizer) |
 | `rebuild_starting_position.py` | Board composite (S9) |
 | `derive_piece_sprites.py` | Writes the twelve ship PNGs from the sheet only |
+| `recenter_piece_contours.py` | Re-tones the ship PNG contour/fill to the O1 hexes |
 | `starting-position.layout.json` | Authoritative square centers / fill / fit (board S7, piece S9) |
 | `starting-position.preview.png` | Golden approved composite (rewritten by rebuild) |
 
@@ -47,6 +48,14 @@ python3 docs/asset-previews/derive_piece_sprites.py
 ```
 
 Same S5–S7 crop, then one shared LANCZOS scale so the tallest body is about 85% of the square and shorter types stay shorter. Writes `game_assets/piece-sprites/<type>-<white|black>.png`. No generative API.
+
+Then re-tone the contour to [SRF.O1](../../specs/aesthetics/surface.md#outline): white pieces C4, black pieces C3. Re-runs write the same twelve files from the same sheet, so the result is reproducible.
+
+```bash
+python3 docs/asset-previews/recenter_piece_contours.py
+```
+
+Per-tone pass: the body fill goes to the side's fill hex and every other ink to the O1 hex; alpha, and so the silhouettes, stay as S8 drew them.
 
 ## Ship UI surfaces
 

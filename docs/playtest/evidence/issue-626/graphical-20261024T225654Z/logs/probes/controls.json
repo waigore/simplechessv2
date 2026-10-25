@@ -1,0 +1,79 @@
+[
+  {
+    "step": "mode-pick",
+    "css": null,
+    "board_ink": 0,
+    "body_ink": 0.034,
+    "shot": "screenshots/control-01-mode-pick.png"
+  },
+  {
+    "step": "shared-setup",
+    "css": {
+      "x": 178,
+      "y": 155
+    },
+    "board_ink": 0.015,
+    "body_ink": 0.027,
+    "shot": "screenshots/control-02-shared-setup.png"
+  },
+  {
+    "step": "board",
+    "css": {
+      "x": 95,
+      "y": 325
+    },
+    "board_ink": 0.408,
+    "body_ink": 0.351,
+    "shot": "screenshots/control-03-board.png"
+  },
+  {
+    "step": "tap-board-menu",
+    "css": {
+      "x": 285,
+      "y": 74
+    },
+    "board_ink": 0.208,
+    "body_ink": 0.38,
+    "shot": "screenshots/control-04-tap-board-menu.png"
+  },
+  {
+    "step": "tap-advice-toggle",
+    "css": {
+      "x": 46,
+      "y": 74
+    },
+    "board_ink": 0.208,
+    "body_ink": 0.38,
+    "shot": "screenshots/control-05-tap-advice-toggle.png"
+  },
+  {
+    "step": "tap-advice-toggle-back",
+    "css": {
+      "x": 46,
+      "y": 74
+    },
+    "board_ink": 0.208,
+    "body_ink": 0.38,
+    "shot": "screenshots/control-06-tap-advice-toggle-back.png"
+  },
+  {
+    "step": "tap-board-square-f1",
+    "css": {
+      "x": 215,
+      "y": 632
+    },
+    "board_ink": 0.208,
+    "body_ink": 0.38,
+    "shot": "screenshots/control-07-tap-board-square-f1.png"
+  },
+  {
+    "step": "tap-board-menu-again",
+    "css": {
+      "x": 285,
+      "y": 74
+    },
+    "board_ink": 0.208,
+    "body_ink": 0.38,
+    "shot": "screenshots/control-08-tap-board-menu-again.png"
+  }
+]

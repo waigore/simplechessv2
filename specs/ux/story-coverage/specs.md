@@ -20,6 +20,6 @@ Part of [`story-coverage.md`](../story-coverage.md). One row per spec in [`stori
 | [`navigation.md`](../navigation.md) | Full | T1–T9, N1–N2 | [`stories/navigation.md`](../stories/navigation.md) `US1.1`–`US1.12`; [`-conditions`](../stories/navigation-conditions.md) `US2.1`, `US2.3`, `US2.4`, `US2.6`, `US2.7` |
 | [`controls.md`](../controls.md) | Full | `IN.*` (8), B1–B11, F1 | [`stories/controls.md`](../stories/controls.md) `US1.1`–`US1.8`; [`-drag`](../stories/controls-drag.md) `US2.1`–`US2.4`; [`-point`](../stories/controls-point.md) `US3.1`–`US3.5`. Per-element proof: [`controls.md`](controls.md) |
 | [`exceptions.md`](../exceptions.md) | Full | `EX.*` (9) | [`stories/exceptions.md`](../stories/exceptions.md) `US1.1`–`US1.7`, `US1.14`–`US1.16`; [`-play`](../stories/exceptions-play.md) `US1.8`–`US1.13`, `US1.17`–`US1.19`. Per-element proof: [`exceptions.md`](exceptions.md) |
-| [`localization.md`](../localization.md) | Baseline | L1–L5 | [`stories/localization.md`](../stories/localization.md) `US1.1`–`US2.2` |
+| [`localization.md`](../localization.md) | Baseline | L1–L10 | [`stories/localization.md`](../stories/localization.md) `US1.1`–`US2.4` |
 
 All 12 Full specs meet the rule's bar: every element ID they define appears in a **Proves** line of at least one scenario above. `localization.md` is Baseline by decision, not by gap — see [`story-coverage.md`](../story-coverage.md). `_template.md` is not a story and is not indexed.

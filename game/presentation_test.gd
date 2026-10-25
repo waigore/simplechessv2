@@ -69,6 +69,9 @@ func _after_seed() -> void:
 ## below is pushed in frame pixels and reaches the presentation as canvas
 ## coordinates, exactly as the browser delivers it. CMP-presentation.R2 owns the
 ## conversion; this drives the real `_gui_input` path rather than the helper.
+## The check reads what the board *paints* (its selection ring and its piece
+## sprites), never the router: a router assertion would pass while the pointer
+## path pointed at another square (#845 verify).
 func _exercise_board_taps() -> bool:
 	root.content_scale_size = Vector2i(1280, 720)
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
@@ -88,25 +91,31 @@ func _exercise_board_taps() -> bool:
 	_presentation.position = Vector2(0.0, 260.0)
 	await process_frame
 	await _tap_painted(board, "e2")
-	var offset_select := _router.selected_piece
+	var offset_select := _painted_selection(board)
 	_presentation.position = Vector2.ZERO
 	await process_frame
 	# B8: the same square again deselects, so the next tap is a fresh select.
 	await _tap_painted(board, "e2")
-	var deselected := _router.selected_piece
+	var deselected := _painted_selection(board)
 	await _tap_painted(board, "e2")
-	var select := _router.selected_piece
+	var select := _painted_selection(board)
 	await _tap_painted(board, "e4")
-	var moved := _router.side_to_move() == ChessRules.SIDE_BLACK
+	# The commit is synchronous, but the moving piece is re-keyed on its settle
+	# tween (BoardGeometry.SETTLE_S), so paint is read after it lands.
+	await _settle_frames()
+	var moved := _painted_kind_at(board, "e4", "pawn")
 	var problem := ""
 	if offset_select != "e2":
-		problem = "an offset presentation selected %s for a painted e2 tap" % offset_select
+		problem = (
+			"an offset presentation painted %s selected for a painted e2 tap"
+			% _shown(offset_select)
+		)
 	elif not deselected.is_empty():
-		problem = "a second painted e2 tap did not deselect (got %s)" % deselected
+		problem = "a second painted e2 tap did not deselect (painted %s)" % _shown(deselected)
 	elif select != "e2":
-		problem = "a painted e2 tap selected %s" % select
+		problem = "a painted e2 tap painted %s selected" % _shown(select)
 	elif not moved:
-		problem = "a painted e4 tap did not commit e2–e4"
+		problem = "a painted e4 tap did not paint the pawn on e4"
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	root.content_scale_size = Vector2i(0, 0)
 	root.size = Vector2i(1280, 720)
@@ -301,6 +310,9 @@ func _labelled(label: String, problem: String) -> String:
 
 
 ## Press and release at the painted centre of `square`, in frame pixels.
+## The paint assertions read the board, not `_router.selected_piece`: the router
+## belongs to `board_presentation.gd`, so asserting on it would pass while the
+## pointer path pointed at another square (#845 verify).
 func _tap_painted(board: BoardPresentation, square: String) -> void:
 	await _tap_world(board, board.framed_center(square))
 
@@ -324,6 +336,32 @@ func _tap_frame(at: Vector2) -> void:
 	release.position = at
 	root.push_input(release)
 	await process_frame
+
+
+## The square the board paints its selection ring on, "" when no ring shows.
+func _painted_selection(board: BoardPresentation) -> String:
+	var ring := board.get_node_or_null("World/Seat/Content/Overlays/Selection") as Line2D
+	if ring == null or not ring.visible or ring.points.is_empty():
+		return ""
+	return BoardGeometry.square_at(ring.points[0] + Vector2(0.5, 0.5))
+
+
+## Whether `square` paints a piece whose kind is `kind`.
+func _painted_kind_at(board: BoardPresentation, square: String, kind: String) -> bool:
+	var node := board.get_node_or_null("World/Seat/Content/Pieces/piece_%s" % square)
+	return node != null and str(node.get_meta("piece_kind", "")) == kind
+
+
+## Let the board's settle tween finish: a headless frame may be shorter than
+## `BoardGeometry.SETTLE_S`, so count frames rather than await one.
+func _settle_frames() -> void:
+	var deadline := Time.get_ticks_msec() + 200
+	while Time.get_ticks_msec() < deadline:
+		await process_frame
+
+
+func _shown(square: String) -> String:
+	return square if not square.is_empty() else "nothing"
 
 
 func _exercise_pointers() -> bool:

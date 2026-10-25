@@ -1,0 +1,55 @@
+## pub-mouse/logs/pub-mouse-s1-console.log
+log.warning [rendering] [.WebGL-0x134000c7200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x134000e2800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+## pub-mouse/logs/pub-mouse-s2-console.log
+log.warning [rendering] [.WebGL-0x104000c9c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x104000e2e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+## pub-mouse/logs/pub-mouse-s3-console.log
+log.warning [rendering] [.WebGL-0x114000cf000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x114000e1c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+## pub-mouse/logs/pub-mouse-s4-console.log
+log.warning [rendering] [.WebGL-0x13c000cd800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x13c000e2e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+console.error WARNING: puzzle stream: deal read failed (status)
+console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+## pub-mouse/logs/pub-mouse-s5-console.log
+log.warning [rendering] [.WebGL-0x13c000c5a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x13c000e1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+console.error WARNING: puzzle stream: deal read failed (status)
+console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+## pub-mouse/logs/pub-mouse-s6-console.log
+log.warning [rendering] [.WebGL-0x10c000ccc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x10c000e0a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+console.error WARNING: puzzle stream: deal read failed (status)
+console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+## pub-mouse/logs/pub-mouse-s7-console.log
+log.warning [rendering] [.WebGL-0x124000ccc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+log.warning [rendering] [.WebGL-0x124000e0400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio

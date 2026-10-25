@@ -15,10 +15,12 @@ A key's owner is the screen whose Copy table holds it, named by that screen's fi
 |----|------|
 | L1 | Key names use lower-case letters, digits, and underscores only, and stay stable within their screen. Renaming a key is an edit to that screen's Copy table, not a locale edit. |
 | L2 | **The Copy table is the only copy source.** A string a player can read is a Copy-table row with its `en` value. No other spec or mockup defines player-facing wording, and a mode adds keys only by adding rows to its own Copy table. |
-| L3 | Every key varies by locale except a row its Copy table marks same in every locale. Only two such rows exist: the `mode-pick` `locale` own name (C4), and the four piece-type names `queen`, `rook`, `bishop`, and `knight` on `shared-play` and `puzzle-play` (C6). Piece names stay as the `en` value in every locale because they double as the accessibility names for a piece's shape, so a piece is called the same at every locale and by every reader. |
+| L3 | Every key varies by locale except the rows L7 marks. A screen's own name (`UI-mode-pick.C4`) and the six piece-type names per L7 stay as the `en` value, since those names are a piece's accessibility names. |
 | L4 | A screen shown in a state carries the copy that state names, and the 40% growth tolerance ([quality.md](../definition/quality.md) Localization) applies to every string in every state the screen can show. |
 | L5 | A value changes only when a cited element contradicts it, and the change names that element. A wording preference is not a reason. |
 | L6 | A journey or a state carries no Copy table of its own: where it shows a string, it cites the owning screen's key, so each key has one value and one place to edit. |
+
+The rules continue as `L7`–`L10` in [`localization-marked-set.md`](localization-marked-set.md): the marked set (the single source for L3), a piece's accessible name, the kind→key map, and the assistive-layer measurement.
 
 ## Modes and keys
 
