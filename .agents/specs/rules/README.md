@@ -69,6 +69,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/view/camera-controls.md` | [view/camera-controls.md](view/camera-controls.md) |
 | `specs/view/physics.md` | [view/physics.md](view/physics.md) |
 | `specs/view/perception.md` | [view/perception.md](view/perception.md) |
+| `specs/view/perception-marks.md` | [view/perception.md](view/perception.md) |
 | `specs/view/audio.md` | [view/audio.md](view/audio.md) |
 | `specs/view/haptics.md` | [view/haptics.md](view/haptics.md) |
 | `specs/view/diagrams/` | [view/diagrams.md](view/diagrams.md) |
