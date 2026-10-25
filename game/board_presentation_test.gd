@@ -19,6 +19,8 @@ func _run() -> void:
 		await process_frame
 		err = _check_seat(board)
 		if err.is_empty():
+			err = _check_accessible_name_meta(board)
+		if err.is_empty():
 			err = await _check_art_orientation(board)
 		if err.is_empty():
 			err = await _check_viewport(board)
@@ -541,6 +543,27 @@ func _screen_bottom_right(points: Array) -> Vector2:
 		if v.y > best.y:
 			best.y = v.y
 	return best
+
+
+## CMP-presentation.R8: a rendered piece node exposes its kind's name as metadata
+## (never a drawn label).
+func _check_accessible_name_meta(board: BoardPresentation) -> String:
+	var rules := ChessRules.new()
+	rules.reset_opening()
+	board.render_position(rules.position_field())
+	var seen := 0
+	for child in board.find_child("Pieces", true, false).get_children():
+		var node := child as Node2D
+		if node == null or not node.has_meta("piece_kind"):
+			continue
+		seen += 1
+		var kind := str(node.get_meta("piece_kind"))
+		var want := BoardPresentation.accessible_name(kind, "shared-play", "en")
+		if want.is_empty() or str(node.get_meta("accessible_name", "")) != want:
+			return "R8 %s has no accessible name metadata" % node.name
+	if seen != 32:
+		return "R8 saw %d piece nodes, want 32" % seen
+	return ""
 
 
 func _check_motion(board: BoardPresentation) -> String:

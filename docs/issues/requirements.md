@@ -19,12 +19,12 @@ Applies to every issue, whether filed from the GitHub form or by a skill. Index:
 
 - **Description**: Concrete unit of work.
 - **Deliverables**: Files and areas to change — as specific as possible (paths, modules, specs).
-- **Acceptance criteria**: Clear, testable conditions (prefer checkbox list). The task is done only when all pass.
+- **Acceptance criteria**: Clear, testable conditions (prefer checkbox list). The task is done only when all pass. Align any story-map / [`specs/playtest/story-rows.md`](../../specs/playtest/story-rows.md) criteria with **When to file what** below: never require every `none` row to name a live `type:defect`.
 - **Parent**: `#N` of parent epic or task, or `None`.
 
 ## Defect
 
-- **Use for**: wrong **game or interface** behavior vs expected play. Never for specs, docs, story maps, AC hygiene, or planning gaps.
+- **Use for**: wrong **game or interface** behavior vs expected play. Never for specs, docs, story maps / story-row `none` cells, AC hygiene, or planning gaps.
 - **Description**: Problem statement — as specific as possible.
 - **Expected** / **Actual**: Contrasting behaviors so the failure is unambiguous.
 - **Reproduction steps**: Numbered steps when known; otherwise `None`.
@@ -36,4 +36,5 @@ Applies to every issue, whether filed from the GitHub form or by a skill. Index:
 - **Defect** — in-game / interface fail only (see above).
 - **Task** — design or spec (or related doc) work that **materially** affects implementation or functional outcome, and **no open issue** already owns it. Spec/design problems are never defects.
 - **Clarification** — PO must decide; put the issue in `pending-clarification` on the **owning** open epic/task. Do not file a defect for ambiguity.
-- **Do not raise** non-material spec, map, or AC hygiene. Prefer repair in place. If repair cannot land with current work and the gap is material with no owner, create a **task**.
+- **Story-row `none`** — durable reason that delivery is not required yet (or link an open **task** when material uncovered work needs an owner). Never a linked `type:defect` as planning owner ([`story-rows.md`](../../specs/playtest/story-rows.md)).
+- **Do not raise** non-material spec, map, story-row, or AC hygiene. Prefer repair in place. If repair cannot land with current work and the gap is material with no owner, create a **task**.

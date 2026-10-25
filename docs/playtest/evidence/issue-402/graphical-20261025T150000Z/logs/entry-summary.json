@@ -1,0 +1,31 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "baselineHead": "89504e470d0a1a0a0000000d494844520000030c000006980802000000a5d2ccde0000100049444154789cec9d057c63d799f6af6d9999999961d0c3cc3361a6",
+  "attempts": [
+    {
+      "label": "shared-y331",
+      "x": 195,
+      "y": 331,
+      "changedFrame": false
+    },
+    {
+      "label": "shared-y320",
+      "x": 195,
+      "y": 320,
+      "changedFrame": false
+    },
+    {
+      "label": "puzzle-y405",
+      "x": 195,
+      "y": 405,
+      "changedFrame": false
+    }
+  ],
+  "shots": [
+    "entry-00-mode-pick.png",
+    "entry-after-shared-y331.png",
+    "entry-after-shared-y320.png",
+    "entry-after-puzzle-y405.png"
+  ],
+  "unresolvedAssetIdWarnings": 0
+}

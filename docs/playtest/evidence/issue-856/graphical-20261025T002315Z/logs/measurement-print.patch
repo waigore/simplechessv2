@@ -1,0 +1,20 @@
+  diff --git a/game/session_router.gd b/game/session_router.gd
+  index b4b3e99..d07dbd8 100644
+  --- a/game/session_router.gd
+  +++ b/game/session_router.gd
+  @@ -437,6 +437,7 @@ func _on_ambient_ready() -> void:
+   	_provide_assets(_resolver.resolve_group("ambient"))
+   	_ambient_started = true
+   	_play_cue(SharedAudioCues.BED_M1)
+  +	print("856 ambient-started %d" % Time.get_ticks_msec())
+   
+   
+   func _provide_assets(resources_by_id: Dictionary) -> void:
+  @@ -474,6 +475,7 @@ func _go_mode_pick(ui_state: String = "S1") -> void:
+   	_leave_advice()
+   	shared_session = null
+   	_last_clock_display = ""
+  +	print("856 mode-pick-ready %d" % Time.get_ticks_msec())
+   	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state(ui_state))
+   	## Mode pick is ready: preload Ambient and start BED_M1 (AST.G3 / SND.M1), #426.
+   	start_music()

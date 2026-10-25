@@ -1,0 +1,448 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "window_minutes_requested": 16,
+  "marks": [
+    {
+      "tag": "01-mode-pick-cold",
+      "at": "2026-10-25T00:02:22.817Z",
+      "t_s": 18.987,
+      "shot": "screenshots/sit-01-01-mode-pick-cold.png",
+      "store": {
+        "key_present": false,
+        "player_elo": null,
+        "last_mode": null,
+        "document": null
+      }
+    },
+    {
+      "tag": "02-shared-setup",
+      "at": "2026-10-25T00:02:27.195Z",
+      "t_s": 23.365,
+      "shot": "screenshots/sit-02-02-shared-setup.png"
+    },
+    {
+      "tag": "03-board-advice-on",
+      "at": "2026-10-25T00:02:35.808Z",
+      "t_s": 31.978,
+      "shot": "screenshots/sit-03-03-board-advice-on.png",
+      "store": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "04-advice-off-at250ms",
+      "at": "2026-10-25T00:02:37.096Z",
+      "t_s": 33.266,
+      "shot": "screenshots/sit-04-04-advice-off-at250ms.png"
+    },
+    {
+      "tag": "05-advice-off-settled",
+      "at": "2026-10-25T00:02:39.762Z",
+      "t_s": 35.932,
+      "shot": "screenshots/sit-05-05-advice-off-settled.png"
+    },
+    {
+      "tag": "06-advice-off-after-tap",
+      "at": "2026-10-25T00:02:43.140Z",
+      "t_s": 39.31,
+      "shot": "screenshots/sit-06-06-advice-off-after-tap.png"
+    },
+    {
+      "tag": "07-advice-off-still-1",
+      "at": "2026-10-25T00:02:48.497Z",
+      "t_s": 44.667,
+      "shot": "screenshots/sit-07-07-advice-off-still-1.png"
+    },
+    {
+      "tag": "07-advice-off-still-2",
+      "at": "2026-10-25T00:02:53.809Z",
+      "t_s": 49.979,
+      "shot": "screenshots/sit-08-07-advice-off-still-2.png"
+    },
+    {
+      "tag": "07-advice-off-still-3",
+      "at": "2026-10-25T00:02:59.227Z",
+      "t_s": 55.397,
+      "shot": "screenshots/sit-09-07-advice-off-still-3.png"
+    },
+    {
+      "tag": "08-foreground-return",
+      "at": "2026-10-25T00:03:51.070Z",
+      "t_s": 107.24,
+      "shot": "screenshots/sit-10-08-foreground-return.png",
+      "cycle": "background→foreground",
+      "background_at": "2026-10-25T00:02:59.289Z",
+      "background_ms": 45013,
+      "before": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      },
+      "after": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      },
+      "control": {
+        "hidden": false,
+        "frames": 10,
+        "tap": {
+          "ms": 658,
+          "ok": true
+        }
+      }
+    },
+    {
+      "tag": "09-mode-pick-after-reopen",
+      "at": "2026-10-25T00:04:03.465Z",
+      "t_s": 119.635,
+      "shot": "screenshots/sit-11-09-mode-pick-after-reopen.png",
+      "cycle": "quit→reopen",
+      "after": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "10-mode-pick-after-reload",
+      "at": "2026-10-25T00:04:17.760Z",
+      "t_s": 133.93,
+      "shot": "screenshots/sit-12-10-mode-pick-after-reload.png",
+      "cycle": "reload",
+      "after": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "11-board-resumed",
+      "at": "2026-10-25T00:04:28.135Z",
+      "t_s": 144.305,
+      "shot": "screenshots/sit-13-11-board-resumed.png",
+      "store": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "12-liveness-01",
+      "at": "2026-10-25T00:04:31.500Z",
+      "t_s": 147.67,
+      "shot": "screenshots/sit-14-12-liveness-01.png"
+    },
+    {
+      "tag": "13-still-01-1",
+      "at": "2026-10-25T00:04:58.424Z",
+      "t_s": 174.594,
+      "shot": "screenshots/sit-15-13-still-01-1.png"
+    },
+    {
+      "tag": "13-still-01-2",
+      "at": "2026-10-25T00:05:23.934Z",
+      "t_s": 200.104,
+      "shot": "screenshots/sit-16-13-still-01-2.png"
+    },
+    {
+      "tag": "12-liveness-02",
+      "at": "2026-10-25T00:05:27.672Z",
+      "t_s": 203.842,
+      "shot": "screenshots/sit-17-12-liveness-02.png"
+    },
+    {
+      "tag": "13-still-02-1",
+      "at": "2026-10-25T00:05:54.785Z",
+      "t_s": 230.955,
+      "shot": "screenshots/sit-18-13-still-02-1.png"
+    },
+    {
+      "tag": "13-still-02-2",
+      "at": "2026-10-25T00:06:20.155Z",
+      "t_s": 256.325,
+      "shot": "screenshots/sit-19-13-still-02-2.png"
+    },
+    {
+      "tag": "12-liveness-03",
+      "at": "2026-10-25T00:06:23.537Z",
+      "t_s": 259.707,
+      "shot": "screenshots/sit-20-12-liveness-03.png"
+    },
+    {
+      "tag": "13-still-03-1",
+      "at": "2026-10-25T00:06:50.522Z",
+      "t_s": 286.692,
+      "shot": "screenshots/sit-21-13-still-03-1.png"
+    },
+    {
+      "tag": "13-still-03-2",
+      "at": "2026-10-25T00:07:16.221Z",
+      "t_s": 312.391,
+      "shot": "screenshots/sit-22-13-still-03-2.png"
+    },
+    {
+      "tag": "12-liveness-04",
+      "at": "2026-10-25T00:07:20.127Z",
+      "t_s": 316.297,
+      "shot": "screenshots/sit-23-12-liveness-04.png"
+    },
+    {
+      "tag": "13-still-04-1",
+      "at": "2026-10-25T00:07:47.654Z",
+      "t_s": 343.824,
+      "shot": "screenshots/sit-24-13-still-04-1.png"
+    },
+    {
+      "tag": "13-still-04-2",
+      "at": "2026-10-25T00:08:13.049Z",
+      "t_s": 369.219,
+      "shot": "screenshots/sit-25-13-still-04-2.png"
+    },
+    {
+      "tag": "12-liveness-05",
+      "at": "2026-10-25T00:08:16.476Z",
+      "t_s": 372.646,
+      "shot": "screenshots/sit-26-12-liveness-05.png"
+    },
+    {
+      "tag": "13-still-05-1",
+      "at": "2026-10-25T00:08:43.447Z",
+      "t_s": 399.617,
+      "shot": "screenshots/sit-27-13-still-05-1.png"
+    },
+    {
+      "tag": "13-still-05-2",
+      "at": "2026-10-25T00:09:08.853Z",
+      "t_s": 425.023,
+      "shot": "screenshots/sit-28-13-still-05-2.png"
+    },
+    {
+      "tag": "12-liveness-06",
+      "at": "2026-10-25T00:09:12.166Z",
+      "t_s": 428.336,
+      "shot": "screenshots/sit-29-12-liveness-06.png"
+    },
+    {
+      "tag": "13-still-06-1",
+      "at": "2026-10-25T00:09:39.407Z",
+      "t_s": 455.577,
+      "shot": "screenshots/sit-30-13-still-06-1.png"
+    },
+    {
+      "tag": "13-still-06-2",
+      "at": "2026-10-25T00:10:04.865Z",
+      "t_s": 481.035,
+      "shot": "screenshots/sit-31-13-still-06-2.png"
+    },
+    {
+      "tag": "12-liveness-07",
+      "at": "2026-10-25T00:10:08.608Z",
+      "t_s": 484.778,
+      "shot": "screenshots/sit-32-12-liveness-07.png"
+    },
+    {
+      "tag": "13-still-07-1",
+      "at": "2026-10-25T00:10:36.049Z",
+      "t_s": 512.219,
+      "shot": "screenshots/sit-33-13-still-07-1.png"
+    },
+    {
+      "tag": "13-still-07-2",
+      "at": "2026-10-25T00:11:01.555Z",
+      "t_s": 537.725,
+      "shot": "screenshots/sit-34-13-still-07-2.png"
+    },
+    {
+      "tag": "12-liveness-08",
+      "at": "2026-10-25T00:11:05.289Z",
+      "t_s": 541.459,
+      "shot": "screenshots/sit-35-12-liveness-08.png"
+    },
+    {
+      "tag": "13-still-08-1",
+      "at": "2026-10-25T00:11:32.774Z",
+      "t_s": 568.944,
+      "shot": "screenshots/sit-36-13-still-08-1.png"
+    },
+    {
+      "tag": "13-still-08-2",
+      "at": "2026-10-25T00:11:58.351Z",
+      "t_s": 594.521,
+      "shot": "screenshots/sit-37-13-still-08-2.png"
+    },
+    {
+      "tag": "12-liveness-09",
+      "at": "2026-10-25T00:12:02.047Z",
+      "t_s": 598.217,
+      "shot": "screenshots/sit-38-12-liveness-09.png"
+    },
+    {
+      "tag": "13-still-09-1",
+      "at": "2026-10-25T00:12:29.557Z",
+      "t_s": 625.727,
+      "shot": "screenshots/sit-39-13-still-09-1.png"
+    },
+    {
+      "tag": "13-still-09-2",
+      "at": "2026-10-25T00:12:55.311Z",
+      "t_s": 651.481,
+      "shot": "screenshots/sit-40-13-still-09-2.png"
+    },
+    {
+      "tag": "12-liveness-10",
+      "at": "2026-10-25T00:12:59.453Z",
+      "t_s": 655.623,
+      "shot": "screenshots/sit-41-12-liveness-10.png"
+    },
+    {
+      "tag": "13-still-10-1",
+      "at": "2026-10-25T00:13:27.078Z",
+      "t_s": 683.248,
+      "shot": "screenshots/sit-42-13-still-10-1.png"
+    },
+    {
+      "tag": "13-still-10-2",
+      "at": "2026-10-25T00:13:52.815Z",
+      "t_s": 708.985,
+      "shot": "screenshots/sit-43-13-still-10-2.png"
+    },
+    {
+      "tag": "12-liveness-11",
+      "at": "2026-10-25T00:13:57.256Z",
+      "t_s": 713.426,
+      "shot": "screenshots/sit-44-12-liveness-11.png"
+    },
+    {
+      "tag": "13-still-11-1",
+      "at": "2026-10-25T00:14:25.217Z",
+      "t_s": 741.387,
+      "shot": "screenshots/sit-45-13-still-11-1.png"
+    },
+    {
+      "tag": "13-still-11-2",
+      "at": "2026-10-25T00:14:50.954Z",
+      "t_s": 767.124,
+      "shot": "screenshots/sit-46-13-still-11-2.png"
+    },
+    {
+      "tag": "12-liveness-12",
+      "at": "2026-10-25T00:14:54.966Z",
+      "t_s": 771.136,
+      "shot": "screenshots/sit-47-12-liveness-12.png"
+    },
+    {
+      "tag": "13-still-12-1",
+      "at": "2026-10-25T00:15:22.655Z",
+      "t_s": 798.825,
+      "shot": "screenshots/sit-48-13-still-12-1.png"
+    },
+    {
+      "tag": "13-still-12-2",
+      "at": "2026-10-25T00:15:48.289Z",
+      "t_s": 824.459,
+      "shot": "screenshots/sit-49-13-still-12-2.png"
+    },
+    {
+      "tag": "12-liveness-13",
+      "at": "2026-10-25T00:15:52.428Z",
+      "t_s": 828.598,
+      "shot": "screenshots/sit-50-12-liveness-13.png"
+    },
+    {
+      "tag": "13-still-13-1",
+      "at": "2026-10-25T00:16:20.291Z",
+      "t_s": 856.461,
+      "shot": "screenshots/sit-51-13-still-13-1.png"
+    },
+    {
+      "tag": "13-still-13-2",
+      "at": "2026-10-25T00:16:45.825Z",
+      "t_s": 881.995,
+      "shot": "screenshots/sit-52-13-still-13-2.png"
+    },
+    {
+      "tag": "12-liveness-14",
+      "at": "2026-10-25T00:16:49.779Z",
+      "t_s": 885.949,
+      "shot": "screenshots/sit-53-12-liveness-14.png"
+    },
+    {
+      "tag": "13-still-14-1",
+      "at": "2026-10-25T00:17:17.395Z",
+      "t_s": 913.565,
+      "shot": "screenshots/sit-54-13-still-14-1.png"
+    },
+    {
+      "tag": "13-still-14-2",
+      "at": "2026-10-25T00:17:43.134Z",
+      "t_s": 939.304,
+      "shot": "screenshots/sit-55-13-still-14-2.png"
+    },
+    {
+      "tag": "14-window-closed",
+      "at": "2026-10-25T00:17:46.656Z",
+      "t_s": 942.826,
+      "shot": "screenshots/sit-56-14-window-closed.png",
+      "store": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      },
+      "control": {
+        "hidden": false,
+        "frames": 10,
+        "tap": {
+          "ms": 814,
+          "ok": true
+        }
+      }
+    }
+  ],
+  "complete": true,
+  "ended_at": "2026-10-25T00:17:46.785Z"
+}

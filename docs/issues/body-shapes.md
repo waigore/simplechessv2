@@ -36,7 +36,7 @@ Skills and forms emit these bodies. Fill every required section; use `None` / `n
 |---------|----------|---------|
 | `## Description` | yes | What needs to be done |
 | `## Deliverables` | yes | Files/areas to change — as specific as possible |
-| `## Acceptance criteria` | yes | Clear, testable done conditions |
+| `## Acceptance criteria` | yes | Clear, testable done conditions; follow [requirements.md](requirements.md) (no “`none` must link a defect” story-row ACs) |
 | `## Parent` | no | `#N` of parent epic or task, or `None` |
 | `## Dependencies` | no | See [hierarchy.md](hierarchy.md) |
 

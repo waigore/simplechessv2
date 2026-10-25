@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R375 {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R375 {"check":"release_scene_has_no_seams","detail":"","ok":true}
+R375 {"check":"router_present","detail":"","ok":true}
+R375 {"check":"presentation_present","detail":"","ok":true}
+R375 {"check":"setup_reached","detail":"shared-setup","ok":true}
+R375 {"check":"setup_advice_default_on","detail":"true","ok":true}
+R375 {"check":"setup_c4_off","detail":"false","ok":true}
+R375 {"check":"setup_c4_on","detail":"true","ok":true}
+advice: ready after 24 ms
+R375 {"check":"play_reached","detail":"shared-play","ok":true}
+R375 {"check":"session_has_client","detail":"","ok":true}
+R375 {"check":"client_is_shipped_transport","detail":"","ok":true}
+R375 {"check":"board_and_marks_present","detail":"","ok":true}
+R375 {"check":"marks_appear_after_start","detail":"from=e2 to=e4 children=11","ok":true}
+R375 {"check":"eval_set","detail":"18","ok":true}
+R375 {"check":"presentation_rendered_eval","detail":"+0.18","ok":true}
+R375 {"marks_while_on":"from=e2 to=e4 children=11"}
+WARNING: A Thread object is being destroyed without its completion having been realized.
+Please call wait_to_finish() on it to ensure correct cleanup.
+     at: ~Thread (drivers/apple/thread_apple.cpp:150)
+R375 {"check":"c3_sets_advice_off","detail":"{ \"position\": { \"occupancy\": { \"a1\": { \"color\": \"white\", \"kind\": \"rook\" }, \"a2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"a7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"a8\": { \"color\": \"black\", \"kind\": \"rook\" }, \"b1\": { \"color\": \"white\", \"kind\": \"knight\" }, \"b2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"b7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"b8\": { \"color\": \"black\", \"kind\": \"knight\" }, \"c1\": { \"color\": \"white\", \"kind\": \"bishop\" }, \"c2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"c7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"c8\": { \"color\": \"black\", \"kind\": \"bishop\" }, \"d1\": { \"color\": \"white\", \"kind\": \"queen\" }, \"d2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"d7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"d8\": { \"color\": \"black\", \"kind\": \"queen\" }, \"e1\": { \"color\": \"white\", \"kind\": \"king\" }, \"e2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"e7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"e8\": { \"color\": \"black\", \"kind\": \"king\" }, \"f1\": { \"color\": \"white\", \"kind\": \"bishop\" }, \"f2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"f7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"f8\": { \"color\": \"black\", \"kind\": \"bishop\" }, \"g1\": { \"color\": \"white\", \"kind\": \"knight\" }, \"g2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"g7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"g8\": { \"color\": \"black\", \"kind\": \"knight\" }, \"h1\": { \"color\": \"white\", \"kind\": \"rook\" }, \"h2\": { \"color\": \"white\", \"kind\": \"pawn\" }, \"h7\": { \"color\": \"black\", \"kind\": \"pawn\" }, \"h8\": { \"color\": \"black\", \"kind\": \"rook\" } }, \"side_to_move\": \"white\" }, \"castling_ep\": { \"white_kingside\": true, \"white_queenside\": true, \"black_kingside\": true, \"black_queenside\": true, \"en_passant\": \"\" }, \"clocks\": { \"white\": <null>, \"black\": <null> }, \"game_ended\": { \"ended\": false, \"reason\": \"\" }, \"mode\": \"shared\", \"repetition_history\": [\"a1:white:rook|a2:white:pawn|a7:black:pawn|a8:black:rook|b1:white:knight|b2:white:pawn|b7:black:pawn|b8:black:knight|c1:white:bishop|c2:white:pawn|c7:black:pawn|c8:black:bishop|d1:white:queen|d2:white:pawn|d7:black:pawn|d8:black:queen|e1:white:king|e2:white:pawn|e7:black:pawn|e8:black:king|f1:white:bishop|f2:white:pawn|f7:black:pawn|f8:black:bishop|g1:white:knight|g2:white:pawn|g7:black:pawn|g8:black:knight|h1:white:rook|h2:white:pawn|h7:black:pawn|h8:black:rook|white|KQkq|\"], \"fifty_move_count\": 0, \"draw_offer\": \"\", \"result_copy\": \"\", \"clocks_stopped\": false, \"clock\": \"untimed\", \"increment_ms\": 0, \"active_clock\": \"\", \"options_locked\": true, \"selected_piece\": \"\", \"play_ui_state\": \"S1\", \"ui_state\": \"S1\", \"advice\": false, \"online\": true, \"advice_best_move\": <null>, \"advice_eval\": <null>, \"last_reject\": \"\", \"reject_square\": \"\", \"confirm_kind\": \"\", \"pending_promote_from\": \"\", \"pending_promote_to\": \"\" }","ok":true}
+R375 {"check":"c3_clears_marks_at_once","detail":"from= to= children=0","ok":true}
+R375 {"check":"c3_clears_eval_at_once","detail":"<null>","ok":true}
+advice: ready after 21 ms
+R375 {"check":"c3_on_re_evaluates","detail":"from=e2 to=e4 children=11","ok":true}
+R375 {"summary":{"checks":19,"failed":0}}
+WARNING: 14 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+
+================================================================
+handle_crash: Program crashed with signal 11
+Engine version: Godot Engine v4.7.2.stable.official (ed1daf0bf001b61586d9930840f2f1394092c079)
+Dumping the backtrace. Please include this when reporting the bug on: https://github.com/godotengine/godot/issues
+Load address: 104970000
+

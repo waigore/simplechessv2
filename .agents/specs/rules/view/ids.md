@@ -31,7 +31,7 @@ Design IDs stay in [../design/ids.md](../design/ids.md) and UX IDs in [../ux/ids
 | `cameras/` | `CAM-<name>` | Framing `F`, Motion `M`, Limits `L`, Occlusion `O`, Transitions `T`, Effects `E`, Player control `P` |
 | `camera-controls.md` | `CC` | Camera actions by name, such as `CC.orbit`; Settings `S` |
 | `physics.md` | `PHY` | Motion `M`, Collision `K`, Contact feel `I` |
-| `perception.md` | `PER` | Readability `R`, Depth cues `D`, Comfort options `M` |
+| `perception.md`, `perception-marks.md` | `PER` | Readability `R`, Depth cues `D`, Comfort options `M`; both files share the `PER` key, and a row keeps one number wherever it is split |
 | `audio.md` | `AUD` | Listener `L`, Spatial rules `R`, Positional cues `Q` |
 | `haptics.md` | `HAP` | Haptic cues `H`, Settings `S` |
 

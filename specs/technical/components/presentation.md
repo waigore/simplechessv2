@@ -19,6 +19,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R5 | Never await network before completing piece motion |
 | R6 | Resolve player-facing copy through [`CTR-localization`](../contracts/localization.md) O1 for the current `GS.locale`, per [`SCH-string-table`](../schemata/string-table.md) |
 | R7 | Keep board state cues non-audio: the checked King carries a [PAL.C8](../../aesthetics/palette.md) rose treatment and side to move stays visible ([PER.R6](../../view/perception.md)), alongside any localized copy |
+| R8 | Expose each piece node's accessible name as node metadata, never a drawn label: the Copy key `LOC.L9` maps for its kind, resolved through [`CTR-localization`](../contracts/localization.md) O1 for the current `GS.locale`. The name is the type (`LOC.L8`), so colour stays metadata and no turn row names a piece ([`LOC.US1.4`](../../ux/stories/localization.md)). A miss follows G4 |
 
 ## Audio architecture
 

@@ -1,0 +1,39 @@
+# Run log — #550 wave-2 sweep, headless run
+
+Build `26b07af`, `TEL.3` session `sess-1792893272248-94361-playtest-807719`, Godot `4.7.2-stable (official)`, locale `en_US`.
+Telemetry rows: 236. Driver errors: [].
+Rows and verdicts are for the sweep's scope only; the driver's other protocol entries are not driven by this run and are not evidence here.
+
+## Protocol verdicts
+
+- `PTD-puzzle-stream` — **pass**
+- `PTD-difficulty` — **pass**
+- `PTD-progression` — **pass**
+- `PTD-game-state` — **pass**
+- `PTD-pieces-common` — **not-judged**
+- `PTD-pieces-king` — **not-judged**
+- `PTD-pieces-officers` — **not-judged**
+- `PTD-pieces-pawn` — **not-judged**
+- `PTU-puzzle-session` — **pass**
+- `PTU-puzzle-play` — **not-judged**
+- `PTU-mode-pick` — **pass**
+- `PTU-navigation` — **pass**
+- `PTU-controls` — **not-judged**
+- `PTU-exceptions` — **not-judged**
+- `PTU-localization` — **not-judged**
+
+## Static asset reading (before protocol step 1)
+- boot: 11 of 11 opened; play: 19 of 19 opened; unresolved {'boot': 0, 'play': 0}.
+
+## Telemetry excerpt
+
+First and last rows (every `TEL.*` row is in `telemetry.ndjson`):
+
+```
+{"TEL.1": "report.assets", "TEL.2": 1792893272755, "TEL.3": "sess-1792893272248-94361-playtest-807719", "TEL.4": "CTR-asset-resolve", "TEL.5": "read"}
+{"TEL.1": "jump", "TEL.2": 1792893272899, "TEL.3": "sess-1792893272248-94361-playtest-807719", "TEL.4": "mode-pick", "TEL.5": "pass"}
+{"TEL.1": "puzzle.enter", "TEL.2": 1792893272905, "TEL.3": "sess-1792893272248-94361-playtest-807719", "TEL.4": "J-puzzle-session.S1", "TEL.5": "ok"}
+{"TEL.1": "jump", "TEL.2": 1792893280461, "TEL.3": "sess-1792893272248-94361-playtest-807719", "TEL.4": "session-ended", "TEL.5": "pass"}
+{"TEL.1": "puzzle.enter", "TEL.2": 1792893280572, "TEL.3": "sess-1792893272248-94361-playtest-807719", "TEL.4": "J-puzzle-session.S1", "TEL.5": "ok"}
+{"TEL.1": "puzzle.deal_failed", "TEL.2": 1792893280591, "TEL.3": "sess-1792893272248-94361-playtest-807719", "TEL.4": "F-puzzle-catalog.X2", "TEL.5": "malformed"}
+```

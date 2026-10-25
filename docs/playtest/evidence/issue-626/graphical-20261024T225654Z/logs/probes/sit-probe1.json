@@ -1,0 +1,626 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "window_minutes_requested": 16,
+  "marks": [
+    {
+      "tag": "01-mode-pick-cold",
+      "at": "2026-10-24T23:33:18.565Z",
+      "t_s": 12.632,
+      "shot": "screenshots/sit-01-01-mode-pick-cold.png",
+      "store": {
+        "key_present": false,
+        "player_elo": null,
+        "last_mode": null,
+        "document": null
+      }
+    },
+    {
+      "tag": "02-shared-setup",
+      "at": "2026-10-24T23:33:21.938Z",
+      "t_s": 16.005,
+      "shot": "screenshots/sit-02-02-shared-setup.png"
+    },
+    {
+      "tag": "03-board-advice-on",
+      "at": "2026-10-24T23:33:27.558Z",
+      "t_s": 21.625,
+      "shot": "screenshots/sit-03-03-board-advice-on.png",
+      "store": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "04-advice-off-at250ms",
+      "at": "2026-10-24T23:33:28.291Z",
+      "t_s": 22.358,
+      "shot": "screenshots/sit-04-04-advice-off-at250ms.png"
+    },
+    {
+      "tag": "05-advice-off-settled",
+      "at": "2026-10-24T23:33:30.801Z",
+      "t_s": 24.868,
+      "shot": "screenshots/sit-05-05-advice-off-settled.png"
+    },
+    {
+      "tag": "06-advice-off-move-selected",
+      "at": "2026-10-24T23:33:32.109Z",
+      "t_s": 26.176,
+      "shot": "screenshots/sit-06-06-advice-off-move-selected.png",
+      "from": "e2",
+      "to": "e4"
+    },
+    {
+      "tag": "06-advice-off-move-moved",
+      "at": "2026-10-24T23:33:34.033Z",
+      "t_s": 28.1,
+      "shot": "screenshots/sit-07-06-advice-off-move-moved.png",
+      "from": "e2",
+      "to": "e4"
+    },
+    {
+      "tag": "07-advice-off-still-1",
+      "at": "2026-10-24T23:33:39.278Z",
+      "t_s": 33.345,
+      "shot": "screenshots/sit-08-07-advice-off-still-1.png"
+    },
+    {
+      "tag": "07-advice-off-still-2",
+      "at": "2026-10-24T23:33:44.532Z",
+      "t_s": 38.599,
+      "shot": "screenshots/sit-09-07-advice-off-still-2.png"
+    },
+    {
+      "tag": "07-advice-off-still-3",
+      "at": "2026-10-24T23:33:49.763Z",
+      "t_s": 43.83,
+      "shot": "screenshots/sit-10-07-advice-off-still-3.png"
+    },
+    {
+      "tag": "08-foreground-return",
+      "at": "2026-10-24T23:34:40.010Z",
+      "t_s": 94.077,
+      "shot": "screenshots/sit-11-08-foreground-return.png",
+      "cycle": "background→foreground",
+      "background_at": "2026-10-24T23:33:49.807Z",
+      "background_ms": 45008,
+      "before": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      },
+      "after": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      },
+      "control": {
+        "hidden": false,
+        "frames": 10,
+        "tap": {
+          "ms": 297,
+          "ok": true
+        }
+      }
+    },
+    {
+      "tag": "09-mode-pick-after-reopen",
+      "at": "2026-10-24T23:34:52.216Z",
+      "t_s": 106.283,
+      "shot": "screenshots/sit-12-09-mode-pick-after-reopen.png",
+      "cycle": "quit→reopen",
+      "after": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "10-mode-pick-after-reload",
+      "at": "2026-10-24T23:35:06.424Z",
+      "t_s": 120.491,
+      "shot": "screenshots/sit-13-10-mode-pick-after-reload.png",
+      "cycle": "reload",
+      "after": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "11-board-resumed",
+      "at": "2026-10-24T23:35:15.236Z",
+      "t_s": 129.303,
+      "shot": "screenshots/sit-14-11-board-resumed.png",
+      "store": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      }
+    },
+    {
+      "tag": "12-move-01-selected",
+      "at": "2026-10-24T23:35:16.504Z",
+      "t_s": 130.571,
+      "shot": "screenshots/sit-15-12-move-01-selected.png",
+      "from": "d2",
+      "to": "d4"
+    },
+    {
+      "tag": "12-move-01-moved",
+      "at": "2026-10-24T23:35:18.447Z",
+      "t_s": 132.514,
+      "shot": "screenshots/sit-16-12-move-01-moved.png",
+      "from": "d2",
+      "to": "d4"
+    },
+    {
+      "tag": "13-still-01-1",
+      "at": "2026-10-24T23:35:43.678Z",
+      "t_s": 157.745,
+      "shot": "screenshots/sit-17-13-still-01-1.png"
+    },
+    {
+      "tag": "13-still-01-2",
+      "at": "2026-10-24T23:36:08.948Z",
+      "t_s": 183.015,
+      "shot": "screenshots/sit-18-13-still-01-2.png"
+    },
+    {
+      "tag": "12-move-02-selected",
+      "at": "2026-10-24T23:36:10.292Z",
+      "t_s": 184.359,
+      "shot": "screenshots/sit-19-12-move-02-selected.png",
+      "from": "d7",
+      "to": "d5"
+    },
+    {
+      "tag": "12-move-02-moved",
+      "at": "2026-10-24T23:36:12.281Z",
+      "t_s": 186.348,
+      "shot": "screenshots/sit-20-12-move-02-moved.png",
+      "from": "d7",
+      "to": "d5"
+    },
+    {
+      "tag": "13-still-02-1",
+      "at": "2026-10-24T23:36:37.539Z",
+      "t_s": 211.606,
+      "shot": "screenshots/sit-21-13-still-02-1.png"
+    },
+    {
+      "tag": "13-still-02-2",
+      "at": "2026-10-24T23:37:02.840Z",
+      "t_s": 236.907,
+      "shot": "screenshots/sit-22-13-still-02-2.png"
+    },
+    {
+      "tag": "12-move-03-selected",
+      "at": "2026-10-24T23:37:04.340Z",
+      "t_s": 238.408,
+      "shot": "screenshots/sit-23-12-move-03-selected.png",
+      "from": "b1",
+      "to": "c3"
+    },
+    {
+      "tag": "12-move-03-moved",
+      "at": "2026-10-24T23:37:06.392Z",
+      "t_s": 240.459,
+      "shot": "screenshots/sit-24-12-move-03-moved.png",
+      "from": "b1",
+      "to": "c3"
+    },
+    {
+      "tag": "13-still-03-1",
+      "at": "2026-10-24T23:37:31.664Z",
+      "t_s": 265.731,
+      "shot": "screenshots/sit-25-13-still-03-1.png"
+    },
+    {
+      "tag": "13-still-03-2",
+      "at": "2026-10-24T23:37:56.877Z",
+      "t_s": 290.944,
+      "shot": "screenshots/sit-26-13-still-03-2.png"
+    },
+    {
+      "tag": "12-move-04-selected",
+      "at": "2026-10-24T23:37:58.245Z",
+      "t_s": 292.312,
+      "shot": "screenshots/sit-27-12-move-04-selected.png",
+      "from": "g8",
+      "to": "f6"
+    },
+    {
+      "tag": "12-move-04-moved",
+      "at": "2026-10-24T23:38:00.222Z",
+      "t_s": 294.289,
+      "shot": "screenshots/sit-28-12-move-04-moved.png",
+      "from": "g8",
+      "to": "f6"
+    },
+    {
+      "tag": "13-still-04-1",
+      "at": "2026-10-24T23:38:25.487Z",
+      "t_s": 319.554,
+      "shot": "screenshots/sit-29-13-still-04-1.png"
+    },
+    {
+      "tag": "13-still-04-2",
+      "at": "2026-10-24T23:38:50.821Z",
+      "t_s": 344.888,
+      "shot": "screenshots/sit-30-13-still-04-2.png"
+    },
+    {
+      "tag": "12-move-05-selected",
+      "at": "2026-10-24T23:38:52.294Z",
+      "t_s": 346.361,
+      "shot": "screenshots/sit-31-12-move-05-selected.png",
+      "from": "c1",
+      "to": "f4"
+    },
+    {
+      "tag": "12-move-05-moved",
+      "at": "2026-10-24T23:38:54.328Z",
+      "t_s": 348.395,
+      "shot": "screenshots/sit-32-12-move-05-moved.png",
+      "from": "c1",
+      "to": "f4"
+    },
+    {
+      "tag": "13-still-05-1",
+      "at": "2026-10-24T23:39:19.598Z",
+      "t_s": 373.665,
+      "shot": "screenshots/sit-33-13-still-05-1.png"
+    },
+    {
+      "tag": "13-still-05-2",
+      "at": "2026-10-24T23:39:44.993Z",
+      "t_s": 399.06,
+      "shot": "screenshots/sit-34-13-still-05-2.png"
+    },
+    {
+      "tag": "12-move-06-selected",
+      "at": "2026-10-24T23:39:46.827Z",
+      "t_s": 400.894,
+      "shot": "screenshots/sit-35-12-move-06-selected.png",
+      "from": "c8",
+      "to": "f5"
+    },
+    {
+      "tag": "12-move-06-moved",
+      "at": "2026-10-24T23:39:48.999Z",
+      "t_s": 403.066,
+      "shot": "screenshots/sit-36-12-move-06-moved.png",
+      "from": "c8",
+      "to": "f5"
+    },
+    {
+      "tag": "13-still-06-1",
+      "at": "2026-10-24T23:40:14.267Z",
+      "t_s": 428.334,
+      "shot": "screenshots/sit-37-13-still-06-1.png"
+    },
+    {
+      "tag": "13-still-06-2",
+      "at": "2026-10-24T23:40:39.555Z",
+      "t_s": 453.622,
+      "shot": "screenshots/sit-38-13-still-06-2.png"
+    },
+    {
+      "tag": "12-move-07-selected",
+      "at": "2026-10-24T23:40:41.132Z",
+      "t_s": 455.199,
+      "shot": "screenshots/sit-39-12-move-07-selected.png",
+      "from": "g1",
+      "to": "f3"
+    },
+    {
+      "tag": "12-move-07-moved",
+      "at": "2026-10-24T23:40:43.138Z",
+      "t_s": 457.205,
+      "shot": "screenshots/sit-40-12-move-07-moved.png",
+      "from": "g1",
+      "to": "f3"
+    },
+    {
+      "tag": "13-still-07-1",
+      "at": "2026-10-24T23:41:08.484Z",
+      "t_s": 482.551,
+      "shot": "screenshots/sit-41-13-still-07-1.png"
+    },
+    {
+      "tag": "13-still-07-2",
+      "at": "2026-10-24T23:41:33.784Z",
+      "t_s": 507.851,
+      "shot": "screenshots/sit-42-13-still-07-2.png"
+    },
+    {
+      "tag": "12-move-08-selected",
+      "at": "2026-10-24T23:41:35.186Z",
+      "t_s": 509.253,
+      "shot": "screenshots/sit-43-12-move-08-selected.png",
+      "from": "e7",
+      "to": "e6"
+    },
+    {
+      "tag": "12-move-08-moved",
+      "at": "2026-10-24T23:41:37.151Z",
+      "t_s": 511.218,
+      "shot": "screenshots/sit-44-12-move-08-moved.png",
+      "from": "e7",
+      "to": "e6"
+    },
+    {
+      "tag": "13-still-08-1",
+      "at": "2026-10-24T23:42:02.397Z",
+      "t_s": 536.464,
+      "shot": "screenshots/sit-45-13-still-08-1.png"
+    },
+    {
+      "tag": "13-still-08-2",
+      "at": "2026-10-24T23:42:27.651Z",
+      "t_s": 561.718,
+      "shot": "screenshots/sit-46-13-still-08-2.png"
+    },
+    {
+      "tag": "12-move-09-selected",
+      "at": "2026-10-24T23:42:28.983Z",
+      "t_s": 563.05,
+      "shot": "screenshots/sit-47-12-move-09-selected.png",
+      "from": "e2",
+      "to": "e3"
+    },
+    {
+      "tag": "12-move-09-moved",
+      "at": "2026-10-24T23:42:30.942Z",
+      "t_s": 565.009,
+      "shot": "screenshots/sit-48-12-move-09-moved.png",
+      "from": "e2",
+      "to": "e3"
+    },
+    {
+      "tag": "13-still-09-1",
+      "at": "2026-10-24T23:42:56.360Z",
+      "t_s": 590.427,
+      "shot": "screenshots/sit-49-13-still-09-1.png"
+    },
+    {
+      "tag": "13-still-09-2",
+      "at": "2026-10-24T23:43:21.754Z",
+      "t_s": 615.821,
+      "shot": "screenshots/sit-50-13-still-09-2.png"
+    },
+    {
+      "tag": "12-move-10-selected",
+      "at": "2026-10-24T23:43:23.399Z",
+      "t_s": 617.466,
+      "shot": "screenshots/sit-51-12-move-10-selected.png",
+      "from": "f8",
+      "to": "d6"
+    },
+    {
+      "tag": "12-move-10-moved",
+      "at": "2026-10-24T23:43:25.701Z",
+      "t_s": 619.768,
+      "shot": "screenshots/sit-52-12-move-10-moved.png",
+      "from": "f8",
+      "to": "d6"
+    },
+    {
+      "tag": "13-still-10-1",
+      "at": "2026-10-24T23:43:51.138Z",
+      "t_s": 645.205,
+      "shot": "screenshots/sit-53-13-still-10-1.png"
+    },
+    {
+      "tag": "13-still-10-2",
+      "at": "2026-10-24T23:44:16.638Z",
+      "t_s": 670.705,
+      "shot": "screenshots/sit-54-13-still-10-2.png"
+    },
+    {
+      "tag": "12-move-11-selected",
+      "at": "2026-10-24T23:44:18.386Z",
+      "t_s": 672.453,
+      "shot": "screenshots/sit-55-12-move-11-selected.png",
+      "from": "d2",
+      "to": "d4"
+    },
+    {
+      "tag": "12-move-11-moved",
+      "at": "2026-10-24T23:44:20.735Z",
+      "t_s": 674.802,
+      "shot": "screenshots/sit-56-12-move-11-moved.png",
+      "from": "d2",
+      "to": "d4"
+    },
+    {
+      "tag": "13-still-11-1",
+      "at": "2026-10-24T23:44:46.215Z",
+      "t_s": 700.282,
+      "shot": "screenshots/sit-57-13-still-11-1.png"
+    },
+    {
+      "tag": "13-still-11-2",
+      "at": "2026-10-24T23:45:11.578Z",
+      "t_s": 725.645,
+      "shot": "screenshots/sit-58-13-still-11-2.png"
+    },
+    {
+      "tag": "12-move-12-selected",
+      "at": "2026-10-24T23:45:13.324Z",
+      "t_s": 727.391,
+      "shot": "screenshots/sit-59-12-move-12-selected.png",
+      "from": "d7",
+      "to": "d5"
+    },
+    {
+      "tag": "12-move-12-moved",
+      "at": "2026-10-24T23:45:15.514Z",
+      "t_s": 729.581,
+      "shot": "screenshots/sit-60-12-move-12-moved.png",
+      "from": "d7",
+      "to": "d5"
+    },
+    {
+      "tag": "13-still-12-1",
+      "at": "2026-10-24T23:45:40.741Z",
+      "t_s": 754.808,
+      "shot": "screenshots/sit-61-13-still-12-1.png"
+    },
+    {
+      "tag": "13-still-12-2",
+      "at": "2026-10-24T23:46:05.983Z",
+      "t_s": 780.05,
+      "shot": "screenshots/sit-62-13-still-12-2.png"
+    },
+    {
+      "tag": "12-move-13-selected",
+      "at": "2026-10-24T23:46:07.395Z",
+      "t_s": 781.462,
+      "shot": "screenshots/sit-63-12-move-13-selected.png",
+      "from": "b1",
+      "to": "c3"
+    },
+    {
+      "tag": "12-move-13-moved",
+      "at": "2026-10-24T23:46:09.336Z",
+      "t_s": 783.403,
+      "shot": "screenshots/sit-64-12-move-13-moved.png",
+      "from": "b1",
+      "to": "c3"
+    },
+    {
+      "tag": "13-still-13-1",
+      "at": "2026-10-24T23:46:34.578Z",
+      "t_s": 808.645,
+      "shot": "screenshots/sit-65-13-still-13-1.png"
+    },
+    {
+      "tag": "13-still-13-2",
+      "at": "2026-10-24T23:46:59.786Z",
+      "t_s": 833.853,
+      "shot": "screenshots/sit-66-13-still-13-2.png"
+    },
+    {
+      "tag": "12-move-14-selected",
+      "at": "2026-10-24T23:47:01.205Z",
+      "t_s": 835.272,
+      "shot": "screenshots/sit-67-12-move-14-selected.png",
+      "from": "g8",
+      "to": "f6"
+    },
+    {
+      "tag": "12-move-14-moved",
+      "at": "2026-10-24T23:47:03.176Z",
+      "t_s": 837.243,
+      "shot": "screenshots/sit-68-12-move-14-moved.png",
+      "from": "g8",
+      "to": "f6"
+    },
+    {
+      "tag": "13-still-14-1",
+      "at": "2026-10-24T23:47:28.539Z",
+      "t_s": 862.606,
+      "shot": "screenshots/sit-69-13-still-14-1.png"
+    },
+    {
+      "tag": "13-still-14-2",
+      "at": "2026-10-24T23:47:53.825Z",
+      "t_s": 887.892,
+      "shot": "screenshots/sit-70-13-still-14-2.png"
+    },
+    {
+      "tag": "12-move-15-selected",
+      "at": "2026-10-24T23:47:55.267Z",
+      "t_s": 889.334,
+      "shot": "screenshots/sit-71-12-move-15-selected.png",
+      "from": "c1",
+      "to": "f4"
+    },
+    {
+      "tag": "12-move-15-moved",
+      "at": "2026-10-24T23:47:57.428Z",
+      "t_s": 891.495,
+      "shot": "screenshots/sit-72-12-move-15-moved.png",
+      "from": "c1",
+      "to": "f4"
+    },
+    {
+      "tag": "13-still-15-1",
+      "at": "2026-10-24T23:48:22.731Z",
+      "t_s": 916.798,
+      "shot": "screenshots/sit-73-13-still-15-1.png"
+    },
+    {
+      "tag": "13-still-15-2",
+      "at": "2026-10-24T23:48:48.134Z",
+      "t_s": 942.201,
+      "shot": "screenshots/sit-74-13-still-15-2.png"
+    },
+    {
+      "tag": "14-window-closed",
+      "at": "2026-10-24T23:48:50.039Z",
+      "t_s": 944.106,
+      "shot": "screenshots/sit-75-14-window-closed.png",
+      "store": {
+        "key_present": true,
+        "player_elo": 1000,
+        "last_mode": "shared",
+        "document": {
+          "last_mode": "shared",
+          "player_elo": 1000,
+          "recent_solved": [],
+          "version": 1
+        }
+      },
+      "control": {
+        "hidden": false,
+        "frames": 10,
+        "tap": {
+          "ms": 519,
+          "ok": true
+        }
+      }
+    }
+  ],
+  "complete": true,
+  "ended_at": "2026-10-24T23:48:50.245Z"
+}
