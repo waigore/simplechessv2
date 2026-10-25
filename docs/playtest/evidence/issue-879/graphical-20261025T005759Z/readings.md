@@ -61,5 +61,5 @@ differed between the arms that advanced and the arms that did not.
 
 ## Is the activation intermittent?
 
-No loss in 28 presses inside a painted control, across three legs, fresh and reopened sessions,
+No loss in 34 presses inside a painted control (30 centre-grid arms plus 4 boundary points), across three legs, fresh and reopened sessions,
 and two input paths. All 7 presses that did not act were in the seam or outside the panel.

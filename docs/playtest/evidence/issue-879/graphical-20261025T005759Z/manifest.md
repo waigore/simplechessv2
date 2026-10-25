@@ -15,7 +15,7 @@
 - **Repeat count**: **6** arms per button on each touch leg; **3** per button on the mouse leg;
   **1** per boundary and seam point. Every arm is the first press of its own session.
 
-## Results — 28 presses inside a painted control, 28 activations
+## Results — 30 centre-grid presses and 4 boundary presses inside a painted control, 34 activations
 
 | Leg | Shared game (C1) | Puzzle stream (C2) | Seam / outside panel |
 |---|---|---|---|
