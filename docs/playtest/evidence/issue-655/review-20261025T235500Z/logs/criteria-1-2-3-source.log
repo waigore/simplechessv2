@@ -1,0 +1,37 @@
+$ git grep -n "advice_endpoint\|advice_api_key" -- game/
+game/advice_ui_test.gd:40:	_router.advice_endpoint = "http://advice.test/advice"
+game/advice_ui_test.gd:41:	_router.advice_api_key = "test-key"
+game/session_router.gd:33:var advice_endpoint := ""
+game/session_router.gd:34:var advice_api_key := ""
+game/session_router.gd:483:	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
+game/session_router.gd:552:	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+game/session_router.gd:756:	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+
+$ sed -n "30,35p;550,554p;754,758p" game/session_router.gd
+var advice_on := true
+## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
+## empty endpoint or key makes Advice unavailable (FAIL.T1).
+var advice_endpoint := ""
+var advice_api_key := ""
+var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
+## B3: both T9 and T10 must be set before Advice can fetch anything.
+func _advice_available() -> bool:
+	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+
+
+	puzzle_flow.telemetry.connect(_on_puzzle_telemetry)
+	puzzle_flow.left.connect(_on_puzzle_left)
+	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+
+
+
+$ git grep -n "T9\|T10\|B5" -- specs/technical/configuration.md
+specs/technical/configuration.md:31:| T9 | advice_endpoint | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default; ships set (`B5`) |
+specs/technical/configuration.md:32:| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; ships set; serves the catalog route too (`B5`) |
+specs/technical/configuration.md:41:| B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: send 2000 as the O1 `time_ms` (design default; the search stop stays [`CMP-advice-backend`](components/advice-backend.md) R3). T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
+specs/technical/configuration.md:43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+
+$ git log --oneline -1 -- specs/technical/configuration.md
+e19401f Make T9/T10 agree with B5 on the catalog release state (#648) (#842)
+$ git log --oneline -1 -- specs/technical/components/catalog-service.md
+e19401f Make T9/T10 agree with B5 on the catalog release state (#648) (#842)

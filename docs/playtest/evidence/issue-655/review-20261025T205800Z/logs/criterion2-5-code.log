@@ -1,0 +1,35 @@
+## Criterion 2 — T9/T10 on the shipped path
+--- game/session_router.gd:30-36 ---
+var advice_on := true
+## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
+## empty endpoint or key makes Advice unavailable (FAIL.T1).
+var advice_endpoint := ""
+var advice_api_key := ""
+var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
+var options_locked := false
+--- every T9/T10 assignment in game/ ---
+game/advice_ui_test.gd:40:	_router.advice_endpoint = "http://advice.test/advice"
+game/advice_ui_test.gd:41:	_router.advice_api_key = "test-key"
+
+## Criterion 5 — C5/EX.confirm gate that makes the probe leg possible
+func request_confirm(control_id: String) -> Dictionary:
+	var kind := ""
+	var needs_puzzle := true
+	var ends_attempt := false
+	match control_id:
+		"C3":
+			kind = CONFIRM_REVEAL
+			ends_attempt = true
+		"C4":
+			kind = CONFIRM_ABANDON
+			ends_attempt = true
+		"C5":
+			kind = CONFIRM_LEAVE
+			needs_puzzle = false
+		_:
+			return {"ok": false}
+	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+		return {"ok": false}
+	if ends_attempt and _is_settled():
+		return {"ok": false, "reason": "settled"}
+	play_ui_state = UI_S2

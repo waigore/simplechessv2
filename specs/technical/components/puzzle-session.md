@@ -12,7 +12,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 
 | ID | Responsibility |
 |----|----------------|
-| R1 | Deal the next puzzle per DIF.Y1 from the host catalog, reading one record through [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) and offering it to [`CMP-puzzle-progression`](puzzle-progression.md) O2; the read runs off the move path and a failed or non-selecting record deals nothing (C5) |
+| R1 | Deal the next puzzle per DIF.Y1 from the host catalog, reading one record through [`CTR-puzzle-catalog-read`](../contracts/puzzle-catalog-read.md) and offering it to [`CMP-puzzle-progression`](puzzle-progression.md) O2; the read runs off the move path and a failed or non-selecting record deals nothing (C5). The release and playtest read returns one record, so the client's O2 is the membership test; the multi-record ladder runs in tests and the in-memory path, and on the host against the snapshot |
 | R2 | Accept puzzle moves via chess-rules, judging each against the required sequence through [`CTR-puzzle-progress`](../contracts/puzzle-progress.md) O3; detect solve vs wrong move |
 | R3 | On result, take the updated Elo and recentSolved from [`CMP-puzzle-progression`](puzzle-progression.md) O1 and commit them via persist; own no Elo, recent-solved, or pick arithmetic of its own |
 | R4 | Never enable Advice |

@@ -1,0 +1,45 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "GATE",
+  "locales": [
+    {
+      "locale": "en",
+      "captured": true,
+      "sharedSetup": true,
+      "sharedPlay": true,
+      "puzzleStream": false,
+      "title": "125,113,68"
+    },
+    {
+      "locale": "zh-Hant",
+      "step": 1,
+      "changed": true
+    },
+    {
+      "locale": "zh-Hant",
+      "captured": true,
+      "sharedSetup": true,
+      "sharedPlay": true,
+      "puzzleStream": false,
+      "title": "125,113,68"
+    },
+    {
+      "locale": "ja",
+      "step": 1,
+      "changed": true
+    },
+    {
+      "locale": "ja",
+      "step": 2,
+      "changed": false
+    },
+    {
+      "locale": "ja",
+      "captured": true,
+      "sharedSetup": true,
+      "sharedPlay": true,
+      "puzzleStream": false,
+      "title": "125,113,68"
+    }
+  ]
+}

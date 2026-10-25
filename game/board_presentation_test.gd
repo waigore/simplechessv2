@@ -2,6 +2,9 @@ class_name BoardPresentationTest
 extends SceneTree
 ## Headless checks for #56: geometry, seat flip, timing budgets.
 
+## FRM.P1 body box half-width: the widest silhouette / tallest body margin.
+const FRM_P1_BODY_HALF := 0.425
+
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -20,9 +23,13 @@ func _run() -> void:
 		if err.is_empty():
 			err = await _check_viewport(board)
 		if err.is_empty():
+			err = await _check_tap_round_trip(board)
+		if err.is_empty():
 			err = await _check_orientation(board)
 		if err.is_empty():
 			err = await _check_motion(board)
+		if err.is_empty():
+			err = await _check_check_mark(board)
 	if not err.is_empty():
 		_fail(err)
 		return
@@ -283,6 +290,96 @@ func _check_viewport(board: BoardPresentation) -> String:
 	return ""
 
 
+## #845 — a tap on a *painted* square must select that square. The exported
+## build plays the project's 1280×720 base through `canvas_items`/`expand`, so
+## the frame is a non-identity stretch of the canvas; the inverse half of the
+## check therefore goes through that stretch, exactly as a pointer does. A test
+## under the identity transform a bare runner starts with would pass either way
+## and prove nothing.
+func _check_tap_round_trip(board: BoardPresentation) -> String:
+	_apply_release_stretch()
+	var squares := ["a1", "e1", "h1", "a2", "e2", "e4", "d4", "e5", "a8", "h8"]
+	var stretched := false
+	for frame in [Vector2i(720, 1280), Vector2i(1280, 720), Vector2i(800, 282), Vector2i(390, 844)]:
+		root.size = frame
+		await process_frame
+		board.size = root.get_visible_rect().size
+		await process_frame
+		var stretch := root.get_final_transform()
+		# 1280×720 *is* the base, so its stretch is legitimately identity; every
+		# other frame must arrive through a real transform or the check is hollow.
+		if frame == Vector2i(1280, 720):
+			if stretch != Transform2D.IDENTITY:
+				return "#845 the base frame must play at 1:1"
+		elif stretch == Transform2D.IDENTITY:
+			return "#845 identity stretch at %s — the check would prove nothing" % frame
+		else:
+			stretched = true
+		var problem := _check_painted_squares(board, stretch, frame, squares)
+		if not problem.is_empty():
+			return problem
+	_reset_release_stretch(board)
+	if not stretched:
+		return "#845 no frame exercised a canvas stretch"
+	return ""
+
+
+func _check_painted_squares(
+	board: BoardPresentation, stretch: Transform2D, frame: Vector2i, squares: Array
+) -> String:
+	# The frame in the stretch's own pixels: the control fills the frame, so its
+	# stretched size is the frame the build plays into.
+	var frame_rect := Rect2(Vector2.ZERO, stretch * board.size)
+	for square in squares:
+		var painted: Vector2 = stretch * board.world_to_screen(board.framed_center(square))
+		if not frame_rect.has_point(painted):
+			return "#845 %s paints outside %s at %s" % [square, frame, painted]
+		# The pointer path receives canvas coordinates; the painted point only
+		# becomes one after the frame's own stretch is removed (#845).
+		var delivered := stretch.affine_inverse() * painted
+		var hit := BoardGeometry.square_at(board.screen_to_world(delivered))
+		if hit != square:
+			return "#845 tap on painted %s hit %s at %s" % [square, hit, frame]
+	return _check_painted_frame(board, stretch, frame)
+
+
+## Half two: the paint itself must sit where the frame's geometry puts it, not
+## merely invert against itself. PRJ.A1 centres the eye on the board and never
+## crops, so its world centre lands on the control's centre and, on a portrait
+## frame, the 10-unit visible width is the frame's full width.
+func _check_painted_frame(
+	board: BoardPresentation, stretch: Transform2D, frame: Vector2i
+) -> String:
+	var painted_centre := stretch * board.world_to_screen(BoardGeometry.BOARD_CENTER)
+	var control_centre := stretch * (board.get_global_transform_with_canvas() * (board.size * 0.5))
+	if painted_centre.distance_to(control_centre) > 1.0:
+		return (
+			"#845 board centre paints at %s, not the control centre %s"
+			% [painted_centre, control_centre]
+		)
+	var control_px: Vector2 = stretch * board.size
+	if frame.y > frame.x:
+		var span := stretch * board.world_to_screen(Vector2(BoardGeometry.BOARD_SIZE, 0.0))
+		var origin := stretch * board.world_to_screen(Vector2.ZERO)
+		var expected := control_px.x * BoardGeometry.BOARD_SIZE / BoardGeometry.SHORT_AXIS
+		if absf(span.x - origin.x - expected) > 1.0:
+			return "#845 the 8-wide board spans %s of %s px" % [span.x - origin.x, expected]
+	return ""
+
+
+func _apply_release_stretch() -> void:
+	root.content_scale_size = Vector2i(1280, 720)
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+
+
+func _reset_release_stretch(board: BoardPresentation) -> void:
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	root.content_scale_size = Vector2i(0, 0)
+	root.size = Vector2i(720, 1280)
+	board.size = Vector2(720, 1280)
+
+
 func _check_orientation(board: BoardPresentation) -> String:
 	## #617 — raster art must not be mirrored by the world Y flip (SPC.E1).
 	## Synthetic asymmetric texture: black top-left pixel, everything else white.
@@ -457,7 +554,10 @@ func _check_motion(board: BoardPresentation) -> String:
 	err = await _motion_capture_castle(board)
 	if not err.is_empty():
 		return err
-	return await _motion_marks(board, rules)
+	err = await _motion_marks(board, rules)
+	if not err.is_empty():
+		return err
+	return await _check_check_mark(board)
 
 
 func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
@@ -647,6 +747,84 @@ func _motion_marks(board: BoardPresentation, rules: ChessRules) -> String:
 	if 2.0 * r * r < 0.25 - 0.0001:
 		return "PER.R4 empty mark under 1/4 square"
 	return ""
+
+
+## PER.R6 / CMP-presentation.R7 — the checked King carries a PAL.C8 L-frame.
+func _check_check_mark(board: BoardPresentation) -> String:
+	var checked_position := {
+		"occupancy":
+		{
+			"e8": {"color": "black", "kind": "king", "square": "e8"},
+			"f7": {"color": "white", "kind": "queen", "square": "f7"},
+		},
+		"side_to_move": "black",
+	}
+	var quiet_options := {"side_to_move": "black"}
+	board.render_position(checked_position, "", PackedStringArray(), quiet_options)
+	await process_frame
+	var marks := board.get_node_or_null("World/Seat/Content/Overlays/CheckMarks") as Node2D
+	var quiet := _first_fail(
+		[
+			[marks != null, "PER.R6 check mark node missing"],
+			[marks != null and marks.get_child_count() == 0, "PER.R6 mark shown out of check"],
+		]
+	)
+	if not quiet.is_empty() or marks == null:
+		return quiet
+	board.render_position(
+		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "black"}
+	)
+	await process_frame
+	var count_ok := [[marks.get_child_count() == 2, "PER.R6 check cue must be two L-frames"]]
+	var shown := _first_fail(
+		count_ok + _l_frame_checks(marks.get_children(), BoardGeometry.square_center("e8"))
+	)
+	if not shown.is_empty():
+		return shown
+	# In check with no rendered King of that side must not throw a mark.
+	board.render_position(
+		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "white"}
+	)
+	await process_frame
+	return _first_fail(
+		[[marks.get_child_count() == 0, "PER.R6 in check without a rendered King threw a mark"]]
+	)
+
+
+## PAL.K9 form: two asymmetric L-frames, C8, inside the square and off the body.
+func _l_frame_checks(children: Array, center: Vector2) -> Array:
+	var checks: Array = []
+	for child in children:
+		var line := child as Line2D
+		checks.append([line != null, "PER.R6 check cue must be a stroke"])
+		if line == null:
+			continue
+		checks.append(
+			[line.default_color == CheckMarks.COLOR_CHECK, "PER.R6 check cue must be PAL.C8"]
+		)
+		checks.append(
+			[
+				line.default_color != BoardPresentation.COLOR_SELECT,
+				"PAL.K9 check cue must differ from the selection ring"
+			]
+		)
+		checks.append([line.get_point_count() == 3, "PAL.K9 check cue must be an L-frame"])
+		if line.get_point_count() != 3:
+			continue
+		checks.append([_arms_unequal(line), "PAL.K9 check L arms must be unequal, not a bracket"])
+		for i in line.get_point_count():
+			var point := line.get_point_position(i)
+			var dx := absf(point.x - center.x)
+			var dy := absf(point.y - center.y)
+			checks.append([dx <= 0.5 and dy <= 0.5, "PER.R6 check cue left the King square"])
+			checks.append([maxf(dx, dy) >= FRM_P1_BODY_HALF, "PER.R1 check cue covers the body"])
+	return checks
+
+
+func _arms_unequal(line: Line2D) -> bool:
+	var first := line.get_point_position(0).distance_to(line.get_point_position(1))
+	var second := line.get_point_position(1).distance_to(line.get_point_position(2))
+	return not is_equal_approx(first, second)
 
 
 func _first_fail(checks: Array) -> String:

@@ -1,0 +1,13 @@
+$ gh api repos/.../contents/docs/playtest/evidence/issue-550/headless-20261024T000000Z/manifest.md (on main)
+# Manifest
+
+- **Issue**: 550
+- **Environment**: headless (`ENV.1`)
+- **Build / session id**: Godot `4.7.2.stable.official.ed1daf0bf`, `origin/main` `614746c`. Probe `TEL.3` `sess-1792788917499-38686-playtest` (`logs/playtest-headless.log`). Same build as the graphical twin.
+- **Coverage mode**: `full` (critical IDs: none), intersected with #550's scope: design `PTD-puzzle-stream`, `PTD-difficulty`, `PTD-progression`, `PTD-game-state`, `PTD-pieces-common`; UX `PTU-puzzle-session`, `PTU-puzzle-play`, `PTU-mode-pick`, `PTU-navigation`, `PTU-controls`, `PTU-exceptions`, `PTU-localization`. View stories excluded.
+- **Story-row source**: the protocol files' own `Cites` rows; #481's map is not on `main`. See `notes.md`.
+- **Defects**: #655 — Puzzle stream deals nothing on the shipped path (`T9`/`T10` unset).
+- **Screenshots**: waiting on `../graphical-20261024T000000Z/screenshots/`, the same build. A headless run omits them without a fail.
+
+$ git log -1 --format="%h %s" -- docs/playtest/evidence/issue-550/headless-20261024T000000Z/manifest.md
+d9e1fe1 Run the wave-2 puzzle sweep: Puzzle stream deals nothing (#550) (#656)

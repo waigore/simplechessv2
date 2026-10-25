@@ -24,37 +24,52 @@ var tel_sink: Callable = Callable()
 
 var _report: Dictionary = {}
 var _armed := false
+## A window that `observe()` closed and no caller has read yet (#544 acceptance
+## finding 1). `measure(kind)` hands it over once, then it is gone: one arm
+## measures one window and no report is ever returned twice.
+var _consumed: Dictionary = {}
 
 
 ## Arm the next window for `kind`. It refuses rather than arming on a placeholder,
-## and the refusal names the first predicate that failed (`D1`).
-func start(kind: String, paused: bool) -> Dictionary:
+## and the refusal names the first predicate that failed (`D1`). A window already
+## closed but not yet read is not an open window: a new arm retires it.
+func start(kind_id: String, paused: bool) -> Dictionary:
 	if _armed:
-		return _refuse(kind, "window open")
-	if kind == KIND_FRAME_TIMES:
+		return _refuse(kind_id, "window open")
+	_consumed = {}
+	if kind_id == KIND_FRAME_TIMES:
 		return _arm_frame_times(paused)
-	if kind == KIND_LOADING_READY:
+	if kind_id == KIND_LOADING_READY:
 		return _arm_loading_ready(paused)
-	return _refuse(kind, "unknown kind")
+	return _refuse(kind_id, "unknown kind")
 
 
 ## The report for the armed window. It closes and disarms, so one arm measures one
 ## window and no caller can hand in samples or a `max` (`D2`). An open window that
 ## never met its close predicate comes back `cancelled` (`D1`).
-func report(kind: String) -> Dictionary:
+##
+## A window that met its close predicate is closed by `observe()` before a caller
+## can ask, so this returns that window's report for the kind it measured (`#544`
+## acceptance finding 1). Asking for a different kind is a fresh refusal and leaves
+## the measured report for its own kind.
+func report(kind_id: String) -> Dictionary:
+	if not _armed and not _consumed.is_empty():
+		return _take_consumed(kind_id)
 	if not _armed:
-		return _refuse(kind, "no window")
-	var closed := _close("ok" if str(_report.get("kind", "")) == kind else "cancelled")
+		return _refuse(kind_id, "no window")
+	var closed := _close("ok" if str(_report.get("kind", "")) == kind_id else "cancelled")
 	_armed = false
-	_report = closed.duplicate(true)
 	_emit_end(closed)
 	return closed
 
 
 ## Closes an open window as `cancelled`, keeping the samples seen but claiming no
-## `max_ms` (`D1`).
+## `max_ms` (`D1`). With nothing open, a window that closed by itself is still
+## handed over rather than lost (`#544` acceptance finding 1).
 func disarm() -> Dictionary:
 	if not _armed:
+		if not _consumed.is_empty():
+			return _close_unread()
 		return _refuse("", "no window")
 	var closed := _close("cancelled")
 	_armed = false
@@ -73,6 +88,7 @@ func refuse_release(kind: String, remember: bool = false) -> Dictionary:
 	if remember:
 		_report = refusal.duplicate(true)
 		_armed = false
+		_consumed = {}
 	return refusal
 
 
@@ -80,15 +96,26 @@ func is_armed() -> bool:
 	return _armed
 
 
-## One passive frame for an open window. A snapshot that has not met the window's
-## close predicate leaves it open; nothing is invented across a different window.
+## One passive frame for an open window; nothing is invented across a window.
+##
+## A frame belongs to the window when the phase the snapshot reads is still the
+## window's own (`#544` acceptance finding 2). `loading_ready` holds every frame
+## observed while the stage is still `loading`, so the *last* load frame is always
+## in the reading even when the load finishes between two ticks and the close is
+## first seen on the following one — no `ok` report about nothing. `frame_times`
+## holds the frames whose snapshot had not yet met its close predicate; the move is
+## observed on the frame after the one that produced it, so that frame is the close
+## and not a sample (`D1`).
 func observe() -> void:
 	if not _armed:
 		return
-	(_report["samples"] as Array).append(_frame_ms())
-	_report["sample_count"] = (_report["samples"] as Array).size()
-	if _closes(_report, _snapshot()):
-		report(str(_report["kind"]))
+	var closing := _closes(_report, _snapshot())
+	if str(_report.get("kind", "")) == KIND_LOADING_READY or not closing:
+		_sample()
+	if closing:
+		_consumed = _close("ok")
+		_armed = false
+		_emit_end(_consumed)
 
 
 ## `D1` — one close predicate per mode, each reading a field that exists *after*
@@ -157,14 +184,20 @@ func _arm_loading_ready(paused: bool) -> Dictionary:
 	return empty
 
 
-## The armed snapshot is the window's origin and never reaches a report.
+## The armed snapshot is the window's origin and never reaches a report. The open
+## window keeps a copy, so the arm's own answer stays the caller's object and the
+## frame source never writes through it (`#544` acceptance finding 1).
 func _arm(open_report: Dictionary, snap: Dictionary, report_mode: String) -> void:
 	open_report["armed"] = snap.duplicate(true)
 	open_report["events"] = {"start": _emit_start(report_mode), "end": {}}
-	_report = open_report
+	_report = open_report.duplicate(true)
+	_report["armed"] = snap.duplicate(true)
 	_armed = true
 
 
+## The closed copy of the open window. The window stops here: it holds no live
+## state once closed, and `_emit_end` makes the closed report the run's readable
+## one (`#544` acceptance finding 1).
 func _close(status: String) -> Dictionary:
 	var closed := _report.duplicate(true)
 	closed.erase("armed")
@@ -177,14 +210,36 @@ func _close(status: String) -> Dictionary:
 			top = maxf(top, float(sample))
 	closed["max_ms"] = top
 	closed["sample_count"] = samples.size()
-	_report = closed
 	if status != "ok" and str(closed.get("detail", "")).is_empty():
 		closed["detail"] = "window did not close"
 	return closed
 
 
+## The report a self-closed window is waiting to hand over, for the kind it
+## measured. A different kind is a fresh refusal, not this window's reading.
+func _take_consumed(kind_id: String) -> Dictionary:
+	if str(_consumed.get("kind", "")) != kind_id:
+		return _refuse(kind_id, "no window")
+	return _close_unread()
+
+
+## Hand over the self-closed report once; a second ask is refused, so one arm
+## never yields two reports (`#544` acceptance finding 1).
+func _close_unread() -> Dictionary:
+	var closed := _consumed.duplicate(true)
+	_consumed = {}
+	return closed
+
+
 func _frame_ms() -> float:
 	return float(frame_provider.call()) if frame_provider.is_valid() else 0.0
+
+
+## One live frame into the open window; collection is internal, never a caller's
+## list (`D2`).
+func _sample() -> void:
+	(_report["samples"] as Array).append(_frame_ms())
+	_report["sample_count"] = (_report["samples"] as Array).size()
 
 
 func _snapshot() -> Dictionary:
@@ -222,10 +277,13 @@ func _emit_start(report_mode: String) -> Dictionary:
 	return _emit("measure.start", "pass", report_mode)
 
 
+## `D2` — the end event lands on the report it closes, so the report a caller
+## receives always carries both halves of `TEL.1`, whichever path closed it.
 func _emit_end(closed: Dictionary) -> void:
-	_report["events"]["end"] = _emit(
+	closed["events"]["end"] = _emit(
 		"measure.end", _outcome(str(closed["status"])), str(closed["mode"])
 	)
+	_report = closed.duplicate(true)
 
 
 ## `TEL.4` is the judged story; `TEL.5` stays pass / fail, not the report's status.

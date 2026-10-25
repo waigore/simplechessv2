@@ -34,6 +34,8 @@ func _run_all() -> String:
 		_check_o4_kn_vs_kb,
 		_check_o4_bishops_opposite_and_same,
 		_check_new_session_reinit,
+		_check_stalemate_by_moves,
+		_check_in_check_signal,
 	]
 	for check in checks:
 		var problem: String = check.call()
@@ -218,6 +220,78 @@ func _stalemate_end_signal(session: SharedGameSession) -> String:
 	elif not bool(session.play_state().get("clocks_stopped", false)):
 		problem = "END.D1 clocks must stop"
 	return problem
+
+
+## A4 (#767): END.D1 is computed by the shared `result()` endpoint, not only
+## asserted from a loaded {} position. K + Q vs K, stalemate on the last ply:
+## White Ka3, Qa4 / Black Ka1. Qa4-b3 covers a2, b1 and b2, the king guards b3,
+## so a1 has no legal move and is not in check.
+func _check_stalemate_by_moves() -> String:
+	var session := SharedGameSession.new()
+	(
+		session
+		. rules
+		. load_position(
+			[
+				_man("a1", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+				_man("a4", ChessRules.SIDE_WHITE, ChessRules.KIND_QUEEN),
+				_man("a3", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+			],
+			ChessRules.SIDE_WHITE,
+			_no_castle(),
+		)
+	)
+	session._sync_active_to_side_to_move()
+	var problems := []
+	if session._in_check_now():
+		problems.append("setup must not start in check")
+	if not session.rules.legal_targets("a1").is_empty():
+		problems.append("setup: a1 must have no legal move yet")
+	if not session.try_move("a4", "b3"):
+		problems.append("stalemate move a4-b3 must be legal")
+	if not problems.is_empty():
+		return "A4 %s" % problems[0]
+	var ended: Dictionary = session.play_state()["game_ended"]
+	if not session.game_ended() or str(ended.get("reason", "")) != ChessRules.END_D1:
+		return "A4 stalemate must end the game as END.D1"
+	var end_problem := _stalemate_end_signal(session)
+	return "A4 %s" % end_problem if not end_problem.is_empty() else ""
+
+
+## PER.R6 — in-check follows the check only: reported while the side to move is
+## in check, cleared once the check resolves (the mark reads this field).
+func _check_in_check_signal() -> String:
+	var state := {}
+	var session := SharedGameSession.new()
+	(
+		session
+		. rules
+		. load_position(
+			[
+				_man("e1", ChessRules.SIDE_WHITE, ChessRules.KIND_KING),
+				_man("e8", ChessRules.SIDE_BLACK, ChessRules.KIND_KING),
+				_man("a5", ChessRules.SIDE_BLACK, ChessRules.KIND_ROOK),
+			],
+			ChessRules.SIDE_BLACK,
+			_no_castle(),
+		)
+	)
+	session._sync_active_to_side_to_move()
+	# The router's own read: `chrome_state` is what every play render carries.
+	state = session.chrome_state("en", BoardGeometry.SEAT_BOTTOM)
+	if bool(state.get("in_check", false)):
+		return "R6 no check reported before the check"
+	if not session.try_move("a5", "a1") or not session._in_check_now():
+		return "R6 setup move must give check"
+	state = session.chrome_state("en", BoardGeometry.SEAT_BOTTOM)
+	if not bool(state.get("in_check", false)):
+		return "R6 in-check must ride the play render"
+	if not session.try_move("e1", "e2"):
+		return "R6 escape move e1-e2 must be legal"
+	state = session.chrome_state("en", BoardGeometry.SEAT_BOTTOM)
+	if bool(state.get("in_check", false)):
+		return "R6 in-check must clear once the check resolves"
+	return ""
 
 
 func _check_refuse_after_end() -> String:

@@ -1,0 +1,75 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "GATE",
+  "block": "load",
+  "load": [
+    {
+      "run": 1,
+      "at9s": 9575,
+      "nav": {
+        "responseEnd": 220,
+        "domContentLoaded": 5459,
+        "loadEvent": 5459,
+        "paints": [
+          [
+            "first-paint",
+            5540
+          ],
+          [
+            "first-contentful-paint",
+            8160
+          ]
+        ]
+      },
+      "modePickPaintedAt9s": true,
+      "shot": "A1-mode-pick.png"
+    },
+    {
+      "run": 2,
+      "at9s": 9390,
+      "nav": {
+        "responseEnd": 143,
+        "domContentLoaded": 6086,
+        "loadEvent": 6086,
+        "paints": [
+          [
+            "first-paint",
+            6116
+          ],
+          [
+            "first-contentful-paint",
+            8716
+          ]
+        ]
+      },
+      "modePickPaintedAt9s": true,
+      "shot": "A2-mode-pick.png"
+    },
+    {
+      "run": 3,
+      "at9s": 9350,
+      "nav": {
+        "responseEnd": 125,
+        "domContentLoaded": 5545,
+        "loadEvent": 5545,
+        "paints": [
+          [
+            "first-paint",
+            5568
+          ],
+          [
+            "first-contentful-paint",
+            8748
+          ]
+        ]
+      },
+      "modePickPaintedAt9s": true,
+      "shot": "A3-mode-pick.png"
+    }
+  ],
+  "localization": [],
+  "durability": {},
+  "recovery": {},
+  "perf": [],
+  "board": {}
+}

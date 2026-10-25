@@ -1,0 +1,151 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+     at: _set_size (scene/gui/control.cpp:1519)
+A334 playtest_build=true session=sess-1792858564177-96736-playtest-201666 godot=4.7.2-stable (official)
+A334 JUDGE ENV ENV.1 pass — headless display (headless)
+A334 JUDGE ENV TEL.3 pass — session id: sess-1792858564177-96736-playtest-201666
+A334 JUDGE ENV seams pass — playtest seams are live on this build
+A334 JUDGE PTU-localization AC1 keys pass — puzzle-play owner has 21 keys
+A334 JUDGE PTU-localization AC1 values pass — all 21 keys + mode-pick.puzzle resolve in 3 locales ([])
+A334 ac1 key=elo en=Elo zh-Hant=Elo 值 ja=Elo レート
+A334 ac1 key=reveal en=Reveal zh-Hant=顯示解答 ja=解答を見る
+A334 ac1 key=abandon en=Abandon zh-Hant=放棄 ja=この問題をやめる
+A334 ac1 key=leave en=Leave stream zh-Hant=離開題組 ja=パズルを離れる
+A334 ac1 key=reveal_confirm en=Reveal the solution? zh-Hant=要顯示解答嗎？ ja=解答を表示しますか？
+A334 ac1 key=abandon_confirm en=Abandon this puzzle? zh-Hant=要放棄這道題嗎？ ja=この問題をやめますか？
+A334 ac1 key=leave_confirm en=Leave the puzzle stream? zh-Hant=要離開題組嗎？ ja=パズルストリームを離れますか？
+A334 ac1 key=confirm en=Confirm zh-Hant=確認 ja=確認
+A334 ac1 key=cancel en=Cancel zh-Hant=取消 ja=キャンセル
+A334 ac1 key=save_failed en=Save failed. Prior Elo kept. zh-Hant=儲存失敗。已保留先前 Elo 值。 ja=保存に失敗しました。以前の Elo を保持します。
+A334 ac1 key=dismiss en=Dismiss zh-Hant=關閉 ja=閉じる
+A334 ac1 key=cue_solved en=Solved zh-Hant=已解出 ja=解決
+A334 ac1 key=cue_wrong en=Wrong move zh-Hant=走錯了 ja=手が違います
+A334 ac1 key=cue_failed en=Failed zh-Hant=未解出 ja=失敗
+A334 ac1 key=cue_abandon en=Abandoned zh-Hant=已放棄 ja=中断
+A334 ac1 key=choose_promotion en=Choose promotion zh-Hant=選擇升變棋子 ja=昇格する駒を選ぶ
+A334 ac1 key=refused_place en=Refused place zh-Hant=無法放置 ja=置けません
+A334 ac1 key=queen en=Queen zh-Hant=Queen ja=Queen
+A334 ac1 key=rook en=Rook zh-Hant=Rook ja=Rook
+A334 ac1 key=bishop en=Bishop zh-Hant=Bishop ja=Bishop
+A334 ac1 key=knight en=Knight zh-Hant=Knight ja=Knight
+A334 ac1 mode-pick.puzzle en=Puzzle stream zh-Hant=謎題串流 ja=パズルストリーム
+A334 JUDGE PTU-localization AC3 varying pass — 17 varying keys, en copies: []
+A334 JUDGE PTU-localization AC3 marked pass — four L3 piece rows stay en-equal in zh-Hant and ja ([])
+A334 ac3 marked=queen en=Queen zh-Hant=Queen ja=Queen every_locale_row=true
+A334 ac3 marked=rook en=Rook zh-Hant=Rook ja=Rook every_locale_row=true
+A334 ac3 marked=bishop en=Bishop zh-Hant=Bishop ja=Bishop every_locale_row=true
+A334 ac3 marked=knight en=Knight zh-Hant=Knight ja=Knight every_locale_row=true
+A334 ac5 locale row en=English
+A334 ac5 locale row zh-Hant=繁體中文
+A334 ac5 locale row ja=日本語
+A334 ac5 marked rows per owner={ "mode-pick": [], "shared-play": ["queen", "rook", "bishop", "knight"], "puzzle-play": ["queen", "rook", "bishop", "knight"] }
+A334 JUDGE PTU-localization AC5 locale row pass — locale row reads its own name in every locale
+A334 JUDGE PTU-localization AC5 marked set pass — puzzle-play marked set is exactly ["queen", "rook", "bishop", "knight"] (no fifth exception)
+A334 ac4 clean= dropped=puzzle-play.cue_failed missing in zh-Hant copied=puzzle-play.reveal still English in ja marked=
+A334 JUDGE PTU-localization AC4 unmutated pass — shipped owner passes ()
+A334 JUDGE PTU-localization AC4 dropped key pass — expects `puzzle-play.cue_failed missing in zh-Hant`, got `puzzle-play.cue_failed missing in zh-Hant`
+A334 JUDGE PTU-localization AC4 en copy pass — expects `puzzle-play.reveal still English in ja`, got `puzzle-play.reveal still English in ja`
+A334 JUDGE PTU-localization AC4 marked row pass — an en-copied marked piece row passes ()
+A334 JUDGE PTU-localization AC4b own rows pass — puzzle-play owns 10 shared bare names ([])
+A334 precondition puzzle-panel=true
+{"TEL.1":"puzzle.enter","TEL.2":1792858564275,"TEL.3":"sess-1792858564177-96736-playtest-201666","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _observe_puzzle_screen (res://zzaccept334_probe.gd:269)
+         [7] _settle (res://zzaccept334_probe.gd:309)
+A334 precondition puzzle-play en stage=puzzle-play visible=Elo 1000 | Reveal | Abandon | Leave stream
+{"TEL.1":"puzzle.enter","TEL.2":1792858564288,"TEL.3":"sess-1792858564177-96736-playtest-201666","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _observe_puzzle_screen (res://zzaccept334_probe.gd:269)
+         [7] _settle (res://zzaccept334_probe.gd:309)
+A334 precondition puzzle-play zh-Hant stage=puzzle-play visible=Elo 值 1000 | 顯示解答 | 放棄 | 離開題組
+{"TEL.1":"puzzle.enter","TEL.2":1792858564308,"TEL.3":"sess-1792858564177-96736-playtest-201666","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _observe_puzzle_screen (res://zzaccept334_probe.gd:269)
+         [7] _settle (res://zzaccept334_probe.gd:309)
+A334 precondition puzzle-play ja stage=puzzle-play visible=Elo レート 1000 | 解答を見る | この問題をやめる | パズルを離れる
+A334 precondition puzzle-panel=true
+A334 JUDGE PTU-localization AC2 stage pass — mode-pick is the live screen (stage=mode-pick)
+{"TEL.1":"puzzle.enter","TEL.2":1792858564331,"TEL.3":"sess-1792858564177-96736-playtest-201666","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _observe_puzzle_screen (res://zzaccept334_probe.gd:269)
+         [7] _settle (res://zzaccept334_probe.gd:309)
+A334 ac2 C4 step=1 locale=zh-Hant stage=puzzle-play
+A334 ac2 visible=Elo 值 1000 | 顯示解答 | 放棄 | 離開題組
+A334 precondition puzzle-play en stage=puzzle-play visible=
+{"TEL.1":"puzzle.enter","TEL.2":1792858564349,"TEL.3":"sess-1792858564177-96736-playtest-201666","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _observe_puzzle_screen (res://zzaccept334_probe.gd:269)
+         [7] _settle (res://zzaccept334_probe.gd:309)
+A334 ac2 C4 step=2 locale=zh-Hant stage=puzzle-play
+A334 ac2 visible=Elo 值 1000 | 顯示解答 | 放棄 | 離開題組
+A334 precondition puzzle-play zh-Hant stage=puzzle-play visible=
+A334 ac2 C4 step=3 locale=ja stage=mode-pick
+A334 ac2 visible=遊び方を選ぶ | シェア対局 | パズルストリーム · 前回 | 終了 | 日本語
+{"TEL.1":"puzzle.enter","TEL.2":1792858564373,"TEL.3":"sess-1792858564177-96736-playtest-201666","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _observe_puzzle_screen (res://zzaccept334_probe.gd:269)
+         [7] _settle (res://zzaccept334_probe.gd:309)
+A334 JUDGE PTU-localization AC2 jump fail — DBG.3 jump to mode-pick shows its copy (stage=puzzle-play): 
+A334 JUDGE PTU-localization AC2 C4 fail — C4 cycles ["zh-Hant", "zh-Hant", "ja"] and the rendered copy differs at each step
+A334 ac2 puzzle label en present=false
+A334 ac2 puzzle label zh-Hant present=false
+A334 ac2 puzzle label ja present=false
+A334 JUDGE PTU-localization AC2 puzzle label fail — puzzle entry copy on the rendered mode-pick: zh-Hant=false ja=false
+A334 precondition puzzle-play ja stage=mode-pick visible=
+A334 JUDGE PTU-localization AC2 raw keys pass — no raw key rendered on the live screen: Choose how to play | Shared game | Puzzle stream · Last | Quit | English
+A334 RESULT rows=19 failures=3
+A334 FAIL row: AC2 jump DBG.3 jump to mode-pick shows its copy (stage=puzzle-play): 
+A334 FAIL row: AC2 C4 C4 cycles ["zh-Hant", "zh-Hant", "ja"] and the rendered copy differs at each step
+A334 FAIL row: AC2 puzzle label puzzle entry copy on the rendered mode-pick: zh-Hant=false ja=false
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

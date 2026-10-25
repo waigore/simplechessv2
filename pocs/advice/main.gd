@@ -56,6 +56,9 @@ const END_PANEL_LAYER := 10
 const ADVICE_TIME_MS := 2000
 ## quality.md / F-move-advice: advice ready within this budget.
 const BUDGET_MS := 2000
+## CTR-advice-stream O1: the start position's `fen` placement, checked on every
+## open so a mis-encoded board cannot pass unseen (verification on #376).
+const START_FEN := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 const AUTODRIVE := "DEMO_AUTODRIVE"
 ## The demo's simulated peer (ADR-0002 Testability). Preloaded by path, so the
 ## demo needs no `class_name` registration in the global script cache.
@@ -514,17 +517,19 @@ func _is_square(name: String) -> bool:
 	return "abcdefgh".contains(file) and "12345678".contains(rank)
 
 
-## O1 wire position: FEN placement, side to move, castling rights (CTR Wire).
+## O1 wire position: FEN placement, side to move, castling rights, then `- 0 1`
+## (no en-passant target or move counters are derived; see Known limitations).
+## `chess_rules` indexes the board by square name (`square_index("a1") = 0`,
+## `a2 = 8`, `a8 = 56`), so `board[(rank - 1) * 8 + file]` reads the named square.
+## FEN always reads rank 8 first, whatever the board view seats.
 func _fen() -> String:
-	# The demo's placement array is row-major from index 0 = rank 8, file a (see
-	# chess_rules.start_position); FEN rows run rank 8 to rank 1.
 	var board: PackedStringArray = pos["board"]
 	var rows: Array[String] = []
 	for row in ["8", "7", "6", "5", "4", "3", "2", "1"]:
 		var line := ""
 		var empty := 0
 		for file in ["a", "b", "c", "d", "e", "f", "g", "h"]:
-			var code := board[(8 - row.to_int()) * 8 + "abcdefgh".find(file)]
+			var code := board[(row.to_int() - 1) * 8 + "abcdefgh".find(file)]
 			if code == "":
 				empty += 1
 				continue
@@ -546,9 +551,13 @@ func _fen() -> String:
 	return "%s %s %s - 0 1" % ["/".join(rows), side, castling]
 
 
+## FEN symbol for a board code: `DemoChessRules.piece_kind()` already returns the
+## FEN letter (`P`/`N`/`B`/`R`/`Q`/`K`), so it is only cased by colour. A code
+## without a piece kind is not a piece and cannot be encoded.
 func _fen_letter(code: String) -> String:
-	var letters := {"pawn": "P", "knight": "N", "bishop": "B", "rook": "R", "queen": "Q", "king": "K"}
-	var letter := str(letters.get(DemoChessRules.piece_kind(code), "P"))
+	var kind := DemoChessRules.piece_kind(code)
+	assert(not kind.is_empty(), "FEN: %s carries no piece kind" % code)
+	var letter := kind.to_upper()
 	return letter if DemoChessRules.piece_color(code) == DemoChessRules.WHITE else letter.to_lower()
 
 
@@ -805,6 +814,12 @@ func _scenario_calm(problems: PackedStringArray) -> void:
 	# F-move-advice.R2–R4; design experience/feedback.md "Advice ready".
 	print("[demo] scenario: advice arrives calmly")
 	_new_game()
+	# O1 carries the position (CTR Wire). The opening must be the orthodox
+	# placement, not an all-pawn board: check the wire value, not the marks.
+	var start_fen := _fen()
+	print("[demo] O1 start fen: %s" % start_fen)
+	if start_fen != START_FEN:
+		problems.append("O1 fen %s, expected %s" % [start_fen, START_FEN])
 	await _wait_until(func() -> bool: return advice_best_move != null, BUDGET_MS)
 	if advice_best_move == null:
 		problems.append("advice never became ready")
@@ -818,6 +833,9 @@ func _scenario_calm(problems: PackedStringArray) -> void:
 		problems.append("advice eval missing")
 	print("[demo] advice ready in %d ms (budget %d)" % [_ready_first_ms, BUDGET_MS])
 	_check_advice_band(problems)
+	# The peer answers the ply, not always the fallback: the first reply must be
+	# the line's own White move, so the eval comes from this position's entry.
+	print("[demo] peer answered the start position: %s" % str(DemoSimPeer.answer_for(start_fen)))
 
 
 func _scenario_move_clears(problems: PackedStringArray) -> void:
@@ -832,10 +850,9 @@ func _scenario_move_clears(problems: PackedStringArray) -> void:
 	if _stream_open and _stream_elapsed() >= BUDGET_MS:
 		problems.append("the move came after the cap: no stream in flight")
 	await _play_uci("e2e4", problems)
-	# The new position's first tick is due ~5% into the new cap, so by the time
-	# the tap sequence returns, advice is legitimately up again for Black. The
-	# immediate clear is what the clear hook checked (`_commit`); what is asserted
-	# here is that the value is for the new position and the new side to move.
+	# R8 asserts the immediate clear in `_commit()`. The tap sequence then waits
+	# out the motion and the first tick of the new stream, which is already up
+	# for Black by the time it returns.
 	if advice_best_move == null:
 		problems.append("the new position was not evaluated (R8)")
 		return
@@ -847,9 +864,7 @@ func _scenario_move_clears(problems: PackedStringArray) -> void:
 		problems.append("the marks did not move to the new best move")
 	print("[demo] new position evaluated: e7e5 (advice had cleared on the move)")
 	await _play_uci("e7e5", problems)
-	await _wait_until(func() -> bool: return advice_best_move != null, BUDGET_MS)
 	await _play_uci("g1f3", problems)
-	await _wait_until(func() -> bool: return advice_best_move != null, BUDGET_MS)
 
 
 func _scenario_off(problems: PackedStringArray) -> void:

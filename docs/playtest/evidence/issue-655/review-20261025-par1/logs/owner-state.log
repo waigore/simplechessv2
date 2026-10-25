@@ -1,0 +1,25 @@
+# criterion 6 / owner state read 2026-10-24T21:19:05Z
+
+## published artefact
+last-modified: Sat, 24 Oct 2026 17:57:05 GMT
+etag: "6adcf171-91ff1c"
+content-length: 9568028
+
+## PR 806 (479 delivery decision)
+state=MERGED mergedAt=2026-10-24T19:59:17Z merge=f07eed6288c6af4dea4f63d18a3011ff6fac7f53
+
+## owners
+#479 OPEN type:task,status:pending-acceptance
+#648 OPEN type:task,status:pending-verification
+#550 OPEN type:task,status:pending-verification
+#671 OPEN type:task,status:pending-implementation
+
+## any open issue naming a deploy-path/T9-T10 delivery owner
+655	Puzzle stream deals nothing on the shipped-path build: T9/T10 are unset
+648	Decide whether the puzzle catalog route ships enabled: T9/T10 never reach the shipped build, so Puzzle stream deals nothing
+505	Record the advice backend deployment posture: operator/player-run only, no project vendor
+
+## 550 manifest Defects line
+- **Defects**: #655 — Puzzle stream deals nothing on the shipped path (`T9`/`T10` unset).
+
+## 550 native edges

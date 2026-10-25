@@ -1,0 +1,21 @@
+$ git log -1 --format="%h %cd %s" --date=iso -- specs/technical/configuration.md   # contains the B5 sentence
+a9192a0 2026-10-24 19:14:59 +0000 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+
+$ git log -S "Ships enabled in the release" --format="%h %s" -- specs/technical/configuration.md
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+
+$ git merge-base --is-ancestor a9192a0 origin/main && echo ancestor
+ancestor
+
+$ git log -S "Because the route ships enabled" --format="%h %s" -- specs/technical/components/catalog-service.md
+4481815 Record advice deployments as operator-run only (#505) (#830)
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+a94210d State that the catalog route ships enabled (#648) (#815)
+
+$ git merge-base --is-ancestor f07eed6 origin/main && echo "f07eed6 (#479) ancestor"
+f07eed6 (#479) ancestor
+
+$ gh pr view 806 --json state,mergedAt,mergeCommit
+{"mergeCommit":{"oid":"f07eed6288c6af4dea4f63d18a3011ff6fac7f53"},"mergedAt":"2026-10-24T19:59:17Z","state":"MERGED"}
+$ gh issue view 479 --json state,labels
+{"labels":[{"id":"LA_kwDOVMSGmc8AAAAC9gFf1w","name":"type:task","description":"Concrete unit of agent work","color":"0366D6"},{"id":"LA_kwDOVMSGmc8AAAAC9gFiDA","name":"status:pending-acceptance","description":"Verified; awaiting acceptance testing","color":"006B75"}],"state":"OPEN"}

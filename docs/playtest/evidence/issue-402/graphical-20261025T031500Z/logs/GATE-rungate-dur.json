@@ -1,0 +1,28 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "GATE",
+  "block": "dur",
+  "load": [],
+  "localization": [],
+  "durability": {
+    "before": {},
+    "afterPuzzleOpen": {
+      "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+    },
+    "afterReload": {
+      "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+    },
+    "afterFailedWrite": {
+      "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+    }
+  },
+  "recovery": {
+    "crashed": true,
+    "afterReopen": {
+      "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+    },
+    "reopenedAtModePick": true
+  },
+  "perf": [],
+  "board": {}
+}

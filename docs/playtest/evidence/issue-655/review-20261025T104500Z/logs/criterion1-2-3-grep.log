@@ -1,0 +1,45 @@
+$ git rev-parse HEAD
+6a969eede64f48940429245e00dc6ec661f7d677
+
+$ git log -1 --format=%s
+Record the #478 wave-1 playtest sweep on one playtest build (#836)
+
+$ godot --version
+4.7.2.stable.official.ed1daf0bf
+
+$ git log -1 --format="%h %s" a94210d
+a94210d State that the catalog route ships enabled (#648) (#815)
+
+$ git log -1 --format="%h %s" a9192a0
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+
+$ git grep -n "Ships enabled" -- specs/technical/configuration.md
+specs/technical/configuration.md:43:| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+
+$ git grep -n -i "ships enabled" -- specs/technical/components/catalog-service.md
+specs/technical/components/catalog-service.md:56:Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.m
+
+$ git grep -n "advice_endpoint\|advice_api_key" -- game/
+game/advice_ui_test.gd:40:	_router.advice_endpoint = "http://advice.test/advice"
+game/advice_ui_test.gd:41:	_router.advice_api_key = "test-key"
+game/session_router.gd:33:var advice_endpoint := ""
+game/session_router.gd:34:var advice_api_key := ""
+game/session_router.gd:483:	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
+game/session_router.gd:552:	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+game/session_router.gd:756:	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+
+$ sed -n 31,34p game/session_router.gd
+## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
+## empty endpoint or key makes Advice unavailable (FAIL.T1).
+var advice_endpoint := ""
+var advice_api_key := ""
+
+$ git grep -n "needs_puzzle" -- game/puzzle_session.gd
+game/puzzle_session.gd:543:	var needs_puzzle := true
+game/puzzle_session.gd:554:			needs_puzzle = false
+game/puzzle_session.gd:557:	if (needs_puzzle and not has_open_puzzle()) or play_ui_state == UI_S2 or play_ui_state == UI_S4:
+
+$ git log --oneline -1 -- game/puzzle_session.gd src 2>/dev/null; git log --oneline -1 -- game/puzzle_session.gd
+
+$ gh pr view 806 --json state,mergedAt
+{"mergedAt":"2026-10-24T19:59:17Z","state":"MERGED"}

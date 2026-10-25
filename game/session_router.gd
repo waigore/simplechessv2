@@ -35,6 +35,9 @@ var advice_api_key := ""
 var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
 var options_locked := false
 var session_ended := false
+## UI-mode-pick states S1 / S3 / S4, as last shown. The router owns it because
+## the input rail can deliver a hidden control id (#846): S3 refuses C1–C4.
+var mode_pick_ui_state := "S1"
 ## CTR-asset-resolve E4 — Boot's unresolved count when the Boot preload failed, else 0.
 var boot_failure_count := 0
 ## EX.error / S3 — an advice fetch failed while On; cleared by Dismiss (states.md).
@@ -60,9 +63,10 @@ var play_ui_state: String:
 			return puzzle_flow.ui_state()
 		if shared_session == null:
 			return SharedGameSession.UI_S1
-		return (
-			SharedGameSession.UI_S3 if shared_session.advice_error else shared_session.play_ui_state
-		)
+		# Have the session tell us the state it shows (states.md S3): the advice
+		# failure is S3 over its own play state, so the gate and the screen read
+		# the same source instead of a second copy of that rule.
+		return str(shared_session.play_state().get("ui_state", SharedGameSession.UI_S1))
 	set(value):
 		if puzzle_flow != null and stage == STAGE_PUZZLE_PLAY:
 			puzzle_flow.session.play_ui_state = value
@@ -210,8 +214,12 @@ func handle_input_commit(from_square: String, to_square: String, promotion: Stri
 		return false
 	if _seams_paused():
 		return false
-	if not shared_session.gestures_available():
+	if not play_gestures_available():
 		return false
+	return _apply_play_gesture(from_square, to_square, promotion)
+
+
+func _apply_play_gesture(from_square: String, to_square: String, promotion: String) -> bool:
 	if to_square.is_empty():
 		return _apply_select(from_square)
 	return _apply_place(from_square, to_square, promotion)
@@ -367,7 +375,8 @@ func side_to_move() -> String:
 	return shared_session.side_to_move()
 
 
-## R1 — C1/C2/C6 gestures are live in S1, S3 and S5 (`PuzzleSession.gestures_available`).
+## R1 — board gestures are live in S1, S3 and S5 (and S6 where the screen allows
+## the board); each session owns its own allow-list.
 func play_gestures_available() -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.gestures_available()
@@ -547,6 +556,7 @@ func _advice_available() -> bool:
 
 
 func _mode_pick_state(ui_state: String) -> Dictionary:
+	mode_pick_ui_state = ui_state
 	return {
 		"ui_state": ui_state,
 		"locale": locale,
@@ -602,30 +612,47 @@ func _emit_play_screen(move: Dictionary = {}) -> void:
 
 
 func _on_mode_pick_control(control_id: String) -> void:
+	# UI-mode-pick Controls table: C1–C4 are available when S1 or S4; S3 offers
+	# only Confirm and Cancel. The input rail can still deliver a hidden id (#846),
+	# so S3 refuses here as well as in the panel.
+	if mode_pick_ui_state == "S3":
+		_on_mode_pick_confirm_control(control_id)
+	else:
+		_on_mode_pick_choice_control(control_id)
+
+
+## S3 (quit confirm) — only Confirm ends the session; Cancel returns to S1.
+func _on_mode_pick_confirm_control(control_id: String) -> void:
 	match control_id:
-		"C1":
-			if not _commit_last_mode(MODE_SHARED):
-				return
-			last_mode = MODE_SHARED
-			stage = STAGE_SHARED_SETUP
-			screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
-		"C2":
-			# UI-mode-pick.C2 / NAV.T2 / J-puzzle-session.S1 — enter the puzzle stream.
-			if not _commit_last_mode(MODE_PUZZLE):
-				return
-			last_mode = MODE_PUZZLE
-			_enter_puzzle_play()
-		"C3":
-			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S3"))
-		"C4":
-			locale = StringTable.next_locale(locale)
-			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S1"))
 		"confirm":
 			_end_session()
 		"cancel":
 			_go_mode_pick("S1")
+
+
+## S1 / S4 — C1–C4, plus Dismiss returning to S1 from S4.
+func _on_mode_pick_choice_control(control_id: String) -> void:
+	match control_id:
+		"C1":
+			if _commit_last_mode(MODE_SHARED):
+				last_mode = MODE_SHARED
+				stage = STAGE_SHARED_SETUP
+				screen_requested.emit(STAGE_SHARED_SETUP, _shared_setup_state())
+		"C2":
+			# UI-mode-pick.C2 / NAV.T2 / J-puzzle-session.S1 — enter the puzzle stream.
+			if _commit_last_mode(MODE_PUZZLE):
+				last_mode = MODE_PUZZLE
+				_enter_puzzle_play()
+		"C3":
+			## Only the panel state moves: C3 opens the quit confirm, it does not
+			## re-enter mode pick (which would reset options and restart the bed).
+			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S3"))
+		"C4":
+			locale = StringTable.next_locale(locale)
+			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S1"))
 		"dismiss":
-			_go_mode_pick("S1")
+			if mode_pick_ui_state == "S4":
+				_go_mode_pick("S1")
 
 
 func _commit_last_mode(mode: String) -> bool:
