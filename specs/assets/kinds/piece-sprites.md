@@ -29,7 +29,7 @@ Authoring rules: [`.agents/specs/rules/assets/kinds.md`](../../../.agents/specs/
 | S8 | Fit | `fit_contain` square (LANCZOS); center; no stretch |
 | S9 | On-board | Preview box 0.88 × square (layout JSON). Play size is [FRM.P2](../../aesthetics/form.md) |
 
-S5–S9 definitive for SS1. Reproduce: [`docs/asset-previews/README.md`](../../../docs/asset-previews/README.md).
+S5–S9 definitive for SS1. Reproduce: [`docs/asset-previews/README.md`](../../../docs/asset-previews/README.md). A ship PNG carries the [SRF.O1](../../aesthetics/surface.md) contour hex on its whole contour, so the S5–S9 output is re-toned to O1 by `recenter_piece_contours.py` before K7 is read.
 
 ## Budgets
 
@@ -72,7 +72,7 @@ Full recipe: [`piece-sprites/recipes.md`](piece-sprites/recipes.md).
 | K4 | Style | Look vs [AES.P2](../../aesthetics/aesthetics.md) [AES.P3](../../aesthetics/aesthetics.md) | Quiet mahogany mood |
 | K5 | Budget B2 | Catalog vs V1 | 12 entries (one file each; not a sheet) |
 | K6 | Fit / crop | Rebuild; compare catalog PNGs by asset ID for each V1 handle | No stretch; ivory intact |
-| K7 | Side fills | Inspect vs [PAL.C3](../../aesthetics/palette.md) [PAL.C4](../../aesthetics/palette.md) | Ivory = C3; charcoal = C4 |
+| K7 | Side fills | Inspect vs [PAL.C3](../../aesthetics/palette.md) [PAL.C4](../../aesthetics/palette.md) [SRF.O1](../../aesthetics/surface.md) | Ivory = C3; charcoal = C4; whole contour at the O1 hex |
 
 ## Naming
 
