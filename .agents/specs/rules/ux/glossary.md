@@ -8,7 +8,7 @@ Shared language for UX specs. Each term is defined once here. Other specs use it
 
 Game terms stay in `specs/design/glossary.md`. Do not redefine them here.
 
-The skeleton already defines Actor, Binding, Control, Exception, Journey, Mockup, Region, Screen, and UI action. Keep those rows. Add a row for a term this game needs. Keep added rows alphabetical. One term per concept: no synonyms.
+The skeleton already defines Actor, Binding, Control, Exception, Journey, Mockup, Mockup catalog, Region, Screen, and UI action. Keep those rows. Add a row for a term this game needs. Keep added rows alphabetical. One term per concept: no synonyms.
 
 Columns: term, a one-sentence definition, and where it is detailed (a link, or "here").
 

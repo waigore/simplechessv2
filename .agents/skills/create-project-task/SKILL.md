@@ -25,7 +25,7 @@ Create a repository **Task** (`type:task`).
 ## Steps
 
 1. **Read** Task requirements + body shape docs and the linking reference.
-2. **Collect** `title` and content for every required Task section; optional `parent`, `blocked_by`, `blocking`. Ask if required content is missing.
+2. **Collect** `title` and content for every required Task section; optional `parent`, `blocked_by`, `blocking`. Ask if required content is missing. If the unit mixes main-tree UI with non-UI work, prefer **two tasks** ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md)).
 3. If `parent` is set: **validate depth** per `hierarchy.md` and the linking reference; abort if the new task would exceed 3 levels from epic to leaf.
 4. **Build** the body exactly as specified in `body-shapes.md`.
 5. If `--no-create` / "draft only": print title + body and stop.
