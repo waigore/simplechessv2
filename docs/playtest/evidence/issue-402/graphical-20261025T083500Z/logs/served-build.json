@@ -1,0 +1,67 @@
+{
+  "base": "https://waigore.github.io/simplechessv2/",
+  "at": "2026-10-25T09:04:37.764Z",
+  "files": {
+    "index.html": {
+      "status": 200,
+      "bytes": 5444,
+      "contentLength": "2190",
+      "lastModified": "Sun, 25 Oct 2026 08:26:11 GMT",
+      "sha256": "178318054d43d126ffc8f9e4db4e967611ee2dda815078c3927ed5c69d1cf3ea"
+    },
+    "index.pck": {
+      "status": 200,
+      "bytes": 9364800,
+      "contentLength": "9165442",
+      "lastModified": "Sun, 25 Oct 2026 08:26:11 GMT",
+      "sha256": "2954319b397a3fdb3d6cdcc98ef714bbef091467cad7ee428698ba3293754a8f"
+    },
+    "index.wasm": {
+      "status": 200,
+      "bytes": 39514754,
+      "contentLength": "10248949",
+      "lastModified": "Sun, 25 Oct 2026 08:26:11 GMT",
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    }
+  },
+  "godotConfig": {
+    "args": [],
+    "canvasResizePolicy": 2,
+    "emscriptenPoolSize": 8,
+    "ensureCrossOriginIsolationHeaders": true,
+    "executable": "index",
+    "experimentalVK": false,
+    "fileSizes": {
+      "index.pck": 9364800,
+      "index.wasm": 39514754
+    },
+    "focusCanvas": true,
+    "gdextensionLibs": [],
+    "godotPoolSize": 4
+  },
+  "pck": {
+    "magic": "GDPC",
+    "packFormat": 4,
+    "engine": [
+      4,
+      7,
+      2
+    ],
+    "pathRows": 80,
+    "gameAssetPaths": 35,
+    "importedRemaps": 0,
+    "scriptPaths": 37,
+    "audioRuntimePaths": 7,
+    "assetPathSample": [
+      "res://game_assets/board-backgrounds/play-table.svg",
+      "res://game_assets/fonts/noto-sans-jp-400.woff2",
+      "res://game_assets/fonts/noto-sans-latin-400.woff2",
+      "res://game_assets/fonts/noto-sans-latin-500.woff2",
+      "res://game_assets/fonts/noto-sans-latin-600.woff2",
+      "res://game_assets/fonts/noto-sans-tc-400.woff2"
+    ],
+    "servedIndexPck": 9364800,
+    "configuredIndexPck": 9364800,
+    "configuredIndexWasm": 39514754
+  }
+}
