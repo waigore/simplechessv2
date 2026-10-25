@@ -24,3 +24,5 @@ The `full` row follows the row unit in [`story-rows.md`](story-rows.md). Which r
 ## Issue mapping
 
 A required acceptance playtest runs protocols for the intersection of this coverage set and the design/UX IDs the issue's playable deliverables can affect. See [`procedures.md`](procedures.md).
+
+Row-level `none` (a durable reason, or an open epic or task when material work needs an owner) is defined in [`story-rows.md`](story-rows.md). This file does not redefine that routing.
