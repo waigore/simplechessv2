@@ -106,6 +106,11 @@ export async function connect({ width, height, dpr, url, outDir, logDir = outDir
     await send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await sleep(250);
   };
+  // A fresh session between sweep pairs: a release→release tap on a selected
+  // piece deselects it (B8), so each pair reloads instead of toggling.
+  const reload = async () => {
+    await send('Page.reload', { ignoreCache: true });
+  };
   const close = async () => {
     fs.writeFileSync(path.join(logDir, `${label}-console.log`), `${logs.join('\n')}\n`);
     ws.close();
@@ -122,5 +127,5 @@ export async function connect({ width, height, dpr, url, outDir, logDir = outDir
       // A leftover scratch profile does not change the capture.
     }
   };
-  return { send, shot, tap, close };
+  return { send, shot, tap, reload, close };
 }
