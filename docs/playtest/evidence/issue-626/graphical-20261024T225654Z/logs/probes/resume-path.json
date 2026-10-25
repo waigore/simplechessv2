@@ -1,0 +1,32 @@
+[
+  {
+    "step": "cold-open",
+    "hidden": false
+  },
+  {
+    "step": "freeze → active",
+    "resume_error": null,
+    "hidden": true,
+    "visibility": "hidden",
+    "frames": 0,
+    "tap": {
+      "ms": 25002,
+      "error": "CDP Input.dispatchTouchEvent exceeded 25000 ms"
+    },
+    "shot": "screenshots/resume-active.png"
+  },
+  {
+    "step": "freeze → Emulation visibility-change",
+    "resume_error": "{\"code\":-32601,\"message\":\"'Emulation.setPageVisibilityState' wasn't found\"}",
+    "hidden": true,
+    "visibility": "hidden",
+    "frames": {
+      "error": "CDP Runtime.evaluate exceeded 25000 ms"
+    },
+    "tap": {
+      "ms": 25001,
+      "error": "CDP Input.dispatchTouchEvent exceeded 25000 ms"
+    },
+    "shot": "screenshots/resume-Emulation-visibility-change.png"
+  }
+]

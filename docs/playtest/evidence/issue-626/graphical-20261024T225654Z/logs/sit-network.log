@@ -1,0 +1,42 @@
+0.006s request  https://waigore.github.io/simplechessv2/ 
+0.411s response 200 https://waigore.github.io/simplechessv2/ 
+0.464s request  https://waigore.github.io/simplechessv2/index.png 
+0.464s request  https://waigore.github.io/simplechessv2/index.js 
+0.864s response 200 https://waigore.github.io/simplechessv2/index.png 
+0.865s response 200 https://waigore.github.io/simplechessv2/index.js 
+7.864s request  https://waigore.github.io/simplechessv2/index.wasm 
+7.865s request  https://waigore.github.io/simplechessv2/index.pck 
+11.627s response 200 https://waigore.github.io/simplechessv2/index.pck 
+11.627s response 200 https://waigore.github.io/simplechessv2/index.wasm 
+11.731s request  https://waigore.github.io/simplechessv2/index.icon.png 
+12.015s response 200 https://waigore.github.io/simplechessv2/index.icon.png 
+16.487s request  blob:https://waigore.github.io/4a847362-f3c2-4d42-98a4-b50a5169cbda 
+18.291s response 200 blob:https://waigore.github.io/4a847362-f3c2-4d42-98a4-b50a5169cbda 
+107.244s request  https://waigore.github.io/simplechessv2/ 
+107.245s response 200 https://waigore.github.io/simplechessv2/ 
+107.474s request  https://waigore.github.io/simplechessv2/index.png 
+107.474s response 200 https://waigore.github.io/simplechessv2/index.png 
+107.474s request  https://waigore.github.io/simplechessv2/index.js 
+107.474s response 200 https://waigore.github.io/simplechessv2/index.js 
+107.951s request  https://waigore.github.io/simplechessv2/index.wasm 
+107.951s request  https://waigore.github.io/simplechessv2/index.pck 
+107.954s response 200 https://waigore.github.io/simplechessv2/index.wasm 
+107.954s request  https://waigore.github.io/simplechessv2/index.icon.png 
+107.955s response 200 https://waigore.github.io/simplechessv2/index.pck 
+107.971s response 200 https://waigore.github.io/simplechessv2/index.icon.png 
+108.907s request  blob:https://waigore.github.io/7f673282-e238-49b0-968e-64805afa9de7 
+109.639s response 200 blob:https://waigore.github.io/7f673282-e238-49b0-968e-64805afa9de7 
+119.638s request  https://waigore.github.io/simplechessv2/ 
+119.932s response 200 https://waigore.github.io/simplechessv2/ 
+120.004s request  https://waigore.github.io/simplechessv2/index.png 
+120.004s request  https://waigore.github.io/simplechessv2/index.js 
+120.052s response 200 https://waigore.github.io/simplechessv2/index.png 
+120.119s response 200 https://waigore.github.io/simplechessv2/index.js 
+120.121s request  https://waigore.github.io/simplechessv2/index.wasm 
+120.121s request  https://waigore.github.io/simplechessv2/index.pck 
+120.123s request  https://waigore.github.io/simplechessv2/index.icon.png 
+120.175s response 200 https://waigore.github.io/simplechessv2/index.icon.png 
+120.181s response 200 https://waigore.github.io/simplechessv2/index.wasm 
+120.184s response 200 https://waigore.github.io/simplechessv2/index.pck 
+121.428s request  blob:https://waigore.github.io/af96d7ec-2ea2-418b-9383-1680ae979bc0 
+122.032s response 200 blob:https://waigore.github.io/af96d7ec-2ea2-418b-9383-1680ae979bc0 
