@@ -38,6 +38,8 @@ func _after_boot() -> void:
 	if _error.is_empty():
 		_error = _quit_confirm_cancel()
 	if _error.is_empty():
+		_error = _quit_confirm_unavailable()
+	if _error.is_empty():
 		_error = _shared_path()
 	if _error.is_empty():
 		_error = _string_table()
@@ -140,6 +142,66 @@ func _quit_confirm_cancel() -> String:
 	_router.handle_control("mode-pick", "confirm")
 	if _router.stage != "session-ended" or not _router.session_ended:
 		return "confirm did not end sitting"
+	return ""
+
+
+## #846 / mode-pick-unavailable US1.10–US1.13 — S3 locks out C1–C4.
+func _quit_confirm_unavailable() -> String:
+	var seams := _presentation.get_node("PlaytestSeams") as PlaytestSeams
+	seams.jump("mode-pick")
+	_router.handle_control("mode-pick", "C3")
+	if _mode_pick().ui_state != "S3":
+		return "quit did not raise S3"
+	var before_locale := _router.locale
+	var before_last := _router.last_mode
+	for control_id in ["C1", "C2", "C3", "C4"]:
+		var err := _s3_refuses(control_id)
+		if not err.is_empty():
+			return err
+	return _s3_kept_locale_and_last_mode(before_locale, before_last)
+
+
+## US1.10 / US1.11 / US1.13 side effects: no Last mode commit, no locale switch.
+func _s3_kept_locale_and_last_mode(before_locale: String, before_last: String) -> String:
+	if _router.locale != before_locale:
+		return "C4 in S3 switched locale"
+	if _router.last_mode != before_last:
+		return "C1/C2 in S3 committed Last mode"
+	if not _mode_pick().button_for("C4").disabled:
+		return "C4 reachable in S3"
+	var err := _s3_cancel_restores()
+	if not err.is_empty():
+		return err
+	return _s3_confirm_ends()
+
+
+## Activation of `control_id` while S3 is up changes nothing on screen or in the router.
+func _s3_refuses(control_id: String) -> String:
+	_router.handle_control("mode-pick", control_id)
+	if _router.stage != "mode-pick":
+		return "%s in S3 moved to %s" % [control_id, _router.stage]
+	if _mode_pick().ui_state != "S3":
+		return "%s in S3 dropped the quit confirm" % control_id
+	return ""
+
+
+## Cancel leaves S3 for S1 and C1–C4 are available again.
+func _s3_cancel_restores() -> String:
+	_router.handle_control("mode-pick", "cancel")
+	var mode_pick := _mode_pick()
+	if mode_pick.ui_state != "S1" or _router.stage != "mode-pick":
+		return "cancel from S3 did not return to S1"
+	if mode_pick.button_for("C4").disabled:
+		return "C4 disabled after leaving S3"
+	return ""
+
+
+## Confirm ends the session from S3.
+func _s3_confirm_ends() -> String:
+	_router.handle_control("mode-pick", "C3")
+	_router.handle_control("mode-pick", "confirm")
+	if _router.stage != "session-ended" or not _router.session_ended:
+		return "confirm from S3 did not end the session"
 	return ""
 
 
