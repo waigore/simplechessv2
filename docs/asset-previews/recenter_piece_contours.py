@@ -36,8 +36,6 @@ FILL = {"white": (245, 240, 230), "black": (44, 42, 40)}
 CORE_ALPHA = 250
 # A file is near-flat at this share of its body in one tone.
 FLAT_SHARE = 0.98
-# Fringe below this coverage carries no visible ink.
-MIN_SHARE = 0.02
 STEMS = [f"{t}-{side}" for side in ("white", "black") for t in "kqrbnp"]
 
 
@@ -95,11 +93,9 @@ def _solid_recenter(im: Image.Image, side: str) -> Image.Image:
             if a >= CORE_ALPHA:
                 px[x, y] = (*(fill if _dist((r, g, b), fill) <= _dist((r, g, b), o1) else o1), a)
                 continue
-            if a / 255.0 <= MIN_SHARE:
-                px[x, y] = (0, 0, 0, 0)
-                continue
-            # The S8 fringe stores its tone premultiplied by alpha: divide the
-            # coverage back out to choose its side, then keep the coverage.
+            # The S8 fringe keeps its alpha (so the silhouette is exactly S8's):
+            # it stores its tone premultiplied by alpha, so divide the coverage
+            # back out to choose the side, then put the coverage back.
             tone = tuple(min(255, round(v / (a / 255.0))) for v in (r, g, b))
             shade = fill if _dist(tone, fill) <= _dist(tone, o1) else o1
             px[x, y] = (*shade, a)
