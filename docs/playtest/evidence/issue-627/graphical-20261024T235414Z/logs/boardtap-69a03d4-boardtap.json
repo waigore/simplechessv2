@@ -1,0 +1,47 @@
+{
+ "url": "https://waigore.github.io/simplechessv2/",
+ "steps": [
+  "boardtap-69a03d4-00-mode-pick.png",
+  "boardtap-69a03d4-01-after-shared.png",
+  "boardtap-69a03d4-02-after-second-press.png",
+  "boardtap-69a03d4-03-settled.png"
+ ],
+ "gestures": [
+  {
+   "t": "pointerdown",
+   "x": 150,
+   "y": 185
+  },
+  {
+   "t": "touchstart",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "t": "touchend",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "t": "pointerdown",
+   "x": 150,
+   "y": 185
+  },
+  {
+   "t": "touchstart",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "t": "touchend",
+   "x": 0,
+   "y": 0
+  }
+ ],
+ "starts": [
+  {
+   "t": 18870,
+   "bufferSec": 180.036
+  }
+ ]
+}

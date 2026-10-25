@@ -1,0 +1,20 @@
+2026-10-24T23:57:20.961Z log.warning [rendering] [.WebGL-0x13c000ccc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-24T23:57:24.247Z console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+2026-10-24T23:57:26.988Z console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-10-24T23:57:27.234Z console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+2026-10-24T23:57:27.679Z console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T23:57:27.684Z console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T23:57:27.685Z console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-b.ogg'.
+2026-10-24T23:57:27.685Z console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T23:57:27.687Z console.error WARNING: Unresolved asset ID: 01a15200-69b2-7964-a602-ad5b19583125
+2026-10-24T23:57:27.688Z console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T23:57:27.688Z console.error ERROR: Can't open file from path 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T23:57:27.693Z console.error    at: get_file_as_bytes (core/io/file_access.cpp:907)
+2026-10-24T23:57:27.706Z console.error ERROR: Cannot open file 'res://game_assets/music/cafe-ambient-a.ogg'.
+2026-10-24T23:57:27.712Z console.error    at: load_from_file (modules/vorbis/audio_stream_ogg_vorbis.cpp:703)
+2026-10-24T23:57:27.713Z console.error WARNING: Unresolved asset ID: 01a15200-69b2-7d13-a30d-696fa4ff390b
+2026-10-24T23:57:27.716Z console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+2026-10-24T23:57:27.716Z console.error ERROR: Preload ambient left 2 approved IDs unresolved
+2026-10-24T23:57:27.716Z console.error    at: push_error (core/variant/variant_utility.cpp:1023)
+2026-10-24T23:57:27.716Z log.warning [rendering] [.WebGL-0x13c000e1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+2026-10-24T23:57:36.034Z log.warning [other] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio

@@ -1,0 +1,37 @@
+[
+ {
+  "at": "2026-10-25T00:28:37.418Z",
+  "kind": "log.warning",
+  "text": "[.WebGL-0x104000cb400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+ },
+ {
+  "at": "2026-10-25T00:28:42.446Z",
+  "kind": "log",
+  "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+ },
+ {
+  "at": "2026-10-25T00:28:45.701Z",
+  "kind": "log",
+  "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+ },
+ {
+  "at": "2026-10-25T00:28:45.959Z",
+  "kind": "log",
+  "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+ },
+ {
+  "at": "2026-10-25T00:28:46.949Z",
+  "kind": "log.warning",
+  "text": "[.WebGL-0x104000e0400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+ },
+ {
+  "at": "2026-10-25T00:28:48.216Z",
+  "kind": "log.warning",
+  "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+ },
+ {
+  "at": "2026-10-25T00:28:59.891Z",
+  "kind": "log.warning",
+  "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+ }
+]
