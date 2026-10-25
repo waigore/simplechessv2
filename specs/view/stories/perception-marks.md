@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/view/story.md`](../../../.agents/specs/ru
 - **Spec key**: `PER`
 - **Glossary terms**: [Board camera](../glossary.md), [Frame](../glossary.md)
 
-Split from [`perception.md`](perception.md) by logical unit; that file proves identity, squares, depth, and comfort.
+Split from [`perception.md`](perception.md); that file proves identity, squares, depth, comfort.
 
 ## Coverage
 
@@ -15,10 +15,11 @@ Split from [`perception.md`](perception.md) by logical unit; that file proves id
 | R3 | VS2.1 | R4 | VS2.2 |
 | R5 | VS2.3 | R6 | VS2.4 VS2.4b |
 | R7 | VS2.5 VS2.6 | R8 | VS2.7 |
+| R9 | VS2.8 |
 
 ## VS2: Read the marks
 
-As a casual player, I see selection, legal moves, Advice, turn, and coordinates clearly so that I can act without guessing.
+As a casual player, I see selection, legal moves, Advice, turn, coordinates, and the last move clearly.
 
 ### VS2.1: Selection
 
@@ -27,7 +28,7 @@ As a casual player, I see selection, legal moves, Advice, turn, and coordinates 
 ```gherkin
 Given CAM-board Web 9:16, a selected piece
 When shown
-Then its square and piece show PAL.C6 at ≥ 2:1 on both square colors (PAL.K5) And ≥ 90% of the body stays visible
+Then square and piece show PAL.C6 at ≥ 2:1 on both square colors (PAL.K5) And ≥ 90% of the body stays visible
 ```
 
 ### VS2.2: Legal destinations
@@ -37,7 +38,7 @@ Then its square and piece show PAL.C6 at ≥ 2:1 on both square colors (PAL.K5) 
 ```gherkin
 Given CAM-board Web 9:16, a selection with legal destinations
 When shown
-Then each target shows PAL.C11 at ≥ 2:1 on both square colors (PAL.K6) And each mark covers ≥ 1/4 square
+Then each target shows PAL.C11 at ≥ 2:1 on both square colors (PAL.K6) And covers ≥ 1/4 square
 ```
 
 ### VS2.3: Advice
@@ -46,7 +47,7 @@ Then each target shows PAL.C11 at ≥ 2:1 on both square colors (PAL.K6) And eac
 
 ```gherkin
 Given CAM-board Web 9:16, Shared Advice On and a best move (F-move-advice)
-When advice marks show
+When shown
 Then from/to and arrow show PAL.C7 at ≥ 2:1 on both squares (PAL.K5) And eval text is ≥ UIS.T2 And the marks cover ≤ 10% of any body
 ```
 
@@ -57,7 +58,7 @@ Then from/to and arrow show PAL.C7 at ≥ 2:1 on both squares (PAL.K5) And eval 
 ```gherkin
 Given CAM-board Web 9:16, side to move White in check, sound off
 When viewed
-Then the side-to-move and check indicator is ≥ 1/12 frame height, in-frame, at ≥ 4.5:1 (PAL.K4) And check uses PAL.C8
+Then side-to-move and check are ≥ 1/12 frame height, in-frame, ≥ 4.5:1 (PAL.K4) And check uses PAL.C8
 ```
 
 ### VS2.4b: Turn without check
@@ -67,7 +68,7 @@ Then the side-to-move and check indicator is ≥ 1/12 frame height, in-frame, at
 ```gherkin
 Given CAM-board Web 9:16, side to move White not in check, sound off
 When viewed
-Then the side-to-move indicator is ≥ 1/12 frame height, in-frame, at ≥ 4.5:1 (PAL.K4) And PAL.C8 is absent
+Then side-to-move is ≥ 1/12 frame height, in-frame, ≥ 4.5:1 (PAL.K4) And PAL.C8 is absent
 ```
 
 ### VS2.5: Coordinates, Bottom seat
@@ -77,7 +78,7 @@ Then the side-to-move indicator is ≥ 1/12 frame height, in-frame, at ≥ 4.5:1
 ```gherkin
 Given CAM-board Web 9:16, White seat Bottom
 When coordinates show
-Then files a–h and ranks 1–8 sit on the outer 1-unit margin only, at ≥ UIS.T2 and ≥ 4.5:1 against the background
+Then files a–h, ranks 1–8 sit on the outer 1-unit margin only, at ≥ UIS.T2 and ≥ 4.5:1 on the background
 ```
 
 ### VS2.6: Coordinates after flip
@@ -87,7 +88,7 @@ Then files a–h and ranks 1–8 sit on the outer 1-unit margin only, at ≥ UIS
 ```gherkin
 Given CAM-board Web 9:16, White seat Top after CAM-board.M2
 When coordinates show
-Then file a stays on White's left after the 180° flip And labels stay on the outer margin
+Then file a stays on White's left after the 180° flip And labels stay on the margin
 ```
 
 ### VS2.7: Refused place
@@ -96,6 +97,16 @@ Then file a stays on White's left after the 180° flip And labels stay on the ou
 
 ```gherkin
 Given CAM-board Web 9:16, a selected piece, a refused place
-When refusal shows
+When refused
 Then that square flashes PAL.C8 for 0.3 s at ≥ 2:1 (PAL.K5) And selection and legal marks stay
+```
+
+### VS2.8: Last move
+
+- **Proves**: R9
+
+```gherkin
+Given CAM-board Web 9:16, e2–e4 applied, a piece selected, legal marks, Advice On
+When seen without hue
+Then both e2 and e4 are marked, told apart by form, not hue (PAL.K9) And each sits on PAL.C10 keylined in PAL.C9 at ≥ 2:1 on its square (PAL.K5) And overlays cover ≤ 10% of any body And both stay until the next move
 ```

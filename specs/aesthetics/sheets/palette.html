@@ -21,6 +21,20 @@
     .pair .sample { display: flex; height: 3rem; width: 12rem; }
     .pair .sample div { flex: 1; }
     .pair p { margin: 0.25rem 0 0; font-size: 0.8125rem; }
+    .board { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .sq { position: relative; width: 7rem; height: 7rem; border: 1px solid var(--line); margin-bottom: 1.5rem; }
+    .sq p { position: absolute; left: 0; right: 0; bottom: -1.4rem; margin: 0; text-align: center; font-size: 0.75rem; color: var(--muted); }
+    /* C10 ticks with a C9 keyline, 1.5 screen px at the reference frame */
+    .tick { position: absolute; background: #2C2A28; }        /* PAL.C9 keyline */
+    .tick::after { content: ""; position: absolute; inset: 1.5px; background: #F7F1E8; } /* PAL.C10 */
+    /* From-square: one vertical stroke just inside the edge that faces the to-square */
+    .tick.back { top: 12%; bottom: 12%; right: 10%; width: 7%; }
+    /* To-square: an L tick in each of the two corners that face the from-square */
+    .tick.corner { width: 18%; height: 18%; }
+    .tick.corner.tl { top: 9%; left: 9%; }
+    .tick.corner.br { bottom: 9%; right: 9%; }
+    .tick.corner.tl::after { clip-path: polygon(0 0, 100% 0, 100% 18%, 18% 18%, 18% 100%, 0 100%); }
+    .tick.corner.br::after { clip-path: polygon(82% 0, 100% 0, 100% 100%, 0 100%, 0 82%, 82% 82%); }
   </style>
 </head>
 <body>
@@ -338,6 +352,30 @@
         </figure>
       </div>
     </section>
-  </article>
+
+    <section data-element="PAL.K9">
+      <h2>PAL.K9 Last-move ticks (PER.R9)</h2>
+      <div class="board">
+        <div class="sq" style="background: #E8D5B5;">
+          <span class="tick back"></span>
+          <p>e2 on C1 — from: one back tick</p>
+        </div>
+        <div class="sq" style="background: #8B5A3C;">
+          <span class="tick back"></span>
+          <p>e2 on C2 — from: one back tick</p>
+        </div>
+        <div class="sq" style="background: #E8D5B5;">
+          <span class="tick corner tl"></span>
+          <span class="tick corner br"></span>
+          <p>e4 on C1 — to: two corner ticks</p>
+        </div>
+        <div class="sq" style="background: #8B5A3C;">
+          <span class="tick corner tl"></span>
+          <span class="tick corner br"></span>
+          <p>e4 on C2 — to: two corner ticks</p>
+        </div>
+      </div>
+      <p>The pair reads along the move: the back tick sits on the edge facing the to-square; the corner ticks face the from-square. C10 on the C9 keyline, no new swatch.</p>
+    </section>  </article>
 </body>
 </html>
