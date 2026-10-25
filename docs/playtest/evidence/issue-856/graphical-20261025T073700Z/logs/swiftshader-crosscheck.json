@@ -1,0 +1,965 @@
+{
+  "arm": "swiftshader-crosscheck",
+  "runs": [
+    {
+      "label": "pub-sw-1",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": true,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "probe": {
+        "t0": 426.8000000002794,
+        "paint": {
+          "t": 3915,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 3907,
+          "dark": 4513,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4513,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 533.3000000002794,
+            "end": 1454,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1454.7000000001863,
+            "end": 2043.6000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2130.3000000002794,
+            "end": 2130.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2151.5,
+            "end": 2151.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2195.399999999907,
+            "end": 2195.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2212.600000000093,
+            "end": 2212.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2301.8000000002794,
+            "end": 2301.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2314.7000000001863,
+            "end": 2314.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2322.8000000002794,
+            "end": 2322.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2337.100000000093,
+            "end": 2337.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2353.8000000002794,
+            "end": 2353.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2370,
+            "end": 2370,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2387.100000000093,
+            "end": 2387.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2403.7000000001863,
+            "end": 2403.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2420.8000000002794,
+            "end": 2420.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2437.100000000093,
+            "end": 2437.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2456.2000000001863,
+            "end": 2456.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2470.5,
+            "end": 2470.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2595.2000000001863,
+            "end": 2648.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2648.399999999907,
+            "end": 2648.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3710.600000000093,
+            "end": 3710.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3906.8000000002794,
+            "end": 3906.8000000002794,
+            "ok": true
+          }
+        ],
+        "frames": 681,
+        "logs": [
+          {
+            "t": 2522,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 2859,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 3070,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 25166.700000000186,
+        "paintTiming": {
+          "first-paint": 2196,
+          "first-contentful-paint": 3944
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 424,
+          "dcl": 2130,
+          "load": 2130
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "log.warning [rendering] [.WebGL-0x134000cd200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x134000c7e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x134000c7e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x134000c7e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "pub-sw-2",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": true,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "probe": {
+        "t0": 131.20000000018626,
+        "paint": {
+          "t": 8524,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 8523,
+          "dark": 4547,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4547,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 229.70000000018626,
+            "end": 4158.700000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 4159.5,
+            "end": 5162.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5275.800000000279,
+            "end": 5275.800000000279,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5307,
+            "end": 5307,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5327.700000000186,
+            "end": 5327.700000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5435.200000000186,
+            "end": 5435.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5796.899999999907,
+            "end": 5796.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5824.5,
+            "end": 5824.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5917.399999999907,
+            "end": 5917.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5927.399999999907,
+            "end": 5927.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5943.600000000093,
+            "end": 5943.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5950.899999999907,
+            "end": 5950.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5972.5,
+            "end": 5972.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 6173.899999999907,
+            "end": 6363.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 6363.200000000186,
+            "end": 6363.300000000279,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 8139.800000000279,
+            "end": 8139.800000000279,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 8523.399999999907,
+            "end": 8523.399999999907,
+            "ok": true
+          }
+        ],
+        "frames": 319,
+        "logs": [
+          {
+            "t": 6036,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 6984,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 7252,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 25335.399999999907,
+        "paintTiming": {
+          "first-paint": 5268,
+          "first-contentful-paint": 8596
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 127,
+          "dcl": 5299,
+          "load": 5299
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "log.warning [rendering] [.WebGL-0x134000ccc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x134000c7800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x134000c7800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x134000c7800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "pub-sw-3",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": true,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "probe": {
+        "t0": 138.20000000018626,
+        "paint": {
+          "t": 9664,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 9664,
+          "dark": 4547,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4547,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 253.3000000002794,
+            "end": 5521.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5522.200000000186,
+            "end": 7127.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7223.800000000279,
+            "end": 7223.800000000279,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7263.300000000279,
+            "end": 7263.300000000279,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7293.5,
+            "end": 7293.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7461.5,
+            "end": 7461.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7521.5,
+            "end": 7521.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7543.899999999907,
+            "end": 7543.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7577.100000000093,
+            "end": 7577.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7638.899999999907,
+            "end": 7638.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7665.600000000093,
+            "end": 7665.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7682.200000000186,
+            "end": 7682.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7699.5,
+            "end": 7699.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7715.399999999907,
+            "end": 7715.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7732.200000000186,
+            "end": 7732.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7749.5,
+            "end": 7749.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 7994.800000000279,
+            "end": 8047.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 8047.700000000186,
+            "end": 8047.700000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 9262.5,
+            "end": 9262.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 9663.600000000093,
+            "end": 9663.700000000186,
+            "ok": true
+          }
+        ],
+        "frames": 459,
+        "logs": [
+          {
+            "t": 7831,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 8162,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 8414,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 25131.399999999907,
+        "paintTiming": {
+          "first-paint": 7256,
+          "first-contentful-paint": 9712
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 133,
+          "dcl": 7223,
+          "load": 7224
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "log.warning [rendering] [.WebGL-0x12c000ccc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x12c000c6000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x12c000c6000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x12c000c6000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "fix-sw-1",
+      "url": "http://127.0.0.1:8099/",
+      "swiftshader": true,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "probe": {
+        "t0": 5.2999999998137355,
+        "paint": {
+          "t": 5185,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 5184,
+          "dark": 4532,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4532,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 23.899999999906868,
+            "end": 2498.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2499.399999999907,
+            "end": 3220.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3361.5,
+            "end": 3361.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3376.899999999907,
+            "end": 3376.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3614.7999999998137,
+            "end": 3614.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3628.399999999907,
+            "end": 3628.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3670.2999999998137,
+            "end": 3670.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3703,
+            "end": 3703,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3745.100000000093,
+            "end": 3745.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3759.7999999998137,
+            "end": 3759.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3785.100000000093,
+            "end": 3785.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3790.5,
+            "end": 3790.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3803.899999999907,
+            "end": 3803.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3820.600000000093,
+            "end": 3820.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3958,
+            "end": 4016.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 4016.600000000093,
+            "end": 4016.6999999997206,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 4924.600000000093,
+            "end": 4924.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5184.100000000093,
+            "end": 5184.100000000093,
+            "ok": true
+          }
+        ],
+        "frames": 730,
+        "logs": [
+          {
+            "t": 3873,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 4328,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 4550,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 25213.399999999907,
+        "paintTiming": {
+          "first-paint": 3376,
+          "first-contentful-paint": 5608
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 2,
+          "dcl": 3355,
+          "load": 3355
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "log.warning [rendering] [.WebGL-0x13c000fc000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x13c000f7800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x13c000f7800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x13c000f7800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "fix-sw-2",
+      "url": "http://127.0.0.1:8099/",
+      "swiftshader": true,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "probe": {
+        "t0": 8.799999999813735,
+        "paint": {
+          "t": 5590,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 5590,
+          "dark": 4542,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4542,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 18.600000000093132,
+            "end": 2716.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2717.899999999907,
+            "end": 3488.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3580.899999999907,
+            "end": 3580.899999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3807.5,
+            "end": 3807.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 4120.899999999907,
+            "end": 4198.299999999814,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 4198.399999999907,
+            "end": 4198.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5272.200000000186,
+            "end": 5272.200000000186,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5590.100000000093,
+            "end": 5590.100000000093,
+            "ok": true
+          }
+        ],
+        "frames": 494,
+        "logs": [
+          {
+            "t": 4012,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 4560,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 4806,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 25251.799999999814,
+        "paintTiming": {
+          "first-paint": 3796,
+          "first-contentful-paint": 6040
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 5,
+          "dcl": 3572,
+          "load": 3572
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "log.warning [rendering] [.WebGL-0x104000cb400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x104000c6c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x104000c6c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x104000c6c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "fix-sw-3",
+      "url": "http://127.0.0.1:8099/",
+      "swiftshader": true,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "probe": {
+        "t0": 5.7000000001862645,
+        "paint": {
+          "t": 5264,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 5264,
+          "dark": 4547,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4547,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 12.200000000186265,
+            "end": 2589.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2590.2000000001863,
+            "end": 3293.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3399.3000000002794,
+            "end": 3399.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3557.8000000002794,
+            "end": 3557.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3582.100000000093,
+            "end": 3582.100000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3829.600000000093,
+            "end": 3876.600000000093,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 3876.8000000002794,
+            "end": 3876.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 4938.399999999907,
+            "end": 4938.399999999907,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 5264.100000000093,
+            "end": 5264.100000000093,
+            "ok": true
+          }
+        ],
+        "frames": 635,
+        "logs": [
+          {
+            "t": 3752,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 4313,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 4545,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 25216.200000000186,
+        "paintTiming": {
+          "first-paint": 3420,
+          "first-contentful-paint": 5680
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 3,
+          "dcl": 3390,
+          "load": 3390
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "log.warning [rendering] [.WebGL-0x11c000cba00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x11c000c6600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x11c000c6600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "log.warning [rendering] [.WebGL-0x11c000c6600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    }
+  ]
+}
