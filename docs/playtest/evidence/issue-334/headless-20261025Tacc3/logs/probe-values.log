@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+spec keys=23 shipped keys=23
+en: elo=Elo | reveal=Reveal | abandon=Abandon | leave=Leave stream | reveal_confirm=Reveal the solution? | abandon_confirm=Abandon this puzzle? | leave_confirm=Leave the puzzle stream? | confirm=Confirm | cancel=Cancel | save_failed=Save failed. Prior Elo kept. | dismiss=Dismiss | cue_solved=Solved | cue_wrong=Wrong move | cue_failed=Failed | cue_abandon=Abandoned | choose_promotion=Choose promotion | refused_place=Refused place | pawn=Pawn | king=King | queen=Queen | rook=Rook | bishop=Bishop | knight=Knight | 
+zh-Hant: elo=Elo 值 | reveal=顯示解答 | abandon=放棄 | leave=離開題組 | reveal_confirm=要顯示解答嗎？ | abandon_confirm=要放棄這道題嗎？ | leave_confirm=要離開題組嗎？ | confirm=確認 | cancel=取消 | save_failed=儲存失敗。已保留先前 Elo 值。 | dismiss=關閉 | cue_solved=已解出 | cue_wrong=走錯了 | cue_failed=未解出 | cue_abandon=已放棄 | choose_promotion=選擇升變棋子 | refused_place=無法放置 | pawn=Pawn | king=King | queen=Queen | rook=Rook | bishop=Bishop | knight=Knight | 
+ja: elo=Elo レート | reveal=解答を見る | abandon=この問題をやめる | leave=パズルを離れる | reveal_confirm=解答を表示しますか？ | abandon_confirm=この問題をやめますか？ | leave_confirm=パズルストリームを離れますか？ | confirm=確認 | cancel=キャンセル | save_failed=保存に失敗しました。以前の Elo を保持します。 | dismiss=閉じる | cue_solved=解決 | cue_wrong=手が違います | cue_failed=失敗 | cue_abandon=中断 | choose_promotion=昇格する駒を選ぶ | refused_place=置けません | pawn=Pawn | king=King | queen=Queen | rook=Rook | bishop=Bishop | knight=Knight | 
+mode-pick.puzzle: en=Puzzle stream zh-Hant=謎題串流 ja=パズルストリーム
+locale own names: English 繁體中文 日本語
+varying keys=17
+marked rows on puzzle-play=["pawn", "king", "queen", "rook", "bishop", "knight"]
+EVERY_LOCALE_ROWS total=13 ["mode-pick.locale", "shared-play.pawn", "shared-play.king", "shared-play.queen", "shared-play.rook", "shared-play.bishop", "shared-play.knight", "puzzle-play.pawn", "puzzle-play.king", "puzzle-play.queen", "puzzle-play.rook", "puzzle-play.bishop", "puzzle-play.knight"]
+PROBE FAILS=0
