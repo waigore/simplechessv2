@@ -35,13 +35,16 @@
 
 `PTU-mode-pick` S1 / `P4` (load time) — **pass on `ENV.2`**. Story row
 `screens/mode-pick.md#US1` judged for its S1 timing only; S2–S6 `not-judged`.
-Per-run readings: `results.md`. Verdict reasoning and the instrument note: `notes.md`.
+Verdict reasoning: [`notes.md`](notes.md).
 
 ## Paths
 
-- [`notes.md`](notes.md) — what was judged, independence, the software-rasteriser cross-check,
-  and what this run does not settle
-- [`results.md`](results.md) — per-run table and the per-step outcomes
+- [`notes.md`](notes.md) — what was judged, the three-way read of an open, and independence
+- [`results.md`](results.md) — the protocol verdict and the story rows
+- [`readings.md`](readings.md) — the per-run table and how to read it
+- [`fix-effect.md`](fix-effect.md) — the base-export ↔ fix-export comparison for #877
+- [`renderer.md`](renderer.md) — the software-rasteriser cross-check and what this run does
+  not settle
 - `logs/published-release-hardware-cold.json`, `logs/published-release-hardware-warm.json`
 - `logs/base-export-hardware-cold.json`, `logs/base-export-hardware-warm.json`
 - `logs/fix-export-hardware-cold.json`, `logs/fix-export-hardware-warm.json`
