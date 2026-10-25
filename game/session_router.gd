@@ -418,8 +418,9 @@ func _on_boot_ready() -> void:
 
 ## CTR-asset-resolve E4 — Boot left approved IDs unresolved. The failure is
 ## observable here instead of the caller waiting forever on a ready that never
-## comes. `EX.loading` has no specified failure exit or copy (#647 S2), so this
-## does not invent one: the wait stays until the UX owner specifies the surface.
+## comes. `EX.loading` still has no specified failure exit or copy, so this does
+## not invent one: the wait stays until the UX owner specifies the surface, which
+## #882 owns (filed from #647's S2 step).
 func _on_boot_failed(unresolved: int) -> void:
 	push_error("Boot assets failed: %d approved IDs unresolved" % unresolved)
 	boot_failure_count = unresolved
@@ -476,6 +477,21 @@ func _go_mode_pick(ui_state: String = "S1") -> void:
 	_last_clock_display = ""
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state(ui_state))
 	## Mode pick is ready: preload Ambient and start BED_M1 (AST.G3 / SND.M1), #426.
+	## Read the beds and start the cue on the frame after mode pick is painted: the
+	## cold screen must not wait behind the Ambient group's pack reads and the audio
+	## device the first bed cue starts (#856).
+	_start_music_after_paint()
+
+
+## `AST.G3` unchanged: Ambient still loads when mode pick is ready, but the group's
+## pack reads and the audio-device start of the first bed cue no longer hold the
+## painted screen (#856). Two frames pass first: one draws mode pick and the next is
+## where a single-threaded Web build presents it — one frame measured no improvement,
+## two moved the first painted screen 0.42–0.50 s earlier on the same host
+## (`docs/playtest/evidence/issue-856/graphical-20261025T002315Z/`).
+func _start_music_after_paint() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
 	start_music()
 
 
