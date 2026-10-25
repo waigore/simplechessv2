@@ -1,0 +1,75 @@
+# Gate readings — #693 pre-recording gates, published build `69a03d4`
+# Read 2026-10-25 on https://waigore.github.io/simplechessv2/ (ENV.2, Graphics).
+# Files: cold-open-{1,2}-events.log/-summary.json, deep-1-audio.json,
+#        entry2-{1,2}-summary.json, entry-summary.json (first, mis-aimed attempt).
+
+## Gate (c) — build identity — PASS
+
+Web release run 40146630737 (push, success) on 69a03d4.
+Step "Check the shipped tree serves the asset root": success.
+Pages deployment github-pages = 7306478742, sha 69a03d4, 2026-10-25T00:26:00Z.
+#785 fix (PR #799) squash-merged on main as 4f133e8; `git merge-base --is-ancestor 4f133e8 69a03d4` = true.
+Deployment sha == run head sha == 69a03d4 == main.
+
+## Gate (a) — mode pick reached, mode entered/played — PASS (2 cold opens)
+
+                     | cold open 1  | cold open 2
+mode pick visible    | 12.271 s     | 12.315 s
+index.pck            | 200          | 200
+mode entered         | YES          | YES
+screen after press   | Shared game setup | Shared game setup
+
+Press at (195,163), 200 ms, inside the C1 "Shared game · Last" box that #879
+measured on this sha (y 144.83–181.67, panel x 87.3–302.3). Both sessions
+advanced to "Shared game setup" with White seat / Clock / Increment / Advice /
+Start / Back.
+
+An earlier attempt (entry-summary.json) pressed at y 320–405 and changed nothing.
+Those points are below the panel, in empty page — the same mis-aim #879 diagnosed
+(its core 0/8 sample sat in the 4.16 px seam). That reading is recorded here as a
+non-finding and is not attributable to the build.
+
+## Gate (b) — audible music bed at mode pick — PASS (2 cold opens)
+
+                     | cold open 1    | cold open 2
+AudioContext state    | running        | running
+AudioContext clock    | 8.15 s @48k    | 7.64 s @48k
+"Preload ambient left N unresolved" | absent | absent
+"Unresolved asset ID" warnings      | 0 | 0
+"Can't open file from path '*.ogg'" | 0 | 0
+non-audio console ERROR lines       | 0 | 0
+
+Bed level at destination (audio_probe.cjs taps every node feeding the
+destination; RMS / peak of a 2048-sample window):
+
+  pre-interaction   RMS 0.196 / 0.173 / 0.137   peak 0.439 / 0.351 / 0.404
+  post-interaction  RMS 0.201 / 0.071 / 0.078   peak 0.488 / 0.176 / 0.155
+
+Non-zero on every window: the bed is playing, not a suspended context.
+
+Note on the "heard by ear" half. This run read level and state, not ears, and
+read them in **headless** Chrome, which `filmed-seating.md` excludes ("Headless is
+excluded; it shows no surface or motion and carries no audio"). The gate-(b)
+console and signal halves are therefore satisfied on the published build; the
+by-ear half has no instrument on this machine (see below).
+
+## Why there is still no recording — SIT.7 cannot be captured here
+
+Gates (a), (b) and (c) pass, so the stop rule does not fire. The seating is still
+not recorded, because no compliant capture path exists on this machine:
+
+- No system-audio loopback device. `ffmpeg -f avfoundation -list_devices` reports
+  one input, "MacBook Pro Microphone"; `system_profiler SPAudioDataType` reports a
+  single built-in output ("MacBook Pro Speakers") and no virtual, aggregate, or
+  multi-output device. `/Library/Audio/Plug-Ins/HAL/` has no loopback driver.
+  Reading `:default` input hangs and produces no file.
+- No on-screen capture. `screencapture -x` returns "could not create image from
+  display" (exit 1): the unattended shell holds no Screen Recording grant.
+- Headless CDP screenshots are the only capture available, and headless is
+  excluded by `filmed-seating.md`.
+
+A microphone recording of room speakers is not a compliant substitute: it is not
+the tab's audio and cannot be judged by ear for SND.M1/M2 or X1–X5.
+
+`SIT.7` is also unrealized: `tools-situational.md` leaves its seam TBD, and no
+technical-design seam or accepted ADR names a recording hook.

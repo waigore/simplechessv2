@@ -1,0 +1,78 @@
+## game/session_router.gd values
+var advice_on := true
+## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
+## empty endpoint or key makes Advice unavailable (FAIL.T1).
+var advice_endpoint := ""
+var advice_api_key := ""
+var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
+var options_locked := false
+## non-test assignments of advice_endpoint / advice_api_key in game/
+game/session_router.gd:33:var advice_endpoint := ""
+game/session_router.gd:34:var advice_api_key := ""
+game/session_router.gd:483:	client.configure(advice_endpoint, advice_api_key, advice_time_ms)
+game/session_router.gd:552:	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+game/session_router.gd:756:	puzzle_flow.enter(_persist, advice_endpoint, advice_api_key, _puzzle_sim_factory())
+## test seam
+	await process_frame
+	_seams.tel_event.connect(_remember_tel)
+	_router.advice_endpoint = "http://advice.test/advice"
+	_router.advice_api_key = "test-key"
+	_router.advice_on = true
+## is_available guard
+game/advice_client.gd:52:func is_available() -> bool:
+game/catalog_deal_client.gd:39:func is_available() -> bool:
+		]
+	)
+
+
+## R9 — leaving the Shared game clears advice and stops evaluation. The S3 error
+## panel goes with the game (it belongs to the shared-play screen).
+func _leave_advice() -> void:
+	_drive_advice("leave")
+
+
+## B3: both T9 and T10 must be set before Advice can fetch anything.
+func _advice_available() -> bool:
+	return not advice_endpoint.is_empty() and not advice_api_key.is_empty()
+
+
+func _mode_pick_state(ui_state: String) -> Dictionary:
+	return {
+		"ui_state": ui_state,
+		"locale": locale,
+		"last_mode": last_mode,
+	}
+## B5 specs sentence
+| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+## B5 introducing commit
+e19401f Make T9/T10 agree with B5 on the catalog release state (#648) (#842)
+## catalog-service R9
+Any failed read returns no record and the client deals nothing, so `GS.playerElo` stays unchanged ([`failures.md`](../failures.md) Reliability; `F-puzzle-catalog` X2). Request counts are per key and per minute and reset without persistence. The served snapshot persists across restarts on that server's deploy path, which the operator owns (ADR-0015). Because the route ships enabled, a missing T9/T10 or an unreachable route on the published release is a deployment fault, never an accepted state.
+## catalog_deal_client.is_available
+	)
+
+
+## Apply B5: `T9` and `T10` are required; a missing one fails every deal.
+func configure(p_endpoint: String, p_api_key: String) -> void:
+	endpoint = p_endpoint.strip_edges()
+	api_key = p_api_key
+
+
+func is_available() -> bool:
+	return not endpoint.is_empty() and not api_key.is_empty()
+
+
+## True while a deal read is in flight; a second request waits for this one.
+func in_flight() -> bool:
+	return _transport != null
+
+
+## O1 — ask for one puzzle for `player_elo` / `recent_solved`. Returns false when
+## the read could not even start (B5, one deal at a time, G6).
+func request(player_elo: float, recent_solved: Array) -> bool:
+
+## B5 introducing commit (first adding the sentence)
+a9192a0 Staff CMP-puzzle-progression and follow the PoC deal ladder (#824)
+
+## catalog-service R9 introducing commit
+a94210d State that the catalog route ships enabled (#648) (#815)

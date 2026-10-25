@@ -31,4 +31,4 @@ A split story file is proof for its base spec and never a row of its own: it car
 
 ## Baseline
 
-[`localization.md`](localization.md) is Baseline: one scenario per element showing its stated outcome ([`stories/localization.md`](stories/localization.md) `US1.1`–`US2.2`). It is a chosen lighter depth, not a gap — the copy it owns is checked on the mockup during review and acceptance.
+[`localization.md`](localization.md) is Baseline: `US1.1`–`US2.4`, one per element, including L7–L10 in [`localization-marked-set.md`](localization-marked-set.md) ([`stories/localization.md`](stories/localization.md)). It is a chosen lighter depth, not a gap — the copy it owns is checked on the mockup during review and acceptance.

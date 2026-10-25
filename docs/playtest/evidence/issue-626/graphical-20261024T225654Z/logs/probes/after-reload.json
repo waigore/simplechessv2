@@ -1,0 +1,46 @@
+[
+  {
+    "step": "cold-open",
+    "shot": "screenshots/after-reload-01-cold.png"
+  },
+  {
+    "step": "tap-before-reload-1",
+    "touch": {
+      "ms": 354,
+      "ok": true
+    }
+  },
+  {
+    "step": "tap-after-reload-1",
+    "touch": {
+      "ms": 243,
+      "ok": true
+    }
+  },
+  {
+    "step": "after-reload-1",
+    "shot": "screenshots/after-reload-02-after-reload-1.png"
+  },
+  {
+    "step": "tap-after-reload-2",
+    "touch": {
+      "ms": 379,
+      "ok": true
+    }
+  },
+  {
+    "step": "after-reload-2",
+    "shot": "screenshots/after-reload-03-after-reload-2.png"
+  },
+  {
+    "step": "tap-after-renavigate",
+    "touch": {
+      "ms": 215,
+      "ok": true
+    }
+  },
+  {
+    "step": "after-renavigate",
+    "shot": "screenshots/after-reload-04-after-renavigate.png"
+  }
+]

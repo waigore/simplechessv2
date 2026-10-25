@@ -1,0 +1,36 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "frame": {
+    "width": 390,
+    "height": 844,
+    "dpr": 2
+  },
+  "steps": [
+    {
+      "name": "mode pick",
+      "shot": "screenshots/board-01-mode-pick.png"
+    },
+    {
+      "name": "after Shared game",
+      "shot": "screenshots/board-02-after-shared.png"
+    },
+    {
+      "name": "setup-screen after Start",
+      "shot": "screenshots/board-03-after-start.png"
+    },
+    {
+      "name": "board canvas (un-simulated control)",
+      "shot": "screenshots/board-control.png"
+    }
+  ],
+  "shots": [
+    "screenshots/board-01-mode-pick.png",
+    "screenshots/board-02-after-shared.png",
+    "screenshots/board-03-after-start.png",
+    "screenshots/board-control.png",
+    "screenshots/board-control-b.png"
+  ],
+  "control": "board-control.png",
+  "controlRepeat": "board-control-b.png",
+  "console": "logs/capture-console.log"
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "step": "cold-open",
+    "evaluate": {
+      "ms": 4,
+      "value": 2
+    },
+    "frames": {
+      "ms": 1163,
+      "value": 30
+    },
+    "shot": "screenshots/responsive-01-cold.png"
+  },
+  {
+    "step": "after-reload",
+    "evaluate": {
+      "ms": 50,
+      "value": 2
+    },
+    "frames": {
+      "ms": 1457,
+      "value": 30
+    },
+    "shot": "screenshots/responsive-02-after-reload.png"
+  },
+  {
+    "step": "touch-after-reload-mode-shared",
+    "touch": {
+      "ms": 341,
+      "ok": true
+    }
+  },
+  {
+    "step": "after-touch",
+    "shot": "screenshots/responsive-03-after-touch.png"
+  }
+]

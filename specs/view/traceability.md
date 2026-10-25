@@ -11,12 +11,12 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Cafe calm | vision | [`cameras/board.md`](cameras/board.md), [`camera-controls.md`](camera-controls.md) |
 | Web / touch primary | definition | [`view.md`](view.md), [`projection.md`](projection.md) |
 | Pieces / board ([E-pieces](../design/entities/pieces.md)) | design | [`spatial-model.md`](spatial-model.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
-| Move advice ([F-move-advice](../design/features/move-advice.md)) | design | [`perception.md`](perception.md) |
-| Experience clarity / feedback | design | [`perception.md`](perception.md), [`physics.md`](physics.md) |
+| Move advice ([F-move-advice](../design/features/move-advice.md)) | design | [`perception.md`](perception.md), [`perception-marks.md`](perception-marks.md) |
+| Experience clarity / feedback | design | [`perception.md`](perception.md), [`perception-marks.md`](perception-marks.md), [`physics.md`](physics.md) |
 | Mode pick flow ([FL-mode-pick](../design/flows/mode-pick.md)) | design | [`cameras/board.md`](cameras/board.md) (Used in P2/P3; T1 trigger) |
 | Shared-game loop ([loops/two-player-game.md](../design/loops/two-player-game.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
 | Puzzle stream loop ([loops/puzzle-stream.md](../design/loops/puzzle-stream.md)) | design | [`cameras/board.md`](cameras/board.md), [`physics.md`](physics.md), [`perception.md`](perception.md) |
-| Accessibility (shape, not color alone) | quality | [`perception.md`](perception.md) R1–R2 |
+| Accessibility (shape, not color alone) | quality | [`perception.md`](perception.md) R1–R2, [`perception-marks.md`](perception-marks.md) R9 |
 
 ## Topic coverage
 
@@ -28,7 +28,7 @@ Authoring rules: [`.agents/specs/rules/view/traceability.md`](../../.agents/spec
 | Cameras | [`cameras/`](cameras/) | Applies |
 | Camera controls and settings | [`camera-controls.md`](camera-controls.md) | Applies — None (fixed board) |
 | Physics feel | [`physics.md`](physics.md) | Applies |
-| Readability and depth | [`perception.md`](perception.md) | Applies — depth N/A |
+| Readability and depth | [`perception.md`](perception.md), [`perception-marks.md`](perception-marks.md) | Applies — depth N/A |
 | Motion comfort | [`perception.md`](perception.md) | N/A — no camera motion over time; reorients only by [CAM-board.M2](cameras/board.md) Cut 0 s at deal or seat change ([CAM-board.T1](cameras/board.md) is also Cut 0 s) |
 | Spatial audio | [`audio.md`](audio.md) | N/A — non-positional event cues only |
 | Haptics | [`haptics.md`](haptics.md) | N/A — Web primary; no haptic platforms |

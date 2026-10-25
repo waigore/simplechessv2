@@ -19,7 +19,7 @@ When mode is `critical-only`, one row per ID: ID (`C1`, `C2`, …), the design s
 
 ## Issue mapping
 
-State that procedures select the intersection of (a) this coverage set and (b) IDs the issue's playable deliverables can affect.
+State that procedures select the intersection of (a) this coverage set and (b) IDs the issue's playable deliverables can affect. Point delivery ownership (epic/task vs `none`) at [`story-rows.md`](story-rows.md); do not redefine Owner routing here.
 
 ## Splitting
 

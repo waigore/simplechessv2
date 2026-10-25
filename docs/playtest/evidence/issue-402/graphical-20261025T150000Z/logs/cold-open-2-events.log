@@ -1,0 +1,13 @@
+0.315s net 200 https://waigore.github.io/simplechessv2/
+0.362s net 200 https://waigore.github.io/simplechessv2/index.png
+0.424s net 200 https://waigore.github.io/simplechessv2/index.js
+6.645s log.warning [rendering] [.WebGL-0x134000ccc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+8.782s net 200 https://waigore.github.io/simplechessv2/index.pck
+8.783s net 200 https://waigore.github.io/simplechessv2/index.wasm
+9.086s net 200 https://waigore.github.io/simplechessv2/index.icon.png
+9.665s console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+11.062s console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+11.325s console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+12.370s log.warning [rendering] [.WebGL-0x134000df800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+13.401s net 200 blob:https://waigore.github.io/db103ea3-db8f-4bd5-bbe7-9033fe51fefe
+13.974s net 200 blob:https://waigore.github.io/db103ea3-db8f-4bd5-bbe7-9033fe51fefe

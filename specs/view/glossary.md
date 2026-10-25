@@ -13,6 +13,8 @@ Authoring rules: [`.agents/specs/rules/view/glossary.md`](../../.agents/specs/ru
 | Dead zone | The part of the frame the target can move within without the camera moving. | [`cameras/board.md`](cameras/board.md) |
 | Diagram | A to-scale HTML drawing of the projection or of one camera. | [`diagrams/`](diagrams/) |
 | Frame | The rectangle of the world shown on the player's display at one moment. | [`projection.md`](projection.md) |
+| Last-move band | The soft C7 band on the from-square of the last move, blurred and without a hard stroke, so it reads as a field rather than a mark. | [`perception-marks.md`](perception-marks.md) |
+| Last-move ticks | The two C10 corner Ls on the to-square of the last move, on a C9 keyline, set in the corners facing the from-square. | [`perception-marks.md`](perception-marks.md) |
 | Listener | The point in the world from which the player hears positional sound. | [`audio.md`](audio.md) |
 | Lookahead | How far ahead of a moving target the camera leads the framing. | [`cameras/board.md`](cameras/board.md) |
 | Offset | A shift of the camera’s aim away from the board center to reframe the board. | [`cameras/board.md`](cameras/board.md) |

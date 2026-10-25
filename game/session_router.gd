@@ -7,6 +7,9 @@ signal replay_pointer(record: Dictionary)
 signal play_rendered(state: Dictionary)
 
 const STAGE_LOADING := "loading"
+## EX.load-failure — the cold open's Boot preload left an approved ID unresolved
+## (CTR-asset-resolve E4 / FAIL.T15). The load wait ends here; Reload leaves it.
+const STAGE_LOAD_FAILED := "load-failure"
 const STAGE_MODE_PICK := "mode-pick"
 const STAGE_SHARED_SETUP := "shared-setup"
 const STAGE_SHARED_PLAY := "shared-play"
@@ -204,6 +207,8 @@ func handle_control(screen_id: String, control_id: String) -> void:
 			_on_shared_result_control(control_id)
 		STAGE_PUZZLE_PLAY:
 			_on_puzzle_play_control(control_id)
+		STAGE_LOAD_FAILED:
+			_on_load_failed_control(control_id)
 
 
 ## CTR-presentation.E1 — select (to empty) or place (from/to + optional promotion).
@@ -399,6 +404,7 @@ func _known_stages() -> PackedStringArray:
 	return PackedStringArray(
 		[
 			STAGE_LOADING,
+			STAGE_LOAD_FAILED,
 			STAGE_MODE_PICK,
 			STAGE_READY_ALIAS,
 			STAGE_SHARED_SETUP,
@@ -418,11 +424,24 @@ func _on_boot_ready() -> void:
 
 ## CTR-asset-resolve E4 — Boot left approved IDs unresolved. The failure is
 ## observable here instead of the caller waiting forever on a ready that never
-## comes. `EX.loading` has no specified failure exit or copy (#647 S2), so this
-## does not invent one: the wait stays until the UX owner specifies the surface.
+## comes, and the wait ends: `EX.load-failure` replaces `EX.loading` (#882).
 func _on_boot_failed(unresolved: int) -> void:
 	push_error("Boot assets failed: %d approved IDs unresolved" % unresolved)
 	boot_failure_count = unresolved
+	stage = STAGE_LOAD_FAILED
+	screen_requested.emit(STAGE_LOAD_FAILED, {})
+
+
+## `EX.load-failure` Reload (CTR-presentation E6) — the game loads again from the
+## start for these Boot reads: the failed group's ID cache and outcome are reset so
+## the next Boot preload reads the served tree instead of the cache. The screen
+## itself must also be re-opened (a fresh page load on Web); this leg is what a
+## test or a playtest seam can drive without a browser.
+func reload_after_load_failure() -> void:
+	if stage != STAGE_LOAD_FAILED:
+		return
+	_resolver.reset_group("boot")
+	start()
 
 
 func _on_asset_needed(asset_ids: PackedStringArray) -> void:
@@ -476,6 +495,21 @@ func _go_mode_pick(ui_state: String = "S1") -> void:
 	_last_clock_display = ""
 	screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state(ui_state))
 	## Mode pick is ready: preload Ambient and start BED_M1 (AST.G3 / SND.M1), #426.
+	## Read the beds and start the cue on the frame after mode pick is painted: the
+	## cold screen must not wait behind the Ambient group's pack reads and the audio
+	## device the first bed cue starts (#856).
+	_start_music_after_paint()
+
+
+## `AST.G3` unchanged: Ambient still loads when mode pick is ready, but the group's
+## pack reads and the audio-device start of the first bed cue no longer hold the
+## painted screen (#856). Two frames pass first: one draws mode pick and the next is
+## where a single-threaded Web build presents it — one frame measured no improvement,
+## two moved the first painted screen 0.42–0.50 s earlier on the same host
+## (`docs/playtest/evidence/issue-856/graphical-20261025T002315Z/`).
+func _start_music_after_paint() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
 	start_music()
 
 
@@ -619,6 +653,13 @@ func _on_mode_pick_control(control_id: String) -> void:
 		_on_mode_pick_confirm_control(control_id)
 	else:
 		_on_mode_pick_choice_control(control_id)
+
+
+## UI-mode-pick S5 / C5 — `EX.load-failure` offers Reload and nothing else, so any
+## other control id on that surface changes nothing.
+func _on_load_failed_control(control_id: String) -> void:
+	if control_id == "C5":
+		reload_after_load_failure()
 
 
 ## S3 (quit confirm) — only Confirm ends the session; Cancel returns to S1.
@@ -921,6 +962,8 @@ func _on_jump_requested(stage_id: String) -> void:
 	match stage_id:
 		STAGE_LOADING:
 			screen_requested.emit(STAGE_LOADING, {})
+		STAGE_LOAD_FAILED:
+			screen_requested.emit(STAGE_LOAD_FAILED, {})
 		STAGE_MODE_PICK:
 			screen_requested.emit(STAGE_MODE_PICK, _mode_pick_state("S1"))
 		STAGE_SHARED_SETUP:

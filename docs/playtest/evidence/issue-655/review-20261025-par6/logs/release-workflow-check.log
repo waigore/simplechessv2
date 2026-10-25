@@ -1,0 +1,32 @@
+## workflow files naming advice/T9/T10 values
+advice-backend.yml
+automerge.yml
+code-lint.yml
+pr-hygiene.yml
+spec-lint.yml
+sync-labels.yml
+sync-project-fields-from-labels.yml
+unit-tests.yml
+web-playtest.yml
+web-release.yml
+
+.github/workflows/web-playtest.yml:27:      # Stockfish endpoint", CTR-advice-stream G3). This job runs on every pull
+.github/workflows/web-release.yml:6:# publishes that directory. No playtest build and no advice backend (ADR-0009).
+.github/workflows/web-release.yml:81:      # Stockfish endpoint", CTR-advice-stream G3). `Web playtest` produces the
+.github/scripts/web_export.py:22:("No client Stockfish endpoint"; CTR-advice-stream G3): the `Web playtest` and
+.github/scripts/web_export.py:77:# §Validation "No client Stockfish endpoint", CTR-advice-stream G3). Client code
+.github/scripts/web_export.py:82:# comment word (`uci`), and the backend's HTTP route (`advice_endpoint`) all
+.github/scripts/web_export.py:554:    ADR-0002 §Validation "No client Stockfish endpoint" and CTR-advice-stream G3:
+.github/scripts/web_export.py:555:    the client talks only to the advice backend, so an export that names the
+.github/scripts/deploy_advice_backend.sh:2:# Reproducible deploy path for the advice backend and its puzzle catalog route
+.github/scripts/deploy_advice_backend.sh:12:#   ADVICE_API_KEY=<configured key> \
+.github/scripts/deploy_advice_backend.sh:13:#   .github/scripts/deploy_advice_backend.sh
+.github/scripts/deploy_advice_backend.sh:25:: "${ADVICE_API_KEY:?ADVICE_API_KEY is required}"
+.github/scripts/deploy_advice_backend.sh:32:  python3 -m advice_backend.catalog build "${catalog_csv}" "${PUZZLE_CATALOG_PATH}"
+.github/scripts/deploy_advice_backend.sh:47:  python3 -m advice_backend.catalog check "${check_args[@]}"
+.github/scripts/deploy_advice_backend.sh:50:exec python3 -m advice_backend
+.github/scripts/tests/test_web_export.py:647:            "best_move_uci res://advice_endpoint.gd stockfishing res://playt_uci_marker.gd\n"
+.github/scripts/tests/test_web_export.py:660:    # endpoint"; CMP-advice-client R1; CTR-advice-stream G3; module M1). Each
+.github/scripts/tests/test_asset_catalog.py:417:            ("icons/advice", "V5"),
+.github/scripts/tests/test_asset_catalog.py:422:        self.add(handle="icons/advice-off", kind_spec="AK-icons", supplier=...,
+.github/scripts/tests/test_asset_catalog.py:423:                 coverage=["AK-icons.V5"], files=["icons/advice-off.svg"])
