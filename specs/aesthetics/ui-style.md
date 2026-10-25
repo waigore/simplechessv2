@@ -38,7 +38,7 @@ Named typefaces are assets ([specs/assets/](../assets/assets.md)).
 | C3 | Accent / focus | [PAL.C6](palette.md) | Distinct from piece fills ([PAL.K3](palette.md)) |
 | C4 | Danger | [PAL.C8](palette.md) | Distinct from piece fills ([PAL.K3](palette.md)) |
 | C5 | Disabled | [PAL.C9](palette.md) at 40% opacity on [PAL.C10](palette.md) | [PAL.K7](palette.md) |
-| C6 | On-board mark surface | [PAL.C10](palette.md) at 100% opacity with a [PAL.C9](palette.md) keyline at 1.5 screen px ([`UIS.I1`](#iconography)) | Keeps every stroke mark distinguishable with hue removed ([PAL.K9](palette/rules.md)): check's L-frame, Advice's brackets, and the last-move ticks ([PER.R9](../view/perception.md)). The ring, the soft band, and refusal's hatching draw on the square itself; one cream foreground per square. Tick geometry is in [PAL.K9](palette/rules-k9.md); the layer split is there and in [PAL.S2](palette/sets.md) |
+| C6 | On-board mark surface | [PAL.C10](palette.md) at 100% opacity with a [PAL.C9](palette.md) keyline at 1.5 screen px ([`UIS.I1`](#iconography)) | Keeps every stroke mark distinguishable with hue removed ([PAL.K9](palette/rules.md)): check's L-frame, Advice's brackets, and the last-move corner ticks ([PER.R9](../view/perception.md)). The ring, the soft band, and refusal's hatching draw on the square itself; one cream foreground per square. Tick geometry is in [PAL.K9](palette/rules-k9.md); the layer split is there and in [PAL.S2](palette/sets.md) |
 
 ## Interface motion
 

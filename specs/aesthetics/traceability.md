@@ -14,9 +14,9 @@ Authoring rules: [`.agents/specs/rules/aesthetics/traceability.md`](../../.agent
 | Accessibility; Localization | quality | [`palette.md`](palette.md) K1–K4, [`palette/rules.md`](palette/rules.md) K8–K9; [`ui-style.md`](ui-style.md) T2 |
 | Sensory mood, sound, clarity | design | [`aesthetics.md`](aesthetics.md); [`sound.md`](sound.md); [`form.md`](form.md) |
 | Clarity: pieces by shape, side to move and check obvious, Advice marks keep piece identity | design | Pieces: [`form.md`](form.md) S1 L1; side to move and check: [`palette.md`](palette.md) C8, [`ui-style.md`](ui-style.md) T2; Advice: [`palette.md`](palette.md) C7 K3 K5, [`form.md`](form.md) D2; bound by [`PER.R1`](../view/perception.md), [`PER.R5`](../view/perception.md), [`PER.R6`](../view/perception.md) |
-| Feedback: select, move, check, ends, wrong puzzle, refused place | design | [`sound.md`](sound.md) X1–X5; [`palette.md`](palette.md) C6–C8 |
+| Feedback: select, move, check, ends, wrong puzzle, refused place | design | [`sound.md`](sound.md) X1–X5; [`palette.md`](palette.md) C6–C8; move: the last-move band and corner ticks in [`palette/rules-k9.md`](palette/rules-k9.md) |
 | Feedback: Advice ready, puzzle solved or abandoned | design | Advice ready: [`palette.md`](palette.md) C7; eval text [`ui-style.md`](ui-style.md) T3; [`motion.md`](motion.md). Solved or abandoned: [`motion.md`](motion.md) |
-| [PER.R1](../view/perception.md)–[PER.R6](../view/perception.md), [PER.R8](../view/perception.md)–[PER.R9](../view/perception.md) | view | [`form.md`](form.md); [`palette.md`](palette.md); [`surface.md`](surface.md) |
+| [PER.R1](../view/perception.md)–[PER.R6](../view/perception.md), [PER.R8](../view/perception.md)–[PER.R9](../view/perception.md) | view | [`form.md`](form.md); [`palette.md`](palette.md); [`palette/rules-k9.md`](palette/rules-k9.md); [`surface.md`](surface.md) |
 | [PER.R7](../view/perception.md) | view | [`ui-style.md`](ui-style.md) T2; [`palette.md`](palette.md) K4, [`palette/rules.md`](palette/rules.md) K8 |
 | [PHY.M1](../view/physics.md)–[PHY.M3](../view/physics.md) | view | [`motion.md`](motion.md); [`surface.md`](surface.md) E1–E2 |
 

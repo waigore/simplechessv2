@@ -23,4 +23,4 @@ Marks differ by **form**, then placement — never by hue. Selection is the only
 
 **Layer split.** Selection's ring, the last-move band, and refusal's hatching draw on the square: the ring and band are fields it carries, and hatching is [C8](swatches.md) over the square's own fill. Check's L-frame, Advice's brackets, and the last-move ticks draw on a full-opacity C10 foreground keylined in C9 at 1.5 screen px ([`UIS.C6`](../ui-style.md)). The keyline separates, not fill or hue: accents measure 2.01:1 on C1 and C2, the cream tick 1.28:1 on C1, while C9 on C10 is **12.73:1**.
 
-**One layer.** A square draws one C10 foreground: check, Advice, or the ticks, never two cream strokes at once. Refusal needs none — hatching is a fill. No swatch added; C10 and C9 are in [S2](sets.md).
+**One layer.** A square draws one C10 foreground: check, Advice, or the ticks, never two cream strokes at once. Refusal needs none — hatching is a fill. No swatch added; C10 and C9 are in [S2](sets.md). Per-rule bounds are in [`rules-k9.md`](rules-k9.md).
