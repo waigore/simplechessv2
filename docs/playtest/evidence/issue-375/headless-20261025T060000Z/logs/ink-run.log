@@ -1,0 +1,43 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M5
+
+R375-INK {"check":"scene_is_release","detail":"res://main_release.tscn","ok":true}
+R375-INK {"check":"router_present","detail":"","ok":true}
+R375-INK {"check":"presentation_present","detail":"","ok":true}
+R375-INK {"check":"play_reached","detail":"shared-play","ok":true}
+R375-INK {"check":"board_present","detail":"","ok":true}
+R375-INK {"body_px":2558,"coverage":0.89913995308835,"ink_on_body_px":2300,"ink_px":3655,"piece":"white|pawn"}
+R375-INK {"check":"per_r5_white_pawn","detail":"body=2558 ink=3655 on_body=2300 coverage=89.91%","ok":false}
+R375-INK {"body_px":4888,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"white|knight"}
+R375-INK {"check":"per_r5_white_knight","detail":"body=4888 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4703,"coverage":0.0,"ink_on_body_px":0,"ink_px":0,"piece":"white|bishop"}
+R375-INK {"check":"per_r5_white_bishop","detail":"body=4703 ink=0 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4763,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"white|rook"}
+R375-INK {"check":"per_r5_white_rook","detail":"body=4763 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4725,"coverage":0.000634920634920635,"ink_on_body_px":3,"ink_px":1100,"piece":"white|queen"}
+R375-INK {"check":"per_r5_white_queen","detail":"body=4725 ink=1100 on_body=3 coverage=0.06%","ok":true}
+R375-INK {"body_px":4760,"coverage":0.0,"ink_on_body_px":0,"ink_px":0,"piece":"white|king"}
+R375-INK {"check":"per_r5_white_king","detail":"body=4760 ink=0 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4652,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"black|pawn"}
+R375-INK {"check":"per_r5_black_pawn","detail":"body=4652 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4888,"coverage":0.0,"ink_on_body_px":0,"ink_px":926,"piece":"black|knight"}
+R375-INK {"check":"per_r5_black_knight","detail":"body=4888 ink=926 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4691,"coverage":0.0,"ink_on_body_px":0,"ink_px":54,"piece":"black|bishop"}
+R375-INK {"check":"per_r5_black_bishop","detail":"body=4691 ink=54 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4736,"coverage":0.0,"ink_on_body_px":0,"ink_px":1100,"piece":"black|rook"}
+R375-INK {"check":"per_r5_black_rook","detail":"body=4736 ink=1100 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"body_px":4720,"coverage":0.000635593220338983,"ink_on_body_px":3,"ink_px":1100,"piece":"black|queen"}
+R375-INK {"check":"per_r5_black_queen","detail":"body=4720 ink=1100 on_body=3 coverage=0.06%","ok":true}
+R375-INK {"body_px":4744,"coverage":0.0,"ink_on_body_px":0,"ink_px":54,"piece":"black|king"}
+R375-INK {"check":"per_r5_black_king","detail":"body=4744 ink=54 on_body=0 coverage=0.00%","ok":true}
+R375-INK {"worst_coverage":0.89913995308835}
+R375-INK {"summary":{"checks":17,"failed":1}}
+---
+## Acceptance re-measurement, board region only (see notes.md). Captured frames from this run:
+##   white|pawn : board ink=1100 px, body=258 px, overlap=0, coverage=0.00%
+##   three repeated raw runs of the probe on the same build gave white-pawn coverage 68.95%, 89.91%, 90.50%.
+##   Cause: the title label fades in between the plain and inked captures, adding ~2656 non-board pixels
+##   classified as ink (diff bounding box reaches y=23, the title row). Board area diff is a stable 1100 px
+##   in every run. body_px for the first-measured piece also varies (2248/2558/2716/2547) with the
+##   interpolated piece pixels. The other eleven pieces are stable: worst 0.13% (black King, 6/4744),
+##   ten at 0.00%.

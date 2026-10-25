@@ -1,11 +1,12 @@
 /**
- * Per-target CDP session for the #879 acceptance run.
+ * Dependency-free Chrome DevTools Protocol driver for the #879 re-measurement.
  *
- * One attach to the page target per browser session, rebuilt only when Chrome
- * reports the target gone; the touch state of `Input.dispatchTouchEvent` lives
- * on the attach, so a press keeps its own.
+ * Starts a headless Chrome with a debugging port, attaches over the built-in
+ * WebSocket, sets the phone frame the run names, and exposes press/click/
+ * screenshot helpers. Node 22+ only, no third-party package. Adapted from the
+ * #868 driver; it never picks the URL or the build itself.
  *
- * Node 22+, no third-party package.
+ * The driver records; it never judges a row.
  */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -34,21 +35,49 @@ const GESTURE_RECORDER = `(() => {
   }
 })();`;
 
-/** Attach to the current page target; returns `{ call, targetId }`. */
-async function attach(port, consoleLogs) {
-  let page = null;
-  for (let attempt = 0; attempt < 200 && !page; attempt++) {
+async function pageTarget(port) {
+  for (let attempt = 0; attempt < 150; attempt++) {
     await sleep(100);
     try {
-      const list = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
-      page = list.find((candidate) => candidate.type === 'page') ?? null;
+      const pages = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
+      const page = pages.find((candidate) => candidate.type === 'page');
+      if (page) return page.webSocketDebuggerUrl;
     } catch {}
   }
-  if (!page) throw new Error('Chrome exposed no page target');
-  const ws = new WebSocket(page.webSocketDebuggerUrl);
+  return null;
+}
+
+export async function connect({
+  width, height, dpr, url, outDir, logDir = outDir, label,
+  touch = true, autoplayFlag = false,
+}) {
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.mkdirSync(logDir, { recursive: true });
+  const port = 9300 + Math.floor(Math.random() * 500);
+  const profile = fs.mkdtempSync(path.join(os.tmpdir(), `a879-chrome-${port}-`));
+  const args = [
+    '--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
+    '--no-first-run', '--no-default-browser-check', '--hide-scrollbars',
+    `--window-size=${width},${height}`, `--force-device-scale-factor=${dpr}`,
+    '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--no-sandbox',
+  ];
+  // The published leg runs with the real autoplay gate: no policy flag (issue #879).
+  if (autoplayFlag) args.push('--autoplay-policy=no-user-gesture-required');
+  args.push('about:blank');
+  const chrome = spawn(CHROME, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+  chrome.stderr.resume();
+
+  const wsUrl = await pageTarget(port);
+  if (!wsUrl) {
+    chrome.kill('SIGKILL');
+    throw new Error('Chrome exposed no page target');
+  }
+  const ws = new WebSocket(wsUrl);
   await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
+
   let nextId = 1;
   const pending = new Map();
+  const logs = [];
   ws.onmessage = (message) => {
     const data = JSON.parse(message.data);
     if (data.id && pending.has(data.id)) {
@@ -59,92 +88,76 @@ async function attach(port, consoleLogs) {
       return;
     }
     if (data.method === 'Runtime.consoleAPICalled') {
-      consoleLogs.push(`console.${data.params.type} ${(data.params.args || [])
-        .map((arg) => arg.value ?? arg.description ?? arg.type).join(' ')}`);
+      const text = (data.params.args || [])
+        .map((arg) => arg.value ?? arg.description ?? arg.type).join(' ');
+      logs.push(`console.${data.params.type} ${text}`);
     }
     if (data.method === 'Log.entryAdded') {
-      consoleLogs.push(`log.${data.params.entry.level} ${data.params.entry.text}`);
+      logs.push(`log.${data.params.entry.level} [${data.params.entry.source}] ${data.params.entry.text}`);
+    }
+    if (data.method === 'Runtime.exceptionThrown') {
+      const details = data.params.exceptionDetails;
+      logs.push(`exception ${details.exception?.description || details.text}`);
     }
   };
-  const call = (method, params = {}) => new Promise((resolve, reject) => {
+  const send = (method, params = {}) => new Promise((resolve, reject) => {
     const id = nextId++;
     pending.set(id, { resolve, reject });
     ws.send(JSON.stringify({ id, method, params }));
   });
-  return { call, targetId: page.id, ws };
-}
 
-export async function connect({ width, height, dpr, url, outDir, logDir = outDir, label, touch = true }) {
-  fs.mkdirSync(outDir, { recursive: true });
-  fs.mkdirSync(logDir, { recursive: true });
-  const port = 9300 + Math.floor(Math.random() * 500);
-  const profile = fs.mkdtempSync(path.join(os.tmpdir(), `a879-accept-${port}-`));
-  const args = [
-    '--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
-    '--no-first-run', '--hide-scrollbars', '--window-size=' + `${width},${height}`,
-    `--force-device-scale-factor=${dpr}`, '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
-    '--no-sandbox',
-  ];
-  // No autoplay-policy flag: the published leg keeps the real autoplay gate (#879).
-  args.push(url);
-  const chrome = spawn(CHROME, args, { stdio: ['ignore', 'pipe', 'pipe'] });
-  const chromeLog = [];
-  chrome.stderr.on('data', (chunk) => chromeLog.push(chunk.toString()));
-
-  const consoleLogs = [];
-  let session = await attach(port, consoleLogs);
-  const emulation = async (call) => {
-    await call('Page.enable');
-    await call('Runtime.enable');
-    await call('Log.enable');
-    await call('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: dpr, mobile: true });
-    if (touch) await call('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
-    await call('Page.addScriptToEvaluateOnNewDocument', { source: GESTURE_RECORDER });
-  };
-  await emulation(session.call);
-
-  /** Run a command, reattaching once if Chrome reports the target gone. */
-  const send = async (method, params = {}) => {
-    try {
-      return await session.call(method, params);
-    } catch (error) {
-      if (!String(error.message).includes('Not attached to an active page')) throw error;
-      session = await attach(port, consoleLogs);
-      await emulation(session.call);
-      return session.call(method, params);
-    }
-  };
+  await send('Runtime.enable');
+  await send('Log.enable');
+  await send('Page.enable');
+  await send('Network.enable');
+  await send('Emulation.setDeviceMetricsOverride', {
+    width, height, deviceScaleFactor: dpr, mobile: true,
+  });
+  if (touch) {
+    await send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
+  }
+  await send('Page.addScriptToEvaluateOnNewDocument', { source: GESTURE_RECORDER });
+  await send('Page.navigate', { url });
 
   const shot = async (name, dir = outDir) => {
-    const buffer = Buffer.from((await send('Page.captureScreenshot', { format: 'png' })).data, 'base64');
-    fs.writeFileSync(path.join(dir, `${name}.png`), buffer);
-    return buffer;
+    const captured = await send('Page.captureScreenshot', { format: 'png' });
+    const buf = Buffer.from(captured.data, 'base64');
+    fs.writeFileSync(path.join(dir, `${name}.png`), buf);
+    return buf;
   };
+  /** Hold a touch at (x, y) for holdMs, then release. The #879 arm shape. */
   const press = async (x, y, holdMs) => {
-    await send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y, id: 1, radiusX: 3, radiusY: 3 }] });
+    await send('Input.dispatchTouchEvent', {
+      type: 'touchStart', touchPoints: [{ x, y, id: 1, radiusX: 3, radiusY: 3 }],
+    });
     await sleep(holdMs);
     await send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   };
+  /** Plain mouse click: no touch emulation, real mousePressed/mouseReleased. */
   const click = async (x, y, holdMs) => {
     await send('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
     await sleep(holdMs);
     await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
   };
   const evaluate = async (expression) => {
-    const out = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+    const out = await send('Runtime.evaluate', { expression, returnByValue: true });
     return out.result?.value;
   };
-  const tapLog = async () => JSON.parse((await evaluate('JSON.stringify(window.__tapLog ?? [])')) ?? '[]');
-  const storage = async () => JSON.parse((await evaluate('JSON.stringify(Object.fromEntries(Object.entries(localStorage)))')) ?? '{}');
-  const reload = async () => send('Page.reload', { ignoreCache: false });
+  const tapLog = async () => JSON.parse(await evaluate('JSON.stringify(window.__tapLog ?? [])'));
+  const storage = async () => JSON.parse(await evaluate('JSON.stringify(Object.fromEntries(Object.entries(localStorage)))'));
   const close = async () => {
-    fs.writeFileSync(path.join(logDir, `${label}-console.log`), `${consoleLogs.join('\n')}\n`);
-    if (chrome.exitCode === null) chrome.kill('SIGKILL');
+    fs.writeFileSync(path.join(logDir, `${label}-console.log`), `${logs.join('\n')}\n`);
+    ws.close();
     await new Promise((resolve) => {
-      if (chrome.exitCode !== null) resolve();
-      else chrome.once('exit', resolve);
+      if (chrome.exitCode !== null) { resolve(); return; }
+      chrome.once('exit', resolve);
+      chrome.kill('SIGKILL');
     });
-    try { fs.rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); } catch {}
+    try {
+      fs.rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+    } catch {
+      // A leftover scratch profile does not change the capture.
+    }
   };
-  return { send, shot, press, click, evaluate, tapLog, storage, reload, close, consoleLogs, chromeLog };
+  return { send, shot, press, click, evaluate, tapLog, storage, close, logs };
 }

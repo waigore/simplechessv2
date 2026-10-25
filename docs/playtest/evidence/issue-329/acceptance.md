@@ -46,3 +46,7 @@ passing at a slice's own count, but the operator run on the host is still open:
 python3 -m advice_backend.catalog build <lichess-export.csv> <snapshot.json>
 python3 -m advice_backend.catalog check <snapshot.json>   # PUZZLE_CATALOG_EXPECTED_COUNT unset
 ```
+
+The residue of AC5 is tracked as [#671](https://github.com/waigore/simplechessv2/issues/671);
+its record — the host run, or the reason it could not be produced and who owns
+the gap — lives in [issue-671/host-run.md](../issue-671/host-run.md).
