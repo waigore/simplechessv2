@@ -14,7 +14,7 @@ Authoring rules: [`.agents/specs/rules/playtest/evidence.md`](../../.agents/spec
 This file owns the outcome vocabulary. Story rows are judged individually ([`story-rows.md`](story-rows.md)); the **protocol** is the acceptance unit ([`playtest.md`](playtest.md)).
 
 - **Story outcome**: per selected row, `pass`, `fail`, `not-judged`, or `none`.
-- **`none`**: a row no protocol judges, recorded once with the row list as `none — <reason>` plus a linked `type:defect` number, never as a run result. A scenario cell no step reaches is a scenario-cell `none` listed in its row's cell, with no defect. Never `out` or `not-judged`.
+- **`none`**: a row no protocol judges, recorded once with the row list as `none — <reason>` with a durable reason ([`story-rows.md`](story-rows.md)), never as a run result. A scenario cell no step reaches is a scenario-cell `none` listed in its row's cell, with no owner. Never `out` or `not-judged`.
 - **Protocol verdict**: `pass` only when every cited story is `pass` in that environment; any cited story `fail` makes it `fail`, and a `not-judged` story makes it `not-judged` there. A protocol is never `pass` beside a failed story.
 - **`not-judged`**: the run could not judge the row (such as a display the run lacks). It never counts as `pass`. The issue stays `status:pending-acceptance` until another run judges it.
 - **`Waiting`**: folder-level only ([`procedures.md`](procedures.md)); never a story outcome or protocol verdict.

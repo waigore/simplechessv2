@@ -1,0 +1,140 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"TEL.1":"shared.start","TEL.2":1792835487294,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792835487344,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792835487454,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792835487484,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792835487486,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"puzzle.enter","TEL.2":1792835487544,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _sweep_puzzle_dialogs (res://chrome_placement_test.gd:114)
+         [7] _settle (res://chrome_placement_test.gd:224)
+{"TEL.1":"puzzle.confirm","TEL.2":1792835487618,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.enter","TEL.2":1792835487748,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _sweep_save_failure (res://chrome_placement_test.gd:135)
+         [7] _settle (res://chrome_placement_test.gd:224)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _sweep_save_failure (res://chrome_placement_test.gd:141)
+       [9] _settle (res://chrome_placement_test.gd:224)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792835487844,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792835487875,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792835487875,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"shared.start","TEL.2":1792835488107,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792835488147,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792835488254,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792835488276,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792835488277,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"puzzle.enter","TEL.2":1792835488329,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _sweep_puzzle_dialogs (res://chrome_placement_test.gd:114)
+         [7] _settle (res://chrome_placement_test.gd:224)
+{"TEL.1":"puzzle.confirm","TEL.2":1792835488407,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.enter","TEL.2":1792835488508,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _sweep_save_failure (res://chrome_placement_test.gd:135)
+         [7] _settle (res://chrome_placement_test.gd:224)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _sweep_save_failure (res://chrome_placement_test.gd:141)
+       [9] _settle (res://chrome_placement_test.gd:224)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792835488597,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792835488622,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792835488622,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+{"TEL.1":"shared.start","TEL.2":1792835488830,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1","TEL.5":"ok"}
+{"TEL.1":"shared.resign","TEL.2":1792835488875,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792835488980,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"confirm"}
+{"TEL.1":"shared.resign","TEL.2":1792835489002,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-shared-play.US1.1","TEL.5":"end"}
+{"TEL.1":"shared.end","TEL.2":1792835489004,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"NAV.T6","TEL.5":"END.L2"}
+{"TEL.1":"puzzle.enter","TEL.2":1792835489053,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _sweep_puzzle_dialogs (res://chrome_placement_test.gd:114)
+         [7] _settle (res://chrome_placement_test.gd:224)
+{"TEL.1":"puzzle.confirm","TEL.2":1792835489124,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.5":"leave_confirm"}
+{"TEL.1":"puzzle.enter","TEL.2":1792835489231,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (status)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] request (res://puzzle_stream.gd:47)
+         [2] enter (res://puzzle_play_flow.gd:44)
+         [3] _enter_puzzle_play (res://session_router.gd:750)
+         [4] _on_mode_pick_control (res://session_router.gd:617)
+         [5] handle_control (res://session_router.gd:194)
+         [6] _sweep_save_failure (res://chrome_placement_test.gd:135)
+         [7] _settle (res://chrome_placement_test.gd:224)
+ERROR: PersistStore: forced write failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] commit (res://persist_store.gd:57)
+       [1] _commit (res://puzzle_session.gd:635)
+       [2] _apply_outcome (res://puzzle_session.gd:609)
+       [3] _settle (res://puzzle_session.gd:456)
+       [4] _judge (res://puzzle_session.gd:379)
+       [5] place (res://puzzle_session.gd:316)
+       [6] gesture (res://puzzle_play_flow.gd:125)
+       [7] handle_input_commit (res://session_router.gd:208)
+       [8] _sweep_save_failure (res://chrome_placement_test.gd:141)
+       [9] _settle (res://chrome_placement_test.gd:224)
+{"TEL.1":"puzzle.save_failed","TEL.2":1792835489320,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.S3","TEL.5":"fail"}
+{"TEL.1":"puzzle.move","TEL.2":1792835489347,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792835489347,"TEL.3":"sess-1792835486551-2338787-playtest-1180357","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}

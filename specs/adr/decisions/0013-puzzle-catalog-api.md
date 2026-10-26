@@ -10,7 +10,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 
 ## Context
 
-[ADR-0008](0008-puzzle-catalog-storage.md) keeps snapshot `2026-10-05` host-side and off the client, readable only through a secured API, and leaves credentials out of scope. [ADR-0009](0009-github-pages-client-host.md) excludes the catalog from Pages. [ADR-0010](0010-advice-backend-stack.md) gives advice a separate Python server with a configured endpoint and shared key. No spec fixes the catalog host, serve path, or key check.
+[ADR-0008](0008-puzzle-catalog-storage.md) keeps snapshot `2026-10-05` host-side and off the client, readable only through a secured API, and leaves credentials out of scope. [ADR-0010](0010-advice-backend-stack.md) gives advice a separate Python server with a configured endpoint and shared key. No spec fixes the catalog host, serve path, or key check.
 
 ## Purpose
 

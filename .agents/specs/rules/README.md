@@ -6,7 +6,7 @@ Specs and `_template` files keep a section skeleton and an authoring-rules link.
 
 Before creating or editing a file under `specs/`, read the rules file for its path in the table below, then every file named in that rules file's **Also read** line. Follow the [`author-spec`](../../skills/author-spec/SKILL.md) skill. How these rules relate to the review checklists is [alignment.md](../alignment.md).
 
-Spec depth (`prototype`, `small`, or `full`) is set in `specs/definition/definition.md`. [depth.md](depth.md) states how it scales story coverage, mockups, and diagrams. A rules file that says a requirement follows spec depth defers to it.
+Spec depth (`prototype`, `small`, or `full`) is set in `specs/definition/definition.md`. [depth.md](depth.md) states how it scales story coverage and diagrams. Screen and journey mockups (and Open Design binding) are required at every depth; see [ux/presentation.md](ux/presentation.md) and [`docs/ux-mockups.md`](../../../docs/ux-mockups.md). A rules file that says a requirement follows spec depth defers to it.
 
 ## Undecided aspects (TBD)
 
@@ -69,6 +69,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/view/camera-controls.md` | [view/camera-controls.md](view/camera-controls.md) |
 | `specs/view/physics.md` | [view/physics.md](view/physics.md) |
 | `specs/view/perception.md` | [view/perception.md](view/perception.md) |
+| `specs/view/perception-marks.md` | [view/perception.md](view/perception.md) |
 | `specs/view/audio.md` | [view/audio.md](view/audio.md) |
 | `specs/view/haptics.md` | [view/haptics.md](view/haptics.md) |
 | `specs/view/diagrams/` | [view/diagrams.md](view/diagrams.md) |
@@ -97,10 +98,12 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/ux/controls.md` | [ux/controls.md](ux/controls.md) |
 | `specs/ux/presentation.md` | [ux/presentation.md](ux/presentation.md) |
 | `specs/ux/localization.md` | [ux/ux.md](ux/ux.md) |
+| `specs/ux/localization-marked-set.md` | [ux/ux.md](ux/ux.md) |
 | `specs/ux/actors/` | [ux/actors.md](ux/actors.md) |
 | `specs/ux/screens/` | [ux/screens.md](ux/screens.md) |
 | `specs/ux/journeys/` | [ux/journeys.md](ux/journeys.md) |
 | `specs/ux/mockups/README.md` | [ux/presentation.md](ux/presentation.md) |
+| `specs/ux/mockups/catalog.md` | [ux/mockup-catalog.md](ux/mockup-catalog.md) |
 | `specs/ux/mockups/screens/` | [ux/screen-mockup.md](ux/screen-mockup.md) |
 | `specs/ux/mockups/journeys/` | [ux/journey-mockup.md](ux/journey-mockup.md) |
 | `specs/playtest/playtest.md` | [playtest/playtest.md](playtest/playtest.md) |
