@@ -46,7 +46,7 @@ N/A — stated in [ADR-0008](../0008-puzzle-catalog-storage.md).
 | Maintainability | Version is the snapshot date, not a client release |
 | Testability | Review the Web bundle; frame-time capture covers the move hitch |
 | Portability | Web only |
-| Security and privacy | GitHub Pages does not serve the raw export anonymously; Elo stays in localStorage |
+| Security and privacy | The client host does not serve the raw export anonymously; Elo stays in localStorage |
 
 ## Imposes
 

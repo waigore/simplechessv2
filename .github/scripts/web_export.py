@@ -1,7 +1,8 @@
 """Export the Godot Web build to build/web/ (ADR-0007).
 
-Used by the Web playtest workflow and the Pages release workflow so both
-presets export the same way. The `Web Release` preset exports the project with
+Used by the Web playtest workflow and the Web release workflow so both
+presets export the same way. The release workflow checks the export and does
+not publish it (ADR-0016). The `Web Release` preset exports the project with
 `application/run/main_scene` set to `res://main_release.tscn`, which carries no
 playtest seams (ADR-0004 / CTR-playtest-drive.G2); the checkout is restored
 afterwards. The release preset is `runnable=false`, so a developer's editor run
@@ -130,26 +131,6 @@ def main_scene_for(preset: str) -> str:
         return table[preset]
     except KeyError:
         raise ExportError(f"unsupported preset: {preset}") from None
-
-
-def pages_present_from_status(status: str) -> bool:
-    """Whether the Pages probe's HTTP status means a site exists.
-
-    Only `200` (present) and `404` (absent) are answers. Any other status — a
-    `403`/`401` from a bad token, a `500`, or curl's `000` for no response — is
-    a failed measurement, never a missing site, so the probe step fails.
-    """
-    code = status.strip()
-    if code == "200":
-        return True
-    if code == "404":
-        return False
-    raise ExportError(f"Pages probe returned {code or '<empty>'}")
-
-
-def release_gate(pages_present: bool) -> bool:
-    """Whether the `deploy` job runs, derived from this run's probe only."""
-    return pages_present is True
 
 
 def ensure_release_settings(text: str) -> None:
@@ -668,11 +649,6 @@ def main(argv: list[str] | None = None) -> int:
         help="fail unless the shipped tree serves each preload group (boot, play, ambient)",
     )
     parser.add_argument(
-        "--pages-status",
-        metavar="HTTP_STATUS",
-        help="map a Pages probe status to present/absent (the release deploy gate)",
-    )
-    parser.add_argument(
         "--check-assets",
         action="store_true",
         help="fail unless the preset export's shipped tree carries the cataloged asset root",
@@ -694,7 +670,6 @@ def main(argv: list[str] | None = None) -> int:
     modes = [
         chosen
         for chosen in (
-            args.pages_status is not None,
             args.check_assets,
             args.check_boot,
             args.check_groups,
@@ -704,8 +679,6 @@ def main(argv: list[str] | None = None) -> int:
         )
         if chosen
     ]
-    if args.pages_status is not None and (args.check_assets or args.check_boot or args.check_groups):
-        parser.error("--pages-status does not combine with an export-tree check")
     # `--check-assets`/`--check-boot`/`--check-groups` read the export's output
     # directory, so each needs `--preset`; every other pair of modes is exclusive.
     tree_check = args.check_assets or args.check_boot or args.check_groups
@@ -714,7 +687,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(
             "--check-assets/--check-boot/--check-groups need --preset to find the export's output directory"
         )
-    if engine_mode and (tree_check or args.preset is not None or args.pages_status is not None):
+    if engine_mode and (tree_check or args.preset is not None):
         parser.error(
             "--check-engine and --synthetic-engine-verdicts are mutually exclusive with "
             "every other mode"
@@ -722,16 +695,8 @@ def main(argv: list[str] | None = None) -> int:
     if not modes:
         parser.error(
             "one of --preset, --check-assets, --check-boot, --check-groups, --check-engine, "
-            "--synthetic-engine-verdicts or --pages-status is required"
+            "--synthetic-engine-verdicts is required"
         )
-    if args.pages_status is not None:
-        try:
-            present = release_gate(pages_present_from_status(args.pages_status))
-        except ExportError as error:
-            print(error)
-            return 1
-        print("true" if present else "false")
-        return 0
     if args.synthetic_engine_verdicts:
         return synthetic_engine_verdicts(Path(args.check_engine[0]) if args.check_engine else None)
     if args.check_engine:

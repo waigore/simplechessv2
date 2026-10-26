@@ -21,6 +21,23 @@
     .pair .sample { display: flex; height: 3rem; width: 12rem; }
     .pair .sample div { flex: 1; }
     .pair p { margin: 0.25rem 0 0; font-size: 0.8125rem; }
+    .board { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .sq { width: 7rem; }
+    .sq .face { position: relative; width: 7rem; height: 7rem; border: 1px solid var(--line); }
+    .sq p { margin: 0.25rem 0 0; text-align: center; font-size: 0.75rem; color: var(--muted); }
+    .sq p b { display: block; color: #000; font-weight: 600; }
+    /* C10 ticks with a C9 keyline, 1.5 screen px at the reference frame */
+    .tick { position: absolute; background: #2C2A28; }        /* PAL.C9 keyline */
+    .tick::after { content: ""; position: absolute; inset: 1.5px; background: #F7F1E8; } /* PAL.C10 */
+    /* From-square: a C7 soft band along the edge that faces the to-square (no hard stroke) */
+    .band { position: absolute; left: 0; right: 0; top: 0; height: 16%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(83, 162, 190, 0.95), rgba(83, 162, 190, 0) 70%); }
+    /* To-square: an L tick in each of the two corners that faces the from-square */
+    .tick.corner { width: 20%; height: 20%; }
+    .tick.corner.tl { top: 4%; left: 4%; }
+    .tick.corner.br { bottom: 4%; right: 4%; }
+    .tick.corner.tl::after { clip-path: polygon(0 0, 20% 0, 20% 20%, 20% 20%, 20% 100%, 0 100%); }
+    .tick.corner.br::after { clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 100%, 80% 80%, 0 80%); }
   </style>
 </head>
 <body>
@@ -124,28 +141,28 @@
             <div style="background: #2C2A28;"></div>
             <div style="background: #E8D5B5;"></div>
           </div>
-          <p>PAL.K2 C3 on C1 — silhouette ≥ 3:1 via SRF.O1 near-C4 outline (9.9:1)</p>
+          <p>PAL.K2 white contour C4 on C1 — contour ≥ 3:1 (9.9:1); the C3 fill on C1 is 1.26:1 and not the carrier</p>
         </figure>
         <figure class="pair" data-element="PAL.K2">
           <div class="sample">
             <div style="background: #F5F0E6;"></div>
             <div style="background: #8B5A3C;"></div>
           </div>
-          <p>PAL.K2 C3 on C2 — fill ≥ 3:1 (5.1:1)</p>
+          <p>PAL.K2 white fill C3 on C2 — fill ≥ 3:1 (5.1:1)</p>
         </figure>
         <figure class="pair" data-element="PAL.K2">
           <div class="sample">
             <div style="background: #2C2A28;"></div>
             <div style="background: #E8D5B5;"></div>
           </div>
-          <p>PAL.K2 C4 on C1 — fill ≥ 3:1 (9.9:1)</p>
+          <p>PAL.K2 black fill C4 on C1 — fill ≥ 3:1 (9.9:1)</p>
         </figure>
         <figure class="pair" data-element="PAL.K2">
           <div class="sample">
             <div style="background: #F5F0E6;"></div>
             <div style="background: #8B5A3C;"></div>
           </div>
-          <p>PAL.K2 C4 on C2 — silhouette ≥ 3:1 via SRF.O1 light edge, near C3 (5.1:1)</p>
+          <p>PAL.K2 black contour C3 on C2 — contour ≥ 3:1 (5.1:1); the C4 fill on C2 is 2.47:1 and not the carrier</p>
         </figure>
         <figure class="pair" data-element="PAL.K3">
           <div class="sample">
@@ -299,14 +316,14 @@
             <div style="background: #53A2BE;"></div>
             <div style="background: #E8D5B5;"></div>
           </div>
-          <p>PAL.K9 C7 on C1 — advice edge-midpoint brackets</p>
+          <p>PAL.K9 C7 on C1 — advice edge-midpoint brackets; last-move soft band</p>
         </figure>
         <figure class="pair" data-element="PAL.K9">
           <div class="sample">
             <div style="background: #53A2BE;"></div>
             <div style="background: #8B5A3C;"></div>
           </div>
-          <p>PAL.K9 C7 on C2 — advice edge-midpoint brackets</p>
+          <p>PAL.K9 C7 on C2 — advice edge-midpoint brackets; last-move soft band</p>
         </figure>
         <figure class="pair" data-element="PAL.K9">
           <div class="sample">
@@ -337,6 +354,39 @@
           <p>PAL.K9 C11 on C2 — empty destination disk, capture corner brackets</p>
         </figure>
       </div>
+    </section>
+
+    <section>
+      <h2>PAL.K9 Last move (PER.R9)</h2>
+      <div class="board">
+        <figure class="sq" data-element="PER.R9">
+          <div class="face" style="background: #E8D5B5;">
+            <span class="band"></span>
+          </div>
+          <figcaption><p><b>PER.R9</b>e2 on C1 — from: C7 soft band</p></figcaption>
+        </figure>
+        <figure class="sq" data-element="PER.R9">
+          <div class="face" style="background: #8B5A3C;">
+            <span class="band"></span>
+          </div>
+          <figcaption><p><b>PER.R9</b>e2 on C2 — from: C7 soft band</p></figcaption>
+        </figure>
+        <figure class="sq" data-element="PER.R9">
+          <div class="face" style="background: #E8D5B5;">
+            <span class="tick corner tl"></span>
+            <span class="tick corner br"></span>
+          </div>
+          <figcaption><p><b>PER.R9</b>e4 on C1 — to: two C10 corner ticks</p></figcaption>
+        </figure>
+        <figure class="sq" data-element="PER.R9">
+          <div class="face" style="background: #8B5A3C;">
+            <span class="tick corner tl"></span>
+            <span class="tick corner br"></span>
+          </div>
+          <figcaption><p><b>PER.R9</b>e4 on C2 — to: two C10 corner ticks</p></figcaption>
+        </figure>
+      </div>
+      <p>The pair reads along the move: the soft band sits on the from-square's edge facing the to-square; the corner ticks face the from-square. The band is soft C7 on the square; the ticks are C10 on the C9 keyline. No new swatch.</p>
     </section>
   </article>
 </body>

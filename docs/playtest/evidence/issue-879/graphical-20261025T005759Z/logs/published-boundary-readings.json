@@ -1,0 +1,334 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "label": "pub-touch",
+  "mode": "touch",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "dpr": 3
+  },
+  "wait": "30000",
+  "startedAt": "2026-10-25T01:18:13.155Z",
+  "sessions": [
+    {
+      "index": 1,
+      "mode": "fresh",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 2,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 3,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 4,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    },
+    {
+      "index": 5,
+      "mode": "reopened",
+      "sha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "waitedMs": 30000
+    }
+  ],
+  "arms": [
+    {
+      "index": 0,
+      "session": 1,
+      "point": "seam-original-150-185",
+      "x": 150,
+      "y": 185,
+      "hold_ms": 120,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "advanced": false,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32237,
+          "x": 150,
+          "y": 185,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32237,
+          "x": 150,
+          "y": 185,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32768.7,
+          "x": 150,
+          "y": 185,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 32768.8,
+          "x": 150,
+          "y": 185,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {}
+    },
+    {
+      "index": 1,
+      "session": 1,
+      "point": "seam-195-183",
+      "x": 195,
+      "y": 183,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "advanced": false,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 36793.9,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 36794,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 37372.7,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 37372.8,
+          "x": 195,
+          "y": 183,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {}
+    },
+    {
+      "index": 2,
+      "session": 1,
+      "point": "issue-shared-195-170",
+      "x": 195,
+      "y": 170,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 41349.6,
+          "x": 195,
+          "y": 170,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 41349.7,
+          "x": 195,
+          "y": 170,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 41882,
+          "x": 195,
+          "y": 170,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 41882,
+          "x": 195,
+          "y": 170,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 3,
+      "session": 2,
+      "point": "issue-puzzle-195-217",
+      "x": 195,
+      "y": 217,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32407.9,
+          "x": 195,
+          "y": 217,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32408,
+          "x": 195,
+          "y": 217,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32926.2,
+          "x": 195,
+          "y": 217,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 32926.2,
+          "x": 195,
+          "y": 217,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 4,
+      "session": 3,
+      "point": "shared-bottom-195-180",
+      "x": 195,
+      "y": 180,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bbefbb38e45ad3232c7564facab8b3c8802e3a80c1ed6a6b2d6e33708d553c80",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32466.3,
+          "x": 195,
+          "y": 180,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32466.4,
+          "x": 195,
+          "y": 180,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 33196,
+          "x": 195,
+          "y": 180,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 33196.1,
+          "x": 195,
+          "y": 180,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"shared\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    },
+    {
+      "index": 5,
+      "session": 4,
+      "point": "puzzle-top-195-187",
+      "x": 195,
+      "y": 187,
+      "hold_ms": 200,
+      "preSha": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90",
+      "postSha": "bb8d41b112f70a9ca975ff0cc2a2e374e4f141841d201b23095ba21a216d16e5",
+      "advanced": true,
+      "pageGestures": [
+        {
+          "type": "pointerdown",
+          "t": 32172,
+          "x": 195,
+          "y": 187,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchstart",
+          "t": 32172.1,
+          "x": 195,
+          "y": 187,
+          "target": "CANVAS"
+        },
+        {
+          "type": "pointerup",
+          "t": 32729.3,
+          "x": 195,
+          "y": 187,
+          "target": "CANVAS"
+        },
+        {
+          "type": "touchend",
+          "t": 32729.3,
+          "x": 195,
+          "y": 187,
+          "target": "CANVAS"
+        }
+      ],
+      "storage": {
+        "simplechessv2.persist.v1": "{\"last_mode\":\"puzzle\",\"player_elo\":1000.0,\"recent_solved\":[],\"version\":1}"
+      }
+    }
+  ],
+  "storageAtBaseline": {},
+  "finishedAt": "2026-10-25T01:21:22.601Z",
+  "summary": {
+    "seam-original-150-185": {
+      "advanced": 0,
+      "total": 1
+    },
+    "seam-195-183": {
+      "advanced": 0,
+      "total": 1
+    },
+    "issue-shared-195-170": {
+      "advanced": 1,
+      "total": 1
+    },
+    "issue-puzzle-195-217": {
+      "advanced": 1,
+      "total": 1
+    },
+    "shared-bottom-195-180": {
+      "advanced": 1,
+      "total": 1
+    },
+    "puzzle-top-195-187": {
+      "advanced": 1,
+      "total": 1
+    }
+  }
+}

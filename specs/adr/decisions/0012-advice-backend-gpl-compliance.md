@@ -23,7 +23,7 @@ In scope: who conveys Stockfish, the source offer, license texts, attribution, a
 **The project conveys no Stockfish binary. The backend operator installs Stockfish and runs it; that operator carries the GPL duty for what it conveys and serves.**
 
 - Nothing shipped — backend, deployment, or client build — carries a Stockfish binary, project source, or combined work. Stockfish stays a separate operator-installed program over local UCI (ADR-0011): unbundled invocation.
-- The repository carries Stockfish's license text, credits, exact version, and source URL beside the backend; the project's own license and source ship through the repository and client host (ADR-0009).
+- The repository carries Stockfish's license text, credits, exact version, and source URL beside the backend; the project's own license and source ship through the repository.
 - An operator that serves a deployed backend to players, or distributes it with Stockfish, offers the source for the exact binary it conveys and keeps the notices intact (`CMP-advice-backend`).
 - ADR-0002 stands unchanged; this ADR only ends ADR-0010's and ADR-0011's exclusion.
 

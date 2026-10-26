@@ -15,6 +15,10 @@ const REASON_TIMEOUT := "timeout"
 const REASON_STATUS := "status"
 const REASON_BULK := "bulk"
 const REASON_MALFORMED := "malformed"
+## B5 — `T9` / `T10` unset on the client: no read was sent, so no transport, status, or
+## body failure can be the cause. Client-internal label; `CTR-puzzle-catalog-read` O2
+## names no reason vocabulary.
+const REASON_UNCONFIGURED := "unconfigured"
 
 ## SCH-puzzle-catalog I1 — the only snapshot the served records name.
 const SNAPSHOT_ID := "2026-10-05"

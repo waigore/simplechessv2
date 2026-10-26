@@ -10,7 +10,7 @@
     "PER.R1"
   ],
   "state": "approved",
-  "version": 1,
+  "version": 2,
   "files": [
     "piece-sprites/r-black.png"
   ],
@@ -76,6 +76,12 @@
         "tool": "Pillow",
         "date": "2026-10-21",
         "notes": "S8 one LANCZOS scale for the set, centered, no stretch; tallest body about 85% (S1) so FRM.P2 order remains"
+      },
+      {
+        "operation": "tone-recenter-o1",
+        "tool": "Pillow",
+        "date": "2026-10-25",
+        "notes": "Post-S8 pass (docs/asset-previews/recenter_piece_contours.py): body fill to the side's PAL fill hex (white C3 / black C4), every other ink to SRF.O1 (white C4 / black C3); alpha kept byte-identical"
       }
     ],
     "series": {
@@ -90,9 +96,80 @@
   },
   "review": {
     "verdict": "Pass",
-    "date": "2026-10-21",
+    "date": "2026-10-25",
     "reviewer": "agent",
-    "report": "Pass. Local S5\u2013S9 from 01a14f87-eeee-7f30-aa10-4516f0191610; no Recraft call. 512 square PNG, 23023 bytes \u2264 80 KB (K3/B1). Opaque body 0.387\u00d70.670 of the canvas, center 0.499,0.504 (S1/S4). Opaque height 343px at shared scale 0.7529; set order K > Q > B \u2248 N > R > P (FRM.P2: king, queen, rook/bishop/knight band with rook at the low end of the sheet, pawn shortest). charcoal PAL.C4 fill; same-type silhouette as the other side; no PAL.K3 overlay hex. Solid-black silhouette at 64px (~1/12 of a short frame) names this type (K1/FRM.L1). Quiet vector, no tournament chrome (K4/P2/P3). K5 is 12 V1 entries. K6: sheet rebuild vs the approved golden differs by at most 3 levels per channel."
+    "report": "Pass. v2 re-tones the S8 PNG to SRF.O1 with docs/asset-previews/recenter_piece_contours.py: body fill PAL.C4, every other ink PAL.C3; alpha is byte-identical to v1, so silhouette, S4 base and FRM.P2 height are v1's. 512 square PNG, 7957 bytes \u2264 80 KB (K3/B1). Opaque body 0.395\u00d70.674 of the canvas, center 0.500,0.503, height 345px = FRM.P2 0.68 -0.0062 (S1/S4/P2). Boundary ink 241/692 (35%) PAL.C3, rest fill; body above alpha 160 reads only the fill and O1 hexes (K7). Same-type silhouette as the other side; no PAL.K3 overlay hex. Solid-black silhouette at 64px names this type (K1/FRM.L1). Quiet vector, no tournament chrome (K4/P2/P3). K5 is 12 V1 entries. K6: crop and fit unchanged from v1 (same sheet, same S8 alpha). Set-level PAL.K2 on the PR #893 local Web release at the judged 78 px square: all four carriers clear 3:1 in both simulations (white C4 contour on C1 9.86:1 protanopia / 10.10:1 deuteranopia; black C3 contour on C2 5.34:1 / 4.74:1)."
   },
-  "guidance": "Ship sprite derived from piece-sprites/style-anchor-sheet. Re-run docs/asset-previews/derive_piece_sprites.py; do not call Recraft."
+  "guidance": "Ship sprite derived from piece-sprites/style-anchor-sheet. Re-run docs/asset-previews/derive_piece_sprites.py, then recenter_piece_contours.py; do not call Recraft.",
+  "history": [
+    {
+      "version": 1,
+      "date": "2026-10-25",
+      "reason": "Re-tone the drawn white-contour and black-contour ink to SRF.O1 so PAL.K2's contour carrier is the spec hex on the shipped board (#883).",
+      "generation": {
+        "prompt": "Derive Staunton rook black from the approved SS1 piece sheet by local S5\u2013S9 only. Staunton vector; flat fills; ivory/charcoal; silhouette (FRM.L1); cafe calm (P3). No new Recraft call.",
+        "negative_prompt": "pixel art; 3D; blood; badges; AI avatar; busy texture; neon; tournament UI",
+        "tool": "Chrome",
+        "operation": "headless-screenshot",
+        "settings": {
+          "rasterizer": "chrome-headless",
+          "window_size": 2048,
+          "flood_fill_rgb_min": 250,
+          "crop_pad_px": 8,
+          "fit": "shared-lanczos-center",
+          "resample": "LANCZOS",
+          "fit_size_px": 512,
+          "body_long_side": 0.85,
+          "shared_scale": 0.7529
+        },
+        "seed": "n/a \u2014 tool has no seed",
+        "inputs": {
+          "style_anchors": [
+            "01a14f87-eeee-7f30-aa10-4516f0191610"
+          ],
+          "refs": [
+            "FRM.L1",
+            "FRM.P2",
+            "PAL.C3",
+            "PAL.C4",
+            "SPC.E1"
+          ],
+          "base_assets": [
+            "01a14f87-eeee-7f30-aa10-4516f0191610"
+          ]
+        },
+        "steps": [
+          {
+            "operation": "headless-screenshot",
+            "tool": "Chrome",
+            "date": "2026-10-21",
+            "notes": "S5 rasterize style-anchor-sheet.svg at 2048; hide scrollbars so the frame is the SVG"
+          },
+          {
+            "operation": "edge-flood-fill",
+            "tool": "Pillow",
+            "date": "2026-10-21",
+            "notes": "S6 near-white RGB >= 250 from the edges only"
+          },
+          {
+            "operation": "sheet-crop",
+            "tool": "Pillow",
+            "date": "2026-10-21",
+            "notes": "S7 ivory top / charcoal bottom, KQRBNP, ~8px pad; drop column-edge slivers"
+          },
+          {
+            "operation": "shared-scale-center",
+            "tool": "Pillow",
+            "date": "2026-10-21",
+            "notes": "S8 one LANCZOS scale for the set, centered, no stretch; tallest body about 85% (S1) so FRM.P2 order remains"
+          }
+        ],
+        "series": {
+          "id": "AK-piece-sprites.SS1",
+          "recraft_style_id": "58840487-cf72-41fa-b83f-5773ea7a1c11"
+        }
+      },
+      "touchups_added": []
+    }
+  ]
 }

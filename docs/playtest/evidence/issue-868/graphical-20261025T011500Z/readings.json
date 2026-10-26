@@ -1,0 +1,923 @@
+{
+  "frame": {
+    "width": 390,
+    "height": 844,
+    "dpr": 2
+  },
+  "url": "https://waigore.github.io/simplechessv2/",
+  "fixtures": [
+    {
+      "tag": "white",
+      "sequence": [
+        [
+          "d2",
+          "d4"
+        ],
+        [
+          "h7",
+          "h5"
+        ],
+        [
+          "d4",
+          "d5"
+        ],
+        [
+          "h5",
+          "h4"
+        ],
+        [
+          "a2",
+          "a3"
+        ],
+        [
+          "h4",
+          "h3"
+        ],
+        [
+          "a3",
+          "a4"
+        ],
+        [
+          "h3",
+          "g2"
+        ],
+        [
+          "g1",
+          "f3"
+        ],
+        [
+          "g2",
+          "h1"
+        ],
+        [
+          "e2",
+          "e3"
+        ],
+        [
+          "h1",
+          "h2"
+        ],
+        [
+          "f3",
+          "h2"
+        ],
+        [
+          "e7",
+          "e5"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b7",
+          "b6"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "e5",
+          "e4"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b6",
+          "b5"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "b5",
+          "b4"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b4",
+          "b3"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "b3",
+          "b2"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b2",
+          "a1"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "a1",
+          "b2"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b2",
+          "a1"
+        ],
+        [
+          "f1",
+          "h2"
+        ]
+      ],
+      "origin": "d5",
+      "dest": "c6",
+      "grid": {
+        "left": 0.25,
+        "right": 389.75,
+        "top": 17.75,
+        "bottom": 843.75,
+        "square": 48.6875,
+        "lightFirst": true,
+        "dpr": 2
+      },
+      "shots": {
+        "board": "screenshots/white-board.png",
+        "ready": "screenshots/white-ready.png",
+        "armed": "screenshots/white-armed.png",
+        "s4": "screenshots/white-s4.png",
+        "committed": "screenshots/white-committed.png"
+      },
+      "points": {
+        "origin": {
+          "x": 170.65625,
+          "y": 188.15625
+        },
+        "dest": {
+          "x": 121.96875,
+          "y": 139.46875
+        }
+      },
+      "s4": {
+        "slots": [
+          {
+            "kind": "queen",
+            "x": 108.33624999999999,
+            "y": 125.83624999999999,
+            "mean": [
+              247,
+              241,
+              232
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 242,
+              "inked": true
+            }
+          },
+          {
+            "kind": "rook",
+            "x": 135.60125,
+            "y": 125.83624999999999,
+            "mean": [
+              245,
+              239,
+              230
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 240,
+              "inked": true
+            }
+          },
+          {
+            "kind": "bishop",
+            "x": 108.33624999999999,
+            "y": 153.10125,
+            "mean": [
+              247,
+              241,
+              232
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 242,
+              "inked": true
+            }
+          },
+          {
+            "kind": "knight",
+            "x": 135.60125,
+            "y": 153.10125,
+            "mean": [
+              245,
+              239,
+              230
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 240,
+              "inked": true
+            }
+          }
+        ],
+        "centre": [
+          247,
+          241,
+          232
+        ],
+        "centreInk": {
+          "inkShare": 1,
+          "inkBrightness": 242,
+          "inked": true
+        }
+      },
+      "originBefore": {
+        "inkShare": 0.966,
+        "inkBrightness": 164,
+        "inked": true
+      },
+      "destBefore": {
+        "inkShare": 1,
+        "inkBrightness": 240,
+        "inked": true
+      },
+      "afterCommit": {
+        "chooser": {
+          "slots": [
+            {
+              "kind": "queen",
+              "x": 108.33624999999999,
+              "y": 125.83624999999999,
+              "mean": [
+                247,
+                241,
+                232
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 242,
+                "inked": true
+              }
+            },
+            {
+              "kind": "rook",
+              "x": 135.60125,
+              "y": 125.83624999999999,
+              "mean": [
+                245,
+                239,
+                230
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 240,
+                "inked": true
+              }
+            },
+            {
+              "kind": "bishop",
+              "x": 108.33624999999999,
+              "y": 153.10125,
+              "mean": [
+                247,
+                241,
+                232
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 242,
+                "inked": true
+              }
+            },
+            {
+              "kind": "knight",
+              "x": 135.60125,
+              "y": 153.10125,
+              "mean": [
+                245,
+                239,
+                230
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 240,
+                "inked": true
+              }
+            }
+          ],
+          "centre": [
+            247,
+            241,
+            232
+          ],
+          "centreInk": {
+            "inkShare": 1,
+            "inkBrightness": 242,
+            "inked": true
+          }
+        },
+        "origin": {
+          "inkShare": 0.966,
+          "inkBrightness": 164,
+          "inked": true
+        },
+        "dest": {
+          "inkShare": 1,
+          "inkBrightness": 240,
+          "inked": true
+        }
+      }
+    },
+    {
+      "tag": "white-deselect",
+      "sequence": [
+        [
+          "d2",
+          "d4"
+        ],
+        [
+          "h7",
+          "h5"
+        ],
+        [
+          "d4",
+          "d5"
+        ],
+        [
+          "h5",
+          "h4"
+        ],
+        [
+          "a2",
+          "a3"
+        ],
+        [
+          "h4",
+          "h3"
+        ],
+        [
+          "a3",
+          "a4"
+        ],
+        [
+          "h3",
+          "g2"
+        ],
+        [
+          "g1",
+          "f3"
+        ],
+        [
+          "g2",
+          "h1"
+        ],
+        [
+          "e2",
+          "e3"
+        ],
+        [
+          "h1",
+          "h2"
+        ],
+        [
+          "f3",
+          "h2"
+        ],
+        [
+          "e7",
+          "e5"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b7",
+          "b6"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "e5",
+          "e4"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b6",
+          "b5"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "b5",
+          "b4"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b4",
+          "b3"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "b3",
+          "b2"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b2",
+          "a1"
+        ],
+        [
+          "f1",
+          "h2"
+        ],
+        [
+          "a1",
+          "b2"
+        ],
+        [
+          "h2",
+          "f1"
+        ],
+        [
+          "b2",
+          "a1"
+        ],
+        [
+          "f1",
+          "h2"
+        ]
+      ],
+      "origin": "d5",
+      "dest": "c6",
+      "grid": {
+        "left": 0.25,
+        "right": 389.75,
+        "top": 17.75,
+        "bottom": 843.75,
+        "square": 48.6875,
+        "lightFirst": true,
+        "dpr": 2
+      },
+      "shots": {
+        "board": "screenshots/white-deselect-board.png",
+        "ready": "screenshots/white-deselect-ready.png",
+        "armed": "screenshots/white-deselect-armed.png",
+        "s4": "screenshots/white-deselect-s4.png",
+        "after": "screenshots/white-deselect-after.png"
+      },
+      "points": {
+        "origin": {
+          "x": 170.65625,
+          "y": 188.15625
+        },
+        "dest": {
+          "x": 121.96875,
+          "y": 139.46875
+        }
+      },
+      "s4": {
+        "slots": [
+          {
+            "kind": "queen",
+            "x": 108.33624999999999,
+            "y": 125.83624999999999,
+            "mean": [
+              247,
+              241,
+              232
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 242,
+              "inked": true
+            }
+          },
+          {
+            "kind": "rook",
+            "x": 135.60125,
+            "y": 125.83624999999999,
+            "mean": [
+              245,
+              239,
+              230
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 240,
+              "inked": true
+            }
+          },
+          {
+            "kind": "bishop",
+            "x": 108.33624999999999,
+            "y": 153.10125,
+            "mean": [
+              247,
+              241,
+              232
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 242,
+              "inked": true
+            }
+          },
+          {
+            "kind": "knight",
+            "x": 135.60125,
+            "y": 153.10125,
+            "mean": [
+              245,
+              239,
+              230
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 240,
+              "inked": true
+            }
+          }
+        ],
+        "centre": [
+          247,
+          241,
+          232
+        ],
+        "centreInk": {
+          "inkShare": 1,
+          "inkBrightness": 242,
+          "inked": true
+        }
+      },
+      "originBefore": {
+        "inkShare": 0.966,
+        "inkBrightness": 164,
+        "inked": true
+      },
+      "destBefore": {
+        "inkShare": 1,
+        "inkBrightness": 240,
+        "inked": true
+      },
+      "afterDeselect": {
+        "chooser": {
+          "slots": [
+            {
+              "kind": "queen",
+              "x": 108.33624999999999,
+              "y": 125.83624999999999,
+              "mean": [
+                247,
+                241,
+                232
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 242,
+                "inked": true
+              }
+            },
+            {
+              "kind": "rook",
+              "x": 135.60125,
+              "y": 125.83624999999999,
+              "mean": [
+                245,
+                239,
+                230
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 240,
+                "inked": true
+              }
+            },
+            {
+              "kind": "bishop",
+              "x": 108.33624999999999,
+              "y": 153.10125,
+              "mean": [
+                247,
+                241,
+                232
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 242,
+                "inked": true
+              }
+            },
+            {
+              "kind": "knight",
+              "x": 135.60125,
+              "y": 153.10125,
+              "mean": [
+                245,
+                239,
+                230
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 240,
+                "inked": true
+              }
+            }
+          ],
+          "centre": [
+            247,
+            241,
+            232
+          ],
+          "centreInk": {
+            "inkShare": 1,
+            "inkBrightness": 242,
+            "inked": true
+          }
+        },
+        "origin": {
+          "inkShare": 0.966,
+          "inkBrightness": 164,
+          "inked": true
+        },
+        "dest": {
+          "inkShare": 1,
+          "inkBrightness": 240,
+          "inked": true
+        }
+      }
+    },
+    {
+      "tag": "black",
+      "sequence": [
+        [
+          "d2",
+          "d4"
+        ],
+        [
+          "e7",
+          "e5"
+        ],
+        [
+          "a2",
+          "a3"
+        ],
+        [
+          "c7",
+          "c5"
+        ],
+        [
+          "a3",
+          "a4"
+        ],
+        [
+          "c5",
+          "d4"
+        ],
+        [
+          "b1",
+          "c3"
+        ],
+        [
+          "d4",
+          "c3"
+        ],
+        [
+          "c3",
+          "c2"
+        ],
+        [
+          "d1",
+          "d2"
+        ]
+      ],
+      "origin": "c2",
+      "dest": "c1",
+      "grid": {
+        "left": 0.25,
+        "right": 389.75,
+        "top": 17.75,
+        "bottom": 843.75,
+        "square": 48.6875,
+        "lightFirst": true,
+        "dpr": 2
+      },
+      "shots": {
+        "board": "screenshots/black-board.png",
+        "ready": "screenshots/black-ready.png",
+        "armed": "screenshots/black-armed.png",
+        "s4": "screenshots/black-s4.png",
+        "committed": "screenshots/black-committed.png"
+      },
+      "points": {
+        "origin": {
+          "x": 121.96875,
+          "y": 334.21875
+        },
+        "dest": {
+          "x": 121.96875,
+          "y": 382.90625
+        }
+      },
+      "s4": {
+        "slots": [
+          {
+            "kind": "queen",
+            "x": 108.33624999999999,
+            "y": 369.27375,
+            "mean": [
+              180,
+              157,
+              135
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 161,
+              "inked": true
+            }
+          },
+          {
+            "kind": "rook",
+            "x": 135.60125,
+            "y": 369.27375,
+            "mean": [
+              182,
+              159,
+              137
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 163,
+              "inked": true
+            }
+          },
+          {
+            "kind": "bishop",
+            "x": 108.33624999999999,
+            "y": 396.53875,
+            "mean": [
+              153,
+              122,
+              98
+            ],
+            "ink": {
+              "inkShare": 0.849,
+              "inkBrightness": 135,
+              "inked": true
+            }
+          },
+          {
+            "kind": "knight",
+            "x": 135.60125,
+            "y": 396.53875,
+            "mean": [
+              179,
+              161,
+              139
+            ],
+            "ink": {
+              "inkShare": 1,
+              "inkBrightness": 164,
+              "inked": true
+            }
+          }
+        ],
+        "centre": [
+          198,
+          175,
+          148
+        ],
+        "centreInk": {
+          "inkShare": 1,
+          "inkBrightness": 179,
+          "inked": true
+        }
+      },
+      "originBefore": {
+        "inkShare": 1,
+        "inkBrightness": 134,
+        "inked": true
+      },
+      "destBefore": {
+        "inkShare": 1,
+        "inkBrightness": 173,
+        "inked": true
+      },
+      "afterCommit": {
+        "chooser": {
+          "slots": [
+            {
+              "kind": "queen",
+              "x": 108.33624999999999,
+              "y": 369.27375,
+              "mean": [
+                180,
+                157,
+                135
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 161,
+                "inked": true
+              }
+            },
+            {
+              "kind": "rook",
+              "x": 135.60125,
+              "y": 369.27375,
+              "mean": [
+                182,
+                159,
+                137
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 163,
+                "inked": true
+              }
+            },
+            {
+              "kind": "bishop",
+              "x": 108.33624999999999,
+              "y": 396.53875,
+              "mean": [
+                153,
+                122,
+                98
+              ],
+              "ink": {
+                "inkShare": 0.849,
+                "inkBrightness": 135,
+                "inked": true
+              }
+            },
+            {
+              "kind": "knight",
+              "x": 135.60125,
+              "y": 396.53875,
+              "mean": [
+                179,
+                161,
+                139
+              ],
+              "ink": {
+                "inkShare": 1,
+                "inkBrightness": 164,
+                "inked": true
+              }
+            }
+          ],
+          "centre": [
+            198,
+            175,
+            148
+          ],
+          "centreInk": {
+            "inkShare": 1,
+            "inkBrightness": 179,
+            "inked": true
+          }
+        },
+        "origin": {
+          "inkShare": 1,
+          "inkBrightness": 134,
+          "inked": true
+        },
+        "dest": {
+          "inkShare": 1,
+          "inkBrightness": 173,
+          "inked": true
+        }
+      }
+    }
+  ]
+}

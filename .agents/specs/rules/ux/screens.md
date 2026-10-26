@@ -13,7 +13,7 @@ One interface surface with one job. `navigation.md` lists it. Journeys only sequ
 - **Job**: the one thing this screen is for.
 - **Actors**: links to `actors/`.
 - **Serves**: vision qualities, definition scope, and the design specs this screen surfaces.
-- **Mockup**: copy `mockups/screens/_template.html` to `mockups/screens/<kebab-name>.html`. Follow [screen-mockup.md](screen-mockup.md). When spec depth requires no mockup for this screen, write "None — spec depth \<level\>", per [depth.md](../depth.md).
+- **Mockup**: copy `mockups/screens/_template.html` to `mockups/screens/<kebab-name>.html`. Follow [screen-mockup.md](screen-mockup.md). Add a `draft` catalog row per [mockup-catalog.md](mockup-catalog.md). Always required.
 - **Glossary terms**: links into `glossary.md`.
 
 Two readers must be able to operate the screen the same way from this file.

@@ -1,0 +1,233 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+display=headless
+session_id=sess-1792887820441-31091-playtest-1078576
+ROW P1/K1 R1-R3
+CHECK PASS [P1/K1 R1-R3] mode pick opens mode-pick
+CHECK PASS [P1/K1 R1-R3] Shared game is the first mode-pick row Shared game · Last
+{"TEL.1":"puzzle.enter","TEL.2":1792887820901,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-s1
+{"TEL.1":"puzzle.dealt","TEL.2":1792887820976,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+CHECK PASS [P1/K1 R1-R3] the served record deals through the stream accept768-s1
+CHECK PASS [P1/K1 R1-R3] GS.puzzleId is the record's id accept768-s1
+CHECK PASS [P1/K1 R1-R3] GS.puzzleElo is the record rating 1000
+CHECK PASS [P1/K1 R1-R3] solvingSide is the side to move after the opening move white
+CHECK PASS [P1/K1 R1-R3] sequenceIndex starts at 0 0
+CHECK PASS [P1/K1 R1-R3] requiredSequence is the later move only 
+CHECK PASS [P1/K1 R1-R3] board faces the solving side bottom
+CHECK PASS [P1/K1 R1-R3] puzzle-play S1 on deal S1
+elo_label=Elo 1000
+ROW P1/K1 R4 I2 K3
+{"TEL.1":"puzzle.select","TEL.2":1792887821123,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887821197,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792887821197,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+CATALOG_ANSWER puzzle_id=accept768-s2-next
+s2_last_result={"committed":true,"cue":"cue_solved","end_reason":"END.W1","expected":0.5,"player_elo":1010.0,"score":1.0,"solved":true} sequence=[{ "from": "b1", "to": "b8", "promotion": "" }] cue=cue_solved due=true
+CHECK PASS [P1/K1 R4 I2 K3] clean solve is END.W1 END.W1
+CHECK PASS [P1/K1 R4 I2 K3] END.W1 scores S = 1 1.0
+CHECK PASS [P1/K1 R4 I2 K3] requiredSequence unchanged by the solve [{ "from": "b1", "to": "b8", "promotion": "" }] vs [{ "from": "b1", "to": "b8", "promotion": "" }]
+CHECK PASS [P1/K1 R4 I2 K3] cue_solved shows at the ending cue_solved
+CHECK PASS [P1/K1 R4 I2 K3] the ending asks the stream for one next deal true
+CHECK PASS [P1/K1 R4 I2 K3] Elo rises on a solve 1000.000 -> 1010.000
+CHECK PASS [P1/K1 R4 I2 K3] R2 shows the new Elo Elo 1010
+CHECK PASS [P1/K1 R4 I2 K3] the settled attempt is dropped for the next deal 
+s2_after_ending cue= due=true
+{"TEL.1":"puzzle.dealt","TEL.2":1792887821276,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+s2_next=accept768-s2-next due=false
+CHECK PASS [P1/K1 R4 I2 K3] the next deal followed the cue accept768-s2-next
+CHECK PASS [P1/K1 R4 I2 K3] the deal ends the previous cue 
+ROW P1/X1-3 R5
+CHECK PASS [P1/X1-3 R5] S3 solves the deal S2 advanced to accept768-s2-next
+CHECK PASS [P1/X1-3 R5] the next deal is live for S3 accept768-s2-next
+{"TEL.1":"puzzle.select","TEL.2":1792887821304,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887821362,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792887821362,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+CATALOG_ANSWER puzzle_id=accept768-s3-next
+s3_result={"committed":true,"cue":"cue_solved","end_reason":"END.W1","expected":0.514387184165999,"player_elo":1019.71225631668,"score":1.0,"solved":true} cue=cue_solved due=true
+CHECK PASS [P1/X1-3 R5] the recorded mate solves END.W1
+CHECK PASS [P1/X1-3 R5] requiredSequence not rewritten by the solve [{ "from": "b1", "to": "b8", "promotion": "" }] vs [{ "from": "b1", "to": "b8", "promotion": "" }]
+CHECK PASS [P1/X1-3 R5] END.W1 scores S = 1 1.0
+s3_elo=1010.0->1019.71225631668
+{"TEL.1":"puzzle.dealt","TEL.2":1792887821371,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+s3_next=accept768-s3-next recent=["accept768-s1", "accept768-s2-next"]
+ROW P3/I1
+s4_recent_before=["accept768-s1", "accept768-s2-next"]
+CHECK PASS [P3/I1] recentSolved holds a solved id ["accept768-s1", "accept768-s2-next"]
+s4_candidates=[{"daily_date":"","fen":"6k1/5ppp/8/8/8/8/5PPP/1R4K1 b - - 0 1","game_url":"","moves":["g8h8","b1b8"],"nb_plays":1200,"opening_tags":"","popularity":90,"puzzle_id":"accept768-s4-fresh","rating":1000,"rating_deviation":80,"snapshot_id":"2026-10-05","themes":["mateIn1"]}]
+CHECK PASS [P3/I1] the recent id is skipped for the unsolved one [{ "snapshot_id": "2026-10-05", "puzzle_id": "accept768-s4-fresh", "fen": "6k1/5ppp/8/8/8/8/5PPP/1R4K1 b - - 0 1", "moves": ["g8h8", "b1b8"], "rating": 1000, "rating_deviation": 80, "popularity": 90, "nb_plays": 1200, "themes": ["mateIn1"], "game_url": "", "opening_tags": "", "daily_date": "" }]
+{"TEL.1":"puzzle.enter","TEL.2":1792887821454,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-s4-seed
+{"TEL.1":"puzzle.dealt","TEL.2":1792887821459,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+s4_entry_read_recent=["accept768-s1", "accept768-s2-next"]
+CHECK PASS [P3/I1] the O1 request carries recentSolved ["accept768-s1", "accept768-s2-next"]
+{"TEL.1":"puzzle.select","TEL.2":1792887821521,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887821578,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792887821578,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+CATALOG_ANSWER puzzle_id=accept768-s1
+{"TEL.1":"puzzle.dealt","TEL.2":1792887821683,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+s4_dealt=accept768-s1 recent=["accept768-s1", "accept768-s2-next"]
+CHECK PASS [P3/I1] the deal's own selection skips the solved id ["accept768-s4-fresh"]
+s4_pick_elo=1019.71225631668 offer_dealt=accept768-s1 answered=5
+s4_recent=["accept768-s1", "accept768-s2-next"] candidates_after=[{"daily_date":"","fen":"6k1/5ppp/8/8/8/8/5PPP/1R4K1 b - - 0 1","game_url":"","moves":["g8h8","b1b8"],"nb_plays":1200,"opening_tags":"","popularity":90,"puzzle_id":"accept768-s4-fresh","rating":1000,"rating_deviation":80,"snapshot_id":"2026-10-05","themes":["mateIn1"]}]
+CHECK PASS [P3/I1] the dealt id is not recent; the solved one still is [{ "snapshot_id": "2026-10-05", "puzzle_id": "accept768-s4-fresh", "fen": "6k1/5ppp/8/8/8/8/5PPP/1R4K1 b - - 0 1", "moves": ["g8h8", "b1b8"], "rating": 1000, "rating_deviation": 80, "popularity": 90, "nb_plays": 1200, "themes": ["mateIn1"], "game_url": "", "opening_tags": "", "daily_date": "" }]
+ROW P3/I1 D1
+{"TEL.1":"puzzle.enter","TEL.2":1792887821816,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-far
+{"TEL.1":"puzzle.dealt","TEL.2":1792887821827,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+s5_player_elo=1029.14549997581 dealt=accept768-far rating=1429
+CHECK PASS [P3/I1 D1] an out-of-band offer still widens and deals accept768-far
+CHECK PASS [P3/I1 D1] no authored band replaces the record rating 1429
+ROW P3/F4 X1-X2
+{"TEL.1":"puzzle.enter","TEL.2":1792887822043,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-x1
+WARNING: puzzle stream: deal read failed (malformed)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:68)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:127)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792887822115,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"F-puzzle-catalog.X2","TEL.5":"malformed"}
+x1 dealt= failure=malformed
+CHECK PASS [P3/F4 X1-X2] a one-move record deals nothing 
+CHECK PASS [P3/F4 X1-X2] playerElo kept after X1 1029.145500
+{"TEL.1":"puzzle.enter","TEL.2":1792887822257,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:127)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792887822264,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+x2 dealt= failure=error
+CHECK PASS [P3/F4 X1-X2] an unreadable route deals nothing 
+CHECK PASS [P3/F4 X1-X2] playerElo kept after X2 1029.145500
+CHECK PASS [P3/F4 X1-X2] the failed read carries a reason error
+ROW P2/K2 S7
+{"TEL.1":"puzzle.enter","TEL.2":1792887822366,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-s7
+{"TEL.1":"puzzle.dealt","TEL.2":1792887822386,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+CHECK PASS [P2/K2 S7] the fixture deals accept768-s7
+{"TEL.1":"puzzle.select","TEL.2":1792887822550,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887822613,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792887822617,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+CHECK PASS [P2/K2 S7] same puzzleId after a wrong move accept768-s7
+CHECK PASS [P2/K2 S7] sequenceIndex back to 0 0
+CHECK PASS [P2/K2 S7] cue_wrong shows cue_wrong
+CHECK PASS [P2/K2 S7] no next deal on a wrong move puzzle-play
+{"TEL.1":"puzzle.select","TEL.2":1792887822627,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887822638,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792887822639,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+CHECK PASS [P2/K2 S7] a second wrong move is retryable accept768-s7
+CHECK PASS [P2/K2 S7] the board reset to the dealt position { "color": "white", "kind": "rook" }
+ROW P2/K2 S8
+{"TEL.1":"puzzle.enter","TEL.2":1792887822695,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-s8
+{"TEL.1":"puzzle.dealt","TEL.2":1792887822707,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+CHECK PASS [P2/K2 S8] the reveal fixture deals accept768-s8
+{"TEL.1":"puzzle.confirm","TEL.2":1792887822791,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.5":"reveal_confirm"}
+CHECK PASS [P2/K2 S8] Reveal asks confirm S2
+CATALOG_ANSWER puzzle_id=accept768-s8b
+{"TEL.1":"puzzle.end","TEL.2":1792887822826,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792887822826,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.3","TEL.5":"cue_failed"}
+reveal_result={"committed":true,"cue":"cue_failed","end_reason":"END.L5","expected":0.541845634662878,"player_elo":1018.30858728255,"score":0.0,"solved":false} cue= stage=puzzle-play
+CHECK PASS [P2/K2 S8] Reveal is END.L5 END.L5
+CHECK PASS [P2/K2 S8] Reveal scores S = 0 0.0
+{"TEL.1":"puzzle.dealt","TEL.2":1792887822838,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+CHECK PASS [P2/K2 S8] Reveal does not raise Elo 1018.308587
+CHECK PASS [P2/K2 S8] the result is committed to the store 1018.30858728255
+CHECK PASS [P2/K2 S8] one next puzzle after Reveal accept768-s8b
+{"TEL.1":"puzzle.confirm","TEL.2":1792887822872,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.5":"abandon_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792887822893,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792887822893,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+abandon_result={"committed":true,"cue":"cue_abandon","end_reason":"END.L6","expected":0.526323813357961,"player_elo":1007.78211101539,"score":0.0,"solved":false} cue=
+CHECK PASS [P2/K2 S8] Abandon is END.L6 END.L6
+CHECK PASS [P2/K2 S8] Abandon scores S = 0 0.0
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:127)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792887822901,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+CHECK PASS [P2/K2 S8] Abandon does not raise Elo 1007.782111
+ROW P2/K4 E1
+{"TEL.1":"puzzle.enter","TEL.2":1792887822974,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-s9
+{"TEL.1":"puzzle.dealt","TEL.2":1792887822983,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+CHECK PASS [P2/K4 E1] the leave fixture deals accept768-s9
+{"TEL.1":"puzzle.confirm","TEL.2":1792887823055,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.5":"leave_confirm"}
+CHECK PASS [P2/K4 E1] Leave asks confirm S2
+{"TEL.1":"puzzle.leave","TEL.2":1792887823124,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S2","TEL.5":"puzzle.leave"}
+after_leave stage=mode-pick elo=1007.78211101539 open=false committed=1007.78211101539
+CHECK PASS [P2/K4 E1] leave returns to mode pick mode-pick
+CHECK PASS [P2/K4 E1] the open puzzle is not scored 1007.782111
+CHECK PASS [P2/K4 E1] recentSolved unchanged by leaving ["accept768-s1", "accept768-s2-next", "accept768-s4-seed"]
+CHECK PASS [P2/K4 E1] the committed Elo is unchanged 1007.78211101539
+ROW P2/K3 S10
+{"TEL.1":"puzzle.enter","TEL.2":1792887823161,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-s10
+{"TEL.1":"puzzle.dealt","TEL.2":1792887823168,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.select","TEL.2":1792887823216,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887823227,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.wrong","TEL.2":1792887823275,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"wrong"}
+{"TEL.1":"puzzle.select","TEL.2":1792887823307,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887823422,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792887823422,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.5","TEL.5":"cue_failed"}
+s10_result={"committed":true,"cue":"cue_failed","end_reason":"END.L4","expected":0.511197485470594,"player_elo":997.558161305978,"score":0.0,"solved":false}
+CHECK PASS [P2/K3 S10] complete after a wrong move is END.L4 END.L4
+CHECK PASS [P2/K3 S10] END.L4 scores S = 0 0.0
+CHECK PASS [P2/K3 S10] Elo drops on END.L4 1007.782111 -> 997.558161
+ROW DIF S1-S2
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:127)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792887823488,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+{"TEL.1":"puzzle.enter","TEL.2":1792887823531,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-dif1
+{"TEL.1":"puzzle.dealt","TEL.2":1792887823542,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.select","TEL.2":1792887823593,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1.1","TEL.5":"ok"}
+{"TEL.1":"puzzle.move","TEL.2":1792887823601,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"outcome"}
+{"TEL.1":"puzzle.result","TEL.2":1792887823601,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.7","TEL.5":"cue_solved"}
+CATALOG_ANSWER puzzle_id=accept768-dif-next
+dif_solve delta=15.2460655766247 expected=0.23769672116877 K=20.0 cue=cue_solved
+CHECK PASS [DIF S1-S2] solve scores S = 1 
+CHECK PASS [DIF S1-S2] the solve's delta is CFG.ELO_K x (1 - E) 15.2461
+{"TEL.1":"puzzle.dealt","TEL.2":1792887823667,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+CHECK PASS [DIF S1-S2] the solve deals the next record once accept768-dif-next
+{"TEL.1":"puzzle.enter","TEL.2":1792887823831,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"J-puzzle-session.S1","TEL.5":"ok"}
+CATALOG_ANSWER puzzle_id=accept768-dif2
+{"TEL.1":"puzzle.dealt","TEL.2":1792887823867,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US1","TEL.5":"ok"}
+{"TEL.1":"puzzle.confirm","TEL.2":1792887823917,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.5":"abandon_confirm"}
+{"TEL.1":"puzzle.end","TEL.2":1792887823939,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"ok"}
+{"TEL.1":"puzzle.result","TEL.2":1792887823939,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"UI-puzzle-play.US2.8","TEL.5":"cue_abandon"}
+dif_fail_read={"committed":true,"cue":"cue_abandon","end_reason":"END.L6","expected":0.253963211838657,"player_elo":1007.72496264583,"score":0.0,"solved":false} cue= stage=puzzle-play
+CHECK PASS [DIF S1-S2] the fail is an ending END.L6
+CHECK PASS [DIF S1-S2] the fail's delta is CFG.ELO_K x (0 - E) -5.0793 (E=0.2540)
+WARNING: puzzle stream: deal read failed (error)
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] refused (res://puzzle_stream.gd:97)
+         [1] _failed (res://puzzle_stream.gd:114)
+         [2] poll (res://puzzle_stream.gd:65)
+         [3] tick (res://puzzle_play_flow.gd:60)
+         [4] _process (res://session_router.gd:127)
+{"TEL.1":"puzzle.deal_failed","TEL.2":1792887823946,"TEL.3":"sess-1792887820441-31091-playtest-1078576","TEL.4":"F-puzzle-catalog.X2","TEL.5":"error"}
+dif_store=1007.72496264583
+CHECK PASS [DIF S1-S2] the shared control is still on mode pick 
+shared_stage=shared-setup
+CHECK PASS [DIF S1-S2] the shared path leaves the committed Puzzle Elo unchanged 
+DEALT=["accept768-s1","accept768-s2-next","accept768-s3-next","accept768-s1","accept768-far","accept768-s7","accept768-s8b","accept768-s10",""]
+FAILURES=[]
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

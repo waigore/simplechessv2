@@ -17,7 +17,7 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Mode pick; loops; configuration; Advice | design | navigation, screens, journeys |
 | End conditions: win, draw, loss, clock expiry ([conditions.md](../design/end-conditions/conditions.md)) | design | [`screens/shared-result.md`](screens/shared-result.md); [`screens/shared-play.md`](screens/shared-play.md) clocks; [`exceptions.md`](exceptions.md) `EX.draw-offer` |
 | Progression: Last mode, Player Elo, save failure ([progression.md](../design/progression.md)) | design | [`screens/mode-pick.md`](screens/mode-pick.md); [`screens/puzzle-play.md`](screens/puzzle-play.md); [`exceptions.md`](exceptions.md) `EX.save-failure` |
-| PER.R1–R8; no camera controls | view | play screens; controls (no CC bindings) |
+| PER.R1–R9; no camera controls | view | play screens; controls (no CC bindings) |
 | UIS interface style | aesthetics | [`presentation.md`](presentation.md) |
 
 ## Topic coverage
@@ -30,7 +30,8 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Navigation | [`navigation.md`](navigation.md) | Applies |
 | Exception states | [`exceptions.md`](exceptions.md) | Applies — `EX.empty` N/A |
 | Controls and bindings | [`controls.md`](controls.md) | Applies |
-| Mockups | [`mockups/`](mockups/), [`presentation.md`](presentation.md) | Applies — depth full |
+| Mockups | [`mockups/`](mockups/), [`mockups/catalog.md`](mockups/catalog.md), [`presentation.md`](presentation.md) | Applies |
 | Accessibility presentation | screens, presentation | Applies |
 | Localization copy | screen copy tables; [`localization.md`](localization.md) (keys, owners, locale rules); mode-pick C4 | Applies |
 | Save-failure feedback | `EX.save-failure` | Applies |
+

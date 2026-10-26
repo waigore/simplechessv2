@@ -254,6 +254,22 @@ func render_advice(advice_best_move: Variant) -> void:
 	_advice_marks.show_best_move(from_square, to_square)
 
 
+## CMP-presentation.R8 — the one accessible name a piece node exposes: the Copy key
+## `LOC.L9` maps for `kind`, resolved through `CTR-localization` O1 for `GS.locale`.
+## `LOC.L8`: the name is the type, so colour is never spoken and `screen` only says
+## which owner's string table resolves it. Metadata only — no drawn node, no state.
+static func accessible_name(kind: String, screen: String, locale: String) -> String:
+	var key := StringTable.piece_name_key(kind)
+	if key.is_empty():
+		return ""
+	match screen:
+		"puzzle-play":
+			return StringTable.puzzle_play(key, locale)
+		"shared-play":
+			return StringTable.shared_play(key, locale)
+	return ""
+
+
 func set_white_seat(seat: String) -> void:
 	white_seat = (
 		BoardGeometry.SEAT_TOP if seat == BoardGeometry.SEAT_TOP else BoardGeometry.SEAT_BOTTOM
@@ -672,6 +688,8 @@ func _apply_kind_texture(node: Node2D, color: String, kind: String) -> void:
 		return
 	node.set_meta("piece_color", color)
 	node.set_meta("piece_kind", kind)
+	# R8: the name rides the same node metadata; promotion re-applies it here.
+	node.set_meta("accessible_name", accessible_name(kind, "shared-play", "en"))
 	var asset_id := str(PIECE_IDS.get("%s|%s" % [color, kind], ""))
 	if asset_id.is_empty():
 		return
