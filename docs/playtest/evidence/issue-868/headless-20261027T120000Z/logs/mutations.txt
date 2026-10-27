@@ -1,0 +1,45 @@
+#868 acceptance — break-and-restore runs (AC5)
+
+Method: on the clean worktree, one leg of the S4→render→C6 seam was broken,
+the suite was run, the leg was restored, and the file was diffed clean.
+Command each time:
+`GODOT_BIN=/opt/homebrew/bin/godot python3 .github/scripts/gdscript_tests.py test`
+
+## Control — unmutated
+
+33 headless unit test(s) passed
+
+## Mutation 1 — render leg (`game/board_presentation.gd`)
+
+`_apply_choice_overlays` no longer calls
+`show_promotion_choice(promote_to, promote_color, kinds_var)`; it calls
+`clear_promotion_choice()` instead, so the S4 chooser is never painted.
+
+ERROR: #868 white c7→c8: no chooser overlay at c8
+Fail: res://presentation_test.gd
+
+## Mutation 2 — commit leg (`game/presentation.gd`)
+
+The S4 branch of `_on_pointer_up` resolves the tapped kind but no longer calls
+`_router.handle_promotion_commit(kind)`, so C6 commits nothing.
+
+ERROR: #868 white c7→c8: a tap on the queen sprite placed (nothing)
+Fail: res://presentation_test.gd
+
+## Mutation 3 — deselect leg (`game/shared_game_session.gd`)
+
+The `UI_S4` branch of `clear_selection()` clears nothing (pass), so an
+`IN.deselect` tap leaves the chooser open.
+
+ERROR: #868 white c7→c8: deselect left state S4
+Fail: res://presentation_test.gd
+
+## Reading
+
+Each of the three legs the defect names — render from the session's S4 fields,
+commit through C6 from a painted tap, and `IN.deselect` dropping the choice —
+fails loudly and by name when broken. The check is not vacuous: a green run
+means the seam is exercised end to end.
+
+All three files were restored and verified unchanged after their run
+(`git status --porcelain` empty; `diff -q` clean).

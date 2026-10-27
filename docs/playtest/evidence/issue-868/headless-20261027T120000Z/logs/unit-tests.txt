@@ -1,0 +1,23 @@
+Acceptance run for defect #868 — headless, on a clean origin/main worktree.
+
+Build: origin/main a1fa8e302380d3b169193df1b6dfe9ff6660dade
+Godot: 4.7.2.stable.official.ed1daf0bf (/opt/homebrew/bin/godot)
+
+$ godot --headless --path game --import --quit
+exit=0
+
+$ GODOT_BIN=/opt/homebrew/bin/godot python3 .github/scripts/gdscript_tests.py test
+33 headless unit test(s) passed
+
+$ gdlint game
+Success: no problems found
+
+$ gdformat --check game
+70 files would be left unchanged
+
+$ python3 .github/scripts/spec_lint.py
+Spec lint: 0 error(s), 1 warning(s) across 10 checks.
+(the warning is the pre-existing specs/view/glossary.md duplicate 'Diagram')
+
+Working tree after every mutation below: restored and diffed clean
+(`git status --porcelain` empty).
