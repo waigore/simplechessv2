@@ -1,0 +1,148 @@
+{
+  "arm": "published-release-hardware-warm",
+  "runs": [
+    {
+      "label": "pub-hw-warm",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": false,
+      "warm": true,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "probe": {
+        "t0": 220.60000000009313,
+        "paint": {
+          "t": 1254,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 1254,
+          "dark": 4545,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4545,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 223.8000000002794,
+            "end": 226.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 236.90000000037253,
+            "end": 239.40000000037253,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 246.40000000037253,
+            "end": 246.40000000037253,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 262.8000000002794,
+            "end": 262.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 279.90000000037253,
+            "end": 279.90000000037253,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 304.60000000009313,
+            "end": 304.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 313.90000000037253,
+            "end": 313.90000000037253,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 337.8000000002794,
+            "end": 337.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 350.10000000009313,
+            "end": 350.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 378.20000000018626,
+            "end": 385,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 385,
+            "end": 385.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1250.4000000003725,
+            "end": 1250.4000000003725,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1253.7000000001863,
+            "end": 1253.7000000001863,
+            "ok": true
+          }
+        ],
+        "frames": 479,
+        "logs": [
+          {
+            "t": 368,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 468,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 510,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 9071.900000000373,
+        "paintTiming": {
+          "first-paint": 248,
+          "first-contentful-paint": 1256
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 208,
+          "dcl": 227,
+          "load": 227
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    }
+  ]
+}
