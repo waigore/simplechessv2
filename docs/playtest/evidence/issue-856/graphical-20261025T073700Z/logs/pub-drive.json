@@ -1,0 +1,103 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "swiftshader": false,
+  "width": 390,
+  "height": 844,
+  "dpr": 2,
+  "cold": {
+    "panelSeenAt": 2620,
+    "panel": {
+      "t": 2613,
+      "dark": 4545
+    },
+    "paint": {
+      "t": 2613,
+      "nonBlack": 19968
+    },
+    "paintTiming": {
+      "first-paint": 188,
+      "first-contentful-paint": 2616
+    },
+    "nav": {
+      "responseStart": 166,
+      "dcl": 496,
+      "load": 496
+    },
+    "logs": [
+      {
+        "t": 1278,
+        "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+      },
+      {
+        "t": 1417,
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+      },
+      {
+        "t": 1636,
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      }
+    ]
+  },
+  "warm": {
+    "panel": {
+      "t": 986,
+      "dark": 3823
+    },
+    "paint": {
+      "t": 986,
+      "nonBlack": 19968
+    },
+    "paintTiming": {
+      "first-paint": 92
+    },
+    "nav": {
+      "responseStart": 53,
+      "dcl": 70,
+      "load": 70
+    },
+    "logs": [
+      {
+        "t": 181,
+        "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+      },
+      {
+        "t": 262,
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+      },
+      {
+        "t": 300,
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      }
+    ],
+    "panelSeenAt": 992
+  },
+  "taps": [
+    {
+      "at": 300,
+      "on": "shared",
+      "phase": "during loading"
+    },
+    {
+      "at": 2620,
+      "on": "shared",
+      "phase": "after panel paint",
+      "shot": "s2-shared-game.png"
+    },
+    {
+      "at": null,
+      "on": "puzzle",
+      "phase": "warm mode pick",
+      "shot": "s3-puzzle-stream.png"
+    }
+  ],
+  "shots": [
+    "s1-loading-300ms.png",
+    "s1-loading-600ms.png",
+    "s1-mode-pick.png",
+    "s2-shared-game.png",
+    "s3-mode-pick-again.png",
+    "s3-puzzle-stream.png",
+    "s1-warm-mode-pick.png"
+  ],
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+}
