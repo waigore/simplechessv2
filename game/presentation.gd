@@ -674,6 +674,9 @@ func _hide_panels() -> void:
 	_load_failure.visible = false
 	_load_failure.modulate.a = 1.0
 	_clear_advice_chrome()
+	# PER.R9 — a new game does not inherit the last game's last-move marks.
+	if _board != null:
+		_board.clear_last_move()
 	_reset_gesture()
 
 

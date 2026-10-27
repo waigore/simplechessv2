@@ -133,11 +133,19 @@ func _marks_show_and_clear() -> String:
 				"R3 marks must show e2-e4 (got %s-%s)" % [marks.last_from, marks.last_to],
 			],
 			[
-				marks.get_child_count() == 11,
+				marks.get_child_count() == 3,
 				(
-					"PER.R5 must draw 4 edge brackets per square plus a 3-stroke arrow "
-					+ "(got %d)" % marks.get_child_count()
+					"PER.R5 the arrow is the node's own 3 strokes; the brackets draw on the "
+					+ "cream foreground (got %d)" % marks.get_child_count()
 				),
+			],
+			[
+				_board().mark_foreground().marks_on("e2").size() == 4,
+				"UIS.C6 the Advice from-square carries 4 brackets on its one foreground",
+			],
+			[
+				_board().mark_foreground().marks_on("e4").size() == 4,
+				"UIS.C6 the Advice to-square carries 4 brackets on its one foreground",
 			],
 			[eval_label.visible, "R3 eval must show when values are set"],
 			[eval_label.text == "+0.34", "R3 eval text %s" % eval_label.text],
