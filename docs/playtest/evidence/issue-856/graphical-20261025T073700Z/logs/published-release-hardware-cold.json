@@ -1,0 +1,1351 @@
+{
+  "arm": "published-release-hardware-cold",
+  "runs": [
+    {
+      "label": "pub-hw-1",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": false,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "probe": {
+        "t0": 180.8000000002794,
+        "paint": {
+          "t": 1812,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 1811,
+          "dark": 4545,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4545,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 184.8000000002794,
+            "end": 188.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 191,
+            "end": 191,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 206.10000000009313,
+            "end": 206.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 222.20000000018626,
+            "end": 222.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 238.3000000002794,
+            "end": 238.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 255.5,
+            "end": 255.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 272,
+            "end": 272,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 288.39999999990687,
+            "end": 288.39999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 290.3000000002794,
+            "end": 292,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 305.5,
+            "end": 305.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 321.60000000009313,
+            "end": 321.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 338.60000000009313,
+            "end": 338.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 354.8000000002794,
+            "end": 354.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 372.20000000018626,
+            "end": 372.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 388,
+            "end": 388,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 405.39999999990687,
+            "end": 405.39999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 422.10000000009313,
+            "end": 422.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 438.8000000002794,
+            "end": 438.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 455.10000000009313,
+            "end": 455.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 472.10000000009313,
+            "end": 472.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 488.20000000018626,
+            "end": 488.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 504.39999999990687,
+            "end": 504.39999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 522,
+            "end": 522,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 538.6000000000931,
+            "end": 538.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 555.3999999999069,
+            "end": 555.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 571.3000000002794,
+            "end": 571.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 588.2000000001863,
+            "end": 588.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 605.3999999999069,
+            "end": 605.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 621.2000000001863,
+            "end": 621.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 638.6000000000931,
+            "end": 638.6000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 655.2000000001863,
+            "end": 655.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 672.1000000000931,
+            "end": 672.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 687.7000000001863,
+            "end": 687.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 705.3000000002794,
+            "end": 705.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 721.3999999999069,
+            "end": 721.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 738.7000000001863,
+            "end": 738.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 754.5,
+            "end": 754.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 772,
+            "end": 772,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 791,
+            "end": 791,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 805.5,
+            "end": 805.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 822,
+            "end": 822,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 901.1000000000931,
+            "end": 903,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 903,
+            "end": 903,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1808.5,
+            "end": 1808.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1811.3999999999069,
+            "end": 1811.3999999999069,
+            "ok": true
+          }
+        ],
+        "frames": 478,
+        "logs": [
+          {
+            "t": 875,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 986,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 1145,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 9076.600000000093,
+        "paintTiming": {
+          "first-paint": 208,
+          "first-contentful-paint": 1816
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 177,
+          "dcl": 293,
+          "load": 293
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "pub-hw-2",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": false,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "probe": {
+        "t0": 225.39999999990687,
+        "paint": {
+          "t": 1858,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 1857,
+          "dark": 4545,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4545,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 229,
+            "end": 232.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 238.10000000009313,
+            "end": 238.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 254.5,
+            "end": 254.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 271.5,
+            "end": 271.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 287.89999999990687,
+            "end": 287.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 304.39999999990687,
+            "end": 304.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 320.89999999990687,
+            "end": 320.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 332.39999999990687,
+            "end": 334.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 337.29999999981374,
+            "end": 337.29999999981374,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 354.89999999990687,
+            "end": 355,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 371.5,
+            "end": 371.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 387.70000000018626,
+            "end": 387.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 404.70000000018626,
+            "end": 404.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 421.20000000018626,
+            "end": 421.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 437.60000000009313,
+            "end": 437.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 454.70000000018626,
+            "end": 454.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 471.60000000009313,
+            "end": 471.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 487.89999999990687,
+            "end": 487.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 504.20000000018626,
+            "end": 504.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 520.8999999999069,
+            "end": 520.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 537.6000000000931,
+            "end": 537.6000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 554.8999999999069,
+            "end": 554.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 570.8999999999069,
+            "end": 570.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 588.1000000000931,
+            "end": 588.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 604.8999999999069,
+            "end": 604.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 621.5,
+            "end": 621.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 637.8999999999069,
+            "end": 637.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 654.2000000001863,
+            "end": 654.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 670.7999999998137,
+            "end": 670.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 687.2000000001863,
+            "end": 687.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 704.8999999999069,
+            "end": 704.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 720.8999999999069,
+            "end": 720.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 737.8999999999069,
+            "end": 737.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 753.7999999998137,
+            "end": 753.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 771.2000000001863,
+            "end": 771.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 787.6000000000931,
+            "end": 787.6000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 803.8999999999069,
+            "end": 803.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 821.2999999998137,
+            "end": 821.2999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 838.2000000001863,
+            "end": 838.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 854.7999999998137,
+            "end": 854.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 871.3999999999069,
+            "end": 871.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 950.8999999999069,
+            "end": 953.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 953.7000000001863,
+            "end": 953.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1854.3999999999069,
+            "end": 1854.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1857.3999999999069,
+            "end": 1857.3999999999069,
+            "ok": true
+          }
+        ],
+        "frames": 475,
+        "logs": [
+          {
+            "t": 924,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 1037,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 1194,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 9078.100000000093,
+        "paintTiming": {
+          "first-paint": 240,
+          "first-contentful-paint": 1860
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 223,
+          "dcl": 335,
+          "load": 335
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "pub-hw-3",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": false,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "probe": {
+        "t0": 195.3000000002794,
+        "paint": {
+          "t": 1876,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 1876,
+          "dark": 4519,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4519,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 198.39999999990687,
+            "end": 201.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 206.70000000018626,
+            "end": 206.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 222.5,
+            "end": 222.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 240.10000000009313,
+            "end": 240.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 255.89999999990687,
+            "end": 255.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 273,
+            "end": 273,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 288.89999999990687,
+            "end": 288.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 306,
+            "end": 306,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 314.20000000018626,
+            "end": 316,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 323.20000000018626,
+            "end": 323.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 339.89999999990687,
+            "end": 339.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 356.70000000018626,
+            "end": 356.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 373.3000000002794,
+            "end": 373.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 389.89999999990687,
+            "end": 389.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 406.10000000009313,
+            "end": 406.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 422.60000000009313,
+            "end": 422.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 439.39999999990687,
+            "end": 439.39999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 456,
+            "end": 456,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 472.5,
+            "end": 472.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 489.70000000018626,
+            "end": 489.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 506.60000000009313,
+            "end": 506.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 523.1000000000931,
+            "end": 523.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 539.8000000002794,
+            "end": 539.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 555.8000000002794,
+            "end": 555.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 572.6000000000931,
+            "end": 572.6000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 589.8999999999069,
+            "end": 589.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 606,
+            "end": 606,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 622.8000000002794,
+            "end": 622.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 639.3000000002794,
+            "end": 639.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 656.2000000001863,
+            "end": 656.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 673.1000000000931,
+            "end": 673.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 689.1000000000931,
+            "end": 689.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 705.8999999999069,
+            "end": 705.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 722.6000000000931,
+            "end": 722.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 739.3999999999069,
+            "end": 739.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 755.7000000001863,
+            "end": 755.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 772.5,
+            "end": 772.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 789.1000000000931,
+            "end": 789.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 806.2000000001863,
+            "end": 806.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 823.1000000000931,
+            "end": 823.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 842.7000000001863,
+            "end": 842.7000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 855.8000000002794,
+            "end": 855.8000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 872.3000000002794,
+            "end": 872.3000000002794,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 889.1000000000931,
+            "end": 889.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 968,
+            "end": 970.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 970.1000000000931,
+            "end": 970.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1872.5,
+            "end": 1872.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 1875.5,
+            "end": 1875.5,
+            "ok": true
+          }
+        ],
+        "frames": 477,
+        "logs": [
+          {
+            "t": 942,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 1050,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 1207,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 9076,
+        "paintTiming": {
+          "first-paint": 208,
+          "first-contentful-paint": 1880
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 192,
+          "dcl": 317,
+          "load": 317
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    },
+    {
+      "label": "pub-hw-4",
+      "url": "https://waigore.github.io/simplechessv2/",
+      "swiftshader": false,
+      "warm": false,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "probe": {
+        "t0": 196.5,
+        "paint": {
+          "t": 2040,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 2039,
+          "dark": 4511,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4511,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 201.89999999990687,
+            "end": 206.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 218.39999999990687,
+            "end": 218.39999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 234.39999999990687,
+            "end": 234.39999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 250.89999999990687,
+            "end": 250.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 267.5,
+            "end": 267.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 284,
+            "end": 284,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 300.70000000018626,
+            "end": 300.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 312.20000000018626,
+            "end": 314.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 317.70000000018626,
+            "end": 317.70000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 334.20000000018626,
+            "end": 334.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 350.79999999981374,
+            "end": 350.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 367.29999999981374,
+            "end": 367.29999999981374,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 384.29999999981374,
+            "end": 384.29999999981374,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 400.89999999990687,
+            "end": 400.89999999990687,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 417.60000000009313,
+            "end": 417.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 434.29999999981374,
+            "end": 434.29999999981374,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 451,
+            "end": 451,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 467.60000000009313,
+            "end": 467.60000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 484.20000000018626,
+            "end": 484.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 500.79999999981374,
+            "end": 500.79999999981374,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 517.3999999999069,
+            "end": 517.3999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 534.2000000001863,
+            "end": 534.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 550.8999999999069,
+            "end": 550.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 567.5,
+            "end": 567.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 584.5,
+            "end": 584.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 600.8999999999069,
+            "end": 600.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 617.1000000000931,
+            "end": 617.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 634.2000000001863,
+            "end": 634.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 651.2999999998137,
+            "end": 651.2999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 667.7999999998137,
+            "end": 667.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 684.2000000001863,
+            "end": 684.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 701,
+            "end": 701,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 717.2999999998137,
+            "end": 717.2999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 734,
+            "end": 734,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 751.1000000000931,
+            "end": 751.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 767.8999999999069,
+            "end": 767.8999999999069,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 784.5,
+            "end": 784.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 800.7999999998137,
+            "end": 800.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 819.2999999998137,
+            "end": 819.2999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 834.1000000000931,
+            "end": 834.1000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 850.7999999998137,
+            "end": 850.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 936,
+            "end": 938.2000000001863,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 938.2999999998137,
+            "end": 938.2999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2035.7999999998137,
+            "end": 2035.7999999998137,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 2039.2000000001863,
+            "end": 2039.2000000001863,
+            "ok": true
+          }
+        ],
+        "frames": 464,
+        "logs": [
+          {
+            "t": 905,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 1032,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 1223,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 9070.399999999907,
+        "paintTiming": {
+          "first-paint": 220,
+          "first-contentful-paint": 2044
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 194,
+          "dcl": 315,
+          "load": 315
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "arm": "fix-export-hardware-warm",
+  "runs": [
+    {
+      "label": "fix-hw-warm",
+      "url": "http://127.0.0.1:8099/",
+      "swiftshader": false,
+      "warm": true,
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "probe": {
+        "t0": 10.399999999906868,
+        "paint": {
+          "t": 653,
+          "nonBlack": 19968,
+          "w": 96,
+          "h": 208,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "panel": {
+          "t": 653,
+          "dark": 4521,
+          "canvasW": 780,
+          "canvasH": 1688
+        },
+        "lastBandDark": 4521,
+        "ctx": [
+          {
+            "kind": "webgl2",
+            "start": 13,
+            "end": 17.100000000093132,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 34.799999999813735,
+            "end": 37.5,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 59.299999999813735,
+            "end": 59.299999999813735,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 71.10000000009313,
+            "end": 71.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 73.79999999981374,
+            "end": 73.79999999981374,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 95.79999999981374,
+            "end": 99.10000000009313,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 99.20000000018626,
+            "end": 99.20000000018626,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 649.6000000000931,
+            "end": 649.6000000000931,
+            "ok": true
+          },
+          {
+            "kind": "webgl2",
+            "start": 652.7000000001863,
+            "end": 652.7000000001863,
+            "ok": true
+          }
+        ],
+        "frames": 491,
+        "logs": [
+          {
+            "t": 89,
+            "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+          },
+          {
+            "t": 183,
+            "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+          },
+          {
+            "t": 225,
+            "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+          }
+        ],
+        "now": 9085.399999999907,
+        "paintTiming": {
+          "first-paint": 44,
+          "first-contentful-paint": 1008
+        },
+        "nav": {
+          "start": 0,
+          "responseStart": 2,
+          "dcl": 18,
+          "load": 18
+        },
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+      },
+      "chromeConsole": [
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      ]
+    }
+  ]
+}

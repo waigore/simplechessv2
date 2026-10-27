@@ -1,0 +1,43 @@
+{
+  "url": "http://127.0.0.1:8977/index.html",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "dpr": 3
+  },
+  "startedAt": "2026-10-25T07:46:25.061Z",
+  "steps": [
+    {
+      "step": "cold-open",
+      "frame": {
+        "path": "screenshots/cold-open-2.png",
+        "sha256": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+      },
+      "storage": {}
+    },
+    {
+      "step": "C5-reload",
+      "point": {
+        "x": 195,
+        "y": 705
+      },
+      "frame": {
+        "path": "screenshots/after-reload-press.png",
+        "sha256": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+      },
+      "tapLog": []
+    },
+    {
+      "step": "C5-reload-settled",
+      "frame": {
+        "path": "screenshots/after-reload-settled.png",
+        "sha256": "c20b06d2ce780568f70ba5c186008ec3b5108d9d2bd5f1fe1b5d4de865ba4b90"
+      }
+    }
+  ],
+  "consoleTail": [
+    "log.warning The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+  ],
+  "shotsWritten": 2,
+  "finishedAt": "2026-10-25T07:46:49.210Z"
+}
