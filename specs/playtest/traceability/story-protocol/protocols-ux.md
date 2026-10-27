@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/playtest/traceability.md`](../../../../.agents/specs/rules/playtest/traceability.md).
 
-Part of the [protocol view](protocols.md). 12 UX protocols (Headless and Graphical). **Cites** is quoted from the protocol file; **Judged rows** is what that cite covers under the [UX judge rule](../story-protocol.md).
+Part of the [protocol view](protocols.md). 11 UX protocols (Headless and Graphical). **Cites** is quoted from the protocol file; **Judged rows** is what that cite covers under the [UX judge rule](../story-protocol.md).
 
 | Protocol | **Cites** | Judged rows | `none` in namespace |
 |----------|-----------|-------------|---------------------|
@@ -21,8 +21,7 @@ Part of the [protocol view](protocols.md). 12 UX protocols (Headless and Graphic
 ## Notes
 
 - **Journey protocols** judge only their journey row and reach every scenario from their Steps tables. `PTU-puzzle-session`'s **Cites** parenthetical stops at `S2` while its Steps run to `S3`; the row records the Steps set.
-- **`PTU-shared-play`** cites each actor `US1` row; the actor splits belong to `PTU-actors`, so no actor row is single-cited.
+- **`PTU-shared-play`** cites each actor `US1` row; the actor splits belong to no protocol, so no actor row is single-cited.
 - **`PTU-localization`** judges `screens/mode-pick.md#US1` through the story ID, which reaches its split file too, and leaves `LOC.US2` out of playtest scope ([story-out-of-scope.md](../story-out-of-scope.md)). Its landed **Cites** line is rule-conformant and carries no deviation note.
 - **`PTU-navigation`** records the landed `NAV.US1` + `NAV.US2` line; **`PTU-exceptions`** records `EX.US1`. This map edits no protocol file.
-- **`PTU-actors`** cites the seven actor splits.
 - Every protocol in the #34, #35, and #37 gates judges at least one story row.
