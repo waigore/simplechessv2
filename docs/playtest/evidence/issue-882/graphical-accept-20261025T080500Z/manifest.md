@@ -17,6 +17,7 @@
 - `screenshots/after-reload-settled.png` — 9 s after the C5 Reload press
 - `screenshots/probe-final.png` — the probe scene's failure surface (resolver outcome pinned to the same `boot_failed` the stripped tree produces)
 - `notes.md` — judgement
+- `reproduction.md` — how the Boot failure was reached on this build
 - `logs/accept-console.log` — page console of the acceptance run
 - `logs/readings.json` — frame digests, tap log, locale storage
 - `logs/probe-page.log` — the probe scene's page console (`PROBE boot_outcome=…`, `Boot assets failed: 9 approved IDs unresolved`)
