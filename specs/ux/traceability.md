@@ -30,7 +30,8 @@ Authoring rules: [`.agents/specs/rules/ux/traceability.md`](../../.agents/specs/
 | Navigation | [`navigation.md`](navigation.md) | Applies |
 | Exception states | [`exceptions.md`](exceptions.md) | Applies — `EX.empty` N/A |
 | Controls and bindings | [`controls.md`](controls.md) | Applies |
-| Mockups | [`mockups/`](mockups/), [`presentation.md`](presentation.md) | Applies — depth full |
+| Mockups | [`mockups/`](mockups/), [`mockups/catalog.md`](mockups/catalog.md), [`presentation.md`](presentation.md) | Applies |
 | Accessibility presentation | screens, presentation | Applies |
 | Localization copy | screen copy tables; [`localization.md`](localization.md) (keys, owners, locale rules); mode-pick C4 | Applies |
 | Save-failure feedback | `EX.save-failure` | Applies |
+

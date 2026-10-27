@@ -18,3 +18,5 @@ Run when the user asks to promote/reconcile a PoC, or a task explicitly requires
 A non-empty keep/adapt list is reimplemented by [`promote-poc`](../.agents/skills/promote-poc/SKILL.md), one PoC per task. An empty list completes the act and does not start that skill.
 
 That work writes needed assumptions into `specs/` (user-confirmed), adds technical design the code needs, approves draft assets it uses, and passes `review-code` and the normal test bar. Main code never imports from `pocs/`. The PoC folder stays as historical reference.
+
+When the keep/adapt list includes UI, author or update mockups to match what is promoted and get catalog **approved** before main-tree UI merges ([`ux-mockups.md`](ux-mockups.md)). Order may vary; unapproved mockups must not ship with main UI.

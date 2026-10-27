@@ -4,9 +4,11 @@ Contract: [`docs/issues/workflow.md`](../../../../docs/issues/workflow.md). Do n
 
 ## Valid `status:*` labels
 
-`status:pending-review`, `status:pending-refinement`, `status:pending-clarification`, `status:pending-implementation`, `status:pending-verification`, `status:pending-acceptance`, `status:accepted`, `status:superseded`
+`status:pending-review`, `status:pending-refinement`, `status:pending-clarification`, `status:pending-implementation`, `status:pending-verification`, `status:pending-acceptance`, `status:accepted`, `status:superseded`, `status:pending-redefinition`
 
 Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
+
+`status:pending-redefinition` is Actions-only; skills must not gate to or from it. Contract: [`docs/issues/workflow-comment-cap.md`](../../../../docs/issues/workflow-comment-cap.md).
 
 ## Allowed transitions
 
@@ -45,6 +47,6 @@ Action skills pass: issue number, expected `from` status (short name without `st
 
 ## Fail-review cascade
 
-When `review-project-issue` has authorized a cascade under [Cascade (fail review)](../../../../docs/issues/workflow-cascade.md), each authorized issue may be moved to `status:pending-refinement` from any current status (swap all `status:*` → `pending-refinement`). Expected `from` is that issue’s current status. The gate applies the swap; it does not re-decide authorization. This exception is only for that authorized cascade.
+When `review-project-issue` has authorized a cascade under [Cascade (fail review)](../../../../docs/issues/workflow-cascade.md), each authorized issue may be moved to `status:pending-refinement` from any current status except `pending-redefinition` (swap all `status:*` → `pending-refinement`). Expected `from` is that issue’s current status. The gate applies the swap; it does not re-decide authorization. This exception is only for that authorized cascade.
 
 `project-planner-agent` may move an issue from `pending-refinement` back to the `status:*` it held before that cascade, or to `pending-review` when the prior label cannot be read, after commenting why the cascade doc does not still authorize it. The issue that failed review is not this edge. Other callers cannot use it.

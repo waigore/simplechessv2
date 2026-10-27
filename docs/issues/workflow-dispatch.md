@@ -11,7 +11,7 @@ Automation entrypoints for unattended runs of the [issue workflow](workflow.md).
 | `issue-workflow-verify-agent` | `status:pending-verification` | `verify-project-issue` |
 | `issue-workflow-accept-agent` | `status:pending-acceptance` | `accept-project-issue` |
 
-No agent for `status:accepted` or `status:superseded` (both terminal; dispatch skips them). Closure of either is planner-only ([terminal-states.md](terminal-states.md)).
+No agent for `status:accepted` or `status:superseded` (both terminal; dispatch skips them). Closure of either is planner-only ([terminal-states.md](terminal-states.md)). No agent for `status:pending-redefinition` — planner via [workflow-comment-cap.md](workflow-comment-cap.md).
 
 ## Resolve the target issue
 

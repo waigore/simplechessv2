@@ -37,3 +37,4 @@ The Alignment table is in [`traceability/alignment.md`](traceability/alignment.m
 | ADR-0013 | [`specs/technical/configuration.md`](../technical/configuration.md) | Cited |
 | ADR-0015 | [`CMP-catalog-service`](../technical/components/catalog-service.md) `R8` | Cited |
 | ADR-0015 | [ADR-0013](decisions/0013-puzzle-catalog-api.md) Purpose | Cited |
+| ADR-0016 | [`specs/playtest/procedures.md`](../playtest/procedures.md) Prep | Cited |
