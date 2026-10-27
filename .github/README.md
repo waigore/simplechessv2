@@ -10,6 +10,7 @@ GitHub configuration for this repository: labels, issue forms, and workflows.
 | [`ISSUE_TEMPLATE/`](ISSUE_TEMPLATE/) | Epic / Task / Defect issue forms |
 | [`pull_request_template.md`](pull_request_template.md) | PR body sections ([`docs/pull-requests.md`](../docs/pull-requests.md)) |
 | [`workflows/sync-labels.yml`](workflows/sync-labels.yml) | Sync labels on push to `main` or `workflow_dispatch` |
+| [`workflows/issue-comment-cap.yml`](workflows/issue-comment-cap.yml) | Task/defect 21st comment → `status:pending-redefinition` + permanent lock ([`docs/issues/workflow-comment-cap.md`](../docs/issues/workflow-comment-cap.md)) |
 | [`workflows/automerge.yml`](workflows/automerge.yml) | Squash auto-merge for all same-repo PRs; opt out with `no-automerge` (user-requested only) |
 | [`workflows/pr-hygiene.yml`](workflows/pr-hygiene.yml) | Required check: PR title/body lint ([`docs/pull-requests.md`](../docs/pull-requests.md)) |
 | [`workflows/spec-lint.yml`](workflows/spec-lint.yml) | Required check: structural spec rules ([`docs/spec-lint.md`](../docs/spec-lint.md)) |

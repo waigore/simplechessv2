@@ -25,7 +25,8 @@ Write or edit specs. The writing rules stay in [`.agents/specs/rules/`](../../sp
 3. **Copy, then fill**, when the target is a new unit, story, or mockup. Copy the folder's `_template` to the new path. Leave the template unchanged.
 4. **Edit the spec**. Keep its section skeleton and its authoring-rules line. Replace `<!-- fill in -->` placeholders. Write an undecided aspect as `TBD — <open question>` per [Undecided aspects](../../specs/rules/README.md#undecided-aspects-tbd); never invent the decision. Delete a row or section only when the rules file says to. On a mockup copy, delete the template comment.
 5. **Stay inside the rules**. Split an oversized Markdown file the way its rules file says. Each Markdown file under `specs/` stays under 500 words.
-6. **Apply a failed review** only when asked to refine the spec. Follow [alignment.md](../../specs/alignment.md) under Refinement. Use the finding's `aligned` or `imposed` tag. Do not apply a `needs clarification` finding by choosing an outcome.
+6. **Mockup catalog**: when creating a screen or journey mockup, add a `draft` catalog row. When a material edit to aesthetics, UX Markdown, or a mockup would leave an `approved` row stale, set it to `draft` with a short reason ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md)).
+7. **Apply a failed review** only when asked to refine the spec. Follow [alignment.md](../../specs/alignment.md) under Refinement. Use the finding's `aligned` or `imposed` tag. Do not apply a `needs clarification` finding by choosing an outcome.
 
 ## Rules
 
