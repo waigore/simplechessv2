@@ -186,7 +186,7 @@ func _placed(square: String) -> bool:
 
 
 func _screen_for(square: String) -> Vector2:
-	return _board().world_to_screen(_board().framed_center(square))
+	return _board().camera().world_to_screen(_board().camera().framed_center(square))
 
 
 func _board() -> BoardPresentation:
