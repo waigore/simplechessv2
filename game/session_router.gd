@@ -43,6 +43,8 @@ var session_ended := false
 var mode_pick_ui_state := "S1"
 ## CTR-asset-resolve E4 — Boot's unresolved count when the Boot preload failed, else 0.
 var boot_failure_count := 0
+## #923 — C5 Reload's Boot preload is in flight; its deferred settle is the reload's.
+var boot_reload_in_flight := false
 ## EX.error / S3 — an advice fetch failed while On; cleared by Dismiss (states.md).
 
 var shared_session: SharedGameSession
@@ -417,15 +419,15 @@ func _known_stages() -> PackedStringArray:
 
 
 func _on_boot_ready() -> void:
+	boot_reload_in_flight = false
 	_provide_assets(_resolver.resolve_group("boot"))
 	_load_persist()
 	_go_mode_pick()
 
 
-## CTR-asset-resolve E4 — Boot left approved IDs unresolved. The failure is
-## observable here instead of the caller waiting forever on a ready that never
-## comes, and the wait ends: `EX.load-failure` replaces `EX.loading` (#882).
+## CTR-asset-resolve E4 — Boot left approved IDs unresolved → `EX.load-failure` (#882, #923).
 func _on_boot_failed(unresolved: int) -> void:
+	boot_reload_in_flight = false
 	push_error("Boot assets failed: %d approved IDs unresolved" % unresolved)
 	boot_failure_count = unresolved
 	stage = STAGE_LOAD_FAILED
@@ -433,13 +435,15 @@ func _on_boot_failed(unresolved: int) -> void:
 
 
 ## `EX.load-failure` Reload (CTR-presentation E6) — the game loads again from the
-## start for these Boot reads: the failed group's ID cache and outcome are reset so
-## the next Boot preload reads the served tree instead of the cache. The screen
-## itself must also be re-opened (a fresh page load on Web); this leg is what a
-## test or a playtest seam can drive without a browser.
+## start: the failed group's ID cache and outcome are reset so the next Boot preload
+## reads the served tree. The screen itself must also be re-opened (a fresh page load
+## on Web); a test or playtest seam drives this leg without a browser. The reload
+## record outlives `start()`'s `STAGE_LOADING`, so the deferred Boot outcome settles
+## as this reload's (#923).
 func reload_after_load_failure() -> void:
 	if stage != STAGE_LOAD_FAILED:
 		return
+	boot_reload_in_flight = true
 	_resolver.reset_group("boot")
 	start()
 

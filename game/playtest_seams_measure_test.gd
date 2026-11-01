@@ -24,12 +24,15 @@ func _check_all() -> bool:
 	var legs := [
 		_check_shared_close,
 		_check_shared_negatives,
+		_check_reply_alone,
 		_check_puzzle_close,
 		_check_puzzle_negatives,
 		_check_loading_ready,
 		_check_refusals,
 		_check_report_shape,
 		_check_consumed_report,
+		_check_late_read,
+		_check_read_before_close,
 		_check_loading_never_empty,
 		_check_disarm_measurement,
 		_check_debug_control,
@@ -122,6 +125,34 @@ func _check_shared_negatives() -> bool:
 		return _fail("cancelled window must claim no max_ms")
 	if int(cancelled.get("sample_count", 0)) != 3:
 		return _fail("cancelled window keeps its samples")
+	return true
+
+
+## D1 shared negatives — a reply **alone** moves the occupancy but restores the
+## armed side, so the window stays open (`#544` verification finding 3). This is
+## the case the `and` in the close predicate exists for.
+func _check_reply_alone() -> bool:
+	var seams := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	seams.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [14.0, 15.0]
+	## The board a reply lands on: a piece moved, and it is the armed side's turn.
+	var replied := {
+		"stage": STAGE_SHARED_PLAY,
+		"mode": MODE_SHARED,
+		"position": {"occupancy": {"a8": "rook"}, "side_to_move": ChessRules.SIDE_WHITE},
+		"selected_piece": "",
+	}
+	_snapshot = replied
+	seams._process(0.0)
+	seams._process(0.0)
+	if not seams.measurement.is_armed():
+		return _fail("a reply alone must not close a shared window")
+	var cancelled := seams.measure("")
+	if str(cancelled.get("status", "")) != "cancelled":
+		return _fail("reply-alone window disarm")
+	if int(cancelled.get("sample_count", 0)) != 2:
+		return _fail("reply-alone window keeps its frames")
 	return true
 
 
@@ -359,6 +390,71 @@ func _check_consumed_report() -> bool:
 	return true
 
 
+## #544 verification finding 1 — a driver reads after the frames it plays, not in
+## the tick the window closed. A closed window stays readable at any later frame,
+## and `dump_state()["measurement"]` keeps the reading after the hand-over.
+func _check_late_read() -> bool:
+	var seams := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	seams.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [11.0]
+	seams._process(0.0)
+	_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
+	seams._process(0.0)
+	## The driver's next protocol steps run before it reads the report.
+	for _frame in 4:
+		seams._process(0.0)
+	var report := seams.measure(PlaytestMeasure.KIND_FRAME_TIMES)
+	var problem := ""
+	if str(report.get("status", "")) != "ok":
+		problem = "a late read must still hand the report over, got %s" % [report.get("status", "")]
+	elif int(report.get("sample_count", 0)) != 1:
+		problem = "late read keeps the window's samples"
+	elif not is_equal_approx(float(report.get("max_ms", 0.0)), 11.0):
+		problem = "late read carries max_ms"
+	elif str(_report(seams).get("status", "")) != "ok":
+		problem = "dump_state keeps the report readable after the hand-over"
+	## A second arm after an unread closed report is not refused as `window open`,
+	## and the retired report stays readable instead of vanishing.
+	var retired := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	retired.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	_frames = [9.0]
+	_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
+	retired._process(0.0)
+	_snapshot = {"stage": SessionRouter.STAGE_LOADING, "mode": ""}
+	var next := retired.start_measurement(PlaytestMeasure.KIND_LOADING_READY)
+	if problem.is_empty() and str(next.get("status", "")) != "ok":
+		problem = "a new arm must not be refused against an unread closed report"
+	if problem.is_empty() and str(_report(retired).get("status", "")) != "ok":
+		problem = "a retired report stays readable through dump_state"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
+## #544 verification finding 1 — a read is not a close. Asking for a report before
+## the move lands comes back `cancelled` instead of claiming an `ok` reading, and
+## the seam's last report still answers the driver.
+func _check_read_before_close() -> bool:
+	var seams := _new_seam()
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	seams.start_measurement(PlaytestMeasure.KIND_FRAME_TIMES)
+	var early := seams.measure(PlaytestMeasure.KIND_FRAME_TIMES)
+	var problem := ""
+	if str(early.get("status", "")) != "cancelled":
+		problem = (
+			"a read before the close predicate must cancel, got %s" % [early.get("status", "")]
+		)
+	elif str(_report(seams).get("status", "")) != "cancelled":
+		problem = "the early report is readable through dump_state"
+	elif str(seams.measure(PlaytestMeasure.KIND_FRAME_TIMES).get("detail", "")) != "no window":
+		problem = "a cancelled read still yields one report per arm"
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
 ## #544 acceptance finding 2 — a `loading_ready` window that met its close
 ## predicate always carries a real reading. The window spans the frames whose
 ## snapshot is still `loading`, so `ok` with no samples is unreachable: even a
@@ -436,29 +532,67 @@ func _check_disarm_measurement() -> bool:
 	return true
 
 
-## D4 — the `Measure` control only arms: it submits no input and plays no move.
+## D4 — the `Measure` control arms, and the closed report reaches the run's output
+## and the `measurement_closed` signal, not only `dump_state()`
+## (`#544` verification finding 2).
 func _check_debug_control() -> bool:
 	var seams := _new_seam()
-	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
+	var announced: Array = []
+	seams.measurement_closed.connect(func(report: Dictionary) -> void: announced.append(report))
 	var field := seams.get_node("PlaytestDebug/DebugPanel/Controls/MeasureKind") as LineEdit
 	var button := seams.get_node("PlaytestDebug/DebugPanel/Controls/Measure") as Button
-	if field == null or button == null:
-		return _fail("measure debug control missing")
+	var problem := "measure debug control missing"
+	if field != null and button != null:
+		problem = _judge_measure_control(seams, field, button, announced)
+	if not problem.is_empty():
+		return _fail(problem)
+	return true
+
+
+## D4 — the control arms, submits nothing, and the closed report is announced with
+## the reading a run records.
+func _judge_measure_control(
+	seams: PlaytestSeams, field: LineEdit, button: Button, announced: Array
+) -> String:
+	_snapshot = _shared_snapshot(ChessRules.SIDE_WHITE)
 	field.text = PlaytestMeasure.KIND_FRAME_TIMES
 	button.pressed.emit()
-	var armed := _report(seams)
-	if str(armed.get("status", "")) != "ok":
-		return _fail("measure control arm")
-	if seams.input_log.size() != 0:
-		return _fail("measure control must not submit input")
-	if str(_snapshot["position"]["occupancy"].get("a1", "")) != "rook":
-		return _fail("measure control must not play the move")
-	_frames = [8.0]
-	_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
-	seams._process(0.0)
+	var problem := ""
 	if str(_report(seams).get("status", "")) != "ok":
-		return _fail("measure control close")
-	return true
+		problem = "measure control arm"
+	elif seams.input_log.size() != 0:
+		problem = "measure control must not submit input"
+	elif str(_snapshot["position"]["occupancy"].get("a1", "")) != "rook":
+		problem = "measure control must not play the move"
+	else:
+		_frames = [8.0, 8.0]
+		## One frame inside the window, then the move frame that closes it, so the
+		## announced report carries a sample rather than an empty close.
+		seams._process(0.0)
+		_snapshot = _shared_snapshot(ChessRules.SIDE_BLACK)
+		seams._process(0.0)
+		problem = _judge_announced(seams, announced)
+	return problem
+
+
+func _judge_announced(seams: PlaytestSeams, announced: Array) -> String:
+	var problem := ""
+	if str(_report(seams).get("status", "")) != "ok":
+		problem = "measure control close"
+	elif announced.size() != 1:
+		problem = "the closed report must be announced once, got %d" % [announced.size()]
+	elif str((announced[0] as Dictionary).get("status", "")) != "ok":
+		problem = "announced report status"
+	elif int((announced[0] as Dictionary).get("sample_count", 0)) != 1:
+		problem = "announced report sample_count"
+	elif not is_equal_approx(float((announced[0] as Dictionary).get("max_ms", 0.0)), 8.0):
+		problem = "announced report max_ms"
+	elif (
+		str((announced[0] as Dictionary).get("events", {}).get("end", {}).get("TEL.1", ""))
+		!= "measure.end"
+	):
+		problem = "announced report carries its end event"
+	return problem
 
 
 ## The report the seam keeps beside the screen (`dump_state`, `S10`).
