@@ -918,14 +918,17 @@ func _check_mark_forms(board: BoardPresentation) -> String:
 ## PER.R4 / rules-k9.md — an empty destination is a solid PAL.C11 disk at the
 ## square centre, area πr² ≥ 1/4, never the old diamond.
 func _check_empty_disk(board: BoardPresentation) -> String:
-	board.render_position(
-		{
-			"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
-			"side_to_move": "white",
-		},
-		"e2",
-		PackedStringArray(["e3", "e4"]),
-		{"capture_marks": []}
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
+				"side_to_move": "white",
+			},
+			"e2",
+			PackedStringArray(["e3", "e4"]),
+			{"capture_marks": []}
+		)
 	)
 	await process_frame
 	var legal_root := board.get_node_or_null("World/Seat/Content/Overlays/LegalMarks")
@@ -955,7 +958,9 @@ func _empty_disk_checks(child: Node) -> Array:
 		[area >= 0.25 - 0.0001, "PER.R4 disk area %.3f under 1/4 square" % area],
 	]
 	for point in points:
-		if not is_equal_approx((point as Vector2).distance_to(centre), BoardPresentation.LEGAL_EMPTY_R):
+		if not is_equal_approx(
+			(point as Vector2).distance_to(centre), BoardPresentation.LEGAL_EMPTY_R
+		):
 			checks.append([false, "PER.R4 disk vertex off the 0.36 radius"])
 			break
 	# The drawn disk is a 32-gon, 0.6% under its circle: πr² = 0.407, not the old
@@ -979,18 +984,21 @@ static func _polygon_area(points: PackedVector2Array) -> float:
 ## PER.R4 / rules-k9.md — a capture destination is corner brackets: two strokes per
 ## corner, inside the square, stroke 0.06 / arm 0.56, and no ring at all.
 func _check_capture_brackets(board: BoardPresentation) -> String:
-	board.render_position(
-		{
-			"occupancy":
+	(
+		board
+		. render_position(
 			{
-				"e2": {"color": "white", "kind": "pawn", "square": "e2"},
-				"d3": {"color": "black", "kind": "pawn", "square": "d3"},
+				"occupancy":
+				{
+					"e2": {"color": "white", "kind": "pawn", "square": "e2"},
+					"d3": {"color": "black", "kind": "pawn", "square": "d3"},
+				},
+				"side_to_move": "white",
 			},
-			"side_to_move": "white",
-		},
-		"e2",
-		PackedStringArray(["d3"]),
-		{"capture_marks": ["d3"]}
+			"e2",
+			PackedStringArray(["d3"]),
+			{"capture_marks": ["d3"]}
+		)
 	)
 	await process_frame
 	var legal_root := board.get_node_or_null("World/Seat/Content/Overlays/LegalMarks")
@@ -1016,7 +1024,10 @@ func _check_capture_brackets(board: BoardPresentation) -> String:
 			]
 		)
 		checks.append(
-			[stroke.default_color == BoardPresentation.COLOR_LEGAL, "PER.R4 capture must use PAL.C11"]
+			[
+				stroke.default_color == BoardPresentation.COLOR_LEGAL,
+				"PER.R4 capture must use PAL.C11"
+			]
 		)
 		var length := stroke.get_point_position(0).distance_to(stroke.get_point_position(1))
 		arms_ok = arms_ok and is_equal_approx(length, BoardPresentation.LEGAL_BRACKET_ARM)
@@ -1029,7 +1040,9 @@ func _check_capture_brackets(board: BoardPresentation) -> String:
 				]
 			)
 		ink += stroke.width * length
-	checks.append([arms_ok, "PER.R4 capture bracket arm %s, want 0.56" % BoardPresentation.LEGAL_BRACKET_ARM])
+	checks.append(
+		[arms_ok, "PER.R4 capture bracket arm %s, want 0.56" % BoardPresentation.LEGAL_BRACKET_ARM]
+	)
 	checks.append([ink >= 0.25 - 0.0001, "PER.R4 capture brackets cover %.3f, under 1/4" % ink])
 	for child in legal_root.get_children():
 		if child is Line2D and (child as Line2D).closed:
@@ -1040,20 +1053,26 @@ func _check_capture_brackets(board: BoardPresentation) -> String:
 ## UIS.C6 — legal destinations draw on the square, so they must never raise a
 ## cream foreground: a board of eight destinations does not turn cream.
 func _check_no_cream_from_legal_marks(board: BoardPresentation) -> String:
-	board.render_position(
-		{
-			"occupancy": {"d4": {"color": "white", "kind": "queen", "square": "d4"}},
-			"side_to_move": "white",
-		},
-		"d4",
-		PackedStringArray(["a4", "b4", "c4", "e4", "f4", "g4", "h4", "d5"]),
-		{"capture_marks": []}
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"d4": {"color": "white", "kind": "queen", "square": "d4"}},
+				"side_to_move": "white",
+			},
+			"d4",
+			PackedStringArray(["a4", "b4", "c4", "e4", "f4", "g4", "h4", "d5"]),
+			{"capture_marks": []}
+		)
 	)
 	await process_frame
 	var fg := board.mark_foreground()
 	return _first_fail(
 		[
-			[fg.marked_squares().is_empty(), "UIS.C6 legal marks must not raise a cream foreground"],
+			[
+				fg.marked_squares().is_empty(),
+				"UIS.C6 legal marks must not raise a cream foreground"
+			],
 			[_cream_nodes(fg).is_empty(), "UIS.C6 no cream node may exist without a cream mark"],
 		]
 	)
@@ -1063,14 +1082,17 @@ func _check_no_cream_from_legal_marks(board: BoardPresentation) -> String:
 ## 0.3 s flash: no cream foreground, no keyline, and selection and legal marks
 ## return when it fades. A clock-tick refresh never restarts the tween.
 func _check_refused_hatch(board: BoardPresentation) -> String:
-	board.render_position(
-		{
-			"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
-			"side_to_move": "white",
-		},
-		"e2",
-		PackedStringArray(["e3", "e4"]),
-		{"reject_square": "d2", "ui_state": "S5", "capture_marks": []}
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
+				"side_to_move": "white",
+			},
+			"e2",
+			PackedStringArray(["e3", "e4"]),
+			{"reject_square": "d2", "ui_state": "S5", "capture_marks": []}
+		)
 	)
 	await process_frame
 	var hatch := board.reject_hatch()
@@ -1086,7 +1108,10 @@ func _check_refused_hatch(board: BoardPresentation) -> String:
 		],
 		[_keylines(hatch).is_empty(), "PER.R8 the hatch must carry no keyline"],
 		[select != null and select.visible, "PER.R3 selection must stay drawn under the flash"],
-		[legal_root != null and legal_root.get_child_count() == 2, "PER.R4 legal marks must stay drawn"],
+		[
+			legal_root != null and legal_root.get_child_count() == 2,
+			"PER.R4 legal marks must stay drawn"
+		],
 	]
 	if hatch != null:
 		for child in hatch.get_children():
@@ -1098,14 +1123,17 @@ func _check_refused_hatch(board: BoardPresentation) -> String:
 	if not err.is_empty():
 		return err
 	# A clock-tick refresh of the same refused square must not restart the flash.
-	board.render_position(
-		{
-			"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
-			"side_to_move": "white",
-		},
-		"e2",
-		PackedStringArray(["e3", "e4"]),
-		{"reject_square": "d2", "ui_state": "S5", "capture_marks": []}
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
+				"side_to_move": "white",
+			},
+			"e2",
+			PackedStringArray(["e3", "e4"]),
+			{"reject_square": "d2", "ui_state": "S5", "capture_marks": []}
+		)
 	)
 	await process_frame
 	if board._reject_tween != tween:
@@ -1128,17 +1156,22 @@ func _check_refused_hatch(board: BoardPresentation) -> String:
 ## cream foreground. Both survive a CAM-board.M2 180° flip unchanged.
 func _check_last_move(board: BoardPresentation) -> String:
 	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
-	board.render_position(
-		{
-			"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
-			"side_to_move": "white",
-		}
+	(
+		board
+		. render_position(
+			{
+				"occupancy": {"e2": {"color": "white", "kind": "pawn", "square": "e2"}},
+				"side_to_move": "white",
+			}
+		)
 	)
 	await process_frame
 	await board.play_move("e2", "e4")
 	await process_frame
 	var moved := board.last_move()
-	var err := _first_fail([[moved[0] == "e2" and moved[1] == "e4", "PER.R9 last move must follow the move"]])
+	var err := _first_fail(
+		[[moved[0] == "e2" and moved[1] == "e4", "PER.R9 last move must follow the move"]]
+	)
 	if not err.is_empty():
 		return err
 	err = _band_checks(board, "e2", "e4")
@@ -1151,8 +1184,14 @@ func _check_last_move(board: BoardPresentation) -> String:
 	await process_frame
 	err = _first_fail(
 		[
-			[_band_on_away_edge(board, "e2", "e4"), "PER.R9 band must stay away from the move after a flip"],
-			[_ticks_face_from(board, "e4", "e2"), "PER.R9 ticks must face the from-square after a flip"],
+			[
+				_band_on_away_edge(board, "e2", "e4"),
+				"PER.R9 band must stay away from the move after a flip"
+			],
+			[
+				_ticks_face_from(board, "e4", "e2"),
+				"PER.R9 ticks must face the from-square after a flip"
+			],
 		]
 	)
 	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
@@ -1165,9 +1204,15 @@ func _band_checks(board: BoardPresentation, from_square: String, to_square: Stri
 	var band := board.last_move_band()
 	var checks: Array = [
 		[band != null, "PER.R9 from-square band missing"],
-		[band != null and band.get_child_count() >= 2, "PER.R9 the band must be soft, not one stroke"],
+		[
+			band != null and band.get_child_count() >= 2,
+			"PER.R9 the band must be soft, not one stroke"
+		],
 		[_keylines(band).is_empty(), "PER.R9 the band must carry no keyline (rules.md)"],
-		[_band_on_away_edge(board, from_square, to_square), "PER.R9 band must sit away from the move"],
+		[
+			_band_on_away_edge(board, from_square, to_square),
+			"PER.R9 band must sit away from the move"
+		],
 		[_band_body_coverage() <= 0.10, "PER.R9 band covers too much of the King body"],
 		[
 			float(BoardPresentation.BAND_LAYERS[2][0]) * board.world_px() >= 1.5 - 0.001,
@@ -1224,7 +1269,10 @@ func _tick_checks(board: BoardPresentation, to_square: String, from_square: Stri
 	var checks: Array = [
 		[fg.marked_squares().has(to_square), "PER.R9 the to-square must carry a cream foreground"],
 		[marks.size() == 4, "PER.R9 the to-square must carry four corner ticks"],
-		[_ticks_face_from(board, to_square, from_square), "PER.R9 tick arms must miss the tick geometry"],
+		[
+			_ticks_face_from(board, to_square, from_square),
+			"PER.R9 tick arms must miss the tick geometry"
+		],
 		[_cream_layers(fg, to_square) == 1, "UIS.C6 a square draws one cream foreground"],
 	]
 	var node := fg.node_for(to_square)
@@ -1250,19 +1298,29 @@ func _tick_checks(board: BoardPresentation, to_square: String, from_square: Stri
 		var points: PackedVector2Array = mark.get("points", PackedVector2Array())
 		checks.append([points.size() == 3, "PER.R9 a tick is an L"])
 		checks.append(
-			[is_equal_approx(float(mark.get("width", 0.0)), BoardPresentation.TICK_W), "PER.R9 tick 0.04 wide"]
+			[
+				is_equal_approx(float(mark.get("width", 0.0)), BoardPresentation.TICK_W),
+				"PER.R9 tick 0.04 wide"
+			]
 		)
 		if points.size() != 3:
 			continue
 		var elbow := points[1]
 		var long_arm := points[0].distance_to(elbow)
 		var short_arm := elbow.distance_to(points[2])
-		checks.append([is_equal_approx(long_arm, BoardPresentation.TICK_LONG), "PER.R9 tick 0.60 long"])
-		checks.append([is_equal_approx(short_arm, BoardPresentation.TICK_ARM), "PER.R9 tick L arm 0.10"])
+		checks.append(
+			[is_equal_approx(long_arm, BoardPresentation.TICK_LONG), "PER.R9 tick 0.60 long"]
+		)
+		checks.append(
+			[is_equal_approx(short_arm, BoardPresentation.TICK_ARM), "PER.R9 tick L arm 0.10"]
+		)
 		var centre := BoardGeometry.square_center(to_square)
 		var offset := maxf(absf(elbow.x - centre.x), absf(elbow.y - centre.y))
 		checks.append(
-			[offset <= 0.5 and offset >= 0.5 - BoardPresentation.TICK_BAND, "PER.R9 tick must sit outside 0.10"]
+			[
+				offset <= 0.5 and offset >= 0.5 - BoardPresentation.TICK_BAND,
+				"PER.R9 tick must sit outside 0.10"
+			]
 		)
 	return _first_fail(checks)
 
@@ -1281,7 +1339,9 @@ func _ticks_face_from(board: BoardPresentation, to_square: String, from_square: 
 		else Vector2(0.0, signf(facing.y))
 	)
 	for mark_var in marks:
-		var points: PackedVector2Array = (mark_var as Dictionary).get("points", PackedVector2Array())
+		var points: PackedVector2Array = (mark_var as Dictionary).get(
+			"points", PackedVector2Array()
+		)
 		if points.size() != 3:
 			return false
 		if absf((points[0] - points[1]).normalized().dot(axis)) > 0.001:
@@ -1312,13 +1372,19 @@ func _check_advice_shares_foreground(board: BoardPresentation) -> String:
 		if str(mark.get("source", "")) == "advice":
 			found_brackets = true
 			checks.append(
-				[float(mark.get("width", 0.0)) == AdviceMarks.ADVICE_STROKE, "PER.R5 bracket stroke"]
+				[
+					float(mark.get("width", 0.0)) == AdviceMarks.ADVICE_STROKE,
+					"PER.R5 bracket stroke"
+				]
 			)
 	checks.append([found_brackets, "PER.R5 Advice brackets must draw on the foreground"])
 	board.render_advice(null)
 	await process_frame
 	checks.append(
-		[fg.node_for("e4") != null and fg.marks_on("e4").size() == 4, "Advice Off must leave only the ticks"]
+		[
+			fg.node_for("e4") != null and fg.marks_on("e4").size() == 4,
+			"Advice Off must leave only the ticks"
+		]
 	)
 	return _first_fail(checks)
 
@@ -1335,7 +1401,10 @@ func _check_coord_chip(board: BoardPresentation) -> String:
 	return _first_fail(
 		[
 			[style.bg_color == BoardPresentation.COLOR_CREAM, "PAL.K8 the chip must be PAL.C10"],
-			[style.border_color == BoardPresentation.COLOR_INK, "PAL.K8 the chip keyline must be PAL.C9"],
+			[
+				style.border_color == BoardPresentation.COLOR_INK,
+				"PAL.K8 the chip keyline must be PAL.C9"
+			],
 			[
 				float(style.border_width_left) >= MarkForeground.KEYLINE_PX,
 				"UIS.I1 the chip keyline %d px, under 1.5" % style.border_width_left

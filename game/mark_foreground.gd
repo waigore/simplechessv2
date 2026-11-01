@@ -145,9 +145,7 @@ func _add_plate(node: Node2D, marks: Array) -> void:
 		var points: PackedVector2Array = mark.get("points", PackedVector2Array())
 		if points.size() < 2:
 			continue
-		var polygon := band_polygon(
-			points, float(mark.get("width", 0.0)) * 0.5 + CREAM_MARGIN
-		)
+		var polygon := band_polygon(points, float(mark.get("width", 0.0)) * 0.5 + CREAM_MARGIN)
 		if polygon.is_empty():
 			continue
 		var plate := Polygon2D.new()
@@ -195,7 +193,9 @@ static func band_polygon(points: PackedVector2Array, half: float) -> PackedVecto
 	var right: Array[Vector2] = []
 	for i in range(count):
 		var dir_in := (
-			(points[i] - points[i - 1]).normalized() if i > 0 else (points[1] - points[0]).normalized()
+			(points[i] - points[i - 1]).normalized()
+			if i > 0
+			else (points[1] - points[0]).normalized()
 		)
 		var dir_out := (
 			(points[i + 1] - points[i]).normalized()

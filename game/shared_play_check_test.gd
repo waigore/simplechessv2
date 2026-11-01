@@ -113,7 +113,10 @@ func _check_cue() -> String:
 		[
 			[not chip.visible and not label.visible, "PER.R6 chip must clear with the check"],
 			[marks.get_child_count() == 0, "PER.R6 board mark must clear with the check"],
-			[not fg.marked_squares().has("e8"), "PER.R6 the cream L-frame must clear with the check"],
+			[
+				not fg.marked_squares().has("e8"),
+				"PER.R6 the cream L-frame must clear with the check"
+			],
 		]
 	)
 

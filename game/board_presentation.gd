@@ -978,7 +978,7 @@ func _sync_last_move_band() -> void:
 static func from_band_points(from_square: String, to_square: String) -> PackedVector2Array:
 	var from_center := BoardGeometry.square_center(from_square)
 	var to_center := BoardGeometry.square_center(to_square)
-	var away := (from_center - to_center)
+	var away := from_center - to_center
 	if away.length() < 0.0001:
 		return PackedVector2Array()
 	# One edge, chosen along the move's dominant axis, so the pair reads as a
@@ -1005,7 +1005,9 @@ static func tick_polylines(to_square: String, from_square: String) -> Array[Pack
 	if facing.length() < 0.0001:
 		return out
 	var axis := (
-		Vector2(signf(facing.x), 0.0) if absf(facing.x) >= absf(facing.y) else Vector2(0.0, signf(facing.y))
+		Vector2(signf(facing.x), 0.0)
+		if absf(facing.x) >= absf(facing.y)
+		else Vector2(0.0, signf(facing.y))
 	)
 	var cross := Vector2(-axis.y, axis.x)
 	var offset := 0.5 - TICK_BAND * 0.5
@@ -1029,20 +1031,32 @@ func _refresh_mark_foreground() -> void:
 	_mark_foreground.clear()
 	if not _checked_square.is_empty():
 		# PER.R6 — the cream L-frame on the two corners the C8 cue already uses.
-		_mark_foreground.set_mark(_checked_square, "check", _foreground_marks(
-			CheckMarks.l_frame_polylines(_checked_square), Color.TRANSPARENT, CheckMarks.CHECK_STROKE
-		))
+		_mark_foreground.set_mark(
+			_checked_square,
+			"check",
+			_foreground_marks(
+				CheckMarks.l_frame_polylines(_checked_square),
+				Color.TRANSPARENT,
+				CheckMarks.CHECK_STROKE
+			)
+		)
 	if _advice_marks != null:
 		for square in [_advice_marks.last_from, _advice_marks.last_to]:
-			_mark_foreground.set_mark(str(square), "advice", _foreground_marks(
-				AdviceMarks.edge_brackets(str(square)),
-				AdviceMarks.COLOR_ADVICE,
-				AdviceMarks.ADVICE_STROKE
-			))
+			_mark_foreground.set_mark(
+				str(square),
+				"advice",
+				_foreground_marks(
+					AdviceMarks.edge_brackets(str(square)),
+					AdviceMarks.COLOR_ADVICE,
+					AdviceMarks.ADVICE_STROKE
+				)
+			)
 	if not _last_to.is_empty() and not _last_from.is_empty():
-		_mark_foreground.set_mark(_last_to, "ticks", _foreground_marks(
-			tick_polylines(_last_to, _last_from), Color.TRANSPARENT, TICK_W
-		))
+		_mark_foreground.set_mark(
+			_last_to,
+			"ticks",
+			_foreground_marks(tick_polylines(_last_to, _last_from), Color.TRANSPARENT, TICK_W)
+		)
 
 
 static func _foreground_marks(

@@ -20,9 +20,12 @@
 | Cream ticks (last move, to) | b3 | pass — four `C10` corner Ls on the square's cream foreground |
 
 No defect is filed from this frame: every form matches the landed row it draws.
-The three conflicts the task names are recorded on [#888](https://github.com/waigore/simplechessv2/issues/888#issuecomment-6394983588),
-the open owner of `rules-k9.md` — spec text, which [`docs/issues/requirements.md`](../../../issues/requirements.md)
-keeps out of `type:defect`.
+The three spec conflicts the task body names are filed as `type:defect` issues against
+[#888](https://github.com/waigore/simplechessv2/issues/888), the open owner of `rules-k9.md`
+(spec chapters are defects per [`docs/issues/requirements.md`](../../../../issues/requirements.md)):
+[#919](https://github.com/waigore/simplechessv2/issues/919) (check row keeps `X4`),
+[#920](https://github.com/waigore/simplechessv2/issues/920) (`0.04` tick under the `UIS.I1` floor), and
+[#918](https://github.com/waigore/simplechessv2/issues/918) (bracket bound with no size that meets it).
 
 ## Paths
 
