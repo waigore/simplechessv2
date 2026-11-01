@@ -18,6 +18,10 @@ const STAGE_PUZZLE_PLAY := "puzzle-play"
 const STAGE_ENDED := "session-ended"
 ## Smoke alias kept for SEQ-playtest-headless-smoke / ENV.1 harness.
 const STAGE_READY_ALIAS := "mode-pick-ready"
+## CMP-session-router R7 — the deployment-supplied advice parameters (T9/T10) read
+## at boot. A bare name in the served tree root, not a `res://` route: the only
+## file whose presence decides whether T9/T10 arrive. Absent is not an error (B5).
+const ADVICE_PARAMETERS_PATH := "advice_parameters.json"
 
 const MODE_SHARED := "shared"
 const MODE_PUZZLE := "puzzle"
@@ -85,7 +89,26 @@ var _clock_accum_ms := 0.0
 var _last_clock_display := ""
 
 
+## R7 — `T9`/`T10` reach the router as one deployment-supplied pair. A miss of any
+## kind (no file, not an object, no key, empty) leaves the `""` absence default that
+## B5 reads, with nothing logged: the pair is a deployment fact, not a runtime fault.
+func _apply_advice_parameters(path: String = ADVICE_PARAMETERS_PATH) -> void:
+	var parameters := _read_advice_parameters(path)
+	advice_endpoint = str(parameters.get("endpoint", "")).strip_edges()
+	advice_api_key = str(parameters.get("api_key", "")).strip_edges()
+
+
+func _read_advice_parameters(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		return {}
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if parsed is Dictionary:
+		return parsed
+	return {}
+
+
 func _ready() -> void:
+	_apply_advice_parameters()
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
