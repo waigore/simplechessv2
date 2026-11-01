@@ -23,6 +23,10 @@ const MODE_SHARED := "shared"
 const MODE_PUZZLE := "puzzle"
 const MODE_NONE := "none"
 const CLOCKS := ["untimed", "blitz", "rapid"]
+## CMP-session-router R7 / CFG.B3 — the one file name both presets read T9/T10 from
+## at boot. A bare name, not a `res://` route: a deploy supplies it, nothing in the
+## tree or the pack carries it, and an absent file is the `""` default (CFG.B5).
+const ADVICE_PARAMETERS_PATH := "advice_parameters.json"
 
 var locale := "en"
 var stage := STAGE_LOADING
@@ -88,6 +92,7 @@ var _last_clock_display := ""
 
 
 func _ready() -> void:
+	_apply_advice_parameters()
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
@@ -101,6 +106,35 @@ func _ready() -> void:
 		host.asset_needed.connect(_on_asset_needed)
 	if _persist != null:
 		_persist.write_failed.connect(show_save_failure)
+
+
+## CMP-session-router R7 — set T9/T10 from the deploy-supplied parameters file before
+## anything can read them. A pair that is not both present and non-empty leaves the
+## `""` initialisers (B5): half a pair is no pair.
+func _apply_advice_parameters(path: String = ADVICE_PARAMETERS_PATH) -> void:
+	var parameters := _read_advice_parameters(path)
+	var endpoint_value: Variant = parameters.get("endpoint", "")
+	var key_value: Variant = parameters.get("api_key", "")
+	if not endpoint_value is String or not key_value is String:
+		return
+	var endpoint := str(endpoint_value).strip_edges()
+	var api_key := str(key_value).strip_edges()
+	if endpoint.is_empty() or api_key.is_empty():
+		return
+	advice_endpoint = endpoint
+	advice_api_key = api_key
+
+
+## Any miss — no file, no parse, not an object — is `{}`, never a warning or an
+## engine error (`JSON.parse_string` writes one to the log, so the instance parser
+## is used and its error is read instead).
+func _read_advice_parameters(path: String) -> Dictionary:
+	if path.is_empty() or not FileAccess.file_exists(path):
+		return {}
+	var json := JSON.new()
+	if json.parse(FileAccess.get_file_as_string(path)) != OK:
+		return {}
+	return json.data if json.data is Dictionary else {}
 
 
 ## G2 — `main_release.tscn` carries no seam node, and this avoids naming the
