@@ -18,6 +18,7 @@ Authoring rules: [`.agents/specs/rules/technical/components.md`](../../../.agent
 | R4 | Return to mode pick after Shared result or when leaving Puzzle |
 | R5 | Hold `GS.locale` (`en`, `zh-Hant`, `ja`) as a configuration field; do not write it to the persist document |
 | R6 | On Boot failure ([`CTR-asset-resolve`](../contracts/asset-resolve.md) E4), leave `EX.loading` for `EX.load-failure` (`FAIL.T15`); Reload loads the game again from the start |
+| R7 | On boot, before Boot ready, read `T9`/`T10` as [`CFG`](../configuration.md) `B3` / `T9` / `T10`'s integration values ([`CMP-advice-client`](advice-client.md) `R6`); `""` is the absence default (`B5`), and when either is missing Advice and the catalog read are unavailable |
 
 ## Communication
 

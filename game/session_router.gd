@@ -31,8 +31,7 @@ var white_seat := "bottom"
 var clock := "untimed"
 var increment := 3
 var advice_on := true
-## T6 / T9 / T10 (configuration.md B3). Integration values, set per deployment;
-## empty endpoint or key makes Advice unavailable (FAIL.T1).
+## T6 / T9 / T10 (B3): integration values, set per deployment by R7; empty = unavailable.
 var advice_endpoint := ""
 var advice_api_key := ""
 var advice_time_ms := AdviceClient.ADVICE_TIME_DEFAULT_MS
@@ -86,6 +85,9 @@ var _last_clock_display := ""
 
 
 func _ready() -> void:
+	var pair := AdviceParameters.pair()  # R7: T9/T10, "" = none
+	advice_endpoint = pair["endpoint"]
+	advice_api_key = pair["api_key"]
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
