@@ -52,7 +52,7 @@ func _check_cue() -> String:
 	var chip := play.find_child("CheckChip", true, false) as PanelContainer
 	var label := play.find_child("CheckCue", true, false) as Label
 	var marks := board.get_node_or_null("World/Seat/Content/Overlays/CheckMarks") as CheckMarks
-	var fg := board.mark_foreground()
+	var fg := board.mark_layer().mark_foreground()
 	if chip == null or label == null or marks == null or fg == null:
 		return "PER.R6 check indicator missing"
 	var quiet := _first_fail(

@@ -140,11 +140,11 @@ func _marks_show_and_clear() -> String:
 				),
 			],
 			[
-				_board().mark_foreground().marks_on("e2").size() == 4,
+				_board().mark_layer().mark_foreground().marks_on("e2").size() == 4,
 				"UIS.C6 the Advice from-square carries 4 brackets on its one foreground",
 			],
 			[
-				_board().mark_foreground().marks_on("e4").size() == 4,
+				_board().mark_layer().mark_foreground().marks_on("e4").size() == 4,
 				"UIS.C6 the Advice to-square carries 4 brackets on its one foreground",
 			],
 			[eval_label.visible, "R3 eval must show when values are set"],

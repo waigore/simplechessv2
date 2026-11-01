@@ -206,7 +206,7 @@ func _promotion_screen(color: String, origin: String, dest: String, kind: String
 		return "%s: %s" % [label, problem]
 	if kind.is_empty():
 		# IN.deselect: the destination centre sits between the four sprites.
-		await _tap_world(board, board.framed_center(dest))
+		await _tap_world(board, board.camera().framed_center(dest))
 		problem = _first_problem(
 			[
 				[session.play_ui_state == "S1", "deselect left state %s" % session.play_ui_state],
@@ -225,7 +225,7 @@ func _promotion_screen(color: String, origin: String, dest: String, kind: String
 				],
 				[session.selected_piece == origin, "deselect lost the pawn selection"],
 				[
-					board.promotion_kind_at(board.framed_center(dest)) == "",
+					board.promotion_choice().kind_at(board.camera().framed_center(dest)) == "",
 					"deselect left the overlay"
 				],
 			]
@@ -245,7 +245,10 @@ func _promotion_screen(color: String, origin: String, dest: String, kind: String
 			[_router.occupancy_at(origin).is_empty(), "origin %s still occupied" % origin],
 			[_router.side_to_move() != color, "side to move did not pass"],
 			[session.play_ui_state == "S1", "commit left state %s" % session.play_ui_state],
-			[board.promotion_kind_at(board.framed_center(dest)) == "", "overlay not cleared"],
+			[
+				board.promotion_choice().kind_at(board.camera().framed_center(dest)) == "",
+				"overlay not cleared",
+			],
 		]
 	)
 	return _labelled(label, problem)
@@ -266,13 +269,13 @@ func _chooser_sprites(board: BoardPresentation, dest: String, color: String) -> 
 		seen.append(str(node.get_meta("promote_kind", "")))
 	if seen != SharedGameSession.PROMOTE_ORDER:
 		return "chooser holds %s, not %s" % [seen, SharedGameSession.PROMOTE_ORDER]
-	var centre := board.framed_center(dest)
+	var centre := board.camera().framed_center(dest)
 	var offsets := _promote_offsets()
 	for i in range(nodes.size()):
 		var at: Vector2 = centre + (offsets[i] as Vector2)
 		if not nodes[i].position.is_equal_approx(at):
 			return "sprite %s off its 2×2 slot" % str(seen[i])
-		if board.promotion_kind_at(at) != str(seen[i]):
+		if board.promotion_choice().kind_at(at) != str(seen[i]):
 			return (
 				"a tap at the %s slot of the %s chooser hits another sprite" % [str(seen[i]), color]
 			)
@@ -282,7 +285,7 @@ func _chooser_sprites(board: BoardPresentation, dest: String, color: String) -> 
 ## Tap `kind`'s sprite inside the chooser at `dest`.
 func _tap_promotion_sprite(board: BoardPresentation, dest: String, kind: String) -> void:
 	var index := maxi(SharedGameSession.PROMOTE_ORDER.find(kind), 0)
-	await _tap_world(board, board.framed_center(dest) + _promote_offsets()[index])
+	await _tap_world(board, board.camera().framed_center(dest) + _promote_offsets()[index])
 
 
 ## The 2×2 layout `BoardPresentation.show_promotion_choice()` paints.
@@ -314,12 +317,12 @@ func _labelled(label: String, problem: String) -> String:
 ## belongs to `board_presentation.gd`, so asserting on it would pass while the
 ## pointer path pointed at another square (#845 verify).
 func _tap_painted(board: BoardPresentation, square: String) -> void:
-	await _tap_world(board, board.framed_center(square))
+	await _tap_world(board, board.camera().framed_center(square))
 
 
 ## Press and release at `world` (board space, seat applied), in frame pixels.
 func _tap_world(board: BoardPresentation, world: Vector2) -> void:
-	var painted: Vector2 = root.get_final_transform() * board.world_to_screen(world)
+	var painted: Vector2 = root.get_final_transform() * board.camera().world_to_screen(world)
 	await _tap_frame(painted)
 
 
