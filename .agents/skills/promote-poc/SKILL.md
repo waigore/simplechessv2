@@ -35,9 +35,10 @@ Promotion is a reimplementation in the main tree with the PoC as reference, not 
 
 8. **Branch** `task/<n>-<slug>` from `main` after the spec PR has merged.
 9. **Approve assets** in scope as needed via [`manage-asset`](../manage-asset/SKILL.md) / [`register-asset`](../register-asset/SKILL.md). Keep asset IDs and handles.
-10. **Reimplement** in the main tree per the technical design, [`docs/solid.md`](../../../docs/solid.md), [`docs/coding-conventions.md`](../../../docs/coding-conventions.md), and existing structure. Add tests per the project bar. Do not import from `pocs/` or copy its structure when SOLID/conventions/continuity disagree.
-11. **Leave the PoC unchanged**: no edits under `pocs/`.
-12. **PR** per [`docs/pull-requests.md`](../../../docs/pull-requests.md). Then run [`implement-project-issue`](../implement-project-issue/SKILL.md).
+10. **UI mockups**: when the keep/adapt list includes interactive UI, ensure screen (and journey, when scoped) mockups exist, match the promoted UI, and are catalog-`approved` before main-tree UI merges ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md), [`docs/poc-promotion.md`](../../../docs/poc-promotion.md)). Author or update mockups from the PoC as needed; approval may be PO or `review-project-issue`.
+11. **Reimplement** in the main tree per the technical design, [`docs/solid.md`](../../../docs/solid.md), [`docs/coding-conventions.md`](../../../docs/coding-conventions.md), and existing structure. Add tests per the project bar. Do not import from `pocs/` or copy its structure when SOLID/conventions/continuity disagree.
+12. **Leave the PoC unchanged**: no edits under `pocs/`.
+13. **PR** per [`docs/pull-requests.md`](../../../docs/pull-requests.md). Then run [`implement-project-issue`](../implement-project-issue/SKILL.md).
 
 ## Rules
 

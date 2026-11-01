@@ -10,6 +10,7 @@ Agents use the matching `create-project-*` skill so labels, sub-issues, and bloc
 | [body-shapes.md](body-shapes.md) | Canonical body templates (Epic / Task / Defect) |
 | [hierarchy.md](hierarchy.md) | Sub-issues, depth limit, blocked-by |
 | [workflow.md](workflow.md) | Status labels, transitions, evidence |
+| [workflow-comment-cap.md](workflow-comment-cap.md) | Task/defect comment cap; `pending-redefinition` |
 | [workflow-cascade.md](workflow-cascade.md) | When a failed review moves another issue |
 | [body-writes.md](body-writes.md) | Safe `gh issue` body/comment writes, the guard, and the read-back |
 | [workflow-dispatch.md](workflow-dispatch.md) | Background dispatch agents (one issue per run) |
@@ -36,4 +37,4 @@ Agent defaults: create on GitHub with `status:pending-review` (priority unlabele
 
 ## Workflow status
 
-After create, issues move through review → refinement/clarification (as needed) → implementation → verification → acceptance. Contract: [workflow.md](workflow.md). Use `enforce-task-workflow-status` and the `*-project-issue` action skills.
+After create, issues move through review → refinement/clarification (as needed) → implementation → verification → acceptance. Contract: [workflow.md](workflow.md). Use `enforce-task-workflow-status` and the `*-project-issue` action skills. Comment cap: [workflow-comment-cap.md](workflow-comment-cap.md).

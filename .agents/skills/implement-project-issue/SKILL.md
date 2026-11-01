@@ -24,12 +24,14 @@ Record implementation evidence for a typed issue in `status:pending-implementati
 
 1. **Load** issue `n` (requirements, deliverables, acceptance criteria).
 2. **Assert** `status:pending-implementation`.
-3. **Confirm** deliverables exist (PRs, commits, paths). Ask if missing.
-4. **Comment** summarizing what was created or modified against the issue requirements; include PR/commit links.
-5. **Gate** via `enforce-task-workflow-status`: `pending-implementation` → `pending-verification`.
-6. **Report** URL, evidence comment, and new status.
+3. **Main-tree UI gate** ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md)): if deliverables include main-tree UI for a screen, that screen's row in [`specs/ux/mockups/catalog.md`](../../../specs/ux/mockups/catalog.md) must be `approved`. If not, stop — do not gate to verification; comment the missing approval (and unapprove/`draft` if a material upstream change landed after review). PoCs under `pocs/` are exempt.
+4. **Confirm** deliverables exist (PRs, commits, paths). Ask if missing.
+5. **Comment** summarizing what was created or modified against the issue requirements; include PR/commit links.
+6. **Gate** via `enforce-task-workflow-status`: `pending-implementation` → `pending-verification`.
+7. **Report** URL, evidence comment, and new status.
 
 ## Rules
 
 - This skill records evidence and status; it does not replace doing the implementation work.
 - Call `enforce-task-workflow-status` for the label change.
+- Do not treat journey catalog approval as required to implement a screen; the **screen** row is the gate.

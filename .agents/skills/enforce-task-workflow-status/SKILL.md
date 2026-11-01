@@ -64,4 +64,5 @@ Inputs: one or more issue numbers, or “all open typed issues”.
 ## Related
 
 - Action skills: `review-project-issue`, `refine-project-issue`, `clarify-project-issue`, `implement-project-issue`, `verify-project-issue`, `accept-project-issue`
+- `pending-redefinition`: Actions comment-cap only; replace via `redefine-project-issue` (not a gate transition)
 - Create skills apply `status:pending-review` on create; priority stays unlabeled unless a human requested high or critical

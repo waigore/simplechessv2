@@ -44,15 +44,17 @@ The table sets the minimum. Any spec may take a higher level. Choose per spec.
 
 | Artifact | full | small | prototype |
 |----------|------|-------|-----------|
-| Screen mockups | Every screen, per platform | Core screens, primary platforms only | None |
-| Journey mockups | Every journey | Core journeys | None |
-| Open Design binding | Required | Required | None |
+| Screen mockups | Every screen, per platform | Every screen; primary platforms only when multi-platform | Every screen; primary platforms only when multi-platform |
+| Journey mockups | Every journey | Every journey | Every journey |
+| Open Design binding | Required | Required | Required |
 | Projection diagram | Required | Required | None |
 | Camera diagrams | Every camera | Core cameras that move | None |
 | Palette sheet | Required | Required | None |
 | Lineup sheet | Every character and entity with a body | Characters and entities in core specs | None |
 
-The table sets the minimum. An artifact beyond it is allowed, and then follows its rules in full. When an artifact is not required and not made, its header field (**Mockup**, **Diagram**, or **Reference sheet**) reads "None — spec depth \<level\>". When no mockup exists at all, the Mockups topic in `specs/ux/traceability.md` is "N/A — spec depth \<level\>". The same applies to the Diagrams topic in `specs/view/traceability.md` and the Reference sheets topic in `specs/aesthetics/traceability.md`.
+Screen and journey mockups, and the Open Design binding that produces them, are required at every depth. Catalog approval gates main-tree UI ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md)).
+
+The table sets the minimum for other artifacts. An artifact beyond it is allowed, and then follows its rules in full. When a non-mockup artifact is not required and not made, its header field (**Diagram** or **Sheet**) reads "None — spec depth \<level\>". The same applies to the Diagrams topic in `specs/view/traceability.md` and the Sheets topic in `specs/aesthetics/traceability.md`. The Mockups topic in `specs/ux/traceability.md` is never N/A for depth.
 
 ## Other effects
 

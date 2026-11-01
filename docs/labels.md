@@ -41,7 +41,8 @@ bash .github/scripts/sync-labels.sh
 | `status:pending-verification` | `0E8A16` | Implemented; awaiting verification |
 | `status:pending-acceptance` | `006B75` | Verified; awaiting acceptance testing |
 | `status:accepted` | `5319E7` | Accepted; leave open until planner closes |
-| `status:superseded` | `8250DF` | Superseded; leave open until planner closes; name the successor |
+| `status:superseded` | `8250DF` | Superseded; leave open until planner closes; name successor |
+| `status:pending-redefinition` | `6E7781` | Comment cap hit; locked pending redefine |
 | `no-automerge` | `B60205` | PR: opt out of automatic squash-merge (user-requested only) |
 | `priority:critical` | `B60205` | Handle before high and normal |
 | `priority:high` | `D93F0B` | Handle before normal; after critical |
@@ -51,7 +52,7 @@ Status transitions: [`docs/issues/workflow.md`](issues/workflow.md). Priority se
 
 ### Priority
 
-At most **one** `priority:*` label on typed issues. Unlabeled means normal — create forms and `create-project-*` skills do **not** apply `priority:normal`. Apply `priority:high` or `priority:critical` only when a human requests it. Effective priority if more than one is present: critical > high > normal; hygiene keeps only the highest and never adds `priority:normal` to unlabeled issues. **Humans only** set or change priority; agents must not add, remove, or swap `priority:*` except that hygiene (drop lower duplicates).
+At most **one** `priority:*` on typed issues. Unlabeled means normal — create skills do **not** apply `priority:normal`. Apply `priority:high` or `priority:critical` only when a human requests it. If more than one is present: critical > high > normal; hygiene keeps the highest and never adds `priority:normal` to unlabeled issues. **Humans only** set or change priority; agents only drop lower duplicates.
 
 ## Adding a label
 
