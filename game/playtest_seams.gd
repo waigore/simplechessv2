@@ -9,6 +9,10 @@ signal tel_event(payload: Dictionary)
 signal seed_changed(value: int)
 signal overlay_changed(enabled: bool, story_ids: PackedStringArray)
 signal viewport_changed(report: Dictionary)
+## SIT.4 `O10` — a `frame_times` / `loading_ready` window closed on its own; the
+## `Measure` control prints it and a runner can capture it without polling
+## `dump_state()` (`#544` verification finding 2).
+signal measurement_closed(report: Dictionary)
 
 ## SIT.6 `O12` phone-width targets.
 const VIEWPORT_PHONE_WIDTH := 390
@@ -72,11 +76,21 @@ func _ready() -> void:
 	configure()
 
 
-## S11 observes the open window; the move path never calls this (`G3`).
+## S11 observes the open window; the move path never calls this (`G3`). A window
+## that closes here is announced once — printed and emitted — so the `Measure`
+## control's run sees its number without anyone polling the seam.
 func _process(_delta: float) -> void:
 	if not playtest_build or not measurement.is_armed():
 		return
 	measurement.observe()
+	if not measurement.is_armed():
+		_announce_measurement()
+
+
+func _announce_measurement() -> void:
+	var closed := measurement.last()
+	print(JSON.stringify(closed))
+	measurement_closed.emit(closed)
 
 
 func configure() -> void:
@@ -363,10 +377,12 @@ func start_measurement(kind: String) -> Dictionary:
 
 
 ## SIT.4 / O10 — the report for the armed window; closes and disarms it (`D2`).
-## A window that closed by itself is handed over on the first ask, once (`#544`
-## acceptance finding 1). An empty `kind` **is the disarm** (`D4`): an open window
-## comes back `cancelled`, keeping its samples and claiming no `max_ms` (`D1`), and
-## a window that already closed by itself is returned as it closed, once.
+## A window that closed by itself is handed over on the first ask, at any later
+## frame, once (`#544` verification finding 1). `dump_state()["measurement"]` is
+## the documented read path that keeps that report readable after the hand-over.
+## An empty `kind` **is the disarm** (`D4`): an open window comes back `cancelled`,
+## keeping its samples and claiming no `max_ms` (`D1`), and a window that already
+## closed by itself is returned as it closed, once.
 func measure(kind: String) -> Dictionary:
 	if not playtest_build:
 		return _release_refusal(kind)
@@ -535,8 +551,9 @@ func _on_set_viewport_pressed() -> void:
 
 
 func _on_measure_pressed() -> void:
-	## SIT.4 — arms the next window only. It never submits input, plays the move,
-	## or times itself (D4); the report prints when the window closes.
+	## SIT.4 — arms the next window (D4); it never submits input, plays the move,
+	## or times itself. The report prints from `_process` when the window closes,
+	## so the panel's output carries the number, not only the arm answer.
 	var kind := _measure_kind.text.strip_edges()
 	var armed := start_measurement(kind)
 	print(JSON.stringify(armed))
