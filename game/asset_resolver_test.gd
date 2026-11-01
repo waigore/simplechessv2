@@ -230,6 +230,12 @@ func _router_loads_again_after_failure(manifest: Dictionary) -> String:
 	await process_frame
 	await process_frame
 	var problem := _load_failure_is_named(router, screens)
+	## #923 (c) — a cold open's Boot failure never sets the reload record.
+	var record: Variant = _reload_record(router)
+	if problem.is_empty() and not (record is bool):
+		problem = str(record)
+	elif problem.is_empty() and record:
+		problem = "a cold open set the reload record"
 	if problem.is_empty():
 		router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C1")
 		if router.stage != SessionRouter.STAGE_LOAD_FAILED:
@@ -239,6 +245,14 @@ func _router_loads_again_after_failure(manifest: Dictionary) -> String:
 		router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
 		if router.stage != SessionRouter.STAGE_LOADING or router.boot_failure_count != 1:
 			problem = "Reload did not load the game again from the start"
+		else:
+			## #923 (a) — the record is set on Reload and survives `start()`'s
+			## `STAGE_LOADING`; the deferred Boot outcome is what consumes it.
+			record = _reload_record(router)
+			if not (record is bool):
+				problem = str(record)
+			elif not record:
+				problem = "Reload did not record that its Boot preload is in flight"
 	if problem.is_empty():
 		## The manifest leaves Boot unresolvable, so the reloaded attempt must fail the
 		## same way, through a fresh read.
@@ -257,8 +271,54 @@ func _router_loads_again_after_failure(manifest: Dictionary) -> String:
 			problem = "Reload's second Boot failure was not named to the presentation"
 		elif router.boot_failure_count != 1:
 			problem = "Reload lost the unresolved count"
+		elif _reload_record(router) != false:
+			problem = "Reload's settle left the reload record held"
+	if problem.is_empty():
+		problem = await _reload_that_resolves_leaves_the_record_clear(router, resolver, screens)
 	parent.queue_free()
 	return problem
+
+
+## #923 (b) — a reload whose Boot resolves takes the normal post-Boot path and
+## clears the record, so the reload state only ever lives for its own settle.
+func _reload_that_resolves_leaves_the_record_clear(
+	router: SessionRouter, resolver: AssetResolver, screens: Array[String]
+) -> String:
+	(
+		resolver
+		. apply_manifest(
+			{
+				"asset_root": str(_manifest.get("asset_root", "")),
+				"groups": {"boot": [], "play": [], "ambient": []},
+				"assets": {},
+			}
+		)
+	)
+	screens.clear()
+	router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
+	var record: Variant = _reload_record(router)
+	if not (record is bool):
+		return str(record)
+	if not record:
+		return "a reload that can resolve did not record its Boot preload"
+	await process_frame
+	await process_frame
+	if router.stage != SessionRouter.STAGE_MODE_PICK:
+		return "a resolved reload settled on %s, not mode-pick" % router.stage
+	if router.boot_reload_in_flight:
+		return "a resolved reload left the reload record held"
+	## Let the post-Boot Ambient leg finish before the fixture is freed.
+	await process_frame
+	await process_frame
+	return ""
+
+
+## #923 — the router's reload record, or a readable finding when it has none, so the
+## test fails on `main` instead of dying on an unknown property.
+func _reload_record(router: SessionRouter) -> Variant:
+	if not ("boot_reload_in_flight" in router):
+		return "the router has no reload record (#923)"
+	return router.boot_reload_in_flight
 
 
 ## E4 reached the router and replaced the wait with `EX.load-failure`.
