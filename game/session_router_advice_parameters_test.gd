@@ -56,16 +56,18 @@ func _check_present_pair_is_read_and_wired() -> String:
 	var path := _fixture('{"endpoint": "  %s  ", "api_key": "%s"}' % [ENDPOINT, API_KEY])
 	if not FileAccess.file_exists(path):
 		return "the fixture must be written off-tree"
-	_router._apply_advice_parameters(path)
+	var pair := AdviceParameters.read(path)
+	_router.advice_endpoint = pair[0]
+	_router.advice_api_key = pair[1]
 	DirAccess.remove_absolute(path)
 	if _router.advice_endpoint != ENDPOINT or _router.advice_api_key != API_KEY:
-		return "R7: the applier must fill and strip both values (got %s / %s)" % [
-			_router.advice_endpoint, _router.advice_api_key
-		]
+		return (
+			"R7: the applier must fill and strip both values (got %s / %s)"
+			% [_router.advice_endpoint, _router.advice_api_key]
+		)
 	var peer := FakeCatalogTransport.new()
 	var flow := PuzzlePlayFlow.new()
-	var factory := func() -> RefCounted:
-		return peer
+	var factory := func() -> RefCounted: return peer
 	flow.enter(null, _router.advice_endpoint, _router.advice_api_key, factory)
 	if peer.requests.size() != 1:
 		return "AC1: an available client must start exactly one read (%d)" % peer.requests.size()
@@ -94,12 +96,15 @@ func _check_every_miss_leaves_the_default() -> String:
 	for label in misses:
 		var path := _fixture(str(misses[label]))
 		_clear_pair()
-		_router._apply_advice_parameters(path)
+		var pair := AdviceParameters.read(path)
+		_router.advice_endpoint = pair[0]
+		_router.advice_api_key = pair[1]
 		DirAccess.remove_absolute(path)
 		if not _router.advice_endpoint.is_empty() or not _router.advice_api_key.is_empty():
-			return "R7: %s must not supply T9/T10 (got %s / %s)" % [
-				label, _router.advice_endpoint, _router.advice_api_key
-			]
+			return (
+				"R7: %s must not supply T9/T10 (got %s / %s)"
+				% [label, _router.advice_endpoint, _router.advice_api_key]
+			)
 	return ""
 
 
@@ -119,7 +124,9 @@ func _check_absent_path_is_unconfigured_not_status() -> String:
 		flow.enter(null, _router.advice_endpoint, _router.advice_api_key, null)
 		var reason: String = flow.stream.last_failure
 		if reason != CatalogWireReader.REASON_UNCONFIGURED:
-			return "B5/FAIL.T14: an absent T9 or T10 must carry REASON_UNCONFIGURED (got %s)" % reason
+			return (
+				"B5/FAIL.T14: an absent T9 or T10 must carry REASON_UNCONFIGURED (got %s)" % reason
+			)
 		if flow.session.puzzle_id != "" or flow.session.puzzle_elo != null:
 			return "B5/FAIL.T14: an absent %s must deal nothing" % absent
 		if flow.session.player_elo != PuzzleSession.ELO_START:

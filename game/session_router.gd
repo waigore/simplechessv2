@@ -23,10 +23,6 @@ const MODE_SHARED := "shared"
 const MODE_PUZZLE := "puzzle"
 const MODE_NONE := "none"
 const CLOCKS := ["untimed", "blitz", "rapid"]
-## CMP-session-router R7 / CFG.B3 — the one file name both presets read T9/T10 from
-## at boot. A bare name, not a `res://` route: a deploy supplies it, nothing in the
-## tree or the pack carries it, and an absent file is the `""` default (CFG.B5).
-const ADVICE_PARAMETERS_PATH := "advice_parameters.json"
 
 var locale := "en"
 var stage := STAGE_LOADING
@@ -92,7 +88,9 @@ var _last_clock_display := ""
 
 
 func _ready() -> void:
-	_apply_advice_parameters()
+	var advice := AdviceParameters.read()
+	advice_endpoint = advice[0]
+	advice_api_key = advice[1]
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
@@ -106,35 +104,6 @@ func _ready() -> void:
 		host.asset_needed.connect(_on_asset_needed)
 	if _persist != null:
 		_persist.write_failed.connect(show_save_failure)
-
-
-## CMP-session-router R7 — set T9/T10 from the deploy-supplied parameters file before
-## anything can read them. A pair that is not both present and non-empty leaves the
-## `""` initialisers (B5): half a pair is no pair.
-func _apply_advice_parameters(path: String = ADVICE_PARAMETERS_PATH) -> void:
-	var parameters := _read_advice_parameters(path)
-	var endpoint_value: Variant = parameters.get("endpoint", "")
-	var key_value: Variant = parameters.get("api_key", "")
-	if not endpoint_value is String or not key_value is String:
-		return
-	var endpoint := str(endpoint_value).strip_edges()
-	var api_key := str(key_value).strip_edges()
-	if endpoint.is_empty() or api_key.is_empty():
-		return
-	advice_endpoint = endpoint
-	advice_api_key = api_key
-
-
-## Any miss — no file, no parse, not an object — is `{}`, never a warning or an
-## engine error (`JSON.parse_string` writes one to the log, so the instance parser
-## is used and its error is read instead).
-func _read_advice_parameters(path: String) -> Dictionary:
-	if path.is_empty() or not FileAccess.file_exists(path):
-		return {}
-	var json := JSON.new()
-	if json.parse(FileAccess.get_file_as_string(path)) != OK:
-		return {}
-	return json.data if json.data is Dictionary else {}
 
 
 ## G2 — `main_release.tscn` carries no seam node, and this avoids naming the
@@ -155,6 +124,11 @@ func _seams_paused() -> bool:
 	return _seams != null and _seams.is_paused()
 
 
+## Stage and a live session, then the playtest pause (CTR-playtest-drive.O1 / DBG.1).
+func _shared_play_live() -> bool:
+	return stage == STAGE_SHARED_PLAY and shared_session != null and not _seams_paused()
+
+
 func _emit_tel(event_name: String, outcome: String, story_id := "") -> void:
 	if _seams != null:
 		_seams.emit_tel(event_name, outcome, story_id)
@@ -165,10 +139,8 @@ func _process(delta: float) -> void:
 		if puzzle_flow != null and not _seams_paused():
 			puzzle_flow.tick()
 		return
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return
 	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
-	if _seams_paused():
+	if not _shared_play_live():
 		return
 	# U3 → U2: advice updates apply on the session path (concurrency.md S1),
 	# including untimed games, which have no clocks to tick.
@@ -251,9 +223,7 @@ func handle_control(screen_id: String, control_id: String) -> void:
 func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.gesture(from_square, to_square, promotion)
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	if not play_gestures_available():
 		return false
@@ -270,9 +240,7 @@ func _apply_play_gesture(from_square: String, to_square: String, promotion: Stri
 func handle_deselect() -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.deselect()
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	var result := shared_session.clear_selection()
 	if not bool(result.get("ok", false)):
@@ -286,9 +254,7 @@ func handle_deselect() -> bool:
 func handle_promotion_commit(kind: String) -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.promotion(kind)
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	var result := shared_session.commit_promotion(kind)
 	_emit_tel_result(result)
