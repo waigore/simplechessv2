@@ -8,7 +8,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain; unused template rows and sections are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized sections; unused template rows and sections there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] Each file links its authoring-rules file from [`rules/README.md`](rules/README.md). Those rules are not pasted into the spec. The authoring-rules link is not game content.
 - [ ] The genre and platform profile and index in `design.md`, and the alignment and topic coverage tables in `traceability.md`, are filled in.
 - [ ] Every topic in the coverage table is covered, or marked N/A with a reason grounded in the genre profile or definition.

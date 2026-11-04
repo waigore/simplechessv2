@@ -3,20 +3,20 @@ name: capture-requirements
 description: |-
   Capture requirements via guided questions derived from each spec's authoring
   rules and template placeholders, confirm answers with the user, then hand off
-  to author-spec. Starts with the high-level stage (vision, definition,
-  quality), which may be captured in one run, and gates downstream specs until
-  it is locked in. Sorts detailed prompts: high-level facts become proposed
-  answers, design-level detail is saved as requirement notes for later.
+  to author-spec. Specifying is the default: a game idea starts with the
+  blocking fields, then one spec file the user picks. They may revise a written
+  requirement. A PoC starts only when they ask to explore a named uncertainty.
   Use when interviewing for any spec, or when the user asks to capture
   requirements, gather requirements, or fill a spec by asking questions.
 
   Examples:
-    - user: "Help me capture requirements" → next high-level file (vision first), interview, author-spec
-    - user: long prompt with pitch, platforms, and combat rules → high-level stage in one run; combat rules saved as notes
+    - user: "Help me capture requirements" → interview unset blocking fields
+    - user: long prompt with pitch, platforms, and combat rules → interview the foundation; save combat as a note until they pick that file
     - user: "Help me fill definition by asking questions" → specs/definition/definition.md only
-    - user: "Interview me for the movement feature" → only once the high-level stage is locked in; uses saved notes
-    - user: "Capture requirements for design and view" → ask which one path this session
-    - unclear rendering approach during technical capture → propose PoC; log purpose/scope/outcome; offer task
+    - user: "Specify movement" while pitch is unset → blocking fields and the movement spec, one confirmation
+    - user: "Capture requirements for design and view" → ask which one file this run
+    - user: "Change the win condition" → revision; show specs that cite it
+    - user: "Explore movement before deciding it" → scope-poc; do not interview
 ---
 
 # Capture requirements (facade)

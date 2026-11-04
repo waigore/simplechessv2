@@ -16,13 +16,7 @@ description: |-
 
 # Review code
 
-Read-only review of code changes against, in precedence order:
-
-1. [`docs/solid.md`](../../../docs/solid.md): SOLID, owned by the template, applies to every project.
-2. [`docs/coding-conventions.md`](../../../docs/coding-conventions.md): project conventions (`CC-<n>` rules at `must` or `should`) and the commands run by `Code lint`, `Unit tests`, and `Coverage`.
-3. Structure continuity, inferred from existing code.
-
-A higher source wins over a lower one.
+Read-only review of a diff. Sources and precedence: [`references/sources.md`](references/sources.md). Do not restate them.
 
 ## Resolve the target
 
@@ -32,7 +26,7 @@ Use the first match:
 2. **Verify caller** — linked deliverable PRs that contain **code changes** → those PR diffs.
 3. **Default** — uncommitted / working-tree changes (`git status`, staged + unstaged diff).
 
-**Code changes:** any touched implementation file (source, tests, build that shapes runtime). Skip this skill when the diff is only docs, specs, agent skills/rules, or similar non-implementation paths. Exclude paths under `pocs/` ([PoCs](../../../docs/pocs.md)); code promoted out of `pocs/` into the main tree is reviewed normally.
+**Code changes:** touched implementation files, as [`sources.md`](references/sources.md) defines them. Skip this skill when the diff is only non-implementation paths.
 
 If there is nothing to review, report **N/A** (not a Pass) and stop.
 
@@ -40,8 +34,8 @@ If there is nothing to review, report **N/A** (not a Pass) and stop.
 
 For the resolved diff (and nearby existing structure needed for continuity):
 
-1. **Conventions file**: read `docs/coding-conventions.md`. If the Rules table says `None — SOLID only`, skip convention checks and note "SOLID only (by choice)". If it still holds placeholders, skip them and note "conventions not filled in". For each rule that contradicts `docs/solid.md`, file a `CONV` `must-fix` against `docs/coding-conventions.md` naming the rule and the principle, and do not apply that rule.
-2. **SOLID**: check **SRP**, **OCP**, **LSP**, **ISP**, **DIP** per `docs/solid.md`.
+1. **Sources**: apply [`sources.md`](references/sources.md), including the conventions-file cases. A contradicting convention is a `CONV` `must-fix` naming the rule and the principle.
+2. **SOLID**: check **SRP**, **OCP**, **LSP**, **ISP**, **DIP**.
 3. **Conventions**: check each applicable rule. A broken `must` rule is a `must-fix`; a broken `should` rule is a `suggestion`.
 4. **CI checks**: for a PR target, read `Code lint`, `Unit tests`, and `Coverage` (`gh pr checks <n>`). A failing check is a `LINT` / `TEST` / `COV` `must-fix` citing the failing step; still running, wait and re-read. A conventions table row with no matching step in [`code-lint.yml`](../../../.github/workflows/code-lint.yml) or [`unit-tests.yml`](../../../.github/workflows/unit-tests.yml) is a must-fix against the workflow; a `None` row needs no step. For a working-tree target, note that the checks run on the PR.
 5. **Continuity** (`CONT`): new code matches existing layout, naming, layering, and patterns unless SOLID or a convention requires otherwise.
@@ -72,7 +66,6 @@ When called from chat, reply with the report. When called from `verify-project-i
 ## Rules
 
 - Read-only: do not edit code, conventions, or workflows while reviewing.
-- Do not invent principles beyond `docs/solid.md` or rules beyond `docs/coding-conventions.md`.
-- Never file a `CONV` or `CONT` must-fix for a change SOLID requires, nor a `CONT` must-fix for a change a convention requires.
+- Follow [`sources.md`](references/sources.md) for precedence and for which `CONV` or `CONT` findings are allowed.
 - A Fail from this skill fails verification when invoked by `verify-project-issue`.
 - A structure or technical-debt pass over the tree or a named portion is [`suggest-code-refactors`](../suggest-code-refactors/SKILL.md). Do not stretch this skill into that audit.
