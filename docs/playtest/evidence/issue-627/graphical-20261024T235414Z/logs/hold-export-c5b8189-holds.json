@@ -1,0 +1,38 @@
+[
+  {
+    "x": 195,
+    "y": 185,
+    "held": "hold-export-c5b8189-h1-held-195-185.png",
+    "after": "hold-export-c5b8189-h1-after-195-185.png"
+  },
+  {
+    "x": 195,
+    "y": 170,
+    "held": "hold-export-c5b8189-h2-held-195-170.png",
+    "after": "hold-export-c5b8189-h2-after-195-170.png"
+  },
+  {
+    "x": 150,
+    "y": 185,
+    "held": "hold-export-c5b8189-h3-held-150-185.png",
+    "after": "hold-export-c5b8189-h3-after-150-185.png"
+  },
+  {
+    "x": 240,
+    "y": 185,
+    "held": "hold-export-c5b8189-h4-held-240-185.png",
+    "after": "hold-export-c5b8189-h4-after-240-185.png"
+  },
+  {
+    "x": 60,
+    "y": 185,
+    "held": "hold-export-c5b8189-h5-held-60-185.png",
+    "after": "hold-export-c5b8189-h5-after-60-185.png"
+  },
+  {
+    "x": 330,
+    "y": 185,
+    "held": "hold-export-c5b8189-h6-held-330-185.png",
+    "after": "hold-export-c5b8189-h6-after-330-185.png"
+  }
+]

@@ -1,0 +1,27 @@
+# What the published pack says it routes, read from the served index.pck (69a03d4, 9 572 540 B)
+# Command: curl -s https://waigore.github.io/simplechessv2/index.pck | strings | grep 'res://.*\.ogg'
+res://.godot/imported/01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg-79ed3ed05a46f1c3d12554c740858fb6.ogg
+res://.godot/imported/01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg-f57d646ae58ccb0d049815458311157a.ogg
+res://.godot/imported/01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg-4f793bf92140c8cb73066c563542d103.ogg
+res://.godot/imported/01a151f8-b7d8-710a-b767-92c9137bfd63.ogg-016dacd6ddaf8faa3c6451c1836d764a.ogg
+res://.godot/imported/01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg-bc3097473a086d7bffc9db2a3bf667b0.ogg
+res://.godot/imported/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg-652a4fb660d75ce20bd1981d3fac47ba.ogg
+res://.godot/imported/01a15200-69b2-7964-a602-ad5b19583125.ogg-483638c911d93f1fedb0d9bef5660b2c.ogg
+res://audio_runtime/01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg
+res://audio_runtime/01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg
+res://audio_runtime/01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg
+res://audio_runtime/01a151f8-b7d8-710a-b767-92c9137bfd63.ogg
+res://audio_runtime/01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg
+res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg
+res://audio_runtime/01a15200-69b2-7964-a602-ad5b19583125.ogg
+res://game_assets/music/cafe-ambient-a.ogg
+res://game_assets/music/cafe-ambient-b.ogg
+res://game_assets/sound-effects/check.ogg
+res://game_assets/sound-effects/end-resolve.ogg
+res://game_assets/sound-effects/move-settle.ogg
+res://game_assets/sound-effects/puzzle-fail.ogg
+res://game_assets/sound-effects/touch-select.ogg
+# 21 ogg routes found; 'res://audio_runtime/<id>.ogg' entries:
+['res://audio_runtime/01a151f8-b7d8-710a-b767-92c9137bfd63.ogg', 'res://audio_runtime/01a151f8-b7d8-759c-89c5-e1be5eecb2b2.ogg', 'res://audio_runtime/01a151f8-b7d8-7ae6-84af-767ba53d09f6.ogg', 'res://audio_runtime/01a151f8-b7d8-7e05-9921-e892e9a2e064.ogg', 'res://audio_runtime/01a151f8-b7d8-7fe3-b94f-e3a562395d96.ogg', 'res://audio_runtime/01a15200-69b2-7964-a602-ad5b19583125.ogg', 'res://audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg']
+audio_runtime/01a15200-69b2-7d13-a30d-696fa4ff390b.ogg       200 3299929
+game_assets/sound-effects/touch-select.ogg                   200 1356

@@ -1,0 +1,52 @@
+{
+  "url": "https://waigore.github.io/simplechessv2/",
+  "gestureDelayMs": 30000,
+  "beforeGesture": {
+    "audio": [
+      {
+        "t": 12.155,
+        "kind": "ctx.create",
+        "state": "suspended"
+      },
+      {
+        "t": 14.329,
+        "kind": "source.start",
+        "bufferSec": 180.036,
+        "ctxState": "suspended"
+      }
+    ],
+    "ctx": "suspended"
+  },
+  "afterGesture": {
+    "audio": [
+      {
+        "t": 12.155,
+        "kind": "ctx.create",
+        "state": "suspended"
+      },
+      {
+        "t": 14.329,
+        "kind": "source.start",
+        "bufferSec": 180.036,
+        "ctxState": "suspended"
+      },
+      {
+        "t": 31.566,
+        "kind": "gesture",
+        "type": "pointerdown"
+      },
+      {
+        "t": 31.566,
+        "kind": "gesture",
+        "type": "touchstart"
+      },
+      {
+        "t": 32.358,
+        "kind": "ctx.state",
+        "state": "running"
+      }
+    ],
+    "ctx": "running",
+    "now": 12.832
+  }
+}
