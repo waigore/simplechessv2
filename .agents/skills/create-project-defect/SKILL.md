@@ -2,43 +2,30 @@
 name: create-project-defect
 description: |-
   Create a GitHub Defect issue (type:defect) from docs/issues/; wire related
-  links and native blocked-by when provided.
+  links when provided. Blocked-by is banned (hierarchy.md).
   Use when the user reports wrong game or interface behavior vs expected play.
   Do not use for specs, docs, story maps, AC hygiene, or planning gaps (those
   are tasks or clarification — see docs/issues/requirements.md).
 
   Examples:
   - user: "File a defect: jump input ignored on web" → collect per docs/issues/, create
-  - user: "Defect related to #15, blocked by #9" → related section + blocked-by
+  - user: "Defect related to #15" → related section only
   - user: "Draft defect body only" → --no-create
 ---
 
 # Create project defect
 
-Create a repository **Defect** (`type:defect`) for an **in-game or interface** bug only.
+Veneer for a repository **Defect** (`type:defect`). In-game or interface bugs only.
 
-**Issue contract:** [`docs/issues/`](../../../docs/issues/) (`requirements.md`, `body-shapes.md`, `hierarchy.md`). Do not redefine sections or invent a parallel template in this skill.
+**Create:** read and apply [`typed-issue-create.md`](../create-project-task/references/typed-issue-create.md).
 
-**Body writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py` and read-back.
+## Deltas
 
-**Linking (sub-issues / blocked-by commands):** [`../create-project-task/references/github-issue-linking.md`](../create-project-task/references/github-issue-linking.md).
-
-## Steps
-
-1. **Read** Defect requirements + body shape docs. Abort and redirect if the report is a spec/design/doc/planning problem: use clarification on an owning open issue, or `create-project-task` when material and uncovered — never a defect.
-2. **Collect** `title` and content for every required Defect section; optional reproduction, context, `related`, `parent`, `blocked_by`, `blocking`. Ask if required content is missing.
-3. **Build** the body exactly as specified in `body-shapes.md`.
-4. If `--no-create` / "draft only": print title + body and stop.
-5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:defect" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in). Add `--label "priority:high"` or `--label "priority:critical"` only when the human explicitly requests that priority at create time; do not apply `priority:normal` (unlabeled means normal).
-6. If `parent` is set: attach as sub-issue (linking reference); enforce depth rules from `hierarchy.md` when nesting under a task chain.
-7. **Blocked-by**: for each true blocker, follow the linking reference. Related-only issues stay in `## Related tasks or defects` per the docs.
-8. **Report** URL, labels (`type:defect`, `status:pending-review`, and `priority:*` only if set), parent (if any), related links, and dependency wiring.
-
-## Rules
-
-- Apply labels `type:defect` and `status:pending-review`. Apply `priority:high` or `priority:critical` only when the human requests it; leave priority unlabeled for normal.
-- Do not change priority after create; only humans set or change priority later.
-- Default: create on GitHub.
+- **Before create:** if the report is a spec, design, doc, or planning problem, abort. Use clarification on an owning open issue, or `create-project-task` when the gap is material and uncovered.
+- Collect optional reproduction, context, `related`, and `parent`. Do not collect or wire `blocked_by` / `blocking`.
+- If `parent` is set, attach it as a sub-issue and enforce depth from `hierarchy.md`.
+- Related-only issues stay in `## Related tasks or defects`.
+- When `create-project-feedback` is the caller, set priority and any `Supersedes #N` line per [`feedback.md`](../../../docs/issues/feedback.md).
 - Never file a defect for specs, docs, maps, or non-material hygiene ([`requirements.md`](../../../docs/issues/requirements.md) — When to file what).
 
 ## Related

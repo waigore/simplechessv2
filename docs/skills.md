@@ -37,16 +37,26 @@ Read that file and its `references/` as needed, then run the workflow there. Do 
 
 ## Invoke, don't restate
 
-Orchestrators name the delegate skill and **when** to call it. They do not copy its Steps, Pass/Fail semantics, transition tables, or procedure narrative.
+A skill whose procedure already lives in a doc, a spec, or a sibling `references/` file is a **veneer**. Name the contract, the delegate, and only the deltas (extra gates, authority lines, when to stop). Do not copy steps, tables, or Pass/Fail rules the contract already states.
 
-- Contract detail lives in `docs/`, `specs/`, or the leaf skill. Callers link; they do not paraphrase.
-- Pattern: [`ensure-project-setup`](../.agents/skills/ensure-project-setup/SKILL.md) — “Do not restate their steps here.”
-- Dispatch agents (`issue-workflow-*-agent`) resolve one issue per [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md), then run the mapped `*-project-issue` skill. An agent-orc line `Assigned issue: N` is that `#n`; `none` means discover. Discovery, queue, and independence rules stay in that doc and the delegates.
+- Contract detail lives in `docs/`, `specs/`, a leaf skill, or that skill's `references/`. Callers link.
+- Pattern: [`ensure-project-setup`](../.agents/skills/ensure-project-setup/SKILL.md).
+- Dispatch agents (`issue-workflow-*-agent`) are veneers over [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md) plus the mapped `*-project-issue` skill. `handle-feedback-agent` is a veneer over [`docs/issues/feedback.md`](issues/feedback.md). An agent-orc line `Assigned issue: N` is `#n`; `none` means discover.
+
+### Veneer references
+
+| Shared procedure | Used by |
+|------------------|---------|
+| [`typed-issue-create.md`](../.agents/skills/create-project-task/references/typed-issue-create.md) | create epic / task / defect / feedback |
+| [`action-shell.md`](../.agents/skills/enforce-task-workflow-status/references/action-shell.md) | review, refine, clarify, implement, verify, accept |
+| [`sources.md`](../.agents/skills/review-code/references/sources.md) | `review-code`, `audit-code-structure` |
+| [`change-pr.md`](../.agents/skills/manage-asset/references/change-pr.md) | asset runs, `create-poc`, `promote-poc` |
+| [`report-back.md`](../.agents/skills/audit-spec-applicability/references/report-back.md) | spec audits |
 
 ### Cross-cutting hooks
 
-- **`ensure-project-setup`**: any skill that opens a PR runs it unless it already passed this session; continue only on Pass.
-- **`implement-project-issue`**: when the work delivers a typed issue (`type:epic` / `type:task` / `type:defect`), end by running that skill after the PR (or equivalent deliverable evidence).
+- **`ensure-project-setup`**: any skill that opens a PR runs it unless it already passed this session; continue only on Pass. [`change-pr.md`](../.agents/skills/manage-asset/references/change-pr.md) includes this.
+- **`implement-project-issue`**: when the work delivers a typed issue (`type:epic` / `type:task` / `type:defect`), end by running that skill after the PR (or equivalent deliverable evidence). `change-pr.md` includes this.
 
 ## Add a skill checklist
 

@@ -4,7 +4,7 @@ Project and process documentation (labels, issues, skills, repo setup). Product/
 
 ## Concise docs
 
-Every file under `docs/` must stay under **500 words**. If content would exceed that, split into multiple focused files and link between them. CI enforces this for Markdown (`word-limit` in [Spec lint](spec-lint.md)); run `python3 .github/scripts/spec_lint.py` locally.
+Every file under `docs/` must stay under **500 words**, except Markdown under `quality/evidence/issue-*` and `playtest/evidence/issue-*`. If other content would exceed that, split into multiple focused files and link between them. CI enforces this for Markdown (`word-limit` in [Spec lint](spec-lint.md)); run `python3 .github/scripts/spec_lint.py` locally.
 
 ## Index
 
@@ -30,7 +30,9 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 | [labels.md](labels.md) | Label catalog and sync |
 | [pull-requests.md](pull-requests.md) | PR flow, branch names, body contract, auto-merge holds |
 | [requirements/](requirements/README.md) | Unconfirmed requirement notes awaiting capture into specs (not specs) |
-| [playtest/evidence/](playtest/evidence/) | AI-agent playtest evidence (story IDs, pass/fail, screenshots, notes, logs); requirements in `specs/playtest/` |
+| [playtest/evidence/](playtest/evidence/) | In-repo playtest index (`manifest.md`, `notes.md`); screenshots/logs on the wiki |
+| [playtest/wiki-evidence.md](playtest/wiki-evidence.md) | Wiki page naming, media layout, cite rules, migration from in-repo media |
+| [quality/evidence/](quality/evidence/) | Quality-evaluator evidence: per-axis pass, fail, or blocked for deterministic verification and llm-judge acceptance |
 | [skills.md](skills.md) | Skill authoring and native wiring |
 | [../agent-orc/](../agent-orc/) | agent-orc daemon: spin up workflow skill agents ([usage](../agent-orc/docs/usage.md)) |
 | [solid.md](solid.md) | SOLID principles + structure continuity for agents; owned by the template |

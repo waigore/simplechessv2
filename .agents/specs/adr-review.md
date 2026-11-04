@@ -8,7 +8,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain. Unused template rows are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized sections. Unused template rows there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] Each Markdown file links its authoring-rules file from [`rules/README.md`](rules/README.md). Those rules are not pasted into the spec.
 - [ ] Overview, Stack, and the index in `adr.md`, and the alignment and imposed-constraints tables in `traceability.md`, are filled in.
 - [ ] Every Proposed and Accepted ADR is listed in the index with its status, and every indexed file exists. No archived ADR is indexed.
@@ -39,7 +39,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 ### Validation
 
 - [ ] Each ADR has at least one check that proves the decision works, with a method and when it runs.
-- [ ] Each Affects quality row has a check, or cites the how-checked method in `quality.md`.
+- [ ] Each Affects quality row has a check, or cites that row's rubric axis in `specs/definition/quality/rubrics.md`.
 
 ### Lifecycle and archive
 

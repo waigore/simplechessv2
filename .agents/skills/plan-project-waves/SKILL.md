@@ -1,7 +1,7 @@
 ---
 name: plan-project-waves
 description: |-
-  Break a defined spec set into coherent implementation waves (milestones),
+  Break formalized specs into coherent implementation waves (milestones),
   vertical epics, and leaf tasks for the wave being expanded (default: wave 1).
   Foundations before detailed mechanics; vertical slicing; confirm before filing.
   Use when planning implementation from specs or expanding the next wave.
@@ -20,18 +20,17 @@ Cut shippable **waves** from `specs/` and file issues. Contract: [`docs/issues/w
 
 ## Principles
 
-- **Waves = appreciable chunks** of game features from the specs — coherent, testable, and understandable. Soft target: **≤2–3 epics per wave**, **~10 implementation tasks per epic**. Prefer smaller waves over large scopes that hide complexity.
-- **Foundations before detailed mechanics**; then **vertical slices** (player outcomes). No horizontal catch-alls.
+Apply [`docs/issues/waves.md`](../../../docs/issues/waves.md), including soft size, foundation, verticals, PoCs, and filing. Do not restate them.
+
 - **Pick one slice axis** for the run (loop, journey, mode, content pack, system+scenario, or similar) so waves extend along a clear spine. Confirm with the user.
-- **PoCs optional** — surface open [`poc-requests.md`](../../../docs/requirements/poc-requests.md) entries; file tasks/epics when useful; use **blocked-by** only where a claim must wait on proof. No mandatory PoC-before-foundation pattern. Details: [PoCs and demo mode](../../../docs/issues/waves.md#pocs-and-demo-mode).
 
 ## Workflow
 
-1. **Setup / gate** — [`ensure-project-setup`](../ensure-project-setup/SKILL.md) unless already passed this session. High-level requirements locked; Engine ADR Accepted; enough specs to inventory. Blocking TBDs on IDs you would include → stop.
-2. **Inventory** — Stable IDs and rough dependencies only (not task lists). Note open PoC requests.
-3. **Propose** — Full wave map (milestones + epic stubs for every wave) unless the user asked for a **specific wave**. Expand **leaf tasks only** for the wave being expanded (first run: wave 1). Soft-size the epics/tasks. Include PoC tasks and local blocked-by only when needed. `--no-create` / draft-only: print and stop.
-4. **Confirm** with the user, then **file** — milestones for all planned waves; epics for all waves; leaves only for the expanded wave. Wire milestones, sub-issues, blocked-by.
-5. **Report** — URLs and dependency summary.
+1. **Setup / gate** — [`docs/skills.md`](../../../docs/skills.md) `ensure-project-setup` hook. Inventory formalized specs only ([`docs/issues/waves.md`](../../../docs/issues/waves.md)). If nothing is formalized, stop. Engine ADR Accepted for main-tree work in the wave, not for leftover placeholders. Blocking TBDs in formalized sections you would include → stop.
+2. **Inventory** — Formalized IDs and rough dependencies only (not task lists). Skip sections that are still `<!-- fill in -->`. Note open PoC requests.
+3. **Propose** — Full wave map (milestones + epic stubs for every wave) unless the user asked for a **specific wave**. Expand **leaf tasks only** for the wave being expanded (first run: wave 1). Size per the waves contract. Include PoC tasks when needed. Do not use blocked-by ([`hierarchy.md`](../../../docs/issues/hierarchy.md)). `--no-create` / draft-only: print and stop.
+4. **Confirm** with the user, then **file** — milestones for all planned waves; epics for all waves; leaves only for the expanded wave. Wire milestones and sub-issues only.
+5. **Report** — URLs and parent/milestone summary.
 
 **Expand later wave:** inventory delta; file leaves under that wave’s epics (create missing epics if needed). Do not re-break earlier waves unless asked.
 

@@ -16,6 +16,7 @@ Each open request should become a GitHub task or epic before build. Status `file
 - **Desired outcome**: <!-- what proven or disproven looks like -->
 - **Trigger**: <!-- agent-proposed | user-requested -->
 - **Related**: <!-- note/spec/ADR path, or none -->
+- **Constraints**: <!-- formalized spec or Accepted ADR paths this experiment must respect, or none -->
 - **Status**: open
 - **Issue**: <!-- none until filed; then #n -->
 ```

@@ -12,26 +12,10 @@ description: |-
 
 # Implement project issue
 
-Record implementation evidence for a typed issue in `status:pending-implementation`.
+Veneer over the [action shell](../enforce-task-workflow-status/references/action-shell.md) for `status:pending-implementation`.
 
-**Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
+This skill records evidence and status. It does not replace doing the implementation work.
 
-**Evidence writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py`, read-back.
+Load requirements, deliverables, and acceptance criteria. Confirm deliverables exist (PRs, commits, paths). Ask if they are missing. Comment summarizing what was created or modified, with PR and commit links. Gate: `pending-implementation` → `pending-verification`.
 
-**Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md)
-
-## Steps
-
-1. **Load** issue `n` (requirements, deliverables, acceptance criteria).
-2. **Assert** `status:pending-implementation`.
-3. **Main-tree UI gate** ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md)): if deliverables include main-tree UI for a screen, that screen's row in [`specs/ux/mockups/catalog.md`](../../../specs/ux/mockups/catalog.md) must be `approved`. If not, stop — do not gate to verification; comment the missing approval (and unapprove/`draft` if a material upstream change landed after review). PoCs under `pocs/` are exempt.
-4. **Confirm** deliverables exist (PRs, commits, paths). Ask if missing.
-5. **Comment** summarizing what was created or modified against the issue requirements; include PR/commit links.
-6. **Gate** via `enforce-task-workflow-status`: `pending-implementation` → `pending-verification`.
-7. **Report** URL, evidence comment, and new status.
-
-## Rules
-
-- This skill records evidence and status; it does not replace doing the implementation work.
-- Call `enforce-task-workflow-status` for the label change.
-- Do not treat journey catalog approval as required to implement a screen; the **screen** row is the gate.
+**Main-tree UI** ([`docs/ux-mockups.md`](../../../docs/ux-mockups.md)): if deliverables include main-tree UI for a screen, that screen's row in [`specs/ux/mockups/catalog.md`](../../../specs/ux/mockups/catalog.md) must be `approved`. If not, stop. Do not gate to verification. Comment the missing approval, and set the row back to `draft` if a material upstream change landed after review. PoCs under `pocs/` are exempt. Journey catalog approval is not required to implement a screen. The screen row is the gate.

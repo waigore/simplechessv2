@@ -10,24 +10,13 @@ signal reject_flash_finished
 const COLOR_LIGHT := Color("E8D5B5")
 const COLOR_DARK := Color("8B5A3C")
 const COLOR_TABLE := Color("5C3A2A")
-const COLOR_SELECT := Color("B8940C")
-const COLOR_LEGAL := Color("6EA746")
 const COLOR_INK := Color("2C2A28")
 const COLOR_CREAM := Color("F7F1E8")
 ## PAL.C8 check rose — refused-place flash (PER.R8 / PAL.K5 full strength ≥ 2:1).
 const COLOR_DANGER := Color("C28A86")
 
-## Empty legal diamond half-diagonal so area 2 r² ≥ 1/4 square (PER.R4).
-const LEGAL_EMPTY_R := 0.36
-## Capture ring radius / stroke so ink area ≈ 2π r w ≥ 1/4 square.
-const LEGAL_CAPTURE_R := 0.40
-const LEGAL_CAPTURE_W := 0.10
-## Selection frame stroke in world units (≪ 10% of piece body — PER.R1 / R3).
-const SELECT_STROKE := 0.06
 ## Reject frame stroke — rim only so piece silhouette stays readable (PER.R1 / R8).
 const REJECT_STROKE := 0.10
-## C6 chooser sprites scaled to fit a 2×2 on the destination square.
-const PROMOTE_SPRITE_SCALE := 0.42
 const BOARD_BG_ID := "01a14f8e-1cfa-7e93-bc94-ef0e7b4e3855"
 const PIECE_IDS := {
 	"white|pawn": "01a15dab-051c-7db1-8f3e-9cb5e68058d8",
@@ -55,10 +44,7 @@ var _assets: Dictionary = {}
 var _occupancy: Dictionary = {}
 var _selection := ""
 var _legal_marks: PackedStringArray = PackedStringArray()
-var _capture_marks: PackedStringArray = PackedStringArray()
-var _piece_nodes: Dictionary = {}
-var _drag_square := ""
-var _drag_world := Vector2.ZERO
+var _captures: PackedStringArray = PackedStringArray()
 var _motion_busy := false
 var _coord_meta: Dictionary = {}
 
@@ -69,18 +55,25 @@ var _content: Node2D
 var _cafe: Polygon2D
 var _board_root: Node2D
 var _squares_root: Node2D
-var _pieces_root: Node2D
+## The pieces: one node a square, its sprite, and the capture fragments.
+var _pieces: BoardPieceLayer
 var _overlay_root: Node2D
-var _select_frame: Line2D
-var _legal_root: Node2D
+## PER.R3 / R4 — the selection ring and the legal destinations.
+var _destinations: BoardDestinationMarks
 ## PER.R6 check L-frame on the checked King's square (E2 `in_check`).
 var _check_marks: CheckMarks
 var _reject_flash: Line2D
 ## PER.R5 advice marks (E4 `show_advice`), over the pieces.
 var _advice_marks: AdviceMarks
-var _promote_root: Node2D
-var _promote_square := ""
-var _promote_color := ""
+## PAL.K9 *Layer split* / UIS.C6 / PER.R8–R9 — the square marks: the refused
+## hatching, the last move's band and ticks, and their one cream foreground.
+var _marks: BoardMarkLayer
+## EX.promote — the Q/R/B/N chooser on a promoting destination.
+var _promotion: BoardPromotionChoice
+## B10 / PER.R8 — the piece follows the pointer; a refused drop returns home.
+var _drag: BoardDrag
+## The seat flip and CMP-presentation.R2's canvas↔world pair.
+var _camera: BoardCamera
 var _reject_square := ""
 var _board_sprite: Sprite2D
 var _coords_root: Control
@@ -130,25 +123,23 @@ func _ready() -> void:
 	_board_root.add_child(_squares_root)
 	_build_squares()
 
-	_pieces_root = Node2D.new()
-	_pieces_root.name = "Pieces"
-	_pieces_root.z_index = 3
-	_content.add_child(_pieces_root)
+	_pieces = BoardPieceLayer.new()
+	_pieces.assets_needed.connect(func(ids: PackedStringArray) -> void: assets_needed.emit(ids))
+	_content.add_child(_pieces)
+	_drag = BoardDrag.new()
+	_drag.pieces = _pieces
+	_drag.motion.connect(_on_drag_motion)
+	_content.add_child(_drag)
+	_camera = BoardCamera.new()
+	_camera.content = _content
+	_content.add_child(_camera)
 
-	_overlay_root = Node2D.new()
-	_overlay_root.name = "Overlays"
-	_overlay_root.z_index = 4
+	_destinations = BoardDestinationMarks.new()
+	_destinations.z_index = 4
+	_overlay_root = _destinations
 	_content.add_child(_overlay_root)
-	_select_frame = Line2D.new()
-	_select_frame.name = "Selection"
-	_select_frame.width = SELECT_STROKE
-	_select_frame.default_color = COLOR_SELECT
-	_select_frame.closed = true
-	_select_frame.visible = false
-	_overlay_root.add_child(_select_frame)
-	_legal_root = Node2D.new()
-	_legal_root.name = "LegalMarks"
-	_overlay_root.add_child(_legal_root)
+	_marks = BoardMarkLayer.new()
+	_overlay_root.add_child(_marks)
 	_check_marks = CheckMarks.new()
 	_overlay_root.add_child(_check_marks)
 	_reject_flash = Line2D.new()
@@ -159,11 +150,8 @@ func _ready() -> void:
 	_reject_flash.visible = false
 	_reject_flash.z_index = 0
 	_overlay_root.add_child(_reject_flash)
-	_promote_root = Node2D.new()
-	_promote_root.name = "PromoteChoice"
-	_promote_root.visible = false
-	_promote_root.z_index = 2
-	_overlay_root.add_child(_promote_root)
+	_promotion = BoardPromotionChoice.new()
+	_overlay_root.add_child(_promotion)
 
 	_advice_marks = AdviceMarks.new()
 	_overlay_root.add_child(_advice_marks)
@@ -187,7 +175,7 @@ func provide_assets(resources_by_id: Dictionary) -> void:
 		_coord_font = latin as Font
 		_refresh_coordinate_fonts()
 	_bind_board_backdrop()
-	_refresh_piece_textures()
+	_pieces.refresh_textures(_occupancy, _assets, _piece_asset_id)
 
 
 func render_position(
@@ -202,13 +190,14 @@ func render_position(
 	var post_occ: Dictionary = (position.get("occupancy", {}) as Dictionary).duplicate(true)
 	_selection = selection
 	_legal_marks = legal.duplicate()
-	_capture_marks = PackedStringArray()
+	var captures := PackedStringArray()
 	for square in _legal_marks:
 		var piece: Dictionary = post_occ.get(square, {})
 		if not piece.is_empty():
-			_capture_marks.append(str(square))
+			captures.append(str(square))
 	if options.has("capture_marks"):
-		_capture_marks = PackedStringArray(options["capture_marks"])
+		captures = PackedStringArray(options["capture_marks"])
+	_captures = captures
 	var move_opt: Variant = options.get("move", null)
 	var has_move := (
 		move_opt is Dictionary and not str((move_opt as Dictionary).get("from", "")).is_empty()
@@ -244,14 +233,17 @@ func render_advice(advice_best_move: Variant) -> void:
 		return
 	if not (advice_best_move is Dictionary):
 		_advice_marks.clear()
+		_refresh_marks()
 		return
 	var move: Dictionary = advice_best_move
 	var from_square := str(move.get("from", ""))
 	var to_square := str(move.get("to", ""))
 	if from_square.is_empty() or to_square.is_empty():
 		_advice_marks.clear()
+		_refresh_marks()
 		return
 	_advice_marks.show_best_move(from_square, to_square)
+	_refresh_marks()
 
 
 ## CMP-presentation.R8 — the one accessible name a piece node exposes: the Copy key
@@ -274,86 +266,46 @@ func set_white_seat(seat: String) -> void:
 	white_seat = (
 		BoardGeometry.SEAT_TOP if seat == BoardGeometry.SEAT_TOP else BoardGeometry.SEAT_BOTTOM
 	)
+	_camera.white_seat = white_seat
 	_layout_camera()
 
 
 func piece_world_center(square: String) -> Vector2:
-	if _drag_square == square:
-		return _drag_world
-	var node: Node2D = _piece_nodes.get(square) as Node2D
+	if _drag.square() == square:
+		return _drag.world()
+	var node: Node2D = _pieces.node_for(square)
 	if node != null:
 		return node.position
 	return BoardGeometry.square_center(square)
 
 
 ## B10 drag follow: `begin` with the square and world point, then `move`.
+## B10 drag follow (`begin`/`move`), and the drop: `end_drag_legal` hands a
+## legal drop to the move, `end_drag_illegal` returns the piece home, and
+## `cancel_drag` drops the follow so O2 can own the place animation.
 func update_drag(cmd: Variant, payload: Variant = null) -> void:
-	match str(cmd):
-		"begin":
-			var start: Dictionary = payload
-			_begin_drag(str(start.get("square", "")), start.get("world", Vector2.ZERO))
-		"move":
-			_move_drag(payload)
-
-
-func _begin_drag(square: String, world: Vector2) -> void:
-	if not _piece_nodes.has(square) or _motion_busy:
-		return
-	_drag_square = square
-	_drag_world = world
-	var node: Node2D = _piece_nodes[square] as Node2D
-	node.z_index = 10
-	node.position = world
-
-
-func _move_drag(world: Vector2) -> void:
-	if _drag_square.is_empty():
-		return
-	_drag_world = world
-	var node: Node2D = _piece_nodes.get(_drag_square) as Node2D
-	if node != null:
-		node.position = world
+	_drag.update_drag(cmd, payload)
 
 
 func end_drag_legal(to_square: String) -> void:
-	if _drag_square.is_empty():
-		return
-	var from_square := _drag_square
-	_drag_square = ""
-	await play_move(from_square, to_square)
+	await _drag.end_legal(to_square, play_move)
 
 
 func end_drag_illegal() -> void:
-	if _drag_square.is_empty():
-		return
-	var square := _drag_square
-	_drag_square = ""
-	var node: Node2D = _piece_nodes.get(square) as Node2D
-	if node == null:
-		return
-	var origin := BoardGeometry.square_center(square)
-	last_return_s = BoardGeometry.TRAVEL_S
-	_motion_busy = true
-	var tw := create_tween()
-	tw.set_ease(Tween.EASE_OUT)
-	tw.set_trans(Tween.TRANS_QUAD)
-	tw.tween_property(node, "position", origin, last_return_s)
-	await tw.finished
-	node.z_index = 0
-	_motion_busy = false
+	await _drag.end_illegal()
 
 
 ## Drop drag follow without tween so O2 can own the place animation.
 func cancel_drag() -> void:
-	if _drag_square.is_empty():
-		return
-	var square := _drag_square
-	_drag_square = ""
-	var node: Node2D = _piece_nodes.get(square) as Node2D
-	if node == null:
-		return
-	node.position = BoardGeometry.square_center(square)
-	node.z_index = 0
+	_drag.cancel()
+
+
+## The drag reports its own busy hand-off (B10 return) so a sync leaves the
+## piece where the animation put it.
+func _on_drag_motion(active: bool) -> void:
+	_motion_busy = active
+	if active:
+		last_return_s = _drag.last_return_s
 
 
 func play_move(
@@ -367,7 +319,7 @@ func play_move(
 	if _motion_busy:
 		return
 	_motion_busy = true
-	var mover: Node2D = _piece_nodes.get(from_square) as Node2D
+	var mover: Node2D = _pieces.node_for(from_square)
 	if mover == null:
 		_motion_busy = false
 		return
@@ -376,17 +328,17 @@ func play_move(
 	var duration := last_travel_s
 	var color := _piece_color(from_square, mover)
 	var fragments: Array[Node2D] = []
-	if not capture_square.is_empty() and _piece_nodes.has(capture_square):
-		fragments = _spawn_capture_break(capture_square)
-		_remove_piece_node(capture_square)
+	if not capture_square.is_empty() and _pieces.node_for(capture_square) != null:
+		fragments = _pieces.spawn_capture_break(capture_square, COLOR_INK)
+		_pieces.remove(capture_square)
 	var rook: Node2D = null
 	var rook_dest := Vector2.ZERO
-	if not castle_rook_from.is_empty() and _piece_nodes.has(castle_rook_from):
-		rook = _piece_nodes[castle_rook_from] as Node2D
+	if not castle_rook_from.is_empty() and _pieces.node_for(castle_rook_from) != null:
+		rook = _pieces.node_for(castle_rook_from)
 		rook_dest = BoardGeometry.square_center(castle_rook_to)
 	# PHY.M3: promotion morph runs inside the same ≤0.15 s budget as M1.
 	if not promote_kind.is_empty():
-		_apply_kind_texture(mover, color, promote_kind)
+		_pieces.apply_kind_texture(mover, color, promote_kind, _assets, _piece_asset_id)
 		mover.modulate.a = 0.35
 	var tw := create_tween()
 	tw.set_ease(Tween.EASE_OUT)
@@ -404,10 +356,12 @@ func play_move(
 		frag.queue_free()
 	if not promote_kind.is_empty():
 		mover.modulate = Color.WHITE
-	_rekey_piece(from_square, to_square, mover)
+	_pieces.rekey(from_square, to_square, mover)
 	if rook != null:
-		_rekey_piece(castle_rook_from, castle_rook_to, rook)
+		_pieces.rekey(castle_rook_from, castle_rook_to, rook)
 	await _settle(mover)
+	# PER.R9 — the pair is replaced by the move that settles, never by a refused one.
+	_marks.set_last_move(from_square, to_square)
 	camera_offset = Vector2.ZERO
 	_motion_busy = false
 	travel_finished.emit(to_square)
@@ -420,30 +374,15 @@ func play_move(
 ## `to_global`/`to_local` walk every ancestor transform, so a seat flip, camera
 ## zoom, or stretch is included and the pair inverts exactly. Do not apply a
 ## canvas transform again here: callers already hold canvas coordinates.
-func screen_to_world(screen: Vector2) -> Vector2:
-	if _content == null:
-		return Vector2.ZERO
-	return _content.to_local(screen)
+## The board's camera: the seat flip and CMP-presentation.R2's canvas↔world pair.
+## It owns no board face, so the board reads it directly.
+func camera() -> BoardCamera:
+	return _camera
 
 
-func world_to_screen(world: Vector2) -> Vector2:
-	if _content == null:
-		return Vector2.ZERO
-	return _content.to_global(world)
-
-
-func framed_center(square: String) -> Vector2:
-	return BoardGeometry.apply_seat(BoardGeometry.square_center(square), white_seat)
-
-
-func aspect_ratio() -> float:
-	if size.y <= 0.0:
-		return 1.0
-	return size.x / size.y
-
-
-func visible_world_size() -> Vector2:
-	return BoardGeometry.visible_size(aspect_ratio())
+## Lookup from a `"color|kind"` slot to the piece sprite's catalog id.
+func _piece_asset_id(slot: String) -> String:
+	return str(PIECE_IDS.get(slot, ""))
 
 
 func _piece_color(square: String, node: Node2D = null) -> String:
@@ -537,6 +476,18 @@ func _layout_camera() -> void:
 	)
 	_fit_board_sprite()
 	_refresh_coordinates()
+	# The foreground keyline is a screen-px width (UIS.C6 / UIS.I1), so every
+	# frame that changes the world scale re-derives it.
+	if _marks != null:
+		_marks.pixels_per_unit = world_px()
+		_marks.refresh(_advice_squares())
+
+
+## Screen px per world unit at the current frame — 36 at 360 × 640 (PRJ.P1).
+func world_px() -> float:
+	if _world == null:
+		return 36.0
+	return absf(_world.scale.x)
 
 
 func _build_squares() -> void:
@@ -572,11 +523,16 @@ func _build_coordinates() -> void:
 
 func _make_coord_label(text: String, key: String) -> Label:
 	## PER.R7: UIS.T2 size, C9 ink on C10 cream chip (≥ 4.5:1), catalog font when bound.
+	## PAL.K8 draws C9 ink on the C10 chip, so the chip carries the 1.5 px C9 keyline
+	## (UIS.I1): the int border field is set to the ceiling of the floor.
 	var chip := Panel.new()
 	chip.name = "%s_chip" % key
 	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
 	style.bg_color = COLOR_CREAM
+	style.border_color = COLOR_INK
+	style.set_border_width_all(_chip_keyline_px())
+	style.anti_aliasing = true
 	style.set_corner_radius_all(3)
 	style.content_margin_left = 2
 	style.content_margin_right = 2
@@ -613,6 +569,11 @@ func _reflow_coordinates() -> void:
 			label.custom_minimum_size = _coord_chip_size()
 
 
+## UIS.I1's 1.5 screen px floor in the integer border field of StyleBoxFlat.
+static func _chip_keyline_px() -> int:
+	return int(ceil(UiChrome.KEYLINE_PX))
+
+
 func _coord_chip_size() -> Vector2:
 	var side := float(UiChrome.scaled_px(UiChrome.BODY_PX, _text_scale) + 4)
 	return Vector2(side, side)
@@ -637,7 +598,7 @@ func _refresh_coordinates() -> void:
 		var chip := label.get_parent() as Control
 		var world: Vector2 = entry["world"]
 		# Content rotates with CAM-board.M2; labels stay upright in board-local space.
-		var screen: Vector2 = world_to_screen(world)
+		var screen: Vector2 = _camera.world_to_screen(world)
 		var local: Vector2 = get_global_transform_with_canvas().affine_inverse() * screen
 		if chip != null:
 			chip.position = local - Vector2(half, half)
@@ -647,117 +608,13 @@ func _refresh_coordinates() -> void:
 
 
 func _sync_pieces() -> void:
-	var keep: Dictionary = {}
-	for square in _occupancy.keys():
-		var piece: Dictionary = _occupancy[square]
-		keep[square] = true
-		var node: Node2D = _piece_nodes.get(square) as Node2D
-		if node == null:
-			node = _make_piece_node(str(square), piece)
-			_piece_nodes[square] = node
-		else:
-			_apply_kind_texture(node, str(piece.get("color", "")), str(piece.get("kind", "")))
-			if _drag_square != square and not _motion_busy:
-				node.position = BoardGeometry.square_center(str(square))
-	var stale: Array = []
-	for square in _piece_nodes.keys():
-		if not keep.has(square) and square != _drag_square:
-			stale.append(square)
-	for square in stale:
-		_remove_piece_node(str(square))
-
-
-func _make_piece_node(square: String, piece: Dictionary) -> Node2D:
-	var root := Node2D.new()
-	root.name = "piece_%s" % square
-	root.position = BoardGeometry.square_center(square)
-	root.set_meta("piece_color", str(piece.get("color", "white")))
-	root.set_meta("piece_kind", str(piece.get("kind", "pawn")))
-	var sprite := Sprite2D.new()
-	sprite.name = "Sprite"
-	sprite.centered = true
-	root.add_child(sprite)
-	_apply_kind_texture(root, str(piece.get("color", "")), str(piece.get("kind", "")))
-	_pieces_root.add_child(root)
-	return root
-
-
-func _apply_kind_texture(node: Node2D, color: String, kind: String) -> void:
-	var sprite := node.get_node_or_null("Sprite") as Sprite2D
-	if sprite == null:
-		return
-	node.set_meta("piece_color", color)
-	node.set_meta("piece_kind", kind)
-	# R8: the name rides the same node metadata; promotion re-applies it here.
-	node.set_meta("accessible_name", accessible_name(kind, "shared-play", "en"))
-	var asset_id := str(PIECE_IDS.get("%s|%s" % [color, kind], ""))
-	if asset_id.is_empty():
-		return
-	var texture: Texture2D = _assets.get(asset_id) as Texture2D
-	if texture == null:
-		assets_needed.emit(PackedStringArray([asset_id]))
-		sprite.texture = null
-		return
-	sprite.texture = texture
-	var px := float(maxi(texture.get_width(), texture.get_height()))
-	if px <= 0.0:
-		px = 1.0
-	# _world mirrors board space (board y up, screen y down). Raster art cancels
-	# that locally so pieces read as authored and still rotate with CAM-board.M2 (#617).
-	var s := BoardGeometry.PIECE_EXTENT / px
-	sprite.scale = Vector2(s, -s)
+	_pieces.sync(_occupancy, _assets, _motion_busy, _drag.square(), _piece_asset_id)
 
 
 func _sync_overlays() -> void:
-	for child in _legal_root.get_children():
-		child.queue_free()
-	if _selection.is_empty() or not BoardGeometry.is_square(_selection):
-		_select_frame.visible = false
-	else:
-		var c := BoardGeometry.square_center(_selection)
-		var half := 0.5 - SELECT_STROKE * 0.5
-		_select_frame.clear_points()
-		_select_frame.add_point(c + Vector2(-half, -half))
-		_select_frame.add_point(c + Vector2(half, -half))
-		_select_frame.add_point(c + Vector2(half, half))
-		_select_frame.add_point(c + Vector2(-half, half))
-		_select_frame.default_color = COLOR_SELECT
-		_select_frame.width = SELECT_STROKE
-		_select_frame.visible = true
-	for square in _legal_marks:
-		var sq := str(square)
-		if not BoardGeometry.is_square(sq):
-			continue
-		var c := BoardGeometry.square_center(sq)
-		var is_capture := false
-		for cap in _capture_marks:
-			if str(cap) == sq:
-				is_capture = true
-				break
-		if is_capture:
-			# Hollow ring at full PAL.C11; ink area 2π r w ≥ 1/4 square (PER.R4 / PAL.K6).
-			var ring := Line2D.new()
-			ring.width = LEGAL_CAPTURE_W
-			ring.default_color = COLOR_LEGAL
-			ring.closed = true
-			for i in range(16):
-				var ang := TAU * float(i) / 16.0
-				ring.add_point(c + Vector2(cos(ang), sin(ang)) * LEGAL_CAPTURE_R)
-			_legal_root.add_child(ring)
-		else:
-			# Diamond at full PAL.C11; area 2 r² ≥ 1/4 square.
-			var mark := Polygon2D.new()
-			mark.color = COLOR_LEGAL
-			var r := LEGAL_EMPTY_R
-			mark.polygon = PackedVector2Array(
-				[
-					c + Vector2(-r, 0),
-					c + Vector2(0, -r),
-					c + Vector2(r, 0),
-					c + Vector2(0, r),
-				]
-			)
-			_legal_root.add_child(mark)
+	_destinations.set_selection(_selection)
+	_destinations.show_destinations(_legal_marks, _captures)
+	_refresh_marks()
 
 
 func _apply_choice_overlays(options: Dictionary) -> void:
@@ -772,7 +629,7 @@ func _apply_choice_overlays(options: Dictionary) -> void:
 	if str(options.get("ui_state", "")) == "S4" and BoardGeometry.is_square(promote_to):
 		show_promotion_choice(promote_to, promote_color, kinds_var)
 	else:
-		clear_promotion_choice()
+		_promotion.clear_choice()
 
 
 ## PER.R6 / R7 — mark the checked King while the side to move is in check. The
@@ -783,8 +640,13 @@ func _sync_check_marks(options: Dictionary) -> void:
 		return
 	if not bool(options.get("in_check", false)):
 		_check_marks.clear()
+		_marks.set_checked_square("")
+		_refresh_marks()
 		return
-	_check_marks.show_square(_king_square(str(options.get("side_to_move", "white"))))
+	var checked := _king_square(str(options.get("side_to_move", "white")))
+	_check_marks.show_square(checked)
+	_marks.set_checked_square(checked)
+	_refresh_marks()
 
 
 func _king_square(color: String) -> String:
@@ -795,6 +657,45 @@ func _king_square(color: String) -> String:
 		if str(piece.get("kind", "")) == "king":
 			return str(square)
 	return ""
+
+
+## PER.R9 — the last move as one state on two squares: a soft PAL.C7 band on the
+## from-square and PAL.C10 corner ticks on the to-square, told apart by form and
+## placement, never hue. Held until the next move settles; drawn in board space so
+## CAM-board.M2's 180° flip carries both without re-deriving (rules-k9.md).
+## The marks themselves (band, ticks, hatching, the one foreground) live in
+## `mark_layer()`.
+func last_move() -> PackedStringArray:
+	if _marks == null:
+		return PackedStringArray()
+	return _marks.last_move()
+
+
+## PER.R9 — leaving the board (a new game, or a screen it does not belong to)
+## drops the last-move pair; on the board it is replaced only by the next move.
+func clear_last_move() -> void:
+	if _marks != null:
+		_marks.clear_last_move()
+
+
+## The square marks this board draws: the last move's band and ticks, the refused
+## hatching, and the one cream foreground (UIS.C6).
+func mark_layer() -> BoardMarkLayer:
+	return _marks
+
+
+## Re-derive the square marks from the current state and the advice accents.
+func _refresh_marks() -> void:
+	if _marks == null:
+		return
+	_marks.refresh(_advice_squares())
+
+
+## The two squares the advice accents mark, empty when advice is off.
+func _advice_squares() -> Array:
+	if _advice_marks == null:
+		return []
+	return [_advice_marks.last_from, _advice_marks.last_to]
 
 
 ## PER.R8 — full-strength PAL.C8 rim on the attempted square for 0.3 s (SPC.L4).
@@ -824,10 +725,14 @@ func flash_reject(square: String) -> void:
 		_reject_tween.kill()
 	_reject_tween = create_tween()
 	_reject_tween.set_ease(Tween.EASE_OUT)
+	_reject_tween.set_parallel(true)
 	_reject_tween.tween_property(
 		_reject_flash, "default_color", Color(COLOR_DANGER, 0.0), SharedGameSession.REJECT_FLASH_S
 	)
-	_reject_tween.tween_callback(_on_reject_flash_tween_done)
+	# The hatching rides the same flash and needs no cream foreground and no keyline:
+	# it is PAL.C8 over the square's own fill, inside the ring (rules.md *Layer split*).
+	_marks.start_hatch(square, _reject_tween)
+	_reject_tween.chain().tween_callback(_on_reject_flash_tween_done)
 
 
 func _on_reject_flash_tween_done() -> void:
@@ -841,85 +746,30 @@ func clear_reject_flash() -> void:
 		_reject_tween = null
 	_reject_flash.visible = false
 	_reject_square = ""
+	if _marks != null:
+		_marks.clear_hatch()
 
 
-## EX.promote — Q/R/B/N upright sprites in a 2×2 on the destination square.
+## EX.promote — Q/R/B/N upright sprites in a 2×2 on a promoting destination,
+## rebuilt only when the square or colour changes (E-pieces.I33 / I34).
 func show_promotion_choice(square: String, color: String, kinds_var: Variant = null) -> void:
-	var kinds: Array = []
-	if kinds_var is Array or kinds_var is PackedStringArray:
-		for item in kinds_var:
-			kinds.append(str(item))
-	else:
-		kinds = SharedGameSession.PROMOTE_ORDER.duplicate()
-	if kinds.is_empty():
-		kinds = SharedGameSession.PROMOTE_ORDER.duplicate()
-	# Clock-tick refresh must not rebuild an open chooser.
-	if _promote_root.visible and _promote_square == square and _promote_color == color:
-		return
-	_promote_square = square
-	_promote_color = color
-	for child in _promote_root.get_children():
-		child.queue_free()
-	var c := BoardGeometry.square_center(square)
-	# 2×2 centered on the destination so last-rank stays on-board (E-pieces.I33/I34).
-	var offsets := [
-		Vector2(-0.28, -0.28),
-		Vector2(0.28, -0.28),
-		Vector2(-0.28, 0.28),
-		Vector2(0.28, 0.28),
-	]
-	for i in range(kinds.size()):
-		var kind := str(kinds[i])
-		var node := Node2D.new()
-		node.name = "Promote_%s" % kind
-		node.position = c + offsets[mini(i, offsets.size() - 1)]
-		node.set_meta("promote_kind", kind)
-		var sprite := Sprite2D.new()
-		sprite.name = "Sprite"
-		sprite.centered = true
-		node.add_child(sprite)
-		# Sprite orientation follows CAM-board.M2 seat rotation with the board;
-		# color/kind art is the side-to-move set (E-pieces.I33 / I34).
-		_apply_kind_texture(node, color, kind)
-		_scale_promote_sprite(sprite)
-		_promote_root.add_child(node)
-	_promote_root.visible = true
+	_promotion.show_choice(
+		square,
+		color,
+		kinds_var,
+		func(node: Node2D, choice_color: String, kind: String) -> void:
+			_pieces.apply_kind_texture(node, choice_color, kind, _assets, _piece_asset_id)
+	)
 
 
-func _scale_promote_sprite(sprite: Sprite2D) -> void:
-	if sprite.texture == null:
-		return
-	var px := float(maxi(sprite.texture.get_width(), sprite.texture.get_height()))
-	if px <= 0.0:
-		px = 1.0
-	# Same local Y cancel as _apply_kind_texture: the chooser overrides that scale (#617).
-	var s := BoardGeometry.PIECE_EXTENT * PROMOTE_SPRITE_SCALE / px
-	sprite.scale = Vector2(s, -s)
-
-
-func clear_promotion_choice() -> void:
-	_promote_square = ""
-	_promote_color = ""
-	for child in _promote_root.get_children():
-		child.queue_free()
-	_promote_root.visible = false
+## The chooser itself (`clear_choice`, `show_choice`, `kind_at`), for the checks.
+func promotion_choice() -> BoardPromotionChoice:
+	return _promotion
 
 
 ## Hit-test C6 promotion sprites in world space; returns kind or "".
 func promotion_kind_at(world: Vector2) -> String:
-	if not _promote_root.visible:
-		return ""
-	var best := ""
-	var best_d := 0.38
-	for child in _promote_root.get_children():
-		var node := child as Node2D
-		if node == null:
-			continue
-		var d := node.position.distance_to(world)
-		if d < best_d:
-			best_d = d
-			best = str(node.get_meta("promote_kind", ""))
-	return best
+	return _promotion.kind_at(world)
 
 
 func _bind_board_backdrop() -> void:
@@ -942,31 +792,6 @@ func _fit_board_sprite() -> void:
 	_board_sprite.scale = Vector2(10.0 / w, -10.0 / h)
 
 
-func _refresh_piece_textures() -> void:
-	for square in _piece_nodes.keys():
-		var piece: Dictionary = _occupancy.get(square, {})
-		if piece.is_empty():
-			continue
-		_apply_kind_texture(
-			_piece_nodes[square] as Node2D, str(piece.get("color", "")), str(piece.get("kind", ""))
-		)
-
-
-func _spawn_capture_break(square: String) -> Array[Node2D]:
-	var out: Array[Node2D] = []
-	var origin := BoardGeometry.square_center(square)
-	for i in range(4):
-		var frag := Polygon2D.new()
-		frag.color = Color(COLOR_INK, 0.85)
-		var o := Vector2(0.12 if i % 2 == 0 else -0.12, 0.12 if i < 2 else -0.12)
-		frag.polygon = PackedVector2Array(
-			[origin + o, origin + o + Vector2(0.15, 0), origin + o + Vector2(0.08, 0.15)]
-		)
-		_pieces_root.add_child(frag)
-		out.append(frag)
-	return out
-
-
 func _settle(mover: Node2D) -> void:
 	last_settle_s = BoardGeometry.SETTLE_S
 	var sprite := mover.get_node_or_null("Sprite") as Sprite2D
@@ -979,18 +804,3 @@ func _settle(mover: Node2D) -> void:
 	tw.tween_property(sprite, "scale", base * Vector2(1.0, 0.92), last_settle_s * 0.5)
 	tw.tween_property(sprite, "scale", base, last_settle_s * 0.5)
 	await tw.finished
-
-
-func _rekey_piece(from_square: String, to_square: String, node: Node2D) -> void:
-	_piece_nodes.erase(from_square)
-	_piece_nodes[to_square] = node
-	node.name = "piece_%s" % to_square
-	node.z_index = 0
-	node.position = BoardGeometry.square_center(to_square)
-
-
-func _remove_piece_node(square: String) -> void:
-	var node: Node2D = _piece_nodes.get(square) as Node2D
-	_piece_nodes.erase(square)
-	if node != null:
-		node.queue_free()
