@@ -8,7 +8,7 @@ Same sections and required content as [`rules/vision.md`](rules/vision.md). File
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain; unused template rows are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized sections; unused template rows there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] The file links [`rules/vision.md`](rules/vision.md). Those rules are not pasted into the spec.
 - [ ] Every section is present: elevator pitch, high-level description, target audience and player fantasy, essential qualities, tradeoffs, non-goals.
 

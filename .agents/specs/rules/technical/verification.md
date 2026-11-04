@@ -15,6 +15,6 @@ This is not a test plan dump and not player stories. It names hooks and invarian
 ## Sections
 
 - **Seams**: `S1`, `S2`, …. Injection or observe point, purpose, how a test drives it.
-- **Invariants to assert**: `I1`, `I2`, …. What must hold, level (unit, integration, smoke), when checked. Cite schema or contract IDs.
+- **Invariants to assert**: `I1`, `I2`, …. What must hold, level (unit, integration, smoke), when checked. Cite schema or contract IDs. Each automatable deterministic axis listed from `specs/definition/quality/rubrics.md` is cited by one invariant.
 - **Harness expectations**: `H1`, `H2`, …. What the test harness or CI must provide (fakes, determinism, fixtures).
 - **Diagram**: optional; add when seam topology is non-obvious.

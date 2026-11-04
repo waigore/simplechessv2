@@ -4,44 +4,43 @@ Authoring rules: [`.agents/specs/rules/playtest/evidence.md`](../../.agents/spec
 
 ## Root and layout
 
-- **Root**: [`docs/playtest/evidence/`](../../docs/playtest/evidence/)
-- **Run folders**: `issue-<n>/headless-<run-id>/` and `issue-<n>/graphical-<run-id>/`
+- **In-repo root**: [`docs/playtest/evidence/`](../../docs/playtest/evidence/)
+- **Run folder**: `issue-<n>/<run-id>/` with `manifest.md` and `notes.md` only
+- **Wiki media**: screenshots and logs on the repo wiki — layout and write path in [`docs/playtest/wiki-evidence.md`](../../docs/playtest/wiki-evidence.md)
 - **Skip**: when [`playtest.md`](playtest.md) says playtesting is not required, no folder is required
-- **Design**: Headless folder only. **UX**: both folders when that protocol is in scope.
-
-## Outcomes
-
-This file owns the outcome vocabulary. Story rows are judged individually ([`story-rows.md`](story-rows.md)); the **protocol** is the acceptance unit ([`playtest.md`](playtest.md)).
-
-- **Story outcome**: per selected row, `pass`, `fail`, `not-judged`, or `none`.
-- **`none`**: a row no protocol judges, recorded once with the row list as `none — <reason>` with a durable reason ([`story-rows.md`](story-rows.md)), never as a run result. A scenario cell no step reaches is a scenario-cell `none` listed in its row's cell, with no owner. Never `out` or `not-judged`.
-- **Protocol verdict**: `pass` only when every cited story is `pass` in that environment; any cited story `fail` makes it `fail`, and a `not-judged` story makes it `not-judged` there. A protocol is never `pass` beside a failed story.
-- **`not-judged`**: the run could not judge the row (such as a display the run lacks). It never counts as `pass`. The issue stays `status:pending-acceptance` until another run judges it.
-- **`Waiting`**: folder-level only ([`procedures.md`](procedures.md)); never a story outcome or protocol verdict.
 
 ## Required artifacts
 
 | Artifact | Requirement |
 |----------|-------------|
-| Story rows | Every selected story row |
-| Results | One story outcome and one protocol verdict per selected protocol |
-| Screenshots | Per the screenshot rule below |
-| Notes | Judgement text for the run |
-| Logs | Session excerpt for the judged window |
-| `manifest.md` | Index of the above, including the environment (`ENV.<n>`) and the defect numbers filed for failed protocols; fields: [`evidence-manifest.md`](evidence-manifest.md) |
+| Story IDs | Every design/UX story (or protocol) in the run's scope |
+| Pass / fail | One outcome per story or protocol |
+| Screenshots | On the wiki; see below |
+| Notes | `notes.md` in the run folder |
+| Logs | On the wiki; session excerpt for the judged window |
+| `manifest.md` | Index of the above, including the wiki page URL |
+
+## Manifest (`manifest.md`)
+
+| Field | Content |
+|-------|---------|
+| Issue | GitHub issue number |
+| Build / session id | Matches `TEL.3` where possible |
+| Coverage mode | `full` or `critical-only` from the hub |
+| Results | Table: story or protocol ID → pass / fail |
+| Paths | Path to `notes.md`; **wiki page URL** for screenshots and logs. A headless run marks screenshots as waiting on a graphical run |
 
 ## Screenshots, logs, notes
 
-- **Screenshots**: Required before acceptance unless the protocol says none: ≥1 image of each failed protocol and of each `pass` judged state, from a graphical run of the same build, under `screenshots/`.
-- **Headless run**: May judge and record outcomes, notes, and logs with no display. Omit `screenshots/` and mark those paths waiting in `manifest.md`; that omission is no fail.
-- **Logs**: under `logs/`, covering the judged window for `TEL.1`–`TEL.5`.
-- **Notes**: `notes.md` — what was judged, blockers, and non-blocking marks only where allowed.
-- **Defects**: A protocol that fails for a game or interface reason is filed as a `type:defect` against the wave epic that owns the behavior on the tracker ([`quality-regression-owners.md`](../definition/quality-regression-owners.md) for quality rows); its number goes in that protocol's results row and on a `Defects` line in `manifest.md`.
+- **Screenshots**: Required before acceptance unless the protocol says none. ≥1 image per **failed** protocol; for each **pass**, ≥1 image of the judged state. Images come from a **graphical run** that re-runs the protocols on the same build the judgement used. Store them on the wiki; cite the wiki page URL in `manifest.md`.
+- **Headless run**: May judge and record pass/fail, notes, and logs with no display. Mark screenshots waiting in `manifest.md`. That omission is not a protocol fail and does not file a defect. The issue stays `status:pending-acceptance`.
+- **Logs**: On the wiki, covering the judged window so `TEL.1`–`TEL.5` can be correlated.
+- **Notes**: `notes.md` in-repo — what was judged, blockers, and non-blocking marks only when the protocol allows.
 
 ## Retention
 
-Keep each run folder in-repo until the accept outcome for that issue is recorded.
+Keep the in-repo run folder and the wiki page (with media) until the accept outcome for that issue is recorded. Do not delete either before then.
 
 ## Cite from acceptance
 
-`accept-project-issue` cites the run folder and `manifest.md`. It accepts only once graphical-run screenshots of the same build exist for every protocol that requires them; a protocol saying none may be accepted from the headless run alone. A game or interface fail still blocks acceptance and may file a defect without screenshots. Procedures: [`procedures.md`](procedures.md).
+`accept-project-issue` cites the run folder (`manifest.md`) and the **wiki page URL** when playtesting was required. It records acceptance only after graphical-run screenshots for the same build are on that wiki page for every protocol that requires them. A protocol that says none may be accepted from the headless run alone. A game or interface fail still blocks acceptance and may file a defect without those screenshots. Procedures: [`procedures.md`](procedures.md).

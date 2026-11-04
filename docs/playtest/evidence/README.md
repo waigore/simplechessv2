@@ -1,15 +1,17 @@
 # Playtest evidence
 
-In-repo evidence from AI-agent playtesting. Schema and requirements: [`specs/playtest/evidence.md`](../../../specs/playtest/evidence.md). Gate and scope: [`specs/playtest/playtest.md`](../../../specs/playtest/playtest.md).
+In-repo index from AI-agent playtesting. Schema: [`specs/playtest/evidence.md`](../../../specs/playtest/evidence.md). Gate: [`specs/playtest/playtest.md`](../../../specs/playtest/playtest.md). Wiki media: [`wiki-evidence.md`](../wiki-evidence.md).
 
 ## Layout
 
-`issue-<n>/headless-<run-id>/` and `issue-<n>/graphical-<run-id>/` with at least:
+`issue-<n>/<run-id>/` with:
 
-- `manifest.md` — issue, environment, build/session id with the source it was read from (published URL or release export), coverage mode, results table, defect numbers, paths, and a timing report (device, browser, repeat count) when a protocol cites `SIT.4`
+- `manifest.md` — issue, build/session id, coverage mode, results table, wiki page URL, path to `notes.md`
 - `notes.md`
-- `screenshots/` — after a graphical run of the same build; a headless-only folder may omit it when `manifest.md` marks screenshots as waiting
-- `logs/`
+
+Screenshots and logs are **not** stored here. Push them to the repo wiki and cite the wiki page URL. Do not commit `screenshots/` or `logs/` under this tree (gitignored).
+
+Markdown under `issue-*` is outside the 500-word cap. This README stays inside it.
 
 ## Gate-level runs
 

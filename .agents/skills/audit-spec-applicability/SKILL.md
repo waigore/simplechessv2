@@ -27,7 +27,7 @@ Read-only audit of **Applies** / **N/A** claims across the spec stack. Fixes go 
 2. **Load the graph**: read [`references/applicability-graph.md`](references/applicability-graph.md) for the seed's upstream grounds and downstream carry-outs. Open only the specs those edges name.
 3. **Upstream**: for each Applies claim, confirm a grounding fact still holds (vision, definition scope/platforms, design presence, Accepted ADR, or an upstream Applies). For each N/A, confirm the reason still matches those facts and is not contradicted by in-scope content.
 4. **Downstream**: for each Applies, confirm required carry-outs exist and are not themselves N/A without the same reason. For each N/A, confirm downstream did not author content that assumes Applies (filled targets, Affects rows that need a target, or topic files that should be N/A).
-5. **Report** using the shape below. Do not edit specs. If the requester wants fixes, point them at `author-spec`.
+5. **Report** using the shape below, then close per [`references/report-back.md`](references/report-back.md). If the requester wants fixes, point them at `author-spec`.
 
 ## Finding tags
 
@@ -53,11 +53,9 @@ Findings:
 Notes (optional): <non-blocking observations>
 ```
 
-**Pass** only when there are no findings. Empty specs still filled with `<!-- fill in -->` are Fail with `orphan Applies` or `stale N/A` as appropriate, not skipped.
+Do not tag an unfilled section `orphan Applies` or `stale N/A`.
 
 ## Rules
 
-- Read-only: do not edit `specs/` or `.agents/specs/rules/` while auditing.
+- Close per [`references/report-back.md`](references/report-back.md).
 - Use only edges in the reference graph (or the rules files they cite). Do not invent carry-outs.
-- Do not run a full `review-spec` checklist. When invoked by `review-spec`, return the audit report to the caller; do not call `review-spec` back.
-- When run alone, report back to the request source (chat, issue/PR comment, or calling agent), same as `review-spec`.
