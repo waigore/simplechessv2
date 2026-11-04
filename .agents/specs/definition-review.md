@@ -8,7 +8,7 @@ Same sections and required content as [`rules/definition.md`](rules/definition.m
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain; unused template rows are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized sections; unused template rows there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] `definition.md` links [`rules/definition.md`](rules/definition.md), and `quality.md` links [`rules/quality.md`](rules/quality.md). Those rules are not pasted into the spec. A split file uses the rules file of the spec it came from.
 - [ ] Every section is present: scope, objectives, supported platforms, engine, constraints, spec depth, quality expectations.
 - [ ] [`quality.md`](../../specs/definition/quality.md) is linked from the quality expectations section and listed in [`specs/README.md`](../../specs/README.md).
@@ -51,8 +51,14 @@ Same sections and required content as [`rules/definition.md`](rules/definition.m
 
 - [ ] Performance, load time / latency, reliability, observability, save durability, accessibility, and localization are each present in [`quality.md`](../../specs/definition/quality.md).
 - [ ] Each category is Applies, or N/A with a reason that cites the vision or the supported platforms. At prototype depth, a category other than performance may instead cite spec depth.
-- [ ] Each Applies row has a measurable target, the platforms it covers, and a how-checked method. Platforms match the supported-platforms table.
-- [ ] An N/A row uses "—" for target, platforms, and how checked.
+- [ ] Each Applies row has a measurable target, the platforms it covers, and exactly one axis id listed in the rubric files linked from [`quality/rubrics.md`](../../specs/definition/quality/rubrics.md). Platforms match the supported-platforms table.
+- [ ] An N/A row uses "—" for target and platforms. The axis id stays, and that axis is not scored.
+- [ ] [`quality/rubrics.md`](../../specs/definition/quality/rubrics.md) is linked from `quality.md` and listed in [`specs/README.md`](../../specs/README.md).
+- [ ] `quality.md` has Categories and Rubrics. `rubrics.md` has Baseline axes, Domain axes, and Judge record. Baseline axes are in that file or in `rubrics/baseline.md` linked from it.
+- [ ] Every baseline axis in [`rules/quality.md`](rules/quality.md) is present, on that characteristic, with evaluator `deterministic`, and "—" for scale and pass level.
+- [ ] A domain axis has a new characteristic and a kebab-case id that is not a baseline id. Its outcome is not already the failure of another axis.
+- [ ] Evaluator is `deterministic` or `llm-judge`. An `llm-judge` row has an ordinal scale, a minimum passing level, and evidence limited to build observations, screenshots, logs, or telemetry. The outcome is the criterion.
+- [ ] Applicable axes are scored separately. The file states that every applicable axis must meet its bar. There is no combined score.
 - [ ] Rows for the same category do not contradict each other, the constraints, or the vision.
 - [ ] Targets are observable outcomes. No architecture, engines, data formats, or APIs.
 - [ ] A target set or limited by an architecture decision cites an ADR ID that exists in [`specs/adr/decisions/`](../../specs/adr/decisions/).

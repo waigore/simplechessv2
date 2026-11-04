@@ -4,7 +4,7 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 
 - **Serves**: Design tunables bound into client code
 - **Informed by**: [`specs/design/configuration.md`](../design/configuration.md); [`CTR-localization`](contracts/localization.md)
-- **ADRs**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0010](../adr/decisions/0010-advice-backend-stack.md), [ADR-0013](../adr/decisions/0013-puzzle-catalog-api.md)
+- **ADRs**: [ADR-0001](../adr/decisions/0001-godot-engine.md), [ADR-0010](../adr/decisions/0010-advice-backend-stack.md), [ADR-0013](../adr/decisions/0013-puzzle-catalog-api.md), [ADR-0015](../adr/decisions/0015-advice-backend-operator-deployments.md)
 - **Design config**: [`specs/design/configuration.md`](../design/configuration.md)
 
 ## Sources
@@ -28,8 +28,8 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 | T6 | advice_time_ms | `CFG.ADVICE_TIME_MS` | int ms | 2000 |
 | T7 | elo_recent_window | `CFG.ELO_RECENT_WINDOW` | int puzzles | 20 |
 | T8 | elo_band_widen | `CFG.ELO_BAND_WIDEN` | int Elo | 50 |
-| T9 | advice_endpoint | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default; ships set (`B5`) |
-| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; ships set; serves the catalog route too (`B5`) |
+| T9 | advice_endpoint | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md)) | string URL | Set per deployment; no fixed default (`B5`) |
+| T10 | advice_api_key | — (integration value; [`ADR-0010`](../adr/decisions/0010-advice-backend-stack.md), [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | string secret | Set per deployment; never committed; serves the catalog route too (`B5`) |
 | T11 | catalog_rate_limit | — (integration value; [`ADR-0013`](../adr/decisions/0013-puzzle-catalog-api.md)) | int requests per key per minute | 30 |
 
 ## Binding
@@ -40,7 +40,7 @@ Authoring rules: [`.agents/specs/rules/technical/configuration.md`](../../.agent
 | B2 | [`CMP-puzzle-progression`](components/puzzle-progression.md) | T3 T4 T5 T7 T8; S2 Elo | [`FAIL.T3`](failures.md) read fail: use T5 |
 | B3 | [`CMP-advice-client`](components/advice-client.md) | T6 T9 T10 | T6 missing: send 2000 as the O1 `time_ms` (design default; the search stop stays [`CMP-advice-backend`](components/advice-backend.md) R3). T9 or T10 missing: Advice unavailable ([`FAIL.T1`](failures.md)) when requested; log |
 | B4 | [`CMP-presentation`](components/presentation.md) | S4 table for `GS.locale`, via [`CTR-localization`](contracts/localization.md) O1 | Unshipped locale or missing key reads `en` ([`FAIL.T13`](failures.md)); a switch applies immediately ([`experience.md`](../design/experience.md)) |
-| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Ships enabled in the release: a missing T9 or T10 there is a deployment fault, not accepted (every deal fails, [`FAIL.T14`](failures.md); Elo kept; log). Arrival: #479 ([delivery](components/catalog-service.md)) |
+| B5 | [`CMP-puzzle-session`](components/puzzle-session.md) catalog read; [`CMP-catalog-service`](components/catalog-service.md) | T9 T10 T11 | Unconfigured when T9 or T10 is absent: every deal fails ([`FAIL.T14`](failures.md); Elo kept; log). That absence is accepted ([ADR-0015](../adr/decisions/0015-advice-backend-operator-deployments.md)) |
 
 ## Diagram
 

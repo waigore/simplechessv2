@@ -30,7 +30,7 @@ Read-only audit of **shared language** across design, view, aesthetics, UX, asse
    - Domain → every row in that domain's glossary (and splits), plus risk-lexicon words that collide with that domain.
    - Whole set → all glossary rows across the six hubs, then risk-lexicon words not already covered.
 4. **Compare usages**: for each candidate, sample definitions and in-spec usages across domains. Match against the owning glossary sense. Cap sampling: prefer glossary files, hub indexes, and files that already use the term; do not thesaurus-expand.
-5. **Report** using the shape below. Do not edit specs. If the requester wants fixes, point them at `author-spec`.
+5. **Report** using the shape below, then close per [`../audit-spec-applicability/references/report-back.md`](../audit-spec-applicability/references/report-back.md). If the requester wants fixes, point them at `author-spec`.
 
 ## Finding tags
 
@@ -56,13 +56,11 @@ Findings:
 Notes (optional): <non-blocking observations>
 ```
 
-**Pass** only when there are no findings. Empty glossary placeholders (`<!-- fill in -->`) are Fail with `undefined` or `orphan entry` as appropriate when the seed requires those rows, not skipped.
+Do not tag an unfilled glossary row `undefined` or `orphan entry`.
 
 ## Rules
 
-- Read-only: do not edit `specs/` or `.agents/specs/rules/` while auditing.
+- Close per [`../audit-spec-applicability/references/report-back.md`](../audit-spec-applicability/references/report-back.md).
 - Do not fail ordinary English used once in prose. Fail terms of art, repeated domain nouns, and risk-lexicon hits.
 - Homonyms across domains are OK when each sense lives in the right glossary and usages stay in-domain or use a qualifier (e.g. "UI screen" vs playfield).
 - Do not invent finding tags beyond the table above.
-- Do not run a full `review-spec` checklist. When invoked by `review-spec`, return the audit report to the caller; do not call `review-spec` back.
-- When run alone, report back to the request source (chat, issue/PR comment, or calling agent), same as `review-spec`.

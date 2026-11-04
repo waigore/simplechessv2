@@ -4,7 +4,7 @@ Project and process documentation (labels, issues, skills, repo setup). Product/
 
 ## Concise docs
 
-Every file under `docs/` must stay under **500 words**. If content would exceed that, split into multiple focused files and link between them. CI enforces this for Markdown (`word-limit` in [Spec lint](spec-lint.md)); run `python3 .github/scripts/spec_lint.py` locally.
+Every file under `docs/` must stay under **500 words**, except Markdown under `quality/evidence/issue-*` and `playtest/evidence/issue-*`. If other content would exceed that, split into multiple focused files and link between them. CI enforces this for Markdown (`word-limit` in [Spec lint](spec-lint.md)); run `python3 .github/scripts/spec_lint.py` locally.
 
 ## Index
 
@@ -23,13 +23,16 @@ Every file under `docs/` must stay under **500 words**. If content would exceed 
 | [poc-style-assets.md](poc-style-assets.md) | Style and asset gate when a PoC shows or plays them |
 | [dev-env-setup.md](dev-env-setup.md) | Local game-stack and asset-tool install/verify; then `setup-unit-test-ci` |
 | [open-design-skill-setup.md](open-design-skill-setup.md) | User-local Open Design skill + content under `~/.open-design-skill/`; optional agent wiring |
+| [ux-mockups.md](ux-mockups.md) | Mockup catalog approval; main-tree UI gate; verification and PoC promotion |
 | [github-repo-setup.md](github-repo-setup.md) | First-time GitHub settings to apply and verify (remotes, Actions, `main` ruleset, squash, auto-merge, labels) |
 | [github-repo-setup-examples.md](github-repo-setup-examples.md) | Non-binding example commands for the setup |
 | [issues/](issues/) | Epic / Task / Defect contract and status workflow |
 | [labels.md](labels.md) | Label catalog and sync |
 | [pull-requests.md](pull-requests.md) | PR flow, branch names, body contract, auto-merge holds |
 | [requirements/](requirements/README.md) | Unconfirmed requirement notes awaiting capture into specs (not specs) |
-| [playtest/evidence/](playtest/evidence/) | AI-agent playtest evidence (story IDs, pass/fail, screenshots, notes, logs); requirements in `specs/playtest/` |
+| [playtest/evidence/](playtest/evidence/) | In-repo playtest index (`manifest.md`, `notes.md`); screenshots/logs on the wiki |
+| [playtest/wiki-evidence.md](playtest/wiki-evidence.md) | Wiki page naming, media layout, cite rules, migration from in-repo media |
+| [quality/evidence/](quality/evidence/) | Quality-evaluator evidence: per-axis pass, fail, or blocked for deterministic verification and llm-judge acceptance |
 | [skills.md](skills.md) | Skill authoring and native wiring |
 | [../agent-orc/](../agent-orc/) | agent-orc daemon: spin up workflow skill agents ([usage](../agent-orc/docs/usage.md)) |
 | [solid.md](solid.md) | SOLID principles + structure continuity for agents; owned by the template |

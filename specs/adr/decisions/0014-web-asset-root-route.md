@@ -63,4 +63,4 @@ N/A — see [`non-functional.md`](0014-web-asset-root-route/non-functional.md).
 |-------|--------|------|
 | Shipped tree carries the root and audio copies | `--check-assets` in `web-release.yml`; `test_web_export.py` red/green | Every release |
 | Staged copies never committed | `.gitignore` review; the staging test | Every release |
-| Build reaches mode pick on the published URL | #630 steps: `Preload boot left 0 approved IDs unresolved` | Every release |
+| Build reaches mode pick on a local release export | #630 steps: `Preload boot left 0 approved IDs unresolved` | Every release |

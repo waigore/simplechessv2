@@ -207,46 +207,128 @@ func _check_boot_failure_surfaced() -> bool:
 
 
 ## The router half: E4 ends the wait, `EX.load-failure` is named, and C5 Reload loads
-## the game again from the start — a fresh Boot read, never a cached verdict.
+## the game again from the start. The router gets its *own* resolver — the one it binds
+## in `_ready` and reloads from — because a decoy resolver cannot show where the real
+## reload lands (#923).
 func _router_loads_again_after_failure(manifest: Dictionary) -> String:
-	var router_probe := AssetResolver.new()
-	router_probe.playtest_override = 1
-	root.add_child(router_probe)
-	router_probe.boot_failed.connect(_router._on_boot_failed)
-	router_probe.apply_manifest(manifest)
+	var parent := Node.new()
+	root.add_child(parent)
+	var resolver := AssetResolver.new()
+	resolver.name = "AssetResolver"
+	resolver.playtest_override = 1
+	parent.add_child(resolver)
+	var router := SessionRouter.new()
+	router.name = "SessionRouter"
+	parent.add_child(router)
+	resolver.apply_manifest(manifest)
 	var screens: Array[String] = []
-	_router.screen_requested.connect(
+	router.screen_requested.connect(
 		func(screen_id: String, _state: Dictionary) -> void: screens.append(screen_id)
 	)
-	## One frame runs the deferred preload, so the checks below never wait on a boot
-	## event that already failed.
-	router_probe.preload_boot()
+	router.start()
+	## The Boot preload is deferred; let it settle before judging the stage.
 	await process_frame
-	var problem := _load_failure_is_named(screens)
+	await process_frame
+	var problem := _load_failure_is_named(router, screens)
+	## #923 (c) — a cold open's Boot failure never sets the reload record.
+	var record: Variant = _reload_record(router)
+	if problem.is_empty() and not (record is bool):
+		problem = str(record)
+	elif problem.is_empty() and record:
+		problem = "a cold open set the reload record"
 	if problem.is_empty():
-		_router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C1")
-		if _router.stage != SessionRouter.STAGE_LOAD_FAILED:
+		router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C1")
+		if router.stage != SessionRouter.STAGE_LOAD_FAILED:
 			problem = "EX.load-failure acted on a control it does not offer"
 	if problem.is_empty():
-		_router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
-		if _router.stage != SessionRouter.STAGE_LOADING or _router.boot_failure_count != 1:
+		screens.clear()
+		router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
+		if router.stage != SessionRouter.STAGE_LOADING or router.boot_failure_count != 1:
 			problem = "Reload did not load the game again from the start"
+		else:
+			## #923 (a) — the record is set on Reload and survives `start()`'s
+			## `STAGE_LOADING`; the deferred Boot outcome is what consumes it.
+			record = _reload_record(router)
+			if not (record is bool):
+				problem = str(record)
+			elif not record:
+				problem = "Reload did not record that its Boot preload is in flight"
 	if problem.is_empty():
 		## The manifest leaves Boot unresolvable, so the reloaded attempt must fail the
 		## same way, through a fresh read.
-		if _router._resolver.boot_outcome == 1 or _router._resolver.group_loaded("boot"):
+		if resolver.boot_outcome == 1 or resolver.group_loaded("boot"):
 			problem = "Reload kept a failed Boot verdict the wait would not read again"
+	## #923: the stage C5 sets is transient. Judge where the reloaded read *lands* —
+	## `exceptions.md` EX.load-failure Recovery says "Boot assets, then `mode-pick` or
+	## this row", so a Boot that fails again must come back to this row, never to
+	## mode-pick.
+	if problem.is_empty():
 		await process_frame
+		await process_frame
+		if router.stage != SessionRouter.STAGE_LOAD_FAILED:
+			problem = "Reload settled on %s, not EX.load-failure" % router.stage
+		elif screens.is_empty() or screens[-1] != SessionRouter.STAGE_LOAD_FAILED:
+			problem = "Reload's second Boot failure was not named to the presentation"
+		elif router.boot_failure_count != 1:
+			problem = "Reload lost the unresolved count"
+		elif _reload_record(router) != false:
+			problem = "Reload's settle left the reload record held"
+	if problem.is_empty():
+		problem = await _reload_that_resolves_leaves_the_record_clear(router, resolver, screens)
+	parent.queue_free()
 	return problem
 
 
+## #923 (b) — a reload whose Boot resolves takes the normal post-Boot path and
+## clears the record, so the reload state only ever lives for its own settle.
+func _reload_that_resolves_leaves_the_record_clear(
+	router: SessionRouter, resolver: AssetResolver, screens: Array[String]
+) -> String:
+	(
+		resolver
+		. apply_manifest(
+			{
+				"asset_root": str(_manifest.get("asset_root", "")),
+				"groups": {"boot": [], "play": [], "ambient": []},
+				"assets": {},
+			}
+		)
+	)
+	screens.clear()
+	router.handle_control(SessionRouter.STAGE_LOAD_FAILED, "C5")
+	var record: Variant = _reload_record(router)
+	if not (record is bool):
+		return str(record)
+	if not record:
+		return "a reload that can resolve did not record its Boot preload"
+	await process_frame
+	await process_frame
+	if router.stage != SessionRouter.STAGE_MODE_PICK:
+		return "a resolved reload settled on %s, not mode-pick" % router.stage
+	if router.boot_reload_in_flight:
+		return "a resolved reload left the reload record held"
+	## Let the post-Boot Ambient leg finish before the fixture is freed.
+	await process_frame
+	await process_frame
+	return ""
+
+
+## #923 — the router's reload record, or a readable finding when it has none, so the
+## test fails on `main` instead of dying on an unknown property.
+func _reload_record(router: SessionRouter) -> Variant:
+	if not ("boot_reload_in_flight" in router):
+		return "the router has no reload record (#923)"
+	return router.boot_reload_in_flight
+
+
 ## E4 reached the router and replaced the wait with `EX.load-failure`.
-func _load_failure_is_named(screens: Array[String]) -> String:
-	if _router.boot_failure_count != 1:
+func _load_failure_is_named(router: SessionRouter, screens: Array[String]) -> String:
+	if router.boot_failure_count != 1:
 		return "session router did not observe the boot failure"
-	if _router.stage != SessionRouter.STAGE_LOAD_FAILED:
+	if router.stage != SessionRouter.STAGE_LOAD_FAILED:
 		return "boot failure left STAGE_LOADING: EX.loading is waited on after it failed"
-	if screens.is_empty() or screens[0] != SessionRouter.STAGE_LOAD_FAILED:
+	## `start()` names `EX.loading` first; the failure replaces it.
+	if screens.is_empty() or screens[-1] != SessionRouter.STAGE_LOAD_FAILED:
 		return "boot failure did not name EX.load-failure to the presentation"
 	return ""
 

@@ -5,9 +5,8 @@
   (`DisplayServer.get_name()` = `macOS`, Apple M5), shipped scene `game/main.tscn`
 - **Build / session id**: `origin/main` `aa16e09`, clean detached worktree at that commit; `TEL.3`
   session `sess-1792883153140-87876-playtest-457570` (`logs/graphical-s6.log`).
-  **Source**: the playtest scene built from `aa16e09`, not a published URL — `Web release` serves
-  `https://waigore.github.io/simplechessv2/` ([ADR-0009](../../../../../specs/adr/decisions/0009-github-pages-client-host.md))
-  and no release PR carries this commit. No `build/web/` export.
+  **Source**: the playtest scene built from `aa16e09`. No `build/web/` export. The run did not
+  read a project client URL.
 - **Coverage mode**: partial — `PTU-mode-pick` S6 only; S1–S5 stay with the #400 sweep
 - **Screenshots**: `screenshots/s6-phone-390x844.png` — mode pick at a genuine 390×844 frame after
   `O12 set_viewport`, from this build (390×844 image, read in this run)

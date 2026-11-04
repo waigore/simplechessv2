@@ -2,8 +2,9 @@
 
 Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/rules/adr/decision.md).
 
-- **Status**: Accepted
-- **Date**: 2026-10-21
+- **Status**: Superseded
+- **Superseded by**: ADR-0016
+- **Date**: 2026-10-25
 - **Category**: Integration
 - **Supersedes**: None
 - **Informed by**: No-install browser commute (definition); Web platform (definition); Load time / latency (quality); uncommitted `build/web/` (ADR-0007); public build omits playtest debug UI (ADR-0004); Web/HTML5 export (ADR-0001)

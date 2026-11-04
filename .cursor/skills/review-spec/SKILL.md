@@ -1,10 +1,12 @@
 ---
 name: review-spec
 description: |-
-  Review a spec document (or the whole spec set) under specs/ against its review
-  instructions in .agents/specs/, then report the verdict back to the requester
-  (chat, GitHub issue, PR, or calling agent). Whole-spec review also runs the
-  applicability, terminology, and TBD audits; any Fail fails the overall verdict.
+  Review a spec document (or the formalized spec set) under specs/ against its
+  review instructions in .agents/specs/, then report the verdict back to the
+  requester (chat, GitHub issue, PR, or calling agent). Whole-spec review also
+  runs the applicability, terminology, and TBD audits on formalized sections;
+  any Fail fails the overall verdict. Placeholder-only files are not formalized
+  and are not a Fail.
   Use when the user asks to review, check, or validate a spec such as the vision,
   definition, design, view, aesthetics, UX, playtest, asset pipeline, ADR, or
   technical design docs.

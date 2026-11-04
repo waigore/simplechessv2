@@ -1,6 +1,7 @@
 class_name BoardPresentationTest
 extends SceneTree
 ## Headless checks for #56: geometry, seat flip, timing budgets.
+## The marks drawn on squares (PAL.K8 / PAL.K9) are BoardMarkFormsTest's.
 
 ## FRM.P1 body box half-width: the widest silhouette / tallest body margin.
 const FRM_P1_BODY_HALF := 0.425
@@ -30,8 +31,6 @@ func _run() -> void:
 			err = await _check_orientation(board)
 		if err.is_empty():
 			err = await _check_motion(board)
-		if err.is_empty():
-			err = await _check_check_mark(board)
 	if not err.is_empty():
 		_fail(err)
 		return
@@ -89,14 +88,14 @@ func _check_seat(board: BoardPresentation) -> String:
 	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
 	var checks: Array = [
 		[board.white_seat == BoardGeometry.SEAT_BOTTOM, "white seat bottom"],
-		[board.framed_center("a1") == Vector2(0.5, 0.5), "framed a1 bottom"],
+		[board.camera().framed_center("a1") == Vector2(0.5, 0.5), "framed a1 bottom"],
 	]
 	var err := _first_fail(checks)
 	if not err.is_empty():
 		return err
 	board.set_white_seat(BoardGeometry.SEAT_TOP)
 	checks = [
-		[board.framed_center("a1") == Vector2(7.5, 7.5), "framed a1 top"],
+		[board.camera().framed_center("a1") == Vector2(7.5, 7.5), "framed a1 top"],
 		[is_equal_approx(board.get_node("World/Seat").rotation, PI), "seat node rotation"],
 	]
 	err = _first_fail(checks)
@@ -119,10 +118,10 @@ func _check_art_orientation(board: BoardPresentation) -> String:
 	board.provide_assets(assets)
 	for seat in [BoardGeometry.SEAT_BOTTOM, BoardGeometry.SEAT_TOP]:
 		board.render_position(rules.position_field(), "", PackedStringArray(), {"white_seat": seat})
-		board.show_promotion_choice("e8", "white")
+		_show_choice(board)
 		await process_frame
 		var err := _orientation_checks(board, seat)
-		board.clear_promotion_choice()
+		board.promotion_choice().clear_choice()
 		if not err.is_empty():
 			return err
 		# Re-entry: provide_assets() re-enters _apply_kind_texture(); the sign must persist.
@@ -131,9 +130,23 @@ func _check_art_orientation(board: BoardPresentation) -> String:
 		err = _orientation_scale_checks(board, seat, false)
 		if not err.is_empty():
 			return err
-	board.clear_promotion_choice()
+	board.promotion_choice().clear_choice()
 	await process_frame
 	return await _settle_restores_scale(board)
+
+
+## Open the chooser the way the board does, painting each sprite from the same
+## synthetic texture the pieces carry.
+func _show_choice(board: BoardPresentation) -> void:
+	board.promotion_choice().show_choice(
+		"e8",
+		"white",
+		null,
+		func(node: Node2D, _choice_color: String, _kind: String) -> void:
+			var sprite := node.get_node_or_null("Sprite") as Sprite2D
+			if sprite != null:
+				sprite.texture = _synthetic_assets()[BoardPresentation.BOARD_BG_ID] as Texture2D
+	)
 
 
 ## A white field with a dark top-left pixel: any mirror or 180° move is detectable.
@@ -268,12 +281,12 @@ func _check_viewport(board: BoardPresentation) -> String:
 	board.size = Vector2(720, 1280)
 	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
 	await process_frame
-	var tall := board.visible_world_size()
+	var tall := board.camera().visible_world_size(board.size)
 	if not is_equal_approx(tall.x, 10.0):
 		return "9:16 visible width stays 10"
 	board.size = Vector2(1280, 720)
 	await process_frame
-	var wide := board.visible_world_size()
+	var wide := board.camera().visible_world_size(board.size)
 	if not is_equal_approx(wide.y, 10.0):
 		return "16:9 visible height stays 10"
 	if BoardGeometry.board_bounds().size != Vector2(8, 8):
@@ -283,10 +296,10 @@ func _check_viewport(board: BoardPresentation) -> String:
 	await process_frame
 	var rect := board.get_global_rect()
 	for square in ["a1", "h1", "a8", "h8"]:
-		var screen := board.world_to_screen(board.framed_center(square))
+		var screen := board.camera().world_to_screen(board.camera().framed_center(square))
 		if not rect.has_point(screen):
 			return "ultra-wide crops %s at %s" % [square, screen]
-	var clamped := board.visible_world_size()
+	var clamped := board.camera().visible_world_size(board.size)
 	if not is_equal_approx(clamped.y, 10.0):
 		return "pillarbox visible height stays 10"
 	return ""
@@ -333,13 +346,15 @@ func _check_painted_squares(
 	# stretched size is the frame the build plays into.
 	var frame_rect := Rect2(Vector2.ZERO, stretch * board.size)
 	for square in squares:
-		var painted: Vector2 = stretch * board.world_to_screen(board.framed_center(square))
+		var painted: Vector2 = (
+			stretch * board.camera().world_to_screen(board.camera().framed_center(square))
+		)
 		if not frame_rect.has_point(painted):
 			return "#845 %s paints outside %s at %s" % [square, frame, painted]
 		# The pointer path receives canvas coordinates; the painted point only
 		# becomes one after the frame's own stretch is removed (#845).
 		var delivered := stretch.affine_inverse() * painted
-		var hit := BoardGeometry.square_at(board.screen_to_world(delivered))
+		var hit := BoardGeometry.square_at(board.camera().screen_to_world(delivered))
 		if hit != square:
 			return "#845 tap on painted %s hit %s at %s" % [square, hit, frame]
 	return _check_painted_frame(board, stretch, frame)
@@ -352,7 +367,7 @@ func _check_painted_squares(
 func _check_painted_frame(
 	board: BoardPresentation, stretch: Transform2D, frame: Vector2i
 ) -> String:
-	var painted_centre := stretch * board.world_to_screen(BoardGeometry.BOARD_CENTER)
+	var painted_centre := stretch * board.camera().world_to_screen(BoardGeometry.BOARD_CENTER)
 	var control_centre := stretch * (board.get_global_transform_with_canvas() * (board.size * 0.5))
 	if painted_centre.distance_to(control_centre) > 1.0:
 		return (
@@ -361,8 +376,8 @@ func _check_painted_frame(
 		)
 	var control_px: Vector2 = stretch * board.size
 	if frame.y > frame.x:
-		var span := stretch * board.world_to_screen(Vector2(BoardGeometry.BOARD_SIZE, 0.0))
-		var origin := stretch * board.world_to_screen(Vector2.ZERO)
+		var span := stretch * board.camera().world_to_screen(Vector2(BoardGeometry.BOARD_SIZE, 0.0))
+		var origin := stretch * board.camera().world_to_screen(Vector2.ZERO)
 		var expected := control_px.x * BoardGeometry.BOARD_SIZE / BoardGeometry.SHORT_AXIS
 		if absf(span.x - origin.x - expected) > 1.0:
 			return "#845 the 8-wide board spans %s of %s px" % [span.x - origin.x, expected]
@@ -400,7 +415,7 @@ func _check_orientation(board: BoardPresentation) -> String:
 			}
 		)
 	)
-	board.show_promotion_choice("e8", "white")
+	_show_choice(board)
 	await process_frame
 	for pass_index in range(2):
 		for seat in [BoardGeometry.SEAT_BOTTOM, BoardGeometry.SEAT_TOP]:
@@ -411,7 +426,7 @@ func _check_orientation(board: BoardPresentation) -> String:
 			var err := _assert_orientation(board, seat)
 			if not err.is_empty():
 				return err
-	board.clear_promotion_choice()
+	board.promotion_choice().clear_choice()
 	board.set_white_seat(BoardGeometry.SEAT_BOTTOM)
 	(
 		board
@@ -578,9 +593,7 @@ func _check_motion(board: BoardPresentation) -> String:
 	if not err.is_empty():
 		return err
 	err = await _motion_marks(board, rules)
-	if not err.is_empty():
-		return err
-	return await _check_check_mark(board)
+	return err
 
 
 func _motion_drag(board: BoardPresentation, rules: ChessRules) -> String:
@@ -757,97 +770,15 @@ func _motion_marks(board: BoardPresentation, rules: ChessRules) -> String:
 	var select := board.get_node_or_null("World/Seat/Content/Overlays/Selection") as Line2D
 	if select == null or not select.visible:
 		return "PER.R3 selection mark missing"
-	if select.default_color != BoardPresentation.COLOR_SELECT:
+	if select.default_color != BoardDestinationMarks.COLOR_SELECT:
 		return "PER.R3 selection must use full-opacity PAL.C6"
 	var legal_root := board.get_node_or_null("World/Seat/Content/Overlays/LegalMarks")
 	if legal_root == null or legal_root.get_child_count() < 2:
 		return "PER.R4 legal marks missing"
-	var diamond := legal_root.get_child(0) as Polygon2D
-	if diamond == null or diamond.color != BoardPresentation.COLOR_LEGAL:
-		return "PER.R4 empty mark must use full-opacity PAL.C11"
-	# Area of diamond with half-diagonal r is 2 r²; require ≥ 1/4.
-	var r := BoardPresentation.LEGAL_EMPTY_R
-	if 2.0 * r * r < 0.25 - 0.0001:
-		return "PER.R4 empty mark under 1/4 square"
+	var disk := legal_root.get_child(0) as Polygon2D
+	if disk == null or disk.color != BoardDestinationMarks.COLOR_LEGAL:
+		return "PER.R4 empty mark must be a full-opacity PAL.C11 disk"
 	return ""
-
-
-## PER.R6 / CMP-presentation.R7 — the checked King carries a PAL.C8 L-frame.
-func _check_check_mark(board: BoardPresentation) -> String:
-	var checked_position := {
-		"occupancy":
-		{
-			"e8": {"color": "black", "kind": "king", "square": "e8"},
-			"f7": {"color": "white", "kind": "queen", "square": "f7"},
-		},
-		"side_to_move": "black",
-	}
-	var quiet_options := {"side_to_move": "black"}
-	board.render_position(checked_position, "", PackedStringArray(), quiet_options)
-	await process_frame
-	var marks := board.get_node_or_null("World/Seat/Content/Overlays/CheckMarks") as Node2D
-	var quiet := _first_fail(
-		[
-			[marks != null, "PER.R6 check mark node missing"],
-			[marks != null and marks.get_child_count() == 0, "PER.R6 mark shown out of check"],
-		]
-	)
-	if not quiet.is_empty() or marks == null:
-		return quiet
-	board.render_position(
-		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "black"}
-	)
-	await process_frame
-	var count_ok := [[marks.get_child_count() == 2, "PER.R6 check cue must be two L-frames"]]
-	var shown := _first_fail(
-		count_ok + _l_frame_checks(marks.get_children(), BoardGeometry.square_center("e8"))
-	)
-	if not shown.is_empty():
-		return shown
-	# In check with no rendered King of that side must not throw a mark.
-	board.render_position(
-		checked_position, "", PackedStringArray(), {"in_check": true, "side_to_move": "white"}
-	)
-	await process_frame
-	return _first_fail(
-		[[marks.get_child_count() == 0, "PER.R6 in check without a rendered King threw a mark"]]
-	)
-
-
-## PAL.K9 form: two asymmetric L-frames, C8, inside the square and off the body.
-func _l_frame_checks(children: Array, center: Vector2) -> Array:
-	var checks: Array = []
-	for child in children:
-		var line := child as Line2D
-		checks.append([line != null, "PER.R6 check cue must be a stroke"])
-		if line == null:
-			continue
-		checks.append(
-			[line.default_color == CheckMarks.COLOR_CHECK, "PER.R6 check cue must be PAL.C8"]
-		)
-		checks.append(
-			[
-				line.default_color != BoardPresentation.COLOR_SELECT,
-				"PAL.K9 check cue must differ from the selection ring"
-			]
-		)
-		checks.append([line.get_point_count() == 3, "PAL.K9 check cue must be an L-frame"])
-		if line.get_point_count() != 3:
-			continue
-		checks.append([_arms_unequal(line), "PAL.K9 check L arms must be unequal, not a bracket"])
-		for i in line.get_point_count():
-			var point := line.get_point_position(i)
-			var dx := absf(point.x - center.x)
-			var dy := absf(point.y - center.y)
-			checks.append([dx <= 0.5 and dy <= 0.5, "PER.R6 check cue left the King square"])
-			checks.append([maxf(dx, dy) >= FRM_P1_BODY_HALF, "PER.R1 check cue covers the body"])
-	return checks
-
-
-func _arms_unequal(line: Line2D) -> bool:
-	var first := line.get_point_position(0).distance_to(line.get_point_position(1))
-	var second := line.get_point_position(1).distance_to(line.get_point_position(2))
-	return not is_equal_approx(first, second)
 
 
 func _first_fail(checks: Array) -> String:

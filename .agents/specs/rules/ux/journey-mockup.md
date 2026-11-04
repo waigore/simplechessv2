@@ -13,3 +13,5 @@ Link only the screens, controls, and exception anchors the journey spec names. E
 Each screen file keeps its own Open Design treatment. This file does not restyle the screen.
 
 Replace every `<!-- fill in -->`. The step list matches the journey's steps and branches, including exception anchors.
+
+After writing the HTML, add or update the journey's row in `mockups/catalog.md` (`draft` until approved) per [mockup-catalog.md](mockup-catalog.md).

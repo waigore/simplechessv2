@@ -8,8 +8,8 @@ These apply to every spec. They are aligned requirements even though each rules 
 
 - The spec links its authoring-rules file from [rules/README.md](rules/README.md). A split file uses the rules file of the spec it came from. HTML mockups and HTML under `specs/view/diagrams/` or `specs/technical/diagrams/` do not carry this link.
 - The rules text is not pasted into the spec. The authoring-rules link is not game or interface content.
-- A finished spec has no `<!-- fill in -->` placeholder. Unused rows and sections the rules file says to delete are deleted.
-- An undecided aspect reads `TBD — <open question>` per [rules/README.md](rules/README.md). A finished spec has no TBD. A reviewer reports each TBD as a failed aligned check tagged `needs clarification` and does not choose an outcome.
+- A formalized section has no `<!-- fill in -->` placeholder. A section whose body is still only placeholders is not formalized: skip its checks and do not fail the file for it. A file with no formalized section is not formalized: report it as not formalized, not as Fail. Unused rows and sections the rules file says to delete are deleted when that section is formalized.
+- An undecided aspect in a formalized section reads `TBD — <open question>` per [rules/README.md](rules/README.md). A reviewer reports each such TBD as a failed aligned check tagged `needs clarification` and does not choose an outcome. Placeholders are not TBDs.
 - Each Markdown file under `specs/` stays under 500 words. HTML mockups and HTML diagrams under `view/diagrams/` and `technical/diagrams/` are exempt. Split the way the rules file says.
 
 ## Aligned checks
