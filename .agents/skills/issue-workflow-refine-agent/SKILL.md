@@ -12,14 +12,6 @@ description: |-
 
 # Issue workflow refine agent
 
-Thin automation entrypoint for `status:pending-refinement`.
+Veneer for unattended `status:pending-refinement`.
 
-**Contract / discovery:** [`docs/issues/workflow-dispatch.md`](../../../docs/issues/workflow-dispatch.md)
-
-**Delegates to:** [`refine-project-issue`](../refine-project-issue/SKILL.md)
-
-## Steps
-
-1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-refinement`.
-2. **Read and run** `refine-project-issue` for that issue.
-3. **Report** the underlying skill's outcome (URL, summary, new status).
+Resolve one issue per [`docs/issues/workflow-dispatch.md`](../../../docs/issues/workflow-dispatch.md), then read and run [`refine-project-issue`](../refine-project-issue/SKILL.md). Report that skill's outcome. Do not restate discovery or transitions.

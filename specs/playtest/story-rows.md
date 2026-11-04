@@ -2,7 +2,7 @@
 
 Authoring rules: [`.agents/specs/rules/playtest/story-rows.md`](../../.agents/specs/rules/playtest/story-rows.md).
 
-This file owns the rows a required run judges: where a row comes from, which protocol judges it, and how an unjudged row is recorded. [`coverage.md`](coverage.md) owns which rows are in the playtest set; [`procedures.md`](procedures.md) selects and judges them; [`evidence.md`](evidence.md) owns the outcome vocabulary.
+Story↔work map for design stories and UX journeys/stories. Playtest results: in-repo index under [`docs/playtest/evidence/`](../../docs/playtest/evidence/); screenshots and logs on the wiki ([`wiki-evidence.md`](../../docs/playtest/wiki-evidence.md)). View stories are out of scope. Issue routing: [`docs/issues/requirements.md`](../../docs/issues/requirements.md).
 
 ## Row unit
 

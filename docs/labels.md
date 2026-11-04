@@ -4,28 +4,7 @@ Repository labels categorize issues for agent workflow orchestration. The catalo
 
 ## Sync behavior
 
-The workflow [`.github/workflows/sync-labels.yml`](../.github/workflows/sync-labels.yml) runs [`.github/scripts/sync-labels.sh`](../.github/scripts/sync-labels.sh):
-
-- **Create** a label if its name is missing on the repository.
-- **Update** description and color when the name already exists.
-- **Never delete** labels that are not listed in the config.
-
-### When it runs
-
-1. **Push to `main`** that changes `.github/project-labels.yml`, the sync script, or the workflow file (covers the first commit when a repo is created from this template, if Actions are enabled).
-2. **Manual run**: Actions → **Sync labels** → **Run workflow** (`workflow_dispatch`).
-
-### First run after inheriting this template
-
-1. Create the repository from the template (or clone and push to a new remote).
-2. Ensure **Actions** are enabled for the repository (Settings → Actions → General, if needed).
-3. If the initial push ran while Actions were disabled, open **Actions → Sync labels → Run workflow** once.
-
-Local sync (requires [`gh`](https://cli.github.com/) and [`yq`](https://github.com/mikefarah/yq)):
-
-```bash
-bash .github/scripts/sync-labels.sh
-```
+[`.github/workflows/sync-labels.yml`](../.github/workflows/sync-labels.yml) runs [`.github/scripts/sync-labels.sh`](../.github/scripts/sync-labels.sh): create missing labels, update description/color, never delete extras. Runs on push to `main` when the catalog, script, or workflow changes, or via **Sync labels** → **Run workflow**. After inheriting the template, enable Actions and run that workflow once if the first push skipped it. Local: `bash .github/scripts/sync-labels.sh` (`gh` + [`yq`](https://github.com/mikefarah/yq)).
 
 ## Catalog
 
@@ -34,6 +13,7 @@ bash .github/scripts/sync-labels.sh
 | `type:epic` | `6F42C1` | Broad orchestration epic |
 | `type:task` | `0366D6` | Concrete unit of agent work |
 | `type:defect` | `D73A4A` | In-game or interface bug (not specs, docs, or planning) |
+| `type:feedback` | `F9D0C4` | User feedback record (agent-filed) |
 | `status:pending-review` | `FBCA04` | Pending review |
 | `status:pending-refinement` | `E4A8FF` | Reviewed; refinements needed |
 | `status:pending-clarification` | `D93F0B` | Needs product-owner clarification |
@@ -41,17 +21,21 @@ bash .github/scripts/sync-labels.sh
 | `status:pending-verification` | `0E8A16` | Implemented; awaiting verification |
 | `status:pending-acceptance` | `006B75` | Verified; awaiting acceptance testing |
 | `status:accepted` | `5319E7` | Accepted; leave open until planner closes |
-| `status:superseded` | `8250DF` | Superseded; leave open until planner closes; name the successor |
+| `status:superseded` | `8250DF` | Superseded; leave open until planner closes; name successor |
+| `status:pending-redefinition` | `6E7781` | Comment cap hit; conversation locked pending redefine |
+| `status:pending-analysis` | `BFD4F2` | Legacy unused; do not apply |
+| `status:pending-resolution` | `D4C5F9` | Feedback awaiting linked work |
+| `status:resolved` | `C2E0C6` | Feedback resolved; planner closes |
 | `no-automerge` | `B60205` | PR: opt out of automatic squash-merge (user-requested only) |
 | `priority:critical` | `B60205` | Handle before high and normal |
 | `priority:high` | `D93F0B` | Handle before normal; after critical |
-| `priority:normal` | `C5DEF5` | Explicit normal (optional; unlabeled already means normal) |
+| `priority:normal` | `C5DEF5` | Default priority (also implied when unlabeled) |
 
-Status transitions: [`docs/issues/workflow.md`](issues/workflow.md). Priority selection: [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md). Auto-merge and `no-automerge` behavior: [`.github/workflows/automerge.yml`](../.github/workflows/automerge.yml) and [`pull-requests.md`](pull-requests.md).
+Status transitions: [`docs/issues/workflow.md`](issues/workflow.md). Feedback: [`docs/issues/feedback.md`](issues/feedback.md). Priority selection: [`docs/issues/workflow-dispatch.md`](issues/workflow-dispatch.md). Auto-merge and `no-automerge` behavior: [`.github/workflows/automerge.yml`](../.github/workflows/automerge.yml) and [`pull-requests.md`](pull-requests.md).
 
 ### Priority
 
-At most **one** `priority:*` label on typed issues. Unlabeled means normal — create forms and `create-project-*` skills do **not** apply `priority:normal`. Apply `priority:high` or `priority:critical` only when a human requests it. Effective priority if more than one is present: critical > high > normal; hygiene keeps only the highest and never adds `priority:normal` to unlabeled issues. **Humans only** set or change priority; agents must not add, remove, or swap `priority:*` except that hygiene (drop lower duplicates).
+Exactly **one** `priority:*` label on typed issues. Create forms and `create-project-*` skills apply `priority:normal` by default. Unlabeled issues are treated as normal. Effective priority if more than one is present: critical > high > normal; hygiene keeps only the highest. Humans set or change priority. Agents only drop lower duplicate `priority:*` labels, except feedback-linked work ([issues/feedback.md](issues/feedback.md)).
 
 ## Adding a label
 

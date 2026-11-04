@@ -41,4 +41,4 @@ A recording is an artifact a run's `manifest.md` cites by path, never a replacem
 
 - **Quality row**: `quality.md` has no surface, sound, motion, or cafe-calm row. TBD — does a filmed seating become the check for a new row there, and with which target?
 - **Publication and retention**: recordings are large media. TBD — in-repo under the evidence folder, or an external store the manifest links with a retention period?
-- **Mix levels**: `SND.L1` and `SND.L2` need a loudness meter, not only an ear. TBD — is mix measured on the recording's audio track, and how?
+- **Mix levels**: a filmed seating's `SND.L1` verdict is **relative and runtime-only**: bed RMS within ± 1 dB under an `SND.X2` cue, on the recording's own track. Integrated loudness stays `AK-music` `K2`'s claim and is not re-measured; `SND.L2`'s true-peak half is not measured from a recording.

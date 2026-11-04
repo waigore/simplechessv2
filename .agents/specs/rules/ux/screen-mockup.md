@@ -15,3 +15,5 @@ Keep `data-screen`, `data-region`, `data-control`, and `data-state`, and keep ev
 Meta screens may adopt the `mobile-app` or `web-prototype` seed named in `presentation.md`. Play screens keep this skeleton and take the bound design system's color, type, and components.
 
 Replace every `<!-- fill in -->`. The visible strings match the screen spec's copy table.
+
+After writing the HTML, add or update the screen's row in `mockups/catalog.md` (`draft` until approved) per [mockup-catalog.md](mockup-catalog.md).

@@ -6,7 +6,7 @@ Specs and `_template` files keep a section skeleton and an authoring-rules link.
 
 Before creating or editing a file under `specs/`, read the rules file for its path in the table below, then every file named in that rules file's **Also read** line. Follow the [`author-spec`](../../skills/author-spec/SKILL.md) skill. How these rules relate to the review checklists is [alignment.md](../alignment.md).
 
-Spec depth (`prototype`, `small`, or `full`) is set in `specs/definition/definition.md`. [depth.md](depth.md) states how it scales story coverage, mockups, and diagrams. A rules file that says a requirement follows spec depth defers to it.
+Spec depth (`prototype`, `small`, or `full`) is set in `specs/definition/definition.md`. [depth.md](depth.md) states how it scales story coverage and diagrams for formalized elements. Screen and journey mockups (and Open Design binding) are required for every formalized screen and journey; see [ux/presentation.md](ux/presentation.md) and [`docs/ux-mockups.md`](../../../docs/ux-mockups.md). A rules file that says a requirement follows spec depth defers to it. At `prototype`, [depth.md](depth.md) may omit glossaries, element IDs, traceability tables, and story matrices for a formalized slice. That omission wins over a unit rules file that would otherwise require them. The slice still states the behavior.
 
 ## Undecided aspects (TBD)
 
@@ -17,7 +17,7 @@ This rule applies to every spec. When an aspect is not decided yet, write `TBD �
 - Keep the section skeleton. A whole section may be a single TBD line.
 - A downstream spec does not build on a TBD. An aspect that depends on one is TBD too, and its question links the upstream spec.
 - Code does not implement a TBD aspect.
-- `<!-- fill in -->` means not yet captured. TBD means captured but undecided. `N/A — reason` means it does not apply.
+- `<!-- fill in -->` means not formalized. Leave it until that section is formalized. TBD means captured but undecided. `N/A — reason` means it does not apply.
 
 Resolve TBDs with the `audit-spec-tbd` skill, then `author-spec`.
 
@@ -103,6 +103,7 @@ Do not paste these rules into a spec. Do not edit a `_template` file to hold one
 | `specs/ux/screens/` | [ux/screens.md](ux/screens.md) |
 | `specs/ux/journeys/` | [ux/journeys.md](ux/journeys.md) |
 | `specs/ux/mockups/README.md` | [ux/presentation.md](ux/presentation.md) |
+| `specs/ux/mockups/catalog.md` | [ux/mockup-catalog.md](ux/mockup-catalog.md) |
 | `specs/ux/mockups/screens/` | [ux/screen-mockup.md](ux/screen-mockup.md) |
 | `specs/ux/mockups/journeys/` | [ux/journey-mockup.md](ux/journey-mockup.md) |
 | `specs/playtest/playtest.md` | [playtest/playtest.md](playtest/playtest.md) |

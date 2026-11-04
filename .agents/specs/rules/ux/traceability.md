@@ -16,7 +16,7 @@ Each row names the upstream item, its source (`vision`, `definition`, `design`, 
 
 Each topic in the table is covered, or marked N/A. Fill Applicability with "Applies" or "N/A — reason". The reason is grounded in the definition or the design. Do not delete a topic row to skip it.
 
-Mockups is N/A only when spec depth requires no mockup, citing spec depth, per [depth.md](../depth.md).
+Mockups always Applies. Catalog: `mockups/catalog.md`. Gate: [`docs/ux-mockups.md`](../../../../docs/ux-mockups.md).
 
 These three follow the quality spec:
 

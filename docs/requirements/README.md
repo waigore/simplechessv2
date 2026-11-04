@@ -1,6 +1,6 @@
 # Requirement notes
 
-Raw requirement input the user has given but no spec holds yet, typically design-level detail from a long first prompt while the high-level specs are still being captured. `capture-requirements` writes and consumes these notes.
+Raw requirement input the user has given but no spec holds yet, typically detail for a file they have not picked yet. `capture-requirements` writes and consumes these notes.
 
 Notes are **not specs**. They are unconfirmed and do not authorize code or design: if it is not in `specs/`, it must not be in the code.
 

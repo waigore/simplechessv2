@@ -43,6 +43,8 @@ var session_ended := false
 var mode_pick_ui_state := "S1"
 ## CTR-asset-resolve E4 — Boot's unresolved count when the Boot preload failed, else 0.
 var boot_failure_count := 0
+## #923 — C5 Reload's Boot preload is in flight; its deferred settle is the reload's.
+var boot_reload_in_flight := false
 ## EX.error / S3 — an advice fetch failed while On; cleared by Dismiss (states.md).
 
 var shared_session: SharedGameSession
@@ -86,6 +88,9 @@ var _last_clock_display := ""
 
 
 func _ready() -> void:
+	var advice := AdviceParameters.read()
+	advice_endpoint = advice[0]
+	advice_api_key = advice[1]
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
@@ -119,6 +124,11 @@ func _seams_paused() -> bool:
 	return _seams != null and _seams.is_paused()
 
 
+## Stage and a live session, then the playtest pause (CTR-playtest-drive.O1 / DBG.1).
+func _shared_play_live() -> bool:
+	return stage == STAGE_SHARED_PLAY and shared_session != null and not _seams_paused()
+
+
 func _emit_tel(event_name: String, outcome: String, story_id := "") -> void:
 	if _seams != null:
 		_seams.emit_tel(event_name, outcome, story_id)
@@ -129,10 +139,8 @@ func _process(delta: float) -> void:
 		if puzzle_flow != null and not _seams_paused():
 			puzzle_flow.tick()
 		return
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return
 	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
-	if _seams_paused():
+	if not _shared_play_live():
 		return
 	# U3 → U2: advice updates apply on the session path (concurrency.md S1),
 	# including untimed games, which have no clocks to tick.
@@ -215,9 +223,7 @@ func handle_control(screen_id: String, control_id: String) -> void:
 func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.gesture(from_square, to_square, promotion)
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	if not play_gestures_available():
 		return false
@@ -234,9 +240,7 @@ func _apply_play_gesture(from_square: String, to_square: String, promotion: Stri
 func handle_deselect() -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.deselect()
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	var result := shared_session.clear_selection()
 	if not bool(result.get("ok", false)):
@@ -250,9 +254,7 @@ func handle_deselect() -> bool:
 func handle_promotion_commit(kind: String) -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.promotion(kind)
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	var result := shared_session.commit_promotion(kind)
 	_emit_tel_result(result)
@@ -417,15 +419,15 @@ func _known_stages() -> PackedStringArray:
 
 
 func _on_boot_ready() -> void:
+	boot_reload_in_flight = false
 	_provide_assets(_resolver.resolve_group("boot"))
 	_load_persist()
 	_go_mode_pick()
 
 
-## CTR-asset-resolve E4 — Boot left approved IDs unresolved. The failure is
-## observable here instead of the caller waiting forever on a ready that never
-## comes, and the wait ends: `EX.load-failure` replaces `EX.loading` (#882).
+## CTR-asset-resolve E4 — Boot left approved IDs unresolved → `EX.load-failure` (#882, #923).
 func _on_boot_failed(unresolved: int) -> void:
+	boot_reload_in_flight = false
 	push_error("Boot assets failed: %d approved IDs unresolved" % unresolved)
 	boot_failure_count = unresolved
 	stage = STAGE_LOAD_FAILED
@@ -433,13 +435,15 @@ func _on_boot_failed(unresolved: int) -> void:
 
 
 ## `EX.load-failure` Reload (CTR-presentation E6) — the game loads again from the
-## start for these Boot reads: the failed group's ID cache and outcome are reset so
-## the next Boot preload reads the served tree instead of the cache. The screen
-## itself must also be re-opened (a fresh page load on Web); this leg is what a
-## test or a playtest seam can drive without a browser.
+## start: the failed group's ID cache and outcome are reset so the next Boot preload
+## reads the served tree. The screen itself must also be re-opened (a fresh page load
+## on Web); a test or playtest seam drives this leg without a browser. The reload
+## record outlives `start()`'s `STAGE_LOADING`, so the deferred Boot outcome settles
+## as this reload's (#923).
 func reload_after_load_failure() -> void:
 	if stage != STAGE_LOAD_FAILED:
 		return
+	boot_reload_in_flight = true
 	_resolver.reset_group("boot")
 	start()
 

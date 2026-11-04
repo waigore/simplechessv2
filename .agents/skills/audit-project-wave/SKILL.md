@@ -20,11 +20,12 @@ Judge a **filed** wave against the contract in [`docs/issues/waves.md`](../../..
 
 ## Principles
 
-- **Contract bar** — Expected deliverable (milestone description), foundation-before-verticals, vertical slices, optional PoCs (local blocked-by only): as in `docs/issues/waves.md`. Soft size: **≤2–3 epics / wave**, **~10 implementation tasks / epic**. Prefer smaller focused waves over large scopes that hide complexity.
-- **Coherent and consistent** — Epics (and tasks where filed) clearly serve the milestone deliverable; no overlaps, contradictions, or mis-membership.
-- **Focused implementation** — No work that enlarges effort without benefit to this wave’s deliverable. Drop, defer, or move noise elsewhere.
-- **In / out of scope** — The wave must state what is in, what is out, and what is deferred or assigned to other waves. Prefer **split or move** over stuffing this wave when completeness would bloat it.
-- **Quality and completeness** — The epic+task set must be enough to ship the stated deliverable without gaps that fit no owner. A `status:superseded` issue counts as catered for when its named successor is on the default branch or in the plan, so a retirement never reads as a coverage gap.
+Judge against [`docs/issues/waves.md`](../../../docs/issues/waves.md). Do not restate deliverable, foundation, verticals, PoCs, or soft size.
+
+- **Coherent** — Epics and filed tasks serve the milestone deliverable. No overlaps, contradictions, or mis-membership.
+- **Focused** — Drop, defer, or move work that does not benefit this wave’s deliverable.
+- **In / out** — The wave states what is in, out, and deferred. Prefer split or move over stuffing.
+- **Complete** — The epic and task set can ship the deliverable without a gap that has no owner.
 
 ## Workflow
 

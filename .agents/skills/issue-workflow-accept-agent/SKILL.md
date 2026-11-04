@@ -12,14 +12,6 @@ description: |-
 
 # Issue workflow accept agent
 
-Thin automation entrypoint for `status:pending-acceptance`.
+Veneer for unattended `status:pending-acceptance`.
 
-**Contract / discovery:** [`docs/issues/workflow-dispatch.md`](../../../docs/issues/workflow-dispatch.md)
-
-**Delegates to:** [`accept-project-issue`](../accept-project-issue/SKILL.md)
-
-## Steps
-
-1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-acceptance`.
-2. **Read and run** `accept-project-issue` for that issue (independence is enforced by that skill and the dispatch contract).
-3. **Report** the underlying skill's outcome (URL, accept/fail/clarify/waiting on screenshots, new status). Waiting on screenshots stays `pending-acceptance` and is not a defect.
+Resolve one issue per [`docs/issues/workflow-dispatch.md`](../../../docs/issues/workflow-dispatch.md), then read and run [`accept-project-issue`](../accept-project-issue/SKILL.md). Report that skill's outcome. Do not restate discovery or transitions.

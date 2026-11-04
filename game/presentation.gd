@@ -674,6 +674,9 @@ func _hide_panels() -> void:
 	_load_failure.visible = false
 	_load_failure.modulate.a = 1.0
 	_clear_advice_chrome()
+	# PER.R9 — a new game does not inherit the last game's last-move marks.
+	if _board != null:
+		_board.clear_last_move()
 	_reset_gesture()
 
 
@@ -788,7 +791,7 @@ func _on_pointer_up(at: Vector2, index: int) -> void:
 	# S4: tap a promotion sprite (C6) or deselect (IN.deselect drops choice).
 	if _router.play_ui_state == SharedGameSession.UI_S4:
 		_finish_drag(true)
-		var kind := _board.promotion_kind_at(_board_world_at(at))
+		var kind: String = _board.promotion_choice().kind_at(_board_world_at(at))
 		if not kind.is_empty():
 			_router.handle_promotion_commit(kind)
 		else:
@@ -866,7 +869,7 @@ func _finish_drag(legal_or_idle: bool) -> void:
 func _board_world_at(at: Vector2) -> Vector2:
 	if _board == null:
 		return Vector2.ZERO
-	return _board.screen_to_world(get_global_transform_with_canvas() * at)
+	return _board.camera().screen_to_world(get_global_transform_with_canvas() * at)
 
 
 func _square_at_screen(at: Vector2) -> String:

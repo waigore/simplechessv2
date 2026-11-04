@@ -8,7 +8,7 @@ The inventory of screens and the transitions between them. Each screen is define
 
 ## Screens
 
-Columns: UI key, job, actors, spec link, and mockup link. Every screen in the table has a spec, and a mockup when spec depth requires one ([depth.md](../depth.md)). Otherwise the mockup link is "None". Every spec under `screens/` is a row here.
+Columns: UI key, job, actors, spec link, and mockup link. Every screen in the table has a spec and a mockup. Every spec under `screens/` is a row here. Catalog approval: [`docs/ux-mockups.md`](../../../../docs/ux-mockups.md).
 
 ## Transitions
 
