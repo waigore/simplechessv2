@@ -8,7 +8,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain in Markdown or in filled mockups. Unused template rows and sections are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized Markdown or in formalized mockups. Unused template rows and sections there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] Each Markdown file links its authoring-rules file from [`rules/README.md`](rules/README.md). Those rules are not pasted into the spec. The authoring-rules link is not interface content. HTML mockups do not carry a rules link; their rules are [screen](rules/ux/screen-mockup.md) and [journey](rules/ux/journey-mockup.md) mockup rules.
 - [ ] The index in `ux.md`, and the alignment and topic coverage tables in `traceability.md`, are filled in.
 - [ ] Every topic in the coverage table is covered, or marked N/A with a reason grounded in the definition or the design.

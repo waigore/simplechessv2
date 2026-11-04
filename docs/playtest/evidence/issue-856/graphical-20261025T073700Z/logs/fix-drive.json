@@ -1,0 +1,103 @@
+{
+  "url": "http://127.0.0.1:8099/",
+  "swiftshader": false,
+  "width": 390,
+  "height": 844,
+  "dpr": 2,
+  "cold": {
+    "panelSeenAt": 2267,
+    "panel": {
+      "t": 1290,
+      "dark": 4545
+    },
+    "paint": {
+      "t": 1290,
+      "nonBlack": 19968
+    },
+    "paintTiming": {
+      "first-paint": 72,
+      "first-contentful-paint": 1740
+    },
+    "nav": {
+      "responseStart": 3,
+      "dcl": 21,
+      "load": 21
+    },
+    "logs": [
+      {
+        "t": 309,
+        "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+      },
+      {
+        "t": 467,
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+      },
+      {
+        "t": 739,
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      }
+    ]
+  },
+  "warm": {
+    "panel": {
+      "t": 595,
+      "dark": 3823
+    },
+    "paint": {
+      "t": 595,
+      "nonBlack": 19968
+    },
+    "paintTiming": {
+      "first-paint": 48
+    },
+    "nav": {
+      "responseStart": 2,
+      "dcl": 15,
+      "load": 15
+    },
+    "logs": [
+      {
+        "t": 87,
+        "text": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+      },
+      {
+        "t": 165,
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+      },
+      {
+        "t": 206,
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."
+      }
+    ],
+    "panelSeenAt": 969
+  },
+  "taps": [
+    {
+      "at": 300,
+      "on": "shared",
+      "phase": "during loading"
+    },
+    {
+      "at": 2267,
+      "on": "shared",
+      "phase": "after panel paint",
+      "shot": "s2-shared-game.png"
+    },
+    {
+      "at": null,
+      "on": "puzzle",
+      "phase": "warm mode pick",
+      "shot": "s3-puzzle-stream.png"
+    }
+  ],
+  "shots": [
+    "s1-loading-300ms.png",
+    "s1-loading-600ms.png",
+    "s1-mode-pick.png",
+    "s2-shared-game.png",
+    "s3-mode-pick-again.png",
+    "s3-puzzle-stream.png",
+    "s1-warm-mode-pick.png"
+  ],
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+}

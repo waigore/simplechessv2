@@ -25,23 +25,13 @@ Use the first match:
 1. **Named portion** — the user or caller names paths or a module.
 2. **Default** — the whole implementation tree.
 
-**Implementation code:** source, tests, and build or config that shapes runtime.
-
-Always exclude `pocs/` unless the user explicitly includes a path under `pocs/`. Exclude docs, specs, agent skills and rules, and other non-implementation paths. If a named path is not implementation code, skip it and say so. If nothing remains, report no findings and stop.
+**Implementation code** is defined in [`sources.md`](../review-code/references/sources.md). If a named path is not implementation code, skip it and say so. If nothing remains, report no findings and stop.
 
 When the scope is a portion, read surrounding callers and siblings far enough to judge continuity and seams.
 
 ## Sources
 
-Apply, in precedence order:
-
-1. [`docs/solid.md`](../../../docs/solid.md) — SOLID.
-2. [`docs/coding-conventions.md`](../../../docs/coding-conventions.md) — project rules (`CC-<n>` at `must` or `should`).
-3. Structure continuity — existing layout, naming, layering, and patterns.
-
-A higher source wins. Do not invent principles or convention rules.
-
-**Conventions file:** if the Rules table says `None — SOLID only`, skip convention checks and note that. If it still holds placeholders, skip them and note "conventions not filled in". A rule that contradicts `docs/solid.md` is one `CONV` finding against `docs/coding-conventions.md`; do not apply that rule to code.
+Apply [`sources.md`](../review-code/references/sources.md). Do not restate precedence or the conventions-file cases. A contradicting convention is one `CONV` finding against `docs/coding-conventions.md`.
 
 ## Smells
 
@@ -62,7 +52,7 @@ For the resolved scope:
 
 1. Check **SRP**, **OCP**, **LSP**, **ISP**, **DIP**, each applicable convention, continuity, then the smells.
 2. One problem, one finding, best-fitting tag. Cite paths and a line range when clear.
-3. **Proposed target:** name the structure change (extract, merge, delete, invert a dependency, extend an existing seam) and the paths it touches. Describe the target; do not paste a replacement implementation. The target must obey the source precedence.
+3. **Proposed target:** name the structure change (extract, merge, delete, invert a dependency, extend an existing seam) and the paths it touches. Describe the target; do not paste a replacement implementation. The target must obey [`sources.md`](../review-code/references/sources.md).
 4. If a sound target would invent an architecture or product decision that is not already specified, do not invent it. Mark the finding `needs decision` and state the question.
 5. Note finding ids that share a seam so the caller can group them.
 

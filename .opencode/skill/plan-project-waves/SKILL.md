@@ -1,7 +1,7 @@
 ---
 name: plan-project-waves
 description: |-
-  Break a defined spec set into coherent implementation waves (milestones),
+  Break formalized specs into coherent implementation waves (milestones),
   vertical epics, and leaf tasks for the wave being expanded (default: wave 1).
   Foundations before detailed mechanics; vertical slicing; confirm before filing.
   Use when planning implementation from specs or expanding the next wave.

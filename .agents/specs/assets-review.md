@@ -8,7 +8,7 @@ Same sections and required content as the rules file for each spec in scope. Fil
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain. Unused template rows are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized sections. Unused template rows there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] Each Markdown file links its authoring-rules file from [`rules/README.md`](rules/README.md). Those rules are not pasted into the spec.
 - [ ] Purpose, asset kinds, sources, catalog, lifecycle, and the index in `assets.md`, and the alignment and topic coverage tables in `traceability.md`, are filled in.
 - [ ] Every skeleton kind row is kept, with applicability and grounds. Every Applies kind is covered by a kind spec, and every kind spec is indexed and exists.

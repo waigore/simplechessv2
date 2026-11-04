@@ -12,27 +12,11 @@ description: |-
 
 # Clarify project issue
 
-Record product-owner clarification for a typed issue in `status:pending-clarification`.
+Veneer over the [action shell](../enforce-task-workflow-status/references/action-shell.md) for `status:pending-clarification` on epic, task, or defect. Feedback issues do not use this status ([`feedback.md`](../../../docs/issues/feedback.md)).
 
-**Contract:** [`docs/issues/workflow.md`](../../../docs/issues/workflow.md)
+Load the outstanding clarification questions. Collect the product-owner clarification. Ask if it is missing. Do not invent answers. Comment with the clarification and attribute the product owner when known.
 
-**Body and comment writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py`, read-back.
+- Body still needs edits → gate `pending-clarification` → `pending-refinement`, then use `refine-project-issue` if refining now.
+- Otherwise → gate `pending-clarification` → `pending-review`.
 
-**Status gate:** [`enforce-task-workflow-status`](../enforce-task-workflow-status/SKILL.md)
-
-## Steps
-
-1. **Load** issue `n` and outstanding clarification questions.
-2. **Assert** `status:pending-clarification`.
-3. **Collect** the PO clarification (ask if missing). Do not invent answers.
-4. **Comment** with the clarification (attribute the PO when known).
-5. **Choose next status:**
-   - Body still needs edits → gate `pending-clarification` → `pending-refinement` (then use `refine-project-issue` if refining now).
-   - Otherwise → gate `pending-clarification` → `pending-review`.
-6. **Report** URL and new status.
-
-## Rules
-
-- Clarification evidence is a comment from/with the PO answer.
-- Do not skip review after clarification unless the user explicitly continues into refine/review skills.
-- Call `enforce-task-workflow-status` for the label change.
+Do not skip review after clarification unless the user explicitly continues into the refine or review skill.

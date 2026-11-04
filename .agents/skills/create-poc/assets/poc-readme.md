@@ -4,18 +4,18 @@ Exploration artifact, not production code. Contract: `docs/pocs.md`, `docs/poc-s
 
 - **Question**: <!-- fill in: the claim this PoC proves or disproves -->
 - **Type**: <!-- fill in: engine | gameplay -->
-- **Issue**: <!-- fill in: #n -->
+- **Issue**: <!-- fill in: #n, or none when no task owns this PoC -->
 - **Request log**: <!-- fill in: docs/requirements/poc-requests.md heading, or none -->
-- **Purpose / scope / outcome**: <!-- fill in: from the issue -->
-- **Engine**: <!-- fill in: engine + version, Engine ADR path if used -->
+- **Purpose / scope / outcome**: <!-- fill in: from the issue, or the confirmed README when there is no task -->
+- **Engine**: <!-- fill in: engine when the experiment needs one, or none. ADR path when that decision is already specified -->
 
-## Citations (optional)
+## Constraints
 
-Design, ADR, or notes drawn on (not binding).
+Formalized specs and Accepted ADRs this experiment must respect. Requirement notes are not constraints.
 
-| Ref | How used |
-|-----|----------|
-| <!-- fill in --> | <!-- fill in --> |
+| Ref | How it constrains the experiment |
+|-----|----------------------------------|
+| <!-- fill in, or none --> | <!-- fill in --> |
 
 ## Style
 
