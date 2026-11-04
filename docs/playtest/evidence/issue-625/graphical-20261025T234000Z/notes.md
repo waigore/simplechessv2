@@ -26,9 +26,11 @@ Why the sitting could not be taken: [blockers.md](blockers.md).
   defines is therefore the correct build choice, and no `Web release` run id exists for
   `491554e` — a future run that wants the published reading must wait for Pages to serve a
   commit carrying the repair ([builds.md](builds.md) §1).
-- **[build-identity.md](build-identity.md) corrects one of those points for the next run**:
-  #647's repair *is* an ancestor of `c5b8189`, so a published-URL reading was available and the
-  fallback was not owed. The rows below are unaffected — there was no device either way.
+- **[build-identity.md](build-identity.md) corrects two of those points for the next run**:
+  #647's repair *is* an ancestor of `c5b8189`, so a published-URL reading was available on
+  2026-10-25; and ADR-0016 (Accepted, 2026-10-25) has since withdrawn the public host entirely —
+  the site answers 404 and `Web release` no longer publishes, so the local export is now the
+  only source. The rows below are unaffected — there was no device either way.
 
 ## Defects
 
