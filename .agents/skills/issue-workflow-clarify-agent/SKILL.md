@@ -12,15 +12,6 @@ description: |-
 
 # Issue workflow clarify agent
 
-Thin automation entrypoint for `status:pending-clarification`.
+Veneer for unattended `status:pending-clarification`.
 
-**Contract / discovery:** [`docs/issues/workflow-dispatch.md`](../../../docs/issues/workflow-dispatch.md)
-
-**Delegates to:** [`clarify-project-issue`](../clarify-project-issue/SKILL.md)
-
-## Steps
-
-1. **Resolve** one target issue per the dispatch contract. Agent-orc `Assigned issue: N` is `#n`; `none` or no number means discover `status:pending-clarification`. Skip candidates that need PO input you do not have.
-2. If no PO clarification is available in the dispatch context, **stop and report** — do not invent answers.
-3. Otherwise **read and run** `clarify-project-issue` for that issue.
-4. **Report** the underlying skill's outcome (URL, new status), or that clarification was unavailable.
+Resolve one epic, task, or defect per [`docs/issues/workflow-dispatch.md`](../../../docs/issues/workflow-dispatch.md). Skip candidates that need product-owner input you do not have. If no clarification is in the dispatch context, stop and report. Do not invent answers. Otherwise read and run [`clarify-project-issue`](../clarify-project-issue/SKILL.md) and report that skill's outcome.

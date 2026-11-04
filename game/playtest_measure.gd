@@ -24,19 +24,20 @@ var tel_sink: Callable = Callable()
 
 var _report: Dictionary = {}
 var _armed := false
-## A window that `observe()` closed and no caller has read yet (#544 acceptance
-## finding 1). `measure(kind)` hands it over once, then it is gone: one arm
-## measures one window and no report is ever returned twice.
-var _consumed: Dictionary = {}
+## A window that closed on its own and no caller has read yet. `report(kind)`
+## hands it over once; `last()` stays readable for the whole run, so a driver that
+## reads a frame or two late still gets the reading (#544 verification finding 1).
+var _closed_unread: Dictionary = {}
 
 
 ## Arm the next window for `kind`. It refuses rather than arming on a placeholder,
-## and the refusal names the first predicate that failed (`D1`). A window already
-## closed but not yet read is not an open window: a new arm retires it.
+## and the refusal names the first predicate that failed (`D1`). A closed report
+## nobody read is not an open window and is never `window open` to a new arm: the
+## new arm retires it from the hand-over path and `last()` keeps it readable.
 func start(kind_id: String, paused: bool) -> Dictionary:
 	if _armed:
 		return _refuse(kind_id, "window open")
-	_consumed = {}
+	_closed_unread = {}
 	if kind_id == KIND_FRAME_TIMES:
 		return _arm_frame_times(paused)
 	if kind_id == KIND_LOADING_READY:
@@ -46,21 +47,27 @@ func start(kind_id: String, paused: bool) -> Dictionary:
 
 ## The report for the armed window. It closes and disarms, so one arm measures one
 ## window and no caller can hand in samples or a `max` (`D2`). An open window that
-## never met its close predicate comes back `cancelled` (`D1`).
+## never met its close predicate comes back `cancelled` (`D1`) — a read is not a
+## close (`#544` verification finding 1).
 ##
 ## A window that met its close predicate is closed by `observe()` before a caller
-## can ask, so this returns that window's report for the kind it measured (`#544`
-## acceptance finding 1). Asking for a different kind is a fresh refusal and leaves
-## the measured report for its own kind.
+## can ask, so this returns that window's report for the kind it measured — at any
+## later frame, not only in the tick it closed (`#544` verification finding 1).
+## Asking for a different kind is a fresh refusal and leaves the measured report
+## for its own kind; `last()` keeps it readable either way.
 func report(kind_id: String) -> Dictionary:
-	if not _armed and not _consumed.is_empty():
-		return _take_consumed(kind_id)
-	if not _armed:
-		return _refuse(kind_id, "no window")
-	var closed := _close("ok" if str(_report.get("kind", "")) == kind_id else "cancelled")
-	_armed = false
-	_emit_end(closed)
-	return closed
+	if _armed:
+		var measured := str(_report.get("kind", ""))
+		var status := "cancelled"
+		if measured == kind_id and _closes(_report, _snapshot()):
+			status = "ok"
+		var closed := _close(status)
+		_armed = false
+		_emit_end(closed)
+		return closed
+	if not _closed_unread.is_empty():
+		return _take_unread(kind_id)
+	return _refuse(kind_id, "no window")
 
 
 ## Closes an open window as `cancelled`, keeping the samples seen but claiming no
@@ -68,7 +75,7 @@ func report(kind_id: String) -> Dictionary:
 ## handed over rather than lost (`#544` acceptance finding 1).
 func disarm() -> Dictionary:
 	if not _armed:
-		if not _consumed.is_empty():
+		if not _closed_unread.is_empty():
 			return _close_unread()
 		return _refuse("", "no window")
 	var closed := _close("cancelled")
@@ -78,6 +85,9 @@ func disarm() -> Dictionary:
 	return closed
 
 
+## The last report, readable at any time — including after the hand-over path has
+## given it once (`#544` verification finding 1). `PlaytestSeams.last_measurement()`
+## and `dump_state()["measurement"]` are the seam's documented read path.
 func last() -> Dictionary:
 	return _report.duplicate(true)
 
@@ -88,7 +98,7 @@ func refuse_release(kind: String, remember: bool = false) -> Dictionary:
 	if remember:
 		_report = refusal.duplicate(true)
 		_armed = false
-		_consumed = {}
+		_closed_unread = {}
 	return refusal
 
 
@@ -113,9 +123,9 @@ func observe() -> void:
 	if str(_report.get("kind", "")) == KIND_LOADING_READY or not closing:
 		_sample()
 	if closing:
-		_consumed = _close("ok")
+		_closed_unread = _close("ok")
 		_armed = false
-		_emit_end(_consumed)
+		_emit_end(_closed_unread)
 
 
 ## `D1` — one close predicate per mode, each reading a field that exists *after*
@@ -216,18 +226,20 @@ func _close(status: String) -> Dictionary:
 
 
 ## The report a self-closed window is waiting to hand over, for the kind it
-## measured. A different kind is a fresh refusal, not this window's reading.
-func _take_consumed(kind_id: String) -> Dictionary:
-	if str(_consumed.get("kind", "")) != kind_id:
-		return _refuse(kind_id, "no window")
+## measured. A different kind is a fresh refusal naming the kind that measured it,
+## not this window's reading.
+func _take_unread(kind_id: String) -> Dictionary:
+	var measured := str(_closed_unread.get("kind", ""))
+	if measured != kind_id:
+		return _refuse(kind_id, "measured %s" % [measured])
 	return _close_unread()
 
 
 ## Hand over the self-closed report once; a second ask is refused, so one arm
-## never yields two reports (`#544` acceptance finding 1).
+## never yields two reports (`#544` acceptance finding 1). `last()` keeps it.
 func _close_unread() -> Dictionary:
-	var closed := _consumed.duplicate(true)
-	_consumed = {}
+	var closed := _closed_unread.duplicate(true)
+	_closed_unread = {}
 	return closed
 
 

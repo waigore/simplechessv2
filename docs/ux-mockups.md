@@ -8,9 +8,9 @@ Contract for HTML mockups under `specs/ux/mockups/`. Authoring: [`.agents/specs/
 2. **UX Markdown** wins over the mockup on controls, states, copy, and behavior — fix the mockup before UI work.
 3. An **approved** mockup binds main-tree UI: similar layout and palette, close functional tracking (not pixel-perfect).
 
-## Always required
+## Always required for formalized UI
 
-Every interactive visual surface (screens, menus, HUD, overlays) and every journey has a mockup. Spec depth does not waive this. PoCs under `pocs/` are exempt until promotion.
+Every formalized interactive visual surface (screens, menus, HUD, overlays) and every formalized journey has a mockup. Spec depth does not waive a formalized screen. Surfaces that have not been kept stay unmocked. PoCs under `pocs/` are exempt until promotion.
 
 ## Catalog and approval
 

@@ -33,7 +33,7 @@ When required: every in-scope **Design** protocol must pass on **Headless**; eve
 
 ## Evidence
 
-Root: [`docs/playtest/evidence/`](../../docs/playtest/evidence/). Each required run records story IDs, pass/fail, notes, and logs. Screenshots come from a graphical re-run of the same build and are required before acceptance, unless the protocol says none. A headless run may omit them without a defect. Schema: [`evidence.md`](evidence.md).
+In-repo root: [`docs/playtest/evidence/`](../../docs/playtest/evidence/) (`manifest.md`, `notes.md`). Screenshots and logs live on the repo wiki and are cited by wiki page URL ([`wiki-evidence.md`](../../docs/playtest/wiki-evidence.md)). Screenshots come from a graphical re-run of the same build and are required before acceptance, unless the protocol says none. A headless run may omit them without a defect. Schema: [`evidence.md`](evidence.md).
 
 ## Architecture constraints
 
@@ -85,6 +85,5 @@ Situational artifact: [`filmed-seating.md`](filmed-seating.md) — a recorded Gr
 - [`ux/navigation.md`](ux/navigation.md)
 - [`ux/exceptions.md`](ux/exceptions.md)
 - [`ux/localization.md`](ux/localization.md)
-- [`ux/actors.md`](ux/actors.md)
 
 Out-of-scope story record (not a runnable protocol): [`traceability/story-out-of-scope.md`](traceability/story-out-of-scope.md).

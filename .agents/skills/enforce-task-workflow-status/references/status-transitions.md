@@ -4,9 +4,11 @@ Contract: [`docs/issues/workflow.md`](../../../../docs/issues/workflow.md). Do n
 
 ## Valid `status:*` labels
 
-`status:pending-review`, `status:pending-refinement`, `status:pending-clarification`, `status:pending-implementation`, `status:pending-verification`, `status:pending-acceptance`, `status:accepted`, `status:superseded`, `status:pending-redefinition`
+Epic, task, and defect: `status:pending-review`, `status:pending-refinement`, `status:pending-clarification`, `status:pending-implementation`, `status:pending-verification`, `status:pending-acceptance`, `status:accepted`, `status:superseded`, `status:pending-redefinition`.
 
-Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
+Feedback (`type:feedback`): `status:pending-resolution`, `status:resolved`. Contract: [`docs/issues/feedback.md`](../../../../docs/issues/feedback.md).
+
+Exactly one `status:*` on each typed issue. Apply the table for that type.
 
 `status:pending-redefinition` is Actions-only; skills must not gate to or from it. Contract: [`docs/issues/workflow-comment-cap.md`](../../../../docs/issues/workflow-comment-cap.md).
 
@@ -30,6 +32,12 @@ Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 
 `accepted` and `superseded` are terminal: no transition leaves either. Closure is planner-only for both ([terminal-states.md](../../../../docs/issues/terminal-states.md)); this gate never closes an issue.
 
+### Feedback
+
+| From | To | Typical evidence |
+|------|-----|------------------|
+| pending-resolution | resolved | Related issues accepted or closed |
+
 ## Label swap (`gh`)
 
 1. Read current labels: `gh issue view <n> --json labels --jq '.labels[].name'`
@@ -37,13 +45,13 @@ Exactly one of these on each `type:epic` / `type:task` / `type:defect` issue.
 3. Remove them: `gh issue edit <n> --remove-label "status:…" …` (all current status labels).
 4. Add target: `gh issue edit <n> --add-label "status:<target>"`.
 
-Never close the issue when applying `status:accepted` or `status:superseded` (closure is planner-only).
+Never close the issue when applying `status:accepted`, `status:superseded`, or `status:resolved` (closure is planner-only).
 
 Label swaps change labels only; body and comment writes follow [`docs/issues/body-writes.md`](../../../../docs/issues/body-writes.md).
 
 ## Gate mode inputs
 
-Action skills pass: issue number, expected `from` status (short name without `status:` prefix or full label), desired `to` status. Abort if current status ≠ `from` (after normalizing). Apply swap only when the transition is in the table above.
+Action skills pass: issue number, expected `from` status (short name without `status:` prefix or full label), desired `to` status. Abort if current status ≠ `from` (after normalizing). Apply swap only when the transition is in the table for that issue's type.
 
 ## Fail-review cascade
 

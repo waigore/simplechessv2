@@ -1,43 +1,28 @@
 ---
 name: create-project-epic
 description: |-
-  Create a GitHub Epic issue (type:epic) from docs/issues/, then wire native
-  blocked-by dependencies when provided.
+  Create a GitHub Epic issue (type:epic) from docs/issues/. Blocked-by is
+  banned (hierarchy.md).
   Use when the user asks for an epic, a broad orchestration outcome, or a parent for multiple tasks.
   Use proactively when planning work that should be split into linked tasks.
 
   Examples:
   - user: "Create an epic for player movement" → collect per docs/issues/, create, report URL
   - user: "Draft an epic body only" → --no-create, print markdown body
-  - user: "Epic for audio, blocked by #4" → create + native blocked-by
+  - user: "Epic for audio" → create without blocked-by
 ---
 
 # Create project epic
 
-Create a repository **Epic** (`type:epic`).
+Veneer for a repository **Epic** (`type:epic`).
 
-**Issue contract:** [`docs/issues/`](../../../docs/issues/) (`requirements.md`, `body-shapes.md`, `hierarchy.md`). Do not redefine sections or invent a parallel template in this skill.
+**Create:** read and apply [`typed-issue-create.md`](../create-project-task/references/typed-issue-create.md).
 
-**Body writes:** [`docs/issues/body-writes.md`](../../../docs/issues/body-writes.md) — guarded writer `gh_issue.py` and read-back.
+## Deltas
 
-**Linking (sub-issues / blocked-by commands):** [`../create-project-task/references/github-issue-linking.md`](../create-project-task/references/github-issue-linking.md).
-
-## Steps
-
-1. **Read** Epic requirements + body shape docs.
-2. **Collect** `title` and content for every required Epic section; optional notes, `blocked_by`, `blocking`. Ask if required content is missing.
-3. **Build** the body exactly as specified in `body-shapes.md`.
-4. If `--no-create` / "draft only": print title + body and stop.
-5. **Create**: write the composed body to a file and run `python3 .github/scripts/gh_issue.py create --file body.md -- --title "…" --label "type:epic" --label "status:pending-review"`, per [`body-writes.md`](../../../docs/issues/body-writes.md) (guard and read-back are built in). Add `--label "priority:high"` or `--label "priority:critical"` only when the human explicitly requests that priority at create time; do not apply `priority:normal` (unlabeled means normal).
-6. **Blocked-by**: for each blocker, follow the linking reference.
-7. **Report** URL, labels (`type:epic`, `status:pending-review`, and `priority:*` only if set), and dependency wiring.
-
-## Rules
-
-- Apply labels `type:epic` and `status:pending-review`. Apply `priority:high` or `priority:critical` only when the human requests it; leave priority unlabeled for normal.
-- Do not change priority after create; only humans set or change priority later.
-- Default: create on GitHub.
-- Do not create child tasks unless asked; use `create-project-task` for children.
+- Collect optional notes. Do not collect or wire `blocked_by` / `blocking`.
+- Do not create child tasks unless asked. Use `create-project-task` for children.
+- When `create-project-feedback` is the caller, set `priority:high` per [`feedback.md`](../../../docs/issues/feedback.md).
 
 ## Related
 

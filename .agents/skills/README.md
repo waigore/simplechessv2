@@ -2,7 +2,7 @@
 
 Canonical skill bodies live here (one folder per skill). This catalog is the list agents should maintain — not a full inventory in `AGENTS.md`.
 
-Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invoke, don't restate**): [`docs/skills.md`](../../docs/skills.md).
+Native facades (Cursor / OpenCode / Grok) and authoring rules (veneers, **Invoke, don't restate**): [`docs/skills.md`](../../docs/skills.md).
 
 ## Catalog
 
@@ -17,13 +17,14 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`manage-agent-orc`](manage-agent-orc/SKILL.md) | Set up, configure, run, and monitor the agent-orc skill-agent daemon (facade over `agent-orc/docs/`) |
 | [`create-project-label`](create-project-label/SKILL.md) | Add a label to config + docs and sync to GitHub |
 | [`create-project-epic`](create-project-epic/SKILL.md) | Create an Epic issue (`type:epic`) on GitHub |
-| [`create-project-task`](create-project-task/SKILL.md) | Create a Task issue (`type:task`) with parent/blocked-by wiring |
-| [`plan-project-waves`](plan-project-waves/SKILL.md) | Cut coherent waves from specs; vertical epics + leaves for the expanded wave; confirm before filing |
+| [`create-project-task`](create-project-task/SKILL.md) | Create a Task issue (`type:task`) with parent (sub-issue) wiring |
+| [`plan-project-waves`](plan-project-waves/SKILL.md) | Cut coherent waves from formalized specs; vertical epics + leaves for the expanded wave; confirm before filing |
 | [`audit-project-wave`](audit-project-wave/SKILL.md) | Audit a filed wave (epics + tasks) for coherence, focus, completeness; confirm before mutating |
 | [`project-planner-agent`](project-planner-agent/SKILL.md) | Align plan with specs; shrink/distill (close non-gameplay defects); create only when necessary |
-| [`unblock-project-issues`](unblock-project-issues/SKILL.md) | Remove blocked-by when the default branch satisfies the blocker or the edge is obsolete (acceptance is not a gate) |
+| [`unblock-project-issues`](unblock-project-issues/SKILL.md) | Critically examine leftover blocked-by edges and delete those not justified under the hierarchy ban |
 | [`redefine-project-issue`](redefine-project-issue/SKILL.md) | Replace comment-capped `pending-redefinition` task/defect with a new `pending-clarification` task (planner) |
-| [`create-project-defect`](create-project-defect/SKILL.md) | Create a Defect issue (`type:defect`) with related/blocked-by wiring |
+| [`create-project-defect`](create-project-defect/SKILL.md) | Create a Defect issue (`type:defect`) with related links (no blocked-by) |
+| [`create-project-feedback`](create-project-feedback/SKILL.md) | File feedback: dispose points, lock requirement changes, file follow-ups |
 | [`enforce-task-workflow-status`](enforce-task-workflow-status/SKILL.md) | Gate or audit `status:*` labels; hygiene for duplicate `priority:*` |
 | [`review-project-issue`](review-project-issue/SKILL.md) | Review pass / fail / clarify → next status |
 | [`refine-project-issue`](refine-project-issue/SKILL.md) | Refine issue body → pending-review |
@@ -31,16 +32,20 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`implement-project-issue`](implement-project-issue/SKILL.md) | Implementation summary → pending-verification |
 | [`verify-project-issue`](verify-project-issue/SKILL.md) | Independent verify pass / fail |
 | [`accept-project-issue`](accept-project-issue/SKILL.md) | Accept / fail / clarify after verification |
+| [`migrate-playtest-evidence-to-wiki`](migrate-playtest-evidence-to-wiki/SKILL.md) | Move in-repo playtest screenshots/logs to the wiki; rewrite manifests; focused PR |
 | [`issue-workflow-review-agent`](issue-workflow-review-agent/SKILL.md) | Background dispatch → `review-project-issue` |
 | [`issue-workflow-refine-agent`](issue-workflow-refine-agent/SKILL.md) | Background dispatch → `refine-project-issue` |
 | [`issue-workflow-clarify-agent`](issue-workflow-clarify-agent/SKILL.md) | Background dispatch → `clarify-project-issue` |
 | [`issue-workflow-implement-agent`](issue-workflow-implement-agent/SKILL.md) | Background dispatch → implement work + `implement-project-issue` |
 | [`issue-workflow-verify-agent`](issue-workflow-verify-agent/SKILL.md) | Background dispatch → `verify-project-issue` |
 | [`issue-workflow-accept-agent`](issue-workflow-accept-agent/SKILL.md) | Background dispatch → `accept-project-issue` |
+| [`handle-feedback-agent`](handle-feedback-agent/SKILL.md) | One `pending-resolution` feedback issue → `resolved` when related work is done |
 | [`babysit-pr-agent`](babysit-pr-agent/SKILL.md) | Soft Actions check queue (~3 active), then one same-repo PR: conflicts, behind, in-scope CI for auto-merge |
 | [`author-spec`](author-spec/SKILL.md) | Write or edit a spec from `.agents/specs/rules/`; do not copy the rules into the spec |
-| [`capture-requirements`](capture-requirements/SKILL.md) | Interview for specs, high-level stage first; detail saved as notes; confirm, `author-spec`, open a spec PR |
-| [`review-spec`](review-spec/SKILL.md) | Review a spec doc or the whole set; whole-spec also runs applicability, terminology, and TBD audits; report verdict |
+| [`author-quality-rubrics`](author-quality-rubrics/SKILL.md) | Interview baseline targets and orthogonal domain axes; write via `author-spec`; execution is `run-quality-evaluators` |
+| [`run-quality-evaluators`](run-quality-evaluators/SKILL.md) | Execute Applies axes: deterministic from verify, llm-judge from accept; write `docs/quality/evidence/`; no status change |
+| [`capture-requirements`](capture-requirements/SKILL.md) | Default path: interview specs the user picks, foundation first; confirm, `author-spec`, open a spec PR. A PoC only when they ask to explore |
+| [`review-spec`](review-spec/SKILL.md) | Review a spec doc or the formalized set; placeholder-only files are not a Fail; whole-spec also runs applicability, terminology, and TBD audits |
 | [`serve-ux-mockups`](serve-ux-mockups/SKILL.md) | Explicit-only: serve `specs/ux/mockups/` on the LAN with a generated index, open it in the browser, and report localhost and LAN URLs |
 | [`review-code`](review-code/SKILL.md) | Review code vs `docs/solid.md` (SOLID + continuity) and `docs/coding-conventions.md` (project rules + Code lint / Unit tests / Coverage); Pass/Fail, read-only |
 | [`audit-code-structure`](audit-code-structure/SKILL.md) | Audit implementation structure and debt (SOLID, conventions, continuity, duplication, dead code, seams, parallel structure); proposed targets; read-only |
@@ -49,12 +54,12 @@ Native facades (Cursor / OpenCode / Grok) and authoring rules (including **Invok
 | [`audit-spec-terminology`](audit-spec-terminology/SKILL.md) | Audit glossary ownership and term usage (undefined, drift, synonyms, homonyms); report for author-spec |
 | [`audit-spec-tbd`](audit-spec-tbd/SKILL.md) | Find TBDs (undecided aspects), propose grounded answers, confirm with the user, then author-spec |
 | [`scope-poc`](scope-poc/SKILL.md) | Clarify PoC purpose/scope/outcome from log or issue; tool/env blockers only; [Before building](../../docs/pocs.md#before-building) |
-| [`create-poc`](create-poc/SKILL.md) | Build a PoC under `pocs/` after `scope-poc` passes; freer exploration, not spec-bound |
+| [`create-poc`](create-poc/SKILL.md) | Build a PoC under `pocs/` after `scope-poc` passes; formalized specs constrain it; SOLID and conventions do not |
 | [`manage-asset`](manage-asset/SKILL.md) | Generate, import, update, or deprecate assets per `specs/assets/` procedures; catalog, review, PR |
 | [`establish-asset-style`](establish-asset-style/SKILL.md) | Establish or refresh a kind Style series (anchors → Recraft / ElevenLabs CLI / soft SFX or soft third-party-visual → registry); PR |
 | [`register-asset`](register-asset/SKILL.md) | Catalog a person-supplied (human-made or third-party) asset; person-granted review exemption or review-asset; PR |
 | [`review-asset`](review-asset/SKILL.md) | Review produced assets vs kind spec and `specs/aesthetics/`; Pass/Fail by element ID, read-only |
-| [`reconcile-poc`](reconcile-poc/SKILL.md) | Optional PoC reconcile act: keep/drop/adapt claims, resolve conflicts, record act |
+| [`reconcile-poc`](reconcile-poc/SKILL.md) | Formalize act: keep/drop/adapt claims, resolve conflicts into the keep list, record act |
 | [`promote-poc`](promote-poc/SKILL.md) | Reimplement one PoC's keep/adapt list: assumptions into specs, technical design, asset approval, code review |
 | [`sync-upstream-template`](sync-upstream-template/SKILL.md) | Merge upstream template changes downstream: baseline, per-file classify, confirm conflicts, one sync PR |
 
