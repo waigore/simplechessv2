@@ -13,7 +13,7 @@ An ordered path one actor takes through screens that already exist in `navigatio
 - **Actor**: a link to `actors/`.
 - **Goal**: what the actor is trying to finish.
 - **Serves**: vision qualities, definition scope, and the design flow or feature.
-- **Mockup**: copy `mockups/journeys/_template.html` to `mockups/journeys/<kebab-name>.html`. Follow [journey-mockup.md](journey-mockup.md). When spec depth requires no mockup for this journey, write "None — spec depth \<level\>", per [depth.md](../depth.md).
+- **Mockup**: copy `mockups/journeys/_template.html` to `mockups/journeys/<kebab-name>.html`. Follow [journey-mockup.md](journey-mockup.md). Add a `draft` catalog row per [mockup-catalog.md](mockup-catalog.md). Always required.
 - **Glossary terms**: links into `glossary.md`.
 
 ## Sections

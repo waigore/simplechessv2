@@ -1,0 +1,14 @@
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+console.error WARNING: puzzle stream: deal read failed (unconfigured)
+console.error    at: push_warning (core/variant/variant_utility.cpp:1033)
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.
+console.log Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+console.log OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+console.log Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.

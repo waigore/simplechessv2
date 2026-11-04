@@ -26,7 +26,7 @@ N/A — see the parent ADR's Reasoning.
 |-------------|--------------|
 | Export-preset `include_filter` / `export_files` for `../game_assets/*` | Godot silently drops paths outside the project tree; four filter forms all measured asset-less (#630) |
 | Symlink `game/asset_files → ../game_assets` | Still outside the export's file scan; measured asset-less (#630) |
-| Serve `game_assets/` beside `build/web/`, no staging | The Pages publish of `build/web/` cannot reach a sibling directory (ADR-0009) |
+| Serve `game_assets/` beside `build/web/`, no staging | An export of `build/web/` cannot reach a sibling directory (ADR-0007) |
 | Pack the assets into `index.pck` | Needs an import cache for bare SVG/WOFF2/OGG and hides the files the resolver opens by path |
 | Move `game_assets/` under `game/` | Changes ADR-0005's roots and every catalog entry path |
 

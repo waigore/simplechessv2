@@ -25,3 +25,9 @@ agent-orc/src/*.egg-info/
 # Runtime log from a manual run redirected into the repo root (#680); the
 # shell redirect writes it, so ignore it rather than change a producer.
 /server.log
+
+# evidence media: playtest on wiki (docs/playtest/wiki-evidence.md); quality is markdown-only
+docs/playtest/evidence/**/screenshots/
+docs/playtest/evidence/**/logs/
+docs/quality/evidence/**/screenshots/
+docs/quality/evidence/**/logs/

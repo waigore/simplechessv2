@@ -1,10 +1,9 @@
 name: Web release
 
-# Publishes the seam-free release Web export to GitHub Pages (ADR-0009,
-# ADR-0007). Exports the `Web Release` preset from a clean checkout into
-# build/web/, checks the publish target and that no test script ships, then
-# publishes that directory. No playtest build and no advice backend (ADR-0009).
-# `Unit tests` owns the seam check (game/release_scene_test.gd, ADR-0004).
+# Checks the seam-free release Web export (ADR-0007, ADR-0016). Exports the
+# `Web Release` preset from a clean checkout into build/web/ and checks that
+# no test script ships. Does not publish. No playtest build and no advice
+# backend. `Unit tests` owns the seam check (game/release_scene_test.gd, ADR-0004).
 
 on:
   push:
@@ -13,19 +12,11 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   build:
     name: Release export
     runs-on: ubuntu-latest
-    outputs:
-      pages_present: ${{ steps.pages_probe.outputs.present }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,10 +70,9 @@ jobs:
 
       # The engine-boundary verdict (#696, ADR-0002 §Validation "No client
       # Stockfish endpoint", CTR-advice-stream G3). `Web playtest` produces the
-      # gating verdict on every pull request with the same function, so this call
-      # is defence-in-depth on the tree before it publishes. Both directions run:
-      # the contra-positive trees are written here, and the real release export
-      # must pass.
+      # gating verdict on every pull request with the same function. Both
+      # directions run: the contra-positive trees are written here, and the
+      # real release export must pass.
       - name: Check the shipped tree carries no client engine
         run: |
           set -euo pipefail
@@ -91,7 +81,7 @@ jobs:
 
       # A tree that carries no asset file, or carries one at no route the
       # shipped resolver reads, loads and then never leaves the loading screen
-      # (#630, #715), so the release fails here instead of publishing. Every
+      # (#630, #715), so the release check fails here. Every
       # preload group is read at its own route (#812): a builder whose import
       # cache never took the playback copies ships a silent `ambient` group
       # while the loose-file and catalog checks stay green.
@@ -125,58 +115,3 @@ jobs:
               if f"res://{script.name}\x00".encode() in pathlib.Path("build/web/index.pck").read_bytes():
                   sys.exit(f"release ships {script.name}")
           EOF
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: build/web
-
-      # Measurement only: this probe decides whether `deploy` can run, and never
-      # any other part of this job's verdict. `web_export.py --pages-status`
-      # owns the status mapping so the shell cannot invent one.
-      - name: Probe for a Pages site
-        id: pages_probe
-        run: |
-          set -uo pipefail
-          token="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
-          if [[ -z "${token}" ]]; then
-            echo "::error::no GITHUB_TOKEN or GH_TOKEN for the Pages probe"
-            exit 1
-          fi
-          status="$(curl -sS -o /dev/null -w '%{http_code}' \
-            -H "Authorization: Bearer ${token}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" || true)"
-          echo "Pages probe status: ${status:-<none>}"
-          present="$(python3 .github/scripts/web_export.py --pages-status "${status}")"
-          echo "present=${present}" >> "${GITHUB_OUTPUT}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Pages not enabled — deploy skipped
-        if: ${{ !cancelled() && steps.pages_probe.outputs.present == 'false' }}
-        run: |
-          {
-            echo "### Web release created no deployment"
-            echo
-            echo "Godot Pages has no site for \`${GITHUB_REPOSITORY}\`, so \`Deploy to Pages\` is skipped."
-            echo "The export and its checks above still ran; the run is green because nothing failed."
-            echo
-            echo "A repository admin enables it: Settings → Pages → Build and deployment → Source: **GitHub Actions**."
-            echo "Tracking defect: #510. After enabling, re-run this workflow to publish."
-          } | tee -a "${GITHUB_STEP_SUMMARY}"
-
-  deploy:
-    name: Deploy to Pages
-    needs: build
-    # Only this run's probe decides: a site that appears later needs a new run.
-    if: ${{ needs.build.outputs.pages_present == 'true' }}
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

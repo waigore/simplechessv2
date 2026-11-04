@@ -8,7 +8,7 @@ Field list for a run's `manifest.md`. Schema and outcomes: [`evidence.md`](evide
 |-------|---------|
 | Issue | GitHub issue number |
 | Environment | `headless` or `graphical` |
-| Build / session id | The build under test by commit, the source it was read from (published URL, or the release export path with the reason it was used — [`procedures.md`](procedures.md) Prep), and the `TEL.3` session id |
+| Build / session id | The build under test by commit, the source it was read from (local export path or in-process run — [`procedures.md`](procedures.md) Prep), and the `TEL.3` session id |
 | Timing (`SIT.4` runs) | Device and browser, and the repeat count of the timings; a single sample is not evidence |
 | Coverage mode | `full` or `critical-only` from the hub |
 | Results | One row per selected story row and one row per protocol verdict, using the outcomes in [`evidence.md`](evidence.md) |

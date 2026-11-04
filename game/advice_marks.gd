@@ -5,9 +5,10 @@ extends Node2D
 ## (PER.R1) and nothing is conveyed by colour alone (the arrow shows the move).
 ##
 ## The square mark is the **edge-bracket** form PAL.K9 gives Advice: one stroke per
-## edge midpoint, corners open — never the capture mark's corner pairs. Nothing on
-## the board sits behind it, so a keyline would change the form; the stroke alone
-## carries it, at the palette rules' bracket stroke.
+## edge midpoint, corners open — never the capture mark's corner pairs. Those
+## brackets draw on the square's PAL.C10 foreground (`UIS.C6`, `rules.md` *Layer
+## split*), so this node only builds their form and the arrow; the board places
+## the form (#792). The arrow is a bare PAL.C7 stroke between the two bodies.
 
 ## PAL.C7 advice teal.
 const COLOR_ADVICE := Color("53A2BE")
@@ -68,8 +69,6 @@ func show_best_move(from_square: String, to_square: String) -> void:
 	_clear_nodes()
 	last_from = from_square
 	last_to = to_square
-	_add_square_marks(from_square)
-	_add_square_marks(to_square)
 	_add_arrow(from_square, to_square)
 	_fade_in()
 
@@ -86,16 +85,22 @@ func _clear_nodes() -> void:
 		child.queue_free()
 
 
-## Edge brackets, one stroke per edge midpoint, corners open (palette rules).
-func _add_square_marks(square: String) -> void:
+## Edge brackets, one stroke per edge midpoint, corners open (palette rules), in
+## world coordinates so the board can draw them on that square's PAL.C10
+## foreground (`UIS.C6`, #792).
+static func edge_brackets(square: String) -> Array[PackedVector2Array]:
+	var out: Array[PackedVector2Array] = []
+	if not BoardGeometry.is_square(square):
+		return out
 	var c := BoardGeometry.square_center(square)
 	var outer := 0.5 - ADVICE_STROKE * 0.5
 	for edge in EDGES:
 		var unit: Vector2 = edge
-		var out: Vector2 = c + unit * outer
+		var mid: Vector2 = c + unit * outer
 		var along := Vector2(-unit.y, unit.x)
-		var points := PackedVector2Array([out - along * ADVICE_ARM, out, out + along * ADVICE_ARM])
-		add_child(_line(points, ADVICE_STROKE))
+		var points := PackedVector2Array([mid - along * ADVICE_ARM, mid, mid + along * ADVICE_ARM])
+		out.append(points)
+	return out
 
 
 func _add_arrow(from_square: String, to_square: String) -> void:

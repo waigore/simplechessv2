@@ -16,7 +16,7 @@ Game design states what happens in the game. The view states how the game world 
 - **Defined once**: terms live in `glossary.md`. Each screen, exception, UI action, and binding is defined in one file. Other specs link it.
 - **Traceable**: every spec states which vision qualities, definition scope items, and design specs it serves. `traceability.md` maps all of them.
 - **Identified and proven**: every behavior-defining element has a stable ID per [ids.md](ids.md) and is proven by Given/When/Then user stories per [stories.md](stories.md) and [story-coverage.md](story-coverage.md).
-- **Shown**: every screen and journey that spec depth requires a mockup for links an HTML mockup under `mockups/`, produced per [presentation.md](presentation.md). Others read "None — spec depth \<level\>", per [depth.md](../depth.md). The mockup matches the spec and adds no screen, control, or state.
+- **Shown**: every screen and journey links an HTML mockup under `mockups/`, produced per [presentation.md](presentation.md), and a catalog row per [mockup-catalog.md](mockup-catalog.md). The mockup matches the spec and adds no screen, control, or state. Main-tree UI follows [`docs/ux-mockups.md`](../../../../docs/ux-mockups.md).
 - **Concise**: each Markdown file stays under 500 words. HTML mockups are exempt. Split by logical unit and link.
 
 ## Index

@@ -23,7 +23,7 @@ Surfaces undecided aspects marked per [Undecided aspects](../../specs/rules/READ
 3. **Order upstream first**, in [`specs/README.md`](../../../specs/README.md) index order. Mark a TBD **blocking** when a downstream TBD links it, or when it sits in a high-level field listed under [High-level stage](../capture-requirements/SKILL.md#high-level-stage).
 4. **Suggest**: for each TBD, read its rules file (per the path table) and the upstream specs that ground it. Propose one to three answers that satisfy the rules, each citing the upstream fact it rests on (a vision quality, scope item, constraint, platform, Accepted ADR). Mark one as recommended only when the upstream points to it. If nothing upstream grounds an answer, say so and pass the question on as written.
 5. **Report** in the shape below, then **ask the user to confirm**, upstream and blocking first, a few at a time. Use a structured multiple-choice question when available, always allowing a custom answer or "keep TBD".
-6. **Hand off**: for each confirmed answer, run `author-spec` on that file to replace the TBD. Then open a spec PR per [Spec PRs](../../../docs/pull-requests.md#spec-prs). A downstream TBD that cited a resolved one is re-asked, not resolved automatically.
+6. **Hand off**: for each confirmed answer, run `author-spec` on that file to replace the TBD. When `reconcile-poc` or `promote-poc` is the caller, return the written paths and do not open a PR. Otherwise open a spec PR per [Spec PRs](../../../docs/pull-requests.md#spec-prs). A downstream TBD that cited a resolved one is re-asked, not resolved automatically.
 
 ## Report shape
 
@@ -42,7 +42,6 @@ Not captured: <files still holding `<!-- fill in -->`, or none>
 
 ## Rules
 
+- Close per [`../audit-spec-applicability/references/report-back.md`](../audit-spec-applicability/references/report-back.md). When `review-spec` invoked this audit, still confirm with the user and write through `author-spec` before returning the report, including remaining open TBDs.
 - Never resolve a TBD without the user's confirmation, and never present a suggestion as decided.
-- Suggestions stay inside the rules and the upstream specs; a suggestion that would change scope, an objective, a platform, a constraint, or a quality target says so.
-- Do not edit `.agents/specs/rules/`. Do not run `review-spec`. When invoked by `review-spec`, keep the interactive confirm → `author-spec` flow, then return the TBD audit report (including remaining open TBDs) to the caller; do not call `review-spec` back.
-- When run alone, report back to the request source (chat, issue/PR comment, or calling agent), same as `review-spec`.
+- Suggestions stay inside the rules and the upstream specs. A suggestion that would change scope, an objective, a platform, a constraint, or a quality target says so.

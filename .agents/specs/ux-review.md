@@ -8,14 +8,14 @@ Same sections and required content as the rules file for each spec in scope. Fil
 
 ### Completeness
 
-- [ ] No `<!-- fill in -->` placeholders remain in Markdown or in filled mockups. Unused template rows and sections are deleted.
+- [ ] No `<!-- fill in -->` placeholders remain in formalized Markdown or in formalized mockups. Unused template rows and sections there are deleted. A section that is still only a placeholder is not formalized ([`alignment.md`](alignment.md)).
 - [ ] Each Markdown file links its authoring-rules file from [`rules/README.md`](rules/README.md). Those rules are not pasted into the spec. The authoring-rules link is not interface content. HTML mockups do not carry a rules link; their rules are [screen](rules/ux/screen-mockup.md) and [journey](rules/ux/journey-mockup.md) mockup rules.
 - [ ] The index in `ux.md`, and the alignment and topic coverage tables in `traceability.md`, are filled in.
 - [ ] Every topic in the coverage table is covered, or marked N/A with a reason grounded in the definition or the design.
 - [ ] Every actor, screen, and journey file is listed in the `ux.md` index, and every indexed file exists.
 - [ ] Every screen spec is a row in `navigation.md`, and every navigation row has a screen spec.
-- [ ] Each screen and journey has a mockup when the definition's spec depth requires one ([`depth.md`](rules/depth.md)). Otherwise its **Mockup** field reads "None — spec depth \<level\>".
-- [ ] When any mockup exists, `presentation.md` names the design system and the template for each surface, and **Aesthetics fit** states which `UIS` elements the system meets and which tokens it overrides.
+- [ ] Each screen and journey has a mockup (always required; depth does not waive) and a row in `mockups/catalog.md` ([`docs/ux-mockups.md`](../../docs/ux-mockups.md)).
+- [ ] `presentation.md` names the design system, the template for each surface, **Aesthetics fit**, and links the mockup catalog.
 
 ### Interface detail
 
@@ -75,8 +75,9 @@ Rules: [`stories.md`](rules/ux/stories.md) and [`story.md`](rules/ux/story.md).
 - [ ] Each filled screen mockup keeps `data-screen`, `data-region`, `data-control`, and `data-state` for the elements in its spec.
 - [ ] Each journey mockup links every step and branch in that journey, including exception anchors.
 - [ ] Visual treatment follows `presentation.md`: Open Design tokens and craft for the bound system, `mobile-app` or `web-prototype` for meta screens, and the game-screen skeleton for play screens.
-- [ ] Mockup colors, type, panels, and interface motion match `specs/aesthetics/ui-style.md` after the overrides in **Aesthetics fit**.
+- [ ] Mockup colors, type, panels, and interface motion match `specs/aesthetics/ui-style.md` after the overrides in **Aesthetics fit**. When they disagree, aesthetics win and the mockup must be fixed.
 - [ ] `presentation.md` is the binding. A root `.open-design.json` does not replace it.
+- [ ] Catalog rows match filled HTML files; states are `draft`, `approved`, or `deprecated` per [mockup-catalog.md](rules/ux/mockup-catalog.md).
 
 ### Scope boundaries
 

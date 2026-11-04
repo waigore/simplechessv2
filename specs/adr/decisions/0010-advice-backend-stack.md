@@ -6,7 +6,7 @@ Authoring rules: [`.agents/specs/rules/adr/decision.md`](../../../.agents/specs/
 - **Date**: 2026-10-22
 - **Category**: Integration
 - **Supersedes**: None
-- **Informed by**: [ADR-0002](0002-stockfish-advice-backend.md); Instant play; definition async time-capped Stockfish; [F-move-advice](../../design/features/move-advice.md); Reliability; [ADR-0009](0009-github-pages-client-host.md)
+- **Informed by**: [ADR-0002](0002-stockfish-advice-backend.md); Instant play; definition async time-capped Stockfish; [F-move-advice](../../design/features/move-advice.md); Reliability
 
 ## Context
 

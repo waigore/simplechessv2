@@ -338,15 +338,15 @@ func _promotion_overlay_at_destination() -> String:
 		var kind := str(node.get_meta("promote_kind", ""))
 		seen[kind] = true
 		if node.position.distance_to(dest) > 0.55:
-			board.clear_promotion_choice()
+			board.promotion_choice().clear_choice()
 			return (
 				"promote sprite %s off destination (d=%s)" % [kind, node.position.distance_to(dest)]
 			)
 		# Last-rank must stay inside the board plane (0..8).
 		if node.position.y < 0.0 or node.position.y > 8.0:
-			board.clear_promotion_choice()
+			board.promotion_choice().clear_choice()
 			return "promote sprite %s leaves board (y=%s)" % [kind, node.position.y]
-	board.clear_promotion_choice()
+	board.promotion_choice().clear_choice()
 	for kind in SharedGameSession.PROMOTE_ORDER:
 		if not seen.has(kind):
 			return "missing promote kind %s" % kind
@@ -764,7 +764,7 @@ func _assert_board_fully_visible(board: BoardPresentation) -> String:
 	## PRJ.A1 / D1 — every corner square centre stays inside the board rect.
 	var rect := board.get_global_rect()
 	for square in ["a1", "h1", "a8", "h8", "e4"]:
-		var screen := board.world_to_screen(board.framed_center(square))
+		var screen := board.camera().world_to_screen(board.camera().framed_center(square))
 		if not rect.has_point(screen):
 			return "square %s cropped at %s in %s" % [square, screen, rect]
 	return ""
@@ -931,7 +931,7 @@ func _drag_to_screen(from_sq: String, to_screen: Vector2) -> void:
 
 func _screen_for(square: String) -> Vector2:
 	var board := _board()
-	return board.world_to_screen(board.framed_center(square))
+	return board.camera().world_to_screen(board.camera().framed_center(square))
 
 
 func _shared_play_state() -> Dictionary:

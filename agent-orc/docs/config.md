@@ -44,6 +44,8 @@ Shipped defaults (see [`.orc/config.yaml`](../../.orc/config.yaml)):
 | opencode-qwen38-max | `opencode` | `run --auto --model opencode-go/qwen3.8-max {prompt}` ([OpenCode Go](https://opencode.ai/docs/go/)) |
 | opencode-deepseek-v41-flash | `opencode` | `run --auto --model opencode-go/deepseek-v4.1-flash {prompt}` |
 
+OpenCode providers: agent-orc injects `--session <id>` when missing, then runs `opencode session delete <id>` when the run ends or on forced shutdown (before process kill — kill alone is not enough; the OpenCode server can respawn killed sessions).
+
 Default agent→provider: planner → `opencode-qwen38-max`; refine → `grok`; verify → `opencode-deepseek-v41-flash`; others → `cursor`.
 
 ## Agents
@@ -77,6 +79,8 @@ gate:
 ```
 
 `project-planner-agent` has no gate (always eligible).
+
+`handle-feedback-agent` gates with [`.orc/scripts/list-feedback-issues.sh`](../../.orc/scripts/list-feedback-issues.sh) (exit 0 when that list is not `[]`). The same script is its issue list: `pending-resolution`, then priority. Provider: `cursor`. Contract: [`docs/issues/feedback.md`](../../docs/issues/feedback.md).
 
 `babysit-pr-agent` gates with [`.agents/skills/babysit-pr-agent/scripts/gate.sh`](../../.agents/skills/babysit-pr-agent/scripts/gate.sh) (exit 0 when a same-repo open PR is conflicted, behind, or failing checks, or when more than three have queued/in-progress checks). Provider: `cursor`.
 

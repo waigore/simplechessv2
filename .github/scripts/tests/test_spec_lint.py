@@ -146,6 +146,14 @@ class SpecLintTest(unittest.TestCase):
         self.write("specs/long.md", "word " * spec_lint.WORD_LIMIT)
         self.assertEqual(self.errors("word-limit"), [])
 
+    def test_word_limit_exempts_issue_runs_only(self) -> None:
+        long = "word " * (spec_lint.WORD_LIMIT + 1)
+        self.write("docs/quality/evidence/issue-1/run/manifest.md", long)
+        self.write("docs/playtest/evidence/issue-2/notes.md", long)
+        self.assertEqual(self.errors("word-limit"), [])
+        self.write("docs/quality/evidence/README.md", long)
+        self.assertEqual([f.path for f in self.errors("word-limit")], ["docs/quality/evidence/README.md"])
+
     def test_unsafe_body_invocation_in_docs(self) -> None:
         # Copyable or not, a doc that shows the sentinel as a flag value fails.
         self.write("docs/issues/unsafe.md", "Run `gh issue edit 12 --body @-`.\n\ngh issue comment 12 --body @-\n")
@@ -155,7 +163,7 @@ class SpecLintTest(unittest.TestCase):
 
     def test_unsafe_body_file_in_skill(self) -> None:
         path = ".agents/skills/create-project-task/SKILL.md"
-        self.edit(path, "## Steps\n", "## Steps\n\n`gh issue comment 12 --body-file @-`\n")
+        self.edit(path, "## Deltas\n", "## Deltas\n\n`gh issue comment 12 --body-file @-`\n")
         [finding] = self.errors("unsafe-body")
         self.assertEqual(finding.path, path)
         self.assertIn("--body-file -", finding.message)
@@ -166,7 +174,7 @@ class SpecLintTest(unittest.TestCase):
 
     def test_unsafe_body_in_fenced_skill_snippet_and_quoted(self) -> None:
         path = ".agents/skills/implement-project-issue/SKILL.md"
-        self.edit(path, "## Rules\n", "## Rules\n\n```bash\ngh issue comment 12 --body-file \"@-\"\n```\n")
+        self.edit(path, "Load requirements", "```bash\ngh issue comment 12 --body-file \"@-\"\n```\n\nLoad requirements")
         [finding] = self.errors("unsafe-body")
         self.assertEqual(finding.path, path)
         self.assertIn("--body-file -", finding.message)
