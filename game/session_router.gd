@@ -88,6 +88,9 @@ var _last_clock_display := ""
 
 
 func _ready() -> void:
+	var advice := AdviceParameters.read()
+	advice_endpoint = advice[0]
+	advice_api_key = advice[1]
 	_resolver = get_node("../AssetResolver") as AssetResolver
 	_seams = _bind_seams()
 	_persist = get_node_or_null("../PersistStore") as PersistStore
@@ -121,6 +124,11 @@ func _seams_paused() -> bool:
 	return _seams != null and _seams.is_paused()
 
 
+## Stage and a live session, then the playtest pause (CTR-playtest-drive.O1 / DBG.1).
+func _shared_play_live() -> bool:
+	return stage == STAGE_SHARED_PLAY and shared_session != null and not _seams_paused()
+
+
 func _emit_tel(event_name: String, outcome: String, story_id := "") -> void:
 	if _seams != null:
 		_seams.emit_tel(event_name, outcome, story_id)
@@ -131,10 +139,8 @@ func _process(delta: float) -> void:
 		if puzzle_flow != null and not _seams_paused():
 			puzzle_flow.tick()
 		return
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return
 	# CTR-playtest-drive.O1 / DBG.1 — pause halts clocks and input.
-	if _seams_paused():
+	if not _shared_play_live():
 		return
 	# U3 → U2: advice updates apply on the session path (concurrency.md S1),
 	# including untimed games, which have no clocks to tick.
@@ -217,9 +223,7 @@ func handle_control(screen_id: String, control_id: String) -> void:
 func handle_input_commit(from_square: String, to_square: String, promotion: String = "") -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.gesture(from_square, to_square, promotion)
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	if not play_gestures_available():
 		return false
@@ -236,9 +240,7 @@ func _apply_play_gesture(from_square: String, to_square: String, promotion: Stri
 func handle_deselect() -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.deselect()
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	var result := shared_session.clear_selection()
 	if not bool(result.get("ok", false)):
@@ -252,9 +254,7 @@ func handle_deselect() -> bool:
 func handle_promotion_commit(kind: String) -> bool:
 	if stage == STAGE_PUZZLE_PLAY:
 		return puzzle_flow != null and puzzle_flow.promotion(kind)
-	if stage != STAGE_SHARED_PLAY or shared_session == null:
-		return false
-	if _seams_paused():
+	if not _shared_play_live():
 		return false
 	var result := shared_session.commit_promotion(kind)
 	_emit_tel_result(result)
