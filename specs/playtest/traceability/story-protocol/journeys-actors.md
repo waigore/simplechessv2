@@ -17,7 +17,7 @@ The only rows whose **Cites** is a bare journey key. That key judges `specs/ux/s
 
 ## Actors — 9 rows, 9 judged
 
-The two `US1` rows reach `PTU-shared-play`; the seven `US2`–`US5` splits are judged rows no protocol cites. `PTU-shared-play` judges the `US1` rows at story level and no actor split, so no actor row is single-cited.
+The two `US1` rows reach `PTU-shared-play`; the seven `US2`–`US5` splits are judged rows no protocol cites. Those seven are the row-level splits of the draft [`ux/actors.md`](../../ux/actors.md), which `playtest.md` §Index does not list as a protocol. `PTU-shared-play` judges the `US1` rows at story level and no actor split, so no actor row is single-cited.
 
 | Story | Protocol | Reached | Level |
 |-------|----------|---------|-------|
