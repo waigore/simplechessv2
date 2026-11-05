@@ -1,6 +1,6 @@
 class_name PieceAccessibleNameTest
 extends SceneTree
-## CMP-presentation.R7 / `specs/ux/localization.md` L7–L9: every piece node names
+## CMP-presentation.R8 / `specs/ux/localization.md` L7–L9: every piece node names
 ## itself, in every shipped locale, from the Copy row its kind maps to (#643).
 
 const PLAY_SCREENS := ["shared-play", "puzzle-play"]
@@ -17,6 +17,8 @@ func _start() -> void:
 		problem = _l9_maps_every_kind()
 	if problem.is_empty():
 		problem = _every_piece_entry_named()
+	if problem.is_empty():
+		problem = _node_surface_names_follow_context()
 	if problem.is_empty():
 		problem = _names_are_not_raw_keys()
 	if problem.is_empty():
@@ -84,6 +86,38 @@ func _every_piece_entry_named() -> String:
 	return ""
 
 
+## R8 surface, not the static call alone: a synced piece layer re-applies every
+## held node's name for each play screen and locale that `set_name_context`
+## names, so a node never keeps a name composed at another owner or locale.
+func _node_surface_names_follow_context() -> String:
+	var layer := BoardPieceLayer.new()
+	var occupancy: Dictionary = {}
+	var pieces := 0
+	for entry in BoardPresentation.PIECE_IDS.keys():
+		occupancy["square_%d" % pieces] = {
+			"color": str(entry).get_slice("|", 0),
+			"kind": str(entry).get_slice("|", 1),
+		}
+		pieces += 1
+	layer.sync(occupancy, {}, false, "", _missing_asset)
+	for screen in PLAY_SCREENS:
+		for locale in StringTable.LOCALES:
+			layer.set_name_context(str(screen), str(locale))
+			for square in occupancy.keys():
+				var piece_node := layer.node_for(str(square)) as Node2D
+				var kind := str(occupancy[str(square)]["kind"])
+				var want := _copy(str(screen), StringTable.piece_name_key(kind), str(locale))
+				var meta := str(piece_node.get_meta("accessible_name", ""))
+				if meta.is_empty():
+					return "%s %s's node carries no name in %s" % [screen, kind, locale]
+				if meta != want:
+					return (
+						"%s %s's node reads %s on %s in %s, want %s"
+						% [screen, kind, meta, screen, locale, want]
+					)
+	return ""
+
+
 ## A resolved name is never the key itself (`CTR-localization` G4).
 func _names_are_not_raw_keys() -> String:
 	for screen in PLAY_SCREENS:
@@ -137,3 +171,8 @@ func _copy(screen: String, key: String, locale: String) -> String:
 	if screen == "puzzle-play":
 		return StringTable.puzzle_play(key, locale)
 	return StringTable.shared_play(key, locale)
+
+
+## The node-sync asset callable that names an empty id, so no sprite request runs.
+func _missing_asset(_asset_id: String) -> String:
+	return ""

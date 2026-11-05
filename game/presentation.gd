@@ -464,6 +464,11 @@ func _show_shared_play(state: Dictionary) -> void:
 		"side_to_move": str(state.get("side_to_move", "white")),
 		"in_check": bool(state.get("in_check", false)),
 		"promote_kinds": state.get("promote_kinds", SharedGameSession.PROMOTE_ORDER),
+		# R8 / `LOC.L9` / `CTR-localization` O1: the name context the piece nodes
+		# resolve their accessible names in, on every screen show and locale
+		# change (#643).
+		"name_screen": "shared-play",
+		"name_locale": _router.locale,
 	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
@@ -612,6 +617,11 @@ func _show_puzzle_play(state: Dictionary) -> void:
 		"side_to_move": str(state.get("side_to_move", "white")),
 		"promote_kinds": state.get("promote_kinds", PuzzleSession.PROMOTE_ORDER),
 		"white_seat": _puzzle_seat(str(state.get("solving_side", ""))),
+		# R8 / `LOC.L9` / `CTR-localization` O1: the name context the piece nodes
+		# resolve their accessible names in, on every screen show and locale
+		# change (#643).
+		"name_screen": "puzzle-play",
+		"name_locale": _router.locale,
 	}
 	var move_var: Variant = state.get("move", null)
 	if move_var is Dictionary:
