@@ -9,10 +9,29 @@ signal assets_needed(asset_ids: PackedStringArray)
 
 var _nodes: Dictionary = {}
 
+## R8 / `LOC.L9` — the play screen and locale the accessible names resolve for,
+## fed by the board on every screen show and locale change (`CTR-localization` O1).
+var _name_screen := ""
+var _name_locale := ""
+
 
 func _init() -> void:
 	name = "Pieces"
 	z_index = 3
+
+
+## Point the piece names at `screen`'s owner and `locale`; re-apply the name every
+## held node carries so it follows the screen and locale, never the tautology of
+## one last-applied pair. NODE R8: #643.
+func set_name_context(screen: String, locale: String) -> void:
+	if screen == _name_screen and locale == _name_locale:
+		return
+	_name_screen = screen
+	_name_locale = locale
+	for square in _nodes.keys():
+		var node := _nodes[square] as Node2D
+		if node != null and node.has_meta("piece_kind"):
+			_apply_name(node, str(node.get_meta("piece_kind")))
 
 
 ## The node for a square, or null when the square holds no drawn piece.
@@ -114,7 +133,7 @@ func apply_kind_texture(
 	node.set_meta("piece_color", color)
 	node.set_meta("piece_kind", kind)
 	# R8: the name rides the same node metadata; promotion re-applies it here.
-	node.set_meta("accessible_name", BoardPresentation.accessible_name(kind, "shared-play", "en"))
+	_apply_name(node, kind)
 	var id := str(asset_id.call("%s|%s" % [color, kind]))
 	if id.is_empty():
 		return
@@ -131,6 +150,17 @@ func apply_kind_texture(
 	# that locally so pieces read as authored and still rotate with CAM-board.M2 (#617).
 	var s := BoardGeometry.PIECE_EXTENT / px
 	sprite.scale = Vector2(s, -s)
+
+
+## R8 — resolve `kind` against `LOC.L9`'s key through O1 for the name context
+## the board set, and only once that context exists: a node is never left
+## carrying a name resolved at a screen or locale that was not asked for.
+func _apply_name(node: Node2D, kind: String) -> void:
+	if _name_screen.is_empty() or _name_locale.is_empty():
+		return
+	node.set_meta(
+		"accessible_name", BoardPresentation.accessible_name(kind, _name_screen, _name_locale)
+	)
 
 
 func _make_node(

@@ -561,23 +561,38 @@ func _screen_bottom_right(points: Array) -> Vector2:
 
 
 ## CMP-presentation.R8: a rendered piece node exposes its kind's name as metadata
-## (never a drawn label).
+## (never a drawn label), and the name follows the screen and locale the board is
+## told to name for — not one hard-wired pair.
 func _check_accessible_name_meta(board: BoardPresentation) -> String:
 	var rules := ChessRules.new()
 	rules.reset_opening()
 	board.render_position(rules.position_field())
-	var seen := 0
+	var nodes: Array[Node2D] = []
 	for child in board.find_child("Pieces", true, false).get_children():
 		var node := child as Node2D
 		if node == null or not node.has_meta("piece_kind"):
 			continue
-		seen += 1
-		var kind := str(node.get_meta("piece_kind"))
-		var want := BoardPresentation.accessible_name(kind, "shared-play", "en")
-		if want.is_empty() or str(node.get_meta("accessible_name", "")) != want:
-			return "R8 %s has no accessible name metadata" % node.name
-	if seen != 32:
-		return "R8 saw %d piece nodes, want 32" % seen
+		nodes.append(node)
+	if nodes.size() != 32:
+		return "R8 saw %d piece nodes, want 32" % nodes.size()
+	for screen in ["shared-play", "puzzle-play"]:
+		for locale in StringTable.LOCALES:
+			board.render_position(
+				rules.position_field(),
+				"",
+				PackedStringArray(),
+				{"name_screen": screen, "name_locale": locale}
+			)
+			for node in nodes:
+				var kind := str(node.get_meta("piece_kind"))
+				var want := BoardPresentation.accessible_name(kind, screen, locale)
+				var meta := str(node.get_meta("accessible_name", ""))
+				if want.is_empty() or meta != want:
+					return (
+						"R8 %s reads %s on %s in %s, want %s"
+						% [node.name, meta, screen, locale, want]
+					)
+	return ""
 	return ""
 
 

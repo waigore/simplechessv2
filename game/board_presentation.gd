@@ -186,6 +186,10 @@ func render_position(
 ) -> void:
 	if options.has("white_seat"):
 		set_white_seat(str(options["white_seat"]))
+	if options.has("name_screen") and options.has("name_locale"):
+		# R8: the screen and `GS.locale` the piece-node names resolve for, fed by
+		# every screen show and locale change so O1 owns resolution (#643).
+		_set_name_context(str(options["name_screen"]), str(options["name_locale"]))
 	_reflow_coordinates()
 	var post_occ: Dictionary = (position.get("occupancy", {}) as Dictionary).duplicate(true)
 	_selection = selection
@@ -260,6 +264,12 @@ static func accessible_name(kind: String, screen: String, locale: String) -> Str
 		"shared-play":
 			return StringTable.shared_play(key, locale)
 	return ""
+
+
+## R8 — the screen and `GS.locale` the piece-node names resolve for, fed by the
+## screen shows and every locale change so O1 owns resolution (`#643`).
+func _set_name_context(screen: String, locale: String) -> void:
+	_pieces.set_name_context(screen, locale)
 
 
 func set_white_seat(seat: String) -> void:
